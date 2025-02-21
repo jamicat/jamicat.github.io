@@ -15,13 +15,11 @@
 
 	  
 
-
-
 .glitch {
   position: relative;
   color: white;
   font-weight: bold;
-  overflow: hidden;
+  cursor: pointer;
 }
 
 .glitch::before,
@@ -32,47 +30,47 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: inherit;
+  opacity: 0;
   color: inherit;
-  opacity: 0.8;
-  clip: rect(0, 900px, 0, 0);
+  background: inherit;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
-.glitch::before {
-  left: 2px;
-  text-shadow: -2px 0 red;
-  animation: glitch 2s infinite linear alternate-reverse;
+.glitch:hover::before {
+  opacity: 1;
+  color: pink;
+  animation: glitch 1s infinite linear alternate-reverse;
 }
 
-.glitch::after {
-  left: -2px;
-  text-shadow: -2px 0 blue;
-  animation: glitch 3s infinite linear alternate-reverse;
+.glitch:hover::after {
+  opacity: 1;
+  color: yellow;
+  animation: glitch 1s infinite linear alternate-reverse;
+  clip-path: inset(20% 0 30% 0);
 }
 
 @keyframes glitch {
   0% {
-    clip: rect(42px, 9999px, 44px, 0);
-  }
-  10% {
-    clip: rect(12px, 9999px, 90px, 0);
+    transform: translate(0);
   }
   20% {
-    clip: rect(85px, 9999px, 80px, 0);
-  }
-  30% {
-    clip: rect(15px, 9999px, 30px, 0);
+    transform: translate(-2px, 2px);
   }
   40% {
-    clip: rect(0px, 9999px, 20px, 0);
+    transform: translate(-2px, -2px);
   }
-  50% {
-    clip: rect(72px, 9999px, 100px, 0);
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
   }
   100% {
-    clip: rect(15px, 9999px, 90px, 0);
+    transform: translate(0);
   }
 }
+
 
 	  
 
