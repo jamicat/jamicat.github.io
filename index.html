@@ -16,11 +16,9 @@
 
 
 
-	  
 .glitch {
   position: relative;
-  color: white;
-  font-weight: bold;
+  font-weight: normal; 
   overflow: hidden;
 }
 
@@ -34,21 +32,30 @@
   height: 100%;
   background: inherit;
   color: inherit;
-  opacity: 0.8;
+  opacity: 0;
   clip: rect(0, 900px, 0, 0);
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+.glitch:hover {
+  font-weight: bold; 
 }
 
 .glitch:hover::before {
+  opacity: 1;
   left: 2px;
   text-shadow: -2px 0 pink;
-  animation: glitch 2s infinite linear alternate-reverse;
+  animation: glitch 1.5s infinite linear alternate-reverse;
 }
 
 .glitch:hover::after {
+  opacity: 1;
   left: -2px;
   text-shadow: -2px 0 yellow;
-  animation: glitch 3s infinite linear alternate-reverse;
+  animation: glitch 1.8s infinite linear alternate-reverse;
 }
+
 
 @keyframes glitch {
   0% {
