@@ -15,11 +15,10 @@
 
 
 
-
 .glitch {
   position: relative;
-  color: white;
-  font-weight: normal;
+  color: white; 
+  font-weight: normal; 
   overflow: hidden;
 }
 
@@ -37,21 +36,26 @@
   pointer-events: none;
   transition: opacity 0.1s ease-in-out;
 }
+
 .glitch:hover {
   font-weight: bold; 
 }
+
 .glitch:hover::before {
   opacity: 1;
-  text-shadow: -2px 0 pink;
+  text-shadow: -2px 0 pink; 
   transform: translate(2px, -2px);
   animation: glitch-flicker 0.3s infinite;
 }
+
 .glitch:hover::after {
   opacity: 1;
-  text-shadow: 2px 0 yellow;
+  text-shadow: 2px 0 yellow; 
   transform: translate(-2px, 2px);
   animation: glitch-flicker 0.4s infinite;
 }
+
+
 @keyframes glitch-flicker {
   0% {
     transform: translate(0, 0);
@@ -78,6 +82,7 @@
     opacity: 0.8;
   }
 }
+
 
 
 
