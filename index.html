@@ -10,78 +10,7 @@
    @font-face {
       font-family: 'nunito';
       src: url('nunito.ttf') format('truetype');
-    }
-
-
-
-
-
- .glitch {
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-  color: white;
-  font-weight: bold;
-}
-
-.glitch-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.1s ease-in-out;
-}
-
-.glitch-layer.pink {
-  color: pink;
-}
-
-.glitch-layer.yellow {
-  color: yellow;
-}
-
-.glitch:hover .glitch-layer {
-  opacity: 1;
-  animation: glitch-effect 0.5s infinite linear alternate-reverse;
-}
-
-.glitch-text {
-  position: relative;
-  z-index: 1;
-}
-
-
-@keyframes glitch-effect {
-  0% {
-    transform: translate(0, 0);
-  }
-  20% {
-    transform: translate(-2px, 2px);
-  }
-  40% {
-    transform: translate(2px, -2px);
-  }
-  60% {
-    transform: translate(-1px, 1px);
-  }
-  80% {
-    transform: translate(1px, -1px);
-  }
-  100% {
-    transform: translate(0, 0);
-  }
-}
-
-
-
-
-
-	  
-
-
-	  
+    } 
 	  
    body {
       background: url('bg.jpg') no-repeat center center fixed;
@@ -217,10 +146,10 @@
 	   <!-- 
       <button class="button" onclick="showAbout()">About</button>
 	    -->
-<button class="button glitch" data-text="Socials" onclick="showSocials()">Socials</button>
-<button class="button glitch" data-text="Art" onclick="showArt()">Art</button>
-<button class="button glitch" data-text="Guestbook" onclick="window.location.href='/book/'">Guestbook</button>
-<button class="button glitch" data-text="Exit" onclick="exitTerminal()">Exit</button>
+   <button class="button" onclick="showSocials()">Socials</button>
+   <button class="button" onclick="showArt()">Art</button>
+   <button class="button" onclick="window.location.href='/book/'">Guestbook</button>
+   <button class="button" onclick="exitTerminal()">Exit</button>
 
     </div>
   </div>
