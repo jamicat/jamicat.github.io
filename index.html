@@ -61,9 +61,9 @@
 
     .button {
       font-size: 1.0em;
-      background-color: #A890D3;
+      background-color: #FFD1DC;
       transition: background-color 0.3s, transform 0.2s;
-      color: #F5F5F5;
+      color: white;
       padding: 10px;
       border: none;
       border-radius: 5px;
@@ -72,9 +72,9 @@
     }
 
     .button:hover {
-      background-color: #C7A9E0; 
+      transition: text-shadow 0.3s ease-in-out;
       transform: scale(1.05); 
-      text-shadow: 0 0 8px white, 0 0 15px white;
+      text-shadow: 0 0 8px #FFF5BA, 0 0 15px #FFF5BA;
     }
     .button:active{
       background-color: #C7A9E0; 
@@ -124,8 +124,7 @@
 
     .button.active {
       animation: toggleOn 0.5s infinite alternate;
-      background-color: #C7A9E0; 
-      text-shadow: 0 0 8px white, 0 0 15px white;
+      text-shadow: 0 0 8px #FFF5BA, 0 0 15px #FFF5BA;
       
     }
 
@@ -186,7 +185,7 @@ VANTA.NET({
   scale: 1.00,
   scaleMobile: 1.00,
   color: 0xffffff,
-  backgroundColor: 0x8479d4,
+  backgroundColor: #FFD1DC,
   points: 20.00,
   maxDistance: 17.00
 })
