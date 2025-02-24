@@ -22,7 +22,7 @@
 	  
    body {
       background: none;
-      /*background: url('bg.jpg') no-repeat center center fixed;*/
+      background: url('bg.jpg') no-repeat center center fixed;
       background-size: cover;
       display: flex;
       justify-content: center;
@@ -48,22 +48,20 @@
     .terminal {
       font-size: 1.1em;
       background-color: black;
-      color: white;
+      color: pink;
       padding: 20px;
-      border-radius: 12px;
+      border-radius: 10px;
       width: 80%;
       max-width: 600px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
       margin-bottom: 70px;
-      text-shadow: 0 0 6px rgba(245, 245, 245, 0.2);
-      border: 2px solid rgba(255, 255, 255, 0.1); 
     }
 
     .button {
       font-size: 1.0em;
-      background-color: #FF9A9E;
+      background-color: #ffb6c1;
       transition: background-color 0.3s, transform 0.2s;
-      color: white;
+      color: black;
       padding: 10px;
       border: none;
       border-radius: 5px;
@@ -72,14 +70,12 @@
     }
 
     .button:hover {
-      transition: text-shadow 0.3s ease-in-out;
+      background-color: #ff9a9e; 
       transform: scale(1.05); 
-     text-shadow: 0 0 8px white, 0 0 15px white;
     }
     .button:active{
-      background-color: #C7A9E0; 
+      background-color: #e6788e; 
       transform: scale(0.95);  
-      text-shadow: 0 0 8px white, 0 0 15px white;
     }
 	  
     .buttons {
@@ -94,11 +90,9 @@
       display: inline-block;
       width: 10px;
       height: 20px;
-      background-color: white;
+      background-color: pink;
       margin-left: 5px;
       animation: blink 1s step-end infinite;
-      box-shadow: 0 0 8px white, 0 0 15px white; 
-      border-radius: 2px;
     }
 
     @keyframes blink {
@@ -124,7 +118,7 @@
 
     .button.active {
       animation: toggleOn 0.5s infinite alternate;
-     text-shadow: 0 0 8px white, 0 0 15px white;
+      background-color: #e6788e; 
       
     }
 
@@ -147,7 +141,7 @@
 <body>
 <div class="image-container" style="position: relative;">
   <img src="fursona.png" alt="Fursona" class="fursona-image" style="display: block;">
-  <div class="infText" id="mood-text" style="background-color: #FF9A9E; color: white; display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">You are loved.</div>
+  <div class="infText" id="mood-text" style="background-color: #ffe59a; display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">You are loved.</div>
 </div>
 
 
@@ -165,31 +159,14 @@
     </div>
   </div>
   <div class="dog-volume-container">
-    <button id="music-toggle-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); text-decoration: line-through white;">🎵</button>
+    <button id="music-toggle-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); text-decoration: line-through black;">🎵</button>
     <button id="toggle-dog-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">Dog Audio: OFF</button>
   </div>
   <audio id="music-audio" src="fromadream.mp3" loop></audio>
   <img src="dog.png" class="dog" id="dog" alt="Dog">
   <audio id="dog-audio" src="dog-bark.mp3" loop></audio>
 
-<script src="three.r134.min.js"></script>
-<script src="vanta.net.min.js"></script>
-<script>
-VANTA.NET({
-  el: "body",
-  mouseControls: true,
-  touchControls: true,
-  gyroControls: false,
-  minHeight: 200.00,
-  minWidth: 200.00,
-  scale: 1.00,
-  scaleMobile: 1.00,
-  color: 0xffffff,
-  backgroundColor: 0xFFD1DC,
-  points: 20.00,
-  maxDistance: 17.00
-})
-</script>
+
 	
 <script>
 const fursonaImage = document.querySelector('.fursona-image');
