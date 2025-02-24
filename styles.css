@@ -101,7 +101,7 @@ body {
   left: 20px; 
   font-size: 1em; 
   color: white; 
-  background-color: #A890D3; 
+  background-color: #FFB7C5; 
   padding: 10px 15px; 
   border-radius: 8px; /
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
@@ -110,7 +110,7 @@ body {
 
 #weather-output {
   font-family: 'hack-regular'; 
-  text-shadow: 0 0 8px white, 0 0 15px white;
+  text-shadow: 0 0 8px #FF9AA2, 0 0 15px #FF9AA2;
   color: white; 
 }
 
