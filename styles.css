@@ -77,7 +77,6 @@ body {
 .button:hover, .home-btn:hover, .delete-all-btn:hover, .species-buttons button:hover {
   background-color: #ff9a9e; 
   transform: scale(1.05); 
-  text-shadow: 0 0 8px white, 0 0 15px white;
 }
 
 
@@ -100,8 +99,8 @@ body {
   bottom: 20px; 
   left: 20px; 
   font-size: 1em; 
-  color: white; 
-  background-color: #FF9A9E; 
+  color: black; 
+  background-color: #ffb6c1; 
   padding: 10px 15px; 
   border-radius: 8px; /
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
@@ -110,8 +109,7 @@ body {
 
 #weather-output {
   font-family: 'hack-regular'; 
-  text-shadow: 0 0 8px white, 0 0 15px white;
-  color: white; 
+  color: black; 
 }
 
 .comment h4 {
