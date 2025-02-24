@@ -110,7 +110,7 @@ body {
 
 #weather-output {
   font-family: 'hack-regular'; 
-  text-shadow: 0 0 8px #FFF5BA, 0 0 15px #FFF5BA;
+  text-shadow: 0 0 8px white, 0 0 15px white;
   color: white; 
 }
 
