@@ -109,6 +109,7 @@ body {
 
 #weather-output {
   font-family: 'hack-regular'; 
+  font-weight: bold;
   color: black; 
 }
 
