@@ -32,7 +32,7 @@ body {
   height: 40vh;
   overflow-y: auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  font-family: 'hack-regular'; 
+  font-family: 'Consolas', 'Courier New', monospace;
 }
 
 .line {
@@ -60,7 +60,7 @@ body {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  font-family: 'hack-regular';
+  font-family: 'Consolas', 'Courier New', monospace;
 }
 
 .button, .home-btn, .delete-all-btn, .species-buttons button {
@@ -71,7 +71,7 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'hack-regular'; 
+  font-family: 'Consolas', 'Courier New', monospace;
 }
 
 .button:hover, .home-btn:hover, .delete-all-btn:hover, .species-buttons button:hover {
@@ -108,7 +108,7 @@ body {
 }
 
 #weather-output {
-  font-family: 'hack-regular', monospace;
+  font-family: 'Consolas', 'Courier New', monospace;
   font-weight: bold;
   color: white; 
 }
