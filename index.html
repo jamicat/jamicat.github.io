@@ -350,13 +350,12 @@ musicToggleButton.addEventListener("click", () => {
           setTimeout(type, typingSpeed);
         } else {
           if (lineIndex === 0 && !hasCleared) {
-            typeEllipses(() => {
               typingArea.innerHTML = '';
               hasCleared = true;
               charIndex = 0;
               lineIndex++;
               setTimeout(type, typingSpeed);
-            });
+         
           } else {
             typingArea.innerHTML += '<br>';
             charIndex = 0;
