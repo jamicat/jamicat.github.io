@@ -19,7 +19,14 @@
    margin: 0;
    }
 
-	  
+ #movable-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  user-select: none; 
+}
    body {
       background: none;
       background: url('bg.jpg') no-repeat center center fixed;
@@ -173,19 +180,22 @@
 </div>
 
 
+ <div id="movable-container">
+  <div class="image-container">
+    <img src="fursona.png" alt="Fursona" class="fursona-image">
+  </div>
   <div class="terminal" id="terminal">
     <div id="typing-area"></div>
     <div class="buttons" id="button-area" style="display: none;">
-	   <!-- 
-      <button class="button" onclick="showAbout()">About</button>
-	    -->
-   <button class="button" onclick="showSocials()">Socials</button>
-   <button class="button2" onclick="showArt()">Art</button>
-   <button class="button" onclick="window.location.href='/book/'">Guestbook</button>
-   <button class="button2" onclick="exitTerminal()">Exit</button>
-
+      <button class="button" onclick="showSocials()">Socials</button>
+      <button class="button2" onclick="showArt()">Art</button>
+      <button class="button" onclick="window.location.href='/book/'">Guestbook</button>
+      <button class="button2" onclick="exitTerminal()">Exit</button>
     </div>
   </div>
+</div>
+
+	
   <div class="dog-volume-container">
     <button id="music-toggle-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); text-decoration: line-through black;">🎵</button>
     <button id="toggle-dog-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">Dog Audio: OFF</button>
