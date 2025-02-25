@@ -74,7 +74,7 @@ body {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  font-family: 'nunito''; 
+  font-family: 'nunito'; 
 }
 
 .button, .button2, .home-btn, .delete-all-btn, .species-buttons button {
@@ -85,7 +85,7 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'nunito''; 
+  font-family: 'nunito'; 
   font-size: 0.9em;
 }
 
@@ -101,7 +101,7 @@ body {
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 5px;
-  font-family: 'nunito''; 
+  font-family: 'nunito'; 
   white-space: pre-wrap;
   position: relative;
   width: 100%;
@@ -110,7 +110,7 @@ body {
 
 .infText {
   position: absolute; 
-  font-family: 'nunito'', monospace;
+  font-family: 'nunito', monospace;
   bottom: 20px; 
   left: 20px; 
   font-size: 0.9em; 
@@ -123,7 +123,7 @@ body {
 }
 
 #weather-output {
-  font-family: 'nunito''; 
+  font-family: 'nunito'; 
   font-weight: bold;
   color: black; 
   font-size: 0.9em; 
@@ -131,14 +131,14 @@ body {
 
 .comment h4 {
   margin: 0 0 5px;
-  font-family: 'nunito'';
+  font-family: 'nunito';
 }
 
 .comment small {
   display: block;
   margin-top: 5px;
   color: grey;
-  font-family: 'nunito'';
+  font-family: 'nunito';
 }
 
 .delete-btn {
