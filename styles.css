@@ -7,6 +7,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'firecode';
+  src: url('firecode.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 body {
   margin: 0;
@@ -32,7 +39,7 @@ body {
   height: 40vh;
   overflow-y: auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  font-family: 'hack-regular'; 
+  font-family: 'firecode'; 
 }
 
 .line {
@@ -60,7 +67,7 @@ body {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  font-family: 'hack-regular'; 
+  font-family: 'firecode'; 
 }
 
 .button, .button2, .home-btn, .delete-all-btn, .species-buttons button {
@@ -71,7 +78,7 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'hack-regular'; 
+  font-family: 'firecode'; 
 }
 
 .button:hover, .button2:hover, .home-btn:hover, .delete-all-btn:hover, .species-buttons button:hover {
@@ -86,7 +93,7 @@ body {
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 5px;
-  font-family: 'hack-regular'; 
+  font-family: 'firecode'; 
   white-space: pre-wrap;
   position: relative;
   width: 100%;
@@ -95,7 +102,7 @@ body {
 
 .infText {
   position: absolute; 
-  font-family: 'hack-regular', monospace;
+  font-family: 'firecode', monospace;
   bottom: 20px; 
   left: 20px; 
   font-size: 1em; 
@@ -108,21 +115,21 @@ body {
 }
 
 #weather-output {
-  font-family: 'hack-regular'; 
+  font-family: 'firecode'; 
   font-weight: bold;
   color: black; 
 }
 
 .comment h4 {
   margin: 0 0 5px;
-  font-family: 'hack-regular';
+  font-family: 'firecode';
 }
 
 .comment small {
   display: block;
   margin-top: 5px;
   color: grey;
-  font-family: 'hack-regular';
+  font-family: 'firecode';
 }
 
 .delete-btn {
