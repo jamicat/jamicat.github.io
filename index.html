@@ -19,12 +19,7 @@ height: 100%;
 margin: 0;
 }
 
-	
-.terminal, .fursona-image {
-  position: absolute; 
-  cursor: grab;
-}
-	
+
 body {
 background: none;
 background: url('bg.jpg') no-repeat center center fixed;
@@ -43,6 +38,7 @@ overflow: hidden;
 display: flex;
 justify-content: center;
 margin-bottom: 0px;
+cursor: grab;
 }
 
 .image-container img {
@@ -628,9 +624,7 @@ function makeDraggable(element) {
         element.style.cursor = "grab";
     });
 }
-makeDraggable(document.querySelector(".terminal"));
-makeDraggable(document.querySelector(".fursona-image"));
-	
+makeDraggable(document.querySelector(".image-container"));
 	
 </script>
 
