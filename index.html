@@ -19,8 +19,7 @@
    margin: 0;
    }
 
-
-
+	  
    body {
       background: none;
       background: url('bg.jpg') no-repeat center center fixed;
@@ -174,25 +173,19 @@
 </div>
 
 
-
-  <div class="image-container">
-    <img src="fursona.png" alt="Fursona" class="fursona-image">
-  </div>
   <div class="terminal" id="terminal">
     <div id="typing-area"></div>
     <div class="buttons" id="button-area" style="display: none;">
-      <button class="button" onclick="showSocials()">Socials</button>
-	    <!-- 
+	   <!-- 
       <button class="button" onclick="showAbout()">About</button>
 	    -->
-      <button class="button2" onclick="showArt()">Art</button>
-      <button class="button" onclick="window.location.href='/book/'">Guestbook</button>
-      <button class="button2" onclick="exitTerminal()">Exit</button>
+   <button class="button" onclick="showSocials()">Socials</button>
+   <button class="button2" onclick="showArt()">Art</button>
+   <button class="button" onclick="window.location.href='/book/'">Guestbook</button>
+   <button class="button2" onclick="exitTerminal()">Exit</button>
+
     </div>
   </div>
-
-
-	
   <div class="dog-volume-container">
     <button id="music-toggle-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); text-decoration: line-through black;">🎵</button>
     <button id="toggle-dog-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">Dog Audio: OFF</button>
@@ -314,15 +307,15 @@ musicToggleButton.addEventListener("click", () => {
         dogDY *= -1; //DOG EVADE AGAIN!!!
       }
 
-      dog.style.left = `${dogX}px`;
-      dog.style.top = `${dogY}px`;
+      dog.style.left = ${dogX}px;
+      dog.style.top = ${dogY}px;
       //KEEP MOVING
       requestAnimationFrame(moveDog);
     }
 
     dog.style.position = 'absolute';
-    dog.style.left = `${dogX}px`;
-    dog.style.top = `${dogY}px`;
+    dog.style.left = ${dogX}px;
+    dog.style.top = ${dogY}px;
     moveDog();
 
    //grow
@@ -331,7 +324,7 @@ musicToggleButton.addEventListener("click", () => {
    clearInterval(growInterval); 
    growInterval = setInterval(() => {
     scale += 0.01; 
-    dogImage.style.transform = `scale(${scale})`;
+    dogImage.style.transform = scale(${scale});
    }, 50); 
    });
 
@@ -341,7 +334,7 @@ musicToggleButton.addEventListener("click", () => {
    clearInterval(growInterval); 
 	   /*	 
    scale = 1; 
-   dogImage.style.transform = `scale(${scale})`; 
+   dogImage.style.transform = scale(${scale}); 
    */
    });
    
@@ -444,17 +437,17 @@ musicToggleButton.addEventListener("click", () => {
 	  /*
     function showAbout() {
       const aboutMessage = [
-        `Welcome to the tea terminal! This is a silly website I made for fun.`,
-        ` `,
-        `My human-feline name is Jamie and as you may have discerned, I love bubble tea, IT, am British and fond of my pets. I very recently befriended (kidnapped) two blue guppies and they fill me with unconditional love. My family has always kept bearded collies as pets (the one trying to escape your screen—she will do it), so love was a big part of my upbringing. As a fairly sensitive person, I always find myself feeling grateful for the smallest things, as they help me put much bigger challenges into a healthy perspective.`,
-        ` `,
-        `I believe that we should strive to give as much unconditional love as our animal companions are capable of. One day when I have escaped IT, I would really love to volunteer at an animal sanctuary or rescue foundation.`,
-        ` `,
-        `When not touching grass or drinking it in milk, I like to engage with online gaming communities in a carefree way, and to coax and encourage my friends to exist as free spirits too. Games like Team Fortress 2, Final Fantasy online and even more stressful competitors like Dead by Daylight are super enjoyable to me for this reason. It is important for me to feel a part of something bigger than myself.`,
-        ` `,
-	`My biggest hobby outside of IT is to read. I come from a family of hungry bookworms, each with our own individual section in the family library at home, always battling for space. Reading in bed, or when I have nothing else to do, is incredibly therapeutic. It provides me with a natural sense of compartmentalisation. Absorbing other people's written experiences feels like a real superpower—one I wish the world wouldn't neglect. I'll list my favourite books in an upcoming FAQ page!`,
-	` `,
-        `This may read like a brainfart—and that is because it probably was. You can expect weekly updates here as the mood shifts, as well as more typical terminal tweaks (TTTs in IT) and wholesome featurettes. Thank you for checking out this website, may our paths cross one day! In the meantime, feel free to leave your mark in the guestbook (I know, I am trying to fix it ;-;).`
+        Welcome to the tea terminal! This is a silly website I made for fun.,
+         ,
+        My human-feline name is Jamie and as you may have discerned, I love bubble tea, IT, am British and fond of my pets. I very recently befriended (kidnapped) two blue guppies and they fill me with unconditional love. My family has always kept bearded collies as pets (the one trying to escape your screen—she will do it), so love was a big part of my upbringing. As a fairly sensitive person, I always find myself feeling grateful for the smallest things, as they help me put much bigger challenges into a healthy perspective.,
+         ,
+        I believe that we should strive to give as much unconditional love as our animal companions are capable of. One day when I have escaped IT, I would really love to volunteer at an animal sanctuary or rescue foundation.,
+         ,
+        When not touching grass or drinking it in milk, I like to engage with online gaming communities in a carefree way, and to coax and encourage my friends to exist as free spirits too. Games like Team Fortress 2, Final Fantasy online and even more stressful competitors like Dead by Daylight are super enjoyable to me for this reason. It is important for me to feel a part of something bigger than myself.,
+         ,
+	My biggest hobby outside of IT is to read. I come from a family of hungry bookworms, each with our own individual section in the family library at home, always battling for space. Reading in bed, or when I have nothing else to do, is incredibly therapeutic. It provides me with a natural sense of compartmentalisation. Absorbing other people's written experiences feels like a real superpower—one I wish the world wouldn't neglect. I'll list my favourite books in an upcoming FAQ page!,
+	 ,
+        This may read like a brainfart—and that is because it probably was. You can expect weekly updates here as the mood shifts, as well as more typical terminal tweaks (TTTs in IT) and wholesome featurettes. Thank you for checking out this website, may our paths cross one day! In the meantime, feel free to leave your mark in the guestbook (I know, I am trying to fix it ;-;).
       ];
 
       buttonArea.style.display = 'none';
@@ -560,7 +553,6 @@ function showArt() {
     'Chibi',
   ];
 
-
   // dedicated intro because fucky event listeners
   const introElement = document.createElement('div');
   introElement.innerHTML = "<br>Jamie is a vivacious chatterbox cat, purring with energy. He's usually dressed in loose, cropped or oversized clothes, with tie-dyed patterns or soft pastel colours that blend seamlessly with his fur. Here is the current collection! The most recent commission was Jamie in Tokyo. His hair has been redyed, and I plan to keep the change going forwards. He is designed to mirror my real-life fashion choices and tastes! :D<br>";
@@ -569,7 +561,7 @@ function showArt() {
   function displayTree() {
     let treeHTML = '<br>art<br>';
     artFiles.forEach((art) => {
-      treeHTML += `├── <span class="art-link" style="color: lightblue; cursor: pointer;" data-file="${art}">${art}</span><br>`;
+      treeHTML += ├── <span class="art-link" style="color: lightblue; cursor: pointer;" data-file="${art}">${art}</span><br>;
     });
 
     const treeElement = document.createElement('div'); 
@@ -584,7 +576,7 @@ function showArt() {
     const links = document.querySelectorAll('.art-link');
     links.forEach((link) => {
       link.addEventListener('click', () => {
-        const filename = `${link.getAttribute('data-file').replace(/\s+/g, '-')}.png`;
+        const filename = ${link.getAttribute('data-file').replace(/\s+/g, '-')}.png;
         displayArt(filename);
       });
     });
@@ -608,8 +600,10 @@ function showArt() {
 }
 
     type();
-
-	  
   </script>
+  
+  
+  
+  
 </body>
 </html>
