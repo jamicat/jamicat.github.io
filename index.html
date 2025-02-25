@@ -72,6 +72,18 @@
       margin: 5px;
     }
 
+	  .button2 {
+      font-size: 1.0em;
+      background-color: #ffe59a;
+      transition: background-color 0.3s, transform 0.2s;
+      color: black;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
     .button:hover {
       background-color: #ff9a9e; 
       transform: scale(1.05); 
@@ -80,6 +92,16 @@
       background-color: #e6788e; 
       transform: scale(0.95);  
     }
+
+	  .button2:hover {
+      background-color: #ffe59a; 
+      transform: scale(1.05); 
+    }
+    .button2:active{
+      background-color: #e6788e; 
+      transform: scale(0.95);  
+    }
+	  
 	  
     .buttons {
       display: flex;
@@ -156,9 +178,9 @@
       <button class="button" onclick="showAbout()">About</button>
 	    -->
    <button class="button" onclick="showSocials()">Socials</button>
-   <button class="button" onclick="showArt()">Art</button>
+   <button class="button2" onclick="showArt()">Art</button>
    <button class="button" onclick="window.location.href='/book/'">Guestbook</button>
-   <button class="button" onclick="exitTerminal()">Exit</button>
+   <button class="button2" onclick="exitTerminal()">Exit</button>
 
     </div>
   </div>
