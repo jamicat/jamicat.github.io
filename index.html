@@ -19,13 +19,7 @@
    margin: 0;
    }
 
- #movable-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  cursor: grab;
-  user-select: none; 
+
 }
    body {
       background: none;
@@ -180,7 +174,7 @@
 </div>
 
 
- <div id="movable-container">
+
   <div class="image-container">
     <img src="fursona.png" alt="Fursona" class="fursona-image">
   </div>
@@ -196,7 +190,7 @@
       <button class="button2" onclick="exitTerminal()">Exit</button>
     </div>
   </div>
-</div>
+
 
 	
   <div class="dog-volume-container">
@@ -615,54 +609,7 @@ function showArt() {
 
     type();
 
-
-
-	  
-document.addEventListener("DOMContentLoaded", () => {
-    const terminal = document.getElementById("terminal");
-    const fursonaImage = document.querySelector(".fursona-image");
-    let isDragging = false;
-    let offsetX, offsetY;
-
-    terminal.style.position = "absolute"; 
-    fursonaImage.style.position = "absolute"; 
-
-    terminal.addEventListener("mousedown", (e) => {
-        isDragging = true;
-
-      
-        offsetX = e.clientX - terminal.offsetLeft;
-        offsetY = e.clientY - terminal.offsetTop;
-
-        document.addEventListener("mousemove", onMouseMove);
-        document.addEventListener("mouseup", onMouseUp);
-    });
-
-    function onMouseMove(e) {
-        if (!isDragging) return;
-
-        let newX = e.clientX - offsetX;
-        let newY = e.clientY - offsetY;
-
-       
-        terminal.style.left = `${newX}px`;
-        terminal.style.top = `${newY}px`;
-
-        fursonaImage.style.left = `${newX}px`;
-        fursonaImage.style.top = `${newY - 120}px`; 
-    }
-
-    function onMouseUp() {
-        isDragging = false;
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-    }
-});
 	  
   </script>
-  
-  
-  
-  
 </body>
 </html>
