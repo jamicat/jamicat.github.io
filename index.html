@@ -35,10 +35,10 @@ overflow: hidden;
 
 
 .image-container {
-display: flex;
+/*display: flex;*/
+position: absolute;
 justify-content: center;
 margin-bottom: 0px;
-cursor: grab;
 }
 
 .image-container img {
@@ -47,6 +47,8 @@ height: auto;
 }
 
 .terminal {
+position: relative;
+	
 font-size: 0.9em;
 background: rgba(0, 0, 0, 0.6); 
 backdrop-filter: blur(10px) saturate(150%);
