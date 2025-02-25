@@ -14,6 +14,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'nunito';
+  src: url('nunito.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 body {
   margin: 0;
@@ -39,7 +46,7 @@ body {
   height: 40vh;
   overflow-y: auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  font-family: 'firecode'; 
+  font-family: 'nunito'; 
 }
 
 .line {
@@ -67,7 +74,7 @@ body {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  font-family: 'firecode'; 
+  font-family: 'nunito''; 
 }
 
 .button, .button2, .home-btn, .delete-all-btn, .species-buttons button {
@@ -78,7 +85,7 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'firecode'; 
+  font-family: 'nunito''; 
   font-size: 0.9em;
 }
 
@@ -94,7 +101,7 @@ body {
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 5px;
-  font-family: 'firecode'; 
+  font-family: 'nunito''; 
   white-space: pre-wrap;
   position: relative;
   width: 100%;
@@ -103,7 +110,7 @@ body {
 
 .infText {
   position: absolute; 
-  font-family: 'firecode', monospace;
+  font-family: 'nunito'', monospace;
   bottom: 20px; 
   left: 20px; 
   font-size: 0.9em; 
@@ -116,7 +123,7 @@ body {
 }
 
 #weather-output {
-  font-family: 'firecode'; 
+  font-family: 'nunito''; 
   font-weight: bold;
   color: black; 
   font-size: 0.9em; 
@@ -124,14 +131,14 @@ body {
 
 .comment h4 {
   margin: 0 0 5px;
-  font-family: 'firecode';
+  font-family: 'nunito'';
 }
 
 .comment small {
   display: block;
   margin-top: 5px;
   color: grey;
-  font-family: 'firecode';
+  font-family: 'nunito'';
 }
 
 .delete-btn {
