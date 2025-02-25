@@ -35,8 +35,7 @@ overflow: hidden;
 
 
 .image-container {
-/*display: flex;*/
-position: absolute;
+display: flex;
 justify-content: center;
 margin-bottom: 0px;
 }
@@ -47,8 +46,6 @@ height: auto;
 }
 
 .terminal {
-position: relative;
-	
 font-size: 0.9em;
 background: rgba(0, 0, 0, 0.6); 
 backdrop-filter: blur(10px) saturate(150%);
@@ -159,10 +156,6 @@ transform: scale(1);
 to {
 transform: scale(1.1);
 }
-
-
-
-
 }
 </style>
 </head>
@@ -602,36 +595,7 @@ displayTree();
 displayTree(); 
 }
 
-type();
-
-
-
-	
-function makeDraggable(element) {
-    let offsetX, offsetY, isDragging = false;
-    element.addEventListener("mousedown", (e) => {
-        isDragging = true;
-        offsetX = e.clientX - element.getBoundingClientRect().left;
-        offsetY = e.clientY - element.getBoundingClientRect().top;
-        element.style.cursor = "grabbing";
-    });
-    document.addEventListener("mousemove", (e) => {
-        if (!isDragging) return;
-        element.style.left = `${e.clientX - offsetX}px`;
-        element.style.top = `${e.clientY - offsetY}px`;
-    });
-
-    document.addEventListener("mouseup", () => {
-        isDragging = false;
-        element.style.cursor = "grab";
-    });
-}
-makeDraggable(document.querySelector(".image-container"));
-	
+type();	
 </script>
-
-
-
-
 </body>
 </html>
