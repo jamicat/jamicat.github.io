@@ -19,7 +19,13 @@ height: 100%;
 margin: 0;
 }
 
-
+.draggable-container {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+cursor: grab;
+}
 	
 
 body {
@@ -174,9 +180,6 @@ transform: scale(1.1);
 <div class="infText" id="mood-text" style="background-color: #ffe59a; display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">ᵇᵉᵃⁿˢ ᵒⁿⁿ ᵗᵒᵃˢᶻᵗ
 </div>
 </div>
-</div>
-
-
 <div class="terminal" id="terminal">
 <div id="typing-area"></div>
 <div class="buttons" id="button-area" style="display: none;">
@@ -187,9 +190,11 @@ transform: scale(1.1);
 <button class="button2" onclick="showArt()">Art</button>
 <button class="button" onclick="window.location.href='/book/'">Guestbook</button>
 <button class="button2" onclick="exitTerminal()">Exit</button>
-
 </div>
 </div>
+</div>
+	
+	
 <div class="dog-volume-container">
     <button id="music-toggle-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); text-decoration: line-through black;">🎵</button>
     <button id="toggle-dog-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">Dog Audio: OFF</button>
