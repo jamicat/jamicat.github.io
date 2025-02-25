@@ -20,7 +20,11 @@ margin: 0;
 }
 
 	
-
+.terminal, .fursona-image {
+  position: absolute; 
+  cursor: grab;
+}
+	
 body {
 background: none;
 background: url('bg.jpg') no-repeat center center fixed;
@@ -603,6 +607,30 @@ displayTree();
 type();
 
 
+
+	
+function makeDraggable(element) {
+    let offsetX, offsetY, isDragging = false;
+    element.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        offsetX = e.clientX - element.getBoundingClientRect().left;
+        offsetY = e.clientY - element.getBoundingClientRect().top;
+        element.style.cursor = "grabbing";
+    });
+    document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        element.style.left = `${e.clientX - offsetX}px`;
+        element.style.top = `${e.clientY - offsetY}px`;
+    });
+
+    document.addEventListener("mouseup", () => {
+        isDragging = false;
+        element.style.cursor = "grab";
+    });
+}
+makeDraggable(document.querySelector(".terminal"));
+makeDraggable(document.querySelector(".fursona-image"));
+	
 	
 </script>
 
