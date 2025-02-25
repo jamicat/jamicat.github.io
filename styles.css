@@ -105,7 +105,7 @@ body {
   font-family: 'firecode', monospace;
   bottom: 20px; 
   left: 20px; 
-  font-size: 1em; 
+  font-size: 0.9em; 
   color: black; 
   background-color: #ffb6c1; 
   padding: 10px 15px; 
@@ -138,7 +138,7 @@ body {
   right: 10px;
   background: none;
   border: none;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   color: pink;
   cursor: pointer;
   display: none;
@@ -182,13 +182,13 @@ body {
   }
 
   .button {
-    font-size: 0.85em; 
+    font-size: 0.9em; 
     padding: 8px; 
   }
 
   .infText {
     position: fixed;
-    font-size: 0.85em; 
+    font-size: 0.9em; 
     padding: 8px 12px; 
     bottom: 15px; 
     left: 15px;
@@ -230,14 +230,14 @@ body {
   }
 
   .button {
-    font-size: 0.85em; 
+    font-size: 0.9em; 
     padding: 8px; 
   }
 
 
   .infText {
     position: fixed;
-    font-size: 0.85em; 
+    font-size: 0.9em; 
     padding: 8px 12px; 
     bottom: 15px; 
     left: 15px;
@@ -277,13 +277,13 @@ body {
   }
 
   .button {
-    font-size: 0.85em; 
+    font-size: 0.9em; 
     padding: 8px; 
   }
 
   .infText {
     position: fixed;
-    font-size: 0.85em; 
+    font-size: 0.9em; 
     padding: 8px 12px; 
     bottom: 15px; 
     left: 15px;
@@ -307,7 +307,7 @@ body {
   .infText {
     bottom: 15px; 
     left: 15px;
-    font-size: 0.95em; 
+    font-size: 0.9em; 
   }
   body {
     
