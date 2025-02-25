@@ -553,6 +553,7 @@ function showArt() {
     'Chibi',
   ];
 
+
   // dedicated intro because fucky event listeners
   const introElement = document.createElement('div');
   introElement.innerHTML = "<br>Jamie is a vivacious chatterbox cat, purring with energy. He's usually dressed in loose, cropped or oversized clothes, with tie-dyed patterns or soft pastel colours that blend seamlessly with his fur. Here is the current collection! The most recent commission was Jamie in Tokyo. His hair has been redyed, and I plan to keep the change going forwards. He is designed to mirror my real-life fashion choices and tastes! :D<br>";
@@ -600,6 +601,51 @@ function showArt() {
 }
 
     type();
+
+
+
+	  
+document.addEventListener("DOMContentLoaded", () => {
+    const terminal = document.getElementById("terminal");
+    const fursonaImage = document.querySelector(".fursona-image");
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    terminal.style.position = "absolute"; 
+    fursonaImage.style.position = "absolute"; 
+
+    terminal.addEventListener("mousedown", (e) => {
+        isDragging = true;
+
+      
+        offsetX = e.clientX - terminal.offsetLeft;
+        offsetY = e.clientY - terminal.offsetTop;
+
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseup", onMouseUp);
+    });
+
+    function onMouseMove(e) {
+        if (!isDragging) return;
+
+        let newX = e.clientX - offsetX;
+        let newY = e.clientY - offsetY;
+
+       
+        terminal.style.left = `${newX}px`;
+        terminal.style.top = `${newY}px`;
+
+        fursonaImage.style.left = `${newX}px`;
+        fursonaImage.style.top = `${newY - 120}px`; 
+    }
+
+    function onMouseUp() {
+        isDragging = false;
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+    }
+});
+	  
   </script>
   
   
