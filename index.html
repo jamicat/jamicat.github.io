@@ -203,22 +203,6 @@ transform: scale(1.1);
 
 
 
-<script>
-const fursonaImage = document.querySelector('.fursona-image');
-const moodText = document.getElementById('mood-text');
-
-fursonaImage.addEventListener('mouseover', () => {
-moodText.style.display = 'block'; 
-});
-
-fursonaImage.addEventListener('mouseout', () => {
-moodText.style.display = 'none'; 
-});
-</script>
-
-
-
-
 <div id="weather-container" class="infText">
 Brit weather: <span id="weather-output"></span>
 </div>
@@ -608,51 +592,61 @@ displayTree();
 
 type();	
 
+
+
+
 	
 
 document.addEventListener("DOMContentLoaded", () => {
-    const messages2 = [
+    const messages = [
         "beans onn toaszt",
         "feeling sleepy...",
         "need more boba...",
         "what are you looking at?"
     ];
+
+
+
+	
     const moodText = document.getElementById("mood-text");
     let messageIndex = 0;
-    let charIndex2 = 0;
+    let charIndex = 0;
     let isDeleting = false;
-
-    const typingSpeed = 100; // Typing speed (ms)
-    const deleteSpeed = 50;  // Delete speed (ms)
-    const pauseBetween = 1500; // Pause before deleting (ms)
+    const typingSpeed = 120; 
+    const deleteSpeed = 50;  
+    const pauseBetween = 2000;
+    const pauseBeforeTyping = 1000;
 
     function typeEffect() {
-        const currentMessage = messages2[messageIndex];
+        const currentMessage = messages[messageIndex];
 
         if (!isDeleting) {
             moodText.innerText = currentMessage.substring(0, charIndex + 1);
-            charIndex2++;
-            if (charIndex2 === currentMessage.length) {
+            charIndex++;
+
+            if (charIndex === currentMessage.length) {
                 isDeleting = true;
-                setTimeout(typeEffect, pauseBetween); // Pause before deleting
+                setTimeout(typeEffect, pauseBetween); 
                 return;
             }
         } else {
-            moodText.innerText = currentMessage.substring(0, charIndex2 - 1);
-            charIndex2--;
+            moodText.innerText = currentMessage.substring(0, charIndex - 1);
+            charIndex--;
 
-            if (charIndex2 === 0) {
+            if (charIndex === 0) {
                 isDeleting = false;
-                messageIndex = (messageIndex + 1) % messages2.length; // Next message
+                messageIndex = (messageIndex + 1) % messages.length; 
+                setTimeout(typeEffect, pauseBeforeTyping); 
+                return;
             }
         }
 
         let speed = isDeleting ? deleteSpeed : typingSpeed;
-        setTimeout(() => requestAnimationFrame(typeEffect), speed);
+        setTimeout(typeEffect, speed);
     }
-
     setTimeout(() => {
         moodText.style.display = "block"; 
+        moodText.innerText = ""; 
         typeEffect();
     }, 500);
 });
