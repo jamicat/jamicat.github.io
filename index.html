@@ -19,6 +19,10 @@ height: 100%;
 margin: 0;
 }
 
+#draggable-container {
+position: absolute;
+cursor: grab;
+}
 
 body {
 background: none;
@@ -162,7 +166,8 @@ transform: scale(1.1);
 
 
 <body>
-	
+
+<div id="draggable-container">	
 <div class="image-container" style="position: relative;">
 <img src="fursona.png" alt="Fursona" class="fursona-image" style="display: block;">
 <div class="infText" id="mood-text" style="background-color: #ffe59a; display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">ᵇᵉᵃⁿˢ ᵒⁿⁿ ᵗᵒᵃˢᶻᵗ
@@ -178,6 +183,7 @@ transform: scale(1.1);
 <button class="button2" onclick="showArt()">Art</button>
 <button class="button" onclick="window.location.href='/book/'">Guestbook</button>
 <button class="button2" onclick="exitTerminal()">Exit</button>
+</div>
 </div>
 </div>
 	
@@ -596,6 +602,35 @@ displayTree();
 }
 
 type();	
+
+document.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById("draggable-container");
+
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    container.addEventListener("mousedown", (event) => {
+        isDragging = true;
+        offsetX = event.clientX - container.getBoundingClientRect().left;
+        offsetY = event.clientY - container.getBoundingClientRect().top;
+        container.style.cursor = "grabbing";
+    });
+
+    document.addEventListener("mousemove", (event) => {
+        if (!isDragging) return;
+
+        const newX = event.clientX - offsetX;
+        const newY = event.clientY - offsetY;
+
+        container.style.left = `${newX}px`;
+        container.style.top = `${newY}px`;
+    });
+
+    document.addEventListener("mouseup", () => {
+        isDragging = false;
+        container.style.cursor = "grab";
+    });
+});
 </script>
 </body>
 </html>
