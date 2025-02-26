@@ -638,57 +638,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-const messages = [
-"beans onn toaszt",
-"feeling sleepy...",
-"need more boba...",
-"what are you looking at?"
-"meow indeed"
-"toaszt onn beans"
-];
+    const messages = [
+        "beans onn toaszt",
+        "feeling sleepy...",
+        "need more boba...",
+        "what are you looking at?",
+	"meow indeed",
+	"toaszt onn beans"
+    ];
 
-	
-const moodText = document.getElementById("mood-text");
-let messageIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
-const typingSpeed = 120; 
-const deleteSpeed = 50;  
-const pauseBetween = 2000;
-const pauseBeforeTyping = 1000;
+    const moodText = document.getElementById("mood-text");
+    let messageIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const baseTypingSpeed = 150; 
+    const deleteSpeed = 75; 
+    const pauseBetween = 2500; 
+    const pauseBeforeTyping = 1200; /
 
-function typeEffect() {
-const currentMessage = messages[messageIndex];
+    function typeEffect() {
+        const currentMessage = messages[messageIndex];
+        if (!isDeleting) {
+            moodText.innerText = currentMessage.substring(0, charIndex + 1);
+            charIndex++;
 
-if (!isDeleting) {
-moodText.innerText = currentMessage.substring(0, charIndex + 1);
-charIndex++;
-
-if (charIndex === currentMessage.length) {
-isDeleting = true;
-setTimeout(typeEffect, pauseBetween); 
-return;
-}
-} else {
-moodText.innerText = currentMessage.substring(0, charIndex - 1);
-charIndex--;
-
-if (charIndex === 0) {
-isDeleting = false;
-messageIndex = (messageIndex + 1) % messages.length; 
-setTimeout(typeEffect, pauseBeforeTyping); 
-return;
-}
-}
-
-let speed = isDeleting ? deleteSpeed : typingSpeed;
-setTimeout(typeEffect, speed);
-}
-setTimeout(() => {
-moodText.style.display = "block"; 
-moodText.innerText = ""; 
-typeEffect();
-}, 500);
+            if (charIndex === currentMessage.length) {
+                isDeleting = true;
+                setTimeout(typeEffect, pauseBetween); 
+                return;
+            }
+        } else {
+            moodText.innerText = currentMessage.substring(0, charIndex - 1);
+            charIndex--;
+            if (charIndex === 0) {
+                isDeleting = false;
+                messageIndex = (messageIndex + 1) % messages.length; 
+                setTimeout(typeEffect, pauseBeforeTyping); 
+                return;
+            }
+        }
+        let randomPause = Math.random() < 0.15 ? 250 : 0;
+        let speed = isDeleting ? deleteSpeed : baseTypingSpeed + randomPause;
+        setTimeout(typeEffect, speed);
+    }
+    setTimeout(() => {
+        moodText.style.display = "block"; 
+        moodText.innerText = ""; 
+        typeEffect();
+    }, 500);
 });
 
 
