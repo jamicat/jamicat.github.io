@@ -206,10 +206,21 @@ transform: scale(1.1);
 <div id="weather-container" class="infText">
 Brit weather: <span id="weather-output"></span>
 </div>
+
+
+<!--script>
+const fursonaImage = document.querySelector('.fursona-image');
+const moodText = document.getElementById('mood-text');
+fursonaImage.addEventListener('mouseover', () => {
+moodText.style.display = 'block'; 
+});
+fursonaImage.addEventListener('mouseout', () => {
+moodText.style.display = 'none'; 
+});
+</script-->
+
+	
 <script>
-
-
-
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat=53.765762&lon=-2.692337&appid=3b394dfa0c0a624d5b6d72af1bef9a64";
 fetch(apiUrl)
 .then(response => {
