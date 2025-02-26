@@ -648,9 +648,9 @@ const messages2 = [
 
 const moodText = document.getElementById("mood-text");
 let messageIndex = 0;
-let charIndex = 0;
+let charIndex2 = 0;
 let isDeleting = false;
-let typingSpeed = 100; 
+let typingSpeed2 = 100; 
 let deleteSpeed = 50;  
 let pauseBetween = 1500; 
 
@@ -659,26 +659,26 @@ function typeEffect() {
 
     if (!isDeleting) {
      
-        moodText.innerText = currentMessage.substring(0, charIndex + 1);
-        charIndex++;
+        moodText.innerText = currentMessage.substring(0, charIndex2 + 1);
+        charIndex2++;
 
-        if (charIndex === currentMessage.length) {
+        if (charIndex2 === currentMessage.length) {
             isDeleting = true;
             setTimeout(typeEffect, pauseBetween); 
             return;
         }
     } else {
        
-        moodText.innerText = currentMessage.substring(0, charIndex - 1);
-        charIndex--;
+        moodText.innerText = currentMessage.substring(0, charIndex2 - 1);
+        charIndex2--;
 
-        if (charIndex === 0) {
+        if (charIndex2 === 0) {
             isDeleting = false;
             messageIndex = (messageIndex + 1) % messages2.length;
         }
     }
 
-    setTimeout(typeEffect, isDeleting ? deleteSpeed : typingSpeed);
+    setTimeout(typeEffect, isDeleting ? deleteSpeed : typingSpeed2);
 }
 
 window.onload = function () {
