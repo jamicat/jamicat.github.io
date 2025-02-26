@@ -639,6 +639,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	
 
+const messages2 = [
+    "beans onn toaszt",
+    "feeling sleepy...",
+    "need more boba...",
+    "what are you looking at?"
+];
+
+const moodText = document.getElementById("mood-text");
+let messageIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let typingSpeed = 100; 
+let deleteSpeed = 50;  
+let pauseBetween = 1500; 
+
+function typeEffect() {
+    const currentMessage = messages2[messageIndex];
+
+    if (!isDeleting) {
+     
+        moodText.innerText = currentMessage.substring(0, charIndex + 1);
+        charIndex++;
+
+        if (charIndex === currentMessage.length) {
+            isDeleting = true;
+            setTimeout(typeEffect, pauseBetween); 
+            return;
+        }
+    } else {
+       
+        moodText.innerText = currentMessage.substring(0, charIndex - 1);
+        charIndex--;
+
+        if (charIndex === 0) {
+            isDeleting = false;
+            messageIndex = (messageIndex + 1) % messages2.length;
+        }
+    }
+
+    setTimeout(typeEffect, isDeleting ? deleteSpeed : typingSpeed);
+}
+
+window.onload = function () {
+    moodText.style.display = "block"; 
+    typeEffect();
+};
+	
+
 	
 
 
