@@ -635,7 +635,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 	
 
-	
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const messages = [
@@ -648,10 +648,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let messageIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
-    const typingSpeed = 120; 
-    const deleteSpeed = 50;  
-    const pauseBetween = 2000;
-    const pauseBeforeTyping = 1000;
+
+    const baseTypingSpeed = 150; 
+    const deleteSpeed = 75; /
+    const pauseBetween = 2500; /
+    const pauseBeforeTyping = 1200; 
     function typeEffect() {
         const currentMessage = messages[messageIndex];
 
@@ -675,16 +676,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
         }
-
-        let speed = isDeleting ? deleteSpeed : typingSpeed;
+        let randomPause = Math.random() < 0.15 ? 250 : 0; // 15% chance to pause slightly
+        let speed = isDeleting ? deleteSpeed : baseTypingSpeed + randomPause;
         setTimeout(typeEffect, speed);
     }
     setTimeout(() => {
-        moodText.style.display = "block"; 
-        moodText.innerText = ""; 
+        moodText.style.display = "block"; /
+        moodText.innerText = "..."; 
         typeEffect();
     }, 500);
 });
+
 	
 </script>
 </body>
