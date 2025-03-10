@@ -296,10 +296,12 @@ musicToggleButton.addEventListener("click", () => {
     musicAudio.play();
     playIcon.style.display = "none";
     pauseIcon.style.display = "flex";
+    musicToggleButton.classList.add('active');
   } else {
     musicAudio.pause();
     playIcon.style.display = "flex";
     pauseIcon.style.display = "none";
+    musicToggleButton.classList.remove('active');
   }
 });
 </script>
