@@ -156,12 +156,43 @@ bottom: 10px;
 right: 20px;
 }
 
+.play-volume-container {
+position: absolute;
+bottom: 14px;
+right: 160px;
+}
+
 .button.active {
 animation: toggleOn 0.5s infinite alternate;
 background-color: #e6788e; 
 
 }
 
+
+.music-button {
+  font-size: 2.1em;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ffb6c1; 
+  transition: transform 0.2s, color 0.3s;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+
+}
+
+.music-button:hover {
+  color: #ff8ca0;
+  transform: scale(1.1);
+}
+
+.music-button:active {
+  transform: scale(0.95);
+}
+
+.play-icon,
+.pause-icon {
+  font-weight: bold;
+}
 @keyframes toggleOn {
 from {
 transform: scale(1);
@@ -198,10 +229,18 @@ style="background-color: #ffe59a; display: none; position: absolute; bottom: 100
 </div>
 
 
+<div class="play-volume-container">
+<button id="music-toggle-button" class="music-button">
+  <span class="play-icon">▶</span>
+  <span class="pause-icon" style="display: none;">❚❚</span>
+</button>
+</div>
 <div class="dog-volume-container">
-<button id="music-toggle-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); text-decoration: line-through black;">🎵</button>
 <button id="toggle-dog-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">Dog Audio: OFF</button>
 </div>
+
+
+
 <audio id="music-audio" src="fromadream.mp3" loop></audio>
 <img src="dog.png" class="dog" id="dog" alt="Dog" draggable="false">
 <audio id="dog-audio" src="dog-bark.mp3" loop></audio>
@@ -245,25 +284,23 @@ console.error("Error fetching weather:", error);
 document.getElementById("weather-output").textContent = "unable to fetch.";
 });
 
-
 const musicToggleButton = document.getElementById("music-toggle-button");
 const musicAudio = document.getElementById("music-audio");
+const playIcon = document.querySelector(".play-icon");
+const pauseIcon = document.querySelector(".pause-icon");
+
 musicAudio.volume = 0.9;
 
-
 musicToggleButton.addEventListener("click", () => {
-if (musicAudio.paused) {
-musicAudio.play();
-musicToggleButton.style.textDecoration = "none"; 
-musicToggleButton.classList.add('active');
-
-
-} else {
-musicAudio.pause();
-musicToggleButton.style.textDecoration = "line-through"; 
-musicToggleButton.classList.remove('active');
-
-}
+  if (musicAudio.paused) {
+    musicAudio.play();
+    playIcon.style.display = "none";
+    pauseIcon.style.display = "flex";
+  } else {
+    musicAudio.pause();
+    playIcon.style.display = "flex";
+    pauseIcon.style.display = "none";
+  }
 });
 </script>
 
