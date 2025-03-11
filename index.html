@@ -169,7 +169,8 @@ background-color: #e6788e;
 
 
 .music-button {
-  font-size: 3.5em;
+  width: 50px;
+  height: 50px;
   background: none;
   border: none;
   cursor: pointer;
@@ -194,9 +195,44 @@ animation: toggleOn 0.5s infinite alternate;
 color: #e6788e; 
 }
 
-.play-icon,
+.play-icon{
+  width: 0;
+    height: 0;
+    border-left: 22px solid #ffb6c1; /* Pink color */
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-radius: 5px; /* Soft rounded edges */
+    display: block;
+    position: absolute;
+    transition: opacity 0.3s ease-in-out;
+    filter: drop-shadow(0px 0px 4px rgba(255, 182, 193, 0.5));
+
+}
 .pause-icon {
-  font-weight: bold;
+  width: 20px;
+    height: 20px;
+    display: none; 
+    position: absolute;
+    display: flex;
+    gap: 4px;
+}
+
+.pause-icon::before,
+.pause-icon::after {
+    content: "";
+    width: 6px;
+    height: 20px;
+    background-color: #ffb6c1; 
+    border-radius: 3px; 
+}
+
+
+.music-button.playing .play-icon {
+    display: none;
+}
+
+.music-button.playing .pause-icon {
+    display: flex;
 }
 	
 @keyframes toggleOn {
@@ -237,8 +273,8 @@ style="background-color: #ffe59a; display: none; position: absolute; bottom: 100
 
 <div class="play-volume-container">
 <button id="music-toggle-button" class="music-button">
-  <span class="play-icon">▶</span>
-  <span class="pause-icon" style="display: none;">❚❚</span>
+  <span class="play-icon"></span>
+  <span class="pause-icon"></span>
 </button>
 </div>
 <div class="dog-volume-container">
@@ -300,16 +336,13 @@ musicAudio.volume = 0.7;
 musicToggleButton.addEventListener("click", () => {
   if (musicAudio.paused) {
     musicAudio.play();
-    playIcon.style.display = "none";
-    pauseIcon.style.display = "flex";
-    musicToggleButton.classList.add('active');
+    musicToggleButton.classList.add("playing"); 
   } else {
     musicAudio.pause();
-    playIcon.style.display = "flex";
-    pauseIcon.style.display = "none";
-    musicToggleButton.classList.remove('active');
+    musicToggleButton.classList.remove("playing"); 
   }
 });
+
 </script>
 
 
