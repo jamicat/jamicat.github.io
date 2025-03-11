@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -158,7 +159,7 @@ right: 20px;
 
 .play-volume-container {
 position: absolute;
-top: 14px; 
+top: 14px; /* Position it towards the top */
 right: 20px;
 }
 
@@ -167,55 +168,36 @@ animation: toggleOn 0.5s infinite alternate;
 background-color: #e6788e; 
 }
 
+
 .music-button {
-    width: 60px; 
-    height: 60px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    transition: transform 0.2s;
+  font-size: 3.5em;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  color: #ffb6c1;
+  transition: transform 0.2s, color 0.3s;
+  text-shadow: 0px 0px 3px rgba(255, 182, 193, 0.8); 
+
 }
 
-.play-icon {
-    width: 0;
-    height: 0;
-    border-left: 30px solid #ffb6c1; 
-    border-top: 18px solid transparent;
-    border-bottom: 18px solid transparent;
-    border-radius: 6px; 
-    position: absolute;
-    filter: drop-shadow(0px 0px 5px rgba(255, 182, 193, 0.5));
-    visibility: visible;
+.music-button:hover {
+  color: #ff8ca0;
+  transform: scale(1.1);
 }
 
+.music-button:active {
+  transform: scale(0.95);
+}
+
+.music-button.active {
+animation: toggleOn 0.5s infinite alternate;
+color: #e6788e; 
+}
+
+.play-icon,
 .pause-icon {
-    width: 24px;
-    height: 28px;
-    visibility: hidden;
-    position: absolute;
-    display: flex;
-    gap: 5px;
-}
-
-.pause-icon::before,
-.pause-icon::after {
-    content: "";
-    width: 8px; 
-    height: 28px; 
-    background-color: #ffb6c1; 
-    border-radius: 4px; 
-
-
-.music-button.playing .play-icon {
-    visibility: hidden;
-}
-
-.music-button.playing .pause-icon {
-    visibility: visible;
+  font-weight: bold;
 }
 	
 @keyframes toggleOn {
@@ -256,8 +238,8 @@ style="background-color: #ffe59a; display: none; position: absolute; bottom: 100
 
 <div class="play-volume-container">
 <button id="music-toggle-button" class="music-button">
-  <span class="play-icon"></span>
-  <span class="pause-icon"></span>
+  <span class="play-icon">▶</span>
+  <span class="pause-icon" style="display: none;">❚❚</span>
 </button>
 </div>
 <div class="dog-volume-container">
@@ -309,26 +291,26 @@ console.error("Error fetching weather:", error);
 document.getElementById("weather-output").textContent = "unable to fetch.";
 });
 
-
 const musicToggleButton = document.getElementById("music-toggle-button");
 const musicAudio = document.getElementById("music-audio");
 const playIcon = document.querySelector(".play-icon");
 const pauseIcon = document.querySelector(".pause-icon");
+
 musicAudio.volume = 0.7;
 
-musicToggleButton.classList.remove("playing");
-
 musicToggleButton.addEventListener("click", () => {
-    if (musicAudio.paused) {
-        musicAudio.play();
-        musicToggleButton.classList.add("playing");
-    } else {
-        musicAudio.pause();
-        musicToggleButton.classList.remove("playing");
-    }
+  if (musicAudio.paused) {
+    musicAudio.play();
+    playIcon.style.display = "none";
+    pauseIcon.style.display = "flex";
+    musicToggleButton.classList.add('active');
+  } else {
+    musicAudio.pause();
+    playIcon.style.display = "flex";
+    pauseIcon.style.display = "none";
+    musicToggleButton.classList.remove('active');
+  }
 });
-
-
 </script>
 
 
