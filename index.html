@@ -309,22 +309,25 @@ console.error("Error fetching weather:", error);
 document.getElementById("weather-output").textContent = "unable to fetch.";
 });
 
+
 const musicToggleButton = document.getElementById("music-toggle-button");
 const musicAudio = document.getElementById("music-audio");
 const playIcon = document.querySelector(".play-icon");
 const pauseIcon = document.querySelector(".pause-icon");
-
 musicAudio.volume = 0.7;
 
+musicToggleButton.classList.remove("playing");
+
 musicToggleButton.addEventListener("click", () => {
-  if (musicAudio.paused) {
-    musicAudio.play();
-    musicToggleButton.classList.add("playing"); 
-  } else {
-    musicAudio.pause();
-    musicToggleButton.classList.remove("playing"); 
-  }
+    if (musicAudio.paused) {
+        musicAudio.play();
+        musicToggleButton.classList.add("playing");
+    } else {
+        musicAudio.pause();
+        musicToggleButton.classList.remove("playing");
+    }
 });
+
 
 </script>
 
