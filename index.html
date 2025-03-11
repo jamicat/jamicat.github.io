@@ -158,7 +158,7 @@ right: 20px;
 
 .play-volume-container {
 position: absolute;
-top: 14px; /* Position it towards the top */
+top: 14px; 
 right: 20px;
 }
 
@@ -167,72 +167,55 @@ animation: toggleOn 0.5s infinite alternate;
 background-color: #e6788e; 
 }
 
-
 .music-button {
-  width: 50px;
-  height: 50px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  color: #ffb6c1;
-  transition: transform 0.2s, color 0.3s;
-  text-shadow: 0px 0px 3px rgba(255, 182, 193, 0.8); 
-
+    width: 60px; 
+    height: 60px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: transform 0.2s;
 }
 
-.music-button:hover {
-  color: #ff8ca0;
-  transform: scale(1.1);
-}
-
-.music-button:active {
-  transform: scale(0.95);
-}
-
-.music-button.active {
-animation: toggleOn 0.5s infinite alternate;
-color: #e6788e; 
-}
-
-.play-icon{
-  width: 0;
+.play-icon {
+    width: 0;
     height: 0;
-    border-left: 22px solid #ffb6c1; /* Pink color */
-    border-top: 12px solid transparent;
-    border-bottom: 12px solid transparent;
-    border-radius: 5px; /* Soft rounded edges */
+    border-left: 30px solid #ffb6c1; 
+    border-top: 18px solid transparent;
+    border-bottom: 18px solid transparent;
+    border-radius: 6px; 
     display: block;
     position: absolute;
-    transition: opacity 0.3s ease-in-out;
-    filter: drop-shadow(0px 0px 4px rgba(255, 182, 193, 0.5));
-
+    filter: drop-shadow(0px 0px 5px rgba(255, 182, 193, 0.5));
 }
+
 .pause-icon {
-  width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 28px;
     display: none; 
     position: absolute;
     display: flex;
-    gap: 4px;
+    gap: 5px;
 }
 
 .pause-icon::before,
 .pause-icon::after {
     content: "";
-    width: 6px;
-    height: 20px;
+    width: 8px; 
+    height: 28px; 
     background-color: #ffb6c1; 
-    border-radius: 3px; 
-}
+    border-radius: 4px; 
 
 
 .music-button.playing .play-icon {
-    display: none;
+    display: none; 
 }
 
 .music-button.playing .pause-icon {
-    display: flex;
+    display: flex; 
 }
 	
 @keyframes toggleOn {
