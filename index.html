@@ -537,44 +537,33 @@ buttonArea.style.display = 'flex';
 
 function showSocials() {
     const socials = [
-        { name: 'Discord', username: 'jamgang', link: 'https://discordapp.com/users/160899636637204482' },
+        { name: 'Discord', username: 'jamgang', link: 'https://discordapp.com/users/160899636637204482' }, 
         { name: 'Steam', username: 'jamigang', link: 'https://steamcommunity.com/id/jamigang' },
         { name: 'Bsky', username: 'jamjme.bsky.social', link: 'https://bsky.app/profile/jamjme.bsky.social' }
     ];
-
+	
     buttonArea.style.display = 'none';
     typingArea.innerHTML = '';
 
     let socialIndex = 0;
-    let charIndex = 0;
-    let currentText = ''; 
 
     function typeSocial() {
         if (socialIndex < socials.length) {
             const social = socials[socialIndex];
-            let fullText = `${social.name} - `;
+            let text = `${social.name} - `;
 
             if (social.link) {
-                fullText += `<a href="${social.link}" target="_blank" 
+                text += `<a href="${social.link}" target="_blank" 
                 style="color: white; text-decoration: none; font-weight: bold;
                 text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd;">
                 ${social.username}</a>`;
             } else {
-                fullText += `<span style="color: white; text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd;">${social.username}</span>`;
+                text += social.username;
             }
 
-            if (charIndex < fullText.length) {
-                currentText += fullText[charIndex]; 
-                typingArea.innerHTML = currentText + '|'; 
-                charIndex++;
-                setTimeout(typeSocial, typingSpeed);
-            } else {
-                typingArea.innerHTML = currentText + '<br>'; 
-                charIndex = 0;
-                socialIndex++;
-                currentText += '<br>';
-                setTimeout(typeSocial, typingSpeed);
-            }
+            typingArea.innerHTML += text + '<br>';
+            socialIndex++;
+            setTimeout(typeSocial, typingSpeed);
         } else {
             showCursor();
             setTimeout(removeCursorAndShowButtons, 1000);
@@ -583,7 +572,6 @@ function showSocials() {
 
     typeSocial();
 }
-
 
 function exitTerminal() {
 typingArea.innerHTML = '';
