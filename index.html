@@ -595,64 +595,69 @@ alert('You need to close this tab manually.');
 
 typeExitMessage();
 }
-
 function showArt() {
-buttonArea.style.display = 'none'; 
-typingArea.innerHTML = ''; 
+    buttonArea.style.display = 'none'; 
+    typingArea.innerHTML = ''; 
 
-const artFiles = [
-'Jamie in Tokyo',
-'Blue Jamie',
-'Album Cover Jamie',
-'Sketchpage',
-'Chibi',
-];
+    const artFiles = [
+        'Jamie in Tokyo',
+        'Blue Jamie',
+        'Album Cover Jamie',
+        'Sketchpage',
+        'Chibi',
+    ];
 
-// dedicated intro because fucky event listeners
-const introElement = document.createElement('div');
-introElement.innerHTML = "<br>Jamie is a vivacious chatterbox cat, purring with energy. He's usually dressed in loose, cropped or oversized clothes, with tie-dyed patterns or soft pastel colours that blend seamlessly with his fur. Here is the current collection! The most recent commission was Jamie in Tokyo. His hair has been redyed, and I plan to keep the change going forwards. He is designed to mirror my real-life fashion choices and tastes! :D<br>";
-typingArea.appendChild(introElement); 
+    // Dedicated intro because fucky event listeners
+    const introElement = document.createElement('div');
+    introElement.innerHTML = `<br>Jamie is a vivacious chatterbox cat, purring with energy. 
+    He's usually dressed in loose, cropped or oversized clothes, with tie-dyed patterns or soft pastel colours 
+    that blend seamlessly with his fur. Here is the current collection! The most recent commission was <span style="color: white; text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd;">Jamie in Tokyo</span>. 
+    His hair has been redyed, and I plan to keep the change going forwards. 
+    He is designed to mirror my real-life fashion choices and tastes! :D<br>`;
+    
+    typingArea.appendChild(introElement); 
 
-function displayTree() {
-let treeHTML = '<br>art<br>';
-artFiles.forEach((art) => {
-treeHTML += `├── <span class="art-link" style="color: lightblue; cursor: pointer;" data-file="${art}">${art}</span><br>`;
-});
+    function displayTree() {
+        let treeHTML = '<br>art<br>';
+        artFiles.forEach((art) => {
+            treeHTML += `├── <span class="art-link" style="color: white; text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd; cursor: pointer;" data-file="${art}">${art}</span><br>`;
+        });
 
-const treeElement = document.createElement('div'); 
-treeElement.innerHTML = treeHTML; 
-typingArea.appendChild(treeElement); 
+        const treeElement = document.createElement('div'); 
+        treeElement.innerHTML = treeHTML; 
+        typingArea.appendChild(treeElement); 
 
-addArtClickEvents(); 
-buttonArea.style.display = 'flex'; 
+        addArtClickEvents(); 
+        buttonArea.style.display = 'flex'; 
+    }
+
+    function addArtClickEvents() {
+        const links = document.querySelectorAll('.art-link');
+        links.forEach((link) => {
+            link.addEventListener('click', () => {
+                const filename = `${link.getAttribute('data-file').replace(/\s+/g, '-')}.png`;
+                displayArt(filename);
+            });
+        });
+    }
+
+    function displayArt(filename) {
+        typingArea.innerHTML = ''; 
+        const imageElement = document.createElement('img');
+        imageElement.src = filename;
+        imageElement.alt = filename;
+        imageElement.style = 'max-width:80%; height:auto; display:block; margin: 10px auto;';
+        typingArea.appendChild(imageElement); 
+
+        const introElementClone = introElement.cloneNode(true); 
+        typingArea.appendChild(introElementClone); 
+
+        displayTree(); 
+    }
+
+    displayTree(); 
 }
 
-function addArtClickEvents() {
-const links = document.querySelectorAll('.art-link');
-links.forEach((link) => {
-link.addEventListener('click', () => {
-const filename = `${link.getAttribute('data-file').replace(/\s+/g, '-')}.png`;
-displayArt(filename);
-});
-});
-}
-
-function displayArt(filename) {
-typingArea.innerHTML = ''; 
-const imageElement = document.createElement('img');
-imageElement.src = filename;
-imageElement.alt = filename;
-imageElement.style = 'max-width:80%; height:auto; display:block; margin: 10px auto;';
-typingArea.appendChild(imageElement); 
-
-const introElementClone = introElement.cloneNode(true); 
-typingArea.appendChild(introElementClone); 
-
-displayTree(); 
-}
-
-displayTree(); 
-}
 
 type();	
 
