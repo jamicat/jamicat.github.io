@@ -713,8 +713,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const pauseBetween = 4700;
     const pauseBeforeTyping = 1200;
 
-
+   
     const knockSound = new audio("knock.mp3");
+
     function typeEffect() {
         const currentMessage = messages[messageIndex];
         if (!isDeleting) {
@@ -750,6 +751,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let speed = isDeleting ? deleteSpeed : baseTypingSpeed + randomPause;
         setTimeout(typeEffect, speed);
     }
+
     setTimeout(() => {
         moodText.style.display = "block";
         moodText.innerText = "";
