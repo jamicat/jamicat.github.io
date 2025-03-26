@@ -698,21 +698,24 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const messages = [
         "blue volcano beige cat black sheep coffee",
-	"boba over brains over brawn",
-	"tôi sẽ vui vẻ trở về trang trại boba của tôi! - kirk lazarus",
-	"a boba a day keeps the boba a day",
-	"boba at 35g, mach 10",
-	"the catrix has you... knock knock"
+        "boba over brains over brawn",
+        "tôi sẽ vui vẻ trở về trang trại boba của tôi! - kirk lazarus",
+        "a boba a day keeps the boba a day",
+        "boba at 35g, mach 10",
+        "the catrix has you... knock knock"
     ];
 
     const moodText = document.getElementById("mood-text");
     let messageIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
-    const baseTypingSpeed = 150; 
-    const deleteSpeed = 75; 
-    const pauseBetween = 4700; 
-    const pauseBeforeTyping = 1200; 
+    const baseTypingSpeed = 150;
+    const deleteSpeed = 75;
+    const pauseBetween = 2700;
+    const pauseBeforeTyping = 1200;
+
+
+    const knockSound = new audio("knock.mp3");
 
     function typeEffect() {
         const currentMessage = messages[messageIndex];
@@ -721,8 +724,19 @@ document.addEventListener("DOMContentLoaded", () => {
             charIndex++;
 
             if (charIndex === currentMessage.length) {
+         
+                if (messageIndex === messages.length - 1) {
+                    setTimeout(() => {
+                        knockSound.play();
+                        setTimeout(() => {
+                            knockSound.pause();
+                            knockSound.currentTime = 0; 
+                        }, 5000); 
+                    }, pauseBetween);
+                }
+
                 isDeleting = true;
-                setTimeout(typeEffect, pauseBetween); 
+                setTimeout(typeEffect, pauseBetween);
                 return;
             }
         } else {
@@ -730,8 +744,8 @@ document.addEventListener("DOMContentLoaded", () => {
             charIndex--;
             if (charIndex === 0) {
                 isDeleting = false;
-                messageIndex = (messageIndex + 1) % messages.length; 
-                setTimeout(typeEffect, pauseBeforeTyping); 
+                messageIndex = (messageIndex + 1) % messages.length;
+                setTimeout(typeEffect, pauseBeforeTyping);
                 return;
             }
         }
@@ -739,12 +753,14 @@ document.addEventListener("DOMContentLoaded", () => {
         let speed = isDeleting ? deleteSpeed : baseTypingSpeed + randomPause;
         setTimeout(typeEffect, speed);
     }
+
     setTimeout(() => {
-        moodText.style.display = "block"; 
-        moodText.innerText = ""; 
+        moodText.style.display = "block";
+        moodText.innerText = "";
         typeEffect();
     }, 500);
 });
+
 
 
 </script>
