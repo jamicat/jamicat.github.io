@@ -60,7 +60,7 @@ user-select: none;
 
 .terminal {
 font-size: 0.9em;
-background: rgba(0, 0, 0, 0.2); 
+background: rgba(0, 0, 0, 0.6); 
 backdrop-filter: blur(10px) saturate(150%);
 -webkit-backdrop-filter: blur(10px) saturate(150%);
 color: white;
@@ -68,7 +68,7 @@ padding: 20px;
 border-radius: 10px;
 width: 80%;
 max-width: 600px;
-box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
+box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
 margin-bottom: 70px;
 border: 2px solid rgba(255, 255, 255, 0.3);
 user-select: none;
@@ -76,7 +76,7 @@ user-select: none;
 
 .button {
 font-size: 0.9em;
-background-color: #F3F3F3;
+background-color: #ffb6c1;
 transition: background-color 0.3s, transform 0.2s;
 color: black;
 padding: 10px;
@@ -88,7 +88,7 @@ margin: 5px;
 
 .button2 {
 font-size: 0.9em;
-background-color: #F3F3F3;
+background-color: #ffe59a;
 transition: background-color 0.3s, transform 0.2s;
 color: black;
 padding: 10px;
@@ -99,16 +99,20 @@ margin: 5px;
 }
 
 .button:hover {
+background-color: #ff9a9e; 
 transform: scale(1.05); 
 }
 .button:active{
+background-color: #e6788e; 
 transform: scale(0.95);  
 }
 
 .button2:hover {
+background-color: #ffe59a; 
 transform: scale(1.05); 
 }
 .button2:active{
+background-color: #e6788e; 
 transform: scale(0.95);  
 }
 
@@ -172,15 +176,16 @@ background-color: #e6788e;
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  color: #F3F3F3;
+  color: #ff8ca0;
   transition: transform 0.2s, color 0.3s;
   text-shadow: 0px 0px 3px rgba(255, 182, 193, 0.8); 
-  filter: drop-shadow(0 0 8px #8be9fd);
+  filter: drop-shadow(0 0 8px #ffb6c1) drop-shadow(0 0 15px #ffb6c1);
 
 
 }
 
 .music-button:hover {
+  color: #ff8ca0;
   transform: scale(1.1);
 }
 
@@ -190,6 +195,7 @@ background-color: #e6788e;
 
 .music-button.active {
 animation: toggleOn 0.5s infinite alternate;
+color: #e6788e; 
 }
 
 .play-icon,
@@ -215,7 +221,7 @@ transform: scale(1.1);
 <div class="image-container" style="position: relative;">
 <img src="fursona.png" alt="Fursona" class="fursona-image" style="display: block;">
 <div class="infText" id="mood-text" 
-style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); color: white; text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd; display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">
+style="background-color: #ffe59a; display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">
 </div>
 </div>
 <div class="terminal" id="terminal">
@@ -251,7 +257,7 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
 <audio id="knock-audio" src="knock.mp3"></audio>
 
 
-<div id="weather-container" class="infText" style="border: 1px solid rgba(255, 255, 255, 0.3);">
+<div id="weather-container" class="infText">
 Brit weather: <span id="weather-output"></span>
 </div>
 
@@ -281,8 +287,7 @@ VANTA.NET({
   scaleMobile: 1.00,
   points: 16.00,
   maxDistance: 22.00,
-  spacing: 13.00,
-  color: 0x8be9fd
+  spacing: 13.00
 })
 </script>
 
