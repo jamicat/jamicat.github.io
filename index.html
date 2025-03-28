@@ -244,9 +244,9 @@ style="background-color: #ffe59a; display: none; position: absolute; bottom: 100
   <span class="pause-icon" style="display: none;">❚❚</span>
 </button>
 </div>
-<div class="dog-volume-container">
+<!--div class="dog-volume-container">
 <button id="toggle-dog-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">Dog Audio: OFF</button>
-</div>
+</div-->
 
 
 
@@ -342,7 +342,7 @@ let slowEllipsesSpeed = 900;
 let hasCleared = false;
 let dogVolumeEnabled = false;
 
-
+/*
 const screenWidth = window.innerWidth;
 const screenHeight = window.innerHeight;
 let dogX = Math.random() * screenWidth * 0.8; 
@@ -391,7 +391,8 @@ clearInterval(growInterval);
  scale = 1; 
  dogImage.style.transform = `scale(${scale})`; 
  */
-});
+/*})
+	
 
 
 
@@ -428,7 +429,7 @@ dogAudio.currentTime = 0;
 toggleDogButton.classList.remove('active');
 toggleDogButton.textContent = 'Dog Audio: OFF';
 }
-});
+});*/
 
 function type() {
 if (lineIndex < messages.length) {
