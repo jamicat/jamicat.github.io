@@ -90,7 +90,6 @@ body {
 }
 
 .button:hover, .button2:hover, .home-btn:hover, .delete-all-btn:hover, .species-buttons button:hover {
-  background-color: #ff9a9e; 
   transform: scale(1.05); 
 }
 
