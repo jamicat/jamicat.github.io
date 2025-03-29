@@ -17,15 +17,16 @@
     color: white;
     padding: 15px;
     border-radius: 10px;
-    width: 250px;
+    width: 270px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     position: absolute;
     left: 20px;
     margin-top: 10px;
     box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-family: 'Nunito', sans-serif;
 }
 
 .input-box {
@@ -35,11 +36,25 @@
     color: white;
     border-radius: 5px;
     font-size: 0.9em;
+    font-family: 'Nunito', sans-serif;
+    width: 100%;
 }
 
 .input-box:focus {
     outline: none;
     background: rgba(255, 255, 255, 0.2);
+}
+
+textarea.input-box {
+    resize: none;
+    height: 80px; 
+}
+
+label {
+    font-size: 0.9em;
+    font-weight: 600;
+    font-family: 'Nunito', sans-serif;
+    margin-bottom: 2px;
 }
 
 
