@@ -90,7 +90,6 @@ font-size: 0.9em;
 }
 
 .button:hover, .button2:hover, .home-btn:hover, .delete-all-btn:hover, .species-buttons button:hover {
-background-color: #ff9a9e; 
 transform: scale(1.05); 
 }
 
@@ -114,8 +113,10 @@ font-family: 'nunito', monospace;
 bottom: 20px; 
 left: 20px; 
 font-size: 0.9em; 
-color: black; 
-background-color: #ffb6c1; 
+color: white; 
+background: rgba(0, 0, 0, 0.2); 
+backdrop-filter: blur(10px) saturate(150%);
+-webkit-backdrop-filter: blur(10px) saturate(150%);
 padding: 10px 15px; 
 border-radius: 8px; /
 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
@@ -125,7 +126,7 @@ white-space: nowrap;
 #weather-output {
 font-family: 'nunito'; 
 font-weight: bold;
-color: black; 
+color: white; 
 font-size: 0.9em; 
 }
 
@@ -326,4 +327,3 @@ justify-content: center;
 align-items: center;
 margin: 0;
 }
-~
