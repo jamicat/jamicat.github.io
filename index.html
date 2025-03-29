@@ -379,10 +379,11 @@ color: 0x8be9fd
 })
 </script-->
 <script>
-function toggleMessageBox() {
-    const messageBox = document.getElementById("messageBox");
-    messageBox.style.display = messageBox.style.display === "none" ? "block" : "none";
-}
+document.addEventListener("DOMContentLoaded", function() {
+window.toggleMessageBox = function() {
+ const messageBox = document.getElementById("messageBox");
+ messageBox.style.display = messageBox.style.display === "none" ? "block" : "none";
+ };
 	
 function submitMessage() {
     var name = document.getElementById("name").value;
