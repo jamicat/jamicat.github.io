@@ -52,11 +52,6 @@ height: 90px;
 padding: 8px;  
 }
 
-
-
-
-
-
 html, body, canvas {
 display: block;
 width: 100%;
@@ -294,16 +289,35 @@ const messageBox = document.getElementById("messageBox");
 messageBox.style.display = messageBox.style.display === "none" ? "block" : "none";
 }
 function submitMessage() {
-const name = document.getElementById("name").value.trim();
-const message = document.getElementById("message").value.trim();
-if (name === "" || message === "") {
-alert("Please fill out both fields.");
-return;
-}
-alert(`Message submitted by ${name}: ${message}`);
-document.getElementById("name").value = "";
-document.getElementById("message").value = "";
-document.getElementById("messageBox").style.display = "none";
+var name = document.getElementById("name").value;
+            var message = document.getElementById("message").value;
+
+            var data = {
+                name: name,
+                comment: message
+            };
+
+            var url = "https://script.google.com/macros/s/AKfycbzNzyyzX2Xgc-n16rlpezl8x_EGzwXn-GSSpihv5sj8457b86CXbeqEE7VJszLb5siA/exec"; 
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+                mode: "no-cors", 
+            })
+            .then(() => {
+                alert("Your message has been sent.");
+                document.getElementById("name").value = "";  
+                document.getElementById("message").value = "";  
+                toggleMessageBox(); 
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                alert("There was an error submitting your message.");
+            });
+        }
 }
 </script>
 
