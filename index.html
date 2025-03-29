@@ -166,6 +166,21 @@ cursor: pointer;
 margin: 5px;	
 }
 
+.button4 {
+font-size: 0.9em;
+background: rgba(255,216,233,0.1);
+transition: background-color 0.3s, transform 0.2s;
+-webkit-backdrop-filter: blur(10px) saturate(150%);
+backdrop-filter: blur(10px) saturate(150%);
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+color: white;
+padding: 10px;
+border-radius: 5px;
+border: none;
+cursor: pointer;
+margin: 5px;	
+}
+
 .button:hover {
 transform: scale(1.05); 
 }
@@ -349,7 +364,7 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
         <input type="text" id="name" class="input-box" placeholder="meower">
         <br><br><label for="message">Message: </label>
         <textarea id="message" class="input-box" placeholder="meow"></textarea>
-        <button class="button3" onclick="submitMessage()">Submit</button>
+        <button class="button4" onclick="submitMessage()">Submit</button>
     </div>
 </div>
 	
