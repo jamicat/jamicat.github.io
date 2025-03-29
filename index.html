@@ -858,7 +858,6 @@ container.style.cursor = "grab";
 });
 });
 
-
 	
 document.addEventListener("DOMContentLoaded", () => {
     const container2 = document.getElementById("draggable-container2");
@@ -868,28 +867,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const pauseIcon = document.querySelector(".pause-icon");
 
     let isDragging2 = false;
-    let offsetX, offsetY;
-    container2.addEventListener("mousedown", (event) => {
-        isDragging2 = true;
-        offsetX = event.clientX - container2.getBoundingClientRect().left;
-        offsetY = event.clientY - container2.getBoundingClientRect().top;
-        container2.style.cursor = "grabbing";
-    });
-
-    document.addEventListener("mousemove", (event) => {
+    let offsetX2, offsetY2;
+    function dragMove2(event) {
         if (!isDragging2) return;
-        const newX = event.clientX - offsetX;
-        const newY = event.clientY - offsetY;
+        const newX = event.clientX - offsetX2;
+        const newY = event.clientY - offsetY2;
         container2.style.left = `${newX}px`;
         container2.style.top = `${newY}px`;
-    });
-
-    document.addEventListener("mouseup", () => {
+    }
+    function dragEnd2() {
         isDragging2 = false;
         container2.style.cursor = "grab";
+        window.removeEventListener("mousemove", dragMove2);
+        window.removeEventListener("mouseup", dragEnd2);
+    }
+    container2.addEventListener("mousedown", (event) => {
+        isDragging2 = true;
+        offsetX2 = event.clientX - container2.getBoundingClientRect().left;
+        offsetY2 = event.clientY - container2.getBoundingClientRect().top;
+        container2.style.cursor = "grabbing";
+        window.addEventListener("mousemove", dragMove2);
+        window.addEventListener("mouseup", dragEnd2);
     });
-
- 
     musicToggleButton.addEventListener("click", () => {
         if (container2.style.display === "none") {
             container2.style.display = "flex";
@@ -898,12 +897,13 @@ document.addEventListener("DOMContentLoaded", () => {
             pauseIcon.style.display = "flex";
         } else {
             container2.style.display = "none";
-            youtubeIframe.src = ""; 
+            youtubeIframe.src = ""; // Stop video when closed
             playIcon.style.display = "flex";
             pauseIcon.style.display = "none";
         }
     });
 });
+
 
 
 
