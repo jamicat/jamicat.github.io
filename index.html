@@ -108,6 +108,26 @@ cursor: pointer;
 margin: 5px;
 }
 
+.button3 {
+font-size: 0.9em;
+background: rgba(0, 0, 0, 0.2);
+transition: background-color 0.3s, transform 0.2s;
+-webkit-backdrop-filter: blur(10px) saturate(150%);
+backdrop-filter: blur(10px) saturate(150%);
+color: white;
+padding: 10px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+margin: 5px;	
+bottom: 100%;
+left: 50%;
+position: absolute;
+text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+	
+}
+
 .button:hover {
 transform: scale(1.05); 
 }
@@ -223,7 +243,7 @@ transform: scale(1.1);
 <div class="image-container" style="position: relative;">
 <img src="fursona.png" alt="Fursona" class="fursona-image" style="display: block;">
 <div class="messageArea">
-<button class="leaveMessage" style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); color: white; text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd; display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);" onclick=leaveMessage()"Leave a message"</button>
+<button class="button3" onclick=leaveMessage()"Leave a message"</button>
 </div>
 <div class="infText" id="mood-text" 
 style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); color: white; text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd; display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">
