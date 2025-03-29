@@ -80,6 +80,7 @@ max-width: 80%;
 }
 	
 #draggable-container2 {
+    position: absolute;
     cursor: grab;
     width: 260px; 
     height: 150px;
@@ -860,43 +861,43 @@ container.style.cursor = "grab";
 
 	
 document.addEventListener("DOMContentLoaded", () => {
-    const container = document.getElementById("draggable-container2");
+    const container2 = document.getElementById("draggable-container2");
     const youtubeIframe = document.getElementById("youtube-video");
     const musicToggleButton = document.getElementById("music-toggle-button");
     const playIcon = document.querySelector(".play-icon");
     const pauseIcon = document.querySelector(".pause-icon");
 
-    let isDragging = false;
+    let isDragging2 = false;
     let offsetX, offsetY;
-    container.addEventListener("mousedown", (event) => {
-        isDragging = true;
-        offsetX = event.clientX - container.getBoundingClientRect().left;
-        offsetY = event.clientY - container.getBoundingClientRect().top;
-        container.style.cursor = "grabbing";
+    container2.addEventListener("mousedown", (event) => {
+        isDragging2 = true;
+        offsetX = event.clientX - container2.getBoundingClientRect().left;
+        offsetY = event.clientY - container2.getBoundingClientRect().top;
+        container2.style.cursor = "grabbing";
     });
 
     document.addEventListener("mousemove", (event) => {
-        if (!isDragging) return;
+        if (!isDragging2) return;
         const newX = event.clientX - offsetX;
         const newY = event.clientY - offsetY;
-        container.style.left = `${newX}px`;
-        container.style.top = `${newY}px`;
+        container2.style.left = `${newX}px`;
+        container2.style.top = `${newY}px`;
     });
 
     document.addEventListener("mouseup", () => {
-        isDragging = false;
-        container.style.cursor = "grab";
+        isDragging2 = false;
+        container2.style.cursor = "grab";
     });
 
  
     musicToggleButton.addEventListener("click", () => {
-        if (container.style.display === "none") {
-            container.style.display = "flex";
+        if (container2.style.display === "none") {
+            container2.style.display = "flex";
             youtubeIframe.src = "https://www.youtube.com/embed/v97FPN2US2o?autoplay=1&mute=0";
             playIcon.style.display = "none";
             pauseIcon.style.display = "flex";
         } else {
-            container.style.display = "none";
+            container2.style.display = "none";
             youtubeIframe.src = ""; 
             playIcon.style.display = "flex";
             pauseIcon.style.display = "none";
