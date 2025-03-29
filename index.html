@@ -8,7 +8,9 @@
 	
 <canvas id="canvas"></canvas>
 <script type="module" src="galaxy.js"></script>
+	
 <style>
+	
 .message-box {
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px) saturate(150%);
@@ -94,7 +96,6 @@ margin: 0;
 overflow: hidden; 
 user-select: none;
 }
-
 
 .image-container {
 display: flex;
@@ -278,10 +279,6 @@ transform: scale(1.1);
 }
 </style>
 </head>
-
-
-
-	
 	
 <script>
 function toggleMessageBox() {
@@ -318,12 +315,7 @@ function submitMessage() {
     });
 }
 </script>
-	
-
-
-
-
-	
+		
 <body>
 <div id="draggable-container">	
 <div class="image-container" style="position: relative;">
@@ -345,7 +337,6 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
 </div>
 </div>
 </div>
-
 
 <div class="play-volume-container">
 <button id="music-toggle-button" class="music-button">
@@ -369,8 +360,6 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
 <button id="toggle-dog-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">Dog Audio: OFF</button>
 </div-->
 
-
-
 <audio id="music-audio" src="fromadream.mp3" loop></audio>
 <!--img src="dog.png" class="dog" id="dog" alt="Dog" draggable="false"-->
 <audio id="dog-audio" src="dog-bark.mp3" loop></audio>
@@ -380,7 +369,6 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
 <div id="weather-container" class="infText" style="border: none;">
 Brit weather: <span id="weather-output"></span>
 </div>
-
 
 <!--script>
 const fursonaImage = document.querySelector('.fursona-image');
@@ -454,10 +442,6 @@ musicToggleButton.classList.remove('active');
 });
 </script>
 
-
-
-
-
 <script>
 const terminal = document.getElementById('terminal');
 const typingArea = document.getElementById('typing-area');
@@ -530,9 +514,6 @@ scale = 1;
 dogImage.style.transform = `scale(${scale})`; 
 */
 /*})
-	
-
-
 
 // dog loud/quiet
 document.addEventListener('mousemove', (event) => {
@@ -598,9 +579,7 @@ buttonArea.style.display = 'flex';
 }, 500); 
 }
 }
-
-
-
+	
 /*
  function typeEllipses(callback) {
    let dots = 0;
@@ -792,8 +771,6 @@ displayTree();
 }
 type();	
 
-
-
 document.addEventListener("DOMContentLoaded", () => {
 const container = document.getElementById("draggable-container");
 
@@ -822,9 +799,6 @@ isDragging = false;
 container.style.cursor = "grab";
 });
 });
-
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
 const messages = [
@@ -890,8 +864,6 @@ moodText.innerText = "";
 typeEffect();
 }, 500);
 });
-
-
 
 </script>
 </body>
