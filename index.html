@@ -292,11 +292,14 @@ messageBox.style.display = messageBox.style.display === "none" ? "block" : "none
 function submitMessage() {
     var name = document.getElementById("name").value;
     var message = document.getElementById("message").value;
+    var timestamp = new Date().toISOString(); 
 
     var data = {
         name: name,
-        comment: message
+        comment: message,
+        timestamp: timestamp
     };
+
     var url = "https://script.google.com/macros/s/AKfycbzNzyyzX2Xgc-n16rlpezl8x_EGzwXn-GSSpihv5sj8457b86CXbeqEE7VJszLb5siA/exec"; 
     fetch(url, {
         method: "POST",
@@ -306,11 +309,13 @@ function submitMessage() {
         body: JSON.stringify(data),
         mode: "no-cors",  
     });
+
     alert("Your message has been sent.");  
     document.getElementById("name").value = "";  
     document.getElementById("message").value = "";  
     toggleMessageBox(); 
 }
+
 
 </script>
 
