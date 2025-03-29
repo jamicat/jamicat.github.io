@@ -80,12 +80,8 @@ max-width: 80%;
 }
 
 #draggable-container2 {
-    position: absolute;
     cursor: grab;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     width: 260px;
     height: 150px;
     background: rgba(0, 0, 0, 0.2);
@@ -403,11 +399,12 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
         <span class="pause-icon" style="display: none;">❚❚</span>
     </button>
 </div>
+	
 <div id="draggable-container2" style="display: none;">
     <iframe 
         id="youtube-video" 
         width="250" height="140" 
-        src="https://www.youtube.com/embed/v97FPN2US2o?autoplay=1&mute=0" 
+        src="https://www.youtube.com/embed/v97FPN2US2o?autoplay=0&mute=0" 
         frameborder="0" 
         allow="autoplay; encrypted-media"
         allowfullscreen>
