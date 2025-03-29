@@ -9,7 +9,6 @@
 <canvas id="canvas"></canvas>
 <script type="module" src="galaxy.js"></script>
 <style>
-	
 .message-box {
 background: rgba(0, 0, 0, 0.5);
 backdrop-filter: blur(10px) saturate(150%);
@@ -73,13 +72,13 @@ margin: 0;
 }
 
 #draggable-container {
-position: relative;
+position: absolute;
 cursor: grab;
 display: flex;
 flex-direction: column;
-max-width: 100%;
+align-items: center;
+width: 40%
 }
-
 
 body {
 /*background: none;
@@ -157,21 +156,6 @@ transition: background-color 0.3s, transform 0.2s;
 -webkit-backdrop-filter: blur(10px) saturate(150%);
 backdrop-filter: blur(10px) saturate(150%);
 text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-color: white;
-padding: 10px;
-border-radius: 5px;
-border: none;
-cursor: pointer;
-margin: 5px;	
-}
-
-.button4 {
-font-size: 0.9em;
-background: rgba(255,216,233,0.1);
-transition: background-color 0.3s, transform 0.2s;
--webkit-backdrop-filter: blur(10px) saturate(150%);
-backdrop-filter: blur(10px) saturate(150%);
 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 color: white;
 padding: 10px;
@@ -304,48 +288,17 @@ function toggleMessageBox() {
 const messageBox = document.getElementById("messageBox");
 messageBox.style.display = messageBox.style.display === "none" ? "block" : "none";
 }
-	
-let lastSubmissionTime = 0; // Store the last submission timestamp
-
 function submitMessage() {
-    var name = document.getElementById("name").value.trim();
-    var message = document.getElementById("message").value.trim();
-
-    if (!name || !message) {
-        alert("Fill in the fields!");
-        return;
-    }
-
-    var currentTime = Date.now();
-    if (currentTime - lastSubmissionTime < 300000) {
-        alert("5 minutes between each message.");
-        return;
-    }
-
-    lastSubmissionTime = currentTime;
-
-    var timestamp = new Date().toISOString(); 
-
-    var data = {
-        name: name,
-        comment: message,
-        timestamp: timestamp
-    };
-
-    var url = "https://script.google.com/macros/s/AKfycbzNzyyzX2Xgc-n16rlpezl8x_EGzwXn-GSSpihv5sj8457b86CXbeqEE7VJszLb5siA/exec"; 
-    fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-        mode: "no-cors",  
-    });
-
-    alert("Message sent!");  
-    document.getElementById("name").value = "";  
-    document.getElementById("message").value = "";  
-    toggleMessageBox(); 
+const name = document.getElementById("name").value.trim();
+const message = document.getElementById("message").value.trim();
+if (name === "" || message === "") {
+alert("Please fill out both fields.");
+return;
+}
+alert(`Message submitted by ${name}: ${message}`);
+document.getElementById("name").value = "";
+document.getElementById("message").value = "";
+document.getElementById("messageBox").style.display = "none";
 }
 </script>
 
@@ -385,14 +338,13 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
 </div>
 
 <div class="messageContainer">
-<button class="button3" onclick="toggleMessageBox()">Leave a private message</button>
+<button class="button3" onclick="toggleMessageBox()">Leave a message</button>
 <div id="messageBox" class="message-box" style="display: none;">
 <label for="name">Name: </label>
 <input type="text" id="name" class="input-box" placeholder="meower">
 <br><br><label for="message">Message: </label>
 <textarea id="message" class="input-box" placeholder="meow"></textarea>
-<!--label for="info" style="font-size: 0.8em;">Messages are private!</label><br-->
-<button class="button4" onclick="submitMessage()">Submit</button>
+<button class="button3" onclick="submitMessage()">Submit</button>
 </div>
 </div>
 
@@ -827,8 +779,10 @@ type();
 
 document.addEventListener("DOMContentLoaded", () => {
 const container = document.getElementById("draggable-container");
+
 let isDragging = false;
 let offsetX, offsetY;
+
 container.addEventListener("mousedown", (event) => {
 isDragging = true;
 offsetX = event.clientX - container.getBoundingClientRect().left;
@@ -845,6 +799,7 @@ const newY = event.clientY - offsetY;
 container.style.left = `${newX}px`;
 container.style.top = `${newY}px`;
 });
+
 document.addEventListener("mouseup", () => {
 isDragging = false;
 container.style.cursor = "grab";
