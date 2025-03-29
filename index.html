@@ -281,13 +281,16 @@ transform: scale(1.1);
 </head>
 	
 <script>
+	
 function toggleMessageBox() {
     const messageBox = document.getElementById("messageBox");
     messageBox.style.display = messageBox.style.display === "none" ? "block" : "none";
 }
+	
 function submitMessage() {
     var name = document.getElementById("name").value;
     var message = document.getElementById("message").value;
+
     var data = {
         name: name,
         comment: message
@@ -299,21 +302,15 @@ function submitMessage() {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Handle the response
-        if (data.result === "success") {
-            alert("Message submitted!");
-        } else {
-            alert("Error submitting message.");
-        }
+        mode: "no-cors", 
+	alert("Your message has been sent.");
     })
     .catch((error) => {
         console.error("Error:", error);
         alert("There was an error submitting your message.");
     });
 }
+	
 </script>
 		
 <body>
