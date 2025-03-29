@@ -78,23 +78,14 @@ display: flex;
 flex-direction: column;
 max-width: 80%;
 }
-	
+
 #draggable-container2 {
-    position: absolute;
-    cursor: grab;
-    width: 260px; 
-    height: 150px;
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px) saturate(150%);
-    -webkit-backdrop-filter: blur(10px) saturate(150%);
-    color: white;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
-    border: none;
-    user-select: none;
-    bottom: 60px;
-    right: 20px;
+position: absolute;
+cursor: grab;
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 40%
 }
 
 body {
@@ -394,23 +385,11 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
 
 
 <div class="play-volume-container">
-    <button id="music-toggle-button" class="music-button">
-        <span class="play-icon">▶</span>
-        <span class="pause-icon" style="display: none;">❚❚</span>
-    </button>
+<button id="music-toggle-button" class="music-button">
+<span class="play-icon">▶</span>
+<span class="pause-icon" style="display: none;">❚❚</span>
+</button>
 </div>
-	
-<!--div id="draggable-container2" style="display: none;">
-    <iframe 
-        id="youtube-video" 
-        width="250" height="140" 
-        src="https://www.youtube.com/embed/v97FPN2US2o?autoplay=0&mute=0" 
-        frameborder="0" 
-        allow="autoplay; encrypted-media"
-        allowfullscreen>
-    </iframe>
-</div-->
-
 
 <div class="messageContainer">
 <button class="button3" onclick="toggleMessageBox()">Leave a private message</button>
@@ -489,6 +468,27 @@ document.getElementById("weather-output").textContent = formattedDescription;
 .catch(error => {
 console.error("Error fetching weather:", error);
 document.getElementById("weather-output").textContent = "unable to fetch.";
+});
+
+const musicToggleButton = document.getElementById("music-toggle-button");
+const musicAudio = document.getElementById("music-audio");
+const playIcon = document.querySelector(".play-icon");
+const pauseIcon = document.querySelector(".pause-icon");
+
+musicAudio.volume = 0.6;
+
+musicToggleButton.addEventListener("click", () => {
+if (musicAudio.paused) {
+musicAudio.play();
+playIcon.style.display = "none";
+pauseIcon.style.display = "flex";
+musicToggleButton.classList.add('active');
+} else {
+musicAudio.pause();
+playIcon.style.display = "flex";
+pauseIcon.style.display = "none";
+musicToggleButton.classList.remove('active');
+}
 });
 </script>
 
@@ -858,51 +858,31 @@ container.style.cursor = "grab";
 });
 });
 
-	
-/*document.addEventListener("DOMContentLoaded", () => {
-    const container2 = document.getElementById("draggable-container2");
-    const youtubeIframe = document.getElementById("youtube-video");
-    const musicToggleButton = document.getElementById("music-toggle-button");
-    const playIcon = document.querySelector(".play-icon");
-    const pauseIcon = document.querySelector(".pause-icon");
+document.addEventListener("DOMContentLoaded", () => {
+const container = document.getElementById("draggable-container2");
+let isDragging = false;
+let offsetX, offsetY;
+container.addEventListener("mousedown", (event) => {
+isDragging = true;
+offsetX = event.clientX - container.getBoundingClientRect().left;
+offsetY = event.clientY - container.getBoundingClientRect().top;
+container.style.cursor = "grabbing";
+});
 
-    let isDragging2 = false;
-    let offsetX2, offsetY2;
-    function dragMove2(event) {
-        if (!isDragging2) return;
-        const newX = event.clientX - offsetX2;
-        const newY = event.clientY - offsetY2;
-        container2.style.left = `${newX}px`;
-        container2.style.top = `${newY}px`;
-    }
-    function dragEnd2() {
-        isDragging2 = false;
-        container2.style.cursor = "grab";
-        window.removeEventListener("mousemove", dragMove2);
-        window.removeEventListener("mouseup", dragEnd2);
-    }
-    container2.addEventListener("mousedown", (event) => {
-        isDragging2 = true;
-        offsetX2 = event.clientX - container2.getBoundingClientRect().left;
-        offsetY2 = event.clientY - container2.getBoundingClientRect().top;
-        container2.style.cursor = "grabbing";
-        window.addEventListener("mousemove", dragMove2);
-        window.addEventListener("mouseup", dragEnd2);
-    });
-    musicToggleButton.addEventListener("click", () => {
-        if (container2.style.display === "none") {
-            container2.style.display = "flex";
-            youtubeIframe.src = "https://www.youtube.com/embed/v97FPN2US2o?autoplay=1&mute=0";
-            playIcon.style.display = "none";
-            pauseIcon.style.display = "flex";
-        } else {
-            container2.style.display = "none";
-            youtubeIframe.src = ""; // Stop video when closed
-            playIcon.style.display = "flex";
-            pauseIcon.style.display = "none";
-        }
-    });
-});*/
+document.addEventListener("mousemove", (event) => {
+if (!isDragging) return;
+
+const newX = event.clientX - offsetX;
+const newY = event.clientY - offsetY;
+
+container.style.left = `${newX}px`;
+container.style.top = `${newY}px`;
+});
+document.addEventListener("mouseup", () => {
+isDragging = false;
+container.style.cursor = "grab";
+});
+});
 
 
 
