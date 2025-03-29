@@ -304,9 +304,25 @@ const messageBox = document.getElementById("messageBox");
 messageBox.style.display = messageBox.style.display === "none" ? "block" : "none";
 }
 	
+let lastSubmissionTime = 0; // Store the last submission timestamp
+
 function submitMessage() {
-    var name = document.getElementById("name").value;
-    var message = document.getElementById("message").value;
+    var name = document.getElementById("name").value.trim();
+    var message = document.getElementById("message").value.trim();
+
+    if (!name || !message) {
+        alert("Fill in the fields!");
+        return;
+    }
+
+    var currentTime = Date.now();
+    if (currentTime - lastSubmissionTime < 300000) {
+        alert("5 minutes between each message.");
+        return;
+    }
+
+    lastSubmissionTime = currentTime;
+
     var timestamp = new Date().toISOString(); 
 
     var data = {
@@ -325,13 +341,11 @@ function submitMessage() {
         mode: "no-cors",  
     });
 
-    alert("Your message has been sent.");  
+    alert("Message sent!");  
     document.getElementById("name").value = "";  
     document.getElementById("message").value = "";  
     toggleMessageBox(); 
 }
-
-
 </script>
 
 
@@ -376,6 +390,7 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
 <input type="text" id="name" class="input-box" placeholder="meower">
 <br><br><label for="message">Message: </label>
 <textarea id="message" class="input-box" placeholder="meow"></textarea>
+<label for="info">Messages are private!</label>
 <button class="button4" onclick="submitMessage()">Submit</button>
 </div>
 </div>
