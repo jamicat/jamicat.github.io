@@ -8,7 +8,51 @@
 	
 <canvas id="canvas"></canvas>
 <script type="module" src="galaxy.js"></script>
+	
 <style>
+	
+.message-box {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+    color: white;
+    padding: 10px; 
+    border-radius: 10px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: absolute;
+    left: 20px;
+    margin-top: 10px;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    box-sizing: border-box;
+}
+
+.input-box {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 10px; 
+    color: white;
+    border-radius: 5px;
+    font-size: 0.9em;
+    font-family: 'Nunito', sans-serif;
+    width: 98%; 
+    box-sizing: border-box;
+    margin: 1px 3px;  
+}
+
+.input-box:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+textarea.input-box {
+    resize: none;
+    height: 90px;
+    padding: 8px;  
+}
 	
 html, body, canvas {
   display: block;
@@ -53,7 +97,6 @@ overflow: hidden;
 user-select: none;
 }
 
-
 .image-container {
 display: flex;
 justify-content: center;
@@ -79,7 +122,7 @@ width: 80%;
 max-width: 600px;
 box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
 margin-bottom: 70px;
-border: 2px solid rgba(255, 255, 255, 0.3);
+border: 2px solid rgba(255, 255, 255, 0.2);
 user-select: none;
 }
 
@@ -114,6 +157,21 @@ transition: background-color 0.3s, transform 0.2s;
 -webkit-backdrop-filter: blur(10px) saturate(150%);
 backdrop-filter: blur(10px) saturate(150%);
 text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+color: white;
+padding: 10px;
+border-radius: 5px;
+border: none;
+cursor: pointer;
+margin: 5px;	
+}
+
+.button4 {
+font-size: 0.9em;
+background: rgba(255,216,233,0.1);
+transition: background-color 0.3s, transform 0.2s;
+-webkit-backdrop-filter: blur(10px) saturate(150%);
+backdrop-filter: blur(10px) saturate(150%);
 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 color: white;
 padding: 10px;
@@ -236,10 +294,41 @@ transform: scale(1.1);
 }
 </style>
 </head>
+	
+<script>
+	
+function toggleMessageBox() {
+    const messageBox = document.getElementById("messageBox");
+    messageBox.style.display = messageBox.style.display === "none" ? "block" : "none";
+}
+	
+function submitMessage() {
+    var name = document.getElementById("name").value;
+    var message = document.getElementById("message").value;
 
-
+    var data = {
+        name: name,
+        comment: message
+    };
+    var url = "https://script.google.com/macros/s/AKfycbzNzyyzX2Xgc-n16rlpezl8x_EGzwXn-GSSpihv5sj8457b86CXbeqEE7VJszLb5siA/exec"; 
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        mode: "no-cors", 
+	alert("Your message has been sent.");
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+        alert("There was an error submitting your message.");
+    });
+}
+	
+</script>
+		
 <body>
-
 <div id="draggable-container">	
 <div class="image-container" style="position: relative;">
 <img src="fursona.png" alt="Fursona" class="fursona-image" style="display: block;">
@@ -261,7 +350,6 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
 </div>
 </div>
 
-
 <div class="play-volume-container">
 <button id="music-toggle-button" class="music-button">
 <span class="play-icon">▶</span>
@@ -270,14 +358,19 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
 </div>
 
 <div class="messageContainer">
-<button class="button3" onclick="leaveMessage()">Leave a message</button>
+    <button class="button3" onclick="toggleMessageBox()">Leave a message</button>
+    <div id="messageBox" class="message-box" style="display: none;">
+        <label for="name">Name: </label>
+        <input type="text" id="name" class="input-box" placeholder="meower">
+        <br><br><label for="message">Message: </label>
+        <textarea id="message" class="input-box" placeholder="meow"></textarea>
+        <button class="button4" onclick="submitMessage()">Submit</button>
+    </div>
 </div>
 	
 <!--div class="dog-volume-container">
 <button id="toggle-dog-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">Dog Audio: OFF</button>
 </div-->
-
-
 
 <audio id="music-audio" src="fromadream.mp3" loop></audio>
 <!--img src="dog.png" class="dog" id="dog" alt="Dog" draggable="false"-->
@@ -285,10 +378,9 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
 <audio id="knock-audio" src="knock.mp3"></audio>
 
 
-<div id="weather-container" class="infText" style="border: 1px solid rgba(255, 255, 255, 0.3);">
+<div id="weather-container" class="infText" style="border: none;">
 Brit weather: <span id="weather-output"></span>
 </div>
-
 
 <!--script>
 const fursonaImage = document.querySelector('.fursona-image');
@@ -362,10 +454,6 @@ musicToggleButton.classList.remove('active');
 });
 </script>
 
-
-
-
-
 <script>
 const terminal = document.getElementById('terminal');
 const typingArea = document.getElementById('typing-area');
@@ -438,9 +526,6 @@ scale = 1;
 dogImage.style.transform = `scale(${scale})`; 
 */
 /*})
-	
-
-
 
 // dog loud/quiet
 document.addEventListener('mousemove', (event) => {
@@ -506,9 +591,7 @@ buttonArea.style.display = 'flex';
 }, 500); 
 }
 }
-
-
-
+	
 /*
  function typeEllipses(callback) {
    let dots = 0;
@@ -694,17 +777,11 @@ typingArea.appendChild(imageElement);
 
 const introElementClone = introElement.cloneNode(true); 
 typingArea.appendChild(introElementClone); 
-
 displayTree(); 
 }
-
 displayTree(); 
 }
-
-
 type();	
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
 const container = document.getElementById("draggable-container");
@@ -734,9 +811,6 @@ isDragging = false;
 container.style.cursor = "grab";
 });
 });
-
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
 const messages = [
@@ -803,8 +877,6 @@ typeEffect();
 }, 500);
 });
 
-
-
 </script>
-</html>
 </body>
+</html>
