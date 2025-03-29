@@ -288,17 +288,48 @@ function toggleMessageBox() {
 const messageBox = document.getElementById("messageBox");
 messageBox.style.display = messageBox.style.display === "none" ? "block" : "none";
 }
+	
+let lastSubmissionTime = 0; 
+
 function submitMessage() {
-const name = document.getElementById("name").value.trim();
-const message = document.getElementById("message").value.trim();
-if (name === "" || message === "") {
-alert("Please fill out both fields.");
-return;
-}
-alert(`Message submitted by ${name}: ${message}`);
-document.getElementById("name").value = "";
-document.getElementById("message").value = "";
-document.getElementById("messageBox").style.display = "none";
+    var name = document.getElementById("name").value.trim();
+    var message = document.getElementById("message").value.trim();
+
+    if (!name || !message) {
+        alert("Fill in the fields!");
+        return;
+    }
+
+    var currentTime = Date.now();
+    if (currentTime - lastSubmissionTime < 300000) {
+        alert("5 minutes between each message.");
+        return;
+    }
+
+    lastSubmissionTime = currentTime;
+
+    var timestamp = new Date().toISOString(); 
+
+    var data = {
+        name: name,
+        comment: message,
+        timestamp: timestamp
+    };
+
+    var url = "https://script.google.com/macros/s/AKfycbzNzyyzX2Xgc-n16rlpezl8x_EGzwXn-GSSpihv5sj8457b86CXbeqEE7VJszLb5siA/exec"; 
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        mode: "no-cors",  
+    });
+
+    alert("Message sent!");  
+    document.getElementById("name").value = "";  
+    document.getElementById("message").value = "";  
+    toggleMessageBox(); 
 }
 </script>
 
