@@ -30,10 +30,10 @@ width: 40%
 }
 
 body {
-background: none;
+/*background: none;
 background: url('bg.jpg') no-repeat center center fixed;
-background-size: cover;
-/*background: transparent;*/
+background-size: cover;*/
+background: transparent;
 display: flex;
 justify-content: center;
 align-items: center;
@@ -60,7 +60,7 @@ user-select: none;
 
 .terminal {
 font-size: 0.9em;
-background: rgba(0, 0, 0, 0.6); 
+background: rgba(0, 0, 0, 0.2); 
 backdrop-filter: blur(10px) saturate(150%);
 -webkit-backdrop-filter: blur(10px) saturate(150%);
 color: white;
@@ -68,7 +68,7 @@ padding: 20px;
 border-radius: 10px;
 width: 80%;
 max-width: 600px;
-box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
 margin-bottom: 70px;
 border: 2px solid rgba(255, 255, 255, 0.3);
 user-select: none;
@@ -76,7 +76,7 @@ user-select: none;
 
 .button {
 font-size: 0.9em;
-background-color: #ffb6c1;
+background-color: #F3F3F3;
 transition: background-color 0.3s, transform 0.2s;
 color: black;
 padding: 10px;
@@ -88,7 +88,7 @@ margin: 5px;
 
 .button2 {
 font-size: 0.9em;
-background-color: #ffe59a;
+background-color: #F3F3F3;
 transition: background-color 0.3s, transform 0.2s;
 color: black;
 padding: 10px;
@@ -99,20 +99,16 @@ margin: 5px;
 }
 
 .button:hover {
-background-color: #ff9a9e; 
 transform: scale(1.05); 
 }
 .button:active{
-background-color: #e6788e; 
 transform: scale(0.95);  
 }
 
 .button2:hover {
-background-color: #ffe59a; 
 transform: scale(1.05); 
 }
 .button2:active{
-background-color: #e6788e; 
 transform: scale(0.95);  
 }
 
@@ -171,38 +167,36 @@ background-color: #e6788e;
 
 
 .music-button {
-  font-size: 3.5em;
-  background: none;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  color: #ff8ca0;
-  transition: transform 0.2s, color 0.3s;
-  text-shadow: 0px 0px 3px rgba(255, 182, 193, 0.8); 
-  filter: drop-shadow(0 0 8px #ffb6c1) drop-shadow(0 0 15px #ffb6c1);
+font-size: 3.5em;
+background: none;
+border: none;
+cursor: pointer;
+border-radius: 5px;
+color: #F3F3F3;
+transition: transform 0.2s, color 0.3s;
+text-shadow: 0px 0px 3px rgba(255, 182, 193, 0.8); 
+filter: drop-shadow(0 0 8px #8be9fd);
 
 
 }
 
 .music-button:hover {
-  color: #ff8ca0;
-  transform: scale(1.1);
+transform: scale(1.1);
 }
 
 .music-button:active {
-  transform: scale(0.95);
+transform: scale(0.95);
 }
 
 .music-button.active {
 animation: toggleOn 0.5s infinite alternate;
-color: #e6788e; 
 }
 
 .play-icon,
 .pause-icon {
-  font-weight: bold;
+font-weight: bold;
 }
-	
+
 @keyframes toggleOn {
 from {
 transform: scale(1);
@@ -221,14 +215,14 @@ transform: scale(1.1);
 <div class="image-container" style="position: relative;">
 <img src="fursona.png" alt="Fursona" class="fursona-image" style="display: block;">
 <div class="infText" id="mood-text" 
-style="background-color: #ffe59a; display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">
+style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); color: white; text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd; display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">
 </div>
 </div>
 <div class="terminal" id="terminal">
 <div id="typing-area"></div>
 <div class="buttons" id="button-area" style="display: none;">
 <!-- 
-    <button class="button" onclick="showAbout()">About</button>
+   <button class="button" onclick="showAbout()">About</button>
 	    -->
 <button class="button" onclick="showSocials()">Socials</button>
 <button class="button2" onclick="showArt()">Art</button>
@@ -241,8 +235,8 @@ style="background-color: #ffe59a; display: none; position: absolute; bottom: 100
 
 <div class="play-volume-container">
 <button id="music-toggle-button" class="music-button">
-  <span class="play-icon">▶</span>
-  <span class="pause-icon" style="display: none;">❚❚</span>
+<span class="play-icon">▶</span>
+<span class="pause-icon" style="display: none;">❚❚</span>
 </button>
 </div>
 <!--div class="dog-volume-container">
@@ -257,7 +251,7 @@ style="background-color: #ffe59a; display: none; position: absolute; bottom: 100
 <audio id="knock-audio" src="knock.mp3"></audio>
 
 
-<div id="weather-container" class="infText">
+<div id="weather-container" class="infText" style="border: 1px solid rgba(255, 255, 255, 0.3);">
 Brit weather: <span id="weather-output"></span>
 </div>
 
@@ -273,23 +267,24 @@ moodText.style.display = 'none';
 });
 </script-->
 
-<!--script src="three.r134.min.js"></script>
+<script src="three.r134.min.js"></script>
 <script src="vanta.net.min.js"></script>
 <script>
 VANTA.NET({
-  el: "body",
-  mouseControls: true,
-  touchControls: true,
-  gyroControls: false,
-  minHeight: 200.00,
-  minWidth: 200.00,
-  scale: 1.00,
-  scaleMobile: 1.00,
-  points: 16.00,
-  maxDistance: 22.00,
-  spacing: 13.00
+el: "body",
+mouseControls: true,
+touchControls: true,
+gyroControls: false,
+minHeight: 200.00,
+minWidth: 200.00,
+scale: 1.00,
+scaleMobile: 1.00,
+points: 16.00,
+maxDistance: 22.00,
+spacing: 13.00,
+color: 0x8be9fd
 })
-</script-->
+</script>
 
 <script>
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat=53.765762&lon=-2.692337&appid=3b394dfa0c0a624d5b6d72af1bef9a64";
@@ -319,17 +314,17 @@ const pauseIcon = document.querySelector(".pause-icon");
 musicAudio.volume = 0.6;
 
 musicToggleButton.addEventListener("click", () => {
-  if (musicAudio.paused) {
-    musicAudio.play();
-    playIcon.style.display = "none";
-    pauseIcon.style.display = "flex";
-    musicToggleButton.classList.add('active');
-  } else {
-    musicAudio.pause();
-    playIcon.style.display = "flex";
-    pauseIcon.style.display = "none";
-    musicToggleButton.classList.remove('active');
-  }
+if (musicAudio.paused) {
+musicAudio.play();
+playIcon.style.display = "none";
+pauseIcon.style.display = "flex";
+musicToggleButton.classList.add('active');
+} else {
+musicAudio.pause();
+playIcon.style.display = "flex";
+pauseIcon.style.display = "none";
+musicToggleButton.classList.remove('active');
+}
 });
 </script>
 
@@ -406,9 +401,9 @@ dogImage.style.transform = `scale(${scale})`;
 dogImage.addEventListener('mouseout', () => {
 clearInterval(growInterval); 
 /*	 
- scale = 1; 
- dogImage.style.transform = `scale(${scale})`; 
- */
+scale = 1; 
+dogImage.style.transform = `scale(${scale})`; 
+*/
 /*})
 	
 
@@ -482,21 +477,21 @@ buttonArea.style.display = 'flex';
 
 
 /*
-  function typeEllipses(callback) {
-    let dots = 0;
-    const ellipsisInterval = setInterval(() => {
-      if (dots < 3) {
-        typingArea.innerHTML += '.';
-        dots++;
-      } else {
-        clearInterval(ellipsisInterval);
-        if (callback) {
-          typingSpeed = 30;
-          callback();
-        }
-      }
-    }, slowEllipsesSpeed);
-  }*/
+ function typeEllipses(callback) {
+   let dots = 0;
+   const ellipsisInterval = setInterval(() => {
+     if (dots < 3) {
+       typingArea.innerHTML += '.';
+       dots++;
+     } else {
+       clearInterval(ellipsisInterval);
+       if (callback) {
+         typingSpeed = 30;
+         callback();
+       }
+     }
+   }, slowEllipsesSpeed);
+ }*/
 
 function showCursor() {
 typingArea.innerHTML += '<div class="cursor"></div>';
@@ -509,87 +504,87 @@ buttonArea.style.display = 'flex';
 }
 
 /*
-  function showAbout() {
-    const aboutMessage = [
-      `Welcome to the tea terminal! This is a silly website I made for fun.`,
-      ` `,
-      `My human-feline name is Jamie and as you may have discerned, I love bubble tea, IT, am British and fond of my pets. I very recently befriended (kidnapped) two blue guppies and they fill me with unconditional love. My family has always kept bearded collies as pets (the one trying to escape your screen—she will do it), so love was a big part of my upbringing. As a fairly sensitive person, I always find myself feeling grateful for the smallest things, as they help me put much bigger challenges into a healthy perspective.`,
-      ` `,
-      `I believe that we should strive to give as much unconditional love as our animal companions are capable of. One day when I have escaped IT, I would really love to volunteer at an animal sanctuary or rescue foundation.`,
-      ` `,
-      `When not touching grass or drinking it in milk, I like to engage with online gaming communities in a carefree way, and to coax and encourage my friends to exist as free spirits too. Games like Team Fortress 2, Final Fantasy online and even more stressful competitors like Dead by Daylight are super enjoyable to me for this reason. It is important for me to feel a part of something bigger than myself.`,
-      ` `,
+ function showAbout() {
+   const aboutMessage = [
+     `Welcome to the tea terminal! This is a silly website I made for fun.`,
+     ` `,
+     `My human-feline name is Jamie and as you may have discerned, I love bubble tea, IT, am British and fond of my pets. I very recently befriended (kidnapped) two blue guppies and they fill me with unconditional love. My family has always kept bearded collies as pets (the one trying to escape your screen—she will do it), so love was a big part of my upbringing. As a fairly sensitive person, I always find myself feeling grateful for the smallest things, as they help me put much bigger challenges into a healthy perspective.`,
+     ` `,
+     `I believe that we should strive to give as much unconditional love as our animal companions are capable of. One day when I have escaped IT, I would really love to volunteer at an animal sanctuary or rescue foundation.`,
+     ` `,
+     `When not touching grass or drinking it in milk, I like to engage with online gaming communities in a carefree way, and to coax and encourage my friends to exist as free spirits too. Games like Team Fortress 2, Final Fantasy online and even more stressful competitors like Dead by Daylight are super enjoyable to me for this reason. It is important for me to feel a part of something bigger than myself.`,
+     ` `,
 	`My biggest hobby outside of IT is to read. I come from a family of hungry bookworms, each with our own individual section in the family library at home, always battling for space. Reading in bed, or when I have nothing else to do, is incredibly therapeutic. It provides me with a natural sense of compartmentalisation. Absorbing other people's written experiences feels like a real superpower—one I wish the world wouldn't neglect. I'll list my favourite books in an upcoming FAQ page!`,
 	` `,
-      `This may read like a brainfart—and that is because it probably was. You can expect weekly updates here as the mood shifts, as well as more typical terminal tweaks (TTTs in IT) and wholesome featurettes. Thank you for checking out this website, may our paths cross one day! In the meantime, feel free to leave your mark in the guestbook (I know, I am trying to fix it ;-;).`
-    ];
+     `This may read like a brainfart—and that is because it probably was. You can expect weekly updates here as the mood shifts, as well as more typical terminal tweaks (TTTs in IT) and wholesome featurettes. Thank you for checking out this website, may our paths cross one day! In the meantime, feel free to leave your mark in the guestbook (I know, I am trying to fix it ;-;).`
+   ];
 
-    buttonArea.style.display = 'none';
-    typingArea.innerHTML = '';
+   buttonArea.style.display = 'none';
+   typingArea.innerHTML = '';
 
-    let lineIndex = 0;
-    let charIndex = 0;
+   let lineIndex = 0;
+   let charIndex = 0;
 
-    function typeAbout() {
-      if (lineIndex < aboutMessage.length) {
-        const currentLine = aboutMessage[lineIndex];
+   function typeAbout() {
+     if (lineIndex < aboutMessage.length) {
+       const currentLine = aboutMessage[lineIndex];
 
-        if (charIndex < currentLine.length) {
-          typingArea.innerHTML += currentLine[charIndex];
-          charIndex++;
-          setTimeout(typeAbout, 10);
-        } else {
-          typingArea.innerHTML += '<br>';
-          charIndex = 0;
-          lineIndex++;
-          setTimeout(typeAbout, 10);
-        }
-      } else {
-        showCursor();
-        setTimeout(removeCursorAndShowButtons, 1000);
-      }
-    }
+       if (charIndex < currentLine.length) {
+         typingArea.innerHTML += currentLine[charIndex];
+         charIndex++;
+         setTimeout(typeAbout, 10);
+       } else {
+         typingArea.innerHTML += '<br>';
+         charIndex = 0;
+         lineIndex++;
+         setTimeout(typeAbout, 10);
+       }
+     } else {
+       showCursor();
+       setTimeout(removeCursorAndShowButtons, 1000);
+     }
+   }
 
-    typeAbout();
-  }
-  */
+   typeAbout();
+ }
+ */
 
 function showSocials() {
-    const socials = [
-        { name: 'Discord', username: 'jamgang', link: 'https://discordapp.com/users/160899636637204482' }, 
-        { name: 'Steam', username: 'jamigang', link: 'https://steamcommunity.com/id/jamigang' },
-        { name: 'Bsky', username: 'jamjme.bsky.social', link: 'https://bsky.app/profile/jamjme.bsky.social' }
-    ];
-	
-    buttonArea.style.display = 'none';
-    typingArea.innerHTML = '';
+const socials = [
+{ name: 'Discord', username: 'jamgang', link: 'https://discordapp.com/users/160899636637204482' }, 
+{ name: 'Steam', username: 'jamigang', link: 'https://steamcommunity.com/id/jamigang' },
+{ name: 'Bsky', username: 'jamjme.bsky.social', link: 'https://bsky.app/profile/jamjme.bsky.social' }
+];
 
-    let socialIndex = 0;
+buttonArea.style.display = 'none';
+typingArea.innerHTML = '';
 
-    function typeSocial() {
-        if (socialIndex < socials.length) {
-            const social = socials[socialIndex];
-            let text = `${social.name} - `;
+let socialIndex = 0;
 
-            if (social.link) {
-                text += `<a href="${social.link}" target="_blank" 
-                style="color: white; text-decoration: none;
-                text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd;">
-                ${social.username}</a>`;
-            } else {
-                text += social.username;
-            }
+function typeSocial() {
+if (socialIndex < socials.length) {
+const social = socials[socialIndex];
+let text = `${social.name} - `;
 
-            typingArea.innerHTML += text + '<br>';
-            socialIndex++;
-            setTimeout(typeSocial, typingSpeed);
-        } else {
-            showCursor();
-            setTimeout(removeCursorAndShowButtons, 1000);
-        }
-    }
+if (social.link) {
+text += `<a href="${social.link}" target="_blank" 
+               style="color: white; text-decoration: none;
+               text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd;">
+               ${social.username}</a>`;
+} else {
+text += social.username;
+}
 
-    typeSocial();
+typingArea.innerHTML += text + '<br>';
+socialIndex++;
+setTimeout(typeSocial, typingSpeed);
+} else {
+showCursor();
+setTimeout(removeCursorAndShowButtons, 1000);
+}
+}
+
+typeSocial();
 }
 
 function exitTerminal() {
@@ -615,168 +610,168 @@ alert('You need to close this tab manually.');
 typeExitMessage();
 }
 function showArt() {
-    buttonArea.style.display = 'none'; 
-    typingArea.innerHTML = ''; 
+buttonArea.style.display = 'none'; 
+typingArea.innerHTML = ''; 
 
-    const artFiles = [
-        'Jamie in Tokyo',
-        'Blue Jamie',
-        'Album Cover Jamie',
-        'Sketchpage',
-        'Chibi',
-    ];
+const artFiles = [
+'Jamie in Tokyo',
+'Blue Jamie',
+'Album Cover Jamie',
+'Sketchpage',
+'Chibi',
+];
 
-    // Dedicated intro because fucky event listeners
-    const introElement = document.createElement('div');
-    introElement.innerHTML = `<br>Jamie is a vivacious chatterbox cat, purring with energy. 
-    He's usually dressed in loose, cropped or oversized clothes, with tie-dyed patterns or soft pastel colours 
-    that blend seamlessly with his fur. Here is the current collection! The most recent commission was <span style="color: white; text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd;">Jamie in Tokyo</span>. 
-    His hair has been redyed, and I plan to keep the change going forwards. 
-    He is designed to mirror my real-life fashion choices and tastes! :D<br>`;
-    
-    typingArea.appendChild(introElement); 
+// Dedicated intro because fucky event listeners
+const introElement = document.createElement('div');
+introElement.innerHTML = `<br>Jamie is a vivacious chatterbox cat, purring with energy. 
+   He's usually dressed in loose, cropped or oversized clothes, with tie-dyed patterns or soft pastel colours 
+   that blend seamlessly with his fur. Here is the current collection! The most recent commission was <span style="color: white; text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd;">Jamie in Tokyo</span>. 
+   His hair has been redyed, and I plan to keep the change going forwards. 
+   He is designed to mirror my real-life fashion choices and tastes! :D<br>`;
 
-    function displayTree() {
-        let treeHTML = '<br>art<br>';
-        artFiles.forEach((art) => {
-            treeHTML += `├── <span class="art-link" style="color: white; text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd; cursor: pointer;" data-file="${art}">${art}</span><br>`;
-        });
+typingArea.appendChild(introElement); 
 
-        const treeElement = document.createElement('div'); 
-        treeElement.innerHTML = treeHTML; 
-        typingArea.appendChild(treeElement); 
+function displayTree() {
+let treeHTML = '<br>art<br>';
+artFiles.forEach((art) => {
+treeHTML += `├── <span class="art-link" style="color: white; text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd; cursor: pointer;" data-file="${art}">${art}</span><br>`;
+});
 
-        addArtClickEvents(); 
-        buttonArea.style.display = 'flex'; 
-    }
+const treeElement = document.createElement('div'); 
+treeElement.innerHTML = treeHTML; 
+typingArea.appendChild(treeElement); 
 
-    function addArtClickEvents() {
-        const links = document.querySelectorAll('.art-link');
-        links.forEach((link) => {
-            link.addEventListener('click', () => {
-                const filename = `${link.getAttribute('data-file').replace(/\s+/g, '-')}.png`;
-                displayArt(filename);
-            });
-        });
-    }
+addArtClickEvents(); 
+buttonArea.style.display = 'flex'; 
+}
 
-    function displayArt(filename) {
-        typingArea.innerHTML = ''; 
-        const imageElement = document.createElement('img');
-        imageElement.src = filename;
-        imageElement.alt = filename;
-        imageElement.style = 'max-width:80%; height:auto; display:block; margin: 10px auto;';
-        typingArea.appendChild(imageElement); 
+function addArtClickEvents() {
+const links = document.querySelectorAll('.art-link');
+links.forEach((link) => {
+link.addEventListener('click', () => {
+const filename = `${link.getAttribute('data-file').replace(/\s+/g, '-')}.png`;
+displayArt(filename);
+});
+});
+}
 
-        const introElementClone = introElement.cloneNode(true); 
-        typingArea.appendChild(introElementClone); 
+function displayArt(filename) {
+typingArea.innerHTML = ''; 
+const imageElement = document.createElement('img');
+imageElement.src = filename;
+imageElement.alt = filename;
+imageElement.style = 'max-width:80%; height:auto; display:block; margin: 10px auto;';
+typingArea.appendChild(imageElement); 
 
-        displayTree(); 
-    }
+const introElementClone = introElement.cloneNode(true); 
+typingArea.appendChild(introElementClone); 
 
-    displayTree(); 
+displayTree(); 
+}
+
+displayTree(); 
 }
 
 
 type();	
 
-	
+
 
 document.addEventListener("DOMContentLoaded", () => {
-    const container = document.getElementById("draggable-container");
+const container = document.getElementById("draggable-container");
 
-    let isDragging = false;
-    let offsetX, offsetY;
+let isDragging = false;
+let offsetX, offsetY;
 
-    container.addEventListener("mousedown", (event) => {
-        isDragging = true;
-        offsetX = event.clientX - container.getBoundingClientRect().left;
-        offsetY = event.clientY - container.getBoundingClientRect().top;
-        container.style.cursor = "grabbing";
-    });
-
-    document.addEventListener("mousemove", (event) => {
-        if (!isDragging) return;
-
-        const newX = event.clientX - offsetX;
-        const newY = event.clientY - offsetY;
-
-        container.style.left = `${newX}px`;
-        container.style.top = `${newY}px`;
-    });
-
-    document.addEventListener("mouseup", () => {
-        isDragging = false;
-        container.style.cursor = "grab";
-    });
+container.addEventListener("mousedown", (event) => {
+isDragging = true;
+offsetX = event.clientX - container.getBoundingClientRect().left;
+offsetY = event.clientY - container.getBoundingClientRect().top;
+container.style.cursor = "grabbing";
 });
-	
+
+document.addEventListener("mousemove", (event) => {
+if (!isDragging) return;
+
+const newX = event.clientX - offsetX;
+const newY = event.clientY - offsetY;
+
+container.style.left = `${newX}px`;
+container.style.top = `${newY}px`;
+});
+
+document.addEventListener("mouseup", () => {
+isDragging = false;
+container.style.cursor = "grab";
+});
+});
+
 
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const messages = [
-        "blue volcano beige cat black sheep coffee",
-        "boba over brains over brawn",
-        "tôi sẽ vui vẻ trở về trang trại boba của tôi! - kirk lazarus",
-        "a boba a day keeps the boba a day",
-        "boba at 35g, mach10 via cat9",
-        "the catrix has you... knock knock ✊"
-    ];
+const messages = [
+"blue volcano beige cat black sheep coffee",
+"boba over brains over brawn",
+"tôi sẽ vui vẻ trở về trang trại boba của tôi! - kirk lazarus",
+"a boba a day keeps the boba a day",
+"boba at 35g, mach10 via cat9",
+"the catrix has you... knock knock ✊"
+];
 
-    const moodText = document.getElementById("mood-text");
-    let messageIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    const baseTypingSpeed = 75;
-    const deleteSpeed = 20;
-    const pauseBetween = 1500;
-    const pauseBeforeTyping = 600;
+const moodText = document.getElementById("mood-text");
+let messageIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+const baseTypingSpeed = 75;
+const deleteSpeed = 20;
+const pauseBetween = 1500;
+const pauseBeforeTyping = 600;
 
-    const knockSound = new Audio("knock.mp3");
+const knockSound = new Audio("knock.mp3");
 
-    function typeEffect() {
-        const currentMessage = messages[messageIndex];
-        if (!isDeleting) {
-            moodText.innerText = currentMessage.substring(0, charIndex + 1);
-            charIndex++;
+function typeEffect() {
+const currentMessage = messages[messageIndex];
+if (!isDeleting) {
+moodText.innerText = currentMessage.substring(0, charIndex + 1);
+charIndex++;
 
-            if (charIndex === currentMessage.length) {
-            
-                if (messageIndex === messages.length - 1) {
-                    setTimeout(() => {
-                        knockSound.play();
-                        setTimeout(() => {
-                            knockSound.pause();
-                            knockSound.currentTime = 0; 
-                        }, 5000); 
-                    }, pauseBetween);
-                }
+if (charIndex === currentMessage.length) {
 
-                isDeleting = true;
-                setTimeout(typeEffect, pauseBetween);
-                return;
-            }
-        } else {
-            moodText.innerText = currentMessage.substring(0, charIndex - 1);
-            charIndex--;
-            if (charIndex === 0) {
-                isDeleting = false;
-                messageIndex = (messageIndex + 1) % messages.length;
-                setTimeout(typeEffect, pauseBeforeTyping);
-                return;
-            }
-        }
-        let randomPause = Math.random() < 0.15 ? 250 : 0;
-        let speed = isDeleting ? deleteSpeed : baseTypingSpeed + randomPause;
-        setTimeout(typeEffect, speed);
-    }
+if (messageIndex === messages.length - 1) {
+setTimeout(() => {
+knockSound.play();
+setTimeout(() => {
+knockSound.pause();
+knockSound.currentTime = 0; 
+}, 5000); 
+}, pauseBetween);
+}
 
-    setTimeout(() => {
-        moodText.style.display = "block";
-        moodText.innerText = "";
-        typeEffect();
-    }, 500);
+isDeleting = true;
+setTimeout(typeEffect, pauseBetween);
+return;
+}
+} else {
+moodText.innerText = currentMessage.substring(0, charIndex - 1);
+charIndex--;
+if (charIndex === 0) {
+isDeleting = false;
+messageIndex = (messageIndex + 1) % messages.length;
+setTimeout(typeEffect, pauseBeforeTyping);
+return;
+}
+}
+let randomPause = Math.random() < 0.15 ? 250 : 0;
+let speed = isDeleting ? deleteSpeed : baseTypingSpeed + randomPause;
+setTimeout(typeEffect, speed);
+}
+
+setTimeout(() => {
+moodText.style.display = "block";
+moodText.innerText = "";
+typeEffect();
+}, 500);
 });
 
 
