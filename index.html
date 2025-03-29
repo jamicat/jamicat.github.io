@@ -353,7 +353,7 @@ let growInterval;
 let scale = 1; 
 
 const messages = [
-'Select your options below!'
+''
 ];
 
 let lineIndex = 0;
@@ -631,11 +631,7 @@ const artFiles = [
 
 // Dedicated intro because fucky event listeners
 const introElement = document.createElement('div');
-introElement.innerHTML = `<br>Jamie is a vivacious chatterbox cat, purring with energy. 
-   He's usually dressed in loose, cropped or oversized clothes, with tie-dyed patterns or soft pastel colours 
-   that blend seamlessly with his fur. Here is the current collection! The most recent commission was <span style="color: white; text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd;">Jamie in Tokyo</span>. 
-   His hair has been redyed, and I plan to keep the change going forwards. 
-   He is designed to mirror my real-life fashion choices and tastes! :D<br>`;
+introElement.innerHTML = `<br><br>`;
 
 typingArea.appendChild(introElement); 
 
