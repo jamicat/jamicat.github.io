@@ -79,14 +79,6 @@ flex-direction: column;
 max-width: 80%;
 }
 
-#draggable-container2 {
-position: absolute;
-cursor: grab;
-display: flex;
-flex-direction: column;
-align-items: center;
-width: 40%
-}
 
 body {
 /*background: none;
@@ -834,32 +826,6 @@ type();
 
 document.addEventListener("DOMContentLoaded", () => {
 const container = document.getElementById("draggable-container");
-let isDragging = false;
-let offsetX, offsetY;
-container.addEventListener("mousedown", (event) => {
-isDragging = true;
-offsetX = event.clientX - container.getBoundingClientRect().left;
-offsetY = event.clientY - container.getBoundingClientRect().top;
-container.style.cursor = "grabbing";
-});
-
-document.addEventListener("mousemove", (event) => {
-if (!isDragging) return;
-
-const newX = event.clientX - offsetX;
-const newY = event.clientY - offsetY;
-
-container.style.left = `${newX}px`;
-container.style.top = `${newY}px`;
-});
-document.addEventListener("mouseup", () => {
-isDragging = false;
-container.style.cursor = "grab";
-});
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-const container = document.getElementById("draggable-container2");
 let isDragging = false;
 let offsetX, offsetY;
 container.addEventListener("mousedown", (event) => {
