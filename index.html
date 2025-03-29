@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jamie></title>
-<link rel="stylesheet" href="styles.css">
-	
-<canvas id="canvas"></canvas>
-<script type="module" src="galaxy.js"></script>
-	
-<style>
-	
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jamie></title>
+    <link rel="stylesheet" href="styles.css">
+    <canvas id="canvas"></canvas>
+    <script type="module" src="galaxy.js"></script>
+
+    <style>
 .message-box {
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px) saturate(150%);
@@ -294,39 +292,45 @@ transform: scale(1.1);
 }
 </style>
 </head>
-	
-<script>
-	
-function toggleMessageBox() {
-    const messageBox = document.getElementById("messageBox");
-    messageBox.style.display = messageBox.style.display === "none" ? "block" : "none";
-}
-	
-function submitMessage() {
-    var name = document.getElementById("name").value;
-    var message = document.getElementById("message").value;
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            window.toggleMessageBox = function() {
+                const messageBox = document.getElementById("messageBox");
+                messageBox.style.display = messageBox.style.display === "none" ? "block" : "none";
+            };
 
-    var data = {
-        name: name,
-        comment: message
-    };
-    var url = "https://script.google.com/macros/s/AKfycbzNzyyzX2Xgc-n16rlpezl8x_EGzwXn-GSSpihv5sj8457b86CXbeqEE7VJszLb5siA/exec"; 
-    fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-        mode: "no-cors", 
-	alert("Your message has been sent.");
-    })
-    .catch((error) => {
-        console.error("Error:", error);
-        alert("There was an error submitting your message.");
-    });
-}
-	
-</script>
+            window.submitMessage = function() {
+                var name = document.getElementById("name").value;
+                var message = document.getElementById("message").value;
+
+                var data = {
+                    name: name,
+                    comment: message
+                };
+
+                var url = "https://script.google.com/macros/s/AKfycbzNzyyzX2Xgc-n16rlpezl8x_EGzwXn-GSSpihv5sj8457b86CXbeqEE7VJszLb5siA/exec"; 
+
+                fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                    mode: "no-cors", 
+                })
+                .then(() => {
+                    alert("Your message has been sent.");
+                    document.getElementById("name").value = "";  
+                    document.getElementById("message").value = "";  
+                    toggleMessageBox(); 
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                    alert("There was an error submitting your message.");
+                });
+            };
+        });
+    </script>
 		
 <body>
 <div id="draggable-container">	
@@ -357,16 +361,21 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
 </button>
 </div>
 
-<div class="messageContainer">
-    <button class="button3" onclick="toggleMessageBox()">Leave a message</button>
-    <div id="messageBox" class="message-box" style="display: none;">
-        <label for="name">Name: </label>
-        <input type="text" id="name" class="input-box" placeholder="meower">
-        <br><br><label for="message">Message: </label>
-        <textarea id="message" class="input-box" placeholder="meow"></textarea>
-        <button class="button4" onclick="submitMessage()">Submit</button>
+  <div class="messageContainer" id="messageBox" style="display: none;">
+        <div class="message-box">
+            <label for="name">Name:</label>
+            <input type="text" id="name" class="input-box" placeholder="Enter your name" required>
+            
+            <label for="message">Message:</label>
+            <textarea id="message" class="input-box" placeholder="Enter your message" required></textarea>
+
+            <button class="button4" onclick="submitMessage()">Submit</button>
+        </div>
     </div>
-</div>
+
+    <div class="messageContainer">
+        <button class="button3" onclick="toggleMessageBox()">Leave a message</button>
+    </div>
 	
 <!--div class="dog-volume-container">
 <button id="toggle-dog-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">Dog Audio: OFF</button>
