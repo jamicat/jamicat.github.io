@@ -294,38 +294,6 @@ transform: scale(1.1);
 }
 </style>
 </head>
-	
-<script>
-function toggleMessageBox() {
-    const messageBox = document.getElementById("messageBox");
-    messageBox.style.display = messageBox.style.display === "none" ? "block" : "none";
-}
-	
-function submitMessage() {
-    var name = document.getElementById("name").value;
-    var message = document.getElementById("message").value;
-
-    var data = {
-        name: name,
-        comment: message
-    };
-    var url = "https://script.google.com/macros/s/AKfycbzNzyyzX2Xgc-n16rlpezl8x_EGzwXn-GSSpihv5sj8457b86CXbeqEE7VJszLb5siA/exec"; 
-    fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-        mode: "no-cors", 
-	alert("Your message has been sent.");
-    })
-    .catch((error) => {
-        console.error("Error:", error);
-        alert("There was an error submitting your message.");
-    });
-}
-	
-</script>
 		
 <body>
 <div id="draggable-container">	
@@ -410,7 +378,37 @@ spacing: 13.00,
 color: 0x8be9fd
 })
 </script-->
+<script>
+function toggleMessageBox() {
+    const messageBox = document.getElementById("messageBox");
+    messageBox.style.display = messageBox.style.display === "none" ? "block" : "none";
+}
+	
+function submitMessage() {
+    var name = document.getElementById("name").value;
+    var message = document.getElementById("message").value;
 
+    var data = {
+        name: name,
+        comment: message
+    };
+    var url = "https://script.google.com/macros/s/AKfycbzNzyyzX2Xgc-n16rlpezl8x_EGzwXn-GSSpihv5sj8457b86CXbeqEE7VJszLb5siA/exec"; 
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        mode: "no-cors", 
+	alert("Your message has been sent.");
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+        alert("There was an error submitting your message.");
+    });
+}
+</script>
+	
 <script>
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat=53.765762&lon=-2.692337&appid=3b394dfa0c0a624d5b6d72af1bef9a64";
 fetch(apiUrl)
