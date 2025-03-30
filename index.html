@@ -406,7 +406,7 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
         <span class="play-icon">▶</span>
         <span class="pause-icon" style="display: none;">❚❚</span>
     </button>
-    <button id="next-song-button" class="music-button" style="font-size: 20px;">
+    <button id="next-song-button" class="music-button" style="font-size: 50px;">
         ⏭
     </button>
 </div>
@@ -471,20 +471,7 @@ color: 0x8be9fd
 })
 </script-->
 <script>
- const nextSongButton = document.getElementById("next-song-button");
-    const youtubeVideo = document.getElementById("youtube-video");
 
-    const videoList = [
-        "https://www.youtube.com/embed/v97FPN2US2o?enablejsapi=1&autoplay=0",
-        "https://www.youtube.com/embed/d1AKq_r0Ggc?enablejsapi=1&autoplay=0"
-    ];
-
-    let currentVideoIndex = 0;
-
-    nextSongButton.addEventListener("click", () => {
-        currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
-        youtubeVideo.src = videoList[currentVideoIndex];
-    });
 </script>
 	
 <script>
