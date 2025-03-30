@@ -401,11 +401,15 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
 
 
 <div class="play-volume-container">
-<button id="music-toggle-button" class="music-button">
-<span class="play-icon">▶</span>
-<span class="pause-icon" style="display: none;">❚❚</span>
-</button>
+    <button id="music-toggle-button" class="music-button">
+        <span class="play-icon">▶</span>
+        <span class="pause-icon" style="display: none;">❚❚</span>
+    </button>
+    <button id="next-song-button" class="music-button">
+        ⏭
+    </button>
 </div>
+
 
 <div class="messageContainer">
 <button class="button3" onclick="toggleMessageBox()">Leave a private message</button>
@@ -465,7 +469,24 @@ spacing: 13.00,
 color: 0x8be9fd
 })
 </script-->
+<script>
+const nextSongButton = document.getElementById("next-song-button");
+const youtubePlayer = document.getElementById("youtube-video");
 
+const videoList = [
+    "https://www.youtube.com/embed/v97FPN2US2o?autoplay=1",
+    "https://www.youtube.com/embed/d1AKq_r0Ggc?autoplay=1"
+];
+
+let currentVideoIndex = 0;
+
+// Function to switch to the next video
+nextSongButton.addEventListener("click", () => {
+    currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+    youtubePlayer.src = videoList[currentVideoIndex];
+});
+</script>
+	
 <script>
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat=53.765762&lon=-2.692337&appid=3b394dfa0c0a624d5b6d72af1bef9a64";
 fetch(apiUrl)
