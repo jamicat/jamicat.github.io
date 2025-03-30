@@ -896,7 +896,7 @@ const messages = [
 "tôi sẽ vui vẻ trở về trang trại boba của tôi! - kirk lazarus",
 "a boba a day keeps the boba a day",
 "boba at 35g, mach10 via cat9",
-"the catrix has you... knock knock ✊"
+"the catrix has you...
 ];
 
 const moodText = document.getElementById("mood-text");
@@ -920,9 +920,9 @@ if (charIndex === currentMessage.length) {
 
 if (messageIndex === messages.length - 1) {
 setTimeout(() => {
-knockSound.play();
+/*knockSound.play();*/
 setTimeout(() => {
-knockSound.pause();
+/*knockSound.pause();*/
 knockSound.currentTime = 0; 
 }, 5000); 
 }, pauseBetween);
