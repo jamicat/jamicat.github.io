@@ -500,12 +500,14 @@ document.getElementById("weather-output").textContent = "unable to fetch.";
 <div class="video-container" id="video-box">
     <iframe id="youtube-video" src="https://www.youtube.com/embed/v97FPN2US2o?enablejsapi=1&autoplay=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
+	
 <script>
     const musicToggleButton = document.getElementById("music-toggle-button");
     const playIcon = document.querySelector(".play-icon");
     const pauseIcon = document.querySelector(".pause-icon");
     const videoBox = document.getElementById("video-box");
-    const youtubeVideo = document.getElementById("youtube-video").contentWindow;
+    const youtubeVideo = document.getElementById("youtube-video").contentWindow; // Use contentWindow to interact with the iframe.
+    const nextSongButton = document.getElementById("next-song-button");
 
     let videoVisible = false;
 
@@ -525,6 +527,18 @@ document.getElementById("weather-output").textContent = "unable to fetch.";
             musicToggleButton.classList.remove('active');
             videoVisible = false;
         }
+    });
+
+    const videoList = [
+        "https://www.youtube.com/embed/v97FPN2US2o?enablejsapi=1&autoplay=1",
+        "https://www.youtube.com/embed/d1AKq_r0Ggc?enablejsapi=1&autoplay=1"
+    ];
+
+    let currentVideoIndex = 0;
+
+    nextSongButton.addEventListener("click", () => {
+        currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+        youtubeVideo.postMessage('{"event":"command","func":"loadVideoByUrl","args":["' + videoList[currentVideoIndex] + '"]}', '*');
     });
 </script>
 
