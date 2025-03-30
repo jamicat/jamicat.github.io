@@ -9,6 +9,30 @@
 <canvas id="canvas"></canvas>
 <script type="module" src="galaxy.js"></script>
 <style>
+
+.video-container 
+{
+display: none;
+position: fixed;
+bottom: 70px;
+right: 20px;
+width: 580px;
+padding: 10px;
+border-radius: 15px;
+background: rgba(0, 0, 0, 0.2);
+backdrop-filter: blur(10px) saturate(150%);
+-webkit-backdrop-filter: blur(10px) saturate(150%);
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.video-container iframe 
+{
+width: 560px;
+height: 315px;
+border-radius: 15px;
+}
+
+	
 .message-box {
 background: rgba(0, 0, 0, 0.5);
 backdrop-filter: blur(10px) saturate(150%);
@@ -461,33 +485,42 @@ document.getElementById("weather-output").textContent = formattedDescription;
 console.error("Error fetching weather:", error);
 document.getElementById("weather-output").textContent = "unable to fetch.";
 });
-
-const musicToggleButton = document.getElementById("music-toggle-button");
-const musicAudio = document.getElementById("music-audio");
-const playIcon = document.querySelector(".play-icon");
-const pauseIcon = document.querySelector(".pause-icon");
-
-musicAudio.volume = 0.6;
-
-musicToggleButton.addEventListener("click", () => {
-if (musicAudio.paused) {
-musicAudio.play();
-playIcon.style.display = "none";
-pauseIcon.style.display = "flex";
-musicToggleButton.classList.add('active');
-} else {
-musicAudio.pause();
-playIcon.style.display = "flex";
-pauseIcon.style.display = "none";
-musicToggleButton.classList.remove('active');
-}
-});
 </script>
 
 
+	
+<div class="video-container" id="video-box">
+    <iframe id="youtube-video" src="https://www.youtube.com/embed/v97FPN2US2o?enablejsapi=1&autoplay=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+<script>
+    const musicToggleButton = document.getElementById("music-toggle-button");
+    const playIcon = document.querySelector(".play-icon");
+    const pauseIcon = document.querySelector(".pause-icon");
+    const videoBox = document.getElementById("video-box");
+    const youtubeVideo = document.getElementById("youtube-video").contentWindow;
 
+    let videoVisible = false;
 
+    musicToggleButton.addEventListener("click", () => {
+        if (!videoVisible) {
+            videoBox.style.display = "flex";
+            youtubeVideo.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            playIcon.style.display = "none";
+            pauseIcon.style.display = "inline-block";
+            musicToggleButton.classList.add('active');
+            videoVisible = true;
+        } else {
+            videoBox.style.display = "none";
+            youtubeVideo.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            playIcon.style.display = "inline-block";
+            pauseIcon.style.display = "none";
+            musicToggleButton.classList.remove('active');
+            videoVisible = false;
+        }
+    });
+</script>
 
+	
 <script>
 const terminal = document.getElementById('terminal');
 const typingArea = document.getElementById('typing-area');
