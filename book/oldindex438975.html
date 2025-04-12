@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>>Catbook</title>
+<style>
+@font-face {
+font-family: 'hack-regular';
+src: url('hack-regular.ttf') format('truetype');
+}
+
+@font-face {
+font-family: 'honeybee';
+src: url('honeybee.ttf') format('truetype');
+}
+
+@font-face {
+font-family: 'nunito';
+src: url('nunito.ttf') format('truetype');
+}
+
+body {
+font-family: 'Courier New', monospace;
+margin: 0;
+padding: 0;
+background-color: beige;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+@media (max-width: 1366px) and (max-height: 768px) {
+
+body {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+margin: 0;
+}
+
+}
+
+h1 {
+text-align: center;
+margin-top: 20px;
+font-size: 4.3em;
+color: #ffe7cd;
+font-family: 'nunito', sans-serif; 
+text-shadow: 
+-1px -1px 0 rgba(255, 182, 193, 0.8), 
+1px -1px 0 rgba(255, 182, 193, 0.8), 
+-1px  1px 0 rgba(255, 182, 193, 0.8), 
+1px  1px 0 rgba(255, 182, 193, 0.8); 
+}
+
+h1 span {
+color: pink;
+}
+
+label {
+display: block;
+margin-bottom: 8px;
+font-weight: bold;
+color: darkbrown;
+font-family: 'nunito', sans-serif; 
+font-size: 0.9em;
+}
+
+.form-container {
+margin: 20px auto;
+width: 90%;
+max-width: 600px;
+}
+
+.form-container input,
+.form-container textarea {
+width: 100%;
+padding: 10px;
+margin-bottom: 15px;
+border: 1px solid #ccc;
+border-radius: 5px;
+font-size: 1em;
+}
+
+.form-container textarea {
+resize: none;
+}
+
+.species-buttons {
+display: flex;
+      flex-wrap: wrap;
+justify-content: space-between;
+margin-bottom: 15px;
+}
+
+.species-buttons button {
+font-size: 1.5rem;
+border: none;
+background: none;
+cursor: pointer;
+}
+
+.species-buttons button:hover {
+transform: scale(1.2);
+}
+
+.comments-section {
+margin: 20px auto;
+width: 90%;
+max-width: 600px;
+}
+
+.comment {
+background-color: rgba(255, 231, 205, 255); 
+color: #333; 
+padding: 20px;
+margin-bottom: 15px;
+border-radius: 10px;
+border: 1px solid rgba(255, 192, 203, 0.6); 
+font-family: 'Arial', sans-serif; 
+font-size: 0.9rem;
+white-space: pre-wrap;
+word-wrap: break-word;
+overflow-wrap: break-word;
+position: relative;
+width: 100%;
+box-sizing: border-box;
+backdrop-filter: blur(5px); 
+}
+.comment iframe {
+width: 100%; 
+height: auto; 
+aspect-ratio: 16 / 9; 
+border-radius: 8px; 
+max-width: 100%; 
+}
+
+.comment h4 {
+margin: 0 0 5px;
+}
+
+.comment small {
+display: block;
+margin-top: 5px;
+color: grey;
+}
+
+.submit-button {
+display: block;
+margin: 20px auto;
+background-color: #ffb6c1;
+transition: background-color 0.3s, transform 0.2s;
+color: black;
+padding: 10px 20px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 1em;
+font-family: 'hack-regular';
+}
+
+
+.submit-button:hover {
+background-color: #ff9a9e; 
+transform: scale(1.05); 
+}
+
+.submit-button:active {
+background-color: #e6788e; 
+transform: scale(0.95); 
+}
+
+.home-btn {
+display: block;
+margin: 20px auto;
+background-color: #ffb6c1;
+transition: background-color 0.3s, transform 0.2s;
+color: black;
+padding: 10px 20px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 1em;
+font-family: 'hack-regular';
+}
+
+.home-btn:hover {
+background-color: #ff9a9e; 
+transform: scale(1.05); 
+}
+
+.home-btn:active {
+background-color: #e6788e; 
+transform: scale(0.95); 
+}
+</style>
+</head>
+
+
+
+<body>
+<h1>Catbook</h1>
+
+<div class="form-container">
+<form id="guestbook-form">
+<label for="name">Name:</label>
+<input type="text" id="name" name="name" required required placeholder="Anonymous">
+
+<label for="comment">Comment:</label>
+<textarea id="comment" name="comment" rows="4" maxlength="10000" required placeholder="🐾"></textarea>
+
+<label for="question">Favourite food:</label>
+<input type="text" id="question" name="question" placeholder="Optional">
+
+<label for="species">Species:</label>
+<div class="species-buttons" id="species-buttons">
+<button type="button" data-species="🐱">🐱</button>
+<button type="button" data-species="🐶">🐶</button>
+<button type="button" data-species="🐺">🐺</button>
+<button type="button" data-species="🦊">🦊</button>
+<button type="button" data-species="🦁">🦁</button>
+<button type="button" data-species="🐰">🐰</button>
+<button type="button" data-species="🐮">🐮</button>
+<button type="button" data-species="🦌">🦌</button>
+<button type="button" data-species="🐐">🐐</button>
+<button type="button" data-species="🦈">🦈</button>
+<button type="button" data-species="🐉">🐉</button>
+<button type="button" data-species="🦋">🦋</button>
+<button type="button" data-species="❓">❓</button>
+</div>
+
+<button type="submit" class="submit-button">Submit</button>
+<button class="home-btn" id="home-btn" onclick="window.location.href='/';">Home</button>
+</form>
+</div>
+
+<div class="comments-section" id="comments-section"></div>
+
+
+
+<script>
+const form = document.getElementById('guestbook-form');
+const commentsSection = document.getElementById('comments-section');
+const speciesButtons = document.querySelectorAll('#species-buttons button');
+let selectedSpecies = '';
+
+const webAppUrl = 'https://script.google.com/macros/s/AKfycbx7bzct-SU2XZ0OgiSQhH76NGyh6oSHkngglBgWLd9-wr76G4uPvtjRw31DifL59iadtA/exec';
+
+const cooldownPeriod = 5 * 60 * 1000;
+
+speciesButtons.forEach(button => {
+button.addEventListener('click', () => {
+selectedSpecies = button.dataset.species;
+speciesButtons.forEach(btn => btn.style.opacity = '0.5');
+button.style.opacity = '1';
+});
+});
+
+form.addEventListener('submit', (e) => {
+e.preventDefault();
+
+const lastSubmissionTime = localStorage.getItem('lastSubmissionTime');
+const now = Date.now();
+
+if (lastSubmissionTime && now - lastSubmissionTime < cooldownPeriod) {
+alert('5 minutes between each comment, please!');
+return;
+}
+
+const name = document.getElementById('name').value.trim();
+const commentText = document.getElementById('comment').value.trim();
+const question = document.getElementById('question').value.trim() || null;
+
+
+if (!name || !commentText) {
+alert('Name and comment cannot be empty!');
+return;
+}
+
+const data = {
+name,
+species: selectedSpecies || '❓',
+comment: commentText,
+question,
+};
+
+fetch(webAppUrl, {
+method: 'POST',
+mode: 'no-cors',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify(data),
+});
+
+localStorage.setItem('lastSubmissionTime', now);
+
+form.reset();
+selectedSpecies = '';
+speciesButtons.forEach(btn => btn.style.opacity = '1');
+loadComments();
+});
+
+async function loadComments() {
+try {
+const response = await fetch(webAppUrl);
+if (!response.ok) throw new Error('Failed to load comments.');
+
+
+const { comments = [], questions = [] } = await response.json();
+console.log('Fetched comments and questions:', { comments, questions });
+
+commentsSection.innerHTML = '';
+comments
+.slice() 
+.reverse() 
+.forEach(({ timestamp, name, species, comment }) => {
+const questionData = questions.find(q => {
+const commentTimestamp = new Date(timestamp).toISOString().slice(0, 19); 
+const questionTimestamp = new Date(q.timestamp).toISOString().slice(0, 19); 
+return (
+q.name.trim().toLowerCase() === name.trim().toLowerCase() &&
+commentTimestamp === questionTimestamp
+);
+});
+const questionText = questionData ? questionData.question : null;
+
+const commentEl = document.createElement('div');
+commentEl.classList.add('comment');
+
+const nameEl = document.createElement('h4');
+nameEl.textContent = `${species || '❓'} ${name || 'Anonymous'}`;
+commentEl.appendChild(nameEl);
+
+
+const textEl = document.createElement('p');
+const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/g;
+const match = comment.match(ytRegex);
+if (match) {
+const videoId = match[0].split("v=")[1]?.split("&")[0] || match[0].split("/").pop().split("?")[0];
+const iframe = document.createElement('iframe');
+iframe.width = "100%"; 
+iframe.height = "315";
+iframe.src = `https://www.youtube.com/embed/${videoId}`;
+iframe.frameBorder = "0";
+iframe.allowFullscreen = true;
+iframe.style.borderRadius = "8px"; 
+const filteredComment = comment.replace(ytRegex, "").trim();
+if (filteredComment) {
+textEl.textContent = filteredComment;
+commentEl.appendChild(textEl);
+}
+commentEl.appendChild(iframe);
+} else {
+textEl.textContent = comment || 'No comment provided.';
+commentEl.appendChild(textEl);
+}
+
+
+
+
+if (questionText) {
+const questionEl = document.createElement('p');
+questionEl.textContent = `Favourite food: ${questionText}`;
+commentEl.appendChild(questionEl);
+}
+
+const dateEl = document.createElement('small');
+dateEl.textContent = timestamp ? formatDate(timestamp) : 'Invalid Date';
+commentEl.appendChild(dateEl);
+
+commentsSection.appendChild(commentEl);
+});
+} catch (error) {
+console.error('Error loading comments:', error.message);
+commentsSection.innerHTML = '<p>Failed to load comments. Please try again later.</p>';
+}
+}
+
+function formatDate(timestamp) {
+if (timestamp.includes('/')) return timestamp;
+const date = new Date(timestamp);
+if (isNaN(date)) return 'Invalid Date';
+return `${date.getDate().toString().padStart(2, '0')}/${
+       (date.getMonth() + 1).toString().padStart(2, '0')
+     }/${date.getFullYear()}, ${date.toLocaleTimeString()} `;
+}
+
+setTimeout(() => {
+loadComments();
+}, 500);
+</script>
+</body>
+</html>
