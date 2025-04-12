@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jamie></title>
+<link rel="stylesheet" href="styles.css">
+
+<canvas id="canvas"></canvas>
+<script type="module" src="galaxy.js"></script>
+<style>
+
+	
+.video-container 
+{
+display: none;
+position: fixed;
+bottom: 90px;
+right: 20px;
+width: 400px;
+padding: 5px;
+border-radius: 15px;
+background: rgba(0,0,0,0.1);
+backdrop-filter: blur(10px) saturate(150%);
+-webkit-backdrop-filter: blur(10px) saturate(150%);
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.video-container iframe 
+{
+width: 700px;
+height: 230px;
+border-radius: 15px;
+}
+
+	
+.message-box {
+background: rgba(0, 0, 0, 0.5);
+backdrop-filter: blur(10px) saturate(150%);
+-webkit-backdrop-filter: blur(10px) saturate(150%);
+color: white;
+padding: 10px; 
+border-radius: 10px;
+width: 300px;
+display: flex;
+flex-direction: column;
+gap: 12px;
+position: absolute;
+left: 20px;
+margin-top: 10px;
+border: none;
+font-family: 'Nunito', sans-serif;
+box-sizing: border-box;
+}
+
+.input-box {
+background: rgba(255, 255, 255, 0.1);
+border: none;
+padding: 10px; 
+color: white;
+border-radius: 5px;
+font-size: 0.9em;
+font-family: 'Nunito', sans-serif;
+width: 98%; 
+box-sizing: border-box;
+margin: 1px 3px;  
+}
+
+.input-box:focus {
+outline: none;
+background: rgba(255, 255, 255, 0.2);
+}
+
+textarea.input-box {
+resize: none;
+height: 90px;
+padding: 8px;  
+}
+
+html, body, canvas {
+display: block;
+width: 100%;
+height: 100%;
+margin: 0;
+position: fixed;
+background: black;
+}
+
+@font-face {
+font-family: 'nunito';
+src: url('nunito.ttf') format('truetype');
+} 
+
+html, body {
+height: 100%;
+margin: 0;
+}
+
+#draggable-container {
+position: absolute;
+cursor: grab;
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 40%
+}
+
+body {
+/*background: none;
+background: url('bg.jpg') no-repeat center center fixed;
+background-size: cover;
+background: transparent;*/
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+height: 100vh;
+margin: 0;
+overflow: hidden; 
+user-select: none;
+}
+
+
+.image-container {
+display: flex;
+justify-content: center;
+margin-bottom: 0px;
+user-select: none;
+}
+
+.image-container img {
+max-width: 170px;
+height: auto;
+user-select: none;
+}
+
+.terminal {
+font-size: 0.9em;
+background: rgba(0, 0, 0, 0.2); 
+backdrop-filter: blur(10px) saturate(150%);
+-webkit-backdrop-filter: blur(10px) saturate(150%);
+color: white;
+padding: 20px;
+border-radius: 10px;
+width: 80%;
+max-width: 600px;
+box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
+margin-bottom: 70px;
+border: 2px solid rgba(255, 255, 255, 0.2);
+user-select: none;
+}
+
+.button {
+font-size: 0.9em;
+background-color: #F3F3F3;
+transition: background-color 0.3s, transform 0.2s;
+color: black;
+padding: 10px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+margin: 5px;
+}
+
+.button2 {
+font-size: 0.9em;
+background-color: #F3F3F3;
+transition: background-color 0.3s, transform 0.2s;
+color: black;
+padding: 10px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+margin: 5px;
+}
+
+.button3 {
+font-size: 0.9em;
+background: rgba(255,216,233,0.1);
+transition: background-color 0.3s, transform 0.2s;
+-webkit-backdrop-filter: blur(10px) saturate(150%);
+backdrop-filter: blur(10px) saturate(150%);
+text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+color: white;
+padding: 10px;
+border-radius: 5px;
+border: none;
+cursor: pointer;
+margin: 5px;	
+}
+
+.button4 {
+font-size: 0.9em;
+background: rgba(255,216,233,0.1);
+transition: background-color 0.3s, transform 0.2s;
+-webkit-backdrop-filter: blur(10px) saturate(150%);
+backdrop-filter: blur(10px) saturate(150%);
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+color: white;
+padding: 10px;
+border-radius: 5px;
+border: none;
+cursor: pointer;
+margin: 5px;	
+}
+	
+.button:hover {
+transform: scale(1.05); 
+}
+.button:active{
+transform: scale(0.95);  
+}
+
+.button2:hover {
+transform: scale(1.05); 
+}
+.button2:active{
+transform: scale(0.95);  
+}
+
+
+.buttons {
+display: flex;
+justify-content: center;
+gap: 10px;
+margin-top: 20px;
+flex-wrap: wrap;
+}
+
+.cursor {
+display: inline-block;
+width: 10px;
+height: 20px;
+background-color: white;
+margin-left: 5px;
+animation: blink 1s step-end infinite;
+box-shadow: 0 0 8px #8be9fd, 0 0 15px #8be9fd; 
+border-radius: 2px;
+}
+
+@keyframes blink {
+50% {
+opacity: 0;
+}
+}
+
+.dog {
+position: absolute;
+width: 100px;
+height: auto;
+z-index: 10;
+pointer-events: auto; 
+transition: transform 0.3s ease;
+user-select: none;
+}
+
+.dog-volume-container {
+position: absolute;
+bottom: 10px;
+right: 20px;
+}
+
+.play-volume-container {
+position: absolute;
+bottom: 14px; 
+right: 20px;
+}
+
+.messageContainer {
+position: absolute;
+top: 14px;
+left: 20px;
+}
+
+.button.active {
+animation: toggleOn 0.5s infinite alternate;
+background-color: #e6788e; 
+}
+
+
+.music-button {
+font-size: 3.5em;
+background: none;
+border: none;
+cursor: pointer;
+border-radius: 5px;
+color: #F3F3F3;
+transition: transform 0.2s, color 0.3s;
+text-shadow: 0px 0px 3px rgba(255, 182, 193, 0.8); 
+filter: drop-shadow(0 0 8px #8be9fd);
+}
+
+.music-button:hover {
+transform: scale(1.1);
+}
+
+.music-button:active {
+transform: scale(0.95);
+}
+
+.music-button.active {
+animation: toggleOn 0.5s infinite alternate;
+}
+
+.play-icon,
+.pause-icon {
+font-weight: bold;
+}
+
+@keyframes toggleOn {
+from {
+transform: scale(1);
+}
+to {
+transform: scale(1.1);
+}
+}
+</style>
+</head>
+
+
+
+
+
+<script>
+function toggleMessageBox() {
+const messageBox = document.getElementById("messageBox");
+messageBox.style.display = messageBox.style.display === "none" ? "block" : "none";
+}
+	
+let lastSubmissionTime = 0; 
+
+function submitMessage() {
+    var name = document.getElementById("name").value.trim();
+    var message = document.getElementById("message").value.trim();
+
+    if (!name || !message) {
+        alert("Fill in the fields!");
+        return;
+    }
+
+    var currentTime = Date.now();
+    if (currentTime - lastSubmissionTime < 300000) {
+        alert("5 minutes between each message.");
+        return;
+    }
+
+    lastSubmissionTime = currentTime;
+
+    var timestamp = new Date().toISOString(); 
+
+    var data = {
+        name: name,
+        comment: message,
+        timestamp: timestamp
+    };
+
+    var url = "https://script.google.com/macros/s/AKfycbzNzyyzX2Xgc-n16rlpezl8x_EGzwXn-GSSpihv5sj8457b86CXbeqEE7VJszLb5siA/exec"; 
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        mode: "no-cors",  
+    });
+
+    alert("Message sent!");  
+    document.getElementById("name").value = "";  
+    document.getElementById("message").value = "";  
+    toggleMessageBox(); 
+}
+</script>
+
+
+
+
+
+
+<body>
+<div id="draggable-container">	
+<div class="image-container" style="position: relative;">
+<img src="fursona.png" alt="Fursona" class="fursona-image" style="display: block;">
+<div class="infText" id="mood-text" 
+style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); color: white; text-shadow: 0 0 5px #ff7eb6, 0 0 10px #ff4da6; display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">
+</div>
+</div>
+<div class="terminal" id="terminal">
+<div id="typing-area"></div>
+<div class="buttons" id="button-area" style="display: none;">
+<!-- 
+  <button class="button" onclick="showAbout()">About</button>
+	    -->
+<button class="button" onclick="showSocials()">Socials</button>
+<button class="button2" onclick="showArt()">Art</button>
+<button class="button" onclick="window.location.href='/book/'">Guestbook</button>
+<button class="button2" onclick="exitTerminal()">Exit</button>
+</div>
+</div>
+</div>
+
+
+<div class="play-volume-container">
+    <button id="music-toggle-button" class="music-button">
+        <span class="play-icon">▶</span>
+        <span class="pause-icon" style="display: none;">❚❚</span>
+    </button>
+    <button id="next-song-button" class="music-button" style="font-size: 70px;">
+        ⏭
+    </button>
+</div>
+
+
+<div class="messageContainer">
+<button class="button3" onclick="toggleMessageBox()">Leave a private message</button>
+<div id="messageBox" class="message-box" style="display: none;">
+<label for="name">Name: </label>
+<input type="text" id="name" class="input-box" placeholder="meower">
+<br><br><label for="message">Message: </label>
+<textarea id="message" class="input-box" placeholder="meow"></textarea>
+<!--label for="info" style="font-size: 0.8em;">Messages are private!</label><br-->
+<button class="button4" onclick="submitMessage()">Submit</button>
+</div>
+</div>
+
+<!--div class="dog-volume-container">
+<button id="toggle-dog-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">Dog Audio: OFF</button>
+</div-->
+
+
+
+<audio id="music-audio" src="fromadream.mp3" loop></audio>
+<!--img src="dog.png" class="dog" id="dog" alt="Dog" draggable="false"-->
+<audio id="dog-audio" src="dog-bark.mp3" loop></audio>
+<audio id="knock-audio" src="knock.mp3"></audio>
+
+
+<div id="weather-container" class="infText" style="border: none;">
+British weather: <span id="weather-output"></span>
+</div>
+
+
+<!--script>
+const fursonaImage = document.querySelector('.fursona-image');
+const moodText = document.getElementById('mood-text');
+fursonaImage.addEventListener('mouseover', () => {
+moodText.style.display = 'block'; 
+});
+fursonaImage.addEventListener('mouseout', () => {
+moodText.style.display = 'none'; 
+});
+</script-->
+
+<!--script src="three.r134.min.js"></script>
+<script src="vanta.net.min.js"></script>
+<script>
+VANTA.NET({
+el: "body",
+mouseControls: true,
+touchControls: true,
+gyroControls: false,
+minHeight: 200.00,
+minWidth: 200.00,
+scale: 1.00,
+scaleMobile: 1.00,
+points: 16.00,
+maxDistance: 22.00,
+spacing: 13.00,
+color: 0x8be9fd
+})
+</script-->
+<script>
+
+</script>
+	
+<script>
+const apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat=53.765762&lon=-2.692337&appid=3b394dfa0c0a624d5b6d72af1bef9a64";
+fetch(apiUrl)
+.then(response => {
+if (!response.ok) {
+throw new Error("Network response not ok");
+}
+return response.json();
+})
+.then(data => {
+const description = data.weather[0].description;
+const formattedDescription = description.charAt(0).toUpperCase() + description.slice(1);
+
+document.getElementById("weather-output").textContent = formattedDescription;
+})
+.catch(error => {
+console.error("Error fetching weather:", error);
+document.getElementById("weather-output").textContent = "unable to fetch.";
+});
+</script>
+
+
+	
+<div class="video-container" id="video-box">
+    <iframe id="youtube-video" src="https://www.youtube.com/embed/v97FPN2US2o?enablejsapi=1&autoplay=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+	
+<script>
+    const musicToggleButton = document.getElementById("music-toggle-button");
+    const playIcon = document.querySelector(".play-icon");
+    const pauseIcon = document.querySelector(".pause-icon");
+    const videoBox = document.getElementById("video-box");
+    const youtubeVideo = document.getElementById("youtube-video").contentWindow; 
+    const nextSongButton = document.getElementById("next-song-button");
+
+    let videoVisible = false;
+
+    musicToggleButton.addEventListener("click", () => {
+        if (!videoVisible) {
+            videoBox.style.display = "flex";
+            youtubeVideo.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            playIcon.style.display = "none";
+            pauseIcon.style.display = "inline-block";
+            musicToggleButton.classList.add('active');
+            videoVisible = true;
+        } else {
+            videoBox.style.display = "none";
+            youtubeVideo.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            playIcon.style.display = "inline-block";
+            pauseIcon.style.display = "none";
+            musicToggleButton.classList.remove('active');
+            videoVisible = false;
+        }
+    });
+
+    const videoList = [
+        "https://www.youtube.com/embed/v97FPN2US2o?enablejsapi=1&autoplay=1",
+        "https://www.youtube.com/embed/ybA7JxsFcKc?enablejsapi=1&autoplay=1"
+    ];
+
+    let currentVideoIndex = 0;
+
+    nextSongButton.addEventListener("click", () => {
+        currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+        youtubeVideo.postMessage('{"event":"command","func":"loadVideoByUrl","args":["' + videoList[currentVideoIndex] + '"]}', '*');
+    });
+</script>
+
+	
+<script>
+const terminal = document.getElementById('terminal');
+const typingArea = document.getElementById('typing-area');
+const buttonArea = document.getElementById('button-area');
+const dog = document.getElementById('dog');
+const dogAudio = document.getElementById('dog-audio');
+const dogImage = document.getElementById('dog');
+const toggleDogButton = document.getElementById('toggle-dog-button');
+let growInterval;
+let scale = 1; 
+
+const messages = [
+''
+];
+
+let lineIndex = 0;
+let charIndex = 0;
+let typingSpeed = 30;
+let slowEllipsesSpeed = 900;
+let hasCleared = false;
+let dogVolumeEnabled = false;
+
+/*
+const screenWidth = window.innerWidth;
+const screenHeight = window.innerHeight;
+let dogX = Math.random() * screenWidth * 0.8; 
+let dogY = Math.random() * screenHeight * 0.8;
+let dogDX = 1; //dog speed
+let dogDY = 1; 
+
+//MOVE DOG
+function moveDog() {
+dogX += dogDX;
+dogY += dogDY;
+
+if (dogX <= 0 || dogX + dog.offsetWidth >= screenWidth) {
+dogDX *= -1; //DOG EVADE
+}
+if (dogY <= 0 || dogY + dog.offsetHeight >= screenHeight) {
+dogDY *= -1; //DOG EVADE AGAIN!!!
+}
+
+dog.style.left = `${dogX}px`;
+dog.style.top = `${dogY}px`;
+//KEEP MOVING
+requestAnimationFrame(moveDog);
+}
+
+dog.style.position = 'absolute';
+dog.style.left = `${dogX}px`;
+dog.style.top = `${dogY}px`;
+moveDog();
+
+//grow
+dogImage.style.pointerEvents = 'auto';
+dogImage.addEventListener('mouseover', () => {
+clearInterval(growInterval); 
+growInterval = setInterval(() => {
+scale += 0.01; 
+dogImage.style.transform = `scale(${scale})`;
+}, 50); 
+});
+
+
+//pause/shrink
+dogImage.addEventListener('mouseout', () => {
+clearInterval(growInterval); 
+/*	 
+scale = 1; 
+dogImage.style.transform = `scale(${scale})`; 
+*/
+/*})
+	
+
+
+
+// dog loud/quiet
+document.addEventListener('mousemove', (event) => {
+if (!dogVolumeEnabled) return;
+
+const cursorX = event.clientX;
+const cursorY = event.clientY;
+
+const dogRect = dog.getBoundingClientRect();
+const dogCenterX = dogRect.left + dogRect.width / 2;
+const dogCenterY = dogRect.top + dogRect.height / 2;
+
+const distance = Math.sqrt(
+Math.pow(cursorX - dogCenterX, 2) + Math.pow(cursorY - dogCenterY, 2)
+);
+
+const maxDistance = 500;
+const volume = Math.max(0, 1 - distance / maxDistance) * 0.4; 
+dogAudio.volume = volume;
+});
+
+toggleDogButton.addEventListener('click', () => {
+dogVolumeEnabled = !dogVolumeEnabled;
+
+if (dogVolumeEnabled) {
+dogAudio.play();
+toggleDogButton.classList.add('active');
+toggleDogButton.textContent = 'Dog Audio: ON';
+} else {
+dogAudio.pause();
+dogAudio.currentTime = 0;
+toggleDogButton.classList.remove('active');
+toggleDogButton.textContent = 'Dog Audio: OFF';
+}
+});*/
+
+function type() {
+if (lineIndex < messages.length) {
+const currentLine = messages[lineIndex];
+if (charIndex < currentLine.length) {
+typingArea.innerHTML += currentLine[charIndex];
+charIndex++;
+setTimeout(type, typingSpeed);
+} else {
+if (lineIndex === 0 && !hasCleared) {
+/*typingArea.innerHTML = '';*/
+hasCleared = true;
+charIndex = 0;
+lineIndex++;
+setTimeout(type, typingSpeed);
+
+} else {
+typingArea.innerHTML += '<br>';
+charIndex = 0;
+lineIndex++;
+setTimeout(type, typingSpeed);
+}
+}
+} else {
+showCursor();         
+setTimeout(() => {
+buttonArea.style.display = 'flex';
+}, 500); 
+}
+}
+
+
+
+/*
+function typeEllipses(callback) {
+  let dots = 0;
+  const ellipsisInterval = setInterval(() => {
+    if (dots < 3) {
+      typingArea.innerHTML += '.';
+      dots++;
+    } else {
+      clearInterval(ellipsisInterval);
+      if (callback) {
+        typingSpeed = 30;
+        callback();
+      }
+    }
+  }, slowEllipsesSpeed);
+}*/
+
+function showCursor() {
+typingArea.innerHTML += '<div class="cursor"></div>';
+}
+
+function removeCursorAndShowButtons() {
+const cursor = document.querySelector('.cursor');
+if (cursor) cursor.remove();
+buttonArea.style.display = 'flex';
+}
+
+/*
+function showAbout() {
+  const aboutMessage = [
+    `Welcome to the tea terminal! This is a silly website I made for fun.`,
+    ` `,
+    `My human-feline name is Jamie and as you may have discerned, I love bubble tea, IT, am British and fond of my pets. I very recently befriended (kidnapped) two blue guppies and they fill me with unconditional love. My family has always kept bearded collies as pets (the one trying to escape your screen—she will do it), so love was a big part of my upbringing. As a fairly sensitive person, I always find myself feeling grateful for the smallest things, as they help me put much bigger challenges into a healthy perspective.`,
+    ` `,
+    `I believe that we should strive to give as much unconditional love as our animal companions are capable of. One day when I have escaped IT, I would really love to volunteer at an animal sanctuary or rescue foundation.`,
+    ` `,
+    `When not touching grass or drinking it in milk, I like to engage with online gaming communities in a carefree way, and to coax and encourage my friends to exist as free spirits too. Games like Team Fortress 2, Final Fantasy online and even more stressful competitors like Dead by Daylight are super enjoyable to me for this reason. It is important for me to feel a part of something bigger than myself.`,
+    ` `,
+	`My biggest hobby outside of IT is to read. I come from a family of hungry bookworms, each with our own individual section in the family library at home, always battling for space. Reading in bed, or when I have nothing else to do, is incredibly therapeutic. It provides me with a natural sense of compartmentalisation. Absorbing other people's written experiences feels like a real superpower—one I wish the world wouldn't neglect. I'll list my favourite books in an upcoming FAQ page!`,
+	` `,
+    `This may read like a brainfart—and that is because it probably was. You can expect weekly updates here as the mood shifts, as well as more typical terminal tweaks (TTTs in IT) and wholesome featurettes. Thank you for checking out this website, may our paths cross one day! In the meantime, feel free to leave your mark in the guestbook (I know, I am trying to fix it ;-;).`
+  ];
+
+  buttonArea.style.display = 'none';
+  typingArea.innerHTML = '';
+
+  let lineIndex = 0;
+  let charIndex = 0;
+
+  function typeAbout() {
+    if (lineIndex < aboutMessage.length) {
+      const currentLine = aboutMessage[lineIndex];
+
+      if (charIndex < currentLine.length) {
+        typingArea.innerHTML += currentLine[charIndex];
+        charIndex++;
+        setTimeout(typeAbout, 10);
+      } else {
+        typingArea.innerHTML += '<br>';
+        charIndex = 0;
+        lineIndex++;
+        setTimeout(typeAbout, 10);
+      }
+    } else {
+      showCursor();
+      setTimeout(removeCursorAndShowButtons, 1000);
+    }
+  }
+
+  typeAbout();
+}
+*/
+
+function showSocials() {
+const socials = [
+{ name: 'Discord', username: 'jamgang', link: 'https://discordapp.com/users/160899636637204482' }, 
+{ name: 'Steam', username: 'jamigang', link: 'https://steamcommunity.com/id/jamigang' },
+{ name: 'Bsky', username: 'jamjme.bsky.social', link: 'https://bsky.app/profile/jamjme.bsky.social' }
+];
+
+buttonArea.style.display = 'none';
+typingArea.innerHTML = '';
+
+let socialIndex = 0;
+
+function typeSocial() {
+if (socialIndex < socials.length) {
+const social = socials[socialIndex];
+let text = `${social.name} - `;
+
+if (social.link) {
+text += `<a href="${social.link}" target="_blank" 
+              style="color: white; text-decoration: none;
+              text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd;">
+              ${social.username}</a>`;
+} else {
+text += social.username;
+}
+
+typingArea.innerHTML += text + '<br>';
+socialIndex++;
+setTimeout(typeSocial, typingSpeed);
+} else {
+showCursor();
+setTimeout(removeCursorAndShowButtons, 1000);
+}
+}
+
+typeSocial();
+}
+
+function exitTerminal() {
+typingArea.innerHTML = '';
+const exitMessage = 'Follow the beige cat...';
+let index = 0;
+
+buttonArea.style.display = 'none';
+
+function typeExitMessage() {
+if (index < exitMessage.length) {
+typingArea.innerHTML += exitMessage[index];
+index++;
+setTimeout(typeExitMessage, typingSpeed);
+} else {
+showCursor();
+setTimeout(() => {
+alert('You need to close this tab manually.');
+}, 1000);
+}
+}
+
+typeExitMessage();
+}
+function showArt() {
+buttonArea.style.display = 'none'; 
+typingArea.innerHTML = ''; 
+
+const artFiles = [
+'Jamie in Tokyo',
+'Blue Jamie',
+'Album Cover Jamie',
+'Sketchpage',
+'Chibi',
+];
+
+// Dedicated intro because fucky event listeners
+const introElement = document.createElement('div');
+introElement.innerHTML = ``;
+
+typingArea.appendChild(introElement); 
+
+function displayTree() {
+let treeHTML = 'art<br>';
+artFiles.forEach((art) => {
+treeHTML += `├── <span class="art-link" style="color: white; text-shadow: 0 0 5px #8be9fd, 0 0 10px #8be9fd; cursor: pointer;" data-file="${art}">${art}</span><br>`;
+});
+
+const treeElement = document.createElement('div'); 
+treeElement.innerHTML = treeHTML; 
+typingArea.appendChild(treeElement); 
+
+addArtClickEvents(); 
+buttonArea.style.display = 'flex'; 
+}
+
+function addArtClickEvents() {
+const links = document.querySelectorAll('.art-link');
+links.forEach((link) => {
+link.addEventListener('click', () => {
+const filename = `${link.getAttribute('data-file').replace(/\s+/g, '-')}.png`;
+displayArt(filename);
+});
+});
+}
+
+function displayArt(filename) {
+typingArea.innerHTML = ''; 
+const imageElement = document.createElement('img');
+imageElement.src = filename;
+imageElement.alt = filename;
+imageElement.style = 'max-width:80%; height:auto; display:block; margin: 10px auto;';
+typingArea.appendChild(imageElement); 
+
+const introElementClone = introElement.cloneNode(true); 
+typingArea.appendChild(introElementClone); 
+displayTree(); 
+}
+displayTree(); 
+}
+type();	
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+const container = document.getElementById("draggable-container");
+
+let isDragging = false;
+let offsetX, offsetY;
+
+container.addEventListener("mousedown", (event) => {
+isDragging = true;
+offsetX = event.clientX - container.getBoundingClientRect().left;
+offsetY = event.clientY - container.getBoundingClientRect().top;
+container.style.cursor = "grabbing";
+});
+
+document.addEventListener("mousemove", (event) => {
+if (!isDragging) return;
+
+const newX = event.clientX - offsetX;
+const newY = event.clientY - offsetY;
+
+container.style.left = `${newX}px`;
+container.style.top = `${newY}px`;
+});
+
+document.addEventListener("mouseup", () => {
+isDragging = false;
+container.style.cursor = "grab";
+});
+});
+
+/*"blue volcano beige cat black sheep coffee",
+"boba over brains over brawn",
+"tôi sẽ vui vẻ trở về trang trại boba của tôi! - kirk lazarus",
+"a boba a day keeps the boba a day",
+"boba at 35g, mach10 via cat9",
+"the catrix has you..."*/
+
+
+document.addEventListener("DOMContentLoaded", () => {
+const messages = [
+"meowemoeowmeowmeowe meowmowmowewmeow",
+"meowowowmewmeowmeowowowmew",
+"meowmowmewmewmewmeowmewmeow",
+"meowowmowowemowmeowmewmewmew",
+"meowmewmewmewowowowmeowmewmeowmow"
+];
+
+const moodText = document.getElementById("mood-text");
+let messageIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+const baseTypingSpeed = 75;
+const deleteSpeed = 20;
+const pauseBetween = 1500;
+const pauseBeforeTyping = 600;
+
+const knockSound = new Audio("knock.mp3");
+
+function typeEffect() {
+const currentMessage = messages[messageIndex];
+if (!isDeleting) {
+moodText.innerText = currentMessage.substring(0, charIndex + 1);
+charIndex++;
+
+if (charIndex === currentMessage.length) {
+
+if (messageIndex === messages.length - 1) {
+setTimeout(() => {
+/*knockSound.play();*/
+setTimeout(() => {
+/*knockSound.pause();*/
+knockSound.currentTime = 0; 
+}, 5000); 
+}, pauseBetween);
+}
+
+isDeleting = true;
+setTimeout(typeEffect, pauseBetween);
+return;
+}
+} else {
+moodText.innerText = currentMessage.substring(0, charIndex - 1);
+charIndex--;
+if (charIndex === 0) {
+isDeleting = false;
+messageIndex = (messageIndex + 1) % messages.length;
+setTimeout(typeEffect, pauseBeforeTyping);
+return;
+}
+}
+let randomPause = Math.random() < 0.15 ? 250 : 0;
+let speed = isDeleting ? deleteSpeed : baseTypingSpeed + randomPause;
+setTimeout(typeEffect, speed);
+}
+
+setTimeout(() => {
+moodText.style.display = "block";
+moodText.innerText = "";
+typeEffect();
+}, 500);
+});
+
+
+
+</script>
+</body>
+</html>
