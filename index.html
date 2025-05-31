@@ -443,39 +443,7 @@ style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%
 🌈British weather: <span id="weather-output"></span>
 </div>
 
-
-<!--script>
-const fursonaImage = document.querySelector('.fursona-image');
-const moodText = document.getElementById('mood-text');
-fursonaImage.addEventListener('mouseover', () => {
-moodText.style.display = 'block'; 
-});
-fursonaImage.addEventListener('mouseout', () => {
-moodText.style.display = 'none'; 
-});
-</script-->
-
-<!--script src="three.r134.min.js"></script>
-<script src="vanta.net.min.js"></script>
-<script>
-VANTA.NET({
-el: "body",
-mouseControls: true,
-touchControls: true,
-gyroControls: false,
-minHeight: 200.00,
-minWidth: 200.00,
-scale: 1.00,
-scaleMobile: 1.00,
-points: 16.00,
-maxDistance: 22.00,
-spacing: 13.00,
-color: 0x8be9fd
-})
-</script-->
-<script>
-
-</script>
+	
 	
 <script>
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat=53.765762&lon=-2.692337&appid=3b394dfa0c0a624d5b6d72af1bef9a64";
@@ -566,96 +534,6 @@ let charIndex = 0;
 let typingSpeed = 30;
 let slowEllipsesSpeed = 900;
 let hasCleared = false;
-let dogVolumeEnabled = false;
-
-/*
-const screenWidth = window.innerWidth;
-const screenHeight = window.innerHeight;
-let dogX = Math.random() * screenWidth * 0.8; 
-let dogY = Math.random() * screenHeight * 0.8;
-let dogDX = 1; //dog speed
-let dogDY = 1; 
-
-//MOVE DOG
-function moveDog() {
-dogX += dogDX;
-dogY += dogDY;
-
-if (dogX <= 0 || dogX + dog.offsetWidth >= screenWidth) {
-dogDX *= -1; //DOG EVADE
-}
-if (dogY <= 0 || dogY + dog.offsetHeight >= screenHeight) {
-dogDY *= -1; //DOG EVADE AGAIN!!!
-}
-
-dog.style.left = `${dogX}px`;
-dog.style.top = `${dogY}px`;
-//KEEP MOVING
-requestAnimationFrame(moveDog);
-}
-
-dog.style.position = 'absolute';
-dog.style.left = `${dogX}px`;
-dog.style.top = `${dogY}px`;
-moveDog();
-
-//grow
-dogImage.style.pointerEvents = 'auto';
-dogImage.addEventListener('mouseover', () => {
-clearInterval(growInterval); 
-growInterval = setInterval(() => {
-scale += 0.01; 
-dogImage.style.transform = `scale(${scale})`;
-}, 50); 
-});
-
-
-//pause/shrink
-dogImage.addEventListener('mouseout', () => {
-clearInterval(growInterval); 
-/*	 
-scale = 1; 
-dogImage.style.transform = `scale(${scale})`; 
-*/
-/*})
-	
-
-
-
-// dog loud/quiet
-document.addEventListener('mousemove', (event) => {
-if (!dogVolumeEnabled) return;
-
-const cursorX = event.clientX;
-const cursorY = event.clientY;
-
-const dogRect = dog.getBoundingClientRect();
-const dogCenterX = dogRect.left + dogRect.width / 2;
-const dogCenterY = dogRect.top + dogRect.height / 2;
-
-const distance = Math.sqrt(
-Math.pow(cursorX - dogCenterX, 2) + Math.pow(cursorY - dogCenterY, 2)
-);
-
-const maxDistance = 500;
-const volume = Math.max(0, 1 - distance / maxDistance) * 0.4; 
-dogAudio.volume = volume;
-});
-
-toggleDogButton.addEventListener('click', () => {
-dogVolumeEnabled = !dogVolumeEnabled;
-
-if (dogVolumeEnabled) {
-dogAudio.play();
-toggleDogButton.classList.add('active');
-toggleDogButton.textContent = 'Dog Audio: ON';
-} else {
-dogAudio.pause();
-dogAudio.currentTime = 0;
-toggleDogButton.classList.remove('active');
-toggleDogButton.textContent = 'Dog Audio: OFF';
-}
-});*/
 
 function type() {
 if (lineIndex < messages.length) {
@@ -686,8 +564,6 @@ buttonArea.style.display = 'flex';
 }, 500); 
 }
 }
-
-
 
 /*
 function typeEllipses(callback) {
@@ -911,30 +787,22 @@ container.style.cursor = "grab";
 });
 });
 
-/*"blue volcano beige cat black sheep coffee",
-"boba over brains over brawn",
-"tôi sẽ vui vẻ trở về trang trại boba của tôi! - kirk lazarus",
-"a boba a day keeps the boba a day",
-"boba at 35g, mach10 via cat9",
-"the catrix has you..."*/
 
 
 document.addEventListener("DOMContentLoaded", () => {
 const messages = [
-"WELCOME!!!!",
 "MEOWMEOWMEOWMEOWMOEMWMEMEWOWMOWOEOWEMWOEW",
 "(ฅ’ω’ฅ)",
 "(ฅ`ω´ฅ)",
 "(๑•ω•́ฅ✧",
 "(ฅ`･ω･´)っ=",
 "ฅ*•ω•*ฅ",
-"HANDS UP!!!!",
+"HANDS UP!",
 "ฅ^•ﻌ•^ฅ",
 "⊱ฅ•ω•ฅ⊰",
 "ฅ(^ω^ฅ)",
 "(ฅ^ω^)ฅ",
-"ฅ(^ω^)ฅ",
-"GO ROUND THE ROUNDABOUT!!!"
+"ฅ(^ω^)ฅ"
 ];
 
 const moodText = document.getElementById("mood-text");
