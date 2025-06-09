@@ -331,6 +331,7 @@ label {
     let selectedSpecies = '';
 
     const webAppUrl = 'https://script.google.com/macros/s/AKfycbx7bzct-SU2XZ0OgiSQhH76NGyh6oSHkngglBgWLd9-wr76G4uPvtjRw31DifL59iadtA/exec';
+    const webAppUrl2 = 'https://script.google.com/macros/s/AKfycbwhUS5DfBvScIkj5WwN4AiBIe16W2u6_sjtpcMljJ668grmt3Yo0a9ploehTlpQdm5bdA/exec';
 
     const cooldownPeriod = 5 * 60 * 1000;
 
@@ -370,7 +371,7 @@ label {
         question,
       };
 
-      fetch(webAppUrl, {
+      fetch(webAppUrl2, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
