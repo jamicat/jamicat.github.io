@@ -375,6 +375,7 @@ label {
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
+	alert('Submitted for review.');
       });
 
       localStorage.setItem('lastSubmissionTime', now);
@@ -471,7 +472,7 @@ if (match) {
     }
 
   setTimeout(() => {
-	alert('Submitted for review.');
+	
     loadComments();
   }, 500);
 	  
