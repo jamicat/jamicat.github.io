@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Test</title>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+    .terminal {
+      background-color: rgba(0, 0, 0, 0.85);
+      color: white;
+      font-family: 'Courier New', monospace;
+      box-shadow: 0 0 30px rgba(0, 255, 100, 0.3);
+      border-radius: 0.75rem;
+      backdrop-filter: blur(6px);
+    }
+
+    .terminal-button {
+      background-color: transparent;
+      color: white;
+      border: 1px solid #00ff99;
+      padding: 0.5rem 1rem;
+      margin-top: 1rem;
+      font-family: 'Courier New', monospace;
+      transition: background 0.2s;
+    }
+
+    .terminal-button:hover {
+      background-color: rgba(0, 255, 153, 0.1);
+    }
+
+    .drag-area {
+      cursor: move;
+    }
+  </style>
+</head>
+
+<body class="bg-black h-screen flex items-center justify-center overflow-hidden">
+
+  <div id="terminal" class="terminal absolute p-6 w-[500px]">
+    <div class="drag-area text-green-500 text-sm mb-2 select-none">library/gpu accel test</div>
+    <div id="typed" class="text-green-400 text-lg mb-4"></div>
+    <button class="terminal-button">Socials!</button>
+    <button class="terminal-button ml-2">Art</button>
+  </div>
+
+  <script>
+    // Typed.js init
+    var typed = new Typed('#typed', {
+      strings: ["Welcome to the J.", "Select one!"],
+      typeSpeed: 40,
+      backSpeed: 0,
+      showCursor: true,
+      cursorChar: '_',
+      smartBackspace: false,
+      loop: false
+    });
+
+
+
+    // Interact.js init
+    interact('#terminal').draggable({
+      allowFrom: '.drag-area',
+      inertia: true,
+      modifiers: [
+        interact.modifiers.restrictRect({
+          restriction: 'parent',
+          endOnly: true
+        })
+      ],
+      listeners: {
+        move (event) {
+          const target = event.target;
+          const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+          const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+          target.style.transform = `translate(${x}px, ${y}px)`; //GPU accel babyyyyy
+          target.setAttribute('data-x', x);
+          target.setAttribute('data-y', y);
+        }
+      }
+    });
+
+   
+  </script>
+</body>
+</html>
+
+  
