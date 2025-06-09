@@ -375,11 +375,11 @@ label {
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
-	alert('Submitted for review.');
+	
       });
 
       localStorage.setItem('lastSubmissionTime', now);
-
+      alert('Submitted for review.');
       form.reset();
       selectedSpecies = '';
       speciesButtons.forEach(btn => btn.style.opacity = '1');
