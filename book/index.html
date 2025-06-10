@@ -450,9 +450,9 @@ if (match) {
 if (comment.startsWith("♡")) {
 
   const cleanedComment = comment.replace(/^♡\s*/, '');
-  textEL.textContent = cleanedComment;
+  textEl.textContent = cleanedComment;
 
-  commentEl.appendChild(textEL); 
+  commentEl.appendChild(textEl); 
   const heartEl = document.createElement('span');
   heartEl.textContent = '♡';
   heartEl.style.position = 'absolute';
