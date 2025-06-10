@@ -422,16 +422,17 @@ label {
 if (comment.startsWith("♡")) {
 
   textEl.textContent = textEl.textContent.replace(/^♡\s*/, '');
-  const heartImg = document.createElement('img');
-  heartImg.src = 'heart.png'; 
-  heartImg.style.position = 'absolute';
-  heartImg.style.width = '31px';
-  heartImg.style.height = '31px';
-  heartImg.style.bottom = '10px';
-  heartImg.style.right = '10px';
-
+ 
+  const heartEl = document.createElement('span');
+  heartEl.textContent = '♡';
+  heartEl.style.position = 'absolute';
+  heartEl.style.bottom = '10px';
+  heartEl.style.right = '10px';
+  heartEl.style.color = '#FE307C';
+  heartEl.style.fontSize = '24px'; 
+  
   commentEl.style.position = 'relative';
-  commentEl.appendChild(heartImg);
+  commentEl.appendChild(heartEl);
 }
 
 	             
