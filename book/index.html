@@ -418,7 +418,23 @@ label {
         nameEl.textContent = `${species || '❓'} ${name || 'Anonymous'}`;
         commentEl.appendChild(nameEl);
 
-         
+ 
+if (comment.startsWith("♡")) {
+
+  textEl.textContent = textEl.textContent.replace(/^♡\s*/, '');
+  const heartImg = document.createElement('img');
+  heartImg.src = 'heart.png'; 
+  heartImg.style.position = 'absolute';
+  heartImg.style.width = '31px';
+  heartImg.style.height = '31px';
+  heartImg.style.bottom = '10px';
+  heartImg.style.right = '10px';
+
+  commentEl.style.position = 'relative';
+  commentEl.appendChild(heartImg);
+}
+
+	             
 const textEl = document.createElement('p');
 const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/g;
 const match = comment.match(ytRegex);
