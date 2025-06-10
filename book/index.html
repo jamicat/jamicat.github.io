@@ -419,26 +419,7 @@ label {
         commentEl.appendChild(nameEl);
 
  
-if (comment.startsWith("♡")) {
-  const textEH = document.createElement('p');
-  const cleanedComment = comment.replace(/^♡\s*/, '');
-  textEH.textContent = cleanedComment;
 
-  commentEl.appendChild(textEH); // Don't forget to append the text itself!
-
-  const heartEl = document.createElement('span');
-  heartEl.textContent = '♡';
-  heartEl.style.position = 'absolute';
-  heartEl.style.bottom = '10px';
-  heartEl.style.right = '10px';
-  heartEl.style.color = '#FE307C';
-  heartEl.style.fontSize = '24px'; 
-
-  commentEl.style.position = 'relative';
-  commentEl.appendChild(heartEl);
-
-  return;
-}
 
 	             
 const textEl = document.createElement('p');
@@ -465,7 +446,26 @@ if (match) {
 }
 
 
+	      
+if (comment.startsWith("♡")) {
 
+  const cleanedComment = comment.replace(/^♡\s*/, '');
+  textEL.textContent = cleanedComment;
+
+  commentEl.appendChild(textEL); 
+  const heartEl = document.createElement('span');
+  heartEl.textContent = '♡';
+  heartEl.style.position = 'absolute';
+  heartEl.style.bottom = '10px';
+  heartEl.style.right = '10px';
+  heartEl.style.color = '#FE307C';
+  heartEl.style.fontSize = '24px'; 
+  commentEl.style.position = 'relative';
+  commentEl.appendChild(heartEl);
+}
+
+
+	      
         
        if (questionText) {
   const questionEl = document.createElement('p');
