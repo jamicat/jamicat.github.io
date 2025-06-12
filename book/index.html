@@ -421,14 +421,12 @@ label {
 
  
 
+	      
 
 
 	      
-
-	             
 let cleanedComment = comment; 
 commentEl.style.position = 'relative';
-
 
 const replyMatch = cleanedComment.match(/^\/([^\\]+)\\(.*)?/);
 if (replyMatch) {
@@ -477,6 +475,12 @@ if (replyMatch) {
   commentEl.appendChild(replyEl);
 }
 
+if (cleanedComment) {
+  const textEl = document.createElement('p');
+  textEl.textContent = cleanedComment;
+  commentEl.appendChild(textEl);
+}
+	      
 
 	      
 	      
