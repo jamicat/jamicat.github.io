@@ -436,50 +436,79 @@ if (replyMatch) {
   let replyText = replyMatch[1].trim();
   cleanedComment = replyMatch[2]?.trim() || '';
 
-const replyEl = document.createElement('div');
-replyEl.style.position = 'absolute';
-replyEl.style.bottom = '10px';
-replyEl.style.right = '10px';
-replyEl.style.width = '50%';
-replyEl.style.border = '1px solid rgb(254, 48, 124)';
-replyEl.style.color = 'rgb(254, 48, 124)';
-replyEl.style.padding = '8px';
-replyEl.style.boxSizing = 'border-box';
-replyEl.style.whiteSpace = 'normal'; 
-replyEl.style.borderRadius = '6px';
-replyEl.style.fontSize = '0.85em';
-replyEl.style.backgroundColor = 'white';
-replyEl.style.zIndex = '1';
-replyEl.style.overflow = 'visible';
+
+  const iframe = document.createElement('iframe');
+  iframe.style.position = 'absolute';
+  iframe.style.bottom = '10px';
+  iframe.style.right = '10px';
+  iframe.style.width = '50%';
+  iframe.style.height = '200px'; 
+  iframe.style.border = '1px solid rgb(254, 48, 124)';
+  iframe.style.borderRadius = '6px';
+  iframe.style.zIndex = '10';
+  iframe.style.backgroundColor = 'white';
+
+
+  commentEl.appendChild(iframe);
+
+
+  const doc = iframe.contentDocument || iframe.contentWindow.document;
+  doc.open();
+  doc.write(`
+    <html>
+      <head>
+        <style>
+          body {
+            margin: 8px;
+            font-size: 0.85em;
+            color: rgb(254, 48, 124);
+            font-family: Arial, sans-serif;
+            background-color: white;
+            overflow-y: auto;
+          }
+          p {
+            margin: 0 0 8px 0;
+            white-space: normal;
+          }
+          img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: block;
+          }
+        </style>
+      </head>
+      <body>
+      </body>
+    </html>
+  `);
+  doc.close();
 
 
   const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/gi;
   const imgurMatches = [...replyText.matchAll(imgurRegex)];
-  imgurMatches.forEach(match => {
-    const imageId = match[1];
-    const extension = match[2] || '.jpg';
-    const imgEl = document.createElement('img');
-    imgEl.src = `https://i.imgur.com/${imageId}${extension}`;
-    imgEl.alt = 'Imgur image';
-    imgEl.style.maxWidth = '100%';
-    imgEl.style.height = 'auto';
-    imgEl.style.display = 'block';
-    imgEl.style.borderRadius = '6px';
-    imgEl.style.marginBottom = '8px';
-    replyEl.appendChild(imgEl);
-  });
-
 
   replyText = replyText.replace(imgurRegex, '').trim();
 
-  if (replyText) {
-    const replyTextEl = document.createElement('p');
-    replyTextEl.textContent = replyText;
-    replyTextEl.style.margin = '0';
-    replyEl.appendChild(replyTextEl);
-  }
+  const body = doc.body;
 
-  commentEl.appendChild(replyEl);
+
+  if (replyText) {
+    const p = doc.createElement('p');
+    p.textContent = replyText;
+    body.appendChild(p);
+  }
+	
+  imgurMatches.forEach(match => {
+    const imageId = match[1];
+    const extension = match[2] || '.jpg';
+
+    const img = doc.createElement('img');
+    img.src = `https://i.imgur.com/${imageId}${extension}`;
+    img.alt = 'Imgur image';
+    body.appendChild(img);
+  });
 }
 
 
