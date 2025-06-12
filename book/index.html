@@ -464,12 +464,13 @@ if (comment.startsWith("♡")) {
 }
 
 
-if (/^\/.*\\$/.test(comment)) {
-  const replyText = comment.replace(/^\/(.*)\\$/, '$1').trim();
+const replyMatch = comment.match(/^\/([^\\]+)\\(.*)?/);
+if (replyMatch) {
+  const replyText = replyMatch[1].trim(); 
+  const restOfComment = replyMatch[2]?.trim(); 
 
   const replyEl = document.createElement('div');
   replyEl.textContent = replyText;
-
   replyEl.style.position = 'absolute';
   replyEl.style.bottom = '10px';
   replyEl.style.right = '10px';
@@ -481,12 +482,17 @@ if (/^\/.*\\$/.test(comment)) {
   replyEl.style.whiteSpace = 'pre-wrap';
   replyEl.style.borderRadius = '6px';
   replyEl.style.fontSize = '0.85em';
-  replyEl.style.backgroundColor = 'white'; 
+  replyEl.style.backgroundColor = 'white';
   replyEl.style.zIndex = '1';
 
-  commentEl.style.position = 'relative';
-
+  commentEl.style.position = 'relative'; 
   commentEl.appendChild(replyEl);
+
+  if (restOfComment) {
+    const textEl = document.createElement('p');
+    textEl.textContent = restOfComment;
+    commentEl.appendChild(textEl);
+  }
 }
 	      
         
