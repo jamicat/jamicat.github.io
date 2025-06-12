@@ -436,20 +436,19 @@ if (replyMatch) {
   let replyText = replyMatch[1].trim();
   cleanedComment = replyMatch[2]?.trim() || '';
 
-  const replyEl = document.createElement('div');
-
-replyEl.style.position = 'absolute';   
+const replyEl = document.createElement('div');
+replyEl.style.position = 'relative';
 replyEl.style.bottom = '10px';
-replyEl.style.right = '10px';      
+replyEl.style.right = '10px';
 replyEl.style.width = '50%';
-replyEl.style.border = 'none';                   
-replyEl.style.color = 'rgb(254, 48, 124)';      
-replyEl.style.padding = '8px';                      
+replyEl.style.border = '1px solid rgb(254, 48, 124)';
+replyEl.style.color = 'rgb(254, 48, 124)';
+replyEl.style.padding = '8px';
 replyEl.style.boxSizing = 'border-box';
-replyEl.style.whiteSpace = 'pre-wrap'; 
-replyEl.style.borderRadius = '0';                 
+replyEl.style.whiteSpace = 'normal'; 
+replyEl.style.borderRadius = '6px';
 replyEl.style.fontSize = '0.85em';
-replyEl.style.backgroundColor = 'transparent';  
+replyEl.style.backgroundColor = 'white';
 replyEl.style.zIndex = '1';
 replyEl.style.overflow = 'visible';
 
