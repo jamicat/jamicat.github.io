@@ -387,6 +387,8 @@ label {
     });
 
     async function loadComments() {
+
+	    
   try {
     const response = await fetch(webAppUrl);
     if (!response.ok) throw new Error('Failed to load comments.');
@@ -420,54 +422,19 @@ label {
  
 
 
-	             
-const textEl = document.createElement('p');
-const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/g;
-const match = comment.match(ytRegex);
-if (match) {
-  const videoId = match[0].split("v=")[1]?.split("&")[0] || match[0].split("/").pop().split("?")[0];
-  const iframe = document.createElement('iframe');
-  iframe.width = "100%"; 
-  iframe.height = "315";
-  iframe.src = `https://www.youtube.com/embed/${videoId}`;
-  iframe.frameBorder = "0";
-  iframe.allowFullscreen = true;
-  iframe.style.borderRadius = "8px"; 
-  const filteredComment = comment.replace(ytRegex, "").trim();
-  if (filteredComment) {
-    textEl.textContent = filteredComment;
-    commentEl.appendChild(textEl);
-  }
-  commentEl.appendChild(iframe);
-} else {
-  textEl.textContent = comment || 'No comment provided.';
-  commentEl.appendChild(textEl);
-}
-
 
 	      
-if (comment.startsWith("♡")) {
 
-  const cleanedComment = comment.replace(/^♡\s*/, '');
-  textEl.textContent = cleanedComment;
-
-  commentEl.appendChild(textEl); 
-  const heartEl = document.createElement('span');
-  heartEl.textContent = '♡';
-  heartEl.style.position = 'absolute';
-  heartEl.style.bottom = '10px';
-  heartEl.style.right = '10px';
-  heartEl.style.color = '#FE307C';
-  heartEl.style.fontSize = '24px'; 
-  commentEl.style.position = 'relative';
-  commentEl.appendChild(heartEl);
-}
+	             
+let cleanedComment = comment; 
+commentEl.style.position = 'relative';
 
 
-const replyMatch = comment.match(/^\/([^\\]+)\\(.*)?/);
+const replyMatch = cleanedComment.match(/^\/([^\\]+)\\(.*)?/);
 if (replyMatch) {
-  const replyText = replyMatch[1].trim(); 
-  const restOfComment = replyMatch[2]?.trim(); 
+  const replyText = replyMatch[1].trim();
+  cleanedComment = replyMatch[2]?.trim() || '';
+
   const replyEl = document.createElement('div');
   replyEl.textContent = replyText;
   replyEl.style.position = 'absolute';
@@ -483,35 +450,78 @@ if (replyMatch) {
   replyEl.style.fontSize = '0.85em';
   replyEl.style.backgroundColor = 'white';
   replyEl.style.zIndex = '1';
-  commentEl.style.position = 'relative';
   commentEl.appendChild(replyEl);
-  comment = restOfComment || '';
 }
-if (comment) {
+
+
+if (cleanedComment.startsWith("♡")) {
+  cleanedComment = cleanedComment.replace(/^♡\s*/, '');
+
+  const heartEl = document.createElement('span');
+  heartEl.textContent = '♡';
+  heartEl.style.position = 'absolute';
+  heartEl.style.bottom = '10px';
+  heartEl.style.right = '10px';
+  heartEl.style.color = '#FE307C';
+  heartEl.style.fontSize = '24px';
+  commentEl.appendChild(heartEl);
+}
+
+
+const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/g;
+const match = cleanedComment.match(ytRegex);
+if (match) {
+  const videoId = match[0].split("v=")[1]?.split("&")[0] || match[0].split("/").pop().split("?")[0];
+  const iframe = document.createElement('iframe');
+  iframe.width = "100%";
+  iframe.height = "315";
+  iframe.src = `https://www.youtube.com/embed/${videoId}`;
+  iframe.frameBorder = "0";
+  iframe.allowFullscreen = true;
+  iframe.style.borderRadius = "8px";
+
+  cleanedComment = cleanedComment.replace(ytRegex, "").trim();
+
+  if (cleanedComment) {
+    const textEl = document.createElement('p');
+    textEl.textContent = cleanedComment;
+    commentEl.appendChild(textEl);
+  }
+
+  commentEl.appendChild(iframe);
+} else if (cleanedComment) {
   const textEl = document.createElement('p');
-  textEl.textContent = comment;
+  textEl.textContent = cleanedComment;
   commentEl.appendChild(textEl);
 }
 
-	      
-        
-       if (questionText) {
+
+if (questionText) {
   const questionEl = document.createElement('p');
   questionEl.textContent = `Favourite food: ${questionText}`;
   commentEl.appendChild(questionEl);
 }
 
-        const dateEl = document.createElement('small');
-        dateEl.textContent = timestamp ? formatDate(timestamp) : 'Invalid Date';
-        commentEl.appendChild(dateEl);
 
-        commentsSection.appendChild(commentEl);
+const dateEl = document.createElement('small');
+dateEl.textContent = timestamp ? formatDate(timestamp) : 'Invalid Date';
+commentEl.appendChild(dateEl);
+
+
+commentsSection.appendChild(commentEl);
       });
   } catch (error) {
     console.error('Error loading comments:', error.message);
     commentsSection.innerHTML = '<p>Failed to load comments. Please try again later.</p>';
   }
 }
+
+
+
+
+
+	  
+	  
 
     function formatDate(timestamp) {
       if (timestamp.includes('/')) return timestamp;
