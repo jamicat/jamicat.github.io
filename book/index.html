@@ -432,11 +432,10 @@ commentEl.style.position = 'relative';
 
 const replyMatch = cleanedComment.match(/^\/([^\\]+)\\(.*)?/);
 if (replyMatch) {
-  const replyText = replyMatch[1].trim();
+  let replyText = replyMatch[1].trim();
   cleanedComment = replyMatch[2]?.trim() || '';
 
   const replyEl = document.createElement('div');
-  replyEl.textContent = replyText;
   replyEl.style.position = 'absolute';
   replyEl.style.bottom = '10px';
   replyEl.style.right = '10px';
@@ -450,8 +449,37 @@ if (replyMatch) {
   replyEl.style.fontSize = '0.85em';
   replyEl.style.backgroundColor = 'white';
   replyEl.style.zIndex = '1';
+
+  const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/gi;
+  const imgurMatches = [...replyText.matchAll(imgurRegex)];
+
+  imgurMatches.forEach(match => {
+    const imageId = match[1];
+    const extension = match[2] || '.jpg';
+    const imgEl = document.createElement('img');
+    imgEl.src = `https://i.imgur.com/${imageId}${extension}`;
+    imgEl.alt = 'Imgur image';
+    imgEl.style.maxWidth = '100%';
+    imgEl.style.borderRadius = '6px';
+    imgEl.style.marginBottom = '8px';
+    replyEl.appendChild(imgEl);
+  });
+
+  replyText = replyText.replace(imgurRegex, '').trim();
+
+  if (replyText) {
+    const replyTextEl = document.createElement('p');
+    replyTextEl.textContent = replyText;
+    replyTextEl.style.margin = '0';
+    replyEl.appendChild(replyTextEl);
+  }
+
   commentEl.appendChild(replyEl);
 }
+
+
+	      
+	      
 
 
 if (cleanedComment.startsWith("♡")) {
@@ -494,6 +522,41 @@ if (match) {
   textEl.textContent = cleanedComment;
   commentEl.appendChild(textEl);
 }
+
+
+	      
+	      
+const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/g;
+const imgurMatches = [...cleanedComment.matchAll(imgurRegex)];
+
+if (imgurMatches.length) {
+  imgurMatches.forEach(match => {
+    const imageId = match[1];
+    const extension = match[2] || '.jpg'; 
+    const imgEl = document.createElement('img');
+    imgEl.src = `https://i.imgur.com/${imageId}${extension}`;
+    imgEl.alt = 'Imgur image';
+    imgEl.style.maxWidth = '100%';
+    imgEl.style.borderRadius = '8px';
+    imgEl.style.marginTop = '8px';
+    commentEl.appendChild(imgEl);
+  });
+
+  cleanedComment = cleanedComment.replace(imgurRegex, "").trim();
+
+  if (cleanedComment) {
+    const textEl = document.createElement('p');
+    textEl.textContent = cleanedComment;
+    commentEl.appendChild(textEl);
+  }
+} else if (cleanedComment) {
+  const textEl = document.createElement('p');
+  textEl.textContent = cleanedComment;
+  commentEl.appendChild(textEl);
+}
+
+
+	      
 
 
 if (questionText) {
