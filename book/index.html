@@ -425,8 +425,10 @@ label {
 
 
 	      
-let cleanedComment = comment; 
+
+let cleanedComment = comment;
 commentEl.style.position = 'relative';
+
 
 const replyMatch = cleanedComment.match(/^\/([^\\]+)\\(.*)?/);
 if (replyMatch) {
@@ -448,9 +450,9 @@ if (replyMatch) {
   replyEl.style.backgroundColor = 'white';
   replyEl.style.zIndex = '1';
 
+
   const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/gi;
   const imgurMatches = [...replyText.matchAll(imgurRegex)];
-
   imgurMatches.forEach(match => {
     const imageId = match[1];
     const extension = match[2] || '.jpg';
@@ -463,6 +465,7 @@ if (replyMatch) {
     replyEl.appendChild(imgEl);
   });
 
+
   replyText = replyText.replace(imgurRegex, '').trim();
 
   if (replyText) {
@@ -474,16 +477,6 @@ if (replyMatch) {
 
   commentEl.appendChild(replyEl);
 }
-
-if (cleanedComment) {
-  const textEl = document.createElement('p');
-  textEl.textContent = cleanedComment;
-  commentEl.appendChild(textEl);
-}
-	      
-
-	      
-	      
 
 
 if (cleanedComment.startsWith("♡")) {
@@ -501,9 +494,9 @@ if (cleanedComment.startsWith("♡")) {
 
 
 const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/g;
-const match = cleanedComment.match(ytRegex);
-if (match) {
-  const videoId = match[0].split("v=")[1]?.split("&")[0] || match[0].split("/").pop().split("?")[0];
+const ytMatch = cleanedComment.match(ytRegex);
+if (ytMatch) {
+  const videoId = ytMatch[0].split("v=")[1]?.split("&")[0] || ytMatch[0].split("/").pop().split("?")[0];
   const iframe = document.createElement('iframe');
   iframe.width = "100%";
   iframe.height = "315";
@@ -514,29 +507,16 @@ if (match) {
 
   cleanedComment = cleanedComment.replace(ytRegex, "").trim();
 
-  if (cleanedComment) {
-    const textEl = document.createElement('p');
-    textEl.textContent = cleanedComment;
-    commentEl.appendChild(textEl);
-  }
-
   commentEl.appendChild(iframe);
-} else if (cleanedComment) {
-  const textEl = document.createElement('p');
-  textEl.textContent = cleanedComment;
-  commentEl.appendChild(textEl);
 }
 
 
-	      
-	      
 const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/g;
 const imgurMatches = [...cleanedComment.matchAll(imgurRegex)];
-
 if (imgurMatches.length) {
   imgurMatches.forEach(match => {
     const imageId = match[1];
-    const extension = match[2] || '.jpg'; 
+    const extension = match[2] || '.jpg';
     const imgEl = document.createElement('img');
     imgEl.src = `https://i.imgur.com/${imageId}${extension}`;
     imgEl.alt = 'Imgur image';
@@ -547,20 +527,14 @@ if (imgurMatches.length) {
   });
 
   cleanedComment = cleanedComment.replace(imgurRegex, "").trim();
+}
 
-  if (cleanedComment) {
-    const textEl = document.createElement('p');
-    textEl.textContent = cleanedComment;
-    commentEl.appendChild(textEl);
-  }
-} else if (cleanedComment) {
+
+if (cleanedComment) {
   const textEl = document.createElement('p');
   textEl.textContent = cleanedComment;
   commentEl.appendChild(textEl);
 }
-
-
-	      
 
 
 if (questionText) {
@@ -569,11 +543,9 @@ if (questionText) {
   commentEl.appendChild(questionEl);
 }
 
-
 const dateEl = document.createElement('small');
 dateEl.textContent = timestamp ? formatDate(timestamp) : 'Invalid Date';
 commentEl.appendChild(dateEl);
-
 
 commentsSection.appendChild(commentEl);
       });
