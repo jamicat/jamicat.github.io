@@ -436,19 +436,20 @@ if (replyMatch) {
   cleanedComment = replyMatch[2]?.trim() || '';
 
   const replyEl = document.createElement('div');
-  replyEl.style.position = 'absolute';
-  replyEl.style.bottom = '10px';
-  replyEl.style.right = '10px';
-  replyEl.style.width = '50%';
-  replyEl.style.border = '1px solid rgb(254, 48, 124)';
-  replyEl.style.color = 'rgb(254, 48, 124)';
-  replyEl.style.padding = '8px';
-  replyEl.style.boxSizing = 'border-box';
-  replyEl.style.whiteSpace = 'pre-wrap';
-  replyEl.style.borderRadius = '6px';
-  replyEl.style.fontSize = '0.85em';
-  replyEl.style.backgroundColor = 'beige';
-  replyEl.style.zIndex = '1';
+replyEl.style.position = 'absolute';
+replyEl.style.bottom = '10px';
+replyEl.style.right = '10px';
+replyEl.style.width = '50%';
+replyEl.style.border = '1px solid rgb(254, 48, 124)';
+replyEl.style.color = 'rgb(254, 48, 124)';
+replyEl.style.padding = '8px';
+replyEl.style.boxSizing = 'border-box';
+replyEl.style.whiteSpace = 'normal'; 
+replyEl.style.borderRadius = '6px';
+replyEl.style.fontSize = '0.85em';
+replyEl.style.backgroundColor = 'beige';
+replyEl.style.zIndex = '1';
+replyEl.style.overflow = 'visible';
 
 
   const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/gi;
@@ -460,6 +461,8 @@ if (replyMatch) {
     imgEl.src = `https://i.imgur.com/${imageId}${extension}`;
     imgEl.alt = 'Imgur image';
     imgEl.style.maxWidth = '100%';
+    imgEl.style.height = 'auto';
+    imgEl.style.display = 'block';
     imgEl.style.borderRadius = '6px';
     imgEl.style.marginBottom = '8px';
     replyEl.appendChild(imgEl);
