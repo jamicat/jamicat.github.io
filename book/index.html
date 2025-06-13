@@ -438,7 +438,7 @@ if (replyMatch) {
   let replyText = replyMatch[1].trim();
   cleanedComment = replyMatch[2]?.trim() || '';
 
-  const replyEl = document.createElement('div');
+  replyEl = document.createElement('div');
   replyEl.style.marginTop = '12px';
   replyEl.style.border = '0.5px solid #44444440';
   replyEl.style.color = '#333';
@@ -555,13 +555,14 @@ if (questionText) {
   commentEl.appendChild(questionEl);
 }
 
+if (replyEl) {
+  commentEl.appendChild(replyEl);
+}
+	      
 const dateEl = document.createElement('small');
 dateEl.textContent = timestamp ? formatDate(timestamp) : 'Invalid Date';
 commentEl.appendChild(dateEl);
 
-if (replyEl) {
-  commentEl.appendChild(replyEl);
-}
 
 commentsSection.appendChild(commentEl);
       });
