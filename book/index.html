@@ -165,6 +165,10 @@ label {
   max-width: 600px;
 }
 
+.comment > * {
+  margin: 0; 
+}
+	  
 .comment {
   background-color: rgba(255, 231, 205, 1); 
   color: #333; 
@@ -433,6 +437,8 @@ let cleanedComment = comment;
 let replyEl;
 commentEl.style.position = 'relative';
 commentEl.style.overflow = 'visible'; 
+commentEl.style.display = 'flex';
+commentEl.style.flexDirection = 'column';
 
 const replyMatch = cleanedComment.match(/^\/([^\\]+)\\(.*)?/);
 if (replyMatch) {
