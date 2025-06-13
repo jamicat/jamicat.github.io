@@ -453,7 +453,12 @@ if (replyMatch) {
   replyEl.style.display = 'inline-block'; 
   replyEl.style.maxWidth = '100%';
 
- 
+  // Add "Reply:" label
+  const replyLabel = document.createElement('div');
+  replyLabel.textContent = 'Reply:';
+  replyLabel.style.marginBottom = '4px';
+  replyEl.appendChild(replyLabel);
+
   const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/gi;
   const imgurMatches = [...replyText.matchAll(imgurRegex)];
   imgurMatches.forEach(match => {
@@ -469,7 +474,6 @@ if (replyMatch) {
     imgEl.style.marginBottom = '8px';
     replyEl.appendChild(imgEl);
   });
-
 
   replyText = replyText.replace(imgurRegex, '').trim();
 
