@@ -433,8 +433,7 @@ let cleanedComment = comment;
 let replyEl;
 commentEl.style.position = 'relative';
 commentEl.style.overflow = 'visible'; 
-commentEl.style.display = 'flex';
-commentEl.style.flexDirection = 'column';
+
 const replyMatch = cleanedComment.match(/^\/([^\\]+)\\(.*)?/);
 if (replyMatch) {
   let replyText = replyMatch[1].trim();
