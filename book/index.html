@@ -433,6 +433,7 @@ let cleanedComment = comment;
 let replyEl;
 commentEl.style.position = 'relative';
 commentEl.style.overflow = 'visible'; 
+commentEl.style.textAlign = 'right';
 const replyMatch = cleanedComment.match(/^\/([^\\]+)\\(.*)?/);
 if (replyMatch) {
   let replyText = replyMatch[1].trim();
@@ -450,7 +451,6 @@ if (replyMatch) {
   replyEl.style.backgroundColor = '#fffbf5';
   replyEl.style.display = 'inline-block'; 
   replyEl.style.maxWidth = '100%';
-  replyEl.style.float = 'right';
 
  
   const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/gi;
