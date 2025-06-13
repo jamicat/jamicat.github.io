@@ -419,7 +419,10 @@ label {
         nameEl.textContent = `${species || '❓'} ${name || 'Anonymous'}`;
         commentEl.appendChild(nameEl);
 
- 
+
+
+
+	      
 
 	      
 
@@ -430,58 +433,87 @@ let cleanedComment = comment;
 commentEl.style.position = 'relative';
 commentEl.style.overflow = 'visible'; 
 
-
 const replyMatch = cleanedComment.match(/^\/([^\\]+)\\(.*)?/);
 if (replyMatch) {
   let replyText = replyMatch[1].trim();
   cleanedComment = replyMatch[2]?.trim() || '';
 
-const replyEl = document.createElement('div');
-replyEl.style.position = 'absolute';
-replyEl.style.bottom = '10px';
-replyEl.style.right = '10px';
-replyEl.style.width = '50%';
-replyEl.style.border = '0.5px solid #44444440';
-replyEl.style.color = '#333';
-replyEl.style.padding = '8px';
-replyEl.style.boxSizing = 'border-box';
-replyEl.style.whiteSpace = 'normal'; 
-replyEl.style.borderRadius = '6px';
-replyEl.style.fontSize = '0.85em';
-replyEl.style.backgroundColor = '#fffbf5';
-replyEl.style.zIndex = '1';
-replyEl.style.overflow = 'visible';
-
 
   const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/gi;
   const imgurMatches = [...replyText.matchAll(imgurRegex)];
-  imgurMatches.forEach(match => {
-    const imageId = match[1];
-    const extension = match[2] || '.jpg';
-    const imgEl = document.createElement('img');
-    imgEl.src = `https://i.imgur.com/${imageId}${extension}`;
-    imgEl.alt = 'Imgur image';
-    imgEl.style.maxWidth = '100%';
-    imgEl.style.height = 'auto';
-    imgEl.style.display = 'block';
-    imgEl.style.borderRadius = '6px';
-    imgEl.style.marginBottom = '8px';
-    replyEl.appendChild(imgEl);
-  });
-
-
   replyText = replyText.replace(imgurRegex, '').trim();
 
-  if (replyText) {
-    const replyTextEl = document.createElement('p');
-    replyTextEl.textContent = replyText;
-    replyTextEl.style.margin = '0';
-    replyEl.appendChild(replyTextEl);
-  }
+ 
+  const iframe = document.createElement('iframe');
+  iframe.style.position = 'absolute';
+  iframe.style.bottom = '10px';
+  iframe.style.right = '10px';
+  iframe.style.width = '50%';
+  iframe.style.border = 'none';
+  iframe.style.borderRadius = '6px';
+  iframe.style.overflow = 'hidden';
+  iframe.style.zIndex = '1';
+  iframe.style.backgroundColor = '#fffbf5';
 
-  commentEl.appendChild(replyEl);
+  commentEl.appendChild(iframe);
+
+  // Write content into the iframe after it loads
+  iframe.onload = () => {
+    const doc = iframe.contentDocument || iframe.contentWindow.document;
+    doc.open();
+    doc.write(`
+      <html>
+        <head>
+          <style>
+            body {
+              margin: 0;
+              padding: 8px;
+              font-size: 0.85em;
+              font-family: sans-serif;
+              background: #fffbf5;
+              color: #333;
+              box-sizing: border-box;
+            }
+            p {
+              margin: 0 0 8px 0;
+              white-space: pre-wrap;
+            }
+            img {
+              max-width: 100%;
+              height: auto;
+              display: block;
+              border-radius: 6px;
+              margin-bottom: 8px;
+            }
+          </style>
+        </head>
+        <body>
+          ${imgurMatches.map(match => `<img src="https://i.imgur.com/${match[1]}${match[2] || '.jpg'}" alt="Imgur image">`).join('')}
+          ${replyText ? `<p>${replyText}</p>` : ''}
+        </body>
+      </html>
+    `);
+    doc.close();
+
+    // Auto-resize the iframe based on its content
+    setTimeout(() => {
+      iframe.style.height = doc.body.scrollHeight + 'px';
+    }, 50);
+  };
 }
 
+
+
+
+
+	      
+
+
+
+
+
+
+	      
 
 if (cleanedComment.startsWith("♡")) {
   cleanedComment = cleanedComment.replace(/^♡\s*/, '');
