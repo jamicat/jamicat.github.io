@@ -613,6 +613,7 @@ modeToggleButton.addEventListener('click', () => {
 });
 
 function switchCommentColors() {
+replyEl.style.backgroundColor = beige;
   document.head.insertAdjacentHTML(
     'beforeend',
     `<style>
@@ -711,8 +712,8 @@ background-color: beige;
 }
 
 function switchToDeerMode() {
-
-	document.head.insertAdjacentHTML(
+replyEl.style.backgroundColor = '#E2FAF8';
+document.head.insertAdjacentHTML(
     'beforeend',
     `<style>
 
