@@ -325,7 +325,7 @@ label {
 ">Mode: 🐈</button>
 
   <script>
-    let replyEl;
+    let replyEls = [];
     const form = document.getElementById('guestbook-form');
     const commentsSection = document.getElementById('comments-section');
     const speciesButtons = document.querySelectorAll('#species-buttons button');
@@ -439,7 +439,7 @@ if (replyMatch) {
   let replyText = replyMatch[1].trim();
   cleanedComment = replyMatch[2]?.trim() || '';
 
-  replyEl = document.createElement('div');
+  const replyEl = document.createElement('div');
   replyEl.style.marginLeft = 'auto';
   replyEl.style.marginTop = 'auto';
   replyEl.style.border = '0.5px solid #44444440';
@@ -458,6 +458,7 @@ if (replyMatch) {
   replyLabel.textContent = 'Reply from Jamie:';
   replyLabel.style.marginBottom = '4px';
   replyEl.appendChild(replyLabel);
+  replyEls.push(replyEl);
 
   const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/gi;
   const imgurMatches = [...replyText.matchAll(imgurRegex)];
@@ -613,7 +614,9 @@ modeToggleButton.addEventListener('click', () => {
 });
 
 function switchCommentColors() {
-replyEl.style.backgroundColor = 'beige';
+ replyEls.forEach(el => {
+    el.style.backgroundColor = 'beige';
+  });
   document.head.insertAdjacentHTML(
     'beforeend',
     `<style>
@@ -712,7 +715,9 @@ background-color: beige;
 }
 
 function switchToDeerMode() {
-replyEl.style.backgroundColor = '#E2FAF8';
+ replyEls.forEach(el => {
+    el.style.backgroundColor = '#E2FAF8';
+  });
 document.head.insertAdjacentHTML(
     'beforeend',
     `<style>
