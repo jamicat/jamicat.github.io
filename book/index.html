@@ -600,7 +600,7 @@ commentsSection.appendChild(commentEl);
   }, 500);
 	  
 const modeToggleButton = document.getElementById('mode-toggle');
-
+replyEl.classList.add('reply-box');
 	  
 let isDeer = true; 
 modeToggleButton.addEventListener('click', () => {
@@ -697,6 +697,10 @@ background-color: rgba(255, 231, 205, 1);
   color: #333; 
 }
 
+ .reply-box {
+background-color: beige;
+ }
+
 
     </style>`
   );
@@ -791,6 +795,10 @@ label {
 .home-btn:active {
   background-color: #2D8787;
 }
+
+.reply-box {
+background-color: #E2FAF8;
+ }
     </style>`
 		
   );
