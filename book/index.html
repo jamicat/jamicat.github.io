@@ -564,11 +564,7 @@ if (questionText) {
 if (replyEl) {
   commentEl.appendChild(replyEl);
 }
-
-if (comment.includes("Jamie")) {
-  commentEl.style.borderColor = '#FE307C'; 
-}
-	      
+      
 const dateEl = document.createElement('small');
 dateEl.textContent = timestamp ? formatDate(timestamp) : 'Invalid Date';
 commentEl.appendChild(dateEl);
