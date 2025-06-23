@@ -431,6 +431,7 @@ label {
 
 let cleanedComment = comment;
 let replyEl;
+replyEl.classList.add('reply-box');
 commentEl.style.position = 'relative';
 commentEl.style.overflow = 'visible'; 
 
@@ -600,7 +601,6 @@ commentsSection.appendChild(commentEl);
   }, 500);
 	  
 const modeToggleButton = document.getElementById('mode-toggle');
-replyEl.classList.add('reply-box');
 	  
 let isDeer = true; 
 modeToggleButton.addEventListener('click', () => {
