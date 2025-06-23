@@ -325,6 +325,7 @@ label {
 ">Mode: 🐈</button>
 
   <script>
+    let replyEl;
     const form = document.getElementById('guestbook-form');
     const commentsSection = document.getElementById('comments-section');
     const speciesButtons = document.querySelectorAll('#species-buttons button');
@@ -430,7 +431,6 @@ label {
 	      
 
 let cleanedComment = comment;
-let replyEl;
 commentEl.style.position = 'relative';
 commentEl.style.overflow = 'visible'; 
 
