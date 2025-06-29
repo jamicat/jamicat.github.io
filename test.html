@@ -67,6 +67,18 @@
       height: 100%;
       object-fit: cover;
     }
+
+    .avatar-icon {
+      width: 24px;
+      height: 24px;
+      border: 1px solid white; 
+      border-radius: 4px; 
+      margin-right: 0.5rem;
+      position: relative;
+      z-index: 0; 
+      object-fit: cover;
+      filter: drop-shadow(0 0 1px black);
+}
   </style>
 </head>
 
@@ -77,8 +89,9 @@
   </div>
 
  <div id="terminal" class="terminal absolute p-6 w-[500px]" style="z-index: 10;">
-  <div class="drag-area text-red-400 text-sm mb-2 select-none flex justify-between items-center">
-    <span class="flex items-center space-x-2">
+  <div class="drag-area text-red-400 text-sm mb-2 select-none flex justify-between items-center relative">
+  <span class="flex items-center space-x-2 relative z-10">
+    <img src="jamie.png" alt="Avatar" class="avatar-icon" />
       <i class="fas fa-paw text-pink-400 text-lg"></i>
       Is there life on mars?
     </span>
