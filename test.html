@@ -53,9 +53,9 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      z-index: -10;
+      z-index: 0;
       overflow: hidden;
-      
+      pointer-events: auto;
     }
 
     #bgndVideo .plyr__video-wrapper,
@@ -74,7 +74,7 @@
     <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="1kfALLjeND4"></div>
   </div>
 
-  <div id="terminal" class="terminal absolute p-6 w-[600px]">
+  <div id="terminal" class="terminal absolute p-6 w-[600px]" style="z-index: 10;">
     <div class="drag-area text-red-400 text-sm mb-2 select-none">Is there life on mars?</div>
     <div id="typed" class="text-red-400 text-lg mb-4"></div>
     <button class="terminal-button">Discord</button>
