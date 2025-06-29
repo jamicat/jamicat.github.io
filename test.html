@@ -78,29 +78,34 @@
     <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="8WmdXVMzwPc"></div>
   </div>
 
-  <div id="terminal" class="terminal absolute p-6 w-[500px]" style="z-index: 10;">
-    <div class="drag-area text-red-400 text-sm mb-2 select-none flex justify-between items-center">
-      <span class="flex items-center space-x-2">
-        <i class="fas fa-paw text-pink-400 text-lg"></i>
-        Is there life on mars?
-      </span>
-      <button id="videoToggle" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-lg leading-none">
-        <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
-          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-        </svg>
-        <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      </button>
-    </div>
-
-    <div id="typed" class="text-red-400 text-lg mb-4"></div>
-
-    <button class="terminal-button">Discord</button>
-    <button class="terminal-button ml-2">Steam</button>
-    <button class="terminal-button ml-3">Art</button>
-    <button class="terminal-button ml-4">Message</button>
+ <div id="terminal" class="terminal absolute p-6 w-[500px]" style="z-index: 10;">
+  <div class="drag-area text-red-400 text-sm mb-2 select-none flex justify-between items-center">
+    <span class="flex items-center space-x-2">
+      <i class="fas fa-paw text-pink-400 text-lg"></i>
+      Is there life on mars?
+    </span>
+    <button id="videoToggle" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-lg leading-none">
+      <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+      </svg>
+      <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+        <path d="M8 5v14l11-7z" />
+      </svg>
+    </button>
   </div>
+
+ 
+  <div id="terminalContent">
+    <div id="typed" class="text-red-400 text-lg mb-4"></div>
+    <div id="buttonRow">
+      <button class="terminal-button" onclick="showSocials()">Discord</button>
+      <button class="terminal-button ml-2" onclick="showSocials()">Steam</button>
+      <button class="terminal-button ml-3" onclick="showArt()">Art</button>
+      <button class="terminal-button ml-4">Message</button>
+    </div>
+  </div>
+</div>
+
 
   <script>
     var typed = new Typed('#typed', {
@@ -160,5 +165,51 @@
       isPlaying = !isPlaying;
     });
   </script>
+
+  <script>
+  function showSocials() {
+    $('#terminalContent').html(`
+      <div class="text-red-400 text-lg mb-4">You can find me here:</div>
+      <div class="mb-4 space-y-2">
+        <a href="https://discord.com" target="_blank" class="block text-blue-300 hover:underline">Discord</a>
+        <a href="https://steamcommunity.com" target="_blank" class="block text-blue-300 hover:underline">Steam</a>
+      </div>
+      <div id="buttonRow">
+        <button class="terminal-button" onclick="resetTerminal()">Back</button>
+      </div>
+    `);
+  }
+ 
+  function showArt() {
+    $('#terminalContent').html(`
+      <div class="text-red-400 text-lg mb-4">Here’s some art soon to be revealed:</div>
+      <div class="mb-4 italic text-white">[Placeholder for Art Gallery]</div>
+      <div id="buttonRow">
+        <button class="terminal-button" onclick="resetTerminal()">Back</button>
+      </div>
+    `);
+  }
+
+  function resetTerminal() {
+    $('#terminalContent').html(`
+      <div id="typed" class="text-red-400 text-lg mb-4"></div>
+      <div id="buttonRow">
+        <button class="terminal-button" onclick="showSocials()">Discord</button>
+        <button class="terminal-button ml-2" onclick="showSocials()">Steam</button>
+        <button class="terminal-button ml-3" onclick="showArt()">Art</button>
+        <button class="terminal-button ml-4">Message</button>
+      </div>
+    `);
+    new Typed('#typed', {
+      strings: ["Welcome to the riot.", "Coming soon."],
+      typeSpeed: 40,
+      backSpeed: 0,
+      showCursor: true,
+      cursorChar: '_',
+      smartBackspace: false,
+      loop: false
+    });
+  }
+</script>
 </body>
 </html>
