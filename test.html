@@ -98,10 +98,9 @@
   <div id="terminalContent">
     <div id="typed" class="text-red-400 text-lg mb-4"></div>
     <div id="buttonRow">
-      <button class="terminal-button" onclick="showSocials()">Discord</button>
-      <button class="terminal-button ml-2" onclick="showSocials()">Steam</button>
-      <button class="terminal-button ml-3" onclick="showArt()">Art</button>
-      <button class="terminal-button ml-4">Message</button>
+      <button class="terminal-button" onclick="showSocials()">Socials</button>
+      <button class="terminal-button ml-2" onclick="showArt()">Art</button>
+      <button class="terminal-button ml-3">Message</button>
     </div>
   </div>
 </div>
@@ -183,7 +182,7 @@
   function showArt() {
     $('#terminalContent').html(`
       <div class="text-red-400 text-lg mb-4">Here’s some art soon to be revealed:</div>
-      <div class="mb-4 italic text-white">[Placeholder for Art Gallery]</div>
+      <div class="mb-4 italic text-white">placeholder</div>
       <div id="buttonRow">
         <button class="terminal-button" onclick="resetTerminal()">Back</button>
       </div>
@@ -194,10 +193,9 @@
     $('#terminalContent').html(`
       <div id="typed" class="text-red-400 text-lg mb-4"></div>
       <div id="buttonRow">
-        <button class="terminal-button" onclick="showSocials()">Discord</button>
-        <button class="terminal-button ml-2" onclick="showSocials()">Steam</button>
-        <button class="terminal-button ml-3" onclick="showArt()">Art</button>
-        <button class="terminal-button ml-4">Message</button>
+        <button class="terminal-button" onclick="showSocials()">Socials</button>
+        <button class="terminal-button ml-2" onclick="showArt()">Art</button>
+        <button class="terminal-button ml-3">Message</button>
       </div>
     `);
     new Typed('#typed', {
