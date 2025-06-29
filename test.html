@@ -76,14 +76,21 @@
   <div id="terminal" class="terminal absolute p-6 w-[500px]" style="z-index: 10;">
     <div class="drag-area text-red-400 text-sm mb-2 select-none flex justify-between items-center">
       <span>Is there life on mars?</span>
-      <button id="videoToggle" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-lg leading-none">
-        <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
-          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-400" viewBox="0 0 64 64" fill="currentColor">
+          <path d="M32 44c-4 0-7 4-7 9s3 7 7 7 7-2 7-7-3-9-7-9zm-14-4c-3 0-6 3-6 6s2 5 6 5 6-2 6-5-3-6-6-6zm28 0c-3 0-6 3-6 6s2 5 6 5 6-2 6-5-3-6-6-6zM18 22c-4 0-7 4-7 8s3 6 7 6 6-3 6-6-2-8-6-8zm28 0c-4 0-6 4-6 8s2 6 6 6 7-2 7-6-3-8-7-8z"/>
         </svg>
-        <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      </button>
+
+     
+        <button id="videoToggle" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-lg leading-none">
+          <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+          </svg>
+          <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </button>
+      </div>
     </div>
     <div id="typed" class="text-red-400 text-lg mb-4"></div>
     <button class="terminal-button">Discord</button>
