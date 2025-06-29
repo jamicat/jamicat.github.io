@@ -68,7 +68,7 @@
   <div id="bgndVideo" class="player">
     <div class="plyr__video-embed" id="player">
       <iframe
-        src="https://www.youtube.com/embed/?autoplay=1&mute=1&loop=1&playlist=&controls=0&modestbranding=1&rel=0&showinfo=0"
+        src="https://www.youtube.com/embed/1kfALLjeND4?autoplay=1&mute=1&loop=1&playlist=1kfALLjeND4&controls=1&modestbranding=1&rel=0&showinfo=0"
         allow="autoplay"
         allowfullscreen
         allowtransparency
@@ -82,8 +82,10 @@
   <div id="terminal" class="terminal absolute p-6 w-[500px]">
     <div class="drag-area text-red-400 text-sm mb-2 select-none">Is there life on mars?</div>
     <div id="typed" class="text-red-400 text-lg mb-4"></div>
-    <button class="terminal-button">Yes</button>
-    <button class="terminal-button ml-2">No</button>
+    <button class="terminal-button">Discord</button>
+    <button class="terminal-button ml-2">Steam</button>
+    <button class="terminal-button ml-3">Art</button>
+    <button class="terminal-button ml-4">Leave a message</button>
   </div>
 
   <script>
@@ -121,7 +123,7 @@
     });
 
     const player = new Plyr('#player', {
-      controls: ['play'], 
+      controls: ['play', 'mute'], 
       autoplay: true,
       muted: false,
       loop: { active: true }
