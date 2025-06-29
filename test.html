@@ -69,13 +69,22 @@
 
 <body class="bg-black h-screen flex items-center justify-center overflow-hidden">
 
- 
   <div id="bgndVideo">
     <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="1kfALLjeND4"></div>
   </div>
 
   <div id="terminal" class="terminal absolute p-6 w-[500px]" style="z-index: 10;">
-    <div class="drag-area text-red-400 text-sm mb-2 select-none">Is there life on mars?</div>
+    <div class="drag-area text-red-400 text-sm mb-2 select-none flex justify-between items-center">
+      <span>Is there life on mars?</span>
+      <button id="videoToggle" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-lg leading-none">
+        <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+        </svg>
+        <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </button>
+    </div>
     <div id="typed" class="text-red-400 text-lg mb-4"></div>
     <button class="terminal-button">Discord</button>
     <button class="terminal-button ml-2">Steam</button>
@@ -116,12 +125,29 @@
       }
     });
 
-
     const player = new Plyr('#player', {
       controls: ['play', 'mute', 'volume'],
       autoplay: true,
-      muted: false, 
+      muted: false,
       loop: { active: true }
+    });
+
+    const toggleBtn = document.getElementById('videoToggle');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+    let isPlaying = true;
+
+    toggleBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        player.pause();
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+      } else {
+        player.play();
+        pauseIcon.classList.remove('hidden');
+        playIcon.classList.add('hidden');
+      }
+      isPlaying = !isPlaying;
     });
   </script>
 </body>
