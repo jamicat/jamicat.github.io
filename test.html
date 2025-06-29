@@ -5,11 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Is there life on mars?</title>
 
+  <!-- Core Libraries -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <!-- Font Awesome (for paw icon) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-vW4cKzRPpFquA8A5I3ZMHxQ5Xb/VHrsOhLuRH3wRQ4Np4JjMEvU/2V5iDUNrK6IgbD2zh5rU6fh8Q5vc2xw/w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Plyr Video Player -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" />
   <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
 
@@ -75,27 +80,22 @@
 
   <div id="terminal" class="terminal absolute p-6 w-[500px]" style="z-index: 10;">
     <div class="drag-area text-red-400 text-sm mb-2 select-none flex justify-between items-center">
-      <span>Is there life on mars?</span>
-      <div class="flex items-center space-x-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-400" viewBox="0 0 64 64" fill="currentColor">
-          <circle cx="20" cy="20" r="5"/>
-          <circle cx="32" cy="16" r="6"/>
-          <circle cx="44" cy="20" r="5"/>
-          <circle cx="26" cy="32" r="5"/>
-          <path d="M32 32c-8 0-14 6-14 14 0 5 3 10 14 10s14-5 14-10c0-8-6-14-14-14z"/>
+      <span class="flex items-center space-x-2">
+        <i class="fas fa-paw text-pink-400 text-lg"></i>
+        Is there life on mars?
+      </span>
+      <button id="videoToggle" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-lg leading-none">
+        <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
         </svg>
-
-        <button id="videoToggle" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-lg leading-none">
-          <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
-            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-          </svg>
-          <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-        </button>
-      </div>
+        <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </button>
     </div>
+
     <div id="typed" class="text-red-400 text-lg mb-4"></div>
+
     <button class="terminal-button">Discord</button>
     <button class="terminal-button ml-2">Steam</button>
     <button class="terminal-button ml-3">Art</button>
@@ -146,7 +146,7 @@
     const playIcon = document.getElementById('playIcon');
     const pauseIcon = document.getElementById('pauseIcon');
     let isPlaying = false;
-    
+
     toggleBtn.addEventListener('click', () => {
       if (isPlaying) {
         player.pause();
