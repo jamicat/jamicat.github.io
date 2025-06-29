@@ -1,95 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Is there life on mars?</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Is there life on mars?</title>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" />
-<script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" />
+  <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
 
-<style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
-  }
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
 
-  .terminal {
-    background-color: rgba(0, 0, 0, 0.3);
-    color: white;
-    font-family: 'Courier New', monospace;
-    border-radius: 0.75rem;
-    backdrop-filter: blur(6px);
-  }
+    .terminal {
+      background-color: rgba(0, 0, 0, 0.3);
+      color: white;
+      font-family: 'Courier New', monospace;
+      border-radius: 0.75rem;
+      backdrop-filter: blur(6px);
+    }
 
-  .terminal-button {
-    background-color: transparent;
-    color: white;
-    border: 1px solid #7875fa;
-    padding: 0.5rem 1rem;
-    margin-top: 1rem;
-    font-family: 'Courier New', monospace;
-    transition: background 0.2s;
-  }
+    .terminal-button {
+      background-color: transparent;
+      color: white;
+      border: 1px solid #7875fa;
+      padding: 0.5rem 1rem;
+      margin-top: 1rem;
+      font-family: 'Courier New', monospace;
+      transition: background 0.2s;
+    }
 
-  .terminal-button:hover {
-    background-color: rgba(255, 0, 0, 0.1);
-  }
+    .terminal-button:hover {
+      background-color: rgba(255, 0, 0, 0.1);
+    }
 
-  .drag-area {
-    cursor: move;
-  }
+    .drag-area {
+      cursor: move;
+    }
 
-  #bgndVideo {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -10;
-  }
- 
-  #bgndVideo .plyr__video-wrapper {
-    width: 100%;
-    height: 100%;
-  }
-</style>
+    #bgndVideo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: auto;
+    }
+
+    #bgndVideo .plyr__video-wrapper,
+    #bgndVideo .plyr__video-embed,
+    #bgndVideo iframe {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 </head>
 
 <body class="bg-black h-screen flex items-center justify-center overflow-hidden">
 
-  <div id="bgndVideo" class="player">
-    <div class="plyr__video-embed" id="player">
-      <iframe
-        src="https://www.youtube.com/embed/1kfALLjeND4?autoplay=1&mute=1&loop=1&playlist=1kfALLjeND4&controls=1&modestbranding=1&rel=0&showinfo=0"
-        allow="autoplay"
-        allowfullscreen
-        allowtransparency
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      ></iframe>
-    </div>
+ 
+  <div id="bgndVideo">
+    <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="1kfALLjeND4"></div>
   </div>
 
- 
-  <div id="terminal" class="terminal absolute p-6 w-[600px]">
+  <div id="terminal" class="terminal absolute p-6 w-[500px]" style="z-index: 10;">
     <div class="drag-area text-red-400 text-sm mb-2 select-none">Is there life on mars?</div>
     <div id="typed" class="text-red-400 text-lg mb-4"></div>
     <button class="terminal-button">Discord</button>
     <button class="terminal-button ml-2">Steam</button>
     <button class="terminal-button ml-3">Art</button>
-    <button class="terminal-button ml-4">Leave a message</button>
+    <button class="terminal-button ml-4">Message</button>
   </div>
 
   <script>
-   
     var typed = new Typed('#typed', {
       strings: ["Welcome to the riot.", "Coming soon."],
       typeSpeed: 40,
@@ -122,10 +116,11 @@
       }
     });
 
+
     const player = new Plyr('#player', {
-      controls: ['play', 'mute', 'volume'], 
+      controls: ['play', 'mute', 'volume'],
       autoplay: true,
-      muted: false,
+      muted: false, 
       loop: { active: true }
     });
   </script>
