@@ -2,21 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Is there life on mars?</title>
-  
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      plugins: [
+        function({ addComponents }) {
+          addComponents({
+            '.terminal-button': {
+              '@apply bg-transparent border border-indigo-500 text-white font-mono px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-indigo-600 hover:bg-opacity-20 hover:text-indigo-300 hover:scale-105 active:scale-95': {},
+              cursor: 'pointer',
+              userSelect: 'none',
+            }
+          });
+        }
+      ],
+    }
+  </script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-vW4cKzRPpFquA8A5I3ZMHxQ5Xb/VHrsOhLuRH3wRQ4Np4JjMEvU/2V5iDUNrK6IgbD2zh5rU6fh8Q5vc2xw/w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-vW4cKzRPpFquA8A5I3ZMHxQ5Xb/VHrsOhLuRH3wRQ4Np4JjMEvU/2V5iDUNrK6IgbD2zh5rU6fh8Q5vc2xw/w=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css"
+  />
   <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
 
   <style>
-    html, body {
+    html,
+    body {
       margin: 0;
       padding: 0;
       height: 100%;
@@ -29,20 +55,6 @@
       font-family: 'Courier New', monospace;
       border-radius: 0.75rem;
       backdrop-filter: blur(6px);
-    }
-
-    .terminal-button {
-      background-color: transparent;
-      color: white;
-      border: 1px solid #7875fa;
-      padding: 0.5rem 1rem;
-      margin-top: 1rem;
-      font-family: 'Courier New', monospace;
-      transition: background 0.2s;
-    }
-
-    .terminal-button:hover {
-      background-color: rgba(255, 0, 0, 0.1);
     }
 
     .drag-area {
@@ -59,7 +71,7 @@
       overflow: hidden;
       pointer-events: none;
     }
-    
+
     #bgndVideo .plyr__video-wrapper,
     #bgndVideo .plyr__video-embed,
     #bgndVideo iframe {
@@ -71,59 +83,75 @@
     .avatar-icon {
       width: 50px;
       height: 50px;
-      border-radius: 50%; 
+      border-radius: 50%;
       margin-right: 0.5rem;
       position: relative;
-      z-index: 0; 
+      z-index: 0;
       object-fit: cover;
-}
+    }
   </style>
 </head>
 
 <body class="bg-black h-screen flex items-center justify-center overflow-hidden">
-
   <div id="bgndVideo">
-    <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="8WmdXVMzwPc"></div>
+    <div
+      id="player"
+      data-plyr-provider="youtube"
+      data-plyr-embed-id="8WmdXVMzwPc"
+    ></div>
   </div>
 
- <div id="terminal" class="terminal absolute p-6 w-[500px]" style="z-index: 10;">
-  <div class="drag-area text-red-700 text-sm mb-2 select-none flex justify-between items-center relative">
-  <span class="flex items-center space-x-2 relative z-10">
-    <img src="jami.png" alt="Avatar" class="avatar-icon" />
-      <i class="fas fa-paw text-pink-400 text-lg"></i>
-      <span class="text-white">Jamie.</span>
-    </span>
-    <button id="videoToggle" class="text-indigo-600 hover:text-indigo-900 transition-colors duration-200 text-lg leading-none">
-      <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
-        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-      </svg>
-      <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-        <path d="M8 5v14l11-7z" />
-      </svg>
-    </button>
-  </div>
+  <div id="terminal" class="terminal absolute p-6 w-[500px]" style="z-index: 10;">
+    <div
+      class="drag-area text-red-700 text-sm mb-2 select-none flex justify-between items-center relative"
+    >
+      <span class="flex items-center space-x-2 relative z-10">
+        <img src="jami.png" alt="Avatar" class="avatar-icon" />
+        <i class="fas fa-paw text-pink-400 text-lg"></i>
+        <span class="text-white">Jamie.</span>
+      </span>
+      <button
+        id="videoToggle"
+        class="text-indigo-600 hover:text-indigo-900 transition-colors duration-200 text-lg leading-none"
+      >
+        <svg
+          id="pauseIcon"
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5 fill-current hidden"
+          viewBox="0 0 24 24"
+        >
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+        </svg>
+        <svg
+          id="playIcon"
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5 fill-current"
+          viewBox="0 0 24 24"
+        >
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </button>
+    </div>
 
- 
-  <div id="terminalContent">
-    <div id="typed" class="text-red-700 text-lg mt-4 mb-4"></div>
-    <div id="buttonRow">
-      <button class="terminal-button" onclick="showSocials()">Socials</button>
-      <button class="terminal-button ml-2" onclick="showArt()">Art</button>
-      <button class="terminal-button ml-3">Message</button>
+    <div id="terminalContent">
+      <div class="text-red-700 text-lg mt-4 mb-4" id="typed"></div>
+      <div id="buttonRow">
+        <button class="terminal-button" onclick="showSocials()">Socials</button>
+        <button class="terminal-button ml-2" onclick="showArt()">Art</button>
+        <button class="terminal-button ml-3">Message</button>
+      </div>
     </div>
   </div>
-</div>
-
 
   <script>
     var typed = new Typed('#typed', {
-      strings: ["Welcome!", "Select"],
+      strings: ['Welcome!', 'Select'],
       typeSpeed: 40,
       backSpeed: 0,
       showCursor: true,
       cursorChar: '_',
       smartBackspace: false,
-      loop: false
+      loop: false,
     });
 
     interact('#terminal').draggable({
@@ -132,8 +160,8 @@
       modifiers: [
         interact.modifiers.restrictRect({
           restriction: 'parent',
-          endOnly: true
-        })
+          endOnly: true,
+        }),
       ],
       listeners: {
         move(event) {
@@ -144,15 +172,15 @@
           target.style.transform = `translate(${x}px, ${y}px)`;
           target.setAttribute('data-x', x);
           target.setAttribute('data-y', y);
-        }
-      }
+        },
+      },
     });
 
     const player = new Plyr('#player', {
       controls: [],
       autoplay: false,
       muted: false,
-      loop: { active: true }
+      loop: { active: true },
     });
 
     const toggleBtn = document.getElementById('videoToggle');
@@ -175,47 +203,47 @@
   </script>
 
   <script>
-  function showSocials() {
-    $('#terminalContent').html(`
-      <div class="mb-4 mt-4 space-y-2">
-        <a href="https://discord.com" target="_blank" class="block text-indigo-500 hover:underline">Discord</a>
-        <a href="https://steamcommunity.com" target="_blank" class="block text-indigo-500 hover:underline">Steam</a>
-      </div>
-      <div id="buttonRow">
-        <button class="terminal-button" onclick="resetTerminal()">Back</button>
-      </div>
-    `);
-  }
- 
-  function showArt() {
-    $('#terminalContent').html(`
-      <div class="text-red-700 text-lg mb-4 mt-4">Art:</div>
-      <div class="mb-4 italic text-white">placeholder</div>
-      <div id="buttonRow">
-        <button class="terminal-button" onclick="resetTerminal()">Back</button>
-      </div>
-    `);
-  }
+    function showSocials() {
+      $('#terminalContent').html(`
+        <div class="mb-4 mt-4 space-y-2">
+          <a href="https://discord.com" target="_blank" class="block text-indigo-500 hover:underline">Discord</a>
+          <a href="https://steamcommunity.com" target="_blank" class="block text-indigo-500 hover:underline">Steam</a>
+        </div>
+        <div id="buttonRow">
+          <button class="terminal-button" onclick="resetTerminal()">Back</button>
+        </div>
+      `);
+    }
 
-  function resetTerminal() {
-    $('#terminalContent').html(`
-      <div id="typed" class="text-red-700 text-lg mb-4 mt-4"></div>
-      <div id="buttonRow">
-        <button class="terminal-button" onclick="showSocials()">Socials</button>
-        <button class="terminal-button ml-2" onclick="showArt()">Art</button>
-        <button class="terminal-button ml-3">Message</button>
-      </div>
-    `);
-    new Typed('#typed', {
-      strings: ["Welcome!", "Select"],
-      typeSpeed: 40,
-      backSpeed: 0,
-      showCursor: true,
-      cursorChar: '_',
-      smartBackspace: false,
-      loop: false
-    });
-  }
-</script>
+    function showArt() {
+      $('#terminalContent').html(`
+        <div class="text-red-700 text-lg mb-4 mt-4">Art:</div>
+        <div class="mb-4 italic text-white">placeholder</div>
+        <div id="buttonRow">
+          <button class="terminal-button" onclick="resetTerminal()">Back</button>
+        </div>
+      `);
+    }
+
+    function resetTerminal() {
+      $('#terminalContent').html(`
+        <div id="typed" class="text-red-700 text-lg mb-4 mt-4"></div>
+        <div id="buttonRow">
+          <button class="terminal-button" onclick="showSocials()">Socials</button>
+          <button class="terminal-button ml-2" onclick="showArt()">Art</button>
+          <button class="terminal-button ml-3">Message</button>
+        </div>
+      `);
+      new Typed('#typed', {
+        strings: ['Welcome!', 'Select'],
+        typeSpeed: 40,
+        backSpeed: 0,
+        showCursor: true,
+        cursorChar: '_',
+        smartBackspace: false,
+        loop: false,
+      });
+    }
+  </script>
 </body>
 </html>
