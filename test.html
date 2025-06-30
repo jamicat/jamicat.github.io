@@ -140,7 +140,8 @@
         <button class="terminal-button" onclick="showSocials()">Socials</button>
         <button class="terminal-button ml-2" onclick="showArt()">Art</button>
         <button class="terminal-button ml-3">Message</button>
-      </div>
+        <button class="terminal-button ml-4" onclick="siteFAQ()">Site FAQ</button>
+        </div>
     </div>
   </div>
 
@@ -226,6 +227,24 @@
       `);
     }
 
+     function siteFAQ() {
+      $('#terminalContent').html(`
+        <div class="text-red-700 text-lg mb-4 mt-4">Libraries used:</div>
+        <div class="mb-4 italic text-white">
+        <ul class="list-disc list-inside space-y-1">
+        <li>jQuery</li>
+        <li>Typed.js</li>
+        <li>Interact.js</li>
+        <li>Tailwind CSS</li>
+        <li>Plyr</li>
+        </ul>
+        </div>
+        <div id="buttonRow">
+          <button class="terminal-button" onclick="resetTerminal()">Back</button>
+        </div>
+      `);
+    }
+
     function resetTerminal() {
       $('#terminalContent').html(`
         <div id="typed" class="text-red-700 text-lg mb-4 mt-4"></div>
@@ -233,6 +252,7 @@
           <button class="terminal-button" onclick="showSocials()">Socials</button>
           <button class="terminal-button ml-2" onclick="showArt()">Art</button>
           <button class="terminal-button ml-3">Message</button>
+          <button class="terminal-button ml-4" onclick="siteFAQ()">Site FAQ</button>
         </div>
       `);
       new Typed('#typed', {
