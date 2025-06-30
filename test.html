@@ -9,22 +9,23 @@
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 
+  <!--I LOVE TAILWIND SFM-->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = {
-      plugins: [
-        function({ addComponents }) {
-          addComponents({
-            '.terminal-button': {
-              '@apply bg-transparent border border-indigo-500 text-white font-mono px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-indigo-600 hover:bg-opacity-20 hover:text-indigo-300 hover:scale-105 active:scale-95': {},
-              cursor: 'pointer',
-              userSelect: 'none',
-            }
-          });
-        }
-      ],
-    }
-  </script>
+  tailwind.config = {
+    plugins: [
+      function({ addComponents }) {
+        addComponents({
+          '.terminal-button': {
+            '@apply bg-transparent border border-red-500 text-white font-mono px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-red-500 hover:bg-opacity-20 hover:text-red-500 hover:scale-105 active:scale-95': {},
+            cursor: 'pointer',
+            userSelect: 'none',
+          }
+        });
+      }
+    ],
+  }
+</script>
 
   <link
     rel="stylesheet"
