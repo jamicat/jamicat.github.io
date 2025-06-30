@@ -9,6 +9,8 @@
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <script>
     tailwind.config = {
       plugins: [
@@ -24,8 +26,6 @@
       ],
     };
   </script>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <style>
     html, body {
@@ -165,6 +165,11 @@
           modestbranding: 1,
           rel: 0,
         },
+        events: {
+          onReady: () => {
+            player.playVideo();
+          },
+        }
       });
     }
 
@@ -213,11 +218,11 @@
         <div class="text-red-700 text-lg mb-4 mt-4">Libraries used:</div>
         <div class="mb-4 italic text-white">
         <ul class="list-disc list-inside space-y-1">
-        <li>jQuery</li>
-        <li>Typed.js</li>
-        <li>Interact.js</li>
-        <li>Tailwind CSS</li>
-        <li>YouTube IFrame API</li>
+          <li>jQuery</li>
+          <li>Typed.js</li>
+          <li>Interact.js</li>
+          <li>Tailwind CSS</li>
+          <li>YouTube IFrame API</li>
         </ul>
         </div>
         <div id="buttonRow">
