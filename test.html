@@ -205,6 +205,7 @@
     document.getElementById('nextTrack').addEventListener('click', () => {
       if (player && typeof player.nextVideo === 'function') {
         player.nextVideo();
+        player.pauseVideo();
       }   
     });
 
@@ -280,7 +281,7 @@
         </div>
       `);
       new Typed('#typed', {
-        strings: ['<i class="fas fa-paw text-red-700 text-lg mr-2"></i>Welcome!', '<i class="fas fa-paw text-indigo-600 text-lg mr-2"></i>Select one - '],
+        strings: ['<i class="fas fa-paw text-red-700 text-lg mr-2"></i>Welcome!', '<i class="fas fa-paw text-red-700 text-lg mr-2"></i>Select one - '],
         typeSpeed: 40,
         backSpeed: 0,
         showCursor: true,
