@@ -8,47 +8,35 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
-
-  <!--I LOVE TAILWIND SFM-->
   <script src="https://cdn.tailwindcss.com"></script>
+
   <script>
-  tailwind.config = {
-   plugins: [
-     function({ addComponents }) {
-       addComponents({
-         '.terminal-button': {
-           '@apply bg-transparent border border-indigo-500 text-white font-mono px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-red-500 hover:bg-opacity-20 hover:scale-105 active:scale-95': {},
-           cursor: 'pointer',
-           userSelect: 'none',
-         }
-       });
-     }
-   ],
- }
-</script>
+    tailwind.config = {
+      plugins: [
+        function({ addComponents }) {
+          addComponents({
+            '.terminal-button': {
+              '@apply bg-transparent border border-indigo-500 text-white font-mono px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-red-500 hover:bg-opacity-20 hover:scale-105 active:scale-95': {},
+              cursor: 'pointer',
+              userSelect: 'none',
+            }
+          });
+        }
+      ],
+    }
+  </script>
 
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
-
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" />
   <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
 
   <style>
-    html,
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
     }
-
     .terminal {
       background-color: rgba(0, 0, 0, 0.3);
       color: white;
@@ -56,77 +44,53 @@
       border-radius: 0.75rem;
       backdrop-filter: blur(6px);
     }
-
     .drag-area {
       cursor: move;
     }
-
     #bgndVideo {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      z-index: 0;
+      z-index: -1;
       overflow: hidden;
       pointer-events: none;
     }
-
     #bgndVideo .plyr__video-wrapper,
     #bgndVideo .plyr__video-embed,
     #bgndVideo iframe {
-      width: 100%;
-      height: 100%;
+      width: 100% !important;
+      height: 100% !important;
       object-fit: cover;
     }
-
     .avatar-icon {
       width: 50px;
       height: 50px;
       border-radius: 50%;
       margin-right: 0.5rem;
-      position: relative;
-      z-index: 0;
       object-fit: cover;
     }
   </style>
 </head>
 
 <body class="bg-black h-screen flex items-center justify-center overflow-hidden">
+
   <div id="bgndVideo">
-    <div
-      id="player"
-      data-plyr-provider="youtube"
-      data-plyr-embed-id="8WmdXVMzwPc"
-    ></div>
+    <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="8WmdXVMzwPc"></div>
   </div>
 
   <div id="terminal" class="terminal absolute p-6 w-[500px]" style="z-index: 10;">
-    <div
-      class="drag-area text-red-700 text-sm mb-2 select-none flex justify-between items-center relative"
-    >
-      <span class="flex items-center space-x-2 relative z-10">
+    <div class="drag-area text-red-700 text-sm mb-2 select-none flex justify-between items-center">
+      <span class="flex items-center space-x-2">
         <img src="jami.png" alt="Avatar" class="avatar-icon" />
         <span class="text-white">Jamie.</span>
       </span>
-      <button
-        id="videoToggle"
-        class="text-indigo-600 hover:text-indigo-900 transition-colors duration-200 text-lg leading-none"
-      >
-        <svg
-          id="pauseIcon"
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-5 h-5 fill-current hidden"
-          viewBox="0 0 24 24"
-        >
+      <button id="videoToggle" class="text-indigo-600 hover:text-indigo-900 transition-colors duration-200 text-lg leading-none">
+        <svg id="pauseIcon" class="w-5 h-5 fill-current hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
         </svg>
-        <svg
-          id="playIcon"
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-5 h-5 fill-current"
-          viewBox="0 0 24 24"
-        >
+        <svg id="playIcon" class="w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path d="M8 5v14l11-7z" />
         </svg>
       </button>
@@ -139,15 +103,16 @@
         <button class="terminal-button ml-2" onclick="showArt()">Art</button>
         <button class="terminal-button ml-3">Message</button>
         <button class="terminal-button ml-4" onclick="siteFAQ()">Site FAQ</button>
-        </div>
+      </div>
     </div>
   </div>
 
   <script>
     var typed = new Typed('#typed', {
-      strings: ['<i class="fas fa-paw text-red-700 text-lg mr-2"></i>Welcome!', 
-                '<i class="fas fa-paw text-red-700 text-lg mr-2"></i>Select'
-               ],
+      strings: [
+        '<i class="fas fa-paw text-red-700 text-lg mr-2"></i>Welcome!',
+        '<i class="fas fa-paw text-red-700 text-lg mr-2"></i>Select'
+      ],
       typeSpeed: 40,
       backSpeed: 0,
       showCursor: true,
@@ -227,17 +192,17 @@
       `);
     }
 
-     function siteFAQ() {
+    function siteFAQ() {
       $('#terminalContent').html(`
         <div class="text-red-700 text-lg mb-4 mt-4">Libraries used:</div>
         <div class="mb-4 italic text-white">
-        <ul class="list-disc list-inside space-y-1">
-        <li>jQuery</li>
-        <li>Typed.js</li>
-        <li>Interact.js</li>
-        <li>Tailwind CSS</li>
-        <li>Plyr</li>
-        </ul>
+          <ul class="list-disc list-inside space-y-1">
+            <li>jQuery</li>
+            <li>Typed.js</li>
+            <li>Interact.js</li>
+            <li>Tailwind CSS</li>
+            <li>Plyr</li>
+          </ul>
         </div>
         <div id="buttonRow">
           <button class="terminal-button" onclick="resetTerminal()">Back</button>
@@ -256,7 +221,7 @@
         </div>
       `);
       new Typed('#typed', {
-        strings: ['Welcome!', 'Select'],
+        strings: ['<i class="fas fa-paw text-red-700 text-lg mr-2"></i>Welcome!', '<i class="fas fa-paw text-red-700 text-lg mr-2"></i>Select'],
         typeSpeed: 40,
         backSpeed: 0,
         showCursor: true,
