@@ -205,7 +205,6 @@
     document.getElementById('nextTrack').addEventListener('click', () => {
       if (player && typeof player.nextVideo === 'function') {
         player.nextVideo();
-        player.playVideo();
         player.pauseVideo();
       }   
     });
