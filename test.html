@@ -205,7 +205,9 @@
     document.getElementById('nextTrack').addEventListener('click', () => {
       if (player && typeof player.nextVideo === 'function') {
         player.nextVideo();
-        player.pauseVideo();
+        isPlaying = true;
+        pauseIcon.classList.remove('hidden');
+        playIcon.classList.add('hidden');
       }   
     });
 
