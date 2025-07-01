@@ -335,6 +335,7 @@
         
         fetch("https://script.google.com/macros/s/AKfycbzNzyyzX2Xgc-n16rlpezl8x_EGzwXn-GSSpihv5sj8457b86CXbeqEE7VJszLb5siA/exec", {
           method: "POST",
+          mode: "no-cors",
           body: formData
         })
           .then(response => response.text())
@@ -342,6 +343,9 @@
             $('#formResponse').text("Thank you for your message!");
             $('#guestbookForm')[0].reset();
           })
+          .catch(error => {
+            $('#formResponse').text("Something went wrong. Please try again.");
+          });
       });
     }
 
