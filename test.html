@@ -47,6 +47,7 @@
       transition: opacity 0.5s ease;
       background-size: cover;
       background-position: center;
+      filter: blur(8px) brightness(0.5);
     }
 
     #bgndVideo {
@@ -190,9 +191,28 @@
         },
         events: {
           onStateChange: (event) => {
+            const posterEl = document.getElementById('videoPoster');
+            const iframeEl = document.getElementById('background-video-iframe');
             if (event.data === YT.PlayerState.PLAYING) {
-              document.getElementById('videoPoster').style.opacity = '0';
-              document.getElementById('background-video-iframe').style.opacity = '1';
+              posterEl.style.opacity = '0';
+              iframeEl.style.opacity = '1';
+            }
+            
+            if (event.data === YT.PlayerState.PAUSED) {
+              const currentVideoId = player.getVideoData().video_id;
+
+              const highRes = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
+              const fallback = `https://img.youtube.com/vi/${currentVideoId}/hqdefault.jpg`;
+              const thumbImg = new Image();
+              thumbImg.onload = () => {
+                posterEl.style.backgroundImage = `url(${highRes})`;
+              };
+              thumbImg.onerror = () => {
+                posterEl.style.backgroundImage = `url(${fallback})`;
+              };
+              thumbImg.src = highRes;
+              posterEl.style.opacity = '1';
+              iframeEl.style.opacity = '0';
             }
           }
         }
