@@ -131,7 +131,7 @@
       <div class="text-red-700 text-lg mt-4 mb-4" id="typed"></div>
       <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap">
         <button class="terminal-button ml-2" onclick="showArt()">Art</button>
-        <button class="terminal-button ml-3">Message</button>
+        <button class="terminal-button ml-3" onclick="showMessageForm()">Message</button>
         <button class="terminal-button" onclick="showList()">Playlist</button>
         <button class="terminal-button ml-4" onclick="siteFAQ()">Site FAQ</button>
       </div>
@@ -318,12 +318,42 @@
         `);
     }
 
+    function showMessageForm() {
+      $('#terminalContent').html(`
+      <form id="guestbookForm" class="space-y-4">
+      <input type="text" name="name" placeholder="Your name" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-500" required>
+      <textarea name="message" placeholder="Your message" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-500" required></textarea>
+      <button type="submit" class="terminal-button">Submit</button>
+      <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
+      <div id="formResponse" class="text-green-500 mt-2"></div>
+      </form>
+      `);
+      
+      $('#guestbookForm').on('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        
+        fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+          method: "POST",
+          body: formData
+        })
+          .then(response => response.text())
+          .then(result => {
+            $('#formResponse').text("Thank you for your message!");
+            $('#guestbookForm')[0].reset();
+          })
+          .catch(error => {
+            $('#formResponse').text("Something went wrong. Please try again.");
+          });
+      });
+    }
+
     function resetTerminal() {
       $('#terminalContent').html(`
         <div id="typed" class="text-red-700 text-lg mb-4 mt-4"></div>
         <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap">
           <button class="terminal-button ml-2" onclick="showArt()">Art</button>
-          <button class="terminal-button ml-3">Message</button>
+          <button class="terminal-button ml-3" onclick="showMessageForm()">Message</button>
           <button class="terminal-button" onclick="showList()">Playlist</button>
           <button class="terminal-button ml-4" onclick="siteFAQ()">Site FAQ</button>
         </div>
