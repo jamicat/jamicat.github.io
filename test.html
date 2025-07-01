@@ -101,7 +101,7 @@
 <body class="bg-black h-screen w-screen overflow-hidden">
   <div id="bgndVideo">
     <div id="videoPoster" class="absolute inset-0 bg-black z-0 bg-cover bg-center"></div>
-    <div id="background-video-iframe"></div>
+    <div id="background-video-iframe" style="opacity: 0; transition: opacity 0.5s;"></div>
   </div>
 
   <div id="terminal" class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px]" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
@@ -192,6 +192,7 @@
           onStateChange: (event) => {
             if (event.data === YT.PlayerState.PLAYING) {
               document.getElementById('videoPoster').style.opacity = '0';
+              document.getElementById('background-video-iframe').style.opacity = '1';
             }
           }
         }
