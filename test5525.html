@@ -346,8 +346,10 @@
         `);
     }
 
-   function showMessageForm() {
-  $('#terminalContent').html(`
+  function showMessageForm() {
+  const cooldownPeriod = 5 * 60 * 1000; // 5 minutes
+
+  document.getElementById('terminalContent').innerHTML = `
     <form id="guestbookForm" class="space-y-4 mt-4">
       <input type="text" name="name" placeholder="Name" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required>
       <textarea name="message" placeholder="🐾" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required></textarea>
@@ -355,34 +357,45 @@
       <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
       <div id="formResponse" class="text-green-500 mt-2"></div>
     </form>
-  `);
+  `;
+  
+  const form = document.getElementById('guestbookForm');
+  const formResponse = document.getElementById('formResponse');
 
-  $('#guestbookForm').on('submit', function (e) {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const name = $('input[name="name"]').val().trim();
-    const message = $('textarea[name="message"]').val().trim();
+    const lastSubmissionTime = localStorage.getItem('lastSubmissionTime');
+    const now = Date.now();
 
-    if (!name || !message) return;
+    if (lastSubmissionTime && now - lastSubmissionTime < cooldownPeriod) {
+      alert('5 minutes between each comment, please!');
+      return;
+    }
 
-    const data = {
-      name,
-      comment: message
-    };
+    const name = form.elements['name'].value.trim();
+    const message = form.elements['message'].value.trim();
+
+    if (!name || !message) {
+      alert('Name and comment cannot be empty!');
+      return;
+    }
+
+    const data = { name, comment: message };
 
     fetch("https://script.google.com/macros/s/AKfycbx9pIQiK7nNYEygmI8fC-ziPZGPkF__0uNf5QXdKRuYQV63bsNClad8dpZ10K9JfjamjA/exec", {
       method: "POST",
       mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     });
 
-    $('#formResponse').text("Thank you for your message!");
-    $('#guestbookForm')[0].reset();
+    localStorage.setItem('lastSubmissionTime', now);
+    form.reset();
+    formResponse.textContent = "Thank you for your message!";
   });
 }
+
 
     function resetTerminal() {
       $('#terminalContent').html(`
