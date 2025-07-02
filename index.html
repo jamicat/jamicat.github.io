@@ -21,6 +21,31 @@
     padding: 20px;
   }
 
+  .glow-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    animation: glowRGB 5s infinite linear;
+    box-shadow:
+      0 0 10px red,
+      0 0 20px orange,
+      0 0 30px yellow,
+      0 0 40px green,
+      0 0 50px blue,
+      0 0 60px indigo,
+      0 0 70px violet;
+  }
+
+  @keyframes glowRGB {
+    0% { box-shadow: 0 0 10px red, 0 0 20px orange, 0 0 30px yellow; }
+    25% { box-shadow: 0 0 10px orange, 0 0 20px yellow, 0 0 30px green; }
+    50% { box-shadow: 0 0 10px yellow, 0 0 20px green, 0 0 30px blue; }
+    75% { box-shadow: 0 0 10px green, 0 0 20px blue, 0 0 30px violet; }
+    100% { box-shadow: 0 0 10px violet, 0 0 20px red, 0 0 30px orange; }
+  }
+
   h1 {
     font-family: 'Orbitron', sans-serif;
     font-size: 3.5rem;
@@ -102,7 +127,12 @@
 </style>
 </head>
 <body>
+
+  <!-- RGB glowing profile image -->
+  <img src="art1.jpg" alt="logo" class="glow-img" />
+
   <h1>catsynth.chain™</h1>
+
   <p>
     harnessing <span class="buzzwords">quantum neural synergy</span>, optimizing <span class="buzzwords">blockchain-enabled thought paradigms</span>
   </p>
