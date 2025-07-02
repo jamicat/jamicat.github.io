@@ -1,11 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>NeuroSynth.AI</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NeuroSynth.AI™ - The Future is Now</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron&family=Roboto:wght@400;700&display=swap');
+
+  body {
+    background: linear-gradient(135deg, #1f1c2c, #928dab);
+    color: #e0e0e0;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    text-align: center;
+    padding: 20px;
+  }
+
+  h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    margin-bottom: 0.2em;
+    color: #00ffe7;
+    text-shadow:
+      0 0 10px #00ffe7,
+      0 0 20px #00ffe7,
+      0 0 30px #00ffe7;
+    animation: flicker 3s infinite alternate;
+  }
+
+  @keyframes flicker {
+    0%, 100% { text-shadow:
+      0 0 10px #00ffe7,
+      0 0 20px #00ffe7,
+      0 0 30px #00ffe7; }
+    50% { text-shadow: none; }
+  }
+
+  p {
+    font-size: 1.25rem;
+    max-width: 600px;
+    line-height: 1.5;
+    margin: 0.5em 0 1.5em 0;
+    color: #cbd5e1;
+  }
+
+  .buzzwords {
+    font-weight: 700;
+    color: #ff6f91;
+    animation: pulse 2s infinite;
+    display: inline-block;
+  }
+
+  @keyframes pulse {
+    0%, 100% { color: #ff6f91; }
+    50% { color: #fcbf49; }
+  }
+
+  .loading {
+    margin-top: 2em;
+    font-family: monospace;
+    font-size: 1.5rem;
+    color: #00ffe7;
+  }
+
+  .dots span {
+    animation-name: blink;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  .dots span:nth-child(1) { animation-delay: 0s; }
+  .dots span:nth-child(2) { animation-delay: 0.3s; }
+  .dots span:nth-child(3) { animation-delay: 0.6s; }
+
+  @keyframes blink {
+    0%, 20% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  footer {
+    position: fixed;
+    bottom: 10px;
+    font-size: 0.8rem;
+    color: #555;
+    font-style: italic;
+  }
+</style>
 </head>
-<body style="text-align:center; font-family:sans-serif; margin-top:50px;">
-  <h1>Welcome to NeuroSynth.AI™</h1>
-  <p>We use AI, blockchain, and buzzwords to deliver synergy.</p>
-  <p>Currently optimizing quantum cloud paradigms. Check back later.</p>
+<body>
+  <h1>NeuroSynth.AI™</h1>
+  <p>
+    Harnessing <span class="buzzwords">quantum neural synergy</span> to optimize your <span class="buzzwords">blockchain-enabled thought paradigms</span>.
+  </p>
+  <p>
+    Currently calibrating our <span class="buzzwords">hyper-dimensional cloud matrices</span> and aligning <span class="buzzwords">intergalactic data streams</span> for
+    <strong>maximum disruption</strong>.
+  </p>
+  <p>
+    In the meantime, feel free to stare at this placeholder — it’s scientifically proven to increase <span class="buzzwords">innovative bandwidth</span> by 47.3%.
+  </p>
+
+  <div class="loading">
+    Initializing AI-driven buzzword generator<span class="dots"><span>.</span><span>.</span><span>.</span></span>
+  </div>
+
+  <footer>
+    *Disclaimer: No actual AI or quantum computers were harmed in the making of this placeholder.
+  </footer>
 </body>
 </html>
