@@ -258,17 +258,43 @@
       }   
     });
 
-    function showList() {
-      $('#terminalContent').html(`
-        <div class="mb-4 mt-4 space-y-2">
-        <a href="https://www.youtube.com/watch?v=hF0I9h7C4A4" target="_blank" class="block text-indigo-300 hover:underline">Lilypichu - last cup of coffee</a>
-        <a href="https://www.youtube.com/watch?v=8WmdXVMzwPc" target="_blank" class="block text-indigo-300 hover:underline">YUNGBLUD - Greatest Parade</a>
-        </div>
-        <div id="buttonRow">
-          <button class="terminal-button" onclick="resetTerminal()">Back</button>
-        </div>
-      `);
+   function showList() {
+  const playlist = [
+    {
+      title: "Lilypichu - last cup of coffee",
+      videoId: "hF0I9h7C4A4",
+      channelAvatar: "https://yt3.googleusercontent.com/ytc/AGIKgqPmOQBhE7oByfUe0duzJWD3NKXRKDr3OyYvT0VX=s88-c-k-c0x00ffffff-no-rj"
+    },
+    {
+      title: "YUNGBLUD - Greatest Parade",
+      videoId: "8WmdXVMzwPc",
+      channelAvatar: "https://yt3.googleusercontent.com/ytc/AGIKgqN2aGqzFuRWNYa9MyRb3ACp7FoLuI05-HkHXDOW=s88-c-k-c0x00ffffff-no-rj"
     }
+  ];
+
+  let html = `<div class="space-y-6 mt-4">`;
+
+  playlist.forEach(item => {
+    html += `
+      <div class="flex items-start space-x-4">
+        <img src="${item.channelAvatar}" width="40" height="40" class="rounded-full" alt="Channel Avatar">
+        <div>
+          <a href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" class="block text-indigo-300 hover:underline mb-1">${item.title}</a>
+          <iframe width="300" height="170" src="https://www.youtube.com/embed/${item.videoId}" frameborder="0" allowfullscreen class="rounded"></iframe>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `
+    <div id="buttonRow" class="mt-6">
+      <button class="terminal-button" onclick="resetTerminal()">Back</button>
+    </div>
+  `;
+
+  $('#terminalContent').html(html);
+}
+
 
     function showArt() {
       $('#terminalContent').html(`
