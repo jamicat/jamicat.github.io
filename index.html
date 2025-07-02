@@ -85,6 +85,13 @@
     100% { opacity: 0; }
   }
 
+  #countdown {
+    font-size: 2rem;
+    margin-top: 30px;
+    color: #00ffe7;
+    font-family: 'Orbitron', monospace;
+  }
+
   footer {
     position: fixed;
     bottom: 10px;
@@ -107,21 +114,49 @@
     In the meantime, feel free to stare at this placeholder — it’s scientifically proven to increase <span class="buzzwords">innovative bandwidth</span> by 47.3%.
   </p>
 
+  <div id="countdown">
+    Launching in: --:--:--
+  </div>
+
   <div class="loading">
     Initializing the<span class="dots"><span>.</span><span>.</span><span>.</span></span>
   </div>
 
+  <iframe id="ytplayer" 
+          src="https://www.youtube.com/embed/nUtAWeSK28g?autoplay=1&loop=1&playlist=nUtAWeSK28g&controls=0&showinfo=0&modestbranding=1&mute=0" 
+          frameborder="0" 
+          allow="autoplay" 
+          style="display:none;" 
+          allowfullscreen>
+  </iframe>
+
   <footer>
     *Disclaimer: if you're reading this you are
   </footer>
-  
-  <iframe id="ytplayer" 
-        src="https://www.youtube.com/embed/nUtAWeSK28g?autoplay=1&loop=1&playlist=nUtAWeSK28g&controls=0&showinfo=0&modestbranding=1&mute=0" 
-        frameborder="0" 
-        allow="autoplay" 
-        style="display:none;" 
-        allowfullscreen>
-</iframe>
-  
+
+  <script>
+    const launchTime = new Date('2025-07-03T04:00:00Z');
+    const countdownElement = document.getElementById('countdown');
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = launchTime - now;
+
+      if (diff <= 0) {
+        countdownElement.textContent = '';
+        clearInterval(timer);
+        return;
+      }
+
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      countdownElement.textContent = `Launching in: ${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+    }
+
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 1000);
+  </script>
 </body>
 </html>
