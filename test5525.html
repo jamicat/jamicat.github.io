@@ -346,36 +346,43 @@
         `);
     }
 
-    function showMessageForm() {
-      $('#terminalContent').html(`
-      <form id="guestbookForm" class="space-y-4 mt-4">
+   function showMessageForm() {
+  $('#terminalContent').html(`
+    <form id="guestbookForm" class="space-y-4 mt-4">
       <input type="text" name="name" placeholder="Name" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required>
       <textarea name="message" placeholder="🐾" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required></textarea>
       <button type="submit" class="terminal-button">Submit</button>
       <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
       <div id="formResponse" class="text-green-500 mt-2"></div>
-      </form>
-      `);
-      
-      $('#guestbookForm').on('submit', function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        
-        fetch("https://script.google.com/macros/s/AKfycbx9pIQiK7nNYEygmI8fC-ziPZGPkF__0uNf5QXdKRuYQV63bsNClad8dpZ10K9JfjamjA/exec", {
-          method: "POST",
-          mode: "no-cors",
-          body: formData
-        })
-          .then(response => response.text())
-          .then(result => {
-            $('#formResponse').text("Thank you for your message!");
-            $('#guestbookForm')[0].reset();
-          })
-          .catch(error => {
-            $('#formResponse').text("Something went wrong. Please try again.");
-          });
-      });
-    }
+    </form>
+  `);
+
+  $('#guestbookForm').on('submit', function (e) {
+    e.preventDefault();
+
+    const name = $('input[name="name"]').val().trim();
+    const message = $('textarea[name="message"]').val().trim();
+
+    if (!name || !message) return;
+
+    const data = {
+      name,
+      comment: message
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbx9pIQiK7nNYEygmI8fC-ziPZGPkF__0uNf5QXdKRuYQV63bsNClad8dpZ10K9JfjamjA/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+
+    $('#formResponse').text("Thank you for your message!");
+    $('#guestbookForm')[0].reset();
+  });
+}
 
     function resetTerminal() {
       $('#terminalContent').html(`
