@@ -347,53 +347,60 @@
     }
 
   function showMessageForm() {
-  const cooldownPeriod = 5 * 60 * 1000; // 5 minutes
+ document.getElementById('terminalContent').innerHTML = `
+  <form id="guestbookForm" class="space-y-4 mt-4" onsubmit="submitMessage(event)">
+    <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required>
+    <textarea id="message" name="message" placeholder="🐾" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required></textarea>
+    <button type="submit" class="terminal-button">Submit</button>
+    <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
+    <div id="formResponse" class="text-green-500 mt-2"></div>
+  </form>
+`;
 
-  document.getElementById('terminalContent').innerHTML = `
-    <form id="guestbookForm" class="space-y-4 mt-4">
-      <input type="text" name="name" placeholder="Name" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required>
-      <textarea name="message" placeholder="🐾" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required></textarea>
-      <button type="submit" class="terminal-button">Submit</button>
-      <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
-      <div id="formResponse" class="text-green-500 mt-2"></div>
-    </form>
-  `;
+let lastSubmissionTime = 0; 
+
+function submitMessage(event) {
+  event.preventDefault(); 
   
-  const form = document.getElementById('guestbookForm');
-  const formResponse = document.getElementById('formResponse');
+  const name = document.getElementById("name").value.trim();
+  const message = document.getElementById("message").value.trim();
+  const now = Date.now();
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+  if (!name || !message) {
+    alert("Fill in the fields!");
+    return;
+  }
 
-    const lastSubmissionTime = localStorage.getItem('lastSubmissionTime');
-    const now = Date.now();
+  if (now - lastSubmissionTime < 300000) { 
+    alert("5 minutes between each message.");
+    return;
+  }
 
-    if (lastSubmissionTime && now - lastSubmissionTime < cooldownPeriod) {
-      alert('5 minutes between each comment, please!');
-      return;
-    }
+  lastSubmissionTime = now;
 
-    const name = form.elements['name'].value.trim();
-    const message = form.elements['message'].value.trim();
+  const timestamp = new Date().toISOString();
 
-    if (!name || !message) {
-      alert('Name and comment cannot be empty!');
-      return;
-    }
+  const data = {
+    name: name,
+    comment: message,
+    timestamp: timestamp,
+  };
 
-    const data = { name, comment: message };
+  const url = "https://script.google.com/macros/s/AKfycbzNzyyzX2Xgc-n16rlpezl8x_EGzwXn-GSSpihv5sj8457b86CXbeqEE7VJszLb5siA/exec";
 
-    fetch("https://script.google.com/macros/s/AKfycbx9pIQiK7nNYEygmI8fC-ziPZGPkF__0uNf5QXdKRuYQV63bsNClad8dpZ10K9JfjamjA/exec", {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-
-    localStorage.setItem('lastSubmissionTime', now);
-    form.reset();
-    formResponse.textContent = "Thank you for your message!";
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+    mode: "no-cors",
   });
+
+  document.getElementById("name").value = "";
+  document.getElementById("message").value = "";
+  document.getElementById("formResponse").textContent = "Thank you for your message!";
+}
 }
 
 
