@@ -346,64 +346,65 @@
         `);
     }
 
+  let lastSubmissionTime = 0;
   function showMessageForm() {
- document.getElementById('terminalContent').innerHTML = `
-  <form id="guestbookForm" class="space-y-4 mt-4" onsubmit="submitMessage(event)">
-    <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required>
-    <textarea id="message" name="message" placeholder="🐾" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required></textarea>
-    <button type="submit" class="terminal-button">Submit</button>
-    <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
-    <div id="formResponse" class="text-green-500 mt-2"></div>
-  </form>
-`;
+    
+    document.getElementById('terminalContent').innerHTML = `
+      <form id="guestbookForm" class="space-y-4 mt-4">
+        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required>
+        <textarea id="message" name="message" placeholder="🐾" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required></textarea>
+        <button type="submit" class="terminal-button">Submit</button>
+        <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
+        <div id="formResponse" class="text-green-500 mt-2"></div>
+      </form>
+    `;
 
-let lastSubmissionTime = 0; 
-
-function submitMessage(event) {
-  event.preventDefault(); 
-  
-  const name = document.getElementById("name").value.trim();
-  const message = document.getElementById("message").value.trim();
-  const now = Date.now();
-
-  if (!name || !message) {
-    alert("Fill in the fields!");
-    return;
+    const form = document.getElementById('guestbookForm');
+    form.addEventListener('submit', submitMessage);
   }
 
-  if (now - lastSubmissionTime < 300000) { 
-    alert("5 minutes between each message.");
-    return;
+  function submitMessage(event) {
+    event.preventDefault();
+
+
+    const name = document.getElementById("name").value.trim();
+    const message = document.getElementById("message").value.trim();
+    const now = Date.now();
+
+    if (!name || !message) {
+      alert("Fill in the fields!");
+      return;
+    }
+
+    if (now - lastSubmissionTime < 300000) {
+      alert("5 minutes between each message.");
+      return;
+    }
+
+    lastSubmissionTime = now;
+
+    const data = {
+      name: name,
+      comment: message,
+      timestamp: new Date().toISOString(),
+    };
+
+    const url = "https://script.google.com/macros/s/AKfycbyHw5sLKQB5OWs3pRSed4T2e-0aX32fwg03OXbyVH_UB6pOyzhCntv_9PDaU8WXeuql/exec";
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+      mode: "no-cors",
+    });
+
+    document.getElementById("name").value = "";
+    document.getElementById("message").value = "";
+    document.getElementById("formResponse").textContent = "Thank you for your message!";
   }
-
-  lastSubmissionTime = now;
-
-  const timestamp = new Date().toISOString();
-
-  const data = {
-    name: name,
-    comment: message,
-    timestamp: timestamp,
-  };
-
-  const url = "https://script.google.com/macros/s/AKfycbyHw5sLKQB5OWs3pRSed4T2e-0aX32fwg03OXbyVH_UB6pOyzhCntv_9PDaU8WXeuql/exec";
-
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-    mode: "no-cors",
-  });
-
-  document.getElementById("name").value = "";
-  document.getElementById("message").value = "";
-  document.getElementById("formResponse").textContent = "Thank you for your message!";
-}
-}
-
-
+    
     function resetTerminal() {
       $('#terminalContent').html(`
         <div id="typed" class="text-red-300 text-lg mb-4 mt-4"></div>
