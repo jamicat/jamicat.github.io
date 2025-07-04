@@ -320,6 +320,7 @@
         iframeEl.style.opacity = '0';
         playIcon.classList.add('hidden');
         pauseIcon.classList.add('hidden');
+        nextTrack.classlist.add('hidden');
         player.pauseVideo();
         canvas.style.opacity = '1';
         canvas.style.pointerEvents = 'none';  
@@ -329,7 +330,8 @@
         posterEl.style.opacity = '1';
         iframeEl.style.opacity = '0';
         playIcon.classList.remove('hidden');
-        pauseIcon.classList.remove('hidden');  
+        pauseIcon.classList.add('hidden');  
+        nextTrack.classlist.remove('hidden');
         canvas.style.opacity = '0';
         canvas.style.pointerEvents = 'auto'; 
       }
