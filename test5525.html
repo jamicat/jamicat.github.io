@@ -303,11 +303,22 @@
     let galaxyVisible = false;
     
     rewind10.addEventListener('click', () => {
-
-      galaxyVisible = !galaxyVisible;
+      
       const canvas = document.getElementById('canvas');  
 
       if (galaxyVisible) {
+        galaxyVisible = false;
+        rewind10.classList.remove('text-white');
+        rewind10.classList.add('text-indigo-300');
+        posterEl.style.opacity = '1';
+        iframeEl.style.opacity = '0';
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');  
+        nextIcon.classList.remove('hidden');
+        canvas.style.opacity = '0';
+        canvas.style.pointerEvents = 'auto'; 
+      } else {
+        galaxyVisible = true;
         rewind10.classList.add('text-white');
         rewind10.classList.remove('text-indigo-300');
         posterEl.style.opacity = '0';
@@ -318,16 +329,6 @@
         player.pauseVideo();
         canvas.style.opacity = '1';
         canvas.style.pointerEvents = 'none';  
-      } else {
-        rewind10.classList.remove('text-white');
-        rewind10.classList.add('text-indigo-300');
-        posterEl.style.opacity = '1';
-        iframeEl.style.opacity = '0';
-        playIcon.classList.remove('hidden');
-        pauseIcon.classList.add('hidden');  
-        nextIcon.classList.remove('hidden');
-        canvas.style.opacity = '0';
-        canvas.style.pointerEvents = 'auto'; 
       }
     });
 
