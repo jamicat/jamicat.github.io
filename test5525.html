@@ -245,11 +245,8 @@
             const posterEl = document.getElementById('videoPoster');
             const iframeEl = document.getElementById('background-video-iframe');
             if (event.data === YT.PlayerState.PLAYING) {
-              if (!galaxyVisible)
-              {
                 posterEl.style.opacity = '0';
                 iframeEl.style.opacity = '1';
-              }
             }
             
             if (event.data === YT.PlayerState.PAUSED) {
@@ -265,11 +262,8 @@
                 posterEl.style.backgroundImage = `url(${fallback})`;
               };
               thumbImg.src = highRes;
-               if (!galaxyVisible)
-              {
-                posterEl.style.opacity = '1';
-                iframeEl.style.opacity = '0';
-              }
+              posterEl.style.opacity = '1';
+              iframeEl.style.opacity = '0';
             }
           }
         }
@@ -342,16 +336,12 @@
         galaxyVisible = false;
         rewind10.classList.remove('text-white');
         rewind10.classList.add('text-indigo-300');
-        posterEl.style.opacity = '1';
-        iframeEl.style.opacity = '0';
         canvas.style.opacity = '0';
         canvas.style.pointerEvents = 'none'; 
       } else {
         galaxyVisible = true;
         rewind10.classList.add('text-white');
         rewind10.classList.remove('text-indigo-300');
-        posterEl.style.opacity = '0';
-        iframeEl.style.opacity = '0';
         canvas.style.opacity = '1';
         canvas.style.pointerEvents = 'auto';  
       }
