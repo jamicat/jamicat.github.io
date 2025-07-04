@@ -266,6 +266,7 @@
 
     const videoId = 'hF0I9h7C4A4';
     const posterEl = document.getElementById('videoPoster');
+    const iframeEl = document.getElementById('background-video-iframe');
     const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
     const fallback = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
     const img = new Image();
@@ -303,7 +304,37 @@
         playIcon.classList.add('hidden');
       }   
     });
-    
+
+    let galaxyVisible = false;
+    const galaxyBtn = document.getElementById('rewind10');
+
+    galaxyBtn.addEventListener('click', () => {
+
+      galaxyVisible = !galaxyVisible;
+      const canvas = document.getElementById('canvas');  
+
+      if (galaxyVisible) {
+        rewind10.classList.add('text-white');
+        rewind10.classList.remove('text-indigo-300');
+        posterEl.style.opacity = '0';
+        iframeEl.style.opacity = '0';
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.add('hidden');
+        player.pauseVideo();
+        canvas.style.opacity = '1';
+        canvas.style.pointerEvents = 'none';  
+      } else {
+        rewind10.classList.remove('text-white');
+        rewind10.classList.add('text-indigo-300');
+        posterEl.style.opacity = '1';
+        iframeEl.style.opacity = '0';
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.remove('hidden');  
+        canvas.style.opacity = '0';
+        canvas.style.pointerEvents = 'auto'; 
+      }
+    });
+
   function showList() {
   const playlist = [
     {
@@ -475,36 +506,6 @@
     const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     document.head.appendChild(tag);
-  </script>
-  <script>
-    const button = document.getElementById('rewind10');
-    const posterEl = document.getElementById('videoPoster');
-    const iframeEl = document.querySelector('#bgndVideo iframe');
-    const canvas = document.getElementById('canvas');
-
-    let galaxyVisible = false;
-
-    button.addEventListener('click', () => {
-      galaxyVisible = !galaxyVisible;
-      if (galaxyVisible) {
-        button.classList.add('text-white');
-        button.classList.remove('text-indigo-300');
-        posterEl.style.opacity = '0';
-        iframeEl.style.opacity = '0';
-        playIcon.classList.add('hidden');
-        pauseIcon.classList.add('hidden');
-        player.pauseVideo();
-        canvas.style.opacity = '1';
-        canvas.style.pointerEvents = 'none';  
-      } else {
-        button.classList.remove('text-white');
-        button.classList.add('text-indigo-300');
-        posterEl.style.opacity = '1';
-        iframeEl.style.opacity = '0';
-        playIcon.classList.remove('hidden');
-        canvas.style.opacity = '0';
-      }
-    });
   </script>
 </body>
 </html>
