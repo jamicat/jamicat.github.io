@@ -323,7 +323,7 @@
         pauseIcon.classList.add('hidden');  
         nextIcon.classList.remove('hidden');
         canvas.style.opacity = '0';
-        canvas.style.pointerEvents = 'auto'; 
+        canvas.style.pointerEvents = 'none'; 
       } else {
         galaxyVisible = true;
         rewind10.classList.add('text-white');
@@ -335,7 +335,7 @@
         nextIcon.classList.add('hidden');
         player.pauseVideo();
         canvas.style.opacity = '1';
-        canvas.style.pointerEvents = 'none';  
+        canvas.style.pointerEvents = 'auto';  
         isPlaying = false;
       }
     });
