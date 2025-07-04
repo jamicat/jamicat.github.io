@@ -55,6 +55,10 @@
       opacity: 0;    
       transition: opacity 0.5s ease;
     }
+
+    .lil-gui {
+      display: none;
+    }
     
     #videoPoster {
       z-index: 0;
@@ -309,11 +313,21 @@
     let galaxyVisible = false;
     let galaxyScriptLoaded = false;
     
-    rewind10.addEventListener('click', () => {
+    rewind10.addEventListener('click', async () => {
 
       if (!galaxyScriptLoaded) {
         await import('./galaxy.js');
         galaxyScriptLoaded = true;
+      }
+
+      const guiElement = document.querySelector('.lil-gui');
+
+      if (guiElement) {
+        if (guiElement.style.display === 'none' || !guiElement.style.display) {
+          guiElement.style.display = 'block';
+        } else {
+          guiElement.style.display = 'none';
+        }
       }
       
       const canvas = document.getElementById('canvas');  
