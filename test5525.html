@@ -144,7 +144,7 @@
       <path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2V6z"/>
     </svg>
        </button>
-       <button id="rewind10" class="text-indigo-300 hover:text-indigo-500 transition-colors duration-200 text-lg leading-none">
+       <button id="rewind10" class="text-red-300 hover:text-indigo-500 transition-colors duration-200 text-lg leading-none">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 611.999 611.999"
@@ -336,13 +336,13 @@
       if (galaxyVisible) {
         galaxyVisible = false;
         rewind10.classList.remove('text-white');
-        rewind10.classList.add('text-indigo-300');
+        rewind10.classList.add('text-red-300');
         canvas.style.opacity = '0';
         canvas.style.pointerEvents = 'none'; 
       } else {
         galaxyVisible = true;
         rewind10.classList.add('text-white');
-        rewind10.classList.remove('text-indigo-300');
+        rewind10.classList.remove('text-red-300');
         canvas.style.opacity = '1';
         canvas.style.pointerEvents = 'auto';  
       }
