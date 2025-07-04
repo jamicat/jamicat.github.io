@@ -15,6 +15,7 @@
   <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/lightgallery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script>
+  <canvas id="canvas"></canvas>
   <script type="module" src="galaxy.js"></script>
 
   <script>
@@ -40,6 +41,18 @@
       height: 100%;
       overflow: hidden;
       background-color: black;
+    }
+    
+    #canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -10;  
+      opacity: 0;    
+      transition: opacity 0.5s ease;
+      pointer-events: none;
     }
     
     #videoPoster {
@@ -462,6 +475,36 @@
     const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     document.head.appendChild(tag);
+  </script>
+  <script>
+    const button = document.getElementById('rewind10');
+    const posterEl = document.getElementById('videoPoster');
+    const iframeEl = document.querySelector('#bgndVideo iframe');
+    const canvas = document.getElementById('canvas');
+
+    let galaxyVisible = false;
+
+    button.addEventListener('click', () => {
+      galaxyVisible = !galaxyVisible;
+      if (galaxyVisible) {
+        button.classList.add('text-white');
+        button.classList.remove('text-indigo-300');
+        posterEl.style.opacity = '0';
+        iframeEl.style.opacity = '0';
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.add('hidden');
+        player.pauseVideo();
+        canvas.style.opacity = '1';
+        canvas.style.pointerEvents = 'none';  
+      } else {
+        button.classList.remove('text-white');
+        button.classList.add('text-indigo-300');
+        posterEl.style.opacity = '1';
+        iframeEl.style.opacity = '0';
+        playIcon.classList.remove('hidden');
+        canvas.style.opacity = '0';
+      }
+    });
   </script>
 </body>
 </html>
