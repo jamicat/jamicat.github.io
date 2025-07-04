@@ -24,7 +24,7 @@
         function ({ addComponents }) {
           addComponents({
             '.terminal-button': {
-              '@apply bg-transparent border border-blue-600 text-white font-mono px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-red-300 hover:bg-opacity-20 hover:scale-105 active:scale-95': {},
+              '@apply bg-transparent border border-blue-500 text-white font-mono px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-red-300 hover:bg-opacity-20 hover:scale-105 active:scale-95': {},
               cursor: 'pointer',
               userSelect: 'none',
             },
@@ -131,7 +131,7 @@
         <span class="text-white">Jamie!</span>
       </span>
       <div class="flex items-center space-x-2">
-      <button id="videoToggle" class="text-blue-600 hover:text-blue-800 transition-colors duration-200 text-lg leading-none">
+      <button id="videoToggle" class="text-blue-500 hover:text-blue-800 transition-colors duration-200 text-lg leading-none">
         <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
           <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
         </svg>
@@ -139,12 +139,12 @@
           <path d="M8 5v14l11-7z" />
         </svg>
       </button>
-      <button id="nextTrack" class="text-blue-600 hover:text-blue-800 transition-colors duration-200 text-lg leading-none">
+      <button id="nextTrack" class="text-blue-500 hover:text-blue-800 transition-colors duration-200 text-lg leading-none">
     <svg id="nextIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
       <path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2V6z"/>
     </svg>
        </button>
-       <button id="rewind10" class="text-blue-600 hover:text-blue-800 transition-colors duration-200 text-lg leading-none">
+       <button id="rewind10" class="text-pink-600 hover:text-pink-800 transition-colors duration-200 text-lg leading-none">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 611.999 611.999"
@@ -372,7 +372,7 @@
         <a href="${item.channelUrl}" target="_blank">
           <img src="${item.channelAvatar}" width="40" height="40" class="rounded-full border border-indigo-400" alt="avatar">
         </a>
-        <a href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" class="text-blue-600 hover:underline text-base">
+        <a href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" class="text-blue-500 hover:underline text-base">
           ${item.title}
         </a>
       </div>
