@@ -453,24 +453,25 @@
       const form = document.getElementById('guestbookForm');
       form.addEventListener('submit', submitMessage);
 
-      const picker = new EmojiButton({
-        theme: 'auto',
-        position: 'bottom-start',
-        autoHide: true,
-        showPreview: false
-      });
+      setTimeout(() => {
+        const avatarInput = document.getElementById('avatar');
+        const picker = new EmojiButton({
+          theme: 'auto',
+          position: 'bottom-start',
+          autoHide: true,
+          showPreview: false
+        });
 
-      const avatarInput = document.querySelector('#avatar');
+        avatarInput.addEventListener('click', () => {
+          picker.togglePicker(avatarInput);
+        });
 
-      avatarInput.addEventListener('click', () => {
-        picker.togglePicker(avatarInput);
-      });
-
-      picker.on('emoji', emoji => {
-        avatarInput.value = emoji;
-      });
+        picker.on('emoji', emoji => {
+          avatarInput.value = emoji;
+        });
+      }, 0);
     }
-    
+
     function submitMessage(event) {
       event.preventDefault();
 
