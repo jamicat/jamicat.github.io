@@ -306,9 +306,8 @@
     });
 
     let galaxyVisible = false;
-    const galaxyBtn = document.getElementById('rewind10');
-
-    galaxyBtn.addEventListener('click', () => {
+    
+    rewind10.addEventListener('click', () => {
 
       galaxyVisible = !galaxyVisible;
       const canvas = document.getElementById('canvas');  
@@ -320,7 +319,7 @@
         iframeEl.style.opacity = '0';
         playIcon.classList.add('hidden');
         pauseIcon.classList.add('hidden');
-        nextIcon.classlist.add('hidden');
+        nextIcon.classList.add('hidden');
         player.pauseVideo();
         canvas.style.opacity = '1';
         canvas.style.pointerEvents = 'none';  
@@ -331,7 +330,7 @@
         iframeEl.style.opacity = '0';
         playIcon.classList.remove('hidden');
         pauseIcon.classList.add('hidden');  
-        nextIcon.classlist.remove('hidden');
+        nextIcon.classList.remove('hidden');
         canvas.style.opacity = '0';
         canvas.style.pointerEvents = 'auto'; 
       }
