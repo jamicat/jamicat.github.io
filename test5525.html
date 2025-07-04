@@ -16,7 +16,6 @@
   <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script>
   <canvas id="canvas"></canvas>
-  <script type="module" src="galaxy.js"></script>
 
   <script>
     tailwind.config = {
@@ -308,8 +307,14 @@
     });
 
     let galaxyVisible = false;
+    let galaxyScriptLoaded = false;
     
     rewind10.addEventListener('click', () => {
+
+      if (!galaxyScriptLoaded) {
+        await import('./galaxy.js');
+        galaxyScriptLoaded = true;
+      }
       
       const canvas = document.getElementById('canvas');  
 
