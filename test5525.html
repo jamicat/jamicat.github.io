@@ -436,99 +436,62 @@
         `);
     }
 
-   let lastSubmissionTime = 0;
+  let lastSubmissionTime = 0;
+  function showMessageForm() {
+    
+    document.getElementById('terminalContent').innerHTML = `
+      <form id="guestbookForm" class="space-y-4 mt-4">
+        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required>
+        <textarea id="message" name="message" placeholder="🐾" class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required></textarea>
+        <button type="submit" class="terminal-button">Submit</button>
+        <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
+        <div id="formResponse" class="text-green-500 mt-2"></div>
+      </form>
+    `;
 
-function showMessageForm() {
-  document.getElementById('terminalContent').innerHTML = `
-    <form id="guestbookForm" class="space-y-4 mt-4">
-      <div class="flex space-x-2 items-center">
-        <button type="button" id="avatarBtn" 
-          class="w-12 h-12 text-xl rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30 cursor-pointer flex items-center justify-center">
-          🧸
-        </button>
-        <input id="name" type="text" name="name" placeholder="Name" 
-          class="flex-grow p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required>
-      </div>
-      <textarea id="message" name="message" placeholder="🐾" 
-        class="w-full p-2 rounded bg-gray-800 text-white border border-indigo-300 bg-opacity-30" required></textarea>
-      <button type="submit" class="terminal-button">Submit</button>
-      <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
-      <div id="formResponse" class="text-green-500 mt-2"></div>
-    </form>
-  `;
-
-  const form = document.getElementById('guestbookForm');
-  form.addEventListener('submit', submitMessage);
-
-  setTimeout(() => {
-    const avatarBtn = document.getElementById('avatarBtn');
-    const picker = new EmojiButton({
-      theme: 'auto',
-      position: 'bottom-start',
-      autoHide: true,
-      showPreview: false
-    });
-
-    avatarBtn.addEventListener('click', () => {
-      picker.togglePicker(avatarBtn);
-    });
-
-    picker.on('emoji', emoji => {
-      avatarBtn.textContent = emoji;
-    });
-  }, 0);
-}
-
-function submitMessage(event) {
-  event.preventDefault();
-
-  const name = document.getElementById("name").value.trim();
-  const message = document.getElementById("message").value.trim();
-  const avatarBtn = document.getElementById("avatarBtn");
-  let avatar = (avatarBtn && avatarBtn.textContent.trim()) || "❓";
-
-  if (!avatar || avatar === "🧸") {
-    avatar = "❓";
+    const form = document.getElementById('guestbookForm');
+    form.addEventListener('submit', submitMessage);
   }
 
-  const now = Date.now();
+  function submitMessage(event) {
+    event.preventDefault();
+    const name = document.getElementById("name").value.trim();
+    const message = document.getElementById("message").value.trim();
+    const now = Date.now();
 
-  if (!name || !message) {
-    alert("Fill in the fields!");
-    return;
+    if (!name || !message) {
+      alert("Fill in the fields!");
+      return;
+    }
+
+    if (now - lastSubmissionTime < 300000) {
+      alert("5 minutes between each message.");
+      return;
+    }
+
+    lastSubmissionTime = now;
+
+    const data = {
+      name: name,
+      comment: message,
+      timestamp: new Date().toISOString(),
+    };
+
+    const url = "https://script.google.com/macros/s/AKfycbyHw5sLKQB5OWs3pRSed4T2e-0aX32fwg03OXbyVH_UB6pOyzhCntv_9PDaU8WXeuql/exec";
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+      mode: "no-cors",
+    });
+
+    document.getElementById("name").value = "";
+    document.getElementById("message").value = "";
+    document.getElementById("formResponse").textContent = "Thank you for your message!";
   }
-
-  if (now - lastSubmissionTime < 300000) {
-    alert("5 minutes between each message.");
-    return;
-  }
-
-  lastSubmissionTime = now;
-
-  const data = {
-    avatar: avatar,
-    name: name,
-    comment: message,
-    timestamp: new Date().toISOString(),
-  };
-
-  const url = "https://script.google.com/macros/s/AKfycbyHw5sLKQB5OWs3pRSed4T2e-0aX32fwg03OXbyVH_UB6pOyzhCntv_9PDaU8WXeuql/exec";
-
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-    mode: "no-cors",
-  });
-
-  avatarBtn.textContent = "🧸";
-  document.getElementById("name").value = "";
-  document.getElementById("message").value = "";
-  document.getElementById("formResponse").textContent = "Thank you for your message!";
-}
-
     
     function resetTerminal() {
       $('#terminalContent').html(`
