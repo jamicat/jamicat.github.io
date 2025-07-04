@@ -24,7 +24,7 @@
         function ({ addComponents }) {
           addComponents({
             '.terminal-button': {
-              '@apply bg-pink-600 text-black font-mono px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-pink-800 hover:bg-opacity-90 hover:scale-105 active:scale-95': {},
+              '@apply bg-pink-600 text-black px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-pink-800 hover:bg-opacity-90 hover:scale-105 active:scale-95': {},
               cursor: 'pointer',
               userSelect: 'none',
             },
@@ -35,7 +35,14 @@
   </script>
 
   <style>
+
+    @font-face {
+      font-family: 'nunito';
+      src: url('nunito.ttf') format('truetype');
+    } 
+    
     html, body {
+      font-family: 'Nunito', sans-serif;
       margin: 0;
       padding: 0;
       height: 100%;
@@ -99,7 +106,7 @@
     .terminal {
       background-color: rgba(0, 0, 0, 0.3);
       color: white;
-      font-family: 'Courier New', monospace;
+      font-family: 'Nunito', sans-serif;
       border-radius: 0.75rem;
       backdrop-filter: blur(6px);
     }
