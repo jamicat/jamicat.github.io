@@ -464,6 +464,12 @@
         <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
         <div id="formResponse" class="text-green-500 mt-2"></div>
       </form>
+
+      <div id="messagesPanel" class="flex-1 flex flex-col bg-gray-900 p-4 rounded border border-pink-600 overflow-auto">
+        <h2 class="text-pink-400 font-semibold mb-2">Messages</h2>
+        <div id="messagesList" class="flex flex-col space-y-3 overflow-y-auto"></div>
+      </div>
+    </div>
     `;
 
     const form = document.getElementById('guestbookForm');
@@ -508,7 +514,56 @@
     document.getElementById("name").value = "";
     document.getElementById("message").value = "";
     document.getElementById("formResponse").textContent = "Thank you for your message!";
+
+    loadMessages();
   }
+
+    function loadMessages() {
+      const messagesList = document.getElementById('messagesList');
+  messagesList.innerHTML = "Loading messages...";
+
+  const messagesUrl = "https://script.google.com/macros/s/AKfycbyHw5sLKQB5OWs3pRSed4T2e-0aX32fwg03OXbyVH_UB6pOyzhCntv_9PDaU8WXeuql/exec";
+
+  fetch(messagesUrl)
+    .then(res => res.json())
+    .then(data => {
+      messagesList.innerHTML = "";
+
+      if (!data || data.length === 0) {
+        messagesList.innerHTML = "<p class='text-gray-400 text-center'>No messages yet.</p>";
+        return;
+      }
+
+      data.forEach(item => {
+        const date = new Date(item.timestamp).toLocaleString();
+        const messageBlock = document.createElement('div');
+        messageBlock.className = "bg-gray-800 bg-opacity-40 rounded p-3 border border-pink-600";
+
+        messageBlock.innerHTML = `
+          <p class="text-pink-400 font-semibold">${escapeHtml(item.name)}</p>
+          <p class="text-white whitespace-pre-wrap mt-1">${escapeHtml(item.comment)}</p>
+          <p class="text-gray-400 text-xs mt-2">${date}</p>
+        `;
+
+        messagesList.appendChild(messageBlock);
+      });
+    })
+    .catch(() => {
+      messagesList.innerHTML = "<p class='text-red-500 text-center'>Failed to load messages.</p>";
+    });
+}
+
+function escapeHtml(text) {
+  return text.replace(/[&<>"']/g, function(m) {
+    return ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[m];
+  });
+}
     
     function resetTerminal() {
       $('#terminalContent').html(`
