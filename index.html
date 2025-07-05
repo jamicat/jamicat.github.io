@@ -442,16 +442,16 @@
 
     function siteFAQ() {
       $('#terminalContent').html(`
-        <div class="text-red-300 text-lg mb-4 mt-4 flex justify-center">Libraries used:</div>
+        <div class="text-red-300 text-lg mb-4 mt-4">Libraries used:</div>
         <ul class="list-disc list-inside text-white space-y-1">
-        <li class="text-pink-glow flex flex-col items-center">jQuery</li>
-         <li class="text-pink-glow flex flex-col items-center">Typed.js</li>
-         <li class="text-pink-glow flex flex-col items-center">Interact.js</li>
-         <li class="text-pink-glow flex flex-col items-center">Tailwind CSS</li>
-         <li class="text-pink-glow flex flex-col items-center">YouTube IFrame API</li>
+        <li class="text-pink-glow">jQuery</li>
+         <li class="text-pink-glow">Typed.js</li>
+         <li class="text-pink-glow">Interact.js</li>
+         <li class="text-pink-glow">Tailwind CSS</li>
+         <li class="text-pink-glow">YouTube IFrame API</li>
         </ul>
         </div>
-        <div id="buttonRow">
+        <div id="buttonRow flex justify-center">
         <button class="terminal-button" onclick="resetTerminal()">Back</button>
         </div>
         `);
