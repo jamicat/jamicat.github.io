@@ -24,7 +24,7 @@
         function ({ addComponents }) {
           addComponents({
             '.terminal-button': {
-              '@apply bg-red-300 text-[0.9em] text-black px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-red-500 hover:bg-opacity-90 hover:scale-105 active:scale-95': {},
+              '@apply bg-red-300 text-[0.9em] text-black px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-red-400 hover:bg-opacity-90 hover:scale-105 active:scale-95': {},
               cursor: 'pointer',
               userSelect: 'none',
             },
@@ -138,7 +138,7 @@
         <span class="text-white">Jamie</span>
       </span>
       <div class="flex items-center space-x-2">
-      <button id="videoToggle" class="text-red-300 hover:text-red-500 transition-colors duration-200 text-lg leading-none">
+      <button id="videoToggle" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
         <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
           <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
         </svg>
@@ -146,7 +146,7 @@
           <path d="M8 5v14l11-7z" />
         </svg>
       </button>
-      <button id="nextTrack" class="text-red-300 hover:text-red-500transition-colors duration-200 text-lg leading-none">
+      <button id="nextTrack" class="text-red-300 hover:text-red-400transition-colors duration-200 text-lg leading-none">
     <svg id="nextIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
       <path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2V6z"/>
     </svg>
@@ -457,8 +457,8 @@
     
     document.getElementById('terminalContent').innerHTML = `
       <form id="guestbookForm" class="space-y-4 mt-4">
-        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 rounded bg-gray-800 text-white border border-red-300 bg-opacity-30" required>
-        <textarea id="message" name="message" placeholder="🐾" class="w-full p-2 rounded bg-gray-800 text-white border border-red-300 bg-opacity-30" required></textarea>
+        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 rounded bg-gray-800 text-white border border-pink-600 bg-opacity-30" required>
+        <textarea id="message" name="message" placeholder="🐾" class="w-full p-2 rounded bg-gray-800 text-white border border-pink-600 bg-opacity-30" required></textarea>
         <button type="submit" class="terminal-button">Submit</button>
         <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
         <div id="formResponse" class="text-green-500 mt-2"></div>
@@ -521,7 +521,7 @@
       `);
       new Typed('#typed', {
         
-        strings: ['<span class="text-pink-600 text-lg mr-2">ฅ(^ω^ฅ)</span>',
+  strings: ['<span class="text-white text-lg mr-2">ฅ(^ω^ฅ)</span>',
   '<span class="text-white text-lg mr-2">(ฅ^ω^)ฅ</span>',
   '<span class="text-white  text-lg mr-2">ฅ(^ω^)ฅ</span>',
   '<span class="text-white  text-lg mr-2">(๑•ω•́ฅ✧</span>',
