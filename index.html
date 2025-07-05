@@ -442,13 +442,13 @@
 
     function siteFAQ() {
       $('#terminalContent').html(`
-        <div class="text-red-300 text-lg mb-4 mt-4">Libraries used:</div>
+        <div class="text-red-300 text-lg mb-4 mt-4 flex justify-center">Libraries used:</div>
         <ul class="list-disc list-inside text-white space-y-1">
-        <li class="text-pink-glow">jQuery</li>
-         <li class="text-pink-glow">Typed.js</li>
-         <li class="text-pink-glow">Interact.js</li>
-         <li class="text-pink-glow">Tailwind CSS</li>
-         <li class="text-pink-glow">YouTube IFrame API</li>
+        <li class="text-pink-glow flex flex-col items-center">jQuery</li>
+         <li class="text-pink-glow flex flex-col items-center">Typed.js</li>
+         <li class="text-pink-glow flex flex-col items-center">Interact.js</li>
+         <li class="text-pink-glow flex flex-col items-center">Tailwind CSS</li>
+         <li class="text-pink-glow flex flex-col items-center">YouTube IFrame API</li>
         </ul>
         </div>
         <div id="buttonRow">
@@ -464,7 +464,7 @@
       <form id="guestbookForm" class="space-y-4 mt-4">
         <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-gray-700 text-white border border-pink-600 bg-opacity-20 border-opacity-75" required>
         <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-gray-700 text-white border border-pink-600 bg-opacity-20 border-opacity-75" required></textarea>
-        <div class="flex space-x-4">
+        <div class="flex justify-center space-x-4 flex-wrap">
         <button type="submit" class="terminal-button">Submit</button>
         <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
         </div>
