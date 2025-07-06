@@ -1,553 +1,553 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" href="favicon.png" type="image/png" />
-  <title>Jamie</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="favicon.png" type="image/png" />
+<title>Jamie</title>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <link href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/css/lightgallery-bundle.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/lightgallery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/dist/index.min.js"></script>
-  <canvas id="canvas"></canvas>
+<link href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/css/lightgallery-bundle.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/lightgallery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/dist/index.min.js"></script>
+<canvas id="canvas"></canvas>
 
-  <script>
-    tailwind.config = {
-      plugins: [
-        function ({ addComponents }) {
-          addComponents({
-            '.terminal-button': {
-              '@apply bg-red-300 text-[0.9em] text-black px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-red-400 hover:bg-opacity-90 hover:scale-105 active:scale-95': {},
-              cursor: 'pointer',
-              userSelect: 'none',
-            },
-          });
-        },
-      ],
-    };
-  </script>
+<script>
+tailwind.config = {
+plugins: [
+function ({ addComponents }) {
+addComponents({
+'.terminal-button': {
+'@apply bg-red-300 text-[0.9em] text-black px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-red-400 hover:bg-opacity-90 hover:scale-105 active:scale-95': {},
+cursor: 'pointer',
+userSelect: 'none',
+},
+});
+},
+],
+};
+</script>
 
-  <style>
+<style>
 
-    @font-face {
-      font-family: 'nunito';
-      src: url('nunito.ttf') format('truetype');
-    } 
-    
-    html, body {
-      font-family: 'Nunito', sans-serif;
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      background-color: black;
-    }
-    
-    #canvas {
-      display: block;
-      position: fixed;
-      background: black;
-      margin: 0;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 5;  
-      opacity: 0;    
-      transition: opacity 0.5s ease;
-    }
+@font-face {
+font-family: 'nunito';
+src: url('nunito.ttf') format('truetype');
+} 
 
-    .lil-gui {
-      display: none;
-    }
-    
-    #videoPoster {
-      z-index: 0;
-      transition: opacity 0.5s ease;
-      background-size: cover;
-      background-position: center;
-      filter: blur(8px) brightness(0.5);
-    }
+html, body {
+font-family: 'Nunito', sans-serif;
+margin: 0;
+padding: 0;
+height: 100%;
+overflow: hidden;
+background-color: black;
+}
 
-    #bgndVideo {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
+#canvas {
+display: block;
+position: fixed;
+background: black;
+margin: 0;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 5;  
+opacity: 0;    
+transition: opacity 0.5s ease;
+}
 
-    #bgndVideo iframe {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 120vw;
-      height: 120vh;
-    }
+.lil-gui {
+display: none;
+}
 
-    @media (max-width: 768px) {
-      #bgndVideo iframe {
-        width: 200vw;
-        height: 250%;
-      }
-    }
+#videoPoster {
+z-index: 0;
+transition: opacity 0.5s ease;
+background-size: cover;
+background-position: center;
+filter: blur(8px) brightness(0.5);
+}
 
-    .terminal {
-      background-color: rgba(0, 0, 0, 0.3);
-      color: white;
-      font-family: 'Nunito', sans-serif;
-      border-radius: 0.75rem;
-      backdrop-filter: blur(6px);
-    }
+#bgndVideo {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+z-index: 0;
+overflow: hidden;
+pointer-events: none;
+}
 
-    .drag-area {
-      cursor: move;
-    }
+#bgndVideo iframe {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 120vw;
+height: 120vh;
+}
 
-    .avatar-icon {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      margin-right: 0.5rem;
-      object-fit: cover;
-    }
+@media (max-width: 768px) {
+#bgndVideo iframe {
+width: 200vw;
+height: 250%;
+}
+}
 
-    .text-pink-glow {
-      text-shadow: 0 0 4px rgba(255, 105, 180, 0.8);
-    }
-  </style>
+.terminal {
+background-color: rgba(0, 0, 0, 0.3);
+color: white;
+font-family: 'Nunito', sans-serif;
+border-radius: 0.75rem;
+backdrop-filter: blur(6px);
+}
+
+.drag-area {
+cursor: move;
+}
+
+.avatar-icon {
+width: 110px;
+height: 110px;
+border-radius: 50%;
+margin-right: 0.5rem;
+object-fit: cover;
+}
+
+.text-pink-glow {
+text-shadow: 0 0 4px rgba(255, 105, 180, 0.8);
+}
+</style>
 </head>
 
 <body class="bg-black h-screen w-screen overflow-hidden">
-  <div id="bgndVideo">
-    <div id="videoPoster" class="absolute inset-0 bg-black z-0 bg-cover bg-center"></div>
-    <div id="background-video-iframe" style="opacity: 0; transition: opacity 0.5s;"></div>
-  </div>
+<div id="bgndVideo">
+<div id="videoPoster" class="absolute inset-0 bg-black z-0 bg-cover bg-center"></div>
+<div id="background-video-iframe" style="opacity: 0; transition: opacity 0.5s;"></div>
+</div>
 
-  <div id="terminal" class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px]" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-    <div class="drag-area text-pink-600 text-sm mb-2 select-none flex justify-between items-center">
-      <span class="flex items-center space-x-2">
-        <img src="jami.png" alt="Avatar" class="avatar-icon" />
-        <span class="text-[1.5em] text-pink-600 font-semibold"></span>
-      </span>
-      <div class="flex items-center space-x-2 mr-3 -mt-12">
-      <button id="videoToggle" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
-        <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
-          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-        </svg>
-        <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      </button>
-      <button id="nextTrack" class="text-red-300 hover:text-red-400transition-colors duration-200 text-lg leading-none">
-    <svg id="nextIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-      <path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2V6z"/>
-    </svg>
-       </button>
-       <button id="rewind10" class="text-pink-600 hover:text-pink-800 transition-colors duration-200 text-lg leading-none">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 611.999 611.999"
-    class="w-5 h-5 fill-current"
-  >
-    <g>
-      <path d="M611.502,203.367c-3.889-53.216-30.921-100.838-93.276-125.006c-69.361-26.884-151.96-13.033-216.77,16.813
-        c-67.784,31.216-151.313,93.935-171.682,171.605c-7.962,30.357-5.303,63.94,10.093,91.288
-        c19.789,35.152,59.002,56.863,99.094,61.324c55.248,6.147,112.773-16.493,155.435-50.741c24.317-19.521,46.5-44.992,58.997-73.774
-        c11.212-25.821,13.864-56.419,1.925-81.911c-16.243-34.679-54.683-49.835-91.121-44.132c-4.787,0.735-9.337,1.776-13.657,3.016
-        c-4.322,1.234-8.419,2.662-12.295,4.256c-7.765,3.148-14.653,6.919-20.773,10.925c-6.109,4.03-11.447,8.348-16.022,12.747
-        c-1.037,1.043-2.056,2.067-3.054,3.071c-1.08,1.074-2.021,2.094-2.964,3.1c-1.877,2.012-3.588,3.995-5.207,5.882
-        c-3.208,3.799-5.955,7.307-8.307,10.499c-4.731,6.35-8.047,11.323-10.284,14.671c-1.1,1.684-1.934,2.961-2.494,3.817
-        c-0.55,0.863-0.829,1.301-0.829,1.301c-0.92,1.449-0.97,3.367,0.036,4.894c1.366,2.076,4.157,2.652,6.233,1.285
-        c0,0,0.433-0.285,1.288-0.846c0.846-0.567,2.108-1.413,3.772-2.529c3.307-2.238,8.187-5.589,14.48-9.753
-        c6.333-4.129,14.012-9.048,23.248-13.695c2.175-1.069,4.431-2.096,6.846-3.028c2.399-0.946,4.893-1.86,7.522-2.638
-        c5.229-1.598,10.883-2.863,16.803-3.589c2.961-0.352,5.978-0.597,9.027-0.671c3.05-0.067,6.128,0.03,9.183,0.299
-        c10.759,1.003,24.149,4.372,30.659,13.714c4.245,6.092,4.815,14.123,3.391,21.409c-2.471,12.644-10.28,23.585-18.883,33.174
-        c-30.278,33.744-74.119,56.946-119.526,60.718c-37.814,2.947-73.075-14.422-78.121-55.732
-        c-3.607-29.523,10.253-58.809,29.349-81.612c26.954-32.186,60.518-59.114,98.754-76.011c14.09-6.227,28.7-11.46,43.667-15.311
-        c39.803-10.321,86.856-13.345,125.381,3.353c36.924,16.004,60.458,52.144,59.714,92.483c-0.223,11.808-2.412,23.851-6.114,35.878
-        c-3.66,12.037-8.996,24.017-15.499,35.56c-6.539,11.542-14.238,22.664-22.764,33.124C454.222,364.819,387.62,404.605,326.223,430.7
-        c-74.109,31.498-215.664,68.734-268.588-17.843c-27.588-45.131-17.468-102.863-2.502-150.461c0.541-1.722,0.006-3.684-1.497-4.867
-        c-1.942-1.528-4.754-1.193-6.282,0.748c0,0-1.277,1.622-3.752,4.764c-0.624,0.768-1.287,1.718-2.039,2.741
-        c-0.746,1.027-1.563,2.153-2.451,3.375C17.106,299.452,2.396,336.089,0.264,373.622c-1.962,34.546,6.992,69.97,26.952,98.236
-        c23.939,33.9,62.223,55.79,102.375,66.286c63.644,16.637,134.014,11.022,196.48-7.885c14.716-4.454,29.379-9.645,43.893-15.61
-        c14.505-5.984,28.826-12.8,42.955-20.315c51.202-27.233,99.882-64.099,136.409-109.452
-        C588.79,335.885,616.063,265.779,611.502,203.367z"/>
-    </g>
-  </svg>
-       </button>
-      </div>
-    </div>
+<div id="terminal" class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px]" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+<div class="drag-area text-pink-600 text-sm mb-2 select-none flex justify-between items-center">
+<span class="flex items-center space-x-2">
+<img src="jami.png" alt="Avatar" class="avatar-icon" />
+<span class="text-[1.5em] text-pink-600 font-semibold"></span>
+</span>
+<div class="flex items-center space-x-2 mr-3 -mt-12">
+<button id="videoToggle" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
+<svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
+<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+</svg>
+<svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M8 5v14l11-7z" />
+</svg>
+</button>
+<button id="nextTrack" class="text-red-300 hover:text-red-400transition-colors duration-200 text-lg leading-none">
+<svg id="nextIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+<path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2V6z"/>
+</svg>
+</button>
+<button id="rewind10" class="text-pink-600 hover:text-pink-800 transition-colors duration-200 text-lg leading-none">
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 611.999 611.999"
+class="w-5 h-5 fill-current"
+>
+<g>
+<path d="M611.502,203.367c-3.889-53.216-30.921-100.838-93.276-125.006c-69.361-26.884-151.96-13.033-216.77,16.813
+       c-67.784,31.216-151.313,93.935-171.682,171.605c-7.962,30.357-5.303,63.94,10.093,91.288
+       c19.789,35.152,59.002,56.863,99.094,61.324c55.248,6.147,112.773-16.493,155.435-50.741c24.317-19.521,46.5-44.992,58.997-73.774
+       c11.212-25.821,13.864-56.419,1.925-81.911c-16.243-34.679-54.683-49.835-91.121-44.132c-4.787,0.735-9.337,1.776-13.657,3.016
+       c-4.322,1.234-8.419,2.662-12.295,4.256c-7.765,3.148-14.653,6.919-20.773,10.925c-6.109,4.03-11.447,8.348-16.022,12.747
+       c-1.037,1.043-2.056,2.067-3.054,3.071c-1.08,1.074-2.021,2.094-2.964,3.1c-1.877,2.012-3.588,3.995-5.207,5.882
+       c-3.208,3.799-5.955,7.307-8.307,10.499c-4.731,6.35-8.047,11.323-10.284,14.671c-1.1,1.684-1.934,2.961-2.494,3.817
+       c-0.55,0.863-0.829,1.301-0.829,1.301c-0.92,1.449-0.97,3.367,0.036,4.894c1.366,2.076,4.157,2.652,6.233,1.285
+       c0,0,0.433-0.285,1.288-0.846c0.846-0.567,2.108-1.413,3.772-2.529c3.307-2.238,8.187-5.589,14.48-9.753
+       c6.333-4.129,14.012-9.048,23.248-13.695c2.175-1.069,4.431-2.096,6.846-3.028c2.399-0.946,4.893-1.86,7.522-2.638
+       c5.229-1.598,10.883-2.863,16.803-3.589c2.961-0.352,5.978-0.597,9.027-0.671c3.05-0.067,6.128,0.03,9.183,0.299
+       c10.759,1.003,24.149,4.372,30.659,13.714c4.245,6.092,4.815,14.123,3.391,21.409c-2.471,12.644-10.28,23.585-18.883,33.174
+       c-30.278,33.744-74.119,56.946-119.526,60.718c-37.814,2.947-73.075-14.422-78.121-55.732
+       c-3.607-29.523,10.253-58.809,29.349-81.612c26.954-32.186,60.518-59.114,98.754-76.011c14.09-6.227,28.7-11.46,43.667-15.311
+       c39.803-10.321,86.856-13.345,125.381,3.353c36.924,16.004,60.458,52.144,59.714,92.483c-0.223,11.808-2.412,23.851-6.114,35.878
+       c-3.66,12.037-8.996,24.017-15.499,35.56c-6.539,11.542-14.238,22.664-22.764,33.124C454.222,364.819,387.62,404.605,326.223,430.7
+       c-74.109,31.498-215.664,68.734-268.588-17.843c-27.588-45.131-17.468-102.863-2.502-150.461c0.541-1.722,0.006-3.684-1.497-4.867
+       c-1.942-1.528-4.754-1.193-6.282,0.748c0,0-1.277,1.622-3.752,4.764c-0.624,0.768-1.287,1.718-2.039,2.741
+       c-0.746,1.027-1.563,2.153-2.451,3.375C17.106,299.452,2.396,336.089,0.264,373.622c-1.962,34.546,6.992,69.97,26.952,98.236
+       c23.939,33.9,62.223,55.79,102.375,66.286c63.644,16.637,134.014,11.022,196.48-7.885c14.716-4.454,29.379-9.645,43.893-15.61
+       c14.505-5.984,28.826-12.8,42.955-20.315c51.202-27.233,99.882-64.099,136.409-109.452
+       C588.79,335.885,616.063,265.779,611.502,203.367z"/>
+</g>
+</svg>
+</button>
+</div>
+</div>
 
-    <div id="terminalContent">
-      <div class="text-pink-600 text-lg mt-4 mb-4 text-center" id="typed"></div>
-      <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap">
-        <button class="terminal-button ml-2" onclick="showArt()">Art</button>
-        <button class="terminal-button ml-3" onclick="showMessageForm()">Message</button>
-        <button class="terminal-button" onclick="showList()">Playlist</button>
-        <button class="terminal-button ml-4" onclick="siteFAQ()">FAQ</button>
-      </div>
-    </div>
-  </div>
+<div id="terminalContent">
+<div class="text-pink-600 text-lg mt-4 mb-4 text-center" id="typed"></div>
+<div id="buttonRow" class="flex justify-center space-x-4 flex-wrap">
+<button class="terminal-button ml-2" onclick="showArt()">Art</button>
+<button class="terminal-button ml-3" onclick="showMessageForm()">Message</button>
+<button class="terminal-button" onclick="showList()">Playlist</button>
+<button class="terminal-button ml-4" onclick="siteFAQ()">FAQ</button>
+</div>
+</div>
+</div>
 
-  <script>
-    var typed = new Typed('#typed', {
-      strings: [
-  '<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'
+<script>
+var typed = new Typed('#typed', {
+strings: [
+'<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'
 ],
-      typeSpeed: 60,
-      backSpeed: 0,
-      showCursor: true,
-      cursorChar: '_',
-      smartBackspace: false,
-      loop: true,
-    });
+typeSpeed: 60,
+backSpeed: 0,
+showCursor: true,
+cursorChar: '_',
+smartBackspace: false,
+loop: true,
+});
 
-    interact('#terminal').draggable({
-      allowFrom: '.drag-area',
-      inertia: true,
-      modifiers: [
-        interact.modifiers.restrictRect({
-          restriction: 'parent',
-          endOnly: true,
-        }),
-      ],
-      listeners: {
-        move(event) {
-          const target = event.target;
-          const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-          const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-          target.style.transform = `translate(${x}px, ${y}px)`;
-          target.setAttribute('data-x', x);
-          target.setAttribute('data-y', y);
-        },
-      },
-    });
+interact('#terminal').draggable({
+allowFrom: '.drag-area',
+inertia: true,
+modifiers: [
+interact.modifiers.restrictRect({
+restriction: 'parent',
+endOnly: true,
+}),
+],
+listeners: {
+move(event) {
+const target = event.target;
+const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+target.style.transform = `translate(${x}px, ${y}px)`;
+target.setAttribute('data-x', x);
+target.setAttribute('data-y', y);
+},
+},
+});
 
-    let player;
-    let isPlaying = false;
-    let galaxyVisible = false;
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('background-video-iframe', {
-        videoId: videoId,
-        playerVars: {
-          autoplay: 0,
-          mute: 0,
-          controls: 0,
-          loop: 1,
-          playlist: 'IZAgVmowDOU,6tc-GD-DEXw',
-          playsinline: 1,
-          modestbranding: 1,
-          rel: 0,
-          fs: 0,
-          showinfo: 0,
-          iv_load_policy: 3
-        },
-        events: {
-          onStateChange: (event) => {
-            const posterEl = document.getElementById('videoPoster');
-            const iframeEl = document.getElementById('background-video-iframe');
-            if (event.data === YT.PlayerState.PLAYING) {
-                posterEl.style.opacity = '0';
-                iframeEl.style.opacity = '1';
-            }
-            
-            if (event.data === YT.PlayerState.PAUSED) {
-              const currentVideoId = player.getVideoData().video_id;
-
-              const highRes = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
-              const fallback = `https://img.youtube.com/vi/${currentVideoId}/hqdefault.jpg`;
-              const thumbImg = new Image();
-              thumbImg.onload = () => {
-                posterEl.style.backgroundImage = `url(${highRes})`;
-              };
-              thumbImg.onerror = () => {
-                posterEl.style.backgroundImage = `url(${fallback})`;
-              };
-              thumbImg.src = highRes;
-              posterEl.style.opacity = '1';
-              iframeEl.style.opacity = '0';
-            }
-          }
-        }
-      });
-    }
-
-    const videoId = 'IZAgVmowDOU';
-    const posterEl = document.getElementById('videoPoster');
-    const iframeEl = document.getElementById('background-video-iframe');
-    const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-    const fallback = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-    const img = new Image();
-    img.onload = () => {
-      posterEl.style.backgroundImage = `url(${highRes})`;
-    };
-    img.onerror = () => {
-      posterEl.style.backgroundImage = `url(${fallback})`;
-    };
-    img.src = highRes;
-
-    const toggleBtn = document.getElementById('videoToggle');
-    const playIcon = document.getElementById('playIcon');
-    const pauseIcon = document.getElementById('pauseIcon');
-
-    toggleBtn.addEventListener('click', () => {
-      if (!player) return;
-      if (isPlaying) {
-        player.pauseVideo();
-        playIcon.classList.remove('hidden');
-        pauseIcon.classList.add('hidden');
-      } else {
-        player.playVideo();
-        pauseIcon.classList.remove('hidden');
-        playIcon.classList.add('hidden');
-      }
-      isPlaying = !isPlaying;
-    });
-
-    document.getElementById('nextTrack').addEventListener('click', () => {
-      if (player && typeof player.nextVideo === 'function') {
-        player.nextVideo();
-        isPlaying = true;
-        pauseIcon.classList.remove('hidden');
-        playIcon.classList.add('hidden');
-      }   
-    });
-
-    let galaxyScriptLoaded = false;
-    
-    rewind10.addEventListener('click', async () => {
-
-      if (!galaxyScriptLoaded) {
-        await import('./galaxy.js');
-        galaxyScriptLoaded = true;
-      }
-
-      const guiElement = document.querySelector('.lil-gui');
-
-      if (guiElement) {
-        if (guiElement.style.display === 'none' || !guiElement.style.display) {
-          guiElement.style.display = 'block';
-        } else {
-          guiElement.style.display = 'none';
-        }
-      }
-      
-      const canvas = document.getElementById('canvas');  
-
-      if (galaxyVisible) {
-        galaxyVisible = false;
-        rewind10.classList.remove('text-white');
-        rewind10.classList.add('text-pink-600');
-        canvas.style.opacity = '0';
-        canvas.style.pointerEvents = 'none'; 
-      } else {
-        galaxyVisible = true;
-        rewind10.classList.add('text-white');
-        rewind10.classList.remove('text-pink-600');
-        canvas.style.opacity = '1';
-        canvas.style.pointerEvents = 'auto';  
-      }
-    });
-
-  function showList() {
-  const playlist = [
-    {
-      title: "YUNGBLUD - Zombie (Live from BLUDFEST)",
-      videoId: "IZAgVmowDOU",
-      channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-      channelUrl: "https://www.youtube.com/@YUNGBLUD"
-    },
-    {
-      title: "YUNGBLUD - Hello Heaven, Hello",
-      videoId: "6tc-GD-DEXw",
-      channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-      channelUrl: "https://www.youtube.com/@YUNGBLUD"
-    }
-  ];
-
-  let html = `<div class="space-y-4 mt-4">`;
-
-  playlist.forEach(item => {
-    html += `
-      <div class="flex items-center space-x-3">
-        <a href="${item.channelUrl}" target="_blank">
-          <img src="${item.channelAvatar}" width="40" height="40" class="rounded-full border border-opacity-0 border-white" alt="avatar">
-        </a>
-        <a href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" class="text-blue-500 text-base">
-          ${item.title}
-        </a>
-      </div>
-    `;
-  });
-
-  html += `
-    <div class="mt-6 flex justify-center">
-      <button class="terminal-button" onclick="resetTerminal()">Back</button>
-    </div>
-  `;
-
-  $('#terminalContent').html(html);
+let player;
+let isPlaying = false;
+let galaxyVisible = false;
+function onYouTubeIframeAPIReady() {
+player = new YT.Player('background-video-iframe', {
+videoId: videoId,
+playerVars: {
+autoplay: 0,
+mute: 0,
+controls: 0,
+loop: 1,
+playlist: 'IZAgVmowDOU,6tc-GD-DEXw',
+playsinline: 1,
+modestbranding: 1,
+rel: 0,
+fs: 0,
+showinfo: 0,
+iv_load_policy: 3
+},
+events: {
+onStateChange: (event) => {
+const posterEl = document.getElementById('videoPoster');
+const iframeEl = document.getElementById('background-video-iframe');
+if (event.data === YT.PlayerState.PLAYING) {
+posterEl.style.opacity = '0';
+iframeEl.style.opacity = '1';
 }
-    
-     function showArt() {
-      $('#terminalContent').html(`
-  <div class="text-pink-600 text-lg mb-4 mt-4"></div>
-    <div id="artGallery" class="grid grid-cols-2 gap-4">
-    <a href="art1.jpg" class="block rounded overflow-hidden">
-      <img src="art1_thumb.jpg" alt="Jamie - Pearl" class="rounded hover:scale-105 transition transform duration-200" />
-        </a>
-      <a href="art2.jpg" class="block rounded overflow-hidden">
-      <img src="art2_thumb.jpg" alt="Jamie - Pixel Fit" class="rounded hover:scale-105 transition transform duration-200" />
-        </a>
-      <a href="art3.jpg" class="block rounded overflow-hidden">
-      <img src="art3_thumb.jpg" alt="Jamie - Tokyo" class="rounded hover:scale-105 transition transform duration-200" />
-        </a>
-      <a href="art4.jpg" class="block rounded overflow-hidden">
-      <img src="art4_thumb.jpg" alt="BLUDFEST 2025" class="rounded hover:scale-105 transition transform duration-200" />
-        </a>
-      </div>
-    <div class="mt-4 flex justify-center">
-    <button class="terminal-button" onclick="resetTerminal()">Back</button>
-      </div>
-    );
-    
-      setTimeout(() => {
-       lightGallery(document.getElementById('artGallery'), {
-         thumbnail: true,
-         zoom: true,
-         download: false,
-       });
-     }, 100); 
-    }
 
-    function siteFAQ() {
-      $('#terminalContent').html(`
-        <div class="text-red-300 text-lg mb-4 mt-4">Libraries used:</div>
-        <ul class="list-disc list-inside text-white space-y-1">
-        <li class="text-pink-glow">jQuery</li>
-         <li class="text-pink-glow">Typed.js</li>
-         <li class="text-pink-glow">Interact.js</li>
-         <li class="text-pink-glow">Tailwind CSS</li>
-         <li class="text-pink-glow">YouTube IFrame API</li>
-        </ul>
-        </div>
-        <div id="buttonRow" class="flex justify-center">
-        <button class="terminal-button" onclick="resetTerminal()">Back</button>
-        </div>
-        `);
-    }
+if (event.data === YT.PlayerState.PAUSED) {
+const currentVideoId = player.getVideoData().video_id;
 
-  let lastSubmissionTime = 0;
-  function showMessageForm() {
-    
-    document.getElementById('terminalContent').innerHTML = `
-      <form id="guestbookForm" class="space-y-4 mt-4">
-        <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-gray-700 text-white border border-pink-600 bg-opacity-20 border-opacity-75" required>
-        <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-gray-700 text-white border border-pink-600 bg-opacity-20 border-opacity-75" required></textarea>
-        <div class="flex justify-center space-x-4 flex-wrap">
-        <button type="submit" class="terminal-button">Submit</button>
-        <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
-        </div>
-        <div id="formResponse" class="text-pink-600 mt-2"></div>
-      </form>
-    `;
+const highRes = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
+const fallback = `https://img.youtube.com/vi/${currentVideoId}/hqdefault.jpg`;
+const thumbImg = new Image();
+thumbImg.onload = () => {
+posterEl.style.backgroundImage = `url(${highRes})`;
+};
+thumbImg.onerror = () => {
+posterEl.style.backgroundImage = `url(${fallback})`;
+};
+thumbImg.src = highRes;
+posterEl.style.opacity = '1';
+iframeEl.style.opacity = '0';
+}
+}
+}
+});
+}
 
-    const form = document.getElementById('guestbookForm');
-    form.addEventListener('submit', submitMessage);
-  }
+const videoId = 'IZAgVmowDOU';
+const posterEl = document.getElementById('videoPoster');
+const iframeEl = document.getElementById('background-video-iframe');
+const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+const fallback = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+const img = new Image();
+img.onload = () => {
+posterEl.style.backgroundImage = `url(${highRes})`;
+};
+img.onerror = () => {
+posterEl.style.backgroundImage = `url(${fallback})`;
+};
+img.src = highRes;
 
-  function submitMessage(event) {
-    event.preventDefault();
-    const name = document.getElementById("name").value.trim();
-    const message = document.getElementById("message").value.trim();
-    const now = Date.now();
+const toggleBtn = document.getElementById('videoToggle');
+const playIcon = document.getElementById('playIcon');
+const pauseIcon = document.getElementById('pauseIcon');
 
-    if (!name || !message) {
-      alert("Fill in the fields!");
-      return;
-    }
+toggleBtn.addEventListener('click', () => {
+if (!player) return;
+if (isPlaying) {
+player.pauseVideo();
+playIcon.classList.remove('hidden');
+pauseIcon.classList.add('hidden');
+} else {
+player.playVideo();
+pauseIcon.classList.remove('hidden');
+playIcon.classList.add('hidden');
+}
+isPlaying = !isPlaying;
+});
 
-    if (now - lastSubmissionTime < 300000) {
-      alert("5 minutes between each message.");
-      return;
-    }
+document.getElementById('nextTrack').addEventListener('click', () => {
+if (player && typeof player.nextVideo === 'function') {
+player.nextVideo();
+isPlaying = true;
+pauseIcon.classList.remove('hidden');
+playIcon.classList.add('hidden');
+}   
+});
 
-    lastSubmissionTime = now;
+let galaxyScriptLoaded = false;
 
-    const data = {
-      name: name,
-      comment: message,
-      timestamp: new Date().toISOString(),
-    };
+rewind10.addEventListener('click', async () => {
 
-    const url = "https://script.google.com/macros/s/AKfycbyHw5sLKQB5OWs3pRSed4T2e-0aX32fwg03OXbyVH_UB6pOyzhCntv_9PDaU8WXeuql/exec";
+if (!galaxyScriptLoaded) {
+await import('./galaxy.js');
+galaxyScriptLoaded = true;
+}
 
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-      mode: "no-cors",
-    });
+const guiElement = document.querySelector('.lil-gui');
 
-    document.getElementById("name").value = "";
-    document.getElementById("message").value = "";
-    document.getElementById("formResponse").textContent = "Thank you for your message!";
-  }
-    
-    function resetTerminal() {
-      $('#terminalContent').html(`
-        <div id="typed" class="text-pink-600 text-lg mb-4 mt-4 text-center"></div>
-        <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap">
-          <button class="terminal-button ml-2" onclick="showArt()">Art</button>
-          <button class="terminal-button ml-3" onclick="showMessageForm()">Message</button>
-          <button class="terminal-button" onclick="showList()">Playlist</button>
-          <button class="terminal-button ml-4" onclick="siteFAQ()">FAQ</button>
-        </div>
-      `);
-      new Typed('#typed', {
-        
-  strings: ['<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
-  '<span class="text-white text-xl mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'],
-        typeSpeed: 60,
-        backSpeed: 0,
-        showCursor: true,
-        cursorChar: '_',
-        smartBackspace: false,
-        loop: true,
-      });
-    }
+if (guiElement) {
+if (guiElement.style.display === 'none' || !guiElement.style.display) {
+guiElement.style.display = 'block';
+} else {
+guiElement.style.display = 'none';
+}
+}
 
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.head.appendChild(tag);
-  </script>
+const canvas = document.getElementById('canvas');  
+
+if (galaxyVisible) {
+galaxyVisible = false;
+rewind10.classList.remove('text-white');
+rewind10.classList.add('text-pink-600');
+canvas.style.opacity = '0';
+canvas.style.pointerEvents = 'none'; 
+} else {
+galaxyVisible = true;
+rewind10.classList.add('text-white');
+rewind10.classList.remove('text-pink-600');
+canvas.style.opacity = '1';
+canvas.style.pointerEvents = 'auto';  
+}
+});
+
+function showList() {
+const playlist = [
+{
+title: "YUNGBLUD - Zombie (Live from BLUDFEST)",
+videoId: "IZAgVmowDOU",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@YUNGBLUD"
+},
+{
+title: "YUNGBLUD - Hello Heaven, Hello",
+videoId: "6tc-GD-DEXw",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@YUNGBLUD"
+}
+];
+
+let html = `<div class="space-y-4 mt-4">`;
+
+playlist.forEach(item => {
+html += `
+     <div class="flex items-center space-x-3">
+       <a href="${item.channelUrl}" target="_blank">
+          <img src="${item.channelAvatar}" width="40" height="40" class="rounded-full border border-opacity-0 border-white" alt="avatar">
+       </a>
+       <a href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" class="text-blue-500 text-base">
+         ${item.title}
+       </a>
+     </div>
+   `;
+});
+
+html += `
+   <div class="mt-6 flex justify-center">
+     <button class="terminal-button" onclick="resetTerminal()">Back</button>
+   </div>
+ `;
+
+$('#terminalContent').html(html);
+}
+
+function showArt() {
+$('#terminalContent').html(`
+ <div class="text-pink-600 text-lg mb-4 mt-4"></div>
+   <div id="artGallery" class="grid grid-cols-2 gap-4">
+   <a href="art1.jpg" class="block rounded overflow-hidden">
+     <img src="art1_thumb.jpg" alt="Jamie - Pearl" class="rounded hover:scale-105 transition transform duration-200" />
+       </a>
+     <a href="art2.jpg" class="block rounded overflow-hidden">
+     <img src="art2_thumb.jpg" alt="Jamie - Pixel Fit" class="rounded hover:scale-105 transition transform duration-200" />
+       </a>
+     <a href="art3.jpg" class="block rounded overflow-hidden">
+     <img src="art3_thumb.jpg" alt="Jamie - Tokyo" class="rounded hover:scale-105 transition transform duration-200" />
+       </a>
+     <a href="art4.jpg" class="block rounded overflow-hidden">
+     <img src="art4_thumb.jpg" alt="Bludfest 2025" class="rounded hover:scale-105 transition transform duration-200" />
+       </a>
+     </div>
+   <div class="mt-4 flex justify-center">
+   <button class="terminal-button" onclick="resetTerminal()">Back</button>
+     </div>
+   `);
+
+setTimeout(() => {
+lightGallery(document.getElementById('artGallery'), {
+thumbnail: true,
+zoom: true,
+download: false,
+});
+}, 100); 
+}
+
+function siteFAQ() {
+$('#terminalContent').html(`
+       <div class="text-red-300 text-lg mb-4 mt-4">Libraries used:</div>
+       <ul class="list-disc list-inside text-white space-y-1">
+       <li class="text-pink-glow">jQuery</li>
+        <li class="text-pink-glow">Typed.js</li>
+        <li class="text-pink-glow">Interact.js</li>
+        <li class="text-pink-glow">Tailwind CSS</li>
+        <li class="text-pink-glow">YouTube IFrame API</li>
+       </ul>
+       </div>
+       <div id="buttonRow" class="flex justify-center">
+       <button class="terminal-button" onclick="resetTerminal()">Back</button>
+       </div>
+       `);
+}
+
+let lastSubmissionTime = 0;
+function showMessageForm() {
+
+document.getElementById('terminalContent').innerHTML = `
+     <form id="guestbookForm" class="space-y-4 mt-4">
+       <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-gray-700 text-white border border-pink-600 bg-opacity-20 border-opacity-75" required>
+       <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-gray-700 text-white border border-pink-600 bg-opacity-20 border-opacity-75" required></textarea>
+       <div class="flex justify-center space-x-4 flex-wrap">
+       <button type="submit" class="terminal-button">Submit</button>
+       <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
+       </div>
+       <div id="formResponse" class="text-pink-600 mt-2"></div>
+     </form>
+   `;
+
+const form = document.getElementById('guestbookForm');
+form.addEventListener('submit', submitMessage);
+}
+
+function submitMessage(event) {
+event.preventDefault();
+const name = document.getElementById("name").value.trim();
+const message = document.getElementById("message").value.trim();
+const now = Date.now();
+
+if (!name || !message) {
+alert("Fill in the fields!");
+return;
+}
+
+if (now - lastSubmissionTime < 300000) {
+alert("5 minutes between each message.");
+return;
+}
+
+lastSubmissionTime = now;
+
+const data = {
+name: name,
+comment: message,
+timestamp: new Date().toISOString(),
+};
+
+const url = "https://script.google.com/macros/s/AKfycbyHw5sLKQB5OWs3pRSed4T2e-0aX32fwg03OXbyVH_UB6pOyzhCntv_9PDaU8WXeuql/exec";
+
+fetch(url, {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+},
+body: JSON.stringify(data),
+mode: "no-cors",
+});
+
+document.getElementById("name").value = "";
+document.getElementById("message").value = "";
+document.getElementById("formResponse").textContent = "Thank you for your message!";
+}
+
+function resetTerminal() {
+$('#terminalContent').html(`
+       <div id="typed" class="text-pink-600 text-lg mb-4 mt-4 text-center"></div>
+       <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap">
+         <button class="terminal-button ml-2" onclick="showArt()">Art</button>
+         <button class="terminal-button ml-3" onclick="showMessageForm()">Message</button>
+         <button class="terminal-button" onclick="showList()">Playlist</button>
+         <button class="terminal-button ml-4" onclick="siteFAQ()">FAQ</button>
+       </div>
+     `);
+new Typed('#typed', {
+
+strings: ['<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'],
+typeSpeed: 60,
+backSpeed: 0,
+showCursor: true,
+cursorChar: '_',
+smartBackspace: false,
+loop: true,
+});
+}
+
+const tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(tag);
+</script>
 </body>
 </html>
