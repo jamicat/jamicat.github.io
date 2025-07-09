@@ -254,7 +254,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'IZAgVmowDOU,6tc-GD-DEXw',
+playlist: 'viimfQi_pUw,6tc-GD-DEXw',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -292,7 +292,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'IZAgVmowDOU';
+const videoId = 'viimfQi_pUw';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -372,13 +372,13 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - Zombie (Live from BLUDFEST)",
-videoId: "IZAgVmowDOU",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+title: "Billie Eilish - Ocean Eyes (Official Music Video)",
+videoId: "viimfQi_pUw",
+channelAvatar: "https://yt3.googleusercontent.com/dirvtoDAmx-u0UR76-pxfhYL6Wxj2vfL2geUcxDwk62tTWWhGG6QDGc63RG3NdOz38-yBwRHDQ=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@YUNGBLUD"
 },
 {
-title: "YUNGBLUD - Hello Heaven, Hello",
+title: "YUNGBLUD - Hello Heaven, Hello (From The Blacklodge)",
 videoId: "6tc-GD-DEXw",
 channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@YUNGBLUD"
@@ -516,38 +516,43 @@ document.getElementById("message").value = "";
 document.getElementById("formResponse").textContent = "Thank you for your message!";
 }
 
-function resetTerminal() {
-$('#terminalContent').html(`
-       <div id="typed" class="text-pink-600 text-lg mb-4 mt-4 text-center"></div>
-       <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap">
-         <button class="terminal-button ml-2" onclick="showArt()">Art</button>
-         <button class="terminal-button ml-3" onclick="showMessageForm()">Message</button>
-         <button class="terminal-button" onclick="showList()">Playlist</button>
-         <button class="terminal-button ml-4" onclick="siteFAQ()">FAQ</button>
-       </div>
-     `);
-new Typed('#typed', {
+       function resetTerminal() {
+              $('#terminalContent').html(`
+              <div id="typed" class="text-pink-600 text-lg mb-4 mt-4 text-center"></div>
+              <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap">
+              <button class="terminal-button ml-2" onclick="showArt()">Art</button>
+              <button class="terminal-button ml-3" onclick="showMessageForm()">Message</button>
+              <button class="terminal-button" onclick="showList()">Playlist</button>
+              <button class="terminal-button ml-4" onclick="siteFAQ()">FAQ</button>
+              </div>
+              `);
+       
+              new Typed('#typed', {
 
-strings: ['<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'],
-typeSpeed: 60,
-backSpeed: 0,
-showCursor: true,
-cursorChar: '_',
-smartBackspace: false,
-loop: true,
-});
+       strings: ['<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
+                 '<span class="text-white text-xl mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
+                 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
+                 '<span class="text-white text-xl mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
+                 '<span class="text-white text-xl mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
+                 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
+                 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
+                 '<span class="text-white text-xl mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'],
+              typeSpeed: 60,
+              backSpeed: 0,
+              showCursor: true,
+              cursorChar: '_',
+              smartBackspace: false,
+              loop: true,
+       });
 }
 
-const tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-document.head.appendChild(tag);
+       const tag = document.createElement('script');
+       tag.src = "https://www.youtube.com/iframe_api";
+       document.head.appendChild(tag);
+       
+       window.addEventListener('load', () => {
+              document.getElementById('toggleBtn').click();
+       });
 </script>
 </body>
 </html>
