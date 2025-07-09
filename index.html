@@ -250,7 +250,7 @@ function onYouTubeIframeAPIReady() {
 player = new YT.Player('background-video-iframe', {
 videoId: videoId,
 playerVars: {
-autoplay: 0,
+autoplay: 1,
 mute: 0,
 controls: 0,
 loop: 1,
@@ -550,9 +550,6 @@ document.getElementById("formResponse").textContent = "Thank you for your messag
        tag.src = "https://www.youtube.com/iframe_api";
        document.head.appendChild(tag);
        
-       window.addEventListener('load', () => {
-              document.getElementById('toggleBtn').click();
-       });
 </script>
 </body>
 </html>
