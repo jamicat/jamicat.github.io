@@ -58,9 +58,9 @@ showinfo: 0,
 iv_load_policy: 3
 },
 events: {
-       onReady: () => {
+       /*onReady: () => {
         toggleBtn.click(); 
-      },
+      },*/
 onStateChange: (event) => {
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
