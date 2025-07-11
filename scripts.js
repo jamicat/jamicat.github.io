@@ -173,7 +173,7 @@ const playlist = [
 title: "Billie Eilish - Bellyache (Official Music Video)",
 videoId: "gBRi6aZJGj4",
 channelAvatar: "https://yt3.googleusercontent.com/dirvtoDAmx-u0UR76-pxfhYL6Wxj2vfL2geUcxDwk62tTWWhGG6QDGc63RG3NdOz38-yBwRHDQ=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@YUNGBLUD"
+channelUrl: "https://www.youtube.com/@BillieEilish"
 },
 {
 title: "YUNGBLUD - Hello Heaven, Hello (From The Blacklodge)",
