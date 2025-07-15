@@ -49,7 +49,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'SJs9Lsq55yI,6tc-GD-DEXw',
+playlist: 'viimfQi_pUw,6tc-GD-DEXw',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -58,9 +58,9 @@ showinfo: 0,
 iv_load_policy: 3
 },
 events: {
-       /*onReady: () => {
-        toggleBtn.click(); 
-      },*/
+/*onReady: () => {
+       toggleBtn.click(); 
+     },*/
 onStateChange: (event) => {
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
@@ -90,7 +90,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'SJs9Lsq55yI';
+const videoId = 'viimfQi_pUw';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -170,10 +170,10 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - Life On Mars (Live At A Bowie Celebration 2021) (Official Video)",
-videoId: "SJs9Lsq55yI",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@YUNGBLUD"
+title: "Billie Eilish - Ocean Eyes (Official Music Video)",
+videoId: "viimfQi_pUw",
+channelAvatar: "https://yt3.googleusercontent.com/dirvtoDAmx-u0UR76-pxfhYL6Wxj2vfL2geUcxDwk62tTWWhGG6QDGc63RG3NdOz38-yBwRHDQ=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@BillieEilish"
 },
 {
 title: "YUNGBLUD - Hello Heaven, Hello (From The Blacklodge)",
@@ -187,47 +187,47 @@ let html = `<div class="space-y-4 mt-4">`;
 
 playlist.forEach(item => {
 html += `
-     <div class="flex items-center space-x-3">
-       <a href="${item.channelUrl}" target="_blank">
-          <img src="${item.channelAvatar}" width="40" height="40" class="rounded-full border border-opacity-0 border-white" alt="avatar">
-       </a>
-       <a href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" class="text-blue-500 text-base">
-         ${item.title}
-       </a>
-     </div>
-   `;
+    <div class="flex items-center space-x-3">
+      <a href="${item.channelUrl}" target="_blank">
+         <img src="${item.channelAvatar}" width="40" height="40" class="rounded-full border border-opacity-0 border-white" alt="avatar">
+      </a>
+      <a href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" class="text-blue-500 text-base">
+        ${item.title}
+      </a>
+    </div>
+  `;
 });
 
 html += `
-   <div class="mt-6 flex justify-center">
-     <button class="terminal-button" onclick="resetTerminal()">Back</button>
-   </div>
- `;
+  <div class="mt-6 flex justify-center">
+    <button class="terminal-button" onclick="resetTerminal()">Back</button>
+  </div>
+`;
 
 $('#terminalContent').html(html);
 }
 
 function showArt() {
 $('#terminalContent').html(`
- <div class="text-pink-600 text-lg mb-4 mt-4"></div>
-   <div id="artGallery" class="grid grid-cols-2 gap-4">
-   <a href="art1.jpg" class="block rounded overflow-hidden">
-     <img src="art1_thumb.jpg" alt="Jamie - Pearl" class="rounded hover:scale-105 transition transform duration-200" />
-       </a>
-     <a href="art2.jpg" class="block rounded overflow-hidden">
-     <img src="art2_thumb.jpg" alt="Jamie - Pixel Fit" class="rounded hover:scale-105 transition transform duration-200" />
-       </a>
-     <a href="art3.jpg" class="block rounded overflow-hidden">
-     <img src="art3_thumb.jpg" alt="Jamie - Tokyo" class="rounded hover:scale-105 transition transform duration-200" />
-       </a>
-     <a href="art4.jpg" class="block rounded overflow-hidden">
-     <img src="art4_thumb.jpg" alt="Bludfest 2025" class="rounded hover:scale-105 transition transform duration-200" />
-       </a>
-     </div>
-   <div class="mt-4 flex justify-center">
-   <button class="terminal-button" onclick="resetTerminal()">Back</button>
-     </div>
-   `);
+<div class="text-pink-600 text-lg mb-4 mt-4"></div>
+  <div id="artGallery" class="grid grid-cols-2 gap-4">
+  <a href="art1.jpg" class="block rounded overflow-hidden">
+    <img src="art1_thumb.jpg" alt="Jamie - Pearl" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
+    <a href="art2.jpg" class="block rounded overflow-hidden">
+    <img src="art2_thumb.jpg" alt="Jamie - Pixel Fit" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
+    <a href="art3.jpg" class="block rounded overflow-hidden">
+    <img src="art3_thumb.jpg" alt="Jamie - Tokyo" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
+    <a href="art4.jpg" class="block rounded overflow-hidden">
+    <img src="art4_thumb.jpg" alt="Bludfest 2025" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
+    </div>
+  <div class="mt-4 flex justify-center">
+  <button class="terminal-button" onclick="resetTerminal()">Back</button>
+    </div>
+  `);
 
 setTimeout(() => {
 lightGallery(document.getElementById('artGallery'), {
@@ -240,35 +240,35 @@ download: false,
 
 function siteFAQ() {
 $('#terminalContent').html(`
-       <div class="text-red-300 text-lg mb-4 mt-4">Libraries used:</div>
-       <ul class="list-disc list-inside text-white space-y-1">
-       <li class="text-pink-glow">jQuery</li>
-        <li class="text-pink-glow">Typed.js</li>
-        <li class="text-pink-glow">Interact.js</li>
-        <li class="text-pink-glow">Tailwind CSS</li>
-        <li class="text-pink-glow">YouTube IFrame API</li>
-       </ul>
-       </div>
-       <div id="buttonRow" class="flex justify-center">
-       <button class="terminal-button" onclick="resetTerminal()">Back</button>
-       </div>
-       `);
+      <div class="text-red-300 text-lg mb-4 mt-4">Libraries used:</div>
+      <ul class="list-disc list-inside text-white space-y-1">
+      <li class="text-pink-glow">jQuery</li>
+       <li class="text-pink-glow">Typed.js</li>
+       <li class="text-pink-glow">Interact.js</li>
+       <li class="text-pink-glow">Tailwind CSS</li>
+       <li class="text-pink-glow">YouTube IFrame API</li>
+      </ul>
+      </div>
+      <div id="buttonRow" class="flex justify-center">
+      <button class="terminal-button" onclick="resetTerminal()">Back</button>
+      </div>
+      `);
 }
 
 let lastSubmissionTime = 0;
 function showMessageForm() {
 
 document.getElementById('terminalContent').innerHTML = `
-     <form id="guestbookForm" class="space-y-4 mt-4">
-       <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-gray-700 text-white border border-pink-600 bg-opacity-20 border-opacity-75" required>
-       <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-gray-700 text-white border border-pink-600 bg-opacity-20 border-opacity-75" required></textarea>
-       <div class="flex justify-center space-x-4 flex-wrap">
-       <button type="submit" class="terminal-button">Submit</button>
-       <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
-       </div>
-       <div id="formResponse" class="text-pink-600 mt-2"></div>
-     </form>
-   `;
+    <form id="guestbookForm" class="space-y-4 mt-4">
+      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-gray-700 text-white border border-pink-600 bg-opacity-20 border-opacity-75" required>
+      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-gray-700 text-white border border-pink-600 bg-opacity-20 border-opacity-75" required></textarea>
+      <div class="flex justify-center space-x-4 flex-wrap">
+      <button type="submit" class="terminal-button">Submit</button>
+      <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
+      </div>
+      <div id="formResponse" class="text-pink-600 mt-2"></div>
+    </form>
+  `;
 
 const form = document.getElementById('guestbookForm');
 form.addEventListener('submit', submitMessage);
@@ -314,36 +314,36 @@ document.getElementById("message").value = "";
 document.getElementById("formResponse").textContent = "Thank you for your message!";
 }
 
-       function resetTerminal() {
-              $('#terminalContent').html(`
-              <div id="typed" class="text-pink-600 text-lg mb-4 mt-4 text-center"></div>
-              <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap">
-              <button class="terminal-button ml-2" onclick="showArt()">Art</button>
-              <!--button class="terminal-button ml-3" onclick="showMessageForm()">Message</button-->
-              <button class="terminal-button" onclick="showList()">Playlist</button>
-              <button class="terminal-button ml-4" onclick="siteFAQ()">FAQ</button>
-              </div>
-              `);
-       
-              new Typed('#typed', {
+function resetTerminal() {
+$('#terminalContent').html(`
+             <div id="typed" class="text-pink-600 text-lg mb-4 mt-4 text-center"></div>
+             <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap">
+             <button class="terminal-button ml-2" onclick="showArt()">Art</button>
+          <!--button class="terminal-button ml-3" onclick="showMessageForm()">Message</button-->
+             <button class="terminal-button" onclick="showList()">Playlist</button>
+             <button class="terminal-button ml-4" onclick="siteFAQ()">FAQ</button>
+             </div>
+             `);
 
-       strings: ['<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
-                 '<span class="text-white text-xl mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
-                 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
-                 '<span class="text-white text-xl mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
-                 '<span class="text-white text-xl mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
-                 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
-                 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
-                 '<span class="text-white text-xl mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'],
-              typeSpeed: 60,
-              backSpeed: 0,
-              showCursor: true,
-              cursorChar: '_',
-              smartBackspace: false,
-              loop: true,
-       });
+new Typed('#typed', {
+
+strings: ['<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
+'<span class="text-white text-xl mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'],
+typeSpeed: 60,
+backSpeed: 0,
+showCursor: true,
+cursorChar: '_',
+smartBackspace: false,
+loop: true,
+});
 }
 
-       const tag = document.createElement('script');
-       tag.src = "https://www.youtube.com/iframe_api";
-       document.head.appendChild(tag);
+const tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(tag);
