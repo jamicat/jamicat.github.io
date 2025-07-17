@@ -49,7 +49,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'SJs9Lsq55yI,6tc-GD-DEXw',
+playlist: '3T5qM2mH3mw,6tc-GD-DEXw',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -90,7 +90,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'SJs9Lsq55yI';
+const videoId = '3T5qM2mH3mw';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -170,8 +170,8 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - Life On Mars? (Live At A Bowie Celebration)",
-videoId: "SJs9Lsq55yI",
+title: "YUNGBLUD - Ghosts (Live From Hansa Studios)",
+videoId: "3T5qM2mH3mw",
 channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@YUNGBLUD"
 },
