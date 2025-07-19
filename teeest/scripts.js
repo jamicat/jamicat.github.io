@@ -256,6 +256,12 @@ $('#terminalContent').html(`
 }
 
 let lastSubmissionTime = 0;
+
+function showGuestBook() {
+
+
+}
+
 function showMessageForm() {
 
 document.getElementById('terminalContent').innerHTML = `
@@ -319,6 +325,7 @@ $('#terminalContent').html(`
              <div id="typed" class="text-pink-600 text-lg mb-4 mt-4 text-center"></div>
              <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap">
              <button class="terminal-button ml-2" onclick="showArt()">Art</button>
+             <button class="terminal-button ml-5" onclick="showGuestBook()">Guestbook</button>
              <button class="terminal-button ml-3" onclick="showMessageForm()">Message</button>
              <button class="terminal-button" onclick="showList()">Playlist</button>
              <button class="terminal-button ml-4" onclick="siteFAQ()">FAQ</button>
