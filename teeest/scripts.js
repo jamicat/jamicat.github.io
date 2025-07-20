@@ -266,8 +266,8 @@ function showGuestBook() {
   const guestBookWindow = document.createElement('div');
   guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px]';
   guestBookWindow.style.zIndex = 11;
-  guestBookWindow.style.top = '55%';
-  guestBookWindow.style.left = '55%';
+  guestBookWindow.style.top = '50%';
+  guestBookWindow.style.left = '50%';
   guestBookWindow.style.transform = 'translate(-50%, -50%)';
   guestBookWindow.id = 'guestBookWindow';
 
@@ -286,8 +286,7 @@ function showGuestBook() {
       </div>
     </div>
     <div class="text-pink-300 text-md mt-4 mb-4 text-center">
-      <p>Welcome to the Guestbook!</p>
-      <p>Be nice.</p>
+      <p>Welcome to the Guestbook! Be nice.</p>
     </div>
     <form class="space-y-4 text-white">
       <input type="text" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" />
