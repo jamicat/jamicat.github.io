@@ -38,7 +38,7 @@ userSelect: 'none',
 <div id="background-video-iframe" style="opacity: 0; transition: opacity 0.5s;"></div>
 </div>
 
-<div id="terminal" class="terminal absolute p-6 w-auto max-w-full sm:min-w-[500px]" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+<div id="terminal" class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px]" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
 <div class="drag-area text-pink-600 text-sm mb-2 select-none flex justify-between items-center">
 <span class="flex items-center space-x-2">
 <img src="jami.png" alt="Avatar" class="avatar-icon" />
@@ -95,7 +95,7 @@ class="w-5 h-5 fill-current"
 
 <div id="terminalContent">
 <div class="text-pink-600 text-lg mt-4 mb-4 text-center" id="typed"></div>
-<div id="buttonRow" class="flex justify-center space-x-4 whitespace-nowrap">
+<div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
 <button class="terminal-button ml-2" onclick="showArt()">Art</button>
 <button class="terminal-button ml-5" onclick="showGuestBook()">Guestbook</button>
 <button class="terminal-button ml-3" onclick="showMessageForm()">Message</button>
