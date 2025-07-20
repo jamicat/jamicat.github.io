@@ -386,7 +386,7 @@ document.getElementById("formResponse").textContent = "Thank you for your messag
 function resetTerminal() {
 $('#terminalContent').html(`
              <div id="typed" class="text-pink-600 text-lg mb-4 mt-4 text-center"></div>
-             <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap">
+             <div id="buttonRow" class="flex justify-center space-x-4 whitespace-nowrap">
              <button class="terminal-button ml-2" onclick="showArt()">Art</button>
              <button class="terminal-button ml-5" onclick="showGuestBook()">Guestbook</button>
              <button class="terminal-button ml-3" onclick="showMessageForm()">Message</button>
