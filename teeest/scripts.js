@@ -282,11 +282,11 @@ function showGuestBook() {
       </div>
     </div>
     <div class="text-pink-300 text-md mt-4 mb-4 text-center">
-      <p>Welcome to the Guestbook! Leave your message below:</p>
+      <p>Welcome to the Guestbook! Be nice.</p>
     </div>
     <form class="space-y-4 text-white">
-      <input type="text" placeholder="Your name" class="w-full p-2 bg-black border border-pink-600 rounded" />
-      <textarea placeholder="Your message" class="w-full p-2 bg-black border border-pink-600 rounded"></textarea>
+      <input type="text" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded" />
+      <textarea placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded"></textarea>
       <div class="text-center">
         <button type="submit" class="terminal-button">Submit</button>
       </div>
@@ -325,8 +325,8 @@ function showMessageForm() {
 
 document.getElementById('terminalContent').innerHTML = `
     <form id="guestbookForm" class="space-y-4 mt-4">
-      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-gray-700 text-white border border-pink-600 bg-opacity-20 border-opacity-75" required>
-      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-gray-700 text-white border border-pink-600 bg-opacity-20 border-opacity-75" required></textarea>
+      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-black text-white border border-pink-600 bg-opacity-20 border-opacity-75" required>
+      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-600 bg-opacity-20 border-opacity-75" required></textarea>
       <div class="flex justify-center space-x-4 flex-wrap">
       <button type="submit" class="terminal-button">Submit</button>
       <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
