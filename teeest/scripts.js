@@ -285,8 +285,8 @@ function showGuestBook() {
       <p>Welcome to the Guestbook! Be nice.</p>
     </div>
     <form class="space-y-4 text-white">
-      <input type="text" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded" />
-      <textarea placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded"></textarea>
+      <input type="text" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" />
+      <textarea placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75"></textarea>
       <div class="text-center">
         <button type="submit" class="terminal-button">Submit</button>
       </div>
