@@ -18,25 +18,42 @@ loop: true,
 });
 
 interact('#terminal').draggable({
-allowFrom: '.drag-area',
-inertia: true,
-modifiers: [
-interact.modifiers.restrictRect({
-restriction: 'parent',
-endOnly: true,
-}),
-],
-listeners: {
-move(event) {
-const target = event.target;
-const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-target.style.transform = `translate(${x}px, ${y}px)`;
-target.setAttribute('data-x', x);
-target.setAttribute('data-y', y);
-},
-},
+  allowFrom: '.drag-area',
+  inertia: true,
+  modifiers: [
+    interact.modifiers.restrictRect({
+      restriction: 'parent',
+      endOnly: true,
+    }),
+  ],
+  listeners: {
+    start(event) {
+      const target = event.target;
+
+      if (target.style.transform.includes('translate(-50%, -50%)')) {
+        const rect = target.getBoundingClientRect();
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+        target.style.top = rect.top + scrollTop + 'px';
+        target.style.left = rect.left + scrollLeft + 'px';
+        target.style.transform = 'translate(0, 0)';
+        target.setAttribute('data-x', 0);
+        target.setAttribute('data-y', 0);
+      }
+    },
+    move(event) {
+      const target = event.target;
+      const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+      const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+           
+      target.style.transform = `translate(${x}px, ${y}px)`;
+      target.setAttribute('data-x', x);
+      target.setAttribute('data-y', y);
+    },
+  },
 });
+
 
 let player;
 let isPlaying = false;
