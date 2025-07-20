@@ -226,25 +226,30 @@ $('#terminalContent').html(html);
 
 function showArt() {
 $('#terminalContent').html(`
-<div class="text-pink-600 text-lg mb-4 mt-4"></div>
-  <div id="artGallery" class="grid grid-cols-2 gap-4">
-  <a href="art1.jpg" class="block rounded overflow-hidden">
-    <img src="art1_thumb.jpg" alt="Jamie - Pearl" class="rounded hover:scale-105 transition transform duration-200" />
+  <div class="text-pink-600 text-lg mb-4 mt-4"></div>
+  
+  <div id="lightgalleryWrapper" class="max-w-full overflow-hidden">
+    <div id="artGallery" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      <a href="art1.jpg" class="block rounded overflow-hidden">
+        <img src="art1_thumb.jpg" alt="Jamie - Pearl" class="rounded hover:scale-105 transition-transform duration-200 max-w-full h-auto object-contain" />
       </a>
-    <a href="art2.jpg" class="block rounded overflow-hidden">
-    <img src="art2_thumb.jpg" alt="Jamie - Pixel Fit" class="rounded hover:scale-105 transition transform duration-200" />
+      <a href="art2.jpg" class="block rounded overflow-hidden">
+        <img src="art2_thumb.jpg" alt="Jamie - Pixel Fit" class="rounded hover:scale-105 transition-transform duration-200 max-w-full h-auto object-contain" />
       </a>
-    <a href="art3.jpg" class="block rounded overflow-hidden">
-    <img src="art3_thumb.jpg" alt="Jamie - Tokyo" class="rounded hover:scale-105 transition transform duration-200" />
+      <a href="art3.jpg" class="block rounded overflow-hidden">
+        <img src="art3_thumb.jpg" alt="Jamie - Tokyo" class="rounded hover:scale-105 transition-transform duration-200 max-w-full h-auto object-contain" />
       </a>
-    <a href="art4.jpg" class="block rounded overflow-hidden">
-    <img src="art4_thumb.jpg" alt="Bludfest 2025" class="rounded hover:scale-105 transition transform duration-200" />
+      <a href="art4.jpg" class="block rounded overflow-hidden">
+        <img src="art4_thumb.jpg" alt="Bludfest 2025" class="rounded hover:scale-105 transition-transform duration-200 max-w-full h-auto object-contain" />
       </a>
     </div>
+  </div>
+
   <div class="mt-4 flex justify-center">
-  <button class="terminal-button" onclick="resetTerminal()">Back</button>
-    </div>
-  `);
+    <button class="terminal-button" onclick="resetTerminal()">Back</button>
+  </div>
+`);
+
 
 setTimeout(() => {
 lightGallery(document.getElementById('artGallery'), {
