@@ -321,6 +321,13 @@ function showGuestBook() {
  interact(guestBookWindow)
   .draggable({
     allowFrom: '.drag-area',
+    inertia: true,
+    modifiers: [
+    interact.modifiers.restrictRect({
+      restriction: 'parent',
+      endOnly: true,
+    }),
+  ],
     listeners: {
       start(event) {
         const target = event.target;
