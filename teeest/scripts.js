@@ -226,30 +226,25 @@ $('#terminalContent').html(html);
 
 function showArt() {
 $('#terminalContent').html(`
-  <div class="text-pink-600 text-lg mb-4 mt-4"></div>
-  
-  <div id="lightgalleryWrapper" class="max-w-full overflow-hidden">
-    <div id="artGallery" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-      <a href="art1.jpg" class="block rounded overflow-hidden">
-        <img src="art1_thumb.jpg" alt="Jamie - Pearl" class="rounded hover:scale-105 transition-transform duration-200 max-w-full h-auto object-contain" />
+<div class="text-pink-600 text-lg mb-4 mt-4"></div>
+  <div id="artGallery" class="grid grid-cols-2 gap-4">
+  <a href="art1.jpg" class="block rounded overflow-hidden">
+    <img src="art1_thumb.jpg" alt="Jamie - Pearl" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
-      <a href="art2.jpg" class="block rounded overflow-hidden">
-        <img src="art2_thumb.jpg" alt="Jamie - Pixel Fit" class="rounded hover:scale-105 transition-transform duration-200 max-w-full h-auto object-contain" />
+    <a href="art2.jpg" class="block rounded overflow-hidden">
+    <img src="art2_thumb.jpg" alt="Jamie - Pixel Fit" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
-      <a href="art3.jpg" class="block rounded overflow-hidden">
-        <img src="art3_thumb.jpg" alt="Jamie - Tokyo" class="rounded hover:scale-105 transition-transform duration-200 max-w-full h-auto object-contain" />
+    <a href="art3.jpg" class="block rounded overflow-hidden">
+    <img src="art3_thumb.jpg" alt="Jamie - Tokyo" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
-      <a href="art4.jpg" class="block rounded overflow-hidden">
-        <img src="art4_thumb.jpg" alt="Bludfest 2025" class="rounded hover:scale-105 transition-transform duration-200 max-w-full h-auto object-contain" />
+    <a href="art4.jpg" class="block rounded overflow-hidden">
+    <img src="art4_thumb.jpg" alt="Bludfest 2025" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
     </div>
-  </div>
-
   <div class="mt-4 flex justify-center">
-    <button class="terminal-button" onclick="resetTerminal()">Back</button>
-  </div>
-`);
-
+  <button class="terminal-button" onclick="resetTerminal()">Back</button>
+    </div>
+  `);
 
 setTimeout(() => {
 lightGallery(document.getElementById('artGallery'), {
@@ -431,7 +426,7 @@ document.getElementById("formResponse").textContent = "Thank you for your messag
 function resetTerminal() {
 $('#terminalContent').html(`
              <div id="typed" class="text-pink-600 text-lg mb-4 mt-4 text-center"></div>
-             <div id="buttonRow" class="flex justify-center space-x-4 whitespace-nowrap">
+             <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
              <button class="terminal-button ml-2" onclick="showArt()">Art</button>
              <button class="terminal-button ml-5" onclick="showGuestBook()">Guestbook</button>
              <button class="terminal-button ml-3" onclick="showMessageForm()">Message</button>
