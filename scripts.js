@@ -10,7 +10,7 @@ strings: [
 '<span class="text-white text-xl mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'
 ],
 typeSpeed: 60,
-backSpeed: 0,
+backSpeed: 30,
 showCursor: true,
 cursorChar: '_',
 smartBackspace: false,
@@ -439,7 +439,7 @@ strings: ['<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</sp
 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'],
 typeSpeed: 60,
-backSpeed: 0,
+backSpeed: 30,
 showCursor: true,
 cursorChar: '_',
 smartBackspace: false,
