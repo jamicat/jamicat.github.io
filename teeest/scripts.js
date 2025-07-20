@@ -259,6 +259,10 @@ let lastSubmissionTime = 0;
 
 function showGuestBook() {
 
+  if (document.getElementById('guestBookWindow')) {
+    return;
+  }
+
   const guestBookWindow = document.createElement('div');
   guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px]';
   guestBookWindow.style.zIndex = 11;
