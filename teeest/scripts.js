@@ -317,26 +317,59 @@ function showGuestBook() {
         </div>
       </form>
     </div>
-
-    <!-- Comments Side -->
-    <div class="w-full sm:w-1/2 max-h-[300px] overflow-y-auto pr-1" id="guestbookComments">
-      <!-- Injected comments will go here -->
-    </div>
   </div>
 `;
 
 document.body.appendChild(guestBookWindow);
 
- interact(guestBookWindow)
+const guestbookCommentBox = document.createElement('div');
+guestbookCommentBox.id = 'guestbookComments';
+guestbookCommentBox.className = `
+  terminal 
+  absolute 
+  p-4 
+  w-[300px] 
+  max-h-[400px] 
+  overflow-y-auto 
+  bg-black 
+  bg-opacity-20 
+  border 
+  border-pink-600 
+  border-opacity-75 
+  text-white 
+  text-sm 
+  scrollbar-thin 
+  scrollbar-thumb-pink-600 
+  scrollbar-track-black 
+  rounded-md
+`;
+guestbookCommentBox.style.zIndex = 10;
+document.body.appendChild(guestbookCommentBox);
+
+function updateCommentBoxPosition() {
+  const guestWindow = document.getElementById('guestBookWindow');
+  const commentBox = document.getElementById('guestbookComments');
+
+  if (!guestWindow || !commentBox) return;
+
+  const rect = guestWindow.getBoundingClientRect();
+  commentBox.style.position = 'absolute';
+  commentBox.style.top = `${rect.top}px`;
+  commentBox.style.left = `${rect.right + 10}px`; // 10px spacing
+}
+
+updateCommentBoxPosition();
+
+interact(guestBookWindow)
   .draggable({
     allowFrom: '.drag-area',
     inertia: true,
     modifiers: [
-    interact.modifiers.restrictRect({
-      restriction: 'parent',
-      endOnly: true,
-    }),
-  ],
+      interact.modifiers.restrictRect({
+        restriction: 'parent',
+        endOnly: true,
+      }),
+    ],
     listeners: {
       start(event) {
         const target = event.target;
@@ -351,6 +384,8 @@ document.body.appendChild(guestBookWindow);
           target.style.transform = 'translate(0, 0)';
           target.setAttribute('data-x', 0);
           target.setAttribute('data-y', 0);
+
+          updateCommentBoxPosition();
         }
       },
       move(event) {
@@ -361,6 +396,8 @@ document.body.appendChild(guestBookWindow);
         target.style.transform = `translate(${x}px, ${y}px)`;
         target.setAttribute('data-x', x);
         target.setAttribute('data-y', y);
+
+        updateCommentBoxPosition();
       }
     }
   });
@@ -454,14 +491,11 @@ async function loadGuestbookComments() {
   }
 }
 
-
-
-
 function closeGuestBook() {
   const gbWindow = document.getElementById('guestBookWindow');
-  if (gbWindow) {
-    gbWindow.remove();
-  }
+  const commentBox = document.getElementById('guestbookComments');
+  if (gbWindow) gbWindow.remove();
+  if (commentBox) commentBox.remove();
 }
 
 function showMessageForm() {
