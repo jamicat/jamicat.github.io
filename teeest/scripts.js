@@ -359,8 +359,9 @@ function updateCommentBoxPosition() {
   commentBox.style.height = `${rect.height}px`; 
 }
 
-
-updateCommentBoxPosition();
+requestAnimationFrame(() => {
+  updateCommentBoxPosition();
+});
 
 interact(guestBookWindow)
   .draggable({
