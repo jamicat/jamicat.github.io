@@ -409,7 +409,7 @@ async function loadGuestbookComments() {
   container.innerHTML = '<p class="text-pink-400 text-sm">Loading comments...</p>';
 
   try {
-    const response = await fetch('https://script.google.com/macros/s/AKfycbxQ-t2ECSGLNu4PpA3GHFgKXJbkx1xbmze6K4L8v9d9XbajDdJY9XjrAAcgsRRvhrMVnw/exec');
+    const response = await fetch('https://script.google.com/macros/s/AKfycbydg53SiNU_PNCT6AW26Ol1VyzmmGUCuhyp3-HPt-QVjOPfhiDduUdrbxFyMxxMUXOfHg/exec');
     const raw = await response.text();
     console.log('RAW response:', raw);
 
