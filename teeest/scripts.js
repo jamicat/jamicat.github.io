@@ -409,7 +409,7 @@ async function loadGuestbookComments() {
   container.innerHTML = '<p class="text-pink-400 text-sm">Loading comments...</p>';
 
   try {
-    const response = await fetch('https://script.google.com/macros/s/AKfycbydg53SiNU_PNCT6AW26Ol1VyzmmGUCuhyp3-HPt-QVjOPfhiDduUdrbxFyMxxMUXOfHg/exec');
+    const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
     const raw = await response.text();
     console.log('RAW response:', raw);
 
@@ -422,18 +422,19 @@ async function loadGuestbookComments() {
       return;
     }
 
-    if (!Array.isArray(data)) {
-      console.error('Expected an array but got:', data);
+    const { comments } = data;
+    if (!Array.isArray(comments)) {
+      console.error('Expected comments array but got:', comments);
       container.innerHTML = '<p class="text-red-400 text-sm">Unexpected data format.</p>';
       return;
     }
 
-    console.log('Parsed comments:', data);
+    console.log('Parsed comments:', comments);
 
     container.innerHTML = '';
 
-    data.forEach(entry => {
-      const { name, message, date } = entry;
+    comments.forEach(entry => {
+      const { name, comment, timestamp } = entry;
       console.log('Rendering comment from:', name);
 
       const div = document.createElement('div');
@@ -441,8 +442,8 @@ async function loadGuestbookComments() {
 
       div.innerHTML = `
         <div class="mb-1 font-semibold text-pink-300">${name || 'Anonymous'}</div>
-        <div class="mb-1">${message || ''}</div>
-        <div class="text-pink-500 text-xs text-right">${date ? new Date(date).toLocaleString() : ''}</div>
+        <div class="mb-1">${comment || ''}</div>
+        <div class="text-pink-500 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
       `;
 
       container.appendChild(div);
@@ -453,6 +454,7 @@ async function loadGuestbookComments() {
     container.innerHTML = '<p class="text-red-400 text-sm">Failed to load comments.</p>';
   }
 }
+
 
 
 
