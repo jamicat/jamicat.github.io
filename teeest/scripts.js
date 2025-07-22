@@ -439,9 +439,11 @@ async function loadGuestbookComments() {
       const { name, comment, timestamp } = entry;
 
       const commentWindow = document.createElement('div');
-      commentWindow.className = 'terminal bg-black bg-opacity-30 border border-pink-600 border-opacity-75 text-sm text-pink-100 rounded-lg p-3 w-[240px]';
+      commentWindow.className = 'terminal text-sm text-pink-100 rounded-lg p-3 w-[240px]';
+      commentWindow.style.backgroundColor = 'rgba(255, 192, 203, 0.05)'; 
+      commentWindow.style.boxShadow = '0 0 10px rgba(255, 192, 203, 0.05)';
       commentWindow.style.position = 'relative';
-      commentWindow.style.pointerEvents = 'auto'; // re-enable interactions
+      commentWindow.style.pointerEvents = 'auto'; 
 
       commentWindow.innerHTML = `
         <div class="font-semibold text-pink-300 mb-1">${name || 'Anonymous'}</div>
