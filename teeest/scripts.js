@@ -422,22 +422,27 @@ async function loadGuestbookComments() {
       return;
     }
 
-    const { comments = [] } = data;
-    console.log('Parsed comments:', comments);
+    if (!Array.isArray(data)) {
+      console.error('Expected an array but got:', data);
+      container.innerHTML = '<p class="text-red-400 text-sm">Unexpected data format.</p>';
+      return;
+    }
+
+    console.log('Parsed comments:', data);
 
     container.innerHTML = '';
 
-    comments.forEach(entry => {
-      const { name, comment, timestamp } = entry;
+    data.forEach(entry => {
+      const { name, message, date } = entry;
       console.log('Rendering comment from:', name);
 
       const div = document.createElement('div');
       div.className = 'bg-black bg-opacity-20 border border-pink-600 border-opacity-75 rounded p-3 mb-2 text-sm text-pink-100';
 
       div.innerHTML = `
-        <div class="mb-1 font-semibold text-pink-300">${name}</div>
-        <div class="mb-1">${comment}</div>
-        <div class="text-pink-500 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
+        <div class="mb-1 font-semibold text-pink-300">${name || 'Anonymous'}</div>
+        <div class="mb-1">${message || ''}</div>
+        <div class="text-pink-500 text-xs text-right">${date ? new Date(date).toLocaleString() : ''}</div>
       `;
 
       container.appendChild(div);
