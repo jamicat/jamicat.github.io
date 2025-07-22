@@ -318,6 +318,8 @@ function showGuestBook() {
   </div>
 `;
 
+document.body.appendChild(guestBookWindow);
+
 var typed2= new Typed('#typed2', {
   strings: ['Guestbook'],
   typeSpeed: 80,
@@ -325,8 +327,6 @@ var typed2= new Typed('#typed2', {
   cursorChar: '_',
   loop: false,
 });
-
-document.body.appendChild(guestBookWindow);
 
 const guestbookCommentBox = document.createElement('div');
 guestbookCommentBox.id = 'guestbookComments';
