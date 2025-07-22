@@ -321,23 +321,24 @@ function showGuestBook() {
   `;
 
 
-  document.body.appendChild(guestBookWindow);
- const commentContainer = document.createElement('div');
-commentContainer.id = 'commentContainer';
-commentContainer.style.position = 'absolute';
-commentContainer.style.top = '0';
-commentContainer.style.left = '100%';
-commentContainer.style.marginLeft = '20px';
-commentContainer.style.display = 'flex';
-commentContainer.style.flexDirection = 'column';
-commentContainer.style.gap = '12px';
-commentContainer.style.pointerEvents = 'none'; 
-guestBookWindow.appendChild(commentContainer);
+document.body.appendChild(guestBookWindow);
+const commentStackContainer = document.createElement('div');
+commentStackContainer.id = 'commentStack';
+commentStackContainer.style.position = 'absolute';
+commentStackContainer.style.top = '50%';
+commentStackContainer.style.left = 'calc(50% + 280px)'; 
+commentStackContainer.style.transform = 'translateY(-50%)';
+commentStackContainer.style.maxHeight = '80vh';
+commentStackContainer.style.overflowY = 'auto';
+commentStackContainer.style.display = 'flex';
+commentStackContainer.style.flexDirection = 'column';
+commentStackContainer.style.gap = '10px';
+commentStackContainer.style.paddingRight = '8px';
+commentStackContainer.style.zIndex = 10;
 
+document.body.appendChild(commentStackContainer);
 
-
-
- interact(guestBookWindow)
+  interact(guestBookWindow)
   .draggable({
     allowFrom: '.drag-area',
     inertia: true,
@@ -406,11 +407,10 @@ guestBookWindow.appendChild(commentContainer);
   loadGuestbookComments();
   
 }
-
 async function loadGuestbookComments() {
-  const container = document.getElementById('commentContainer');
+  const container = document.getElementById('commentStack');
   if (!container) {
-    console.error('commentContainer not found');
+    console.error('commentStack not found');
     return;
   }
 
@@ -439,11 +439,13 @@ async function loadGuestbookComments() {
       const { name, comment, timestamp } = entry;
 
       const commentWindow = document.createElement('div');
-      commentWindow.className = 'terminal text-sm text-pink-100 rounded-lg p-3 w-[240px]';
-      commentWindow.style.backgroundColor = 'rgba(255, 192, 203, 0.05)'; 
+      commentWindow.className = 'terminal text-sm text-pink-100 rounded-lg p-3 w-[240px] transition-all duration-300';
+      commentWindow.style.backgroundColor = 'rgba(255, 192, 203, 0.05)';
       commentWindow.style.boxShadow = '0 0 10px rgba(255, 192, 203, 0.05)';
-      commentWindow.style.position = 'relative';
-      commentWindow.style.pointerEvents = 'auto'; 
+      commentWindow.style.backdropFilter = 'blur(3px)';
+      commentWindow.style.webkitBackdropFilter = 'blur(3px)';
+      commentWindow.style.cursor = 'move';
+      commentWindow.style.userSelect = 'none';
 
       commentWindow.innerHTML = `
         <div class="font-semibold text-pink-300 mb-1">${name || 'Anonymous'}</div>
@@ -453,13 +455,14 @@ async function loadGuestbookComments() {
 
       container.appendChild(commentWindow);
 
+      // Make each comment draggable but snap back to vertical stack layout
       interact(commentWindow).draggable({
         inertia: true,
         modifiers: [
           interact.modifiers.restrictRect({
-            restriction: 'parent',
-            endOnly: true,
-          }),
+            restriction: container,
+            endOnly: true
+          })
         ],
         listeners: {
           move(event) {
@@ -470,6 +473,13 @@ async function loadGuestbookComments() {
             target.style.transform = `translate(${x}px, ${y}px)`;
             target.setAttribute('data-x', x);
             target.setAttribute('data-y', y);
+          },
+          end(event) {
+            const target = event.target;
+            // Snap back to original layout
+            target.style.transform = '';
+            target.removeAttribute('data-x');
+            target.removeAttribute('data-y');
           }
         }
       });
@@ -479,6 +489,7 @@ async function loadGuestbookComments() {
     console.error('Error loading comments:', err);
   }
 }
+
 
 
 
