@@ -93,6 +93,10 @@ text-shadow: 0 0 4px rgba(255, 105, 180, 0.8);
 min-height: 2.5em; 
 }
 
+#typed2 {
+min-height: 2.5em; 
+}
+
 #guestbookComments {
   scrollbar-width: thin;
   scrollbar-color: #ec4899 #000000;
