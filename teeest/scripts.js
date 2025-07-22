@@ -290,7 +290,7 @@ function showGuestBook() {
   guestBookWindow.innerHTML = `
   <div class="drag-area text-pink-600 text-sm mb-2 select-none flex justify-between items-center">
     <span class="flex items-center space-x-2">
-      <img src="jami.png" alt="Avatar" class="avatar-icon" />
+      <img src="jami2.png" alt="Avatar2" class="avatar-icon" />
       <span class="text-[1.5em] text-pink-600 font-semibold">Guestbook</span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
@@ -331,17 +331,12 @@ guestbookCommentBox.className = `
   overflow-y-auto 
   bg-black 
   bg-opacity-20 
-  border 
-  border-pink-400 
-  border-opacity-40 
   text-white 
   text-sm 
   scrollbar-thin 
   scrollbar-thumb-pink-600 
   scrollbar-track-black 
   rounded-lg
-  shadow-md 
-  shadow-pink-600/20
 `;
 
 guestbookCommentBox.style.zIndex = 10;
@@ -456,7 +451,7 @@ async function loadGuestbookComments() {
     return;
   }
 
-  container.innerHTML = '<p class="text-pink-400 text-sm">Loading comments...</p>';
+  container.innerHTML = '<p class="text-pink-400 text-sm">Loading...</p>';
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
