@@ -317,16 +317,25 @@ function showGuestBook() {
       </div>
     </form>
   </div>
-
-  <!-- comments -->
-  <div class="sm:w-1/2 w-full max-h-[300px] overflow-y-auto pr-1" id="guestbookComments">
-    <!-- to be injected with JS -->
-  </div>
 </div>
   `;
 
 
   document.body.appendChild(guestBookWindow);
+  const commentContainer = document.createElement('div');
+commentContainer.id = 'commentContainer';
+commentContainer.style.position = 'absolute';
+commentContainer.style.top = '50%';
+commentContainer.style.left = 'calc(50% + 300px)';
+commentContainer.style.transform = 'translateY(-50%)';
+commentContainer.style.maxHeight = '80vh';
+commentContainer.style.overflowY = 'auto';
+commentContainer.style.display = 'flex';
+commentContainer.style.flexDirection = 'column';
+commentContainer.style.gap = '12px';
+commentContainer.style.zIndex = 10;
+
+document.body.appendChild(commentContainer);
 
 
  interact(guestBookWindow)
@@ -400,13 +409,13 @@ function showGuestBook() {
 }
 
 async function loadGuestbookComments() {
-  const container = document.getElementById('guestbookComments');
+  const container = document.getElementById('commentContainer');
   if (!container) {
-    console.error('guestbookComments container not found');
+    console.error('commentContainer not found');
     return;
   }
 
-  container.innerHTML = '<p class="text-pink-400 text-sm">Loading comments...</p>';
+  container.innerHTML = '';
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
@@ -418,40 +427,55 @@ async function loadGuestbookComments() {
       data = JSON.parse(raw);
     } catch (jsonErr) {
       console.error('Failed to parse JSON:', jsonErr);
-      container.innerHTML = '<p class="text-red-400 text-sm">Invalid JSON response.</p>';
       return;
     }
 
     const { comments } = data;
     if (!Array.isArray(comments)) {
       console.error('Expected comments array but got:', comments);
-      container.innerHTML = '<p class="text-red-400 text-sm">Unexpected data format.</p>';
       return;
     }
 
-    console.log('Parsed comments:', comments);
-
-    container.innerHTML = '';
-
-    comments.forEach(entry => {
+    comments.forEach((entry, i) => {
       const { name, comment, timestamp } = entry;
-      console.log('Rendering comment from:', name);
 
-      const div = document.createElement('div');
-      div.className = 'bg-black bg-opacity-20 border border-pink-600 border-opacity-75 rounded p-3 mb-2 text-sm text-pink-100';
+      const commentWindow = document.createElement('div');
+      commentWindow.className = 'terminal bg-black bg-opacity-30 border border-pink-600 border-opacity-75 text-sm text-pink-100 rounded-lg p-3 w-[240px]';
+      commentWindow.style.position = 'relative';
+      commentWindow.style.zIndex = 9;
 
-      div.innerHTML = `
-        <div class="mb-1 font-semibold text-pink-300">${name || 'Anonymous'}</div>
+      commentWindow.innerHTML = `
+        <div class="font-semibold text-pink-300 mb-1">${name || 'Anonymous'}</div>
         <div class="mb-1">${comment || ''}</div>
         <div class="text-pink-500 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
       `;
 
-      container.appendChild(div);
+      container.appendChild(commentWindow);
+
+      interact(commentWindow).draggable({
+        inertia: true,
+        modifiers: [
+          interact.modifiers.restrictRect({
+            restriction: 'parent',
+            endOnly: true,
+          }),
+        ],
+        listeners: {
+          move(event) {
+            const target = event.target;
+            const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+            const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+            target.style.transform = `translate(${x}px, ${y}px)`;
+            target.setAttribute('data-x', x);
+            target.setAttribute('data-y', y);
+          }
+        }
+      });
     });
 
   } catch (err) {
     console.error('Error loading comments:', err);
-    container.innerHTML = '<p class="text-red-400 text-sm">Failed to load comments.</p>';
   }
 }
 
