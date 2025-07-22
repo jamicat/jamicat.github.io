@@ -400,30 +400,45 @@ function showGuestBook() {
 }
 
 async function loadGuestbookComments() {
-  const commentsContainer = document.getElementById('guestbookComments');
-  commentsContainer.innerHTML = '<p class="text-pink-300 text-sm">Loading comments...</p>';
+  const container = document.getElementById('guestbookComments');
+  container.innerHTML = '<p class="text-pink-400 text-sm">Loading comments...</p>';
 
   try {
-    const response = await fetch('YOUR_APPSCRIPT_URL_HERE');
-    const data = await response.json();
+    const response = await fetch('https://script.google.com/macros/s/AKfycbws4tBuGL9gmR9q8hhDxOcb7E3oOweFtkvThIk5Ovv1M-rDI4876WT_fXU8QuoRd77AJg/exec', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      },
+      mode: 'cors' 
+    });
 
-    commentsContainer.innerHTML = ''; 
+    const data = await response.json(); 
+
+    if (!Array.isArray(data)) throw new Error('Invalid format');
+
+    container.innerHTML = ''; 
 
     data.forEach(entry => {
-      const box = document.createElement('div');
-      box.className = 'border border-pink-600 rounded p-3 mb-2 bg-black bg-opacity-20 text-white';
-      box.innerHTML = `
-        <p class="text-pink-500 font-semibold">${entry.name}</p>
-        <p class="text-sm text-pink-300">${entry.message}</p>
+      const { name, message, date } = entry;
+
+      const div = document.createElement('div');
+      div.className = 'bg-black bg-opacity-20 border border-pink-600 border-opacity-75 rounded p-3 mb-2 text-sm text-pink-100';
+
+      div.innerHTML = `
+        <div class="mb-1 font-semibold text-pink-300">${name}</div>
+        <div class="mb-1">${message}</div>
+        <div class="text-pink-500 text-xs text-right">${new Date(date).toLocaleString()}</div>
       `;
-      commentsContainer.appendChild(box);
+
+      container.appendChild(div);
     });
 
   } catch (err) {
-    commentsContainer.innerHTML = '<p class="text-red-400">Failed to load comments.</p>';
-    console.error(err);
+    console.error('Error loading comments:', err);
+    container.innerHTML = '<p class="text-red-400 text-sm">Failed to load comments.</p>';
   }
 }
+
 
 function closeGuestBook() {
   const gbWindow = document.getElementById('guestBookWindow');
