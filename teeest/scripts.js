@@ -412,11 +412,13 @@ async function loadGuestbookComments() {
     });
 
      const data = await response.json();
+    
     if (!Array.isArray(data)) throw new Error('Invalid format');
 
     container.innerHTML = ''; 
 
     data.forEach(entry => {
+      console.log('Rendering comment from:', name);
       const { name, message, date } = entry;
 
       const div = document.createElement('div');
