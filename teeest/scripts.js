@@ -322,20 +322,19 @@ function showGuestBook() {
 
 
   document.body.appendChild(guestBookWindow);
-  const commentContainer = document.createElement('div');
+ const commentContainer = document.createElement('div');
 commentContainer.id = 'commentContainer';
 commentContainer.style.position = 'absolute';
-commentContainer.style.top = '50%';
-commentContainer.style.left = 'calc(50% + 300px)';
-commentContainer.style.transform = 'translateY(-50%)';
-commentContainer.style.maxHeight = '80vh';
-commentContainer.style.overflowY = 'auto';
+commentContainer.style.top = '0';
+commentContainer.style.left = '100%';
+commentContainer.style.marginLeft = '20px';
 commentContainer.style.display = 'flex';
 commentContainer.style.flexDirection = 'column';
 commentContainer.style.gap = '12px';
-commentContainer.style.zIndex = 10;
+commentContainer.style.pointerEvents = 'none'; 
+guestBookWindow.appendChild(commentContainer);
 
-document.body.appendChild(commentContainer);
+
 
 
  interact(guestBookWindow)
@@ -436,13 +435,13 @@ async function loadGuestbookComments() {
       return;
     }
 
-    comments.forEach((entry, i) => {
+    comments.forEach(entry => {
       const { name, comment, timestamp } = entry;
 
       const commentWindow = document.createElement('div');
       commentWindow.className = 'terminal bg-black bg-opacity-30 border border-pink-600 border-opacity-75 text-sm text-pink-100 rounded-lg p-3 w-[240px]';
       commentWindow.style.position = 'relative';
-      commentWindow.style.zIndex = 9;
+      commentWindow.style.pointerEvents = 'auto'; // re-enable interactions
 
       commentWindow.innerHTML = `
         <div class="font-semibold text-pink-300 mb-1">${name || 'Anonymous'}</div>
