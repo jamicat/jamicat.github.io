@@ -306,7 +306,7 @@ function showGuestBook() {
     <!-- Form Area -->
     <div class="w-full">
       <div class="text-pink-300 text-md mt-2 mb-4 text-center">
-        <p class="text-base">Welcome to the Guestbook! Be nice.</p>
+        <p class="text-base">Welcome! Be nice.</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-white">
         <input type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required />
