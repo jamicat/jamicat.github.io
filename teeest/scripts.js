@@ -289,43 +289,47 @@ function showGuestBook() {
   guestBookWindow.id = 'guestBookWindow';
 
   guestBookWindow.innerHTML = `
-  <div class="drag-area text-pink-600 text-sm mb-2 select-none flex justify-between items-center">
-    <span class="flex items-center space-x-2">
-      <img src="jami.png" alt="Avatar" class="avatar-icon" />
-      <span class="text-[1.5em] text-pink-600 font-semibold">Guestbook</span>
-    </span>
-    <div class="flex items-center space-x-2 mr-3 -mt-12">
-      <button onclick="closeGuestBook()" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-600 hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-    </div>
+    <div class="drag-area text-pink-600 text-sm mb-2 select-none flex justify-between items-center">
+  <span class="flex items-center space-x-2">
+    <img src="jami.png" alt="Avatar" class="avatar-icon" />
+    <span class="text-[1.5em] text-pink-600 font-semibold">Guestbook</span>
+  </span>
+  <div class="flex items-center space-x-2 mr-3 -mt-12">
+    <button onclick="closeGuestBook()" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-600 hover:text-red-400 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
   </div>
+</div>
 
-  <div class="flex flex-col sm:flex-row gap-6">
-    <!-- Left: Form -->
-    <div class="sm:w-1/2 w-full">
-      <div class="text-pink-300 text-md mt-4 mb-4 text-center">
-        <p>Welcome to the Guestbook! Be nice.</p>
+<div class="flex flex-col sm:flex-row gap-6">
+  <!-- Form Side -->
+  <div class="sm:w-1/2 w-full">
+    <div class="text-pink-300 text-md mt-4 mb-4 text-center">
+      <p>Welcome to the Guestbook! Be nice.</p>
+    </div>
+    <form id="guestbookForm" class="space-y-4 text-white">
+      <input type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required />
+      <textarea name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required></textarea>
+      <div class="text-center">
+        <button type="submit" class="terminal-button">Submit</button>
       </div>
-      <form id="guestbookForm" class="space-y-4 text-white">
-        <input type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required />
-        <textarea name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required></textarea>
-        <div class="text-center">
-          <button type="submit" class="terminal-button">Submit</button>
-        </div>
-      </form>
-    </div>
-
-    <!-- Right: Comments Stack -->
-    <div id="commentStack" class="sm:w-1/2 w-full max-h-[320px] overflow-y-auto space-y-3 pr-1 scrollbar-thin scrollbar-thumb-pink-600 scrollbar-track-transparent">
-      <!-- Comments will be injected here -->
-    </div>
+    </form>
   </div>
-`;
 
-  interact(guestBookWindow)
+  <!-- comments -->
+  <div class="sm:w-1/2 w-full max-h-[300px] overflow-y-auto pr-1" id="guestbookComments">
+    <!-- to be injected with JS -->
+  </div>
+</div>
+  `;
+
+
+  document.body.appendChild(guestBookWindow);
+
+
+ interact(guestBookWindow)
   .draggable({
     allowFrom: '.drag-area',
     inertia: true,
@@ -394,14 +398,15 @@ function showGuestBook() {
   loadGuestbookComments();
   
 }
+
 async function loadGuestbookComments() {
-  const container = document.getElementById('commentStack');
+  const container = document.getElementById('guestbookComments');
   if (!container) {
-    console.error('commentStack not found');
+    console.error('guestbookComments container not found');
     return;
   }
 
-  container.innerHTML = '';
+  container.innerHTML = '<p class="text-pink-400 text-sm">Loading comments...</p>';
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
@@ -413,70 +418,42 @@ async function loadGuestbookComments() {
       data = JSON.parse(raw);
     } catch (jsonErr) {
       console.error('Failed to parse JSON:', jsonErr);
+      container.innerHTML = '<p class="text-red-400 text-sm">Invalid JSON response.</p>';
       return;
     }
 
     const { comments } = data;
     if (!Array.isArray(comments)) {
       console.error('Expected comments array but got:', comments);
+      container.innerHTML = '<p class="text-red-400 text-sm">Unexpected data format.</p>';
       return;
     }
 
+    console.log('Parsed comments:', comments);
+
+    container.innerHTML = '';
+
     comments.forEach(entry => {
       const { name, comment, timestamp } = entry;
+      console.log('Rendering comment from:', name);
 
-      const commentWindow = document.createElement('div');
-      commentWindow.className = 'terminal text-sm text-pink-100 rounded-lg p-3 w-[240px] transition-all duration-300';
-      commentWindow.style.backgroundColor = 'rgba(255, 192, 203, 0.05)';
-      commentWindow.style.boxShadow = '0 0 10px rgba(255, 192, 203, 0.05)';
-      commentWindow.style.backdropFilter = 'blur(3px)';
-      commentWindow.style.webkitBackdropFilter = 'blur(3px)';
-      commentWindow.style.cursor = 'move';
-      commentWindow.style.userSelect = 'none';
+      const div = document.createElement('div');
+      div.className = 'bg-black bg-opacity-20 border border-pink-600 border-opacity-75 rounded p-3 mb-2 text-sm text-pink-100';
 
-      commentWindow.innerHTML = `
-        <div class="font-semibold text-pink-300 mb-1">${name || 'Anonymous'}</div>
+      div.innerHTML = `
+        <div class="mb-1 font-semibold text-pink-300">${name || 'Anonymous'}</div>
         <div class="mb-1">${comment || ''}</div>
         <div class="text-pink-500 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
       `;
 
-      container.appendChild(commentWindow);
-
-      // Make each comment draggable but snap back to vertical stack layout
-      interact(commentWindow).draggable({
-        inertia: true,
-        modifiers: [
-          interact.modifiers.restrictRect({
-            restriction: container,
-            endOnly: true
-          })
-        ],
-        listeners: {
-          move(event) {
-            const target = event.target;
-            const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-            const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-            target.style.transform = `translate(${x}px, ${y}px)`;
-            target.setAttribute('data-x', x);
-            target.setAttribute('data-y', y);
-          },
-          end(event) {
-            const target = event.target;
-            // Snap back to original layout
-            target.style.transform = '';
-            target.removeAttribute('data-x');
-            target.removeAttribute('data-y');
-          }
-        }
-      });
+      container.appendChild(div);
     });
 
   } catch (err) {
     console.error('Error loading comments:', err);
+    container.innerHTML = '<p class="text-red-400 text-sm">Failed to load comments.</p>';
   }
 }
-
 
 
 
