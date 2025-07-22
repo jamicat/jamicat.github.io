@@ -325,33 +325,6 @@ function showGuestBook() {
   </div>
 `;
 
-
-
-const commentStackContainer = document.createElement('div');
-commentStackContainer.id = 'commentStack';
-
-commentStackContainer.className = `
-  max-h-[80vh] 
-  overflow-y-auto 
-  flex flex-col gap-2 
-  pr-2 
-  scrollbar-thin 
-  scrollbar-thumb-pink-600 
-  scrollbar-track-zinc-800 
-  backdrop-blur-md 
-  bg-black/20 
-  rounded-lg 
-  p-2
-`;
-
-commentStackContainer.style.position = 'absolute';
-commentStackContainer.style.top = '50%';
-commentStackContainer.style.left = 'calc(50% + 280px)';
-commentStackContainer.style.transform = 'translateY(-50%)';
-commentStackContainer.style.zIndex = '10';
-commentStackContainer.style.width = '260px';
-document.body.appendChild(commentStackContainer);
-
   interact(guestBookWindow)
   .draggable({
     allowFrom: '.drag-area',
