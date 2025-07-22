@@ -290,28 +290,39 @@ function showGuestBook() {
 
   guestBookWindow.innerHTML = `
     <div class="drag-area text-pink-600 text-sm mb-2 select-none flex justify-between items-center">
-      <span class="flex items-center space-x-2">
-        <img src="jami.png" alt="Avatar" class="avatar-icon" />
-        <span class="text-[1.5em] text-pink-600 font-semibold">Guestbook</span>
-      </span>
-      <div class="flex items-center space-x-2 mr-3 -mt-12">
-        <button onclick="closeGuestBook()" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-600 hover:text-red-400 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-    </div>
+  <span class="flex items-center space-x-2">
+    <img src="jami.png" alt="Avatar" class="avatar-icon" />
+    <span class="text-[1.5em] text-pink-600 font-semibold">Guestbook</span>
+  </span>
+  <div class="flex items-center space-x-2 mr-3 -mt-12">
+    <button onclick="closeGuestBook()" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-600 hover:text-red-400 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+</div>
+
+<div class="flex flex-col sm:flex-row gap-6">
+  <!-- Form Side -->
+  <div class="sm:w-1/2 w-full">
     <div class="text-pink-300 text-md mt-4 mb-4 text-center">
       <p>Welcome to the Guestbook! Be nice.</p>
     </div>
-    <form class="space-y-4 text-white">
-      <input type="text" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required />
-      <textarea placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required></textarea>
+    <form id="guestbookForm" class="space-y-4 text-white">
+      <input type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required />
+      <textarea name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required></textarea>
       <div class="text-center">
         <button type="submit" class="terminal-button">Submit</button>
       </div>
     </form>
+  </div>
+
+  <!-- comments -->
+  <div class="sm:w-1/2 w-full max-h-[300px] overflow-y-auto pr-1" id="guestbookComments">
+    <!-- to be injected with JS -->
+  </div>
+</div>
   `;
 
 
@@ -356,6 +367,62 @@ function showGuestBook() {
     }
   });
 
+  document.getElementById('guestbookForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const name = this.name.value.trim();
+  const message = this.message.value.trim();
+  if (!name || !message) return;
+
+  const submitBtn = this.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending...';
+
+  try {
+    await fetch('YOUR_SUBMIT_URL_HERE', {
+      method: 'POST',
+      body: new URLSearchParams({ name, message })
+    });
+
+    this.reset();
+    loadGuestbookComments(); 
+  } catch (err) {
+    alert('Failed to send message');
+    console.error(err);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit';
+  }
+});
+
+  loadGuestbookComments();
+  
+}
+
+async function loadGuestbookComments() {
+  const commentsContainer = document.getElementById('guestbookComments');
+  commentsContainer.innerHTML = '<p class="text-pink-300 text-sm">Loading comments...</p>';
+
+  try {
+    const response = await fetch('YOUR_APPSCRIPT_URL_HERE');
+    const data = await response.json();
+
+    commentsContainer.innerHTML = ''; 
+
+    data.forEach(entry => {
+      const box = document.createElement('div');
+      box.className = 'border border-pink-600 rounded p-3 mb-2 bg-black bg-opacity-20 text-white';
+      box.innerHTML = `
+        <p class="text-pink-500 font-semibold">${entry.name}</p>
+        <p class="text-sm text-pink-300">${entry.message}</p>
+      `;
+      commentsContainer.appendChild(box);
+    });
+
+  } catch (err) {
+    commentsContainer.innerHTML = '<p class="text-red-400">Failed to load comments.</p>';
+    console.error(err);
+  }
 }
 
 function closeGuestBook() {
