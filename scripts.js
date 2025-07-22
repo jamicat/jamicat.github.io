@@ -437,7 +437,7 @@ interact(guestBookWindow)
     });
 
     this.reset();
-    loadGuestbookComments(); 
+    //loadGuestbookComments(); 
   } catch (err) {
     alert('Failed to send message');
     console.error(err);
@@ -447,7 +447,7 @@ interact(guestBookWindow)
   }
 });
 
-  //loadGuestbookComments();
+  loadGuestbookComments();
   
 }
 
