@@ -54,7 +54,6 @@ interact('#terminal').draggable({
   },
 });
 
-
 let player;
 let isPlaying = false;
 let galaxyVisible = false;
@@ -329,7 +328,6 @@ guestbookCommentBox.className = `
   absolute 
   p-4 
   w-[300px] 
-  max-h-[400px] 
   overflow-y-auto 
   bg-black 
   bg-opacity-20 
@@ -343,6 +341,7 @@ guestbookCommentBox.className = `
   scrollbar-track-black 
   rounded-md
 `;
+
 guestbookCommentBox.style.zIndex = 10;
 document.body.appendChild(guestbookCommentBox);
 
@@ -353,10 +352,13 @@ function updateCommentBoxPosition() {
   if (!guestWindow || !commentBox) return;
 
   const rect = guestWindow.getBoundingClientRect();
+
   commentBox.style.position = 'absolute';
   commentBox.style.top = `${rect.top}px`;
-  commentBox.style.left = `${rect.right + 10}px`; // 10px spacing
+  commentBox.style.left = `${rect.right + 10}px`;
+  commentBox.style.height = `${rect.height}px`; 
 }
+
 
 updateCommentBoxPosition();
 
