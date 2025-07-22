@@ -484,6 +484,12 @@ async function loadGuestbookComments() {
 
     console.log('Parsed comments:', comments);
 
+    comments.sort((a, b) => {
+      const timeA = new Date(a.timestamp).getTime() || 0;
+      const timeB = new Date(b.timestamp).getTime() || 0;
+      return timeB - timeA; 
+    });
+
     container.innerHTML = '';
 
     comments.forEach(entry => {
@@ -492,7 +498,6 @@ async function loadGuestbookComments() {
 
       const div = document.createElement('div');
       div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm text-pink-100';
-
 
       div.innerHTML = `
         <div class="mb-1 font-semibold text-pink-300">${name || 'Anonymous'}</div>
@@ -508,6 +513,7 @@ async function loadGuestbookComments() {
     container.innerHTML = '<p class="text-red-400 text-sm">Failed to load comments.</p>';
   }
 }
+
 
 function closeGuestBook() {
   const gbWindow = document.getElementById('guestBookWindow');
