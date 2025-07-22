@@ -447,7 +447,7 @@ interact(guestBookWindow)
   }
 });
 
-  loadGuestbookComments();
+  //loadGuestbookComments();
   
 }
 
