@@ -289,53 +289,67 @@ function showGuestBook() {
   guestBookWindow.id = 'guestBookWindow';
 
   guestBookWindow.innerHTML = `
-    <div class="drag-area text-pink-600 text-sm mb-2 select-none flex justify-between items-center">
-  <span class="flex items-center space-x-2">
-    <img src="jami.png" alt="Avatar" class="avatar-icon" />
-    <span class="text-[1.5em] text-pink-600 font-semibold">Guestbook</span>
-  </span>
-  <div class="flex items-center space-x-2 mr-3 -mt-12">
-    <button onclick="closeGuestBook()" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-600 hover:text-red-400 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
-  </div>
-</div>
-
-<div class="flex flex-col sm:flex-row gap-6">
-  <!-- Form Side -->
-  <div class="sm:w-1/2 w-full">
-    <div class="text-pink-300 text-md mt-4 mb-4 text-center">
-      <p>Welcome to the Guestbook! Be nice.</p>
+  <div class="drag-area text-pink-600 text-sm mb-2 select-none flex justify-between items-center">
+    <span class="flex items-center space-x-2">
+      <img src="jami.png" alt="Avatar" class="avatar-icon" />
+      <span class="text-[1.5em] text-pink-600 font-semibold">Guestbook</span>
+    </span>
+    <div class="flex items-center space-x-2 mr-3 -mt-12">
+      <button onclick="closeGuestBook()" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-600 hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
-    <form id="guestbookForm" class="space-y-4 text-white">
-      <input type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required />
-      <textarea name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required></textarea>
-      <div class="text-center">
-        <button type="submit" class="terminal-button">Submit</button>
-      </div>
-    </form>
   </div>
-</div>
-  `;
+
+  <div class="flex flex-col sm:flex-row gap-6">
+    <!-- Left: Form -->
+    <div class="sm:w-1/2 w-full">
+      <div class="text-pink-300 text-md mt-4 mb-4 text-center">
+        <p>Welcome to the Guestbook! Be nice.</p>
+      </div>
+      <form id="guestbookForm" class="space-y-4 text-white">
+        <input type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required />
+        <textarea name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required></textarea>
+        <div class="text-center">
+          <button type="submit" class="terminal-button">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Right: Comments Stack -->
+    <div id="commentStack" class="sm:w-1/2 w-full max-h-[320px] overflow-y-auto space-y-3 pr-1 scrollbar-thin scrollbar-thumb-pink-600 scrollbar-track-transparent">
+      <!-- Comments will be injected here -->
+    </div>
+  </div>
+`;
 
 
-document.body.appendChild(guestBookWindow);
+
 const commentStackContainer = document.createElement('div');
 commentStackContainer.id = 'commentStack';
+
+commentStackContainer.className = `
+  max-h-[80vh] 
+  overflow-y-auto 
+  flex flex-col gap-2 
+  pr-2 
+  scrollbar-thin 
+  scrollbar-thumb-pink-600 
+  scrollbar-track-zinc-800 
+  backdrop-blur-md 
+  bg-black/20 
+  rounded-lg 
+  p-2
+`;
+
 commentStackContainer.style.position = 'absolute';
 commentStackContainer.style.top = '50%';
-commentStackContainer.style.left = 'calc(50% + 280px)'; 
+commentStackContainer.style.left = 'calc(50% + 280px)';
 commentStackContainer.style.transform = 'translateY(-50%)';
-commentStackContainer.style.maxHeight = '80vh';
-commentStackContainer.style.overflowY = 'auto';
-commentStackContainer.style.display = 'flex';
-commentStackContainer.style.flexDirection = 'column';
-commentStackContainer.style.gap = '10px';
-commentStackContainer.style.paddingRight = '8px';
-commentStackContainer.style.zIndex = 10;
-
+commentStackContainer.style.zIndex = '10';
+commentStackContainer.style.width = '260px';
 document.body.appendChild(commentStackContainer);
 
   interact(guestBookWindow)
