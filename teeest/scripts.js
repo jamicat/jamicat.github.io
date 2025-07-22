@@ -363,6 +363,16 @@ requestAnimationFrame(() => {
   updateCommentBoxPosition();
 });
 
+const guestWindow = document.getElementById('guestBookWindow');
+const commentBox = document.getElementById('guestbookComments');
+
+if (guestWindow && commentBox) {
+  const resizeObserver = new ResizeObserver(() => {
+    updateCommentBoxPosition();
+  });
+  resizeObserver.observe(guestWindow);
+}
+
 interact(guestBookWindow)
   .draggable({
     allowFrom: '.drag-area',
