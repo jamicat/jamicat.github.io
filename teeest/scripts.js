@@ -409,7 +409,7 @@ async function loadGuestbookComments() {
       headers: {
         'Accept': 'application/json'
       },
-      mode: 'cors' 
+      mode: 'no-cors' 
     });
 
     const data = await response.json(); 
