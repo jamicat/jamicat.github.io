@@ -405,29 +405,26 @@ async function loadGuestbookComments() {
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbxQ-t2ECSGLNu4PpA3GHFgKXJbkx1xbmze6K4L8v9d9XbajDdJY9XjrAAcgsRRvhrMVnw/exec', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      }
+      method: 'GET'
     });
 
-     const data = await response.json();
-    
-    if (!Array.isArray(data)) throw new Error('Invalid format');
+    const { comments = [] } = await response.json();
 
-    container.innerHTML = ''; 
+    if (!Array.isArray(comments)) throw new Error('Invalid format');
 
-    data.forEach(entry => {
+    container.innerHTML = '';
+
+    comments.forEach(entry => {
+      const { name, comment, timestamp } = entry;
       console.log('Rendering comment from:', name);
-      const { name, message, date } = entry;
 
       const div = document.createElement('div');
       div.className = 'bg-black bg-opacity-20 border border-pink-600 border-opacity-75 rounded p-3 mb-2 text-sm text-pink-100';
 
       div.innerHTML = `
         <div class="mb-1 font-semibold text-pink-300">${name}</div>
-        <div class="mb-1">${message}</div>
-        <div class="text-pink-500 text-xs text-right">${new Date(date).toLocaleString()}</div>
+        <div class="mb-1">${comment}</div>
+        <div class="text-pink-500 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
       `;
 
       container.appendChild(div);
