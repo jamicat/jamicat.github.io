@@ -321,7 +321,7 @@ function showGuestBook() {
 document.body.appendChild(guestBookWindow);
 
 var typed2= new Typed('#typed2', {
-  strings: ['Guestbook'],
+  strings: ['<span class="text-white text-xl mr-2 text-pink-glow">Guestbook</span>'],
   typeSpeed: 80,
   showCursor: true,
   cursorChar: '_',
