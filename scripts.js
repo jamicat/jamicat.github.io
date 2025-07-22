@@ -305,7 +305,7 @@ function showGuestBook() {
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
       <div class="text-pink-300 text-md mt-2 mb-4 text-center">
-        <p class="text-base">Welcome! Be nice.</p>
+       <p id="welcomeMessage" class="text-base">Welcome! Be nice.</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-white">
         <input type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required />
@@ -419,10 +419,53 @@ interact(guestBookWindow)
     }
   });
 
-  document.getElementById('guestbookForm').addEventListener('submit', async function (e) {
-  e.preventDefault();
+document.getElementById('guestbookForm').addEventListener('submit', async function (e) {
+e.preventDefault();
 
-  const name = this.name.value.trim();
+const name = document.getElementById("name").value.trim();
+const message = document.getElementById("message").value.trim();
+const now = Date.now();
+
+if (!name || !message) {
+alert("Fill in the fields!");
+return;
+}
+
+if (now - lastSubmissionTime < 300000) {
+alert("5 minutes between each submission.");
+return;
+}
+
+lastSubmissionTime = now;
+
+const data = {
+name: `*${name}`,
+comment: `*${message}`,
+timestamp: new Date().toISOString(),
+};
+
+const url = "https://script.google.com/macros/s/AKfycbyHw5sLKQB5OWs3pRSed4T2e-0aX32fwg03OXbyVH_UB6pOyzhCntv_9PDaU8WXeuql/exec";
+
+fetch(url, {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+},
+body: JSON.stringify(data),
+mode: "no-cors",
+});
+
+document.getElementById("name").value = "";
+document.getElementById("message").value = "";
+const welcomeMessage = document.querySelector('p.text-base');
+welcomeMessage.textContent = "Thanks for your comment!";
+
+  setTimeout(() => {
+    welcomeMessage.textContent = "Welcome! Be nice.";
+  }, 5000);
+  loadGuestbookComments();
+
+  /*const name = this.name.value.trim();
   const message = this.message.value.trim();
   if (!name || !message) return;
 
@@ -445,10 +488,9 @@ interact(guestBookWindow)
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit';
   }
-});
-
-  loadGuestbookComments();
-  
+});*/
+}
+                                                          loadGuestbookComments();
 }
 
 async function loadGuestbookComments() {
