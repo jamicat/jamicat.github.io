@@ -401,16 +401,29 @@ function showGuestBook() {
 
 async function loadGuestbookComments() {
   const container = document.getElementById('guestbookComments');
+  if (!container) {
+    console.error('guestbookComments container not found');
+    return;
+  }
+
   container.innerHTML = '<p class="text-pink-400 text-sm">Loading comments...</p>';
 
   try {
-    const response = await fetch('https://script.google.com/macros/s/AKfycbxQ-t2ECSGLNu4PpA3GHFgKXJbkx1xbmze6K4L8v9d9XbajDdJY9XjrAAcgsRRvhrMVnw/exec', {
-      method: 'GET'
-    });
+    const response = await fetch('https://script.google.com/macros/s/AKfycbxQ-t2ECSGLNu4PpA3GHFgKXJbkx1xbmze6K4L8v9d9XbajDdJY9XjrAAcgsRRvhrMVnw/exec');
+    const raw = await response.text();
+    console.log('RAW response:', raw);
 
-    const { comments = [] } = await response.json();
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch (jsonErr) {
+      console.error('Failed to parse JSON:', jsonErr);
+      container.innerHTML = '<p class="text-red-400 text-sm">Invalid JSON response.</p>';
+      return;
+    }
 
-    if (!Array.isArray(comments)) throw new Error('Invalid format');
+    const { comments = [] } = data;
+    console.log('Parsed comments:', comments);
 
     container.innerHTML = '';
 
@@ -435,6 +448,7 @@ async function loadGuestbookComments() {
     container.innerHTML = '<p class="text-red-400 text-sm">Failed to load comments.</p>';
   }
 }
+
 
 
 function closeGuestBook() {
