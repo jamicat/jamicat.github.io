@@ -404,7 +404,7 @@ async function loadGuestbookComments() {
   container.innerHTML = '<p class="text-pink-400 text-sm">Loading comments...</p>';
 
   try {
-    const response = await fetch('https://script.google.com/macros/s/AKfycbws4tBuGL9gmR9q8hhDxOcb7E3oOweFtkvThIk5Ovv1M-rDI4876WT_fXU8QuoRd77AJg/exec', {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbxQ-t2ECSGLNu4PpA3GHFgKXJbkx1xbmze6K4L8v9d9XbajDdJY9XjrAAcgsRRvhrMVnw/exec', {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
