@@ -323,7 +323,7 @@ document.body.appendChild(guestBookWindow);
 var typed2= new Typed('#typed2', {
   strings: ['<span class="text-white text-xl mr-2 text-pink-glow">Guestbook</span>'],
   typeSpeed: 80,
-  showCursor: true,
+  showCursor: false,
   cursorChar: '_',
   loop: false,
 });
