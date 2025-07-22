@@ -412,8 +412,6 @@ async function loadGuestbookComments() {
       mode: 'no-cors' 
     });
 
-    const data = await response.json(); 
-
     if (!Array.isArray(data)) throw new Error('Invalid format');
 
     container.innerHTML = ''; 
