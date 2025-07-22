@@ -305,7 +305,7 @@ function showGuestBook() {
 
 <div class="flex-row gap-6 sm:flex-row gap-6">
   <!-- Form Side -->
-  <div class="sm:w-1/2 w-full">
+  <div class="w-1/2 w-full sm:w-1/2 w-full">
     <div class="text-pink-300 text-md mt-4 mb-4 text-center">
       <p>Welcome to the Guestbook! Be nice.</p>
     </div>
