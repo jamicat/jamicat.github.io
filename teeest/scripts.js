@@ -291,7 +291,7 @@ function showGuestBook() {
   <div class="drag-area text-pink-600 text-sm mb-2 select-none flex justify-between items-center">
     <span class="flex items-center space-x-2">
       <img src="jami2.png" alt="Avatar2" class="avatar-icon" />
-     <span id="typed-title" class="text-pink-600 text-lg mt-4 mb-4"></span>
+     <span id="typed" class="text-pink-600 text-lg mt-4 mb-4"></span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
       <button onclick="closeGuestBook()" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
@@ -319,7 +319,7 @@ function showGuestBook() {
   </div>
 `;
 
-var typedTitle = new Typed('#typed-title', {
+var typedTitle = new Typed('#typed', {
   strings: ['Guestbook'],
   typeSpeed: 80,
   showCursor: true,
