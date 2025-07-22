@@ -319,7 +319,7 @@ function showGuestBook() {
     </div>
 
     <!-- Comments Side -->
-    <div class="w-full sm:w-1/2 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-pink-600 scrollbar-track-black scrollbar-thumb-rounded-md" id="guestbookComments">
+    <div class="w-full sm:w-1/2 max-h-[300px] overflow-y-auto pr-1" id="guestbookComments">
       <!-- Injected comments will go here -->
     </div>
   </div>
