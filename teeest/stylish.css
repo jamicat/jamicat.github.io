@@ -97,6 +97,10 @@ min-height: 2.5em;
 min-height: 2.5em; 
 }
 
+#typed2 .typed-cursor {
+  color: white !important;
+}
+
 #guestbookComments {
   scrollbar-width: thin;
   scrollbar-color: #ec4899 #000000;
