@@ -332,14 +332,16 @@ guestbookCommentBox.className = `
   bg-black 
   bg-opacity-20 
   border 
-  border-pink-600 
-  border-opacity-75 
+  border-pink-400 
+  border-opacity-40 
   text-white 
   text-sm 
   scrollbar-thin 
   scrollbar-thumb-pink-600 
   scrollbar-track-black 
-  rounded-md
+  rounded-lg
+  shadow-md 
+  shadow-pink-600/20
 `;
 
 guestbookCommentBox.style.zIndex = 10;
