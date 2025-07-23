@@ -464,6 +464,7 @@ welcomeMessage.textContent = "Thanks for your comment!";
     welcomeMessage.textContent = "Welcome! Be nice.";
   }, 5000);
   loadGuestbookComments();
+  });
 
   /*const name = this.name.value.trim();
   const message = this.message.value.trim();
@@ -489,9 +490,10 @@ welcomeMessage.textContent = "Thanks for your comment!";
     submitBtn.textContent = 'Submit';
   }
 });*/
+loadGuestbookComments();
 }
-                                                          loadGuestbookComments();
-}
+                                                          
+
 
 async function loadGuestbookComments() {
   const container = document.getElementById('guestbookComments');
