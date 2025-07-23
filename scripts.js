@@ -272,6 +272,7 @@ $('#terminalContent').html(`
 }
 
 let lastSubmissionTime = 0;
+let lastGbSubmissionTime = 0;
 
 function showGuestBook() {
 
@@ -431,12 +432,12 @@ alert("Fill in the fields!");
 return;
 }
 
-if (now - lastSubmissionTime < 300000) {
+if (now - lastGbSubmissionTime < 300000) {
 alert("5 minutes between each submission.");
 return;
 }
 
-lastSubmissionTime = now;
+lastGbSubmissionTime= now;
 
 const data = {
 name: `*${name}`,
