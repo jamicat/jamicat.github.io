@@ -459,7 +459,7 @@ mode: "no-cors",
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
 const welcomeMessage = document.querySelector('p.text-base');
-welcomeMessage.textContent = "Thanks for your comment!";
+welcomeMessage.textContent = "Thank you for your comment!";
 
   setTimeout(() => {
     welcomeMessage.textContent = "Welcome! Be nice.";
@@ -576,7 +576,7 @@ document.getElementById('terminalContent').innerHTML = `
       <button type="submit" class="terminal-button">Submit</button>
       <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
       </div>
-      <div id="formResponse" class="text-pink-600 mt-2"></div>
+      <div id="formResponse" class="text-pink-300 text-md mt-2 mb-4 text-center"></div>
     </form>
   `;
 
