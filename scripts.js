@@ -106,7 +106,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'qGg-hitVZKQ';
+const videoId = 'p_4M4TKTydM';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -186,10 +186,10 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "Wet Leg - Ur Mum (Official Video)",
-videoId: "qGg-hitVZKQ",
-channelAvatar: "https://yt3.googleusercontent.com/ctx8viOqBYgqYvhwkxh6IGZwaapW4j-QngUWO5yjRkLa7e2OajQaTZKDRp5NkSgOetijVpl1_Q=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@wetlegband"
+title: "KSI – Patience (feat. YUNGBLUD & Polo G)",
+videoId: "p_4M4TKTydM",
+channelAvatar: "https://yt3.googleusercontent.com/AWJwtk1q1fPYQC53SGs2KyPdFITyY7JpMj39aPh0XcUKfNnlqxjriBc6qQacwFhRj8V2t6Kj_w=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@ksiofficialmusic"
 },
 {
 title: "YUNGBLUD - King Charles (Official Video)",
