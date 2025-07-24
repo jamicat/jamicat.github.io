@@ -65,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'p_4M4TKTydM,rzWRLgZ8M18',
+playlist: 'p_4M4TKTydM,LqtCRoLtyNI',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -192,8 +192,8 @@ channelAvatar: "https://yt3.googleusercontent.com/AWJwtk1q1fPYQC53SGs2KyPdFITyY7
 channelUrl: "https://www.youtube.com/@ksiofficialmusic"
 },
 {
-title: "YUNGBLUD - Sex Not Violence",
-videoId: "rzWRLgZ8M18",
+title: "YUNGBLUD - California",
+videoId: "LqtCRoLtyNI",
 channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@YUNGBLUD"
 }
