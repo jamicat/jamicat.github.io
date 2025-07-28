@@ -103,11 +103,13 @@ min-height: 2.5em;
 
 #guestbookComments {
   scrollbar-width: thin;
-  scrollbar-color: #ec4899 #000000;
+  scrollbar-color: #333333 #000000;
+  overflow-y: auto;
+  scrollbar-gutter: stable both-edges;
 }
 
 #guestbookComments::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 #guestbookComments::-webkit-scrollbar-track {
@@ -115,8 +117,8 @@ min-height: 2.5em;
 }
 
 #guestbookComments::-webkit-scrollbar-thumb {
-  background-color: #ec4899;
-  border-radius: 8px;
-  border: 1px solid #000000;
+  background-color: #333333; 
+  border-radius: 6px;
+  border: 1px solid #000000; 
 }
 
