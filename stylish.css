@@ -101,7 +101,7 @@ min-height: 2.5em;
   color: white !important;
 }
 
-#guestbookComments {
+/*#guestbookComments {
   overflow-y: auto;
   scrollbar-width: none; 
   scrollbar-gutter: stable; 
@@ -131,4 +131,4 @@ min-height: 2.5em;
   background-color: transparent;
   border-radius: 6px;
   border: 1px solid transparent;
-}
+}*/
