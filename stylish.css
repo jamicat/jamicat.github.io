@@ -102,7 +102,6 @@ min-height: 2.5em;
 }
 
 #guestbookComments {
-  overflow-y: auto;
   scrollbar-width: none; 
   scrollbar-gutter: stable; 
   -ms-overflow-style: none;        
