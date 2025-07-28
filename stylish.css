@@ -107,8 +107,6 @@ min-height: 2.5em;
   scrollbar-gutter: stable; 
   -ms-overflow-style: none;        
   scrollbar-color: #333333 #000000;
-  display: none;
-  
 }
 
 #guestbookComments::-webkit-scrollbar {
