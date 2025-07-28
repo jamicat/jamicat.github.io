@@ -103,13 +103,16 @@ min-height: 2.5em;
 
 #guestbookComments {
   overflow-y: auto;
-  scrollbar-width: none;            
+  scrollbar-width: none; 
+  scrollbar-gutter: stable; 
   -ms-overflow-style: none;        
+  scrollbar-color: #333333 #000000;
+  
 }
 
 #guestbookComments::-webkit-scrollbar {
   width: 4px;
-  display: none;
+  background: transparent;
 }
 
 #guestbookComments:hover {
@@ -121,11 +124,11 @@ min-height: 2.5em;
 }
 
 #guestbookComments:hover::-webkit-scrollbar-track {
-  background: #000000;              /
+  background: #000000;              
 }
 
 #guestbookComments:hover::-webkit-scrollbar-thumb {
-  background-color: #333333;        
+  background-color: transparent;
   border-radius: 6px;
-  border: 1px solid #000000;
+  border: 1px solid transparent;
 }
