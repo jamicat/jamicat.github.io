@@ -102,22 +102,30 @@ min-height: 2.5em;
 }
 
 #guestbookComments {
-  scrollbar-width: thin;
-  scrollbar-color: #333333 #000000;
   overflow-y: auto;
+  scrollbar-width: none;            
+  -ms-overflow-style: none;        
 }
 
 #guestbookComments::-webkit-scrollbar {
   width: 4px;
+  display: none;
 }
 
-#guestbookComments::-webkit-scrollbar-track {
-  background: #000000;
+#guestbookComments:hover {
+  scrollbar-width: thin;           
 }
 
-#guestbookComments::-webkit-scrollbar-thumb {
-  background-color: #333333; 
+#guestbookComments:hover::-webkit-scrollbar {
+  display: block;
+}
+
+#guestbookComments:hover::-webkit-scrollbar-track {
+  background: #000000;              /
+}
+
+#guestbookComments:hover::-webkit-scrollbar-thumb {
+  background-color: #333333;        
   border-radius: 6px;
-  border: 1px solid #000000; 
+  border: 1px solid #000000;
 }
-
