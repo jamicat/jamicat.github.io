@@ -65,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'p_4M4TKTydM,LqtCRoLtyNI',
+playlist: 'QgyW9qjgIf4,vV_D6KvAUqE',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -106,7 +106,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'p_4M4TKTydM';
+const videoId = 'QgyW9qjgIf4';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -186,16 +186,16 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "KSI – Patience (feat. YUNGBLUD & Polo G)",
-videoId: "p_4M4TKTydM",
-channelAvatar: "https://yt3.googleusercontent.com/AWJwtk1q1fPYQC53SGs2KyPdFITyY7JpMj39aPh0XcUKfNnlqxjriBc6qQacwFhRj8V2t6Kj_w=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@ksiofficialmusic"
+title: "Jane Remover — Dancing with your eyes closed",
+videoId: "QgyW9qjgIf4",
+channelAvatar: "https://yt3.googleusercontent.com/2bxF7tqefllZCY6X6Xb9LBbuWt-L5k2cgafU9bEvwlbVBEywZQIkbiYJsJxHnn_Fmd4bJVBq=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@jane_remover"
 },
 {
-title: "YUNGBLUD - California",
-videoId: "LqtCRoLtyNI",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@YUNGBLUD"
+title: "PALAYE ROYALE - Showbiz (Official Music Video)",
+videoId: "vV_D6KvAUqE",
+channelAvatar: "https://yt3.googleusercontent.com/0wSYqaUVQchPTN_S7evpJxDf4ySZKZ1mdLfZv9wjKrO0xEMIy-xFquuB60IMXIB22JPSh6Huzc8=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@SumerianRecords"
 }
 ];
 
