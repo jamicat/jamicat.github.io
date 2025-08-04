@@ -273,7 +273,7 @@ download: false,
 
 function siteFAQ() {
 $('#terminalContent').html(`
-      <div class="text-sky-300 text-lg mb-4 mt-4">Libraries used:</div>
+      <div class="text-sky-200 text-lg mb-4 mt-4">Libraries used:</div>
       <ul class="list-disc list-inside text-white space-y-1">
       <li class="text-pink-glow">jQuery</li>
        <li class="text-pink-glow">Typed.js</li>
@@ -322,12 +322,12 @@ function showGuestBook() {
 
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
-      <div class="text-sky-300 text-md mt-2 mb-4 text-center">
+      <div class="text-sky-200 text-md mt-2 mb-4 text-center">
        <p id="welcomeMessage" class="text-base">Welcome! Be nice.</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-white">
-        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-sky-500 rounded border-opacity-75" required />
-        <textarea id="message" name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-sky-500 rounded border-opacity-75" required></textarea>
+        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-sky-200 rounded border-opacity-75" required />
+        <textarea id="message" name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-sky-200 rounded border-opacity-75" required></textarea>
         <div class="text-center">
           <button type="submit" class="terminal-button">Submit</button>
         </div>
@@ -558,12 +558,12 @@ async function loadGuestbookComments() {
       console.log('Rendering comment from:', name);
 
       const div = document.createElement('div');
-      div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm text-pink-100';
+      div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm text-sky-100';
 
       div.innerHTML = `
-        <div class="mb-1 font-semibold text-pink-300">${name || 'Anonymous'}</div>
+        <div class="mb-1 font-semibold text-sky-200">${name || 'Anonymous'}</div>
         <div class="mb-1">${comment || ''}</div>
-        <div class="text-pink-500 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
+        <div class="text-sky-200 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
       `;
 
       container.appendChild(div);
@@ -586,8 +586,8 @@ function showMessageForm() {
 
 document.getElementById('terminalContent').innerHTML = `
     <form id="guestbookForm" class="space-y-4 mt-4">
-      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-black text-white border border-sky-500 bg-opacity-20 border-opacity-75" required>
-      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-sky-500 bg-opacity-20 border-opacity-75" required></textarea>
+      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-black text-white border border-sky-200 bg-opacity-20 border-opacity-75" required>
+      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-sky-200 bg-opacity-20 border-opacity-75" required></textarea>
       <div class="flex justify-center space-x-4 flex-wrap">
       <button type="submit" class="terminal-button">Submit</button>
       <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
@@ -674,6 +674,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
