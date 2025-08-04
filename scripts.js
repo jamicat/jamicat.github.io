@@ -298,7 +298,7 @@ function showGuestBook() {
   }
 
   const guestBookWindow = document.createElement('div');
-  guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px]';
+  guestBookWindow.className = 'terminal bg-pink-200/10 absolute p-6 max-w-full w-[90vw] sm:w-[500px]';
   guestBookWindow.style.zIndex = 11;
   guestBookWindow.style.top = '50%';
   guestBookWindow.style.left = '50%';
@@ -352,6 +352,7 @@ guestbookCommentBox.className = `
   terminal 
   absolute 
   p-4 
+  bg-pink-300/10
   w-[300px] 
   overflow-y-auto 
   bg-black 
@@ -558,7 +559,7 @@ async function loadGuestbookComments() {
       console.log('Rendering comment from:', name);
 
       const div = document.createElement('div');
-      div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm text-sky-100';
+      div.className = 'bg-pink-100/10 rounded p-3 mb-2 text-sm text-sky-100';
 
       div.innerHTML = `
         <div class="mb-1 font-semibold text-white text-pink-glow">${name || 'Anonymous'}</div>
@@ -674,6 +675,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
