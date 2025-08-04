@@ -561,7 +561,7 @@ async function loadGuestbookComments() {
       div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm text-sky-100';
 
       div.innerHTML = `
-        <div class="mb-1 font-semibold text-sky-200 text-pink-glow">${name || 'Anonymous'}</div>
+        <div class="mb-1 font-semibold text-white text-pink-glow">${name || 'Anonymous'}</div>
         <div class="mb-1">${comment || ''}</div>
         <div class="text-sky-200 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
       `;
@@ -674,6 +674,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
