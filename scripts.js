@@ -224,12 +224,20 @@ html += `
 $('#terminalContent').html(html);
 }
 
+const tooltip = document.getElementById('tooltip');
 themeBtn.addEventListener('click', changeTheme);
 
 function changeTheme()
 {
+  document.documentElement.classList.toggle('dark');
 
+  tooltip.classList.remove('opacity-0', 'pointer-events-none');
+  tooltip.classList.add('opacity-100');
 
+  setTimeout(() => {
+    tooltip.classList.add('opacity-0', 'pointer-events-none');
+    tooltip.classList.remove('opacity-100');
+  }, 1500);
 }
 
 function showArt() {
@@ -667,4 +675,5 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
