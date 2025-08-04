@@ -123,6 +123,7 @@ img.src = highRes;
 const toggleBtn = document.getElementById('videoToggle');
 const playIcon = document.getElementById('playIcon');
 const pauseIcon = document.getElementById('pauseIcon');
+const themeBtn = document.getElementById('changeTheme');
 
 toggleBtn.addEventListener('click', () => {
 if (!player) return;
@@ -221,6 +222,14 @@ html += `
 `;
 
 $('#terminalContent').html(html);
+}
+
+themeBtn.addEventListener('click', changeTheme);
+
+function changeTheme()
+{
+
+
 }
 
 function showArt() {
@@ -658,3 +667,4 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
