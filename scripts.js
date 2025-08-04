@@ -273,7 +273,7 @@ download: false,
 
 function siteFAQ() {
 $('#terminalContent').html(`
-      <div class="text-red-300 text-lg mb-4 mt-4">Libraries used:</div>
+      <div class="text-sky-300 text-lg mb-4 mt-4">Libraries used:</div>
       <ul class="list-disc list-inside text-white space-y-1">
       <li class="text-pink-glow">jQuery</li>
        <li class="text-pink-glow">Typed.js</li>
@@ -322,12 +322,12 @@ function showGuestBook() {
 
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
-      <div class="text-pink-300 text-md mt-2 mb-4 text-center">
+      <div class="text-sky-300 text-md mt-2 mb-4 text-center">
        <p id="welcomeMessage" class="text-base">Welcome! Be nice.</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-white">
-        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required />
-        <textarea id="message" name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required></textarea>
+        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-sky-500 rounded border-opacity-75" required />
+        <textarea id="message" name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-sky-500 rounded border-opacity-75" required></textarea>
         <div class="text-center">
           <button type="submit" class="terminal-button">Submit</button>
         </div>
@@ -520,7 +520,7 @@ async function loadGuestbookComments() {
     return;
   }
 
-  container.innerHTML = '<p class="text-pink-400 text-sm">Loading ฅᨐฅ...</p>';
+  container.innerHTML = '<p class="text-sky-400 text-sm">Loading ฅᨐฅ...</p>';
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
@@ -586,8 +586,8 @@ function showMessageForm() {
 
 document.getElementById('terminalContent').innerHTML = `
     <form id="guestbookForm" class="space-y-4 mt-4">
-      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-black text-white border border-pink-600 bg-opacity-20 border-opacity-75" required>
-      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-600 bg-opacity-20 border-opacity-75" required></textarea>
+      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-black text-white border border-sky-500 bg-opacity-20 border-opacity-75" required>
+      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-sky-500 bg-opacity-20 border-opacity-75" required></textarea>
       <div class="flex justify-center space-x-4 flex-wrap">
       <button type="submit" class="terminal-button">Submit</button>
       <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
@@ -674,6 +674,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
