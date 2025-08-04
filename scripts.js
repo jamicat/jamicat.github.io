@@ -172,13 +172,13 @@ const canvas = document.getElementById('canvas');
 if (galaxyVisible) {
 galaxyVisible = false;
 rewind10.classList.remove('text-white');
-rewind10.classList.add('text-cyan-500');
+rewind10.classList.add('text-cyan-100');
 canvas.style.opacity = '0';
 canvas.style.pointerEvents = 'none'; 
 } else {
 galaxyVisible = true;
 rewind10.classList.add('text-white');
-rewind10.classList.remove('text-cyan-500');
+rewind10.classList.remove('text-cyan-100');
 canvas.style.opacity = '1';
 canvas.style.pointerEvents = 'auto';  
 }
@@ -273,7 +273,7 @@ download: false,
 
 function siteFAQ() {
 $('#terminalContent').html(`
-      <div class="text-cyan-200 text-lg mb-4 mt-4">Libraries used:</div>
+      <div class="text-cyan-100 text-lg mb-4 mt-4">Libraries used:</div>
       <ul class="list-disc list-inside text-white space-y-1">
       <li class="text-pink-glow">jQuery</li>
        <li class="text-pink-glow">Typed.js</li>
@@ -322,7 +322,7 @@ function showGuestBook() {
 
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
-      <div class="text-cyan-200 text-md mt-2 mb-4 text-center">
+      <div class="text-cyan-100 text-md mt-2 mb-4 text-center">
        <p id="welcomeMessage" class="text-base">Welcome! Be nice.</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-white">
@@ -520,7 +520,7 @@ async function loadGuestbookComments() {
     return;
   }
 
-  container.innerHTML = '<p class="text-cyan-200 text-sm">Loading ฅᨐฅ...</p>';
+  container.innerHTML = '<p class="text-cyan-100 text-sm">Loading ฅᨐฅ...</p>';
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
@@ -563,7 +563,7 @@ async function loadGuestbookComments() {
       div.innerHTML = `
         <div class="mb-1 font-semibold text-white text-pink-glow">${name || 'Anonymous'}</div>
         <div class="mb-1">${comment || ''}</div>
-        <div class="text-cyan-200 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
+        <div class="text-cyan-100 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
       `;
 
       container.appendChild(div);
@@ -592,7 +592,7 @@ document.getElementById('terminalContent').innerHTML = `
       <button type="submit" class="terminal-button">Submit</button>
       <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
       </div>
-      <div id="formResponse" class="text-cyan-200 text-md mt-2 mb-4 text-center"></div>
+      <div id="formResponse" class="text-cyan-100 text-md mt-2 mb-4 text-center"></div>
     </form>
   `;
 
@@ -674,6 +674,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
