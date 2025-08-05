@@ -1,6 +1,5 @@
 var typed = new Typed('#typed', {
 strings: [
-'<span class="text-white text-xl mr-2 text-pink-glow">Love you all</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
@@ -66,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'UL8MN5YF8v8,dqUdI4AIDF0',
+playlist: 'QgyW9qjgIf4,vV_D6KvAUqE',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -107,7 +106,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'UL8MN5YF8v8';
+const videoId = 'QgyW9qjgIf4';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -124,7 +123,6 @@ img.src = highRes;
 const toggleBtn = document.getElementById('videoToggle');
 const playIcon = document.getElementById('playIcon');
 const pauseIcon = document.getElementById('pauseIcon');
-const themeBtn = document.getElementById('changeTheme');
 
 toggleBtn.addEventListener('click', () => {
 if (!player) return;
@@ -173,13 +171,13 @@ const canvas = document.getElementById('canvas');
 if (galaxyVisible) {
 galaxyVisible = false;
 rewind10.classList.remove('text-white');
-rewind10.classList.add('text-cyan-100');
+rewind10.classList.add('text-pink-600');
 canvas.style.opacity = '0';
 canvas.style.pointerEvents = 'none'; 
 } else {
 galaxyVisible = true;
 rewind10.classList.add('text-white');
-rewind10.classList.remove('text-cyan-100');
+rewind10.classList.remove('text-pink-600');
 canvas.style.opacity = '1';
 canvas.style.pointerEvents = 'auto';  
 }
@@ -188,16 +186,16 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - breakdown.",
-videoId: "UL8MN5YF8v8",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@YUNGBLUD"
+title: "Jane Remover — Dancing with your eyes closed",
+videoId: "QgyW9qjgIf4",
+channelAvatar: "https://yt3.googleusercontent.com/2bxF7tqefllZCY6X6Xb9LBbuWt-L5k2cgafU9bEvwlbVBEywZQIkbiYJsJxHnn_Fmd4bJVBq=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@jane_remover"
 },
 {
-title: "Jack Johnson - Upside Down",
-videoId: "dqUdI4AIDF0",
-channelAvatar: "https://yt3.googleusercontent.com/ytc/AIdro_mNTN-FWWyBcJxOGm6Fden4OI8j6ad1m5W8YjUfOD8hqGg=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@jackjohnsonmusic"
+title: "PALAYE ROYALE - Showbiz (Official Music Video)",
+videoId: "vV_D6KvAUqE",
+channelAvatar: "https://yt3.googleusercontent.com/0wSYqaUVQchPTN_S7evpJxDf4ySZKZ1mdLfZv9wjKrO0xEMIy-xFquuB60IMXIB22JPSh6Huzc8=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@SumerianRecords"
 }
 ];
 
@@ -223,22 +221,6 @@ html += `
 `;
 
 $('#terminalContent').html(html);
-}
-
-const tooltip = document.getElementById('tooltip');
-themeBtn.addEventListener('click', changeTheme);
-
-function changeTheme()
-{
-  document.documentElement.classList.toggle('dark');
-
-  tooltip.classList.remove('opacity-0', 'pointer-events-none');
-  tooltip.classList.add('opacity-100');
-
-  setTimeout(() => {
-    tooltip.classList.add('opacity-0', 'pointer-events-none');
-    tooltip.classList.remove('opacity-100');
-  }, 1500);
 }
 
 function showArt() {
@@ -274,7 +256,7 @@ download: false,
 
 function siteFAQ() {
 $('#terminalContent').html(`
-      <div class="text-cyan-100 text-lg mb-4 mt-4">Libraries used:</div>
+      <div class="text-red-300 text-lg mb-4 mt-4">Libraries used:</div>
       <ul class="list-disc list-inside text-white space-y-1">
       <li class="text-pink-glow">jQuery</li>
        <li class="text-pink-glow">Typed.js</li>
@@ -299,7 +281,7 @@ function showGuestBook() {
   }
 
   const guestBookWindow = document.createElement('div');
-  guestBookWindow.className = 'terminal bg-pink-200/10 absolute p-6 max-w-full w-[90vw] sm:w-[500px]';
+  guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px]';
   guestBookWindow.style.zIndex = 11;
   guestBookWindow.style.top = '50%';
   guestBookWindow.style.left = '50%';
@@ -314,7 +296,7 @@ function showGuestBook() {
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
       <button onclick="closeGuestBook()" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-sky-100 hover:text-sky-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-600 hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -323,12 +305,12 @@ function showGuestBook() {
 
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
-      <div class="text-cyan-100 text-md mt-2 mb-4 text-center">
+      <div class="text-pink-300 text-md mt-2 mb-4 text-center">
        <p id="welcomeMessage" class="text-base">Welcome! Be nice.</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-white">
-        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-sky-200 rounded border-opacity-75" required />
-        <textarea id="message" name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-sky-200 rounded border-opacity-75" required></textarea>
+        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required />
+        <textarea id="message" name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required></textarea>
         <div class="text-center">
           <button type="submit" class="terminal-button">Submit</button>
         </div>
@@ -353,7 +335,6 @@ guestbookCommentBox.className = `
   terminal 
   absolute 
   p-4 
-  bg-pink-300/10
   w-[300px] 
   overflow-y-auto 
   bg-black 
@@ -522,7 +503,7 @@ async function loadGuestbookComments() {
     return;
   }
 
-  container.innerHTML = '<p class="text-cyan-100 text-sm">Loading ฅᨐฅ...</p>';
+  container.innerHTML = '<p class="text-pink-400 text-sm">Loading ฅᨐฅ...</p>';
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
@@ -560,12 +541,12 @@ async function loadGuestbookComments() {
       console.log('Rendering comment from:', name);
 
       const div = document.createElement('div');
-      div.className = 'bg-pink-100/10 rounded p-3 mb-2 text-sm text-sky-100';
+      div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm text-pink-100';
 
       div.innerHTML = `
-        <div class="mb-1 font-semibold text-white text-pink-glow">${name || 'Anonymous'}</div>
+        <div class="mb-1 font-semibold text-pink-300">${name || 'Anonymous'}</div>
         <div class="mb-1">${comment || ''}</div>
-        <div class="text-cyan-100 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
+        <div class="text-pink-500 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
       `;
 
       container.appendChild(div);
@@ -576,6 +557,7 @@ async function loadGuestbookComments() {
     container.innerHTML = '<p class="text-red-400 text-sm">Failed to load comments.</p>';
   }
 }
+
 
 function closeGuestBook() {
   const gbWindow = document.getElementById('guestBookWindow');
@@ -588,13 +570,13 @@ function showMessageForm() {
 
 document.getElementById('terminalContent').innerHTML = `
     <form id="guestbookForm" class="space-y-4 mt-4">
-      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-black text-white border border-sky-200 bg-opacity-20 border-opacity-75" required>
-      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-sky-200 bg-opacity-20 border-opacity-75" required></textarea>
+      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-black text-white border border-pink-600 bg-opacity-20 border-opacity-75" required>
+      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-600 bg-opacity-20 border-opacity-75" required></textarea>
       <div class="flex justify-center space-x-4 flex-wrap">
       <button type="submit" class="terminal-button">Submit</button>
       <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
       </div>
-      <div id="formResponse" class="text-cyan-100 text-md mt-2 mb-4 text-center"></div>
+      <div id="formResponse" class="text-pink-300 text-md mt-2 mb-4 text-center"></div>
     </form>
   `;
 
@@ -656,9 +638,7 @@ $('#terminalContent').html(`
 
 new Typed('#typed', {
 
-strings: [
-'<span class="text-white text-xl mr-2 text-pink-glow">Love you all</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
+strings: ['<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
@@ -678,5 +658,3 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
-
-
