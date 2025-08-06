@@ -66,7 +66,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'nqUoa2inNtw,dqUdI4AIDF0',
+playlist: 'nqUoa2inNtw,d1AKq_r0Ggc,dqUdI4AIDF0',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -190,6 +190,12 @@ const playlist = [
 {
 title: "jellyfish ♫",
 videoId: "nqUoa2inNtw",
+channelAvatar: "https://yt3.googleusercontent.com/51L0efrd79-PmTQQ_7cqRpvitzH-p_13VFk9Lid7KBv0YhTO4gPqgmRbbvq_NWmccrAgFuBJqA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@comfibeats"
+},
+{
+title: "hyacinth ♫",
+videoId: "d1AKq_r0Ggc",
 channelAvatar: "https://yt3.googleusercontent.com/51L0efrd79-PmTQQ_7cqRpvitzH-p_13VFk9Lid7KBv0YhTO4gPqgmRbbvq_NWmccrAgFuBJqA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@comfibeats"
 },
@@ -678,5 +684,6 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
