@@ -22,7 +22,7 @@ plugins: [
 function ({ addComponents }) {
 addComponents({
 '.terminal-button': {
-'@apply bg-sky-100 text-[0.9em] text-black px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-sky-200 hover:bg-opacity-90 hover:scale-105 active:scale-95': {},
+'@apply bg-red-300 text-[0.9em] text-black px-4 py-2 mt-4 rounded-md transition duration-300 ease-in-out hover:bg-red-400 hover:bg-opacity-90 hover:scale-105 active:scale-95': {},
 cursor: 'pointer',
 userSelect: 'none',
 },
@@ -38,14 +38,14 @@ userSelect: 'none',
 <div id="background-video-iframe" style="opacity: 0; transition: opacity 0.5s;"></div>
 </div>
 
-<div id="terminal" class="terminal absolute bg-pink-200/10 p-6 max-w-full w-[90vw] sm:w-[500px]" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-<div class="drag-area text-sky-600 text-sm mb-2 select-none flex justify-between items-center">
+<div id="terminal" class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px]" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+<div class="drag-area text-pink-600 text-sm mb-2 select-none flex justify-between items-center">
 <span class="flex items-center space-x-2">
 <img src="jami.png" alt="Avatar" class="avatar-icon" />
-<span class="text-[1.5em] text-sky-600 font-semibold"></span>
+<span class="text-[1.5em] text-pink-600 font-semibold"></span>
 </span>
 <div class="flex items-center space-x-2 mr-3 -mt-12">
-<button id="videoToggle" class="text-sky-100 hover:text-sky-200 transition-colors duration-200 text-lg leading-none">
+<button id="videoToggle" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
 <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
 <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
 </svg>
@@ -53,26 +53,12 @@ userSelect: 'none',
 <path d="M8 5v14l11-7z" />
 </svg>
 </button>
-<button id="nextTrack" class="text-sky-100 hover:text-sky-200 transition-colors duration-200 text-lg leading-none">
+<button id="nextTrack" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
 <svg id="nextIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
 <path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2V6z"/>
 </svg>
 </button>
-<button id="changeTheme" class="relative text-sky-100 hover:text-sky-200 transition-colors duration-200 text-lg leading-none -mb-1.5">
-<svg id="themeIcon" class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-  <g id="SVGRepo_iconCarrier">
-    <path d="M5.6 11.6l-1.2-1.2c-0.8-0.2-2-0.1-2.7 1-0.8 1.1-0.3 2.8-1.7 4.6 0 0 3.5 0 4.8-1.3 1.2-1.2 1.2-2.2 1-3l-0.2-0.1z"></path>
-    <path d="M5.8 8.1c-0.2 0.3-0.5 0.7-0.7 1 0 0.2-0.1 0.3-0.2 0.4l1.5 1.5c0.1-0.1 0.3-0.2 0.4-0.3 0.3-0.2 0.7-0.4 1-0.7 0.4 0 0.6-0.2 0.8-0.4l-2.2-2.2c-0.2 0.2-0.4 0.4-0.6 0.7z"></path>
-    <path d="M15.8 0.2c-0.3-0.3-0.7-0.3-1-0.1 0 0-3 2.5-5.9 5.1-0.4 0.4-0.7 0.7-1.1 1-0.2 0.2-0.4 0.4-0.6 0.5l2.1 2.1c0.2-0.2 0.4-0.4 0.5-0.7 0.3-0.4 0.6-0.7 0.9-1.1 2.5-3 5.1-5.9 5.1-5.9 0.3-0.2 0.3-0.6 0-0.9z"></path>
-  </g>
-</svg>
-  <span id="tooltip" class="text-blue-glow absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap px-3 py-1 rounded bg-black/60 text-sm text-white opacity-0 pointer-events-none transition-opacity duration-300">
-    Theme change coming soon!
-  </span>
-</button>
-<button id="rewind10" class="text-cyan-100 hover:text-white text-blue-glow transition-colors duration-200 text-lg leading-none">
+<button id="rewind10" class="text-pink-600 hover:text-pink-800 transition-colors duration-200 text-lg leading-none">
 <svg
 xmlns="http://www.w3.org/2000/svg"
 viewBox="0 0 611.999 611.999"
