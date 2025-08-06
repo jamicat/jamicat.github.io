@@ -85,8 +85,12 @@ margin-right: 0.5rem;
 object-fit: cover;
 }
 
-.text-pink-glow {
+.text-blue-glow {
 text-shadow: 0 0 4px rgba(135, 206, 235, 0.8);
+}
+
+.text-pink-glow {
+text-shadow: 0 0 4px rgba(255, 105, 180, 0.8);
 }
 
 #typed {
@@ -128,6 +132,7 @@ min-height: 2.5em;
   border-radius: 6px;
   border: 1px solid transparent;
 }
+
 
 
 
