@@ -66,7 +66,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'UL8MN5YF8v8,dqUdI4AIDF0',
+playlist: 'nqUoa2inNtw,dqUdI4AIDF0',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -107,7 +107,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'UL8MN5YF8v8';
+const videoId = 'nqUoa2inNtw';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -188,10 +188,10 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - breakdown.",
-videoId: "UL8MN5YF8v8",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@YUNGBLUD"
+title: "jellyfish ♫",
+videoId: "nqUoa2inNtw",
+channelAvatar: "https://yt3.googleusercontent.com/51L0efrd79-PmTQQ_7cqRpvitzH-p_13VFk9Lid7KBv0YhTO4gPqgmRbbvq_NWmccrAgFuBJqA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@comfibeats"
 },
 {
 title: "Jack Johnson - Upside Down",
@@ -678,4 +678,5 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
