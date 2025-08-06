@@ -1,13 +1,13 @@
 var typed = new Typed('#typed', {
 strings: [
 '<span class="text-white text-xl mr-2 text-blue-glow">Love you all</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">ฅ(^ω^ฅ)</span>',
 '<span class="text-white text-xl mr-2 text-blue-glow">(ฅ^ω^)ฅ</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">ฅ(^ω^)ฅ</span>',
 '<span class="text-white text-xl mr-2 text-blue-glow">(๑•ω•́ฅ✧</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">(ฅ`･ω･´)っ=</span>',
 '<span class="text-white text-xl mr-2 text-blue-glow">ฅ*•ω•*ฅ</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">ฅ^•ﻌ•^ฅ</span>',
 '<span class="text-white text-xl mr-2 text-blue-glow">⊱ฅ•ω•ฅ⊰</span>'
 ],
 typeSpeed: 60,
@@ -282,11 +282,11 @@ function siteFAQ() {
 $('#terminalContent').html(`
       <div class="text-cyan-100 text-lg mb-4 mt-4">Libraries used:</div>
       <ul class="list-disc list-inside text-white space-y-1">
-      <li class="text-pink-glow">jQuery</li>
-       <li class="text-pink-glow">Typed.js</li>
-       <li class="text-pink-glow">Interact.js</li>
-       <li class="text-pink-glow">Tailwind CSS</li>
-       <li class="text-pink-glow">YouTube IFrame API</li>
+      <li class="text-blue-glow">jQuery</li>
+       <li class="text-blue-glow">Typed.js</li>
+       <li class="text-blue-glow">Interact.js</li>
+       <li class="text-blue-glow">Tailwind CSS</li>
+       <li class="text-blue-glow">YouTube IFrame API</li>
       </ul>
       </div>
       <div id="buttonRow" class="flex justify-center">
@@ -346,7 +346,7 @@ function showGuestBook() {
 document.body.appendChild(guestBookWindow);
 
 var typed2= new Typed('#typed2', {
-  strings: ['<span class="text-white text-xl mr-2 text-pink-glow">Guestbook</span>'],
+  strings: ['<span class="text-white text-xl mr-2 text-blue-glow">Guestbook</span>'],
   typeSpeed: 80,
   showCursor: false,
   cursorChar: '_',
@@ -569,7 +569,7 @@ async function loadGuestbookComments() {
       div.className = 'bg-pink-100/10 rounded p-3 mb-2 text-sm text-sky-100';
 
       div.innerHTML = `
-        <div class="mb-1 font-semibold text-white text-pink-glow">${name || 'Anonymous'}</div>
+        <div class="mb-1 font-semibold text-white text-blue-glow">${name || 'Anonymous'}</div>
         <div class="mb-1">${comment || ''}</div>
         <div class="text-cyan-100 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
       `;
@@ -664,13 +664,13 @@ new Typed('#typed', {
 
 strings: [
 '<span class="text-white text-xl mr-2 text-blue-glow">Love you all</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">ฅ(^ω^ฅ)</span>',
 '<span class="text-white text-xl mr-2 text-blue-glow">(ฅ^ω^)ฅ</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">ฅ(^ω^)ฅ</span>',
 '<span class="text-white text-xl mr-2 text-blue-glow">(๑•ω•́ฅ✧</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">(ฅ`･ω･´)っ=</span>',
 '<span class="text-white text-xl mr-2 text-blue-glow">ฅ*•ω•*ฅ</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">ฅ^•ﻌ•^ฅ</span>',
 '<span class="text-white text-xl mr-2 text-blue-glow">⊱ฅ•ω•ฅ⊰</span>'],
 typeSpeed: 60,
 backSpeed: 30,
@@ -684,6 +684,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
