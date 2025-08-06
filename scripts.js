@@ -1,14 +1,14 @@
 var typed = new Typed('#typed', {
 strings: [
-'<span class="text-white text-xl mr-2 text-pink-glow">Love you all</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">Love you all</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">(ฅ^ω^)ฅ</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">(๑•ω•́ฅ✧</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">ฅ*•ω•*ฅ</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'
+'<span class="text-white text-xl mr-2 text-blue-glow">⊱ฅ•ω•ฅ⊰</span>'
 ],
 typeSpeed: 60,
 backSpeed: 30,
@@ -663,15 +663,15 @@ $('#terminalContent').html(`
 new Typed('#typed', {
 
 strings: [
-'<span class="text-white text-xl mr-2 text-pink-glow">Love you all</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">Love you all</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">(ฅ^ω^)ฅ</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">(๑•ω•́ฅ✧</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
+'<span class="text-white text-xl mr-2 text-blue-glow">ฅ*•ω•*ฅ</span>',
 '<span class="text-white text-xl mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
-'<span class="text-white text-xl mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'],
+'<span class="text-white text-xl mr-2 text-blue-glow">⊱ฅ•ω•ฅ⊰</span>'],
 typeSpeed: 60,
 backSpeed: 30,
 showCursor: true,
@@ -684,6 +684,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
