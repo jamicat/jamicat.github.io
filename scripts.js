@@ -65,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'cOottwCBiRA,vV_D6KvAUqE',
+playlist: 'cOottwCBiRA,4T5nNmaTPEY',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -192,10 +192,10 @@ channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKsh
 channelUrl: "https://www.youtube.com/@YUNGBLUD"
 },
 {
-title: "PALAYE ROYALE - Showbiz (Official Music Video)",
-videoId: "vV_D6KvAUqE",
-channelAvatar: "https://yt3.googleusercontent.com/0wSYqaUVQchPTN_S7evpJxDf4ySZKZ1mdLfZv9wjKrO0xEMIy-xFquuB60IMXIB22JPSh6Huzc8=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@SumerianRecords"
+title: "The Last Dinner Party - This is the Killer Speaking",
+videoId: "4T5nNmaTPEY",
+channelAvatar: "https://yt3.googleusercontent.com/4Sx-vTXecS8LU1GgxxiQ6JDjixcaRYQHeDil4hvrJCgrl8bkii8wLtDbzm-Bcb0TPrEBmO9hipg=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@thelastdinnerparty"
 }
 ];
 
@@ -658,4 +658,5 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
