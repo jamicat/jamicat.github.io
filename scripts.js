@@ -65,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'QriwPQLir,4T5nNmaTPEY',
+playlist: 'QriwPQLir-E,SJs9Lsq55yI',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -106,7 +106,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'QriwPQLir';
+const videoId = 'QriwPQLir-E';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -188,15 +188,15 @@ function showList() {
 const playlist = [
 {
 title: "YUNGBLUD - mars (Live From BLUDFEST)",
-videoId: "QriwPQLir",
+videoId: "QriwPQLir-E",
 channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@YUNGBLUD"
 },
 {
-title: "The Last Dinner Party - This is the Killer Speaking",
-videoId: "4T5nNmaTPEY",
-channelAvatar: "https://yt3.googleusercontent.com/4Sx-vTXecS8LU1GgxxiQ6JDjixcaRYQHeDil4hvrJCgrl8bkii8wLtDbzm-Bcb0TPrEBmO9hipg=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@thelastdinnerparty"
+title: "YUNGBLUD - Life On Mars? (Live At A Bowie Celebration)",
+videoId: "SJs9Lsq55yI",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@YUNGBLUD"
 }
 ];
 
@@ -675,6 +675,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
