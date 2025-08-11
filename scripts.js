@@ -65,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'QriwPQLir-E,SJs9Lsq55yI',
+playlist: 'Tj_RqPrpr48,3tlzF2jtzEU',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -106,7 +106,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'QriwPQLir-E';
+const videoId = 'Tj_RqPrpr48';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -187,14 +187,14 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - mars (Live From BLUDFEST)",
-videoId: "QriwPQLir-E",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@YUNGBLUD"
+title: "hallows eve masquerade - beetlebug",
+videoId: "Tj_RqPrpr48",
+channelAvatar: "https://yt3.googleusercontent.com/zuw1vd2r87ydvGCj3D6jeosObilt47sZaEGZ2X-JsOQXEQHfKokoUKJoKOcJbfWaGxSgTn4abg=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@auribeetlebug"
 },
 {
-title: "YUNGBLUD - Life On Mars? (Live At A Bowie Celebration)",
-videoId: "SJs9Lsq55yI",
+title: "YUNGBLUD - Zombie (Live From Hansa Studios)",
+videoId: "3tlzF2jtzEU",
 channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@YUNGBLUD"
 }
@@ -675,6 +675,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
