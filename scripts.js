@@ -569,7 +569,7 @@ async function loadGuestbookComments() {
       div.innerHTML = `
         <div class="mb-1 font-semibold text-white text-pink-glow">${name || 'Anonymous'}</div>
         <div class="mb-1">${comment || ''}</div>
-        <div class="text-pink-300 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
+        <div class="text-pink-300 text-[0.65rem] leading-[1rem] text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
       `;
 
       container.appendChild(div);
@@ -681,6 +681,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
