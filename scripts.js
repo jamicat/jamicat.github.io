@@ -332,8 +332,8 @@ function showGuestBook() {
        <p id="welcomeMessage" class="text-base">Welcome! Be nice.</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-white">
-        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-300 rounded border-opacity-80" required />
-        <textarea id="message" name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-300 rounded border-opacity-80" required></textarea>
+        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-300 rounded border-opacity-50" required />
+        <textarea id="message" name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-300 rounded border-opacity-50" required></textarea>
         <div class="text-center">
           <button type="submit" class="terminal-button">Submit</button>
         </div>
@@ -593,8 +593,8 @@ function showMessageForm() {
 
 document.getElementById('terminalContent').innerHTML = `
     <form id="guestbookForm" class="space-y-4 mt-4">
-      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-80" required>
-      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-80" required></textarea>
+      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-50" required>
+      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-50" required></textarea>
       <div class="flex justify-center space-x-4 flex-wrap">
       <button type="submit" class="terminal-button">Submit</button>
       <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
@@ -681,6 +681,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
