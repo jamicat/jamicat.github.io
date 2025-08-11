@@ -328,7 +328,7 @@ function showGuestBook() {
 
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
-      <div class="text-pink-300 text-md mt-2 mb-4 text-center">
+      <div class="text-pink-100 text-md mt-2 mb-4 text-center">
        <p id="welcomeMessage" class="text-base">Welcome! Be nice.</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-white">
@@ -599,7 +599,7 @@ document.getElementById('terminalContent').innerHTML = `
       <button type="submit" class="terminal-button">Submit</button>
       <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
       </div>
-      <div id="formResponse" class="text-pink-300 text-md mt-2 mb-4 text-center"></div>
+      <div id="formResponse" class="text-pink-100 text-md mt-2 mb-4 text-center"></div>
     </form>
   `;
 
@@ -681,6 +681,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
