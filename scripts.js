@@ -279,7 +279,7 @@ download: false,
 
 function siteFAQ() {
 $('#terminalContent').html(`
-      <div class="text-pink-300 text-lg mb-4 mt-4">Libraries used:</div>
+      <div class="text-pink-100 text-lg mb-4 mt-4">Libraries used:</div>
       <ul class="list-disc list-inside text-white space-y-1">
       <li class="text-pink-glow">jQuery</li>
        <li class="text-pink-glow">Typed.js</li>
@@ -681,6 +681,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
