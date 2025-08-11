@@ -242,7 +242,7 @@ function changeTheme()
 
 function showArt() {
 $('#terminalContent').html(`
-<div class="text-pink-600 text-lg mb-4 mt-4"></div>
+<div class="text-pink-300 text-lg mb-4 mt-4"></div>
   <div id="artGallery" class="grid grid-cols-3 gap-4">
    <a href="closeup.jpg" class="block rounded overflow-hidden">
     <img src="closeup_thumb.jpg" alt="Jamie - Oliv" class="rounded hover:scale-105 transition transform duration-200" />
@@ -279,7 +279,7 @@ download: false,
 
 function siteFAQ() {
 $('#terminalContent').html(`
-      <div class="text-red-300 text-lg mb-4 mt-4">Libraries used:</div>
+      <div class="text-pink-300 text-lg mb-4 mt-4">Libraries used:</div>
       <ul class="list-disc list-inside text-white space-y-1">
       <li class="text-pink-glow">jQuery</li>
        <li class="text-pink-glow">Typed.js</li>
@@ -312,14 +312,14 @@ function showGuestBook() {
   guestBookWindow.id = 'guestBookWindow';
 
   guestBookWindow.innerHTML = `
-  <div class="drag-area text-pink-600 text-sm mb-2 select-none flex justify-between items-center">
+  <div class="drag-area text-pink-300 text-sm mb-2 select-none flex justify-between items-center">
     <span class="flex items-center space-x-2">
       <img src="jami2.png" alt="Avatar2" class="avatar-icon" />
-     <span id="typed2" class="text-pink-600 text-lg mt-4 mb-4"></span>
+     <span id="typed2" class="text-pink-300 text-lg mt-4 mb-4"></span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
-      <button onclick="closeGuestBook()" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-600 hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <button onclick="closeGuestBook()" class="text-pink-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-300 hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -332,8 +332,8 @@ function showGuestBook() {
        <p id="welcomeMessage" class="text-base">Welcome! Be nice.</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-white">
-        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required />
-        <textarea id="message" name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-600 rounded border-opacity-75" required></textarea>
+        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-red-600 rounded border-opacity-75" required />
+        <textarea id="message" name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-red-600 rounded border-opacity-75" required></textarea>
         <div class="text-center">
           <button type="submit" class="terminal-button">Submit</button>
         </div>
@@ -365,7 +365,7 @@ guestbookCommentBox.className = `
   text-white 
   text-sm 
   scrollbar-thin 
-  scrollbar-thumb-pink-600 
+  scrollbar-thumb-pink-300 
   scrollbar-track-black 
   rounded-lg
 `;
@@ -569,7 +569,7 @@ async function loadGuestbookComments() {
       div.innerHTML = `
         <div class="mb-1 font-semibold text-pink-300">${name || 'Anonymous'}</div>
         <div class="mb-1">${comment || ''}</div>
-        <div class="text-pink-500 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
+        <div class="text-pink-50 text-xs text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
       `;
 
       container.appendChild(div);
@@ -593,8 +593,8 @@ function showMessageForm() {
 
 document.getElementById('terminalContent').innerHTML = `
     <form id="guestbookForm" class="space-y-4 mt-4">
-      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-black text-white border border-pink-600 bg-opacity-20 border-opacity-75" required>
-      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-600 bg-opacity-20 border-opacity-75" required></textarea>
+      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-75" required>
+      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-75" required></textarea>
       <div class="flex justify-center space-x-4 flex-wrap">
       <button type="submit" class="terminal-button">Submit</button>
       <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
@@ -649,7 +649,7 @@ document.getElementById("formResponse").textContent = "Thank you for your messag
 
 function resetTerminal() {
 $('#terminalContent').html(`
-             <div id="typed" class="text-pink-600 text-lg mb-4 mt-4 text-center"></div>
+             <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
              <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
              <button class="terminal-button ml-2" onclick="showArt()">Art</button>
              <button class="terminal-button ml-5" onclick="showGuestBook()">Guestbook</button>
@@ -681,6 +681,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
