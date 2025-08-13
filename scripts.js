@@ -675,6 +675,11 @@ const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
 
+document.addEventListener('DOMContentLoaded', () => {
+    rewind10.click();
+});
+
+
 
 
 
