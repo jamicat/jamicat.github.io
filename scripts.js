@@ -258,6 +258,7 @@ $('#terminalContent').html(`
     <a href="art3.jpg" class="block rounded overflow-hidden">
     <img src="art3_thumb.jpg" alt="Jamie - Tokyo" class="rounded hover:scale-105 transition transform duration-200" />
     </div>
+    </a>
   <div class="mt-4 flex justify-center">
   <button class="terminal-button" onclick="resetTerminal()">Back</button>
     </div>
@@ -676,6 +677,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
