@@ -291,7 +291,7 @@ $('#terminalContent').html(`
   </p>
   <p>
   This site is my playful contradiction, a place where my busy 
-    mind channels itself into something more hobbyesque, proving ironically, that less can be more in an 
+    mind channels itself into something more hobbyesque, proving, ironically, that less can be more in an 
     age of information overload.
   </p>
   <p>
@@ -306,7 +306,7 @@ $('#terminalContent').html(`
   </p>
 </div>
       <ul class="list-disc list-inside text-sm text-white space-y-1">
-      <li class="text-pink-glow">Libraries - jQuery, Typed.js, Interact.js, Tailwind CSS, YouTube iFrame API</li>
+      <li class="text-pink-glow">Libraries - jQuery, Typed.js, Interact.js, Tailwind CSS, YT iFrame API</li>
       </ul>
       </div>
       <div id="buttonRow" class="flex justify-center">
@@ -702,6 +702,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
