@@ -296,7 +296,7 @@ $('#terminalContent').html(`
   </p>
   <p>
     Now go and click on something, or nothing. 
-    <span class="text-pink-glow text-white relative inline-block group cursor-pointer">
+    <span class="text-pink-glow text-white relative inline-block group cursor-pointer underline">
     >Thanks for visiting!
     <img src="thankyou.png" alt="Thank you!"
          class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-[300px] h-[311px] max-w-none z-50 rounded shadow-lg opacity-0 invisible transition-opacity duration-150 group-hover:opacity-100 group-hover:visible pointer-events-none"/>
@@ -707,6 +707,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
