@@ -281,7 +281,7 @@ $('#terminalContent').html(`
     and though it feels a bit loaded, it is exactly what this is: a small piece of shared personal space. 
     I like to litter it with occasional fur art updates, music I have been attached to lately, and bits 
     of code that refuse to stay foldered. Really, it is just whatever I feel in the moment, on a whim, 
-    and if you are reading this, I hope you find something worth your time.
+    and if you are reading this, I hope that you find something worth your time.
   </p>
   <p>
     A creative outlet has always been a kind of lifeline for me. For some fellow furs and friends, 
@@ -702,6 +702,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
