@@ -285,7 +285,7 @@ $('#terminalContent').html(`
   </p>
   <p>
     A creative outlet has always been a kind of lifeline for me. For some fellow furs and friends, 
-    it loops back into the IT world we claim to despise, creating a curious middle ground. A friend of 
+    it loops back into the IT work we claim to despise, creating a curious middle ground. A friend of 
     mine has coined the phrase <em>working in hating IT</em>, which we jokingly called copium jargon, 
     and so naturally we adopted that too. 
   </p>
@@ -672,11 +672,11 @@ function resetTerminal() {
 $('#terminalContent').html(`
              <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
              <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-             <button class="terminal-button ml-2" onclick="showArt()">Art</button>
-             <button class="terminal-button ml-5 bg-pink-100 hover:bg-pink-200 hover:bg-opacity-90" onclick="showGuestBook()">Guestbook</button>
-             <button class="terminal-button ml-3" onclick="showMessageForm()">Message</button>
+             <button class="terminal-button ml-2 bg-pink-100 hover:bg-pink-200 hover:bg-opacity-90" onclick="showArt()">Art</button>
+             <button class="terminal-button ml-5" onclick="showGuestBook()">Guestbook</button>
+             <!--button class="terminal-button ml-3" onclick="showMessageForm()">Message</button-->
              <button class="terminal-button bg-pink-100 hover:bg-pink-200 hover:bg-opacity-90" onclick="showList()">Playlist</button>
-             <button class="terminal-button ml-4" onclick="siteFAQ()">FAQ</button>
+             <button class="terminal-button ml-4" onclick="siteFAQ()">About</button>
              </div>
              `);
 
@@ -702,6 +702,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
