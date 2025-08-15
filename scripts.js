@@ -340,7 +340,7 @@ function showGuestBook() {
   guestBookWindow.innerHTML = `
   <div class="drag-area text-pink-300 text-sm mb-2 select-none flex justify-between items-center">
     <span class="flex items-center space-x-2">
-      <img src="jami.png" alt="Avatar2" class="avatar-icon" />
+      <img src="jami2.png" alt="Avatar2" class="avatar-icon" />
      <span id="typed2" class="text-pink-300 text-lg mt-4 mb-4"></span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
@@ -707,6 +707,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
