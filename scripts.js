@@ -287,7 +287,10 @@ $('#terminalContent').html(`
     A creative outlet has always been a kind of lifeline for me. For some fellow furs and friends, 
     it loops back into the IT world we claim to despise, creating a curious middle ground. A friend of 
     mine has coined the phrase <em>working in hating IT</em>, which we jokingly called copium jargon, 
-    and so naturally we adopted that too. This site is my playful contradiction, a place where my busy 
+    and so naturally we adopted that too. 
+  </p>
+  <p>
+  This site is my playful contradiction, a place where my busy 
     mind channels itself into something more hobbyesque, proving ironically, that less can be more in an 
     age of information overload.
   </p>
@@ -295,17 +298,15 @@ $('#terminalContent').html(`
     Now go and click on something, or nothing.
   </p>
 
-  <p class="flex items-center space-x-2">
-    <span>tldr</span>
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100">
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="80" fill="pink">:3</text>
+  <p class="flex items-center space-x-1">
+    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" viewBox="20 20">
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20" fill="pink">tldr :3</text>
     </svg>
-    <span>: dog pics incoming</span>
+    <span> - dog pics soon</span>
   </p>
 </div>
-      <div class="text-pink-100 text-sm mb-4 mt-4">P.S. For the nerds... couldn't be me: </div>
       <ul class="list-disc list-inside text-sm text-white space-y-1">
-      <li class="text-pink-glow">jQuery, Typed.js, Interact.js, Tailwind CSS, YouTube iFrame API</li>
+      <li class="text-pink-glow">Libraries - jQuery, Typed.js, Interact.js, Tailwind CSS, YouTube iFrame API</li>
       </ul>
       </div>
       <div id="buttonRow" class="flex justify-center">
@@ -701,6 +702,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
