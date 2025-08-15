@@ -285,7 +285,7 @@ $('#terminalContent').html(`
   </p>
   <p>
     A creative outlet has always been a kind of lifeline for me. For some fellow furs and friends, 
-    it loops back into the IT world we claim to despise, creating a healthy middle ground between work and play. One friend of 
+    it loops back into the IT world we claim to despise, creating a curious middle ground between work and play. One friend of 
     mine has coined the phrase <em>working in hating IT</em>, which we jokingly called copium jargon, 
     and so naturally we adopted that too. 
   </p>
@@ -702,6 +702,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
