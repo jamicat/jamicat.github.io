@@ -275,13 +275,37 @@ download: false,
 
 function siteFAQ() {
 $('#terminalContent').html(`
-      <div class="text-pink-100 text-lg mb-4 mt-4">Libraries used:</div>
-      <ul class="list-disc list-inside text-white space-y-1">
-      <li class="text-pink-glow">jQuery</li>
-       <li class="text-pink-glow">Typed.js</li>
-       <li class="text-pink-glow">Interact.js</li>
-       <li class="text-pink-glow">Tailwind CSS</li>
-       <li class="text-pink-glow">YouTube IFrame API</li>
+      <div class="text-pink-100 text-sm mb-4 mt-4 space-y-4">
+  <p>
+    Welcome to my little corner of the internet. I almost typed bespoke for lack of a better word, 
+    and though it feels a bit loaded, it is exactly what this is: a small piece of shared personal space. 
+    I like to litter it with occasional fur art updates, music I have been attached to lately, and bits 
+    of code that refuse to stay foldered. Really, it is just whatever I feel in the moment, on a whim, 
+    and if you are reading this, I hope you find something worth your time.
+  </p>
+  <p>
+    A creative outlet has always been a kind of lifeline for me. For some fellow furs and friends, 
+    it loops back into the IT world we claim to despise, creating a curious middle ground. A friend of 
+    mine has coined the phrase <em>working in hating IT</em>, which we jokingly called copium jargon, 
+    and so naturally we adopted that too. This site is my playful contradiction, a place where my busy 
+    mind channels itself into something more hobbyesque, proving ironically, that less can be more in an 
+    age of information overload.
+  </p>
+  <p>
+    Now go and click on something, or nothing.
+  </p>
+
+  <p class="flex items-center space-x-2">
+    <span>tldr</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100">
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="80" fill="pink">:3</text>
+    </svg>
+    <span>: dog pics incoming</span>
+  </p>
+</div>
+      <div class="text-pink-100 text-sm mb-4 mt-4">P.S. For the nerds... couldn't be me: </div>
+      <ul class="list-disc list-inside text-sm text-white space-y-1">
+      <li class="text-pink-glow">jQuery, Typed.js, Interact.js, Tailwind CSS, YouTube iFrame API</li>
       </ul>
       </div>
       <div id="buttonRow" class="flex justify-center">
@@ -677,6 +701,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
