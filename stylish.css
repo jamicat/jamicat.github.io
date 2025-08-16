@@ -106,20 +106,18 @@ min-height: 2.5em;
 }
 
 #guestbookComments {
-  scrollbar-width: none; 
+  scrollbar-width: thin; 
   scrollbar-gutter: stable; 
   -ms-overflow-style: none;        
-  scrollbar-color: #333333 #000000;
+  scrollbar-color: #f9a8d4 #000000;
 }
 
 #guestbookComments::-webkit-scrollbar {
   width: 4px;
   background: transparent;
-  display: none;
 }
 
 #guestbookComments:hover::-webkit-scrollbar {
-  display: none;
 }
 
 #guestbookComments:hover::-webkit-scrollbar-track {
@@ -127,11 +125,11 @@ min-height: 2.5em;
 }
 
 #guestbookComments:hover::-webkit-scrollbar-thumb {
-  display: none;
-  background-color: transparent;
+  background-color: #f9a8d4;
   border-radius: 6px;
-  border: 1px solid transparent;
+ 
 }
+
 
 
 
