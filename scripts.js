@@ -65,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'MFzq4_qCFUQ,ciqUEV9F0OY',
+playlist: 'ZM_Gamwxvtc,9DiJJVfZXUk',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -106,7 +106,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'MFzq4_qCFUQ';
+const videoId = 'ZM_Gamwxvtc';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -189,16 +189,16 @@ rewind10.click();
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - Memories",
-videoId: "MFzq4_qCFUQ",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@YUNGBLUD"
+title: "Cavetown - This Is Home",
+videoId: "ZM_Gamwxvtc",
+channelAvatar: "https://yt3.googleusercontent.com/oWWGvBTDEGOyU2IkWe9ycVjpyHkvIhgNBJjKfWx4WfIXWYtIZB0L-oEahLKRZ-boo3gt-FwUlg=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
 },
 {
-title: "Avril Lavigne - Bite Me",
-videoId: "ciqUEV9F0OY",
-channelAvatar: "https://yt3.googleusercontent.com/o4u-Su2zOrLmPhxLJgbv0U210sPb1DjBbvoKRU6ilU1hieKyaVBMmnRY7MVBiNhsgu6gggIlc5E=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@AvrilLavigne"
+title: "Cavetown - Baby Spoon",
+videoId: "9DiJJVfZXUk",
+channelAvatar: "https://yt3.googleusercontent.com/oWWGvBTDEGOyU2IkWe9ycVjpyHkvIhgNBJjKfWx4WfIXWYtIZB0L-oEahLKRZ-boo3gt-FwUlg=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
 }
 ];
 
@@ -707,6 +707,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
