@@ -248,10 +248,10 @@ $('#terminalContent').html(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
   <div id="artGallery" class="grid grid-cols-3 gap-4">
   <a href="chibi_thumb.png" class="block rounded overflow-hidden">
-    <img src="chibi.png" alt="Chibi" class="rounded hover:scale-105 transition transform duration-200" />
+    <img src="chibi.png" alt="Jamie - Chibi" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
       <a href="sp_thumb.png" class="block rounded overflow-hidden">
-    <img src="sp.png" alt="Sketchpage" class="rounded hover:scale-105 transition transform duration-200" />
+    <img src="sp.png" alt="Jamie - Sketchpage" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
   <a href="festival.jpg" class="block rounded overflow-hidden">
     <img src="festival_thumb.jpg" alt="Jamie - Festival" class="rounded hover:scale-105 transition transform duration-200" />
@@ -716,6 +716,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
