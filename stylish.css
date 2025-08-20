@@ -87,10 +87,10 @@ object-fit: cover;
 
 .avatar-icon2 {
 width: 110px;
-height: 110px;
-border-radius: 50%;
+height: 132px;
+border-radius: 0%;
 margin-right: 0.5rem;
-object-fit: cover;
+object-fit: contain;
 }
 
 .text-blue-glow {
@@ -137,6 +137,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
