@@ -1,14 +1,14 @@
 var typed = new Typed('#typed', {
 strings: [
-'<span class="text-white text-sm mr-2 text-pink-glow">I´ll figure out a way to get us out of here</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'
+'<span class="text-white text-base mr-2 text-pink-glow">I´ll figure out a way to get us out of here</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'
 ],
 typeSpeed: 60,
 backSpeed: 30,
@@ -695,15 +695,15 @@ $('#terminalContent').html(`
 new Typed('#typed', {
 
 strings: [
-'<span class="text-white text-sm mr-2 text-pink-glow">I´ll figure out a way to get us out of here</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
-'<span class="text-white text-sm mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'
+'<span class="text-white text-base mr-2 text-pink-glow">I´ll figure out a way to get us out of here</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'
 ],
 typeSpeed: 60,
 backSpeed: 30,
@@ -717,6 +717,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
