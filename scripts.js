@@ -1,6 +1,5 @@
 var typed = new Typed('#typed', {
 strings: [
-'<span class="text-white text-base mr-2 text-pink-glow">I´ll figure out a way to get us out of here</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
@@ -695,7 +694,6 @@ $('#terminalContent').html(`
 new Typed('#typed', {
 
 strings: [
-'<span class="text-white text-base mr-2 text-pink-glow">I´ll figure out a way to get us out of here</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
@@ -717,6 +715,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
