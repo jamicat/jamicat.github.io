@@ -79,10 +79,10 @@ cursor: move;
 
 .avatar-icon {
 width: 110px;
-height: 132px;
-border-radius: 0%;
+height: 110px;
+border-radius: 50%;
 margin-right: 0.5rem;
-object-fit: cover;
+object-fit: contain;
 }
 
 .avatar-icon2 {
@@ -90,7 +90,7 @@ width: 110px;
 height: 132px;
 border-radius: 0%;
 margin-right: 0.5rem;
-object-fit: contain;
+object-fit: cover;
 }
 
 .text-blue-glow {
@@ -137,6 +137,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
