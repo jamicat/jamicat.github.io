@@ -65,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'oJZmO5mByVY,9DiJJVfZXUk',
+playlist: 'QgyW9qjgIf4,oJZmO5mByVY',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -106,7 +106,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'oJZmO5mByVY';
+const videoId = 'QgyW9qjgIf4';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -184,21 +184,19 @@ canvas.style.pointerEvents = 'auto';
 }
 });
 
-rewind10.click();
-
 function showList() {
 const playlist = [
+{
+title: "Jane Remover — Dancing with your eyes closed",
+videoId: "QgyW9qjgIf4",
+channelAvatar: "https://yt3.googleusercontent.com/2bxF7tqefllZCY6X6Xb9LBbuWt-L5k2cgafU9bEvwlbVBEywZQIkbiYJsJxHnn_Fmd4bJVBq=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@jane_remover"
+},
 {
 title: "Changes (Live From Villa Park)",
 videoId: "oJZmO5mByVY",
 channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@YUNGBLUD"
-},
-{
-title: "Cavetown - Baby Spoon",
-videoId: "9DiJJVfZXUk",
-channelAvatar: "https://yt3.googleusercontent.com/oWWGvBTDEGOyU2IkWe9ycVjpyHkvIhgNBJjKfWx4WfIXWYtIZB0L-oEahLKRZ-boo3gt-FwUlg=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@cavetown"
 }
 ];
 
@@ -715,6 +713,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
