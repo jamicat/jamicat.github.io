@@ -65,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'QgyW9qjgIf4,oJZmO5mByVY',
+playlist: 'EVMlU2LgLDk,3SH54uv-h1Y',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -106,7 +106,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'QgyW9qjgIf4';
+const videoId = 'EVMlU2LgLDk';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -184,19 +184,21 @@ canvas.style.pointerEvents = 'auto';
 }
 });
 
+rewind10.click();
+
 function showList() {
 const playlist = [
 {
-title: "Jane Remover — Dancing with your eyes closed",
-videoId: "QgyW9qjgIf4",
-channelAvatar: "https://yt3.googleusercontent.com/2bxF7tqefllZCY6X6Xb9LBbuWt-L5k2cgafU9bEvwlbVBEywZQIkbiYJsJxHnn_Fmd4bJVBq=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@jane_remover"
+title: "Cavetown - kill u",
+videoId: "EVMlU2LgLDk",
+channelAvatar: "https://yt3.googleusercontent.com/oWWGvBTDEGOyU2IkWe9ycVjpyHkvIhgNBJjKfWx4WfIXWYtIZB0L-oEahLKRZ-boo3gt-FwUlg=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
 },
 {
-title: "Changes (Live From Villa Park)",
-videoId: "oJZmO5mByVY",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@YUNGBLUD"
+title: "cat serenade - beetlebug",
+videoId: "3SH54uv-h1Y",
+channelAvatar: "https://yt3.googleusercontent.com/zuw1vd2r87ydvGCj3D6jeosObilt47sZaEGZ2X-JsOQXEQHfKokoUKJoKOcJbfWaGxSgTn4abg=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@auribeetlebug"
 }
 ];
 
@@ -344,7 +346,7 @@ function showGuestBook() {
   guestBookWindow.innerHTML = `
   <div class="drag-area text-pink-300 text-sm mb-2 select-none flex justify-between items-center">
     <span class="flex items-center space-x-2">
-      <img src="ChibiAv.png" alt="Avatar2" class="avatar-icon2" />
+      <img src="ChibiAv2.png" alt="Avatar2" class="avatar-icon2" />
      <span id="typed2" class="text-pink-300 text-lg mt-4 mb-4"></span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
@@ -713,6 +715,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
