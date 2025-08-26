@@ -65,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '5roGS5WSLWQ,Q1I5WghxDu8',
+playlist: '5roGS5WSLWQ,vV_D6KvAUqE',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -195,10 +195,10 @@ channelAvatar: "https://yt3.googleusercontent.com/2bxF7tqefllZCY6X6Xb9LBbuWt-L5k
 channelUrl: "https://www.youtube.com/@jane_remover"
 },
 {
-title: "YUNGBLUD - War",
-videoId: "Q1I5WghxDu8",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@YUNGBLUD"
+title: "PALAYE ROYALE - Showbiz",
+videoId: "vV_D6KvAUqE",
+channelAvatar: "https://yt3.googleusercontent.com/0wSYqaUVQchPTN_S7evpJxDf4ySZKZ1mdLfZv9wjKrO0xEMIy-xFquuB60IMXIB22JPSh6Huzc8=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@SumerianRecords"
 }
 ];
 
@@ -715,6 +715,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
