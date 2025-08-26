@@ -65,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'EVMlU2LgLDk,3SH54uv-h1Y',
+playlist: '5roGS5WSLWQ,Q1I5WghxDu8',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -106,7 +106,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'EVMlU2LgLDk';
+const videoId = '5roGS5WSLWQ';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -189,16 +189,16 @@ rewind10.click();
 function showList() {
 const playlist = [
 {
-title: "Cavetown - kill u",
-videoId: "EVMlU2LgLDk",
-channelAvatar: "https://yt3.googleusercontent.com/oWWGvBTDEGOyU2IkWe9ycVjpyHkvIhgNBJjKfWx4WfIXWYtIZB0L-oEahLKRZ-boo3gt-FwUlg=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@cavetown"
+title: "Jane Remover — Professional Vengeance",
+videoId: "5roGS5WSLWQ",
+channelAvatar: "https://yt3.googleusercontent.com/2bxF7tqefllZCY6X6Xb9LBbuWt-L5k2cgafU9bEvwlbVBEywZQIkbiYJsJxHnn_Fmd4bJVBq=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@jane_remover"
 },
 {
-title: "cat serenade - beetlebug",
-videoId: "3SH54uv-h1Y",
-channelAvatar: "https://yt3.googleusercontent.com/zuw1vd2r87ydvGCj3D6jeosObilt47sZaEGZ2X-JsOQXEQHfKokoUKJoKOcJbfWaGxSgTn4abg=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@auribeetlebug"
+title: "YUNGBLUD - War",
+videoId: "Q1I5WghxDu8",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@YUNGBLUD"
 }
 ];
 
@@ -715,6 +715,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
