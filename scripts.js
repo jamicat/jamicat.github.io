@@ -65,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '5roGS5WSLWQ,vV_D6KvAUqE',
+playlist: 'JVRVy9sf-LM',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -106,7 +106,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '5roGS5WSLWQ';
+const videoId = 'JVRVy9sf-LM';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -189,16 +189,10 @@ rewind10.click();
 function showList() {
 const playlist = [
 {
-title: "Jane Remover — Professional Vengeance",
-videoId: "5roGS5WSLWQ",
-channelAvatar: "https://yt3.googleusercontent.com/2bxF7tqefllZCY6X6Xb9LBbuWt-L5k2cgafU9bEvwlbVBEywZQIkbiYJsJxHnn_Fmd4bJVBq=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@jane_remover"
-},
-{
-title: "PALAYE ROYALE - Showbiz",
-videoId: "vV_D6KvAUqE",
-channelAvatar: "https://yt3.googleusercontent.com/0wSYqaUVQchPTN_S7evpJxDf4ySZKZ1mdLfZv9wjKrO0xEMIy-xFquuB60IMXIB22JPSh6Huzc8=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@SumerianRecords"
+title: "beetlebug - embers",
+videoId: "JVRVy9sf-LM",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@auribeetlebug"
 }
 ];
 
@@ -715,6 +709,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
