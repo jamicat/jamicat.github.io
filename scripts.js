@@ -1,13 +1,13 @@
 var typed = new Typed('#typed', {
 strings: [
-'<span class="text-white text-base mr-2 text-pink-glow">Welcome ฅ!</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">Press the galaxy button ★!</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">Catting arounddddddddd</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">Leave a message ฅ!</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">Be awesome to each other :3</span>'
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'
 ],
 typeSpeed: 60,
 backSpeed: 30,
@@ -65,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'JhnTM9eBkhE,bass9XdfxtQ',
+playlist: '9DiJJVfZXUk,bass9XdfxtQ',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -106,7 +106,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'JhnTM9eBkhE';
+const videoId = '9DiJJVfZXUk';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -184,15 +184,15 @@ canvas.style.pointerEvents = 'auto';
 }
 });
 
-//rewind10.click();
+rewind10.click();
 
 function showList() {
 const playlist = [
 {
-title: "starsmitten ♫",
-videoId: "JhnTM9eBkhE",
-channelAvatar: "https://yt3.googleusercontent.com/51L0efrd79-PmTQQ_7cqRpvitzH-p_13VFk9Lid7KBv0YhTO4gPqgmRbbvq_NWmccrAgFuBJqA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@comfibeats"
+title: "Cavetown - Baby Spoon",
+videoId: "9DiJJVfZXUk",
+channelAvatar: "https://yt3.googleusercontent.com/oWWGvBTDEGOyU2IkWe9ycVjpyHkvIhgNBJjKfWx4WfIXWYtIZB0L-oEahLKRZ-boo3gt-FwUlg=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
 },
 {
 title: "sherbet sky ♫",
@@ -341,7 +341,6 @@ function showGuestBook() {
   guestBookWindow.style.top = '50%';
   guestBookWindow.style.left = '50%';
   guestBookWindow.style.transform = 'translate(-50%, -50%)';
-  guestBookWindow.style.backgroundImage = "url('bubtea.png')";
   guestBookWindow.id = 'guestBookWindow';
 
   guestBookWindow.innerHTML = `
@@ -402,7 +401,7 @@ guestbookCommentBox.className = `
   scrollbar-track-black 
   rounded-lg
 `;
-guestbookCommentBox.style.backgroundImage = "url('bubtea.png')";
+
 guestbookCommentBox.style.zIndex = 10;
 document.body.appendChild(guestbookCommentBox);
 
@@ -597,7 +596,7 @@ async function loadGuestbookComments() {
       console.log('Rendering comment from:', name);
 
       const div = document.createElement('div');
-      div.className = 'bg-pink-50 bg-opacity-[0.3] rounded p-3 mb-2 text-sm text-pink-100';
+      div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm text-pink-100';
 
       div.innerHTML = `
         <div class="mb-1 font-semibold text-white text-pink-glow">${name || 'Anonymous'}</div>
@@ -695,14 +694,14 @@ $('#terminalContent').html(`
 new Typed('#typed', {
 
 strings: [
-'<span class="text-white text-base mr-2 text-pink-glow">Welcome ฅ!</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">Press the galaxy button ★!</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">Catting arounddddddddd</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">Leave a message ฅ!</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">Be awesome to each other :3</span>'
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'
 ],
 typeSpeed: 60,
 backSpeed: 30,
@@ -716,16 +715,6 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
-
-
-
-
-
-
-
-
-
-
 
 
 
