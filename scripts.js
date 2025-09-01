@@ -335,6 +335,7 @@ function showGuestBook() {
   guestBookWindow.style.top = '50%';
   guestBookWindow.style.left = '50%';
   guestBookWindow.style.transform = 'translate(-50%, -50%)';
+  guestBookWindow.style.backgroundImage = "url('bubtea.png')";
   guestBookWindow.id = 'guestBookWindow';
 
   guestBookWindow.innerHTML = `
@@ -395,7 +396,7 @@ guestbookCommentBox.className = `
   scrollbar-track-black 
   rounded-lg
 `;
-
+guestbookCommentBox.style.backgroundImage = "url('bubtea.png')";
 guestbookCommentBox.style.zIndex = 10;
 document.body.appendChild(guestbookCommentBox);
 
@@ -590,7 +591,7 @@ async function loadGuestbookComments() {
       console.log('Rendering comment from:', name);
 
       const div = document.createElement('div');
-      div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm text-pink-100';
+      div.className = 'bg-pink-50 bg-opacity-[0.3] rounded p-3 mb-2 text-sm text-pink-100';
 
       div.innerHTML = `
         <div class="mb-1 font-semibold text-white text-pink-glow">${name || 'Anonymous'}</div>
@@ -709,6 +710,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
