@@ -1,13 +1,13 @@
 var typed = new Typed('#typed', {
 strings: [
-'<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^ฅ)</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">(ฅ^ω^)ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">Welcome!!!</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">Press the galaxy button!</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'
+'<span class="text-white text-base mr-2 text-pink-glow">Just catting aroundddddddd</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">Leave a message ฅ!</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">Be awesome and rock on :3</span>'
 ],
 typeSpeed: 60,
 backSpeed: 30,
@@ -65,7 +65,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'JhnTM9eBkhE',
+playlist: 'JhnTM9eBkhE, bass9XdfxtQ',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -191,6 +191,12 @@ const playlist = [
 {
 title: "starsmitten ♫",
 videoId: "JhnTM9eBkhE",
+channelAvatar: "https://yt3.googleusercontent.com/51L0efrd79-PmTQQ_7cqRpvitzH-p_13VFk9Lid7KBv0YhTO4gPqgmRbbvq_NWmccrAgFuBJqA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@comfibeats"
+},
+{
+title: "sherbet sky ♫",
+videoId: "bass9XdfxtQ",
 channelAvatar: "https://yt3.googleusercontent.com/51L0efrd79-PmTQQ_7cqRpvitzH-p_13VFk9Lid7KBv0YhTO4gPqgmRbbvq_NWmccrAgFuBJqA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@comfibeats"
 }
@@ -710,6 +716,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
