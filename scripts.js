@@ -1,11 +1,11 @@
 var typed = new Typed('#typed', {
 strings: [
 '<span class="text-white text-base mr-2 text-pink-glow">Welcome!!!</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">Press the galaxy button!</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">Press the galaxy button ★!</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
-'<span class="text-white text-base mr-2 text-pink-glow">Just catting aroundddddddd</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">Just catting arounddddddddddddddd</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">Leave a message ฅ!</span>',
 '<span class="text-white text-base mr-2 text-pink-glow">Be awesome to each other :3</span>'
 ],
@@ -716,6 +716,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
