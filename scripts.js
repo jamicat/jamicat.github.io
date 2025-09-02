@@ -294,19 +294,11 @@ changeTyped3('<span class="text-white text-xl mr-2 text-pink-glow">Art</span>');
 }
 
 function changeTyped3(newText) {
-  if (typed3) typed3.destroy();
+  if (!typed3) return;
 
-  typed3 = new Typed('#typed3', {
-    strings: [
-      '<span class="text-white text-xl mr-2 text-pink-glow">Jamie</span>', 
-      newText
-    ],
-    typeSpeed: 80,
-    backSpeed: 70,
-    backDelay: 800,
-    showCursor: false,
-    loop: false
-  });
+  typed3.strings = [newText];
+
+  typed3.reset(true);
 }
 
 function siteFAQ() {
@@ -750,6 +742,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
