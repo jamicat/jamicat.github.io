@@ -109,7 +109,15 @@ min-height: 2.5em;
 min-height: 2.5em; 
 }
 
+#typed3 {
+min-height: 2.5em;
+}
+
 #typed2 .typed-cursor {
+  color: white !important;
+}
+
+#typed3 .typed-cursor {
   color: white !important;
 }
 
@@ -137,6 +145,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
