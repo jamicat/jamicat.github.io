@@ -17,6 +17,14 @@ smartBackspace: false,
 loop: true,
 });
 
+var typed3 = new Typed('#typed3', {
+  strings: ['<span class="text-white text-xl mr-2 text-pink-glow">Jamie</span>'],
+  typeSpeed: 80,
+  showCursor: false,
+  cursorChar: '_',
+  loop: false,
+});
+
 interact('#terminal').draggable({
   allowFrom: '.drag-area',
   inertia: true,
@@ -225,6 +233,14 @@ html += `
 `;
 
 $('#terminalContent').html(html);
+
+new Typed('#typed3', {
+  strings: ['<span class="text-white text-xl mr-2 text-pink-glow">Playlist</span>'],
+  typeSpeed: 80,
+  showCursor: false,
+  cursorChar: '_',
+  loop: false,
+});
 }
 
 const tooltip = document.getElementById('tooltip');
@@ -278,6 +294,14 @@ zoom: true,
 download: false,
 });
 }, 100); 
+
+new Typed('#typed3', {
+  strings: ['<span class="text-white text-xl mr-2 text-pink-glow">Art</span>'],
+  typeSpeed: 80,
+  showCursor: false,
+  cursorChar: '_',
+  loop: false,
+});
 }
 
 function siteFAQ() {
@@ -325,6 +349,15 @@ $('#terminalContent').html(`
       <button class="terminal-button" onclick="resetTerminal()">Back</button>
       </div>
       `);
+
+  new Typed('#typed3', {
+  strings: ['<span class="text-white text-xl mr-2 text-pink-glow">About</span>'],
+  typeSpeed: 80,
+  showCursor: false,
+  cursorChar: '_',
+  loop: false,
+});
+  
 }
 
 let lastSubmissionTime = 0;
@@ -692,6 +725,14 @@ $('#terminalContent').html(`
              </div>
              `);
 
+new Typed('#typed3', {
+  strings: ['<span class="text-white text-xl mr-2 text-pink-glow">Jamie</span>'],
+  typeSpeed: 80,
+  showCursor: false,
+  cursorChar: '_',
+  loop: false,
+});
+
 new Typed('#typed', {
 
 strings: [
@@ -716,6 +757,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
