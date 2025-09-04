@@ -74,7 +74,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'C4DwV8J9wzA,6tc-GD-DEXw',
+playlist: 'ZM_Gamwxvtc',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -115,7 +115,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'C4DwV8J9wzA';
+const videoId = 'ZM_Gamwxvtc';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -198,17 +198,10 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "Jane Remover — Census Designated",
-videoId: "C4DwV8J9wzA",
-channelAvatar: "https://yt3.googleusercontent.com/ZCjJEcbEMDeZqjF4MIM6Na3zwAoDQUVT9Jwvn7gmMdMPYJKegrIiBf-bNkclB-Jve2PHaU5666A=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@jane_remover"
-}
-,
-{
-title: "YUNGBLUD - Hello Heaven, Hello",
-videoId: "6tc-GD-DEXw",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@YUNGBLUD"
+title: "cavetown - This Is Home",
+videoId: "ZM_Gamwxvtc",
+channelAvatar: "https://yt3.googleusercontent.com/oWWGvBTDEGOyU2IkWe9ycVjpyHkvIhgNBJjKfWx4WfIXWYtIZB0L-oEahLKRZ-boo3gt-FwUlg=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
 }
 ];
 
@@ -742,6 +735,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
