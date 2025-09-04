@@ -74,7 +74,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'ZM_Gamwxvtc',
+playlist: 'pPbmcz_WP4Y',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -115,7 +115,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'ZM_Gamwxvtc';
+const videoId = 'pPbmcz_WP4Y';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -198,8 +198,8 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "cavetown - This Is Home",
-videoId: "ZM_Gamwxvtc",
+title: "cavetown - Dysphoric",
+videoId: "pPbmcz_WP4Y",
 channelAvatar: "https://yt3.googleusercontent.com/oWWGvBTDEGOyU2IkWe9ycVjpyHkvIhgNBJjKfWx4WfIXWYtIZB0L-oEahLKRZ-boo3gt-FwUlg=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@cavetown"
 }
@@ -735,6 +735,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
