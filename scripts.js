@@ -74,7 +74,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'Wq7g9j5149E,6tc-GD-DEXw',
+playlist: 'C4DwV8J9wzA,6tc-GD-DEXw',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -115,7 +115,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'Wq7g9j5149E';
+const videoId = 'C4DwV8J9wzA';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -198,10 +198,10 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "Wolf Alice - Smile",
-videoId: "Wq7g9j5149E",
-channelAvatar: "https://yt3.googleusercontent.com/Q_Q7wjtlswnz5IwbYQP2qrsDYOGz-zRRZ-UZjeGGHNH4OoknQ9nRPBAxsCZeUkP0ixX58L4sKQ=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@wolfaliceband"
+title: "Jane Remover — Census Designated",
+videoId: "C4DwV8J9wzA",
+channelAvatar: "https://yt3.googleusercontent.com/ZCjJEcbEMDeZqjF4MIM6Na3zwAoDQUVT9Jwvn7gmMdMPYJKegrIiBf-bNkclB-Jve2PHaU5666A=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@jane_remover"
 }
 ,
 {
@@ -742,6 +742,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
