@@ -74,7 +74,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'uWvCv43vjd4',
+playlist: 'RiwEzF3DsGk',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -115,7 +115,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'uWvCv43vjd4';
+const videoId = 'RiwEzF3DsGk';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -198,10 +198,10 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "Steven Tyler, YUNGBLUD - Ozzy Tribute",
-videoId: "uWvCv43vjd4",
-channelAvatar: "https://yt3.googleusercontent.com/IddRuVuOf3ElbyV6BC0R4bXh9r30uDTCbZsENR6V4xF9Uj7yFxRw3cLcnssfPAHLlWqNdeO9EA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@MTV"
+title: "Jane Remover — JRJRJR",
+videoId: "RiwEzF3DsGk",
+channelAvatar: "https://yt3.googleusercontent.com/ZCjJEcbEMDeZqjF4MIM6Na3zwAoDQUVT9Jwvn7gmMdMPYJKegrIiBf-bNkclB-Jve2PHaU5666A=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@jane_remover"
 }
 ];
 
@@ -735,6 +735,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
