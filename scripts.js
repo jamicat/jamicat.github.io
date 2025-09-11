@@ -17,14 +17,14 @@ smartBackspace: false,
 loop: true,
 });
 
-var typed3 = new Typed('#typed3', {
+/*var typed3 = new Typed('#typed3', {
   strings: ['<span class="text-white text-xl mr-2 text-pink-glow">Jamie</span>'],
   typeSpeed: 80,
   backspeed: 70,
   showCursor: false,
   cursorChar: '_',
   loop: false,
-});
+});*/
 
 interact('#terminal').draggable({
   allowFrom: '.drag-area',
@@ -228,7 +228,7 @@ html += `
 
 $('#terminalContent').html(html);
 
-changeTyped3('<span class="text-white text-xl mr-2 text-pink-glow">Playlist</span>');
+//changeTyped3('<span class="text-white text-xl mr-2 text-pink-glow">Playlist</span>');
 }
 
 const tooltip = document.getElementById('tooltip');
@@ -283,7 +283,7 @@ download: false,
 });
 }, 100); 
 
-changeTyped3('<span class="text-white text-xl mr-2 text-pink-glow">Art</span>');
+//changeTyped3('<span class="text-white text-xl mr-2 text-pink-glow">Art</span>');
 }
 
 function changeTyped3(newText) {
@@ -340,7 +340,7 @@ $('#terminalContent').html(`
       </div>
       `);
 
- changeTyped3('<span class="text-white text-xl mr-2 text-pink-glow">About</span>');
+ //changeTyped3('<span class="text-white text-xl mr-2 text-pink-glow">About</span>');
   
 }
 
@@ -709,7 +709,7 @@ $('#terminalContent').html(`
              </div>
              `);
 
-changeTyped3('<span class="text-white text-xl mr-2 text-pink-glow">Jamie</span>');
+//changeTyped3('<span class="text-white text-xl mr-2 text-pink-glow">Jamie</span>');
 
 new Typed('#typed', {
 
@@ -735,6 +735,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
