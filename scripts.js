@@ -703,7 +703,7 @@ $('#terminalContent').html(`
              <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
              <button class="terminal-button ml-4" onclick="siteFAQ()">About</button>
              <button class="terminal-button ml-2" onclick="showArt()">Art</button>
-             <button class="terminal-button ml-5" onclick="showGuestBook()">Guestbook</button>
+             <button class="terminal-button ml-5" onclick="window.open('https://www.jmie.co.uk/book/', '_blank');">Guestbook</button>
              <!--button class="terminal-button ml-3" onclick="showMessageForm()">Message</button-->
              <button class="terminal-button" onclick="showList()">Playlist</button>
              </div>
@@ -735,6 +735,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
