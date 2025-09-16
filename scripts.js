@@ -1,7 +1,7 @@
 var typed = new Typed('#typed', {
 strings: [
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ(^ω^ฅ)</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">(ฅ^ω^)ฅ</span>',
+'<span class="text-white text-base mr-2 text-blue-glow">Leave a message in the guestbook!</span>',
+'<span class="text-white text-base mr-2 text-blue-glow">Click on the galaxy icon.</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">ฅ(^ω^)ฅ</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">(๑•ω•́ฅ✧</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">(ฅ`･ω･´)っ=</span>',
@@ -714,8 +714,8 @@ $('#terminalContent').html(`
 new Typed('#typed', {
 
 strings: [
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ(^ω^ฅ)</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">(ฅ^ω^)ฅ</span>',
+'<span class="text-white text-base mr-2 text-blue-glow">Leave a message in the guestbook!</span>',
+'<span class="text-white text-base mr-2 text-blue-glow">Click on the galaxy icon.</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">ฅ(^ω^)ฅ</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">(๑•ω•́ฅ✧</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">(ฅ`･ω･´)っ=</span>',
@@ -735,6 +735,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
