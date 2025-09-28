@@ -74,7 +74,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'c_jWpZ6XDIc',
+playlist: '74mV9qwlCgg',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -115,7 +115,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'c_jWpZ6XDIc';
+const videoId = '74mV9qwlCgg';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -198,10 +198,10 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "Cavetown - Sweet Tooth",
-videoId: "c_jWpZ6XDIc",
-channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@cavetown"
+title: "Aerosmith, YUNGBLUD - My Only Angel",
+videoId: "74mV9qwlCgg",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@YUNGBLUD"
 }
 ];
 
@@ -735,6 +735,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
