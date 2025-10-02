@@ -1,13 +1,13 @@
 var typed = new Typed('#typed', {
 strings: [
-'<span class="text-white text-base mr-2 text-blue-glow">Leave a message in the guestbook!</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">Click on the galaxy icon.</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ(^ω^)ฅ</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">(๑•ω•́ฅ✧</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">(ฅ`･ω･´)っ=</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ*•ω•*ฅ</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ^•ﻌ•^ฅ</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">⊱ฅ•ω•ฅ⊰</span>'
+'<span class="text-white text-base mr-2 text-pink-glow">Leave a message in the guestbook!</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">Click on the galaxy icon.</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'
 ],
 typeSpeed: 60,
 backSpeed: 30,
@@ -18,7 +18,7 @@ loop: true,
 });
 
 /*var typed3 = new Typed('#typed3', {
-  strings: ['<span class="text-white text-xl mr-2 text-blue-glow">Jamie</span>'],
+  strings: ['<span class="text-white text-xl mr-2 text-pink-glow">Jamie</span>'],
   typeSpeed: 80,
   backspeed: 70,
   showCursor: false,
@@ -159,7 +159,7 @@ playIcon.classList.add('hidden');
 
 let galaxyScriptLoaded = false;
 
-rewind10.addEventListener('click', async () => {
+text-pink-glow.addEventListener('click', async () => {
 
 if (!galaxyScriptLoaded) {
 await import('./galaxy.js');
@@ -181,13 +181,13 @@ const canvas = document.getElementById('canvas');
 if (galaxyVisible) {
 galaxyVisible = false;
 rewind10.classList.remove('text-purple-200');
-rewind10.classList.add('text-purple-50');
+rewind10.classList.add('text-pink-600');
 canvas.style.opacity = '0';
 canvas.style.pointerEvents = 'none'; 
 } else {
 galaxyVisible = true;
 rewind10.classList.add('text-purple-200');
-rewind10.classList.remove('text-purple-50');
+rewind10.classList.remove('text-pink-600');
 canvas.style.opacity = '1';
 canvas.style.pointerEvents = 'auto';  
 }
@@ -228,7 +228,7 @@ html += `
 
 $('#terminalContent').html(html);
 
-//changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Playlist</span>');
+//changeTyped3('<span class="text-white text-xl mr-2 text-pink-glow">Playlist</span>');
 }
 
 const tooltip = document.getElementById('tooltip');
@@ -283,7 +283,7 @@ download: false,
 });
 }, 100); 
 
-//changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Art</span>');
+//changeTyped3('<span class="text-white text-xl mr-2 text-pink-glow">Art</span>');
 }
 
 function changeTyped3(newText) {
@@ -317,7 +317,7 @@ $('#terminalContent').html(`
   </p>
   <p>
     Now go and click on something, or nothing. 
-    <span class="text-blue-glow text-white relative inline-block group cursor-pointer underline">
+    <span class="text-pink-glow text-white relative inline-block group cursor-pointer underline">
     >Thanks for visiting!
     <img src="thankyou.png" alt="Thank you!"
          class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-[300px] h-[311px] max-w-none z-50 rounded shadow-lg opacity-0 invisible transition-opacity duration-150 group-hover:opacity-100 group-hover:visible pointer-events-none"/>
@@ -332,7 +332,7 @@ $('#terminalContent').html(`
   </p>
 </div>
       <ul class="list-disc list-inside text-sm text-white space-y-1">
-      <li class="text-blue-glow">Libraries - jQuery, Typed.js, Interact.js, Tailwind CSS, YT iFrame API</li>
+      <li class="text-pink-glow">Libraries - jQuery, Typed.js, Interact.js, Tailwind CSS, YT iFrame API</li>
       </ul>
       </div>
       <div id="buttonRow" class="flex justify-center">
@@ -340,7 +340,7 @@ $('#terminalContent').html(`
       </div>
       `);
 
- //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
+ //changeTyped3('<span class="text-white text-xl mr-2 text-pink-glow">About</span>');
   
 }
 
@@ -395,7 +395,7 @@ function showGuestBook() {
 document.body.appendChild(guestBookWindow);
 
 var typed2= new Typed('#typed2', {
-  strings: ['<span class="text-white text-xl mr-2 text-blue-glow">Guestbook</span>'],
+  strings: ['<span class="text-white text-xl mr-2 text-pink-glow">Guestbook</span>'],
   typeSpeed: 80,
   showCursor: false,
   cursorChar: '_',
@@ -617,7 +617,7 @@ async function loadGuestbookComments() {
       div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm text-pink-100';
 
       div.innerHTML = `
-        <div class="mb-1 font-semibold text-white text-blue-glow">${name || 'Anonymous'}</div>
+        <div class="mb-1 font-semibold text-white text-pink-glow">${name || 'Anonymous'}</div>
         <div class="mb-1">${comment || ''}</div>
         <div class="text-pink-200 text-[0.65rem] leading-[1rem] text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
       `;
@@ -709,19 +709,19 @@ $('#terminalContent').html(`
              </div>
              `);
 
-//changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Jamie</span>');
+//changeTyped3('<span class="text-white text-xl mr-2 text-pink-glow">Jamie</span>');
 
 new Typed('#typed', {
 
 strings: [
-'<span class="text-white text-base mr-2 text-blue-glow">Leave a message in the guestbook!</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">Click on the galaxy icon.</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ(^ω^)ฅ</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">(๑•ω•́ฅ✧</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">(ฅ`･ω･´)っ=</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ*•ω•*ฅ</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ^•ﻌ•^ฅ</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">⊱ฅ•ω•ฅ⊰</span>'
+'<span class="text-white text-base mr-2 text-pink-glow">Leave a message in the guestbook!</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">Click on the galaxy icon.</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ(^ω^)ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">(๑•ω•́ฅ✧</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">(ฅ`･ω･´)っ=</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ*•ω•*ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">ฅ^•ﻌ•^ฅ</span>',
+'<span class="text-white text-base mr-2 text-pink-glow">⊱ฅ•ω•ฅ⊰</span>'
 ],
 typeSpeed: 60,
 backSpeed: 30,
@@ -735,6 +735,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
