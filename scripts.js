@@ -159,7 +159,7 @@ playIcon.classList.add('hidden');
 
 let galaxyScriptLoaded = false;
 
-text-pink-glow.addEventListener('click', async () => {
+rewind10.addEventListener('click', async () => {
 
 if (!galaxyScriptLoaded) {
 await import('./galaxy.js');
@@ -735,6 +735,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
