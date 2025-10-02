@@ -181,13 +181,13 @@ const canvas = document.getElementById('canvas');
 if (galaxyVisible) {
 galaxyVisible = false;
 rewind10.classList.remove('text-purple-200');
-rewind10.classList.add('text-pink-600');
+rewind10.classList.add('text-pink-50');
 canvas.style.opacity = '0';
 canvas.style.pointerEvents = 'none'; 
 } else {
 galaxyVisible = true;
 rewind10.classList.add('text-purple-200');
-rewind10.classList.remove('text-pink-600');
+rewind10.classList.remove('text-pink-50');
 canvas.style.opacity = '1';
 canvas.style.pointerEvents = 'auto';  
 }
@@ -735,6 +735,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
