@@ -74,7 +74,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'V9PVRfjEBTI',
+playlist: 'fI9ztgoZ5yQ',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -115,7 +115,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'V9PVRfjEBTI';
+const videoId = 'fI9ztgoZ5yQ';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -198,10 +198,10 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "Billie Eilish - BIRDS OF A FEATHER",
-videoId: "V9PVRfjEBTI",
-channelAvatar: "https://yt3.googleusercontent.com/dirvtoDAmx-u0UR76-pxfhYL6Wxj2vfL2geUcxDwk62tTWWhGG6QDGc63RG3NdOz38-yBwRHDQ=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@BillieEilish"
+title: "YUNGBLUD - Tissues",
+videoId: "fI9ztgoZ5yQ",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@YUNGBLUD"
 }
 ];
 
@@ -735,4 +735,5 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
