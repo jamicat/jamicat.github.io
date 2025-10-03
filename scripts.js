@@ -11,7 +11,7 @@ strings: [
 ],
 typeSpeed: 60,
 backSpeed: 30,
-showCursor: true,
+showCursor: false,
 cursorChar: '_',
 smartBackspace: false,
 loop: true,
@@ -725,7 +725,7 @@ strings: [
 ],
 typeSpeed: 60,
 backSpeed: 30,
-showCursor: true,
+showCursor: false,
 cursorChar: '_',
 smartBackspace: false,
 loop: true,
@@ -735,5 +735,6 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
