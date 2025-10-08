@@ -74,7 +74,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '6ZWhNxslxzA,xHqyRFJ8f2A',
+playlist: 'Egxg01Gd9Ws,xHqyRFJ8f2A',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -115,7 +115,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '6ZWhNxslxzA';
+const videoId = 'Egxg01Gd9Ws';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -742,6 +742,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
