@@ -202,7 +202,8 @@ title: "Jane Remover — Dreamflasher",
 videoId: "6ZWhNxslxzA",
 channelAvatar: "https://yt3.googleusercontent.com/ZCjJEcbEMDeZqjF4MIM6Na3zwAoDQUVT9Jwvn7gmMdMPYJKegrIiBf-bNkclB-Jve2PHaU5666A=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@jane_remover"
-},
+}
+,
 {
 title: "YUNGBLUD - God Only Knows",
 videoId: "xHqyRFJ8f2A",
@@ -741,6 +742,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
