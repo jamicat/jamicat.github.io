@@ -74,7 +74,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'fI9ztgoZ5yQ',
+playlist: '6ZWhNxslxzA,xHqyRFJ8f2A',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -198,8 +198,14 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - Tissues",
-videoId: "fI9ztgoZ5yQ",
+title: "Jane Remover — Dreamflasher",
+videoId: "6ZWhNxslxzA",
+channelAvatar: "https://yt3.googleusercontent.com/ZCjJEcbEMDeZqjF4MIM6Na3zwAoDQUVT9Jwvn7gmMdMPYJKegrIiBf-bNkclB-Jve2PHaU5666A=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@jane_remover"
+},
+{
+title: "YUNGBLUD - God Only Knows",
+videoId: "xHqyRFJ8f2A",
 channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@YUNGBLUD"
 }
@@ -735,6 +741,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
