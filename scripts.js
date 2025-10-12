@@ -74,7 +74,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'Egxg01Gd9Ws,xHqyRFJ8f2A',
+playlist: 'PsbVS6x4Stk',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -198,17 +198,10 @@ canvas.style.pointerEvents = 'auto';
 function showList() {
 const playlist = [
 {
-title: "Jane Remover — angels in camo",
-videoId: "Egxg01Gd9Ws",
-channelAvatar: "https://yt3.googleusercontent.com/ZCjJEcbEMDeZqjF4MIM6Na3zwAoDQUVT9Jwvn7gmMdMPYJKegrIiBf-bNkclB-Jve2PHaU5666A=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@jane_remover"
-}
-,
-{
-title: "YUNGBLUD - God Only Knows",
-videoId: "xHqyRFJ8f2A",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@YUNGBLUD"
+title: "Cavetown - Tarmac",
+videoId: "PsbVS6x4Stk",
+channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
 }
 ];
 
@@ -742,6 +735,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
