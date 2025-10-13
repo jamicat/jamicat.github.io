@@ -18,14 +18,14 @@ smartBackspace: false,
 loop: true,
 });
 
-/*var typed3 = new Typed('#typed3', {
-  strings: ['<span class="text-white text-xl mr-2 text-blue-glow">Jamie</span>'],
+var typed3 = new Typed('#typed3', {
+  strings: ['<span class="text-white text-xl mr-2 text-blue-glow"></span>'],
   typeSpeed: 80,
   backspeed: 70,
   showCursor: false,
   cursorChar: '_',
   loop: false,
-});*/
+});
 
 interact('#terminal').draggable({
   allowFrom: '.drag-area',
@@ -229,7 +229,7 @@ html += `
 
 $('#terminalContent').html(html);
 
-//changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Playlist</span>');
+changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Playlist</span>');
 }
 
 const tooltip = document.getElementById('tooltip');
@@ -794,6 +794,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
