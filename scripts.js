@@ -371,7 +371,7 @@ function somethingNew() {
       </p>
 
       <p>
-        Last year. It wasn’t my worst year, but it came uncomfortably close. I’m no longer bitter about it.
+        <em>Last year.</em> It wasn’t my worst year, but it came uncomfortably close. I’m no longer bitter about it.
       </p>
       <p>
         When you're stuck in a self-perpetuating rut long enough, you start forgetting life could feel any different. I'm not going to go into any revealing depth in a public infodump, but I feel the urge to put my thanks into words for those I consider closest.
@@ -781,6 +781,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
