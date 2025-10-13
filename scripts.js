@@ -776,7 +776,7 @@ $('#terminalContent').html(`
 new Typed('#typed', {
 
 strings: [
-'<span class="text-white text-base mr-2 text-blue-glow">Myeoooooow, welcome!</span>',
+'<span class="text-white text-base mr-2 text-blue-glow">Meoeoeoeoeow, welcome!</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">Click on the galaxy icon!</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">Check out the guestbook!</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">ฅ(^ω^)ฅ</span>',
@@ -798,46 +798,5 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
