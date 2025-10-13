@@ -378,7 +378,7 @@ function somethingNew() {
         When you're stuck in a self-perpetuating rut long enough, you start forgetting life could feel any different. I'm not going to go into any revealing depth in a public infodump, but I feel the urge to put my thanks into words for those I consider closest.
       </p>
       <p>
-        After a major life change, it took a few rocky months. Some of that I unfairly projected onto the friends who stood by me, but through that I began to rebuild myself. The flipside of this is that I can now say I feel healthier and happier than I can last remember.
+        After a big turning point, it took a few rocky months to find my footing again. Some of that I unfairly projected onto the friends who stood by me, but through it, I started to rebuild myself. The flipside of that is I can now say I feel healthier and happier than I have in a long time.
       </p>
       <p>
         Maybe I’m too shy or too awkward to say it often, but I love every one of you. Thank you. c:
@@ -783,6 +783,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
