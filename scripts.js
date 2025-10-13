@@ -384,7 +384,11 @@ function somethingNew() {
   After a turning point, it took a little time to find my footing again. I projected frustration onto some friends near and dear, but through that, I started to rebuild my understanding of myself. The upside is that now, I feel healthier and happier than I can remember.
 </p>
 <p>
-  This year, I reconnected with my love for music. I got to attend Bludfest Year 2 at Milton Keynes and feel part of something much bigger than myself. Being part of a modern rock movement aimed at my age group wasn’t something I planned for, and the energy and collective morale completely swept me off my feet. In the months leading up to the festival, I felt a magnetic pull toward YUNGBLUD in particular, followed my gut, and met so many people from similar walks of life.
+  This year, I reconnected with my love for music. I got to attend <span class="text-blue-glow text-white relative inline-block group cursor-pointer underline">
+          Bludfest year 2
+          <img src="bgy2.jpg" alt="Thank you!"
+               class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-[300px] h-[311px] max-w-none z-50 rounded shadow-lg opacity-0 invisible transition-opacity duration-150 group-hover:opacity-100 group-hover:visible pointer-events-none"/>
+        </span> at Milton Keynes and feel part of something much bigger than myself. Being part of a modern rock movement aimed at my age group wasn’t something I planned for, and the energy and collective morale completely swept me off my feet. In the months leading up to the festival, I felt a magnetic pull toward YUNGBLUD in particular, followed my gut, and met so many people from similar walks of life.
 </p>
 <p>
   Maybe I’m too shy or awkward to say it often, but I love my friends like family.
@@ -794,6 +798,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
