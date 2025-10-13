@@ -300,11 +300,11 @@ function siteFAQ() {
     
 <div class="text-white text-sm space-y-2 mt-6">
   <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
-    <span class="text-pink-300">[13/10]</span> - 
+    <span class="text-pink-glow">[13/10]</span> - 
     <span class="underline text-blue-glow">Something new</span>
   </p>
   <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
-    <span class="text-pink-300">[15/08]</span> - 
+    <span class="text-pink-glow">[15/08]</span> - 
     <span class="underline text-blue-glow">About</span>
   </p>
 </div>
@@ -357,11 +357,11 @@ function aboutPost() {
     
   <div class="text-white text-sm space-y-2 mt-6">
   <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
-    <span class="text-pink-300">[13/10]</span> - 
+    <span class="text-pink-glow">[13/10]</span> - 
     <span class="underline text-blue-glow">Something new</span>
   </p>
   <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
-    <span class="text-pink-300">[15/08]</span> - 
+    <span class="text-pink-glow">[15/08]</span> - 
     <span class="underline text-blue-glow">About</span>
   </p>
 </div>
@@ -400,11 +400,11 @@ function somethingNew() {
     
   <div class="text-white text-sm space-y-2 mt-6">
   <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
-    <span class="text-pink-300">[13/10]</span> - 
+    <span class="text-pink-glow">[13/10]</span> - 
     <span class="underline text-blue-glow">Something new</span>
   </p>
   <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
-    <span class="text-pink-300">[15/08]</span> - 
+    <span class="text-pink-glow">[15/08]</span> - 
     <span class="underline text-blue-glow">About</span>
   </p>
 </div>
@@ -806,6 +806,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
