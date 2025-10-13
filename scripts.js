@@ -308,6 +308,10 @@ function siteFAQ() {
     <span class="underline text-blue-glow">About</span>
   </p>
 </div>
+
+  <div id="buttonRow" class="flex justify-center mt-4">
+      <button class="terminal-button" onclick="resetTerminal()">Back</button>
+    </div>
   `);
 
   //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
@@ -351,10 +355,16 @@ function aboutPost() {
       </p>
     </div>
     
-    <div class="text-white text-sm space-y-1 mt-6">
-      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="aboutPost()">About</p>
-      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="somethingNew()">Something new</p>
-    </div>
+  <div class="text-white text-sm space-y-2 mt-6">
+  <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
+    <span class="text-pink-300">[13/10]</span> - 
+    <span class="underline text-blue-glow">Something new</span>
+  </p>
+  <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
+    <span class="text-pink-300">[15/08]</span> - 
+    <span class="underline text-blue-glow">About</span>
+  </p>
+</div>
 
     <div id="buttonRow" class="flex justify-center mt-4">
       <button class="terminal-button" onclick="resetTerminal()">Back</button>
@@ -388,10 +398,16 @@ function somethingNew() {
       </p>
     </div>
     
-    <div class="text-white text-sm space-y-1 mt-6">
-      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="aboutPost()">About</p>
-      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="somethingNew()">Something new</p>
-    </div>
+  <div class="text-white text-sm space-y-2 mt-6">
+  <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
+    <span class="text-pink-300">[13/10]</span> - 
+    <span class="underline text-blue-glow">Something new</span>
+  </p>
+  <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
+    <span class="text-pink-300">[15/08]</span> - 
+    <span class="underline text-blue-glow">About</span>
+  </p>
+</div>
 
     <div id="buttonRow" class="flex justify-center mt-4">
       <button class="terminal-button" onclick="resetTerminal()">Back</button>
@@ -790,6 +806,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
