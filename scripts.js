@@ -361,7 +361,9 @@ function aboutPost() {
 
 function somethingNew() {
   $('#terminalContent').html(`
+  
     <div class="text-pink-100 text-sm mb-4 mt-4 space-y-4">
+    <div class="flex justify-center mt-4">
       <p>
         <a href="https://www.youtube.com/watch?v=xrZX47RbeJs" 
            target="_blank" 
@@ -370,6 +372,7 @@ function somethingNew() {
           🖤YUNGBLUD - Hello Heaven, Hello
         </a>
       </p>
+      </div>
 
       <p>
   <em>Last year.</em> It wasn’t my worst year, but it wasn’t my comfiest either. I’m no longer bitter about it.
@@ -787,6 +790,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
