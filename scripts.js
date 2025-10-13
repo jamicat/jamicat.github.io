@@ -387,9 +387,11 @@ function somethingNew() {
   This year, I reconnected with my love for music. I got to attend Bludfest Year 2 at Milton Keynes and feel part of something much bigger than myself. Being part of a modern rock movement aimed at my age group wasn’t something I planned for, but the energy and collective morale completely swept me off my feet. In the months leading up to the festival, I felt a magnetic pull toward YUNGBLUD in particular, followed my gut, and met so many people from similar walks of life.
 </p>
 <p>
-  Maybe I’m too shy or awkward to say it often, but I love my friends like family. Thank you. <svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" viewBox="20 20">
-          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20" fill="pink">c:</text>
-        </svg>
+  Maybe I’m too shy or awkward to say it often, but I love my friends like family. Thank you. 
+  
+  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="20" viewBox="20 20" class="inline-block">
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20" fill="pink">c:</text>
+  </svg>
 </p>
 
     </div>
@@ -792,6 +794,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
