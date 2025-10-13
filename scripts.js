@@ -372,17 +372,21 @@ function somethingNew() {
       </p>
 
       <p>
-        <em>Last year.</em> It wasn’t my worst year, but it came uncomfortably close. I’m no longer bitter about it.
-      </p>
-      <p>
-        When you're stuck in a loop long enough, you start forgetting life could feel any different. I'm not going to go into any revealing depth in a public infodump, but I feel the urge to put my thanks into words for those I consider closest.
-      </p>
-      <p>
-        After a big turning point, it took a few rocky months to find my footing again. Some of that I unfairly projected onto the friends who stood by me, but through it, I started to rebuild myself. The flipside of that is I can now say I feel healthier and happier than I can last remember.
-      </p>
-      <p>
-        Maybe I’m too shy or too awkward to say it often, but I love every one of you. Thank you. c:
-      </p>
+  <em>Last year.</em> It wasn’t my worst year, but it wasn’t my comfiest either. I’m no longer bitter about it.
+</p>
+<p>
+  When you stay in a loop long enough, it’s easy to forget that life can actually feel different. I’m not going to overshare in a public infodump, but I felt the urge to type out some thanks for my closest friends.
+</p>
+<p>
+  After a turning point, it took a few months to find my footing again. I definitely projected some of my frustration onto the friends who stayed near and dear, but through that, I started to rebuild my understanding of myself. The upside is that now, I feel healthier and happier than I can remember.
+</p>
+<p>
+  This year, I reconnected with my love for music. I got to attend Bludfest Year 2 at Milton Keynes and feel part of something much bigger than myself. Being part of a modern rock movement aimed at my age group wasn’t something I planned for, but the energy and collective morale completely swept me off my feet. In the months leading up to the festival, I felt a magnetic pull toward YUNGBLUD in particular, followed my gut, and met so many people from similar walks of life.
+</p>
+<p>
+  Maybe I’m too shy or awkward to say it often, but I love every one of you. Thank you. c:
+</p>
+
     </div>
 
     <div id="buttonRow" class="flex justify-center mt-4">
@@ -783,6 +787,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
