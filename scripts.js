@@ -367,7 +367,7 @@ function somethingNew() {
            target="_blank" 
            rel="noopener noreferrer" 
            class="text-blue-glow underline hover:text-white transition">
-          YUNGBLUD - Hello Heaven, Hello
+          🖤YUNGBLUD - Hello Heaven, Hello
         </a>
       </p>
 
@@ -783,6 +783,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
