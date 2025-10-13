@@ -295,53 +295,111 @@ function changeTyped3(newText) {
 }
 
 function siteFAQ() {
-$('#terminalContent').html(`
-      <div class="text-pink-100 text-sm mb-4 mt-4 space-y-4">
-  <p>
-    Welcome to my little corner of the internet. I almost typed bespoke for lack of a better word, 
-    and though it feels a bit loaded, it is exactly what this is: a small piece of shared personal space. 
-    I like to litter it with occasional fur art updates, music I have been attached to lately, and bits 
-    of code that refuse to stay foldered. Really, it is just whatever I feel in the moment, on a whim, 
-    and if you are reading this, I hope that you find something worth your time.
-  </p>
-  <p>
-    A creative outlet has always been a kind of lifeline for me. For some fellow furs and friends, 
-    it loops back into the IT world we claim to despise, creating a curious middle ground between work and play. One friend of 
-    mine has coined the phrase <em>working in hating IT</em>, which we jokingly called copium jargon, 
-    and so naturally we adopted that too. 
-  </p>
-  <p>
-  This site is my playful contradiction, a place where my busy 
-    mind channels itself into something more hobbyesque, proving, ironically, that less can be more in an 
-    age of information overload.
-  </p>
-  <p>
-    Now go and click on something, or nothing. 
-    <span class="text-blue-glow text-white relative inline-block group cursor-pointer underline">
-    >Thanks for visiting!
-    <img src="thankyou.png" alt="Thank you!"
-         class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-[300px] h-[311px] max-w-none z-50 rounded shadow-lg opacity-0 invisible transition-opacity duration-150 group-hover:opacity-100 group-hover:visible pointer-events-none"/>
-  </span>
-  </p>
+  $('#terminalContent').html(`
+    <div class="text-pink-100 text-sm mb-4 mt-4 space-y-4">
+      <p>
+        Welcome to my little corner of the internet. This section holds small personal posts, 
+        reflective notes, and the occasional whimsical ramble. Pick one to read below.
+      </p>
+    </div>
+    
+    <div class="text-white text-sm space-y-2 mt-6">
+      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="aboutPost()">About</p>
+      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="somethingNew()">Something new</p>
+    </div>
 
-  <p class="flex items-center space-x-1">
-    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" viewBox="20 20">
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20" fill="pink">tldr :3</text>
-    </svg>
-    <span> - dog pics soon</span>
-  </p>
-</div>
-      <ul class="list-disc list-inside text-sm text-white space-y-1">
-      <li class="text-blue-glow">Libraries - jQuery, Typed.js, Interact.js, Tailwind CSS, YT iFrame API</li>
-      </ul>
-      </div>
-      <div id="buttonRow" class="flex justify-center">
+    <div id="buttonRow" class="flex justify-center mt-6">
       <button class="terminal-button" onclick="resetTerminal()">Back</button>
-      </div>
-      `);
+    </div>
+  `);
 
- //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
+  //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
   
+}
+
+function aboutPost() {
+  $('#terminalContent').html(`
+    <div class="text-pink-100 text-sm mb-4 mt-4 space-y-4">
+      <p>
+        Welcome to my little corner of the internet. I almost typed bespoke for lack of a better word, 
+        and though it feels a bit loaded, it is exactly what this is: a small piece of shared personal space. 
+        I like to litter it with occasional fur art updates, music I have been attached to lately, and bits 
+        of code that refuse to stay foldered. Really, it is just whatever I feel in the moment, on a whim, 
+        and if you are reading this, I hope that you find something worth your time.
+      </p>
+      <p>
+        A creative outlet has always been a kind of lifeline for me. For some fellow furs and friends, 
+        it loops back into the IT world we claim to despise, creating a curious middle ground between work and play. One friend of 
+        mine has coined the phrase <em>working in hating IT</em>, which we jokingly called copium jargon, 
+        and so naturally we adopted that too. 
+      </p>
+      <p>
+        This site is my playful contradiction, a place where my busy 
+        mind channels itself into something more hobbyesque, proving, ironically, that less can be more in an 
+        age of information overload.
+      </p>
+      <p>
+        Now go and click on something, or nothing. 
+        <span class="text-blue-glow text-white relative inline-block group cursor-pointer underline">
+          >Thanks for visiting!
+          <img src="thankyou.png" alt="Thank you!"
+               class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-[300px] h-[311px] max-w-none z-50 rounded shadow-lg opacity-0 invisible transition-opacity duration-150 group-hover:opacity-100 group-hover:visible pointer-events-none"/>
+        </span>
+      </p>
+      <p class="flex items-center space-x-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" viewBox="20 20">
+          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20" fill="pink">tldr :3</text>
+        </svg>
+        <span> - dog pics soon</span>
+      </p>
+    </div>
+    
+    <div class="text-white text-sm space-y-1 mt-6">
+      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="aboutPost()">About</p>
+      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="somethingNew()">Something new</p>
+    </div>
+
+    <div id="buttonRow" class="flex justify-center mt-4">
+      <button class="terminal-button" onclick="resetTerminal()">Back</button>
+    </div>
+  `);
+}
+
+function somethingNew() {
+  $('#terminalContent').html(`
+    <div class="text-pink-100 text-sm mb-4 mt-4 space-y-4">
+      <p>
+        <a href="https://www.youtube.com/watch?v=xrZX47RbeJs" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="text-blue-glow underline hover:text-white transition">
+          YUNGBLUD - Hello Heaven, Hello
+        </a>
+      </p>
+
+      <p>
+        Last year. It wasn’t my worst year, but it came uncomfortably close. I’m no longer bitter about it.
+      </p>
+      <p>
+        When you're stuck in a self-perpetuating rut long enough, you start forgetting life could feel any different. I'm not going to go into any revealing depth in a public infodump, but I feel the urge to put my thanks into words for those I consider closest.
+      </p>
+      <p>
+        After a major life change, it took a few rocky months. Some of that I unfairly projected onto the friends who stood by me, but through that I began to rebuild myself. The flipside of this is that I can now say I feel healthier and happier than I can last remember.
+      </p>
+      <p>
+        Maybe I’m too shy or too awkward to say it often, but I love every one of you. Thank you. c:
+      </p>
+    </div>
+    
+    <div class="text-white text-sm space-y-1 mt-6">
+      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="aboutPost()">About</p>
+      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="somethingNew()">Something new</p>
+    </div>
+
+    <div id="buttonRow" class="flex justify-center mt-4">
+      <button class="terminal-button" onclick="resetTerminal()">Back</button>
+    </div>
+  `);
 }
 
 let lastSubmissionTime = 0;
@@ -735,6 +793,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
