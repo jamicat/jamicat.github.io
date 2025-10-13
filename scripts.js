@@ -366,7 +366,7 @@ function somethingNew() {
         <a href="https://www.youtube.com/watch?v=xrZX47RbeJs" 
            target="_blank" 
            rel="noopener noreferrer" 
-           class="text-blue-glow underline hover:text-white transition">
+           class="text-blue-glow hover:text-white hover:underline transition">
           🖤YUNGBLUD - Hello Heaven, Hello
         </a>
       </p>
@@ -783,6 +783,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
