@@ -385,7 +385,7 @@ function somethingNew() {
     </div>
 
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="resetTerminal()">siteFAQ</button>
+      <button class="terminal-button" onclick="siteFAQ()">Back</button>
     </div>
   `);
 }
@@ -781,6 +781,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
