@@ -296,8 +296,7 @@ function changeTyped3(newText) {
 
 function siteFAQ() {
   $('#terminalContent').html(`
-   
-    
+  
 <div class="text-white text-sm space-y-2 mt-6">
   <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
     <span class="text-pink-glow">[13/10]</span> - 
@@ -313,9 +312,7 @@ function siteFAQ() {
       <button class="terminal-button" onclick="resetTerminal()">Back</button>
     </div>
   `);
-
   //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
-  
 }
 
 function aboutPost() {
@@ -355,19 +352,8 @@ function aboutPost() {
       </p>
     </div>
     
-  <div class="text-white text-sm space-y-2 mt-6">
-  <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
-    <span class="text-pink-glow">[13/10]</span> - 
-    <span class="underline text-blue-glow">Something new</span>
-  </p>
-  <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
-    <span class="text-pink-glow">[15/08]</span> - 
-    <span class="underline text-blue-glow">About</span>
-  </p>
-</div>
-
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="resetTerminal()">Back</button>
+      <button class="terminal-button" onclick="siteFAQ()">Back</button>
     </div>
   `);
 }
@@ -397,20 +383,9 @@ function somethingNew() {
         Maybe I’m too shy or too awkward to say it often, but I love every one of you. Thank you. c:
       </p>
     </div>
-    
-  <div class="text-white text-sm space-y-2 mt-6">
-  <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
-    <span class="text-pink-glow">[13/10]</span> - 
-    <span class="underline text-blue-glow">Something new</span>
-  </p>
-  <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
-    <span class="text-pink-glow">[15/08]</span> - 
-    <span class="underline text-blue-glow">About</span>
-  </p>
-</div>
 
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="resetTerminal()">Back</button>
+      <button class="terminal-button" onclick="resetTerminal()">siteFAQ</button>
     </div>
   `);
 }
@@ -806,6 +781,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
