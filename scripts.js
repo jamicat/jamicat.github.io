@@ -301,7 +301,7 @@ function siteFAQ() {
 <div class="text-white text-sm space-y-2 mt-6">
   <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
     <span class="text-pink-glow">[13/10]</span> - 
-    <span class="underline text-blue-glow">Something new</span>
+    <span class="underline text-blue-glow">Hello Heaven, Hello</span>
   </p>
   <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
     <span class="text-pink-glow">[15/08]</span> - 
@@ -787,6 +787,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
