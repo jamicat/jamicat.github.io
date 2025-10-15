@@ -231,21 +231,58 @@ $('#terminalContent').html(html);
 
 //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Playlist</span>');
 }
-
+// Get elements
+const changeThemeBtn = document.getElementById('changeTheme');
 const tooltip = document.getElementById('tooltip');
-themeBtn.addEventListener('click', changeTheme);
 
-function changeTheme()
-{
-  document.documentElement.classList.toggle('dark');
+const lightBtn = document.getElementById('theme-light-btn');
+const darkBtn = document.getElementById('theme-dark-btn');
+const midnightBtn = document.getElementById('theme-midnight-btn');
 
-  tooltip.classList.remove('opacity-0', 'pointer-events-none');
-  tooltip.classList.add('opacity-100');
+// Show tooltip when clicking the theme icon
+changeThemeBtn.addEventListener('click', () => {
+  const isVisible = tooltip.classList.contains('opacity-100');
 
-  setTimeout(() => {
+  if (isVisible) {
     tooltip.classList.add('opacity-0', 'pointer-events-none');
     tooltip.classList.remove('opacity-100');
-  }, 1500);
+  } else {
+    tooltip.classList.remove('opacity-0', 'pointer-events-none');
+    tooltip.classList.add('opacity-100');
+
+    // Auto-hide after 3 seconds if no selection
+    setTimeout(() => {
+      tooltip.classList.add('opacity-0', 'pointer-events-none');
+      tooltip.classList.remove('opacity-100');
+    }, 3000);
+  }
+});
+
+lightBtn.addEventListener('click', setLightTheme);
+darkBtn.addEventListener('click', setDarkTheme);
+midnightBtn.addEventListener('click', setMidnightTheme);
+
+function setLightTheme() {
+  console.log('Light theme selected');
+  hideTooltip();
+
+}
+
+function setDarkTheme() {
+  console.log('Dark theme selected');
+  hideTooltip();
+  
+}
+
+function setMidnightTheme() {
+  console.log('Midnight theme selected');
+  hideTooltip();
+
+
+}
+function hideTooltip() {
+  tooltip.classList.add('opacity-0', 'pointer-events-none');
+  tooltip.classList.remove('opacity-100');
 }
 
 function showArt() {
@@ -798,5 +835,6 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
