@@ -1,8 +1,7 @@
 var typed = new Typed('#typed', {
 strings: [
-'<span class="text-white text-base mr-2 text-blue-glow">Meoeoeoeoeow, welcome!</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">Click on the galaxy icon!</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">Check out the guestbook!</span>',
+'<span class="text-white text-base mr-2 text-blue-glow">Leave a message in the guestbook!</span>',
+'<span class="text-white text-base mr-2 text-blue-glow">Click on the galaxy icon.</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">ฅ(^ω^)ฅ</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">(๑•ω•́ฅ✧</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">(ฅ`･ω･´)っ=</span>',
@@ -232,55 +231,21 @@ $('#terminalContent').html(html);
 //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Playlist</span>');
 }
 
-const changeThemeBtn = document.getElementById('changeTheme');
 const tooltip = document.getElementById('tooltip');
-const lightBtn = document.getElementById('theme-light-btn');
-const darkBtn = document.getElementById('theme-dark-btn');
-const midnightBtn = document.getElementById('theme-midnight-btn');
+themeBtn.addEventListener('click', changeTheme);
 
-let tooltipVisible = false;
+function changeTheme()
+{
+  document.documentElement.classList.toggle('dark');
 
-changeThemeBtn.addEventListener('click', () => {
-  tooltipVisible ? hideTooltip() : showTooltip();
-});
-
-document.addEventListener('click', (event) => {
-  if (
-    tooltipVisible &&
-    !tooltip.contains(event.target) &&
-    !changeThemeBtn.contains(event.target)
-  ) {
-    hideTooltip();
-  }
-});
-
-lightBtn.addEventListener('click', () => {
-  console.log('Light theme selected');
-  hideTooltip();
-});
-
-darkBtn.addEventListener('click', () => {
-  console.log('Dark theme selected');
-  hideTooltip();
-});
-
-midnightBtn.addEventListener('click', () => {
-  console.log('Midnight theme selected');
-  hideTooltip();
-});
-
-function showTooltip() {
-  tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
+  tooltip.classList.remove('opacity-0', 'pointer-events-none');
   tooltip.classList.add('opacity-100');
-  tooltipVisible = true;
-}
 
-function hideTooltip() {
-  tooltip.classList.add('opacity-0', 'pointer-events-none', 'invisible');
-  tooltip.classList.remove('opacity-100');
-  tooltipVisible = false;
+  setTimeout(() => {
+    tooltip.classList.add('opacity-0', 'pointer-events-none');
+    tooltip.classList.remove('opacity-100');
+  }, 1500);
 }
-
 
 function showArt() {
 $('#terminalContent').html(`
@@ -331,23 +296,20 @@ function changeTyped3(newText) {
 
 function siteFAQ() {
   $('#terminalContent').html(`
-  
-<div class="text-white text-sm space-y-2 mt-6">
-  <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
-    <span class="text-pink-glow">[13/10]</span> - 
-    <span class="underline text-blue-glow">Hello Heaven, Hello</span>
-  </p>
-  <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
-    <span class="text-pink-glow">[15/08]</span> - 
-    <span class="underline text-blue-glow">About</span>
-  </p>
-</div>
+   
+    
+    <div class="text-white text-sm space-y-2 mt-6">
+      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="somethingNew()">13/10 - Something new</p>
+      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="aboutPost()">15/08 - About</p>
+    </div>
 
-  <div id="buttonRow" class="flex justify-center mt-4">
+    <div id="buttonRow" class="flex justify-center mt-6">
       <button class="terminal-button" onclick="resetTerminal()">Back</button>
     </div>
   `);
+
   //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
+  
 }
 
 function aboutPost() {
@@ -387,55 +349,50 @@ function aboutPost() {
       </p>
     </div>
     
+    <div class="text-white text-sm space-y-1 mt-6">
+      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="aboutPost()">About</p>
+      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="somethingNew()">Something new</p>
+    </div>
+
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="siteFAQ()">Back</button>
+      <button class="terminal-button" onclick="resetTerminal()">Back</button>
     </div>
   `);
 }
 
 function somethingNew() {
   $('#terminalContent').html(`
-  
     <div class="text-pink-100 text-sm mb-4 mt-4 space-y-4">
-    <div class="flex justify-center mt-4">
       <p>
         <a href="https://www.youtube.com/watch?v=xrZX47RbeJs" 
            target="_blank" 
            rel="noopener noreferrer" 
-           class="text-blue-glow hover:text-white hover:underline transition">
-          🖤YUNGBLUD - Hello Heaven, Hello
+           class="text-blue-glow underline hover:text-white transition">
+          YUNGBLUD - Hello Heaven, Hello
         </a>
       </p>
-      </div>
 
       <p>
-  <em>Last year.</em> It wasn’t my worst year, but it wasn’t my comfiest either. I’m no longer bitter about it.
-</p>
-<p>
-  When you stay in a loop long enough, it’s easy to forget that life can actually feel different. I’m not going to overshare in a public infodump, but I felt the urge to type out some thanks for my closest friends.
-</p>
-<p>
-  After a turning point, it took a little time to find my footing again. I projected frustration onto some friends near and dear, but through that, I started to rebuild my understanding of myself. The upside is that now, I feel healthier and happier than I can remember.
-</p>
-<p>
-  This year, I reconnected with my love for music. I got to attend <span class="text-blue-glow text-white relative inline-block group cursor-pointer underline">
-          Bludfest year 2
-          <img src="bgy2.jpg" alt="Thank you!"
-               class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-[400px] h-[300px] max-w-none z-50 rounded shadow-lg opacity-0 invisible transition-opacity duration-150 group-hover:opacity-100 group-hover:visible pointer-events-none"/>
-        </span> at Milton Keynes and feel part of something much bigger than myself. Being part of a modern rock movement aimed at my age group wasn’t something I planned for, and the energy and collective morale completely swept me off my feet. In the months leading up to the festival, I felt a magnetic pull toward YUNGBLUD in particular, followed my gut, and met so many people from similar walks of life.
-</p>
-<p>
-  Maybe I’m too shy or awkward to say it often, but I love my friends like family.
-  
-  <svg xmlns="http://www.w3.org/2000/svg" width="120" height="20" viewBox="20 20" class="inline-block">
-  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20" fill="pink">Thank you c:</text>
-  </svg>
-</p>
-
+        Last year. It wasn’t my worst year, but it came uncomfortably close. I’m no longer bitter about it.
+      </p>
+      <p>
+        When you're stuck in a self-perpetuating rut long enough, you start forgetting life could feel any different. I'm not going to go into any revealing depth in a public infodump, but I feel the urge to put my thanks into words for those I consider closest.
+      </p>
+      <p>
+        After a major life change, it took a few rocky months. Some of that I unfairly projected onto the friends who stood by me, but through that I began to rebuild myself. The flipside of this is that I can now say I feel healthier and happier than I can last remember.
+      </p>
+      <p>
+        Maybe I’m too shy or too awkward to say it often, but I love every one of you. Thank you. c:
+      </p>
+    </div>
+    
+    <div class="text-white text-sm space-y-1 mt-6">
+      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="aboutPost()">About</p>
+      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="somethingNew()">Something new</p>
     </div>
 
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="siteFAQ()">Back</button>
+      <button class="terminal-button" onclick="resetTerminal()">Back</button>
     </div>
   `);
 }
@@ -810,9 +767,8 @@ $('#terminalContent').html(`
 new Typed('#typed', {
 
 strings: [
-'<span class="text-white text-base mr-2 text-blue-glow">Meoeoeoeoeow, welcome!</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">Click on the galaxy icon!</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">Check out the guestbook!</span>',
+'<span class="text-white text-base mr-2 text-blue-glow">Leave a message in the guestbook!</span>',
+'<span class="text-white text-base mr-2 text-blue-glow">Click on the galaxy icon.</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">ฅ(^ω^)ฅ</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">(๑•ω•́ฅ✧</span>',
 '<span class="text-white text-base mr-2 text-blue-glow">(ฅ`･ω･´)っ=</span>',
@@ -832,9 +788,3 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
-
-
-
-
-
-
