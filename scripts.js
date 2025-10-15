@@ -240,8 +240,7 @@ const midnightBtn = document.getElementById('theme-midnight-btn');
 
 let outsideClickHandler = null;
 
-changeThemeBtn.addEventListener('click', (e) => {
-  e.stopPropagation();
+changeThemeBtn.addEventListener('click', () => {
 
   const isVisible = tooltip.classList.contains('opacity-100');
   if (isVisible) {
@@ -836,6 +835,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
