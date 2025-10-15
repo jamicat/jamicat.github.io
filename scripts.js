@@ -243,20 +243,13 @@ changeThemeBtn.addEventListener('click', () => {
   const isVisible = tooltip.classList.contains('opacity-100');
 
   if (isVisible) {
-    tooltip.classList.add('opacity-0', 'pointer-events-none');
-    tooltip.classList.remove('opacity-100');
+    hideTooltip();
   } else {
-    tooltip.classList.remove('opacity-0', 'pointer-events-none');
+    tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.add('opacity-100');
-
-
-    setTimeout(() => {
-      tooltip.classList.add('opacity-0', 'pointer-events-none');
-      tooltip.classList.remove('opacity-100');
-    }, 3000);
+    setTimeout(hideTooltip, 3000);
   }
 });
-
 lightBtn.addEventListener('click', setLightTheme);
 darkBtn.addEventListener('click', setDarkTheme);
 midnightBtn.addEventListener('click', setMidnightTheme);
@@ -264,22 +257,19 @@ midnightBtn.addEventListener('click', setMidnightTheme);
 function setLightTheme() {
   console.log('Light theme selected');
   hideTooltip();
-
 }
-
 function setDarkTheme() {
   console.log('Dark theme selected');
   hideTooltip();
-  
-}
 
+}
 function setMidnightTheme() {
   console.log('Midnight theme selected');
   hideTooltip();
 
 }
 function hideTooltip() {
-  tooltip.classList.add('opacity-0', 'pointer-events-none');
+  tooltip.classList.add('opacity-0', 'pointer-events-none', 'invisible');
   tooltip.classList.remove('opacity-100');
 }
 
@@ -833,6 +823,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
