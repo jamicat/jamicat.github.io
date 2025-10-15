@@ -238,15 +238,19 @@ const lightBtn = document.getElementById('theme-light-btn');
 const darkBtn = document.getElementById('theme-dark-btn');
 const midnightBtn = document.getElementById('theme-midnight-btn');
 
-let outsideClickHandler = null;
+let tooltipVisible = false;
 
 changeThemeBtn.addEventListener('click', () => {
+  tooltipVisible ? hideTooltip() : showTooltip();
+});
 
-  const isVisible = tooltip.classList.contains('opacity-100');
-  if (isVisible) {
+document.addEventListener('click', (event) => {
+  if (
+    tooltipVisible &&
+    !tooltip.contains(event.target) &&
+    !changeThemeBtn.contains(event.target)
+  ) {
     hideTooltip();
-  } else {
-    showTooltip();
   }
 });
 
@@ -254,10 +258,12 @@ lightBtn.addEventListener('click', () => {
   console.log('Light theme selected');
   hideTooltip();
 });
+
 darkBtn.addEventListener('click', () => {
   console.log('Dark theme selected');
   hideTooltip();
 });
+
 midnightBtn.addEventListener('click', () => {
   console.log('Midnight theme selected');
   hideTooltip();
@@ -266,24 +272,15 @@ midnightBtn.addEventListener('click', () => {
 function showTooltip() {
   tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
   tooltip.classList.add('opacity-100');
-
-  outsideClickHandler = (event) => {
-    if (!tooltip.contains(event.target) && !changeThemeBtn.contains(event.target)) {
-      hideTooltip();
-    }
-  };
-  document.addEventListener('click', outsideClickHandler);
+  tooltipVisible = true;
 }
 
 function hideTooltip() {
   tooltip.classList.add('opacity-0', 'pointer-events-none', 'invisible');
   tooltip.classList.remove('opacity-100');
-
-  if (outsideClickHandler) {
-    document.removeEventListener('click', outsideClickHandler);
-    outsideClickHandler = null;
-  }
+  tooltipVisible = false;
 }
+
 
 function showArt() {
 $('#terminalContent').html(`
@@ -835,6 +832,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
