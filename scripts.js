@@ -231,13 +231,13 @@ $('#terminalContent').html(html);
 
 //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Playlist</span>');
 }
+
 const changeThemeBtn = document.getElementById('changeTheme');
 const tooltip = document.getElementById('tooltip');
 
 const lightBtn = document.getElementById('theme-light-btn');
 const darkBtn = document.getElementById('theme-dark-btn');
 const midnightBtn = document.getElementById('theme-midnight-btn');
-
 
 changeThemeBtn.addEventListener('click', () => {
   const isVisible = tooltip.classList.contains('opacity-100');
@@ -276,7 +276,6 @@ function setDarkTheme() {
 function setMidnightTheme() {
   console.log('Midnight theme selected');
   hideTooltip();
-
 
 }
 function hideTooltip() {
@@ -834,6 +833,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
