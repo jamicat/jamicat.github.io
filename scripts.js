@@ -247,9 +247,15 @@ changeThemeBtn.addEventListener('click', () => {
   } else {
     tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.add('opacity-100');
-    setTimeout(hideTooltip, 3000);
   }
 });
+
+document.addEventListener('click', (e) => {
+  if (!tooltip.contains(e.target) && !changeThemeBtn.contains(e.target)) {
+    hideTooltip();
+  }
+});
+
 lightBtn.addEventListener('click', setLightTheme);
 darkBtn.addEventListener('click', setDarkTheme);
 midnightBtn.addEventListener('click', setMidnightTheme);
@@ -823,6 +829,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
