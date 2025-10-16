@@ -231,74 +231,20 @@ $('#terminalContent').html(html);
 //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Playlist</span>');
 }
 
-const changeThemeBtn = document.getElementById('changeTheme');
 const tooltip = document.getElementById('tooltip');
-const lightBtn = document.getElementById('theme-light-btn');
-const darkBtn = document.getElementById('theme-dark-btn');
-const midnightBtn = document.getElementById('theme-midnight-btn');
+themeBtn.addEventListener('click', changeTheme);
 
-let tooltipVisible = false;
+function changeTheme()
+{
+  document.documentElement.classList.toggle('dark');
 
-const ignoreOutsideClickSelectors = [
-  '#changeTheme',
-  '#videoToggle',
-  '#playIcon',
-  '#pauseIcon',
-  '#nextTrack',
-  '#rewind10',
-];
-
-changeThemeBtn.addEventListener('click', () => {
-  if (tooltipVisible) {
-    hideTooltip();
-  } else {
-    showTooltip();
-
-    setTimeout(() => {
-      document.addEventListener('click', handleOutsideClick);
-    }, 50);
-  }
-});
-
-lightBtn.addEventListener('click', () => {
-  console.log('Light theme selected');
-  hideTooltip();
-});
-
-darkBtn.addEventListener('click', () => {
-  console.log('Dark theme selected');
-  hideTooltip();
-});
-
-midnightBtn.addEventListener('click', () => {
-  console.log('Midnight theme selected');
-  hideTooltip();
-});
-
-function showTooltip() {
-  tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
+  tooltip.classList.remove('opacity-0', 'pointer-events-none');
   tooltip.classList.add('opacity-100');
-  tooltipVisible = true;
-}
 
-function hideTooltip() {
-  tooltip.classList.add('opacity-0', 'pointer-events-none', 'invisible');
-  tooltip.classList.remove('opacity-100');
-  tooltipVisible = false;
-  document.removeEventListener('click', handleOutsideClick);
-}
-
-function handleOutsideClick(event) {
-
-  if (
-    tooltip.contains(event.target) ||
-    changeThemeBtn.contains(event.target) ||
-    ignoreOutsideClickSelectors.some(sel => event.target.closest(sel))
-  ) {
-    return;
-  }
-
-  hideTooltip();
+  setTimeout(() => {
+    tooltip.classList.add('opacity-0', 'pointer-events-none');
+    tooltip.classList.remove('opacity-100');
+  }, 1500);
 }
 
 function showArt() {
@@ -842,4 +788,18 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
