@@ -1,22 +1,84 @@
-var typed = new Typed('#typed', {
-strings: [
-'<span class="text-white text-base mr-2 text-blue-glow">Meoeoeoeoeoeow, welcome!</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">Click on the galaxy icon!</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">Check out the guestbook!</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ(^ω^)ฅ</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">(๑•ω•́ฅ✧</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">(ฅ`･ω･´)っ=</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ*•ω•*ฅ</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ^•ﻌ•^ฅ</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">⊱ฅ•ω•ฅ⊰</span>'
-],
-typeSpeed: 60,
-backSpeed: 30,
-showCursor: false,
-cursorChar: '_',
-smartBackspace: false,
-loop: true,
-});
+
+const themes = {
+  Default: {
+    glowPrimary: 'text-blue-glow',
+    glowSecondary: 'text-pink-glow',
+    buttonColor: 'bg-red-300 hover:bg-red-400',
+    iconColor: 'text-red-300 hover:text-red-400',
+    galaxyActive: 'text-purple-200',
+    galaxyInactive: 'text-purple-50'
+  },
+  Yungblud: {
+    glowPrimary: 'text-pink-glow',
+    glowSecondary: 'text-red-glow',
+    buttonColor: 'bg-pink-400 hover:bg-pink-500',
+    iconColor: 'text-pink-400 hover:text-pink-500',
+    galaxyActive: 'text-red-200',
+    galaxyInactive: 'text-red-50'
+  },
+  Aero: {
+    glowPrimary: 'text-green-glow',
+    glowSecondary: 'text-cyan-glow',
+    buttonColor: 'bg-cyan-300 hover:bg-cyan-400',
+    iconColor: 'text-cyan-300 hover:text-cyan-400',
+    galaxyActive: 'text-green-200',
+    galaxyInactive: 'text-green-50'
+  }
+};
+
+function applyTheme(themeName) {
+  const theme = themes[themeName];
+  if (!theme) return console.warn(`Theme not found: ${themeName}`);
+
+  document.documentElement.setAttribute('data-theme', themeName);
+
+  document.querySelectorAll('.terminal-button').forEach(btn => {
+    btn.className = `terminal-button ${theme.buttonColor} text-white px-3 py-1.5 mt-3 rounded-md transition duration-300 ease-in-out hover:scale-105 active:scale-95`;
+  });
+
+  const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme, #rewind10');
+  icons.forEach(icon => {
+    icon.className = `${theme.iconColor} transition-colors duration-200 text-lg leading-none`;
+  });
+
+  document.querySelectorAll('.text-blue-glow, .text-pink-glow, .text-red-glow, .text-green-glow, .text-cyan-glow').forEach(el => {
+    el.classList.remove('text-blue-glow', 'text-pink-glow', 'text-red-glow', 'text-green-glow', 'text-cyan-glow');
+    el.classList.add(theme.glowPrimary);
+  });
+
+  localStorage.setItem('theme', themeName);
+}
+
+let typedInstance;
+
+function initTyped(themeName = 'Default') {
+  if (typedInstance) {
+    typedInstance.destroy();
+  }
+
+  const glow = themes[themeName].glowPrimary || 'text-blue-glow';
+
+  const strings = [
+    `<span class="text-white text-base mr-2 ${glow}">Meoeoeoeoeoeow, welcome!</span>`,
+    `<span class="text-white text-base mr-2 ${glow}">Click on the galaxy icon!</span>`,
+    `<span class="text-white text-base mr-2 ${glow}">Check out the guestbook!</span>`,
+    `<span class="text-white text-base mr-2 ${glow}">ฅ(^ω^)ฅ</span>`,
+    `<span class="text-white text-base mr-2 ${glow}">(๑•ω•́ฅ✧</span>`,
+    `<span class="text-white text-base mr-2 ${glow}">(ฅ･ω･´)っ=</span>`,
+    `<span class="text-white text-base mr-2 ${glow}">ฅ*•ω•*ฅ</span>`,
+    `<span class="text-white text-base mr-2 ${glow}">ฅ^•ﻌ•^ฅ</span>`,
+    `<span class="text-white text-base mr-2 ${glow}">⊱ฅ•ω•ฅ⊰</span>`
+  ];
+
+  typedInstance = new Typed('#typed', {
+    strings,
+    typeSpeed: 60,
+    backSpeed: 30,
+    showCursor: false,
+    smartBackspace: false,
+    loop: true
+  });
+}
 
 /*var typed3 = new Typed('#typed3', {
   strings: ['<span class="text-white text-xl mr-2 text-blue-glow">Jamie</span>'],
@@ -179,19 +241,21 @@ guiElement.style.display = 'none';
 
 const canvas = document.getElementById('canvas');  
 
+const currentTheme = themes[localStorage.getItem('theme') || 'Default'];
+  
 if (galaxyVisible) {
-galaxyVisible = false;
-rewind10.classList.remove('text-purple-200');
-rewind10.classList.add('text-purple-50');
-canvas.style.opacity = '0';
-canvas.style.pointerEvents = 'none'; 
-} else {
-galaxyVisible = true;
-rewind10.classList.add('text-purple-200');
-rewind10.classList.remove('text-purple-50');
-canvas.style.opacity = '1';
-canvas.style.pointerEvents = 'auto';  
-}
+    galaxyVisible = false;
+    rewind10.classList.remove(currentTheme.galaxyActive);
+    rewind10.classList.add(currentTheme.galaxyInactive);
+    canvas.style.opacity = '0';
+    canvas.style.pointerEvents = 'none';
+  } else {
+    galaxyVisible = true;
+    rewind10.classList.add(currentTheme.galaxyActive);
+    rewind10.classList.remove(currentTheme.galaxyInactive);
+    canvas.style.opacity = '1';
+    canvas.style.pointerEvents = 'auto';
+  }
 });
 
 rewind10.click();
@@ -233,56 +297,53 @@ $('#terminalContent').html(html);
 }
 
 function initThemeTooltip() {
-  const changeThemeBtn = document.getElementById('changeTheme');
   const tooltip = document.getElementById('tooltip');
   const defaultBtn = document.getElementById('themeDefault');
   const yungbludBtn = document.getElementById('themeYungblud');
   const aeroBtn = document.getElementById('themeAero');
+  const changeThemeBtn = document.getElementById('changeTheme');
 
-  let tooltipVisible = false;
-
-  changeThemeBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); 
-    tooltipVisible ? hideTooltip() : showTooltip();
-  });
-
-  document.addEventListener('click', (e) => {
-    if (
-      tooltipVisible &&
-      !tooltip.contains(e.target) &&
-      e.target !== changeThemeBtn
-    ) {
-      hideTooltip();
-    }
-  });
-
-  defaultBtn.addEventListener('click', () => {
-    console.log('Default theme selected');
-    hideTooltip();
-  });
-
-  yungbludBtn.addEventListener('click', () => {
-    console.log('Yungblud theme selected');
-    hideTooltip();
-  });
-
-  aeroBtn.addEventListener('click', () => {
-    console.log('Frutiger Aero theme selected');
-    hideTooltip();
-  });
+  const isVisible = tooltip.classList.contains('opacity-100');
+  isVisible ? hideTooltip() : showTooltip();
 
   function showTooltip() {
     tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.add('opacity-100');
-    tooltipVisible = true;
+
+    // Click outside to hide
+    document.addEventListener('click', handleClickOutside);
   }
 
   function hideTooltip() {
     tooltip.classList.add('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.remove('opacity-100');
-    tooltipVisible = false;
+
+    document.removeEventListener('click', handleClickOutside);
   }
+
+  function handleClickOutside(e) {
+    if (!tooltip.contains(e.target) && e.target !== changeThemeBtn) {
+      hideTooltip();
+    }
+  }
+
+  defaultBtn.onclick = () => {
+    applyTheme('Default');
+    initTyped('Default');
+    hideTooltip();
+  };
+  yungbludBtn.onclick = () => {
+    applyTheme('Yungblud');
+    initTyped('Yungblud');
+    hideTooltip();
+  };
+  aeroBtn.onclick = () => {
+    applyTheme('Aero');
+    initTyped('Aero');
+    hideTooltip();
+  };
 }
+
 
 document.addEventListener('DOMContentLoaded', initThemeTooltip);
 
@@ -335,23 +396,23 @@ function changeTyped3(newText) {
 
 function siteFAQ() {
   $('#terminalContent').html(`
-  
-<div class="text-white text-sm space-y-2 mt-6">
-  <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
-    <span class="text-pink-glow">[13/10]</span> - 
-    <span class="underline text-blue-glow">Hello Heaven, Hello</span>
-  </p>
-  <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
-    <span class="text-pink-glow">[15/08]</span> - 
-    <span class="underline text-blue-glow">About</span>
-  </p>
-</div>
-
-  <div id="buttonRow" class="flex justify-center mt-4">
+    <div class="text-white text-sm space-y-2 mt-6">
+      <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
+        <span class="text-pink-glow">[13/10]</span> - 
+        <span class="underline text-blue-glow">Hello Heaven, Hello</span>
+      </p>
+      <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
+        <span class="text-pink-glow">[15/08]</span> - 
+        <span class="underline text-blue-glow">About</span>
+      </p>
+    </div>
+    <div id="buttonRow" class="flex justify-center mt-4">
       <button class="terminal-button" onclick="resetTerminal()">Back</button>
     </div>
   `);
   //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
+  const currentTheme = localStorage.getItem('theme') || 'Default';
+  applyTheme(currentTheme);
 }
 
 function aboutPost() {
@@ -798,44 +859,34 @@ document.getElementById("formResponse").textContent = "Thank you for your messag
 }
 
 function resetTerminal() {
-$('#terminalContent').html(`
-             <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
-             <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-             <button class="terminal-button ml-4" onclick="siteFAQ()">About</button>
-             <button class="terminal-button ml-2" onclick="showArt()">Art</button>
-             <button class="terminal-button ml-5" onclick="window.open('https://www.jmie.co.uk/book/', '_blank');">Guestbook</button>
-             <!--button class="terminal-button ml-3" onclick="showMessageForm()">Message</button-->
-             <button class="terminal-button" onclick="showList()">Playlist</button>
-             </div>
-             `);
+  $('#terminalContent').html(`
+    <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
+    <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
+      <button class="terminal-button ml-4" onclick="siteFAQ()">About</button>
+      <button class="terminal-button ml-2" onclick="showArt()">Art</button>
+      <button class="terminal-button ml-5" onclick="window.open('https://www.jmie.co.uk/book/', '_blank');">Guestbook</button>
+      <button class="terminal-button" onclick="showList()">Playlist</button>
+    </div>
+  `);
 
-//changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Jamie</span>');
-
-new Typed('#typed', {
-
-strings: [
-'<span class="text-white text-base mr-2 text-blue-glow">Meoeoeoeoeoeow, welcome!</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">Click on the galaxy icon!</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">Check out the guestbook!</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ(^ω^)ฅ</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">(๑•ω•́ฅ✧</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">(ฅ`･ω･´)っ=</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ*•ω•*ฅ</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">ฅ^•ﻌ•^ฅ</span>',
-'<span class="text-white text-base mr-2 text-blue-glow">⊱ฅ•ω•ฅ⊰</span>'
-],
-typeSpeed: 60,
-backSpeed: 30,
-showCursor: false,
-cursorChar: '_',
-smartBackspace: false,
-loop: true,
-});
+  const currentTheme = localStorage.getItem('theme') || 'Default';
+  applyTheme(currentTheme);
+  initTyped(currentTheme);
 }
+
 
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme') || 'Default';
+  applyTheme(savedTheme);
+  initTyped(savedTheme);
+});
+
+
+
 
 
 
