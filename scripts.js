@@ -232,28 +232,24 @@ $('#terminalContent').html(html);
 }
 
 function initThemeTooltip() {
+  const changeThemeBtn = document.getElementById('changeTheme');
   const tooltip = document.getElementById('tooltip');
   const defaultBtn = document.getElementById('themeDefault');
   const yungbludBtn = document.getElementById('themeYungblud');
   const aeroBtn = document.getElementById('themeAero');
 
-  const isVisible = tooltip.classList.contains('opacity-100');
+  let tooltipVisible = false;
 
-  if (isVisible) {
-    hideTooltip();
-  } else {
-    showTooltip();
-  }
+  changeThemeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    tooltipVisible ? hideTooltip() : showTooltip();
+  });
 
-  function showTooltip() {
-    tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
-    tooltip.classList.add('opacity-100');
-  }
-
-  function hideTooltip() {
-    tooltip.classList.add('opacity-0', 'pointer-events-none', 'invisible');
-    tooltip.classList.remove('opacity-100');
-  }
+  document.addEventListener('click', (e) => {
+    if (tooltipVisible && !tooltip.contains(e.target) && e.target !== changeThemeBtn) {
+      hideTooltip();
+    }
+  });
 
   defaultBtn.onclick = () => {
     console.log('Default theme selected');
@@ -269,8 +265,19 @@ function initThemeTooltip() {
     console.log('Frutiger Aero theme selected');
     hideTooltip();
   };
-}
 
+  function showTooltip() {
+    tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
+    tooltip.classList.add('opacity-100');
+    tooltipVisible = true;
+  }
+
+  function hideTooltip() {
+    tooltip.classList.add('opacity-0', 'pointer-events-none', 'invisible');
+    tooltip.classList.remove('opacity-100');
+    tooltipVisible = false;
+  }
+}
 
 function showArt() {
 $('#terminalContent').html(`
@@ -813,6 +820,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
