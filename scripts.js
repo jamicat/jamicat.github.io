@@ -382,54 +382,58 @@ function aboutPost() {
       </p>
     </div>
     
-    <div class="text-white text-sm space-y-1 mt-6">
-      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="aboutPost()">About</p>
-      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="somethingNew()">Something new</p>
-    </div>
-
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="resetTerminal()">Back</button>
+      <button class="terminal-button" onclick="siteFAQ()">Back</button>
     </div>
   `);
 }
 
 function somethingNew() {
   $('#terminalContent').html(`
+  
     <div class="text-pink-100 text-sm mb-4 mt-4 space-y-4">
+    <div class="flex justify-center mt-4">
       <p>
         <a href="https://www.youtube.com/watch?v=xrZX47RbeJs" 
            target="_blank" 
            rel="noopener noreferrer" 
-           class="text-blue-glow underline hover:text-white transition">
-          YUNGBLUD - Hello Heaven, Hello
+           class="text-blue-glow hover:text-white hover:underline transition">
+          🖤YUNGBLUD - Hello Heaven, Hello
         </a>
       </p>
+      </div>
 
       <p>
-        Last year. It wasn’t my worst year, but it came uncomfortably close. I’m no longer bitter about it.
-      </p>
-      <p>
-        When you're stuck in a self-perpetuating rut long enough, you start forgetting life could feel any different. I'm not going to go into any revealing depth in a public infodump, but I feel the urge to put my thanks into words for those I consider closest.
-      </p>
-      <p>
-        After a major life change, it took a few rocky months. Some of that I unfairly projected onto the friends who stood by me, but through that I began to rebuild myself. The flipside of this is that I can now say I feel healthier and happier than I can last remember.
-      </p>
-      <p>
-        Maybe I’m too shy or too awkward to say it often, but I love every one of you. Thank you. c:
-      </p>
-    </div>
-    
-    <div class="text-white text-sm space-y-1 mt-6">
-      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="aboutPost()">About</p>
-      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="somethingNew()">Something new</p>
+  <em>Last year.</em> It wasn’t my worst year, but it wasn’t my comfiest either. I’m no longer bitter about it.
+</p>
+<p>
+  When you stay in a loop long enough, it’s easy to forget that life can actually feel different. I’m not going to overshare in a public infodump, but I felt the urge to type out some thanks for my closest friends.
+</p>
+<p>
+  After a turning point, it took a little time to find my footing again. I projected frustration onto some friends near and dear, but through that, I started to rebuild my understanding of myself. The upside is that now, I feel healthier and happier than I can remember.
+</p>
+<p>
+  This year, I reconnected with my love for music. I got to attend <span class="text-blue-glow text-white relative inline-block group cursor-pointer underline">
+          Bludfest year 2
+          <img src="bgy2.jpg" alt="Thank you!"
+               class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-[300px] h-[311px] max-w-none z-50 rounded shadow-lg opacity-0 invisible transition-opacity duration-150 group-hover:opacity-100 group-hover:visible pointer-events-none"/>
+        </span> at Milton Keynes and feel part of something much bigger than myself. Being part of a modern rock movement aimed at my age group wasn’t something I planned for, and the energy and collective morale completely swept me off my feet. In the months leading up to the festival, I felt a magnetic pull toward YUNGBLUD in particular, followed my gut, and met so many people from similar walks of life.
+</p>
+<p>
+  Maybe I’m too shy or awkward to say it often, but I love my friends like family.
+  
+  <svg xmlns="http://www.w3.org/2000/svg" width="120" height="20" viewBox="20 20" class="inline-block">
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20" fill="pink">Thank you c:</text>
+  </svg>
+</p>
+
     </div>
 
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="resetTerminal()">Back</button>
+      <button class="terminal-button" onclick="siteFAQ()">Back</button>
     </div>
   `);
 }
-
 let lastSubmissionTime = 0;
 let lastGbSubmissionTime = 0;
 
@@ -822,6 +826,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
