@@ -242,7 +242,7 @@ function initThemeTooltip() {
   let tooltipVisible = false;
 
   changeThemeBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); // prevents immediate outside-click close
+    e.stopPropagation(); 
     tooltipVisible ? hideTooltip() : showTooltip();
   });
 
@@ -283,6 +283,7 @@ function initThemeTooltip() {
     tooltipVisible = false;
   }
 }
+
 document.addEventListener('DOMContentLoaded', initThemeTooltip);
 
 function showArt() {
@@ -334,20 +335,23 @@ function changeTyped3(newText) {
 
 function siteFAQ() {
   $('#terminalContent').html(`
-   
-    
-    <div class="text-white text-sm space-y-2 mt-6">
-      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="somethingNew()">13/10 - Something new</p>
-      <p class="underline cursor-pointer text-blue-glow hover:text-white transition" onclick="aboutPost()">15/08 - About</p>
-    </div>
+  
+<div class="text-white text-sm space-y-2 mt-6">
+  <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
+    <span class="text-pink-glow">[13/10]</span> - 
+    <span class="underline text-blue-glow">Hello Heaven, Hello</span>
+  </p>
+  <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
+    <span class="text-pink-glow">[15/08]</span> - 
+    <span class="underline text-blue-glow">About</span>
+  </p>
+</div>
 
-    <div id="buttonRow" class="flex justify-center mt-6">
+  <div id="buttonRow" class="flex justify-center mt-4">
       <button class="terminal-button" onclick="resetTerminal()">Back</button>
     </div>
   `);
-
   //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
-  
 }
 
 function aboutPost() {
@@ -439,6 +443,7 @@ function somethingNew() {
     </div>
   `);
 }
+
 let lastSubmissionTime = 0;
 let lastGbSubmissionTime = 0;
 
@@ -831,6 +836,7 @@ loop: true,
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
+
 
 
 
