@@ -49,12 +49,12 @@ function applyTheme(themeName) {
 
 const terminal = document.getElementById('terminal');
 if (terminal) {
-  terminal.className = `terminal absolute p-6 max-w-full w-[90vw] sm:w-[480px] ${theme.terminalColor}`;
-  terminal.style.zIndex = '10';
-  terminal.style.top = '50%';
-  terminal.style.left = '50%';
-  terminal.style.transform = 'translate(-50%, -50%)';
+  terminal.classList.forEach(cls => {
+    if (cls.startsWith('bg-')) terminal.classList.remove(cls);
+  });
+  terminal.classList.add(theme.terminalColor);
 }
+
 
  const rewind10 = document.getElementById('rewind10');
 if (rewind10) {
@@ -911,6 +911,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
