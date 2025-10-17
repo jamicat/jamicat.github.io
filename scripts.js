@@ -296,31 +296,38 @@ $('#terminalContent').html(html);
 //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Playlist</span>');
 }
 
-function initThemeTooltip() {
-  const tooltip = document.getElementById('tooltip');
+document.addEventListener('DOMContentLoaded', () => {
   const changeThemeBtn = document.getElementById('changeTheme');
+  const tooltip = document.getElementById('tooltip');
+  const defaultBtn = document.getElementById('themeDefault');
+  const yungbludBtn = document.getElementById('themeYungblud');
+  const aeroBtn = document.getElementById('themeAero');
 
-  if (!initThemeTooltip._inited) {
-    changeThemeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isVisible = tooltip.classList.contains('opacity-100');
-      if (isVisible) hideTooltip();
-      else showTooltip();
-    });
+  changeThemeBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); 
+    const isVisible = tooltip.classList.contains('opacity-100');
+    if (isVisible) hideTooltip();
+    else showTooltip();
+  });
 
-    document.addEventListener('click', (e) => {
-      if (!tooltip.contains(e.target) && e.target !== changeThemeBtn) {
-        hideTooltip();
-      }
-    });
+  document.addEventListener('click', (e) => {
+    if (!tooltip.contains(e.target) && e.target !== changeThemeBtn) {
+      hideTooltip();
+    }
+  });
 
-    initThemeTooltip._inited = true;
-  }
-
-  const isVisible = tooltip.classList.contains('opacity-100');
-  if (isVisible) hideTooltip();
-  else showTooltip();
-
+  defaultBtn.addEventListener('click', () => {
+    console.log('Default theme selected');
+    hideTooltip();
+  });
+  yungbludBtn.addEventListener('click', () => {
+    console.log('Yungblud theme selected');
+    hideTooltip();
+  });
+  aeroBtn.addEventListener('click', () => {
+    console.log('Frutiger Aero theme selected');
+    hideTooltip();
+  });
   function showTooltip() {
     tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.add('opacity-100');
@@ -329,7 +336,7 @@ function initThemeTooltip() {
     tooltip.classList.add('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.remove('opacity-100');
   }
-}
+});
 
 
 function showArt() {
@@ -869,6 +876,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
