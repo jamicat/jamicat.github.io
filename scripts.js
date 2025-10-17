@@ -317,15 +317,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   defaultBtn.addEventListener('click', () => {
-    console.log('Default theme selected');
+    applyTheme('Default');
+    initTyped('Default');
     hideTooltip();
   });
   yungbludBtn.addEventListener('click', () => {
-    console.log('Yungblud theme selected');
+    applyTheme('Yungblud');
+    initTyped('Yungblud');
     hideTooltip();
   });
   aeroBtn.addEventListener('click', () => {
-    console.log('Frutiger Aero theme selected');
+    applyTheme('Aero');
+    initTyped('Aero');
     hideTooltip();
   });
   function showTooltip() {
@@ -876,6 +879,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
