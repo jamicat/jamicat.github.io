@@ -11,10 +11,10 @@ const themes = {
   Yungblud: {
     glowPrimary: 'text-pink-glow',
     glowSecondary: 'text-red-glow',
-    buttonColor: 'bg-pink-400 hover:bg-pink-500',
-    iconColor: 'text-pink-400 hover:text-pink-500',
-    galaxyActive: 'text-red-200',
-    galaxyInactive: 'text-red-50'
+    buttonColor: 'bg-red-300 hover:bg-red-400',
+    iconColor: 'text-red-300 hover:text-red-400',
+    galaxyActive: 'text-purple-50',
+    galaxyInactive: 'text-pink-500'
   },
   Aero: {
     glowPrimary: 'text-green-glow',
@@ -36,10 +36,21 @@ function applyTheme(themeName) {
     btn.className = `terminal-button ${theme.buttonColor} text-white px-3 py-1.5 mt-3 rounded-md transition duration-300 ease-in-out hover:scale-105 active:scale-95`;
   });
 
-  const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme, #rewind10');
+  const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme');
   icons.forEach(icon => {
     icon.className = `${theme.iconColor} transition-colors duration-200 text-lg leading-none`;
   });
+
+  if (galaxyScriptLoaded)
+  {
+    rewind10.classList.remove(currentTheme.galaxyInactive);
+    rewind10.classList.add(currentTheme.galaxyActive);
+  }
+  else
+  {
+    rewind10.classList.remove(currentTheme.galaxyActive);
+    rewind10.classList.add(currentTheme.galaxyInactive);
+  }
 
   document.querySelectorAll('.text-blue-glow, .text-pink-glow, .text-red-glow, .text-green-glow, .text-cyan-glow').forEach(el => {
     el.classList.remove('text-blue-glow', 'text-pink-glow', 'text-red-glow', 'text-green-glow', 'text-cyan-glow');
@@ -879,6 +890,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
