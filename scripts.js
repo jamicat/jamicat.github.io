@@ -303,21 +303,15 @@ function initThemeTooltip() {
   const aeroBtn = document.getElementById('themeAero');
   const changeThemeBtn = document.getElementById('changeTheme');
 
-  const isVisible = tooltip.classList.contains('opacity-100');
-  isVisible ? hideTooltip() : showTooltip();
-
   function showTooltip() {
     tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.add('opacity-100');
-
-    // Click outside to hide
     document.addEventListener('click', handleClickOutside);
   }
 
   function hideTooltip() {
     tooltip.classList.add('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.remove('opacity-100');
-
     document.removeEventListener('click', handleClickOutside);
   }
 
@@ -326,6 +320,16 @@ function initThemeTooltip() {
       hideTooltip();
     }
   }
+
+  changeThemeBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevent immediate close due to outside listener
+    const isVisible = tooltip.classList.contains('opacity-100');
+    if (isVisible) {
+      hideTooltip();
+    } else {
+      showTooltip();
+    }
+  });
 
   defaultBtn.onclick = () => {
     applyTheme('Default');
@@ -343,6 +347,10 @@ function initThemeTooltip() {
     hideTooltip();
   };
 }
+
+// Run only once when the DOM is ready
+document.addEventListener('DOMContentLoaded', initThemeTooltip);
+
 
 
 document.addEventListener('DOMContentLoaded', initThemeTooltip);
@@ -884,6 +892,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
