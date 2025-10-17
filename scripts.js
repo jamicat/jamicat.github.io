@@ -306,7 +306,9 @@ function initThemeTooltip() {
   function showTooltip() {
     tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.add('opacity-100');
-    document.addEventListener('click', handleClickOutside);
+    setTimeout(() => {
+      document.addEventListener('click', handleClickOutside);
+    }, 0); 
   }
 
   function hideTooltip() {
@@ -322,7 +324,7 @@ function initThemeTooltip() {
   }
 
   changeThemeBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); // Prevent immediate close due to outside listener
+    e.stopPropagation(); 
     const isVisible = tooltip.classList.contains('opacity-100');
     if (isVisible) {
       hideTooltip();
@@ -347,6 +349,7 @@ function initThemeTooltip() {
     hideTooltip();
   };
 }
+
 
 // Run only once when the DOM is ready
 document.addEventListener('DOMContentLoaded', initThemeTooltip);
@@ -892,6 +895,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
