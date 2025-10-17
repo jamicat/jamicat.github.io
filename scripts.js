@@ -319,6 +319,9 @@ html += `
 
 $('#terminalContent').html(html);
 
+const currentTheme = localStorage.getItem('theme') || 'Default';
+applyTheme(currentTheme);
+
 //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Playlist</span>');
 }
 
@@ -403,7 +406,9 @@ zoom: true,
 download: false,
 });
 }, 100); 
-
+  
+const currentTheme = localStorage.getItem('theme') || 'Default';
+applyTheme(currentTheme);
 //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Art</span>');
 }
 
@@ -911,6 +916,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
