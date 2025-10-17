@@ -7,7 +7,8 @@ const themes = {
     buttonTextColor: 'text-white',
     iconColor: 'text-red-300 hover:text-red-400',
     galaxyActive: 'text-purple-200',
-    galaxyInactive: 'text-purple-50'
+    galaxyInactive: 'text-purple-50',
+    terminalColor: 'bg-default/10'
   },
   Yungblud: {
     glowPrimary: 'text-pink-glow',
@@ -15,17 +16,19 @@ const themes = {
     buttonColor: 'bg-red-300 hover:bg-red-400',
     buttonTextColor: 'text-black',
     iconColor: 'text-red-300 hover:text-red-400',
-    galaxyActive: 'text-purple-50',
-    galaxyInactive: 'text-pink-500'
+    galaxyActive: 'text-purple-200',
+    galaxyInactive: 'text-purple-50',
+    terminalColor: 'bg-default/10'
   },
   Aero: {
-    glowPrimary: 'text-green-glow',
-    glowSecondary: 'text-cyan-glow',
-    buttonColor: 'bg-cyan-300 hover:bg-cyan-400',
-    buttonTextColor: 'text-white',
-    iconColor: 'text-cyan-300 hover:text-cyan-400',
-    galaxyActive: 'text-green-200',
-    galaxyInactive: 'text-green-50'
+    glowPrimary: 'text-blue-glow',
+    glowSecondary: 'text-blue-glow',
+    buttonColor: 'bg-sky-100 hover:bg-sky-300',
+    buttonTextColor: 'text-black',
+    iconColor: 'bg-sky-100 hover:bg-sky-300',
+    galaxyActive: 'text-purple-200',
+    galaxyInactive: 'text-purple-50',
+    terminalColor: 'bg-pink-200/10'
   }
 };
 
@@ -43,6 +46,15 @@ function applyTheme(themeName) {
   icons.forEach(icon => {
     icon.className = `${theme.iconColor} transition-colors duration-200 text-lg leading-none`;
   });
+
+const terminal = document.getElementById('terminal');
+if (terminal) {
+  terminal.className = `terminal absolute p-6 max-w-full w-[90vw] sm:w-[480px] ${theme.terminalColor}`;
+  terminal.style.zIndex = '10';
+  terminal.style.top = '50%';
+  terminal.style.left = '50%';
+  terminal.style.transform = 'translate(-50%, -50%)';
+}
 
  if (galaxyScriptLoaded) {
   rewind10.classList.remove(theme.galaxyInactive);
@@ -890,6 +902,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
