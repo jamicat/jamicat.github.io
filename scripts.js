@@ -350,8 +350,6 @@ function initThemeTooltip() {
   };
 }
 
-document.addEventListener('DOMContentLoaded', initThemeTooltip);
-
 function showArt() {
 $('#terminalContent').html(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
@@ -889,6 +887,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
