@@ -296,58 +296,48 @@ $('#terminalContent').html(html);
 //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Playlist</span>');
 }
 
+let tooltipVisible = false;
+
 function initThemeTooltip() {
   const tooltip = document.getElementById('tooltip');
+  const changeThemeBtn = document.getElementById('changeTheme');
   const defaultBtn = document.getElementById('themeDefault');
   const yungbludBtn = document.getElementById('themeYungblud');
   const aeroBtn = document.getElementById('themeAero');
-  const changeThemeBtn = document.getElementById('changeTheme');
 
   function showTooltip() {
     tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.add('opacity-100');
-    setTimeout(() => {
-      document.addEventListener('click', handleClickOutside);
-    }, 0); 
+    tooltipVisible = true;
   }
 
   function hideTooltip() {
     tooltip.classList.add('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.remove('opacity-100');
-    document.removeEventListener('click', handleClickOutside);
+    tooltipVisible = false;
   }
 
-  function handleClickOutside(e) {
-    if (!tooltip.contains(e.target) && e.target !== changeThemeBtn) {
-      hideTooltip();
-    }
-  }
-
+  // Toggle on click
   changeThemeBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); 
-    const isVisible = tooltip.classList.contains('opacity-100');
-    if (isVisible) {
-      hideTooltip();
-    } else {
-      showTooltip();
-    }
+    e.stopPropagation(); // prevent any bubbling
+    tooltipVisible ? hideTooltip() : showTooltip();
   });
 
-  defaultBtn.onclick = () => {
-    applyTheme('Default');
-    initTyped('Default');
+  // Set up once
+  defaultBtn.addEventListener('click', () => {
+    console.log('Default theme selected');
     hideTooltip();
-  };
-  yungbludBtn.onclick = () => {
-    applyTheme('Yungblud');
-    initTyped('Yungblud');
+  });
+
+  yungbludBtn.addEventListener('click', () => {
+    console.log('Yungblud theme selected');
     hideTooltip();
-  };
-  aeroBtn.onclick = () => {
-    applyTheme('Aero');
-    initTyped('Aero');
+  });
+
+  aeroBtn.addEventListener('click', () => {
+    console.log('Frutiger Aero theme selected');
     hideTooltip();
-  };
+  });
 }
 
 document.addEventListener('DOMContentLoaded', initThemeTooltip);
@@ -889,6 +879,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
