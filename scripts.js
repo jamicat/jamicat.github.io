@@ -1,13 +1,13 @@
 
 const themes = {
   Default: {
-    glowPrimary: 'text-pink-glow',
+    glowPrimary: 'text-blue-glow',
     glowSecondary: 'text-pink-glow',
     buttonColor: 'bg-red-300 hover:bg-red-400',
-    buttonTextColor: 'text-black',
+    buttonTextColor: 'text-white',
     iconColor: 'text-red-300 hover:text-red-400',
     galaxyActive: 'text-purple-200',
-    galaxyInactive: 'text-pink-500',
+    galaxyInactive: 'text-purple-50',
     terminalColor: 'bg-default/10'
   },
   Yungblud: {
@@ -167,7 +167,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'wK-8TCDrbV8,Q1I5WghxDu8',
+playlist: 'xrZX47RbeJs',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -208,7 +208,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'wK-8TCDrbV8';
+const videoId = 'xrZX47RbeJs';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -296,20 +296,13 @@ const theme = themes[themeName];
   }
 });
 
-//rewind10.click();
+rewind10.click();
 
 function showList() {
 const playlist = [
-
 {
-title: "Machine Gun Kelly - I Think I'm OKAY",
-videoId: "wK-8TCDrbV8",
-channelAvatar: "https://yt3.googleusercontent.com/ZRx4DM8SPOjKFH5Q5sWNVohh9FpHGYFCwhEG7rzunrrwIGEVy6g2eA6yCnikYLF9kE0JliM6mQ=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@mgk"
-},
-{
-title: "YUNGBLUD - War",
-videoId: "Q1I5WghxDu8",
+title: "YUNGBLUD - Hello Heaven, Hello",
+videoId: "xrZX47RbeJs",
 channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@yungblud"
 }
@@ -348,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const changeThemeBtn = document.getElementById('changeTheme');
   const tooltip = document.getElementById('tooltip');
   const defaultBtn = document.getElementById('themeDefault');
-  //const yungbludBtn = document.getElementById('themeYungblud');
+  const yungbludBtn = document.getElementById('themeYungblud');
   const aeroBtn = document.getElementById('themeAero');
 
   changeThemeBtn.addEventListener('click', (e) => {
@@ -369,11 +362,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initTyped('Default');
     hideTooltip();
   });
-  /*yungbludBtn.addEventListener('click', () => {
+  yungbludBtn.addEventListener('click', () => {
     applyTheme('Yungblud');
     initTyped('Yungblud');
     hideTooltip();
-  });*/
+  });
   aeroBtn.addEventListener('click', () => {
     applyTheme('Aero');
     initTyped('Aero');
@@ -935,39 +928,4 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
