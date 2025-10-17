@@ -58,7 +58,12 @@ if (terminal) {
 
  const rewind10 = document.getElementById('rewind10');
 if (rewind10) {
-  rewind10.classList.remove(theme.galaxyActive, theme.galaxyInactive);
+  rewind10.classList.remove(
+  'text-purple-200',
+  'text-purple-50',
+  'text-pink-500',
+  'text-cyan-100'
+);
   if (typeof galaxyVisible !== 'undefined' && galaxyVisible) {
     rewind10.classList.add(theme.galaxyActive);
   } else {
@@ -266,9 +271,16 @@ guiElement.style.display = 'none';
 
 const canvas = document.getElementById('canvas');  
 
- const themeName = localStorage.getItem('theme') || 'Default';
-  const theme = themes[themeName];
-
+rewind10.classList.remove(
+  'text-purple-200',
+  'text-purple-50',
+  'text-pink-500',
+  'text-cyan-100'
+);
+  
+const themeName = localStorage.getItem('theme') || 'Default';
+const theme = themes[themeName];
+  
   if (galaxyVisible) {
     galaxyVisible = false;
     rewind10.classList.remove(theme.galaxyActive);
@@ -916,6 +928,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
