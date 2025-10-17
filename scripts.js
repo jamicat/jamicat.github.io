@@ -167,7 +167,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'xrZX47RbeJs',
+playlist: 'lbc6CcZTp5E,PsbVS6x4Stk',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -208,7 +208,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'xrZX47RbeJs';
+const videoId = 'lbc6CcZTp5E';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -301,10 +301,16 @@ rewind10.click();
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - Hello Heaven, Hello",
-videoId: "xrZX47RbeJs",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@yungblud"
+title: "Wet Leg - mangetout",
+videoId: "lbc6CcZTp5E",
+channelAvatar: "https://yt3.googleusercontent.com/ctx8viOqBYgqYvhwkxh6IGZwaapW4j-QngUWO5yjRkLa7e2OajQaTZKDRp5NkSgOetijVpl1_Q=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@wetlegband"
+},
+{
+title: "Cavetown - Tarmac",
+videoId: "PsbVS6x4Stk",
+channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
 }
 ];
 
@@ -928,4 +934,5 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
