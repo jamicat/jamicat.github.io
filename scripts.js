@@ -25,7 +25,7 @@ const themes = {
     glowSecondary: 'text-blue-glow',
     buttonColor: 'bg-sky-100 hover:bg-sky-300',
     buttonTextColor: 'text-black',
-    iconColor: 'bg-sky-100 hover:bg-sky-300',
+    iconColor: 'text-sky-100 hover:text-sky-300',
     galaxyActive: 'text-purple-200',
     galaxyInactive: 'text-purple-50',
     terminalColor: 'bg-pink-200/10'
@@ -902,6 +902,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
