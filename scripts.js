@@ -4,6 +4,7 @@ const themes = {
     glowPrimary: 'text-blue-glow',
     glowSecondary: 'text-pink-glow',
     buttonColor: 'bg-red-300 hover:bg-red-400',
+    buttonTextColor: 'text-white',
     iconColor: 'text-red-300 hover:text-red-400',
     galaxyActive: 'text-purple-200',
     galaxyInactive: 'text-purple-50'
@@ -12,6 +13,7 @@ const themes = {
     glowPrimary: 'text-pink-glow',
     glowSecondary: 'text-red-glow',
     buttonColor: 'bg-red-300 hover:bg-red-400',
+    buttonTextColor: 'text-black',
     iconColor: 'text-red-300 hover:text-red-400',
     galaxyActive: 'text-purple-50',
     galaxyInactive: 'text-pink-500'
@@ -33,7 +35,7 @@ function applyTheme(themeName) {
   document.documentElement.setAttribute('data-theme', themeName);
 
   document.querySelectorAll('.terminal-button').forEach(btn => {
-    btn.className = `terminal-button ${theme.buttonColor} text-white px-3 py-1.5 mt-3 rounded-md transition duration-300 ease-in-out hover:scale-105 active:scale-95`;
+    btn.className = `terminal-button ${theme.buttonColor} ${theme.buttonTextColor} px-3 py-1.5 mt-3 rounded-md transition duration-300 ease-in-out hover:scale-105 active:scale-95`;
   });
 
   const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme');
@@ -41,17 +43,14 @@ function applyTheme(themeName) {
     icon.className = `${theme.iconColor} transition-colors duration-200 text-lg leading-none`;
   });
 
-  if (galaxyScriptLoaded)
-  {
-    rewind10.classList.remove(currentTheme.galaxyInactive);
-    rewind10.classList.add(currentTheme.galaxyActive);
-  }
-  else
-  {
-    rewind10.classList.remove(currentTheme.galaxyActive);
-    rewind10.classList.add(currentTheme.galaxyInactive);
-  }
-
+ if (galaxyScriptLoaded) {
+  rewind10.classList.remove(theme.galaxyInactive);
+  rewind10.classList.add(theme.galaxyActive);
+} else {
+  rewind10.classList.remove(theme.galaxyActive);
+  rewind10.classList.add(theme.galaxyInactive);
+}
+  
   document.querySelectorAll('.text-blue-glow, .text-pink-glow, .text-red-glow, .text-green-glow, .text-cyan-glow').forEach(el => {
     el.classList.remove('text-blue-glow', 'text-pink-glow', 'text-red-glow', 'text-green-glow', 'text-cyan-glow');
     el.classList.add(theme.glowPrimary);
@@ -890,6 +889,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
