@@ -1,13 +1,13 @@
 
 const themes = {
   Default: {
-    glowPrimary: 'text-blue-glow',
+    glowPrimary: 'text-pink-glow',
     glowSecondary: 'text-pink-glow',
     buttonColor: 'bg-red-300 hover:bg-red-400',
-    buttonTextColor: 'text-white',
+    buttonTextColor: 'text-black',
     iconColor: 'text-red-300 hover:text-red-400',
     galaxyActive: 'text-purple-200',
-    galaxyInactive: 'text-purple-50',
+    galaxyInactive: 'text-pink-500',
     terminalColor: 'bg-default/10'
   },
   Yungblud: {
@@ -935,6 +935,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
