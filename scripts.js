@@ -298,57 +298,39 @@ $('#terminalContent').html(html);
 
 function initThemeTooltip() {
   const tooltip = document.getElementById('tooltip');
-  const defaultBtn = document.getElementById('themeDefault');
-  const yungbludBtn = document.getElementById('themeYungblud');
-  const aeroBtn = document.getElementById('themeAero');
   const changeThemeBtn = document.getElementById('changeTheme');
+
+  if (!initThemeTooltip._inited) {
+    changeThemeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isVisible = tooltip.classList.contains('opacity-100');
+      if (isVisible) hideTooltip();
+      else showTooltip();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!tooltip.contains(e.target) && e.target !== changeThemeBtn) {
+        hideTooltip();
+      }
+    });
+
+    initThemeTooltip._inited = true;
+  }
+
+  const isVisible = tooltip.classList.contains('opacity-100');
+  if (isVisible) hideTooltip();
+  else showTooltip();
 
   function showTooltip() {
     tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.add('opacity-100');
-    setTimeout(() => {
-      document.addEventListener('click', handleClickOutside);
-    }, 0); 
   }
-
   function hideTooltip() {
     tooltip.classList.add('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.remove('opacity-100');
-    document.removeEventListener('click', handleClickOutside);
   }
-
-  function handleClickOutside(e) {
-    if (!tooltip.contains(e.target) && e.target !== changeThemeBtn) {
-      hideTooltip();
-    }
-  }
-
-  changeThemeBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); 
-    const isVisible = tooltip.classList.contains('opacity-100');
-    if (isVisible) {
-      hideTooltip();
-    } else {
-      showTooltip();
-    }
-  });
-
-  defaultBtn.onclick = () => {
-    applyTheme('Default');
-    initTyped('Default');
-    hideTooltip();
-  };
-  yungbludBtn.onclick = () => {
-    applyTheme('Yungblud');
-    initTyped('Yungblud');
-    hideTooltip();
-  };
-  aeroBtn.onclick = () => {
-    applyTheme('Aero');
-    initTyped('Aero');
-    hideTooltip();
-  };
 }
+
 
 function showArt() {
 $('#terminalContent').html(`
@@ -887,6 +869,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
