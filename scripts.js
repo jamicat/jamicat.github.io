@@ -56,12 +56,14 @@ if (terminal) {
   terminal.style.transform = 'translate(-50%, -50%)';
 }
 
- if (galaxyScriptLoaded) {
-  rewind10.classList.remove(theme.galaxyInactive);
-  rewind10.classList.add(theme.galaxyActive);
-} else {
-  rewind10.classList.remove(theme.galaxyActive);
-  rewind10.classList.add(theme.galaxyInactive);
+ const rewind10 = document.getElementById('rewind10');
+if (rewind10) {
+  rewind10.classList.remove(theme.galaxyActive, theme.galaxyInactive);
+  if (typeof galaxyVisible !== 'undefined' && galaxyVisible) {
+    rewind10.classList.add(theme.galaxyActive);
+  } else {
+    rewind10.classList.add(theme.galaxyInactive);
+  }
 }
   
   document.querySelectorAll('.text-blue-glow, .text-pink-glow, .text-red-glow, .text-green-glow, .text-cyan-glow').forEach(el => {
@@ -264,18 +266,19 @@ guiElement.style.display = 'none';
 
 const canvas = document.getElementById('canvas');  
 
-const currentTheme = themes[localStorage.getItem('theme') || 'Default'];
-  
-if (galaxyVisible) {
+ const themeName = localStorage.getItem('theme') || 'Default';
+  const theme = themes[themeName];
+
+  if (galaxyVisible) {
     galaxyVisible = false;
-    rewind10.classList.remove(currentTheme.galaxyActive);
-    rewind10.classList.add(currentTheme.galaxyInactive);
+    rewind10.classList.remove(theme.galaxyActive);
+    rewind10.classList.add(theme.galaxyInactive);
     canvas.style.opacity = '0';
     canvas.style.pointerEvents = 'none';
   } else {
     galaxyVisible = true;
-    rewind10.classList.add(currentTheme.galaxyActive);
-    rewind10.classList.remove(currentTheme.galaxyInactive);
+    rewind10.classList.remove(theme.galaxyInactive);
+    rewind10.classList.add(theme.galaxyActive);
     canvas.style.opacity = '1';
     canvas.style.pointerEvents = 'auto';
   }
@@ -908,6 +911,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
