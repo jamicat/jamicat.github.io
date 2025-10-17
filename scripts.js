@@ -350,12 +350,6 @@ function initThemeTooltip() {
   };
 }
 
-
-// Run only once when the DOM is ready
-document.addEventListener('DOMContentLoaded', initThemeTooltip);
-
-
-
 document.addEventListener('DOMContentLoaded', initThemeTooltip);
 
 function showArt() {
@@ -895,6 +889,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
