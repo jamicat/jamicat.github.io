@@ -167,7 +167,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'xrZX47RbeJs',
+playlist: 'wK-8TCDrbV8,Q1I5WghxDu8',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -208,7 +208,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'xrZX47RbeJs';
+const videoId = 'wK-8TCDrbV8';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -296,13 +296,20 @@ const theme = themes[themeName];
   }
 });
 
-rewind10.click();
+//rewind10.click();
 
 function showList() {
 const playlist = [
+
 {
-title: "YUNGBLUD - Hello Heaven, Hello",
-videoId: "xrZX47RbeJs",
+title: "Machine Gun Kelly - I Think I'm OKAY",
+videoId: "wK-8TCDrbV8",
+channelAvatar: "https://yt3.googleusercontent.com/ZRx4DM8SPOjKFH5Q5sWNVohh9FpHGYFCwhEG7rzunrrwIGEVy6g2eA6yCnikYLF9kE0JliM6mQ=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@mgk"
+},
+{
+title: "YUNGBLUD - War",
+videoId: "Q1I5WghxDu8",
 channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@yungblud"
 }
@@ -928,6 +935,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
