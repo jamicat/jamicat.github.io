@@ -22,6 +22,7 @@ const themes = {
     glowPrimary: 'text-green-glow',
     glowSecondary: 'text-cyan-glow',
     buttonColor: 'bg-cyan-300 hover:bg-cyan-400',
+    buttonTextColor: 'text-white',
     iconColor: 'text-cyan-300 hover:text-cyan-400',
     galaxyActive: 'text-green-200',
     galaxyInactive: 'text-green-50'
@@ -889,6 +890,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
