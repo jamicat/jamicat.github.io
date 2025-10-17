@@ -348,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const changeThemeBtn = document.getElementById('changeTheme');
   const tooltip = document.getElementById('tooltip');
   const defaultBtn = document.getElementById('themeDefault');
-  const yungbludBtn = document.getElementById('themeYungblud');
+  //const yungbludBtn = document.getElementById('themeYungblud');
   const aeroBtn = document.getElementById('themeAero');
 
   changeThemeBtn.addEventListener('click', (e) => {
@@ -369,11 +369,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initTyped('Default');
     hideTooltip();
   });
-  yungbludBtn.addEventListener('click', () => {
+  /*yungbludBtn.addEventListener('click', () => {
     applyTheme('Yungblud');
     initTyped('Yungblud');
     hideTooltip();
-  });
+  });*/
   aeroBtn.addEventListener('click', () => {
     applyTheme('Aero');
     initTyped('Aero');
@@ -935,6 +935,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
