@@ -474,6 +474,9 @@ function aboutPost() {
       <button class="terminal-button" onclick="siteFAQ()">Back</button>
     </div>
   `);
+
+ const currentTheme = localStorage.getItem('theme') || 'Default';
+ applyTheme(currentTheme);
 }
 
 function somethingNew() {
@@ -521,6 +524,9 @@ function somethingNew() {
       <button class="terminal-button" onclick="siteFAQ()">Back</button>
     </div>
   `);
+
+  const currentTheme = localStorage.getItem('theme') || 'Default';
+  applyTheme(currentTheme);
 }
 
 let lastSubmissionTime = 0;
@@ -902,6 +908,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
