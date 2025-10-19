@@ -1,15 +1,5 @@
 const themes = {
   Default: {
-    glowPrimary: 'text-blue-glow',
-    glowSecondary: 'text-pink-glow',
-    buttonColor: 'bg-red-300 hover:bg-red-400',
-    buttonTextColor: 'text-white',
-    iconColor: 'text-red-300 hover:text-red-400',
-    galaxyActive: 'text-purple-200',
-    galaxyInactive: 'text-purple-50',
-    terminalColor: 'bg-default/10'
-  },
-  Yungblud: {
     glowPrimary: 'text-pink-glow',
     glowSecondary: 'text-red-glow',
     buttonColor: 'bg-red-300 hover:bg-red-400',
@@ -17,6 +7,16 @@ const themes = {
     iconColor: 'text-red-300 hover:text-red-400',
     galaxyActive: 'text-purple-200',
     galaxyInactive: 'text-pink-500',
+    terminalColor: 'bg-default/10'
+  },
+  Yungblud: {
+    glowPrimary: 'text-blue-glow',
+    glowSecondary: 'text-pink-glow',
+    buttonColor: 'bg-red-300 hover:bg-red-400',
+    buttonTextColor: 'text-white',
+    iconColor: 'text-red-300 hover:text-red-400',
+    galaxyActive: 'text-purple-200',
+    galaxyInactive: 'text-purple-50',
     terminalColor: 'bg-default/10'
   },
   Aero: {
@@ -805,6 +805,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
