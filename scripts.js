@@ -1,4 +1,3 @@
-uuuuu
 const themes = {
   Default: {
     glowPrimary: 'text-blue-glow',
@@ -816,6 +815,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
