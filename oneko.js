@@ -1,7 +1,7 @@
 (function oneko() {
     const nekoEl = document.createElement("div");
     let nekoPosX = 32;
-    let nekoPosY = 32;
+    let nekoPosY = window.innerHeight - 64;
     let mousePosX = 0;
     let mousePosY = 0;
     let frameCount = 0;
@@ -62,8 +62,8 @@
         nekoEl.style.position = "fixed";
         nekoEl.style.backgroundImage = "url('./oneko.gif')";
         nekoEl.style.imageRendering = "pixelated";
-        nekoEl.style.left = "16px";
-        nekoEl.style.top = "16px";
+        nekoEl.style.left = `${nekoPosX}px`;
+        nekoEl.style.top = `${nekoPosY}px`;
 
         document.body.appendChild(nekoEl);
 
