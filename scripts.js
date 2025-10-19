@@ -54,7 +54,6 @@ if (terminal) {
   terminal.classList.add(theme.terminalColor);
 }
 
-
  const rewind10 = document.getElementById('rewind10');
 if (rewind10) {
   rewind10.classList.remove(
@@ -806,6 +805,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
