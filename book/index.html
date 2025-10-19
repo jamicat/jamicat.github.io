@@ -37,8 +37,11 @@
       src: url('Minecraftia-Regular.ttf') format('truetype');
     }
 	  
-
-
+	  @font-face {
+      font-family: 'delicatus';
+      src: url('Delicatus.ttf') format('truetype');
+    }
+	  
     @media (max-width: 1080px) and (max-height: 2400px) {
     .species-buttons {
       display: flex;
@@ -207,7 +210,7 @@ label {
   border-radius: 5px;
   cursor: pointer;
   font-size: 0.8em;
-  font-family: 'nunito';
+  font-family: 'delicatus';
 }
 
 .submit-button:hover {
@@ -231,7 +234,7 @@ label {
   border-radius: 5px;
   cursor: pointer;
   font-size: 0.8em;
-  font-family: 'nunito';
+  font-family: 'delicatus';
 }
 
 .home-btn:hover {
@@ -267,7 +270,7 @@ label {
       <label for="question" style="font-family: 'minecraftia', serif;">Favourite food:</label>
       <input type="text" id="question" name="question" placeholder="Optional">
 
-      <label for="species">Icon:</label>
+      <label for="species" style="font-family: 'minecraftia', serif;">Icon:</label>
       <div class="species-buttons" id="species-buttons">
         <button type="button" data-species="🐱">🐱</button>
         <button type="button" data-species="🐶">🐶</button>
@@ -321,7 +324,7 @@ label {
   border-radius: 50px;
   cursor: pointer;
   font-size: 0.9em;
-  font-family: 'nunito', sans-serif;
+  font-family: 'delicatus', sans-serif;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 ">Mode: 🐈</button>
 
