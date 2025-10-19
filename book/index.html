@@ -33,15 +33,11 @@
     }
 
     @font-face {
-      font-family: 'minecraftia';
-      src: url('Minecraftia-Regular.ttf') format('truetype');
+      font-family: 'nunito';
+      src: url('nunito.ttf') format('truetype');
     }
-	  
-	  @font-face {
-      font-family: 'delicatus';
-      src: url('Delicatus.ttf') format('truetype');
-    }
-	  
+
+
     @media (max-width: 1080px) and (max-height: 2400px) {
     .species-buttons {
       display: flex;
@@ -209,8 +205,8 @@ label {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1.0em;
-  font-family: 'delicatus';
+  font-size: 0.8em;
+  font-family: 'nunito';
 }
 
 .submit-button:hover {
@@ -233,8 +229,8 @@ label {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1.0em;
-  font-family: 'delicatus';
+  font-size: 0.8em;
+  font-family: 'nunito';
 }
 
 .home-btn:hover {
@@ -261,16 +257,16 @@ label {
 	
   <div class="form-container">
     <form id="guestbook-form">
-      <label for="name" style="font-family: 'minecraftia', serif;">Name:</label>
+      <label for="name">Name:</label>
       <input type="text" id="name" name="name" required required placeholder="Anonymous">
 
-      <label for="comment" style="font-family: 'minecraftia', serif;">Comment:</label>
+      <label for="comment">Comment:</label>
       <textarea id="comment" name="comment" rows="4" maxlength="10000" required placeholder="🐾"></textarea>
 
-      <label for="question" style="font-family: 'minecraftia', serif;">Favourite food:</label>
+      <label for="question">Favourite food:</label>
       <input type="text" id="question" name="question" placeholder="Optional">
 
-      <label for="species" style="font-family: 'minecraftia', serif;">Icon:</label>
+      <label for="species">Icon:</label>
       <div class="species-buttons" id="species-buttons">
         <button type="button" data-species="🐱">🐱</button>
         <button type="button" data-species="🐶">🐶</button>
@@ -323,8 +319,8 @@ label {
   padding: 10px 20px;
   border-radius: 50px;
   cursor: pointer;
-  font-size: 1.0em;
-  font-family: 'delicatus', sans-serif;
+  font-size: 0.9em;
+  font-family: 'nunito', sans-serif;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 ">Mode: 🐈</button>
 
