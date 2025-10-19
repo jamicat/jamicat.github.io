@@ -9,7 +9,7 @@ src: url('Minecraftia-Regular.ttf') format('truetype');
 } 
 
 html, body {
-font-family: 'minecraftia', sans-serif;
+font-family: 'nunito', sans-serif;
 margin: 0;
 padding: 0;
 height: 100%;
@@ -73,7 +73,7 @@ height: 250%;
 .terminal {
 background-color: rgba(0, 0, 0, 0.3);
 color: white;
-font-family: 'minecraftia', sans-serif;
+font-family: 'nunito', sans-serif;
 border-radius: 0.75rem;
 backdrop-filter: blur(6px);
 }
@@ -150,6 +150,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
