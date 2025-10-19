@@ -87,15 +87,15 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-blue-glow';
 
   const strings = [
-    `<span class="text-white text-base mr-2 ${glow}">Meoeoeoeoeoeow, welcome!</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">Click on the galaxy icon!</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">Check out the guestbook!</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">ฅ(^ω^)ฅ</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">(๑•ω•́ฅ✧</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">(ฅ･ω･´)っ=</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">ฅ*•ω•*ฅ</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">ฅ^•ﻌ•^ฅ</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">⊱ฅ•ω•ฅ⊰</span>`
+   `<span class="text-white text-base mr-2 ${glow}" style="font-family: 'Minecraftia', serif;">Meoeoeoeoeoeow, welcome!</span>`,
+  `<span class="text-white text-base mr-2 ${glow}" style="font-family: 'Minecraftia', serif;">Click on the galaxy icon!</span>`,
+  `<span class="text-white text-base mr-2 ${glow}" style="font-family: 'Minecraftia', serif;">Check out the guestbook!</span>`,
+  `<span class="text-white text-base mr-2 ${glow}" style="font-family: 'Minecraftia', serif;">ฅ(^ω^)ฅ</span>`,
+  `<span class="text-white text-base mr-2 ${glow}" style="font-family: 'Minecraftia', serif;">(๑•ω•́ฅ✧</span>`,
+  `<span class="text-white text-base mr-2 ${glow}" style="font-family: 'Minecraftia', serif;">(ฅ･ω･´)っ=</span>`,
+  `<span class="text-white text-base mr-2 ${glow}" style="font-family: 'Minecraftia', serif;">ฅ*•ω•*ฅ</span>`,
+  `<span class="text-white text-base mr-2 ${glow}" style="font-family: 'Minecraftia', serif;">ฅ^•ﻌ•^ฅ</span>`,
+  `<span class="text-white text-base mr-2 ${glow}" style="font-family: 'Minecraftia', serif;">⊱ฅ•ω•ฅ⊰</span>`
   ];
 
   typedInstance = new Typed('#typed', {
@@ -805,6 +805,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
