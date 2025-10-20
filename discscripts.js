@@ -3,7 +3,8 @@ const discordUserId = "160899636637204482";
 const statusContainer = document.createElement("div");
 statusContainer.id = "discordStatus";
 statusContainer.className =
-  "absolute top-4 left-4 flex items-center space-x-3 p-3 rounded-lg bg-black/40 backdrop-blur-md border border-white/10 text-pink-400 shadow-lg transition duration-300 ease-in-out z-[9999] hover:bg-black/50 hover:border-white/20 font-[Nunito]";
+  "absolute top-6 left-6 scale-125 flex items-center space-x-4 p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 text-pink-400 shadow-lg transition duration-300 ease-in-out z-[9999] hover:bg-black/50 hover:border-white/20 font-[Nunito]";
+
 
 statusContainer.innerHTML = `
   <div class="relative">
@@ -102,3 +103,4 @@ async function fetchDiscordStatus() {
 
 fetchDiscordStatus();
 setInterval(fetchDiscordStatus, 20000);
+
