@@ -36,7 +36,7 @@ async function fetchDiscordStatus() {
     const activities = data.activities || [];
     const customStatus = activities.find(a => a.type === 4);
     const playing = activities.find(a => a.type === 0);
-    const listening = activities.find(a => a.type === 2);
+    const listening = activities.find(a => a.id === "spotify:1" || a.name === "Spotify");
     const watching = activities.find(a => a.type === 3);
 
     const avatarEl = document.getElementById("discordAvatar");
@@ -71,12 +71,16 @@ async function fetchDiscordStatus() {
     } else {
       lastOnline = Date.now();
 
-      if (playing) {
-        activityEl.textContent = `Playing ${playing.name}`;
-      } else if (listening) {
-        activityEl.textContent = `Listening to ${listening.details || "music"}`;
+      if (listening && listening.details && listening.state) {
+        // Spotify activity (full song info)
+        const song = listening.details;
+        const artist = listening.state;
+        const album = listening.assets?.large_text || "";
+        activityEl.textContent = `🎵 ${song} — ${artist}${album ? ` (${album})` : ""}`;
+      } else if (playing) {
+        activityEl.textContent = `🎮 Playing ${playing.name}`;
       } else if (watching) {
-        activityEl.textContent = `Watching ${watching.name}`;
+        activityEl.textContent = `📺 Watching ${watching.name}`;
       } else if (customStatus && customStatus.state) {
         activityEl.textContent = customStatus.state;
       } else {
@@ -101,7 +105,6 @@ async function fetchDiscordStatus() {
 fetchDiscordStatus();
 setInterval(fetchDiscordStatus, 20000);
 
-// 🌟 Smooth tilt hover effect
 statusContainer.addEventListener("mousemove", (e) => {
   const rect = statusContainer.getBoundingClientRect();
   const x = e.clientX - rect.left;
