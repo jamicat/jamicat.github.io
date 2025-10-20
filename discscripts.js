@@ -3,7 +3,7 @@ const discordUserId = "160899636637204482";
 const statusContainer = document.createElement("div");
 statusContainer.id = "discordStatus";
 statusContainer.className =
-  "absolute top-6 left-6 flex items-center space-x-3 p-2.5 rounded-3xl bg-black/15 backdrop-blur-md border-[2px] border-black/20 text-pink-400 shadow-lg transition-transform duration-300 ease-in-out z-[9999] hover:bg-black/25 hover:border-white/30 font-[Nunito] text-base perspective-[800px]";
+  "absolute top-6 left-6 flex items-center space-x-3 p-2.5 rounded-3xl bg-black/15 backdrop-blur-md border-[2px] border-black/20 text-pink-400 shadow-lg transition-transform duration-300 ease-in-out z-[9999] hover:bg-black/25 hover:border-white/30 font-[Nunito] text-base perspective-[800px] w-auto";
 
 statusContainer.innerHTML = `
   <div class="relative">
@@ -11,9 +11,9 @@ statusContainer.innerHTML = `
     <span id="statusDot" class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-black"></span>
   </div>
   <div id="discordText" class="flex flex-col leading-tight">
-   <span id="discordName" class="text-pink-300 text-[16px] font-semibold">Loading...</span>
-   <span id="discordActivity" class="text-pink-500 text-[14px] opacity-90 truncate max-w-[180px]">Fetching status...</span>
-  </div>
+  <span id="discordName" class="text-pink-300 text-[16px] font-semibold">Loading...</span>
+  <span id="discordActivity" class="text-pink-500 text-[14px] opacity-90">Fetching status...</span>
+</div>
 `;
 
 document.body.appendChild(statusContainer);
@@ -118,6 +118,7 @@ statusContainer.addEventListener("mousemove", (e) => {
 statusContainer.addEventListener("mouseleave", () => {
   statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
 });
+
 
 
 
