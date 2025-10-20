@@ -2,8 +2,8 @@ const discordUserId = "160899636637204482";
 
 const statusContainer = document.createElement("div");
 statusContainer.id = "discordStatus";
-statusContainer.className =
-  "absolute bottom-6 left-6 flex items-center space-x-3 p-2.5 rounded-3xl bg-black/15 backdrop-blur-md border-[2px] bg-opacity-[0.15] text-pink-400 shadow-lg transition-transform duration-300 ease-in-out z-[9999] hover:bg-black/25 hover:border-white/30 font-[Nunito] text-base perspective-[800px] w-auto";
+statusContainer.className = 
+  "absolute top-6 left-6 flex items-center space-x-3 p-2.5 rounded-3xl bg-black/15 backdrop-blur-md border-[2px] border-[rgba(0,0,0,0.15)] text-pink-400 shadow-lg transition-transform duration-300 ease-in-out z-[9999] hover:bg-black/25 hover:border-white/30 font-[Nunito] text-base perspective-[800px]";
 
 statusContainer.innerHTML = `
   <div class="relative">
