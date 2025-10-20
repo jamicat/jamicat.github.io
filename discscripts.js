@@ -3,12 +3,13 @@ const discordUserId = "160899636637204482";
 const statusContainer = document.createElement("div");
 statusContainer.id = "discordStatus";
 statusContainer.className =
-  "absolute top-6 left-6 scale-125 flex items-center space-x-4 p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 text-pink-400 shadow-lg transition duration-300 ease-in-out z-[9999] hover:bg-black/50 hover:border-white/20 font-[Nunito]";
+  "absolute top-6 left-6 flex items-center space-x-4 p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 text-pink-400 shadow-lg transition duration-300 ease-in-out z-[9999] hover:bg-black/50 hover:border-white/20 font-[Nunito] text-base";
+
 
 
 statusContainer.innerHTML = `
   <div class="relative">
-    <img id="discordAvatar" class="w-10 h-10 rounded-full border border-pink-400/40 shadow-md" src="" alt="Discord Avatar">
+   <img id="discordAvatar" class="w-14 h-14 rounded-full border border-pink-400/40 shadow-md" src="" alt="Discord Avatar">
     <span id="statusDot" class="absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-black"></span>
   </div>
   <div id="discordText" class="flex flex-col leading-tight">
@@ -103,4 +104,5 @@ async function fetchDiscordStatus() {
 
 fetchDiscordStatus();
 setInterval(fetchDiscordStatus, 20000);
+
 
