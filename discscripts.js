@@ -7,12 +7,12 @@ statusContainer.className =
 
 statusContainer.innerHTML = `
   <div class="relative">
-    <img id="discordAvatar" class="w-16 h-16 rounded-full border border-pink-400/50 shadow-md object-cover" src="" alt="Discord Avatar">
+    <img id="discordAvatar" class="w-15 h-15 rounded-full border border-pink-400/50 shadow-md object-cover" src="" alt="Discord Avatar">
     <span id="statusDot" class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-black"></span>
   </div>
   <div id="discordText" class="flex flex-col leading-tight">
-    <span id="discordName" class="text-pink-300 text-base font-semibold">Loading...</span>
-    <span id="discordActivity" class="text-pink-500 text-sm opacity-90 truncate max-w-[180px]">Fetching status...</span>
+    <span id="discordName" class="text-pink-300 text-[13px] font-semibold">Loading...</span>
+    <span id="discordActivity" class="text-pink-500 text-[11px] opacity-90 truncate max-w-[180px]">Fetching status...</span>
   </div>
 `;
 
@@ -118,6 +118,7 @@ statusContainer.addEventListener("mousemove", (e) => {
 statusContainer.addEventListener("mouseleave", () => {
   statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
 });
+
 
 
 
