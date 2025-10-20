@@ -1,7 +1,6 @@
 // discscripts.js
-const discordUserId = "YOUR_DISCORD_ID_HERE"; // Replace with your Discord user ID
+const discordUserId = "160899636637204482"; 
 
-// Create Discord status container
 const statusContainer = document.createElement("div");
 statusContainer.id = "discordStatus";
 statusContainer.className =
@@ -43,7 +42,6 @@ async function fetchDiscordStatus() {
     if (status === "dnd") statusColor = "text-red-400";
     if (status === "offline") statusColor = "text-gray-400";
 
-    // reset and apply color
     nameEl.className = `text-sm font-semibold ${statusColor}`;
     activityEl.textContent = activity;
   } catch (error) {
@@ -53,6 +51,6 @@ async function fetchDiscordStatus() {
   }
 }
 
-// Fetch on load and refresh every 20 seconds
 fetchDiscordStatus();
 setInterval(fetchDiscordStatus, 20000);
+
