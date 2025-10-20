@@ -99,7 +99,6 @@ h1 {
   
 }
 
-
 h1 span {
   color: pink; 
 }
@@ -245,8 +244,6 @@ label {
 
   </style>
 </head>
-
-
   
 <body>
  <div class="header-container">
@@ -254,7 +251,6 @@ label {
   <h1>Catbook</h1>
 </div>
 
-	
   <div class="form-container">
     <form id="guestbook-form">
       <label for="name">Name:</label>
@@ -291,8 +287,7 @@ label {
         <button class="home-btn" id="home-btn" onclick="window.location.href='/';">Home</button>
     </div>
 </div>
-
-      
+  
 <!--div class="video-container">
   <iframe 
     width="560" 
@@ -303,13 +298,12 @@ label {
   </iframe>
      </div-->
 
-   
    </form>
    </div>
 	
   <div class="comments-section" id="comments-section"></div>
 
-<button id="mode-toggle" style="
+<!--button id="mode-toggle" style="
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -322,7 +316,7 @@ label {
   font-size: 0.9em;
   font-family: 'nunito', sans-serif;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-">Mode: 🐈</button>
+">Mode: 🐈</button-->
 
   <script>
 	  
@@ -359,7 +353,6 @@ label {
       const commentText = document.getElementById('comment').value.trim();
       const question = document.getElementById('question').value.trim() || null;
 
-
       if (!name || !commentText) {
         alert('Name and comment cannot be empty!');
         return;
@@ -388,12 +381,10 @@ label {
     });
 
     async function loadComments() {
-
-	    
+ 
   try {
     const response = await fetch(webAppUrl);
     if (!response.ok) throw new Error('Failed to load comments.');
-
     
     const { comments = [], questions = [] } = await response.json();
     console.log('Fetched comments and questions:', { comments, questions });
@@ -419,16 +410,7 @@ label {
         const nameEl = document.createElement('h4');
         nameEl.textContent = `${species || '❓'} ${name || 'Anonymous'}`;
         commentEl.appendChild(nameEl);
-
-
-
-
-	      
-
-	      
-
-
-	      
+  
 let replyEl;
 let cleanedComment = comment;
 commentEl.style.position = 'relative';
@@ -452,7 +434,6 @@ if (replyMatch) {
   replyEl.style.backgroundColor = 'beige';
   replyEl.style.display = 'inline-block'; 
   replyEl.style.maxWidth = '100%';
-
 
   const replyLabel = document.createElement('div');
   replyLabel.textContent = 'Reply from Jamie:';
@@ -484,9 +465,7 @@ if (replyMatch) {
     replyEl.appendChild(replyTextEl);
   }
 }
-
-	      
-
+      
 if (cleanedComment.startsWith("♡")) {
   cleanedComment = cleanedComment.replace(/^♡\s*/, '');
 
@@ -499,7 +478,6 @@ if (cleanedComment.startsWith("♡")) {
   heartEl.style.fontSize = '24px';
   commentEl.appendChild(heartEl);
 }
-
 
 const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/g;
 const ytMatch = cleanedComment.match(ytRegex);
@@ -518,7 +496,6 @@ if (ytMatch) {
   commentEl.appendChild(iframe);
 }
 
-
 const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/g;
 const imgurMatches = [...cleanedComment.matchAll(imgurRegex)];
 if (imgurMatches.length) {
@@ -536,7 +513,6 @@ if (imgurMatches.length) {
 
   cleanedComment = cleanedComment.replace(imgurRegex, "").trim();
 }
-
 
 if (cleanedComment) {
   const textEl = document.createElement('p');
@@ -559,7 +535,6 @@ const dateEl = document.createElement('small');
 dateEl.textContent = timestamp ? formatDate(timestamp) : 'Invalid Date';
 commentEl.appendChild(dateEl);
 
-
 commentsSection.appendChild(commentEl);
       });
   } catch (error) {
@@ -567,13 +542,6 @@ commentsSection.appendChild(commentEl);
     commentsSection.innerHTML = '<p>Failed to load comments. Please try again later.</p>';
   }
 }
-
-
-
-
-
-	  
-	  
 
     function formatDate(timestamp) {
       if (timestamp.includes('/')) return timestamp;
@@ -610,7 +578,6 @@ function switchCommentColors() {
     .header-container img {
       content: url('cat.png'); 
     }
-    
       .comment {
         background-color: rgba(255, 231, 205, 1);
         border: none;
@@ -623,7 +590,6 @@ function switchCommentColors() {
 
       .comment h4 {
         color: black;
-
       }
 
       h1 {
@@ -635,7 +601,6 @@ function switchCommentColors() {
    1px  1px 0 #44444445;
   
 }
-
       h1 span {
         color: pink;
       }
@@ -689,8 +654,6 @@ background-color: rgba(255, 231, 205, 1);
  .reply-box {
 background-color: beige;
  }
-
-
     </style>`
   );
 
@@ -712,7 +675,6 @@ document.head.insertAdjacentHTML(
   body {
   background-color: #C3E6C5;
 }
-
 
 h1 {
   color: #ffffff; 
@@ -742,12 +704,10 @@ label {
   color: #225F5F; 
 }
 
-
 .comment {
   background-color: #B0F0EC; 
   color: #225F5F; 
 }
-
 
 .comment h4 {
   color: #155E5E;
