@@ -1,13 +1,20 @@
-const discordUserId = "160899636637204482"; 
+// discscripts.js
+const discordUserId = "YOUR_DISCORD_ID_HERE"; // Replace with your Discord user ID
+
+// Create Discord status container
 const statusContainer = document.createElement("div");
 statusContainer.id = "discordStatus";
+statusContainer.className =
+  "absolute top-4 left-4 flex items-center space-x-3 p-3 rounded-lg bg-black/40 backdrop-blur-md border border-white/10 text-pink-400 shadow-lg transition duration-300 ease-in-out z-[9999] hover:bg-black/50 hover:border-white/20 font-[Nunito]";
+
 statusContainer.innerHTML = `
-  <img id="discordAvatar" src="" alt="Discord Avatar">
-  <div id="discordText">
-    <span id="discordName">Loading...</span>
-    <span id="discordActivity">Fetching status...</span>
+  <img id="discordAvatar" class="w-10 h-10 rounded-full border border-pink-400/40 shadow-md" src="" alt="Discord Avatar">
+  <div id="discordText" class="flex flex-col leading-tight">
+    <span id="discordName" class="text-pink-300 text-sm font-semibold">Loading...</span>
+    <span id="discordActivity" class="text-pink-500 text-xs opacity-80">Fetching status...</span>
   </div>
 `;
+
 document.body.appendChild(statusContainer);
 
 async function fetchDiscordStatus() {
@@ -30,13 +37,14 @@ async function fetchDiscordStatus() {
     avatarEl.src = avatar;
     nameEl.textContent = name;
 
-    let statusColor = "#f472b6"; // pink default
-    if (status === "online") statusColor = "#86efac";
-    if (status === "idle") statusColor = "#facc15";
-    if (status === "dnd") statusColor = "#f87171";
-    if (status === "offline") statusColor = "#9ca3af";
+    let statusColor = "text-pink-300"; // default
+    if (status === "online") statusColor = "text-green-300";
+    if (status === "idle") statusColor = "text-yellow-300";
+    if (status === "dnd") statusColor = "text-red-400";
+    if (status === "offline") statusColor = "text-gray-400";
 
-    nameEl.style.color = statusColor;
+    // reset and apply color
+    nameEl.className = `text-sm font-semibold ${statusColor}`;
     activityEl.textContent = activity;
   } catch (error) {
     console.error("Failed to fetch Discord status:", error);
@@ -45,5 +53,6 @@ async function fetchDiscordStatus() {
   }
 }
 
+// Fetch on load and refresh every 20 seconds
 fetchDiscordStatus();
 setInterval(fetchDiscordStatus, 20000);
