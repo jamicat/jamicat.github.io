@@ -11,8 +11,8 @@ statusContainer.innerHTML = `
     <span id="statusDot" class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-black"></span>
   </div>
   <div id="discordText" class="flex flex-col leading-tight">
-    <span id="discordName" class="text-pink-300 text-sm font-semibold">Loading...</span> 
-    <span id="discordActivity" class="text-pink-500 text-xs opacity-90 truncate max-w-[180px]">Fetching status...</span>
+   <span id="discordName" class="text-pink-300 text-[15px] font-semibold">Loading...</span>
+   <span id="discordActivity" class="text-pink-500 text-[13px] opacity-90 truncate max-w-[180px]">Fetching status...</span>
   </div>
 `;
 
@@ -118,6 +118,7 @@ statusContainer.addEventListener("mousemove", (e) => {
 statusContainer.addEventListener("mouseleave", () => {
   statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
 });
+
 
 
 
