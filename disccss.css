@@ -1,0 +1,25 @@
+#discordStatus {
+  @apply absolute top-4 left-4 flex items-center space-x-3 p-3 rounded-lg bg-black/40 backdrop-blur-md border border-white/10 text-pink-400 shadow-lg transition duration-300 ease-in-out;
+  font-family: 'Nunito', sans-serif;
+  z-index: 20;
+}
+
+#discordStatus:hover {
+  @apply bg-black/50 border-white/20;
+}
+
+#discordStatus img {
+  @apply w-10 h-10 rounded-full border border-pink-400/40 shadow-md;
+}
+
+#discordText {
+  @apply flex flex-col leading-tight;
+}
+
+#discordName {
+  @apply text-pink-300 text-sm font-semibold;
+}
+
+#discordActivity {
+  @apply text-pink-500 text-xs opacity-80;
+}
