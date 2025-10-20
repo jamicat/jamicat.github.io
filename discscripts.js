@@ -3,16 +3,16 @@ const discordUserId = "160899636637204482";
 const statusContainer = document.createElement("div");
 statusContainer.id = "discordStatus";
 statusContainer.className =
-  "absolute top-6 left-6 flex items-center space-x-4 p-3 rounded-xl bg-black/50 backdrop-blur-md border-[1.5px] border-white/25 text-pink-400 shadow-lg transition-transform duration-300 ease-in-out z-[9999] hover:bg-black/60 hover:border-white/35 font-[Nunito] text-lg perspective-[800px]";
+  "absolute top-6 left-6 flex items-center space-x-3 p-2.5 rounded-xl bg-black/20 backdrop-blur-md border border-white/20 text-pink-400 shadow-lg transition-transform duration-300 ease-in-out z-[9999] hover:bg-black/25 hover:border-white/30 font-[Nunito] text-base perspective-[800px]";
 
 statusContainer.innerHTML = `
   <div class="relative">
-    <img id="discordAvatar" class="w-13 h-13 rounded-full border border-pink-400/50 shadow-md" src="" alt="Discord Avatar">
-    <span id="statusDot" class="absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-black"></span>
+    <img id="discordAvatar" class="w-11 h-11 rounded-full border border-pink-400/50 shadow-md object-cover" src="" alt="Discord Avatar">
+    <span id="statusDot" class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-black"></span>
   </div>
-  <div id="discordText" class="flex flex-col leading-snug">
-    <span id="discordName" class="text-pink-300 text-base font-semibold">Loading...</span>
-    <span id="discordActivity" class="text-pink-500 text-sm opacity-90">Fetching status...</span>
+  <div id="discordText" class="flex flex-col leading-tight">
+    <span id="discordName" class="text-pink-300 text-sm font-semibold">Loading...</span>
+    <span id="discordActivity" class="text-pink-500 text-xs opacity-90 truncate max-w-[180px]">Fetching status...</span>
   </div>
 `;
 
@@ -52,7 +52,7 @@ async function fetchDiscordStatus() {
     if (status === "idle") dotColor = "bg-yellow-400";
     if (status === "dnd") dotColor = "bg-red-500";
 
-    statusDot.className = `absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-black ${dotColor}`;
+    statusDot.className = `absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-black ${dotColor}`;
 
     if (status === "offline") {
       const now = Date.now();
@@ -72,7 +72,6 @@ async function fetchDiscordStatus() {
       lastOnline = Date.now();
 
       if (listening && listening.details && listening.state) {
-        // Spotify activity (full song info)
         const song = listening.details;
         const artist = listening.state;
         const album = listening.assets?.large_text || "";
