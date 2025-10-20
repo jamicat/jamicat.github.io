@@ -12,7 +12,7 @@ statusContainer.innerHTML = `
   </div>
   <div id="discordText" class="flex flex-col leading-tight">
   <span id="discordName" class="text-pink-300 text-[16px] font-semibold">Loading...</span>
-  <span id="discordActivity" class="text-pink-500 text-[14px] opacity-90">Fetching status...</span>
+  <span id="discordActivity" class="text-pink-500 text-[14px] opacity-90 italic">Fetching status...</span>
 </div>
 `;
 
@@ -71,28 +71,29 @@ async function fetchDiscordStatus() {
     } else {
       lastOnline = Date.now();
 
-      if (listening && listening.details && listening.state) {
-        const song = listening.details;
-        const artist = listening.state;
-        const album = listening.assets?.large_text || "";
-        activityEl.textContent = `🎵 ${song} — ${artist}${album ? ` (${album})` : ""}`;
-      } else if (playing) {
-        activityEl.textContent = `🎮 Playing ${playing.name}`;
-      } else if (watching) {
-        activityEl.textContent = `📺 Watching ${watching.name}`;
-      } else if (customStatus && customStatus.state) {
-        activityEl.textContent = customStatus.state;
-      } else {
-        const prettyStatus =
-          status === "online"
-            ? "Online"
-            : status === "idle"
-            ? "Idle"
-            : status === "dnd"
-            ? "Do Not Disturb"
-            : "Offline";
-        activityEl.textContent = prettyStatus;
-      }
+     if (listening && listening.details && listening.state) {
+    const song = listening.details;
+    const artist = listening.state;
+    const album = listening.assets?.large_text || "";
+    activityEl.textContent = `Listening to ${song} — ${artist}${album ? ` (${album})` : ""}`;
+} else if (playing) {
+    activityEl.textContent = `Playing ${playing.name}`;
+} else if (watching) {
+    activityEl.textContent = `Watching ${watching.name}`;
+} else if (customStatus && customStatus.state) {
+    activityEl.textContent = customStatus.state;
+} else {
+    const prettyStatus =
+      status === "online"
+        ? "Online"
+        : status === "idle"
+        ? "Idle"
+        : status === "dnd"
+        ? "Do Not Disturb"
+        : "Offline";
+    activityEl.textContent = prettyStatus;
+}
+
     }
   } catch (error) {
     console.error("Failed to fetch Discord status:", error);
@@ -118,6 +119,7 @@ statusContainer.addEventListener("mousemove", (e) => {
 statusContainer.addEventListener("mouseleave", () => {
   statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
 });
+
 
 
 
