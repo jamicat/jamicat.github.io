@@ -3,11 +3,11 @@ const discordUserId = "160899636637204482";
 const statusContainer = document.createElement("div");
 statusContainer.id = "discordStatus";
 statusContainer.className =
-  "absolute top-6 left-6 flex items-center space-x-3 p-2.5 rounded-2xl bg-black/20 backdrop-blur-md border-[1px] border-white/10 text-pink-400 shadow-lg transition-transform duration-300 ease-in-out z-[9999] hover:bg-black/25 hover:border-white/30 font-[Nunito] text-base perspective-[800px]";
+  "absolute top-6 left-6 flex items-center space-x-3 p-2.5 rounded-3xl bg-black/20 backdrop-blur-md border-[1px] border-white/10 text-pink-400 shadow-lg transition-transform duration-300 ease-in-out z-[9999] hover:bg-black/25 hover:border-white/30 font-[Nunito] text-base perspective-[800px]";
 
 statusContainer.innerHTML = `
   <div class="relative">
-    <img id="discordAvatar" class="w-15 h-15 rounded-full border border-pink-400/50 shadow-md object-cover" src="" alt="Discord Avatar">
+    <img id="discordAvatar" class="w-[3.25rem] h-[3.25rem] rounded-full border border-pink-400/50 shadow-md object-cover" src="" alt="Discord Avatar">
     <span id="statusDot" class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-black"></span>
   </div>
   <div id="discordText" class="flex flex-col leading-tight">
@@ -118,6 +118,7 @@ statusContainer.addEventListener("mousemove", (e) => {
 statusContainer.addEventListener("mouseleave", () => {
   statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
 });
+
 
 
 
