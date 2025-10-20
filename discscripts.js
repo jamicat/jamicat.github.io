@@ -3,18 +3,16 @@ const discordUserId = "160899636637204482";
 const statusContainer = document.createElement("div");
 statusContainer.id = "discordStatus";
 statusContainer.className =
-  "absolute top-6 left-6 flex items-center space-x-4 p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 text-pink-400 shadow-lg transition duration-300 ease-in-out z-[9999] hover:bg-black/50 hover:border-white/20 font-[Nunito] text-base";
-
-
+  "absolute top-6 left-6 flex items-center space-x-5 p-4 rounded-xl bg-black/75 backdrop-blur-md border-2 border-white/25 text-pink-400 shadow-xl transition-transform duration-300 ease-in-out z-[9999] hover:bg-black/85 hover:border-white/35 font-[Nunito] text-lg perspective-[800px]";
 
 statusContainer.innerHTML = `
   <div class="relative">
-   <img id="discordAvatar" class="w-14 h-14 rounded-full border border-pink-400/40 shadow-md" src="" alt="Discord Avatar">
-    <span id="statusDot" class="absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-black"></span>
+    <img id="discordAvatar" class="w-16 h-16 rounded-full border-2 border-pink-400/50 shadow-md" src="" alt="Discord Avatar">
+    <span id="statusDot" class="absolute bottom-0 right-0 w-4.5 h-4.5 rounded-full border-2 border-black"></span>
   </div>
-  <div id="discordText" class="flex flex-col leading-tight">
-    <span id="discordName" class="text-pink-300 text-sm font-semibold">Loading...</span>
-    <span id="discordActivity" class="text-pink-500 text-xs opacity-80">Fetching status...</span>
+  <div id="discordText" class="flex flex-col leading-snug">
+    <span id="discordName" class="text-pink-300 text-base font-semibold">Loading...</span>
+    <span id="discordActivity" class="text-pink-500 text-sm opacity-90">Fetching status...</span>
   </div>
 `;
 
@@ -26,7 +24,6 @@ async function fetchDiscordStatus() {
   try {
     const response = await fetch(`https://api.lanyard.rest/v1/users/${discordUserId}`);
     const { data } = await response.json();
-
     if (!data) return;
 
     const user = data.discord_user;
@@ -50,13 +47,12 @@ async function fetchDiscordStatus() {
     avatarEl.src = avatar;
     nameEl.textContent = username;
 
-    // Status dot color
     let dotColor = "bg-gray-500";
     if (status === "online") dotColor = "bg-green-400";
     if (status === "idle") dotColor = "bg-yellow-400";
     if (status === "dnd") dotColor = "bg-red-500";
 
-    statusDot.className = `absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-black ${dotColor}`;
+    statusDot.className = `absolute bottom-0 right-0 w-5 h-5 rounded-full border-2 border-black ${dotColor}`;
 
     if (status === "offline") {
       const now = Date.now();
@@ -105,4 +101,18 @@ async function fetchDiscordStatus() {
 fetchDiscordStatus();
 setInterval(fetchDiscordStatus, 20000);
 
+// 🌟 Enhanced tilt hover effect with smoother easing
+statusContainer.addEventListener("mousemove", (e) => {
+  const rect = statusContainer.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+  const rotateX = ((y - centerY) / centerY) * 3;
+  const rotateY = ((x - centerX) / centerX) * -3;
+  statusContainer.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+});
 
+statusContainer.addEventListener("mouseleave", () => {
+  statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
+});
