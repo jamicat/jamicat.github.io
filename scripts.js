@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '3tlzF2jtzEU,lbc6CcZTp5E',
+playlist: '3tlzF2jtzEU,Q1I5WghxDu8',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -306,7 +306,7 @@ channelUrl: "https://www.youtube.com/@yungblud"
 },
 {
 title: "YUNGBLUD - War",
-videoId: "lbc6CcZTp5E",
+videoId: "Q1I5WghxDu8",
 channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@yungblud"
 }
@@ -805,6 +805,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
