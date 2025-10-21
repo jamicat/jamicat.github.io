@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'lbc6CcZTp5E',
+playlist: '3tlzF2jtzEU,lbc6CcZTp5E',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -206,7 +206,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'lbc6CcZTp5E';
+const videoId = '3tlzF2jtzEU';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -298,6 +298,12 @@ const theme = themes[themeName];
 
 function showList() {
 const playlist = [
+{
+title: "YUNGBLUD - Zombie",
+videoId: "3tlzF2jtzEU",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
+},
 {
 title: "YUNGBLUD - War",
 videoId: "lbc6CcZTp5E",
@@ -799,6 +805,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
