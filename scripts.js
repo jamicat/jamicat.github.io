@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'lbc6CcZTp5E,PsbVS6x4Stk',
+playlist: 'lbc6CcZTp5E',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -299,16 +299,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Wet Leg - mangetout",
+title: "YUNGBLUD - War",
 videoId: "lbc6CcZTp5E",
-channelAvatar: "https://yt3.googleusercontent.com/ctx8viOqBYgqYvhwkxh6IGZwaapW4j-QngUWO5yjRkLa7e2OajQaTZKDRp5NkSgOetijVpl1_Q=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@wetlegband"
-},
-{
-title: "Cavetown - Tarmac",
-videoId: "PsbVS6x4Stk",
-channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@cavetown"
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ];
 
@@ -805,6 +799,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
