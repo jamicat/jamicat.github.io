@@ -42,7 +42,7 @@ display: none;
   -webkit-mask-composite: destination-in;
   mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 1.2px, transparent 1.2px);
   mask-repeat: repeat;
-  mask-size: 2.8px 2.8px;
+  mask-size: 3px 3px;
   mask-composite: intersect;
 }
 
@@ -153,6 +153,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
