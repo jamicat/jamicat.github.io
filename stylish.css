@@ -35,18 +35,14 @@ display: none;
   transition: opacity 0.5s ease;
   background-size: cover;
   background-position: center;
-  filter: brightness(0.5);
-  -webkit-mask-image: 
-    radial-gradient(circle, rgba(0,0,0,0.4) 1px, transparent 1px),
-    radial-gradient(circle, rgba(0,0,0,0.3) 1px, transparent 1px);
-  -webkit-mask-repeat: repeat, repeat;
-  -webkit-mask-size: 3px 3px, 5px 5px; 
+  filter: brightness(0.5); 
+  -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 1px, transparent 1px);
+  -webkit-mask-repeat: repeat;
+  -webkit-mask-size: 4px 4px;
   -webkit-mask-composite: destination-in;
-  mask-image: 
-    radial-gradient(circle, rgba(0,0,0,0.4) 1px, transparent 1px),
-    radial-gradient(circle, rgba(0,0,0,0.3) 1px, transparent 1px);
-  mask-repeat: repeat, repeat;
-  mask-size: 3px 3px, 5px 5px;
+  mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 1px, transparent 1px);
+  mask-repeat: repeat;
+  mask-size: 4px 4px;
   mask-composite: intersect;
 }
 
@@ -157,6 +153,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
