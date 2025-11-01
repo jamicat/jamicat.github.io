@@ -35,20 +35,8 @@ display: none;
   transition: opacity 0.5s ease;
   background-size: cover;
   background-position: center;
-  filter: brightness(0.55);
-  position: relative;
-  overflow: hidden;
-}
-
-#videoPoster::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
-  background-size: 3px 3px;
-  mix-blend-mode: overlay;
-  opacity: 0.6;
+  image-rendering: pixelated;
+  filter: brightness(0.55) contrast(1.1);
 }
 
 #bgndVideo {
@@ -158,6 +146,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
