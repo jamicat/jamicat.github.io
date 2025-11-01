@@ -12,7 +12,7 @@ statusContainer.innerHTML = `
   </div>
   <div id="discordText" class="flex flex-col leading-tight">
   <span id="discordName" class="text-pink-300 text-[16px] font-semibold">Loading...</span>
-  <span id="discordActivity" class="text-pink-500 text-[14px] opacity-90 italic">Fetching status...</span>
+  <span id="discordActivity" class="text-pink-500 text-[13.5px] opacity-90 italic">Fetching status...</span>
 </div>
 `;
 
@@ -119,6 +119,7 @@ statusContainer.addEventListener("mousemove", (e) => {
 statusContainer.addEventListener("mouseleave", () => {
   statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
 });
+
 
 
 
