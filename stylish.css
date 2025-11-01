@@ -31,11 +31,37 @@ display: none;
 }
 
 #videoPoster {
-z-index: 0;
-transition: opacity 0.5s ease;
-background-size: cover;
-background-position: center;
-filter: blur(8px) brightness(0.5);
+  position: relative;
+  z-index: 0;
+  transition: opacity 0.5s ease;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.6); 
+  overflow: hidden;
+}
+
+#videoPoster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 3px 3px; 
+  mix-blend-mode: overlay; 
+  pointer-events: none;
+}
+
+#videoPoster::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    rgba(255, 255, 255, 0.04) 0px,
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 2px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+  pointer-events: none;
 }
 
 #bgndVideo {
@@ -143,26 +169,5 @@ min-height: 2.5em;
 #guestbookComments:hover::-webkit-scrollbar-thumb {
   background-color: #fce7f3;
   border-radius: 6px;
- 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
