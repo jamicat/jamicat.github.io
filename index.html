@@ -33,6 +33,21 @@ userSelect: 'none',
 </head>
 <body class="bg-black h-screen w-screen overflow-hidden">
 <div id="bgndVideo">
+ <svg id="dotsOverlay" xmlns="http://www.w3.org/2000/svg" style="
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  ">
+    <defs>
+      <pattern id="tinyDots" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
+        <circle cx="2" cy="2" r="0.3" fill="black" />
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#tinyDots)" />
+  </svg>
 <div id="videoPoster" class="absolute inset-0 bg-black z-0 bg-cover bg-center"></div>
 <div id="background-video-iframe" style="opacity: 0; transition: opacity 0.5s;"></div>
 </div>
@@ -124,20 +139,5 @@ class="w-6 h-6 fill-current"
 <script src="scripts.js"></script>
 <script src="./oneko.js"></script>
 <script src="discscripts.js"></script>
-<svg id="dotsOverlay" xmlns="http://www.w3.org/2000/svg" style="
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -1;
-">
-  <defs>
-    <pattern id="tinyDots" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="0.3" fill="black" />
-    </pattern>
-  </defs>
-  <rect width="100%" height="100%" fill="url(#tinyDots)" />
-</svg>
 </body>
 </html>
