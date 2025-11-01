@@ -36,11 +36,11 @@ display: none;
   background-size: cover;
   background-position: center;
   filter: brightness(0.5);
-  -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 1.4px, transparent 1.4px);
+  -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 1.6px, transparent 1.6px);
   -webkit-mask-repeat: repeat;
   -webkit-mask-size: 3px 3px; 
   -webkit-mask-composite: destination-in;
-  mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 1.4px, transparent 1.4px);
+  mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 1.6px, transparent 1.6px);
   mask-repeat: repeat;
   mask-size: 3px 3px;
   mask-composite: intersect;
@@ -153,6 +153,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
