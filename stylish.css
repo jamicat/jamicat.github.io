@@ -31,23 +31,23 @@ display: none;
 }
 
 #videoPoster {
-  position: relative; 
+  position: relative;
   z-index: 0;
   transition: opacity 0.5s ease;
   background-size: cover;
   background-position: center;
   filter: brightness(0.5);
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 #videoPoster::before {
   content: '';
   position: absolute;
   inset: 0;
-  pointer-events: none; 
-  z-index: 2; 
+  pointer-events: none;
+  z-index: 2;
   background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
-  background-size: 4px 4px; 
+  background-size: 4px 4px;
 }
 
 #bgndVideo {
@@ -157,6 +157,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
