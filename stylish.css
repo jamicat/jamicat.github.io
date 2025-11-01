@@ -44,6 +44,30 @@ display: none;
   content: "";
   position: absolute;
   inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 3px 3px;
+  opacity: 0.4;             
+  pointer-events: none;
+}
+
+#videoPoster::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    rgba(255, 255, 255, 0.05) 0px,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 2px,
+    transparent 3px
+  );
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+#videoPoster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
   background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
   background-size: 3px 3px; 
   mix-blend-mode: overlay; 
@@ -170,4 +194,5 @@ min-height: 2.5em;
   background-color: #fce7f3;
   border-radius: 6px;
 }
+
 
