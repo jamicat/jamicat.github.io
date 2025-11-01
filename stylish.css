@@ -36,16 +36,15 @@ display: none;
   background-size: cover;
   background-position: center;
   filter: brightness(0.5);
-  -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 1.5px, transparent 1.5px);
+  -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 2px, transparent 2px);
   -webkit-mask-repeat: repeat;
-  -webkit-mask-size: 3px 3px; 
+  -webkit-mask-size: 4px 4px;
   -webkit-mask-composite: destination-in;
-  mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 1.5px, transparent 1.5px);
+  mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 2px, transparent 2px);
   mask-repeat: repeat;
-  mask-size: 3px 3px;
+  mask-size: 4px 4px;
   mask-composite: intersect;
 }
-
 #bgndVideo {
 position: fixed;
 top: 0;
@@ -153,6 +152,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
