@@ -31,11 +31,23 @@ display: none;
 }
 
 #videoPoster {
-z-index: 0;
-transition: opacity 0.5s ease;
-background-size: cover;
-background-position: center;
-filter: blur(8px) brightness(0.5);
+  z-index: 0;
+  transition: opacity 0.5s ease;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  filter: brightness(0.55); /* darken a bit for contrast */
+}
+
+#videoPoster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 3px 3px;      
+  mix-blend-mode: normal;         
+  opacity: 1;
 }
 
 #bgndVideo {
@@ -144,4 +156,5 @@ min-height: 2.5em;
   background-color: #fce7f3;
   border-radius: 6px;
 }
+
 
