@@ -38,11 +38,11 @@ display: none;
   filter: brightness(0.5);
   -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 1.2px, transparent 1.2px);
   -webkit-mask-repeat: repeat;
-  -webkit-mask-size: 2px 2px; 
+  -webkit-mask-size: 2.8px 2.8px; 
   -webkit-mask-composite: destination-in;
   mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 1.2px, transparent 1.2px);
   mask-repeat: repeat;
-  mask-size: 2px 2px;
+  mask-size: 2.8px 2.8px;
   mask-composite: intersect;
 }
 
@@ -153,6 +153,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
