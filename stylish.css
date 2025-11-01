@@ -31,11 +31,19 @@ display: none;
 }
 
 #videoPoster {
-z-index: 0;
-transition: opacity 0.5s ease;
-background-size: cover;
-background-position: center;
-filter: blur(8px) brightness(0.5);
+  z-index: 0;
+  transition: opacity 0.5s ease;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.5); 
+  -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 1px, transparent 1px);
+  -webkit-mask-repeat: repeat;
+  -webkit-mask-size: 4px 4px;
+  -webkit-mask-composite: destination-in;
+  mask-image: radial-gradient(circle, rgba(0,0,0,0.5) 1px, transparent 1px);
+  mask-repeat: repeat;
+  mask-size: 4px 4px;
+  mask-composite: intersect;
 }
 
 #bgndVideo {
@@ -145,6 +153,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
