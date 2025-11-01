@@ -31,12 +31,11 @@ display: none;
 }
 
 #videoPoster {
-  z-index: 0;
-  transition: opacity 0.5s ease;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  filter: brightness(0.55); 
+z-index: 0;
+transition: opacity 0.5s ease;
+background-size: cover;
+background-position: center;
+filter: blur(8px) brightness(0.5);
 }
 
 #bgndVideo {
@@ -144,7 +143,25 @@ min-height: 2.5em;
 #guestbookComments:hover::-webkit-scrollbar-thumb {
   background-color: #fce7f3;
   border-radius: 6px;
+ 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
