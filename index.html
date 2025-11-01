@@ -124,5 +124,15 @@ class="w-6 h-6 fill-current"
 <script src="scripts.js"></script>
 <script src="./oneko.js"></script>
 <script src="discscripts.js"></script>
+  <svg width="0" height="0" style="position:absolute">
+  <defs>
+    <pattern id="tinyDots" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.1" fill="white" />
+    </pattern>
+    <mask id="dotsMask" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+      <rect width="100%" height="100%" fill="url(#tinyDots)" />
+    </mask>
+  </defs>
+</svg>
 </body>
 </html>
