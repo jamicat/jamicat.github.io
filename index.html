@@ -33,7 +33,8 @@ userSelect: 'none',
 </head>
 <body class="bg-black h-screen w-screen overflow-hidden">
 <div id="bgndVideo">
- <svg id="dotsOverlay" xmlns="http://www.w3.org/2000/svg" style="
+<div id="videoPoster" class="absolute inset-0 bg-black z-0 bg-cover bg-center"></div>
+  <svg id="dotsOverlay" xmlns="http://www.w3.org/2000/svg" style="
     position: absolute;
     inset: 0;
     width: 100%;
@@ -48,7 +49,6 @@ userSelect: 'none',
     </defs>
     <rect width="100%" height="100%" fill="url(#tinyDots)" />
   </svg>
-<div id="videoPoster" class="absolute inset-0 bg-black z-0 bg-cover bg-center"></div>
 <div id="background-video-iframe" style="opacity: 0; transition: opacity 0.5s;"></div>
 </div>
 
