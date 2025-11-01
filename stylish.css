@@ -38,8 +38,6 @@ display: none;
   background-size: cover;
   background-position: center;
   filter: brightness(0.5);
-  mask: url(#dotsMask);
-  -webkit-mask: url(#dotsMask);
 }
 
 #bgndVideo {
@@ -149,6 +147,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
