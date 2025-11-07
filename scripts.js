@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'qePhiiz7dtc,33jh7UEHA0E',
+playlist: 'qePhiiz7dtc,RhT1uKTlc2c',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -305,8 +305,8 @@ channelAvatar: "https://yt3.googleusercontent.com/4dWNJqHXMewnOehsg-Skv6txA9I_vP
 channelUrl: "https://www.youtube.com/@PalayeRoyale"
 },
 {
-title: "YUNGBLUD - Change",
-videoId: "33jh7UEHA0E",
+title: "YUNGBLUD - Fire",
+videoId: "RhT1uKTlc2c",
 channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@YUNGBLUD"
 }
@@ -805,6 +805,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
