@@ -219,7 +219,7 @@ input::placeholder {
 
 .comment-count-info {
   text-align: center;
-  margin: 16px 0 10px;
+  margin: 10px auto 15px;
   font-family: 'Nunito', sans-serif;
   font-size: 0.95em;
   color: #555;
