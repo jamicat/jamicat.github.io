@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '1F7yhM4bWCo',
+playlist: '1F7yhM4bWCo,XXUuXxzTnHY',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -303,6 +303,12 @@ title: "Cavetown - let them know they're on your mind",
 videoId: "1F7yhM4bWCo",
 channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@cavetown"
+},
+{
+title: "Chrissy Costanza - Weather",
+videoId: "XXUuXxzTnHY",
+channelAvatar: "https://yt3.googleusercontent.com/hRXMsDmW_hiQjcaVW1w-3L8Z6kv_Ya1Wtt7rhNHckXoHTBotBnf-r7M-3Agt7NfrSNJhsm66lw=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@chrissycostanza"
 }
 ];
 
@@ -799,6 +805,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
