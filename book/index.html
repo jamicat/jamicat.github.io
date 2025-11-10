@@ -380,167 +380,243 @@ label {
       loadComments();
     });
 
-    async function loadComments() {
- 
+const COMMENTS_PER_PAGE = 6;
+let currentPage = 1;
+let currentComments = [];
+let currentQuestions = [];
+
+async function loadComments() {
   try {
     const response = await fetch(webAppUrl);
     if (!response.ok) throw new Error('Failed to load comments.');
-    
+
     const { comments = [], questions = [] } = await response.json();
     console.log('Fetched comments and questions:', { comments, questions });
 
-    commentsSection.innerHTML = '';
-    comments
-      .slice() 
-      .reverse() 
-      .forEach(({ timestamp, name, species, comment }) => {
-        const questionData = questions.find(q => {
-        const commentTimestamp = new Date(timestamp).toISOString().slice(0, 19); 
-        const questionTimestamp = new Date(q.timestamp).toISOString().slice(0, 19); 
-        return (
-    q.name.trim().toLowerCase() === name.trim().toLowerCase() &&
-    commentTimestamp === questionTimestamp
-  );
-});
-        const questionText = questionData ? questionData.question : null;
-
-        const commentEl = document.createElement('div');
-        commentEl.classList.add('comment');
-
-        const nameEl = document.createElement('h4');
-        nameEl.textContent = `${species || '❓'} ${name || 'Anonymous'}`;
-        commentEl.appendChild(nameEl);
-  
-let replyEl;
-let cleanedComment = comment;
-commentEl.style.position = 'relative';
-commentEl.style.overflow = 'visible'; 
-
-const replyMatch = cleanedComment.match(/^\/([^\\]+)\\(.*)?/);
-if (replyMatch) {
-  let replyText = replyMatch[1].trim();
-  cleanedComment = replyMatch[2]?.trim() || '';
-
-  replyEl = document.createElement('div');
-  replyEl.style.marginLeft = 'auto';
-  replyEl.style.marginTop = 'auto';
-  replyEl.style.border = '0.5px solid #44444440';
-  replyEl.style.color = '#333';
-  replyEl.style.padding = '8px';
-  replyEl.style.boxSizing = 'border-box';
-  replyEl.style.whiteSpace = 'normal'; 
-  replyEl.style.borderRadius = '6px';
-  replyEl.style.fontSize = '0.85em';
-  replyEl.style.backgroundColor = 'beige';
-  replyEl.style.display = 'inline-block'; 
-  replyEl.style.maxWidth = '100%';
-
-  const replyLabel = document.createElement('div');
-  replyLabel.textContent = 'Reply from Jamie:';
-  replyLabel.style.marginBottom = '4px';
-  replyEl.appendChild(replyLabel);
-
-  const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/gi;
-  const imgurMatches = [...replyText.matchAll(imgurRegex)];
-  imgurMatches.forEach(match => {
-    const imageId = match[1];
-    const extension = match[2] || '.jpg';
-    const imgEl = document.createElement('img');
-    imgEl.src = `https://i.imgur.com/${imageId}${extension}`;
-    imgEl.alt = 'Imgur image';
-    imgEl.style.maxWidth = '50%';
-    imgEl.style.height = 'auto';
-    imgEl.style.display = 'block';
-    imgEl.style.borderRadius = '6px';
-    imgEl.style.marginBottom = '8px';
-    replyEl.appendChild(imgEl);
-  });
-
-  replyText = replyText.replace(imgurRegex, '').trim();
-
-  if (replyText) {
-    const replyTextEl = document.createElement('p');
-    replyTextEl.textContent = replyText;
-    replyTextEl.style.margin = '0';
-    replyEl.appendChild(replyTextEl);
-  }
-}
-      
-if (cleanedComment.startsWith("♡")) {
-  cleanedComment = cleanedComment.replace(/^♡\s*/, '');
-
-  const heartEl = document.createElement('span');
-  heartEl.textContent = '♡';
-  heartEl.style.position = 'absolute';
-  heartEl.style.bottom = '10px';
-  heartEl.style.right = '10px';
-  heartEl.style.color = '#FE307C';
-  heartEl.style.fontSize = '24px';
-  commentEl.appendChild(heartEl);
-}
-
-const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/g;
-const ytMatch = cleanedComment.match(ytRegex);
-if (ytMatch) {
-  const videoId = ytMatch[0].split("v=")[1]?.split("&")[0] || ytMatch[0].split("/").pop().split("?")[0];
-  const iframe = document.createElement('iframe');
-  iframe.width = "100%";
-  iframe.height = "315";
-  iframe.src = `https://www.youtube.com/embed/${videoId}`;
-  iframe.frameBorder = "0";
-  iframe.allowFullscreen = true;
-  iframe.style.borderRadius = "8px";
-
-  cleanedComment = cleanedComment.replace(ytRegex, "").trim();
-
-  commentEl.appendChild(iframe);
-}
-
-const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/g;
-const imgurMatches = [...cleanedComment.matchAll(imgurRegex)];
-if (imgurMatches.length) {
-  imgurMatches.forEach(match => {
-    const imageId = match[1];
-    const extension = match[2] || '.jpg';
-    const imgEl = document.createElement('img');
-    imgEl.src = `https://i.imgur.com/${imageId}${extension}`;
-    imgEl.alt = 'Imgur image';
-    imgEl.style.maxWidth = '50%';
-    imgEl.style.borderRadius = '8px';
-    imgEl.style.marginTop = '8px';
-    commentEl.appendChild(imgEl);
-  });
-
-  cleanedComment = cleanedComment.replace(imgurRegex, "").trim();
-}
-
-if (cleanedComment) {
-  const textEl = document.createElement('p');
-  textEl.textContent = cleanedComment;
-  commentEl.appendChild(textEl);
-}
-
-
-if (questionText) {
-  const questionEl = document.createElement('p');
-  questionEl.textContent = `Favourite food: ${questionText}`;
-  commentEl.appendChild(questionEl);
-}
-
-if (replyEl) {
-  commentEl.appendChild(replyEl);
-}
-      
-const dateEl = document.createElement('small');
-dateEl.textContent = timestamp ? formatDate(timestamp) : 'Invalid Date';
-commentEl.appendChild(dateEl);
-
-commentsSection.appendChild(commentEl);
-      });
+    currentComments = comments.slice().reverse();
+    currentQuestions = questions || [];
+    currentPage = 1; 
+    renderPage(currentPage);
   } catch (error) {
     console.error('Error loading comments:', error.message);
     commentsSection.innerHTML = '<p>Failed to load comments. Please try again later.</p>';
   }
+}
+
+function renderPage(pageNumber) {
+  const totalPages = Math.max(1, Math.ceil(currentComments.length / COMMENTS_PER_PAGE));
+  if (pageNumber < 1) pageNumber = 1;
+  if (pageNumber > totalPages) pageNumber = totalPages;
+  currentPage = pageNumber;
+
+  commentsSection.innerHTML = '';
+
+  const startIdx = (pageNumber - 1) * COMMENTS_PER_PAGE;
+  const pageSlice = currentComments.slice(startIdx, startIdx + COMMENTS_PER_PAGE);
+
+  pageSlice.forEach(({ timestamp, name, species, comment }) => {
+    const questionData = currentQuestions.find(q => {
+      const commentTimestamp = new Date(timestamp).toISOString().slice(0, 19);
+      const questionTimestamp = new Date(q.timestamp).toISOString().slice(0, 19);
+      return (
+        q.name.trim().toLowerCase() === (name || '').trim().toLowerCase() &&
+        commentTimestamp === questionTimestamp
+      );
+    });
+    const questionText = questionData ? questionData.question : null;
+
+    const commentEl = document.createElement('div');
+    commentEl.classList.add('comment');
+
+    const nameEl = document.createElement('h4');
+    nameEl.textContent = `${species || '❓'} ${name || 'Anonymous'}`;
+    commentEl.appendChild(nameEl);
+
+    let replyEl;
+    let cleanedComment = comment;
+    commentEl.style.position = 'relative';
+    commentEl.style.overflow = 'visible';
+
+    const replyMatch = cleanedComment && cleanedComment.match(/^\/([^\\]+)\\(.*)?/);
+    if (replyMatch) {
+      let replyText = replyMatch[1].trim();
+      cleanedComment = replyMatch[2]?.trim() || '';
+
+      replyEl = document.createElement('div');
+      replyEl.style.marginLeft = 'auto';
+      replyEl.style.marginTop = 'auto';
+      replyEl.style.border = '0.5px solid #44444440';
+      replyEl.style.color = '#333';
+      replyEl.style.padding = '8px';
+      replyEl.style.boxSizing = 'border-box';
+      replyEl.style.whiteSpace = 'normal';
+      replyEl.style.borderRadius = '6px';
+      replyEl.style.fontSize = '0.85em';
+      replyEl.style.backgroundColor = 'beige';
+      replyEl.style.display = 'inline-block';
+      replyEl.style.maxWidth = '100%';
+
+      const replyLabel = document.createElement('div');
+      replyLabel.textContent = 'Reply from Jamie:';
+      replyLabel.style.marginBottom = '4px';
+      replyEl.appendChild(replyLabel);
+
+      const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/gi;
+      const imgurMatches = [...replyText.matchAll(imgurRegex)];
+      imgurMatches.forEach(match => {
+        const imageId = match[1];
+        const extension = match[2] || '.jpg';
+        const imgEl = document.createElement('img');
+        imgEl.src = `https://i.imgur.com/${imageId}${extension}`;
+        imgEl.alt = 'Imgur image';
+        imgEl.style.maxWidth = '50%';
+        imgEl.style.height = 'auto';
+        imgEl.style.display = 'block';
+        imgEl.style.borderRadius = '6px';
+        imgEl.style.marginBottom = '8px';
+        replyEl.appendChild(imgEl);
+      });
+
+      replyText = replyText.replace(imgurRegex, '').trim();
+
+      if (replyText) {
+        const replyTextEl = document.createElement('p');
+        replyTextEl.textContent = replyText;
+        replyTextEl.style.margin = '0';
+        replyEl.appendChild(replyTextEl);
+      }
+    }
+
+    if (cleanedComment && cleanedComment.startsWith("♡")) {
+      cleanedComment = cleanedComment.replace(/^♡\s*/, '');
+      const heartEl = document.createElement('span');
+      heartEl.textContent = '♡';
+      heartEl.style.position = 'absolute';
+      heartEl.style.bottom = '10px';
+      heartEl.style.right = '10px';
+      heartEl.style.color = '#FE307C';
+      heartEl.style.fontSize = '24px';
+      commentEl.appendChild(heartEl);
+    }
+
+    if (cleanedComment) {
+      const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/g;
+      const ytMatch = cleanedComment.match(ytRegex);
+      if (ytMatch) {
+        const videoId = ytMatch[0].split("v=")[1]?.split("&")[0] || ytMatch[0].split("/").pop().split("?")[0];
+        const iframe = document.createElement('iframe');
+        iframe.width = "100%";
+        iframe.height = "315";
+        iframe.src = `https://www.youtube.com/embed/${videoId}`;
+        iframe.frameBorder = "0";
+        iframe.allowFullscreen = true;
+        iframe.style.borderRadius = "8px";
+        cleanedComment = cleanedComment.replace(ytRegex, "").trim();
+        commentEl.appendChild(iframe);
+      }
+    }
+
+    if (cleanedComment) {
+      const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/g;
+      const imgurMatches = [...cleanedComment.matchAll(imgurRegex)];
+      if (imgurMatches.length) {
+        imgurMatches.forEach(match => {
+          const imageId = match[1];
+          const extension = match[2] || '.jpg';
+          const imgEl = document.createElement('img');
+          imgEl.src = `https://i.imgur.com/${imageId}${extension}`;
+          imgEl.alt = 'Imgur image';
+          imgEl.style.maxWidth = '50%';
+          imgEl.style.borderRadius = '8px';
+          imgEl.style.marginTop = '8px';
+          commentEl.appendChild(imgEl);
+        });
+        cleanedComment = cleanedComment.replace(imgurRegex, "").trim();
+      }
+    }
+
+    if (cleanedComment) {
+      const textEl = document.createElement('p');
+      textEl.textContent = cleanedComment;
+      commentEl.appendChild(textEl);
+    }
+
+    if (questionText) {
+      const questionEl = document.createElement('p');
+      questionEl.textContent = `Favourite food: ${questionText}`;
+      commentEl.appendChild(questionEl);
+    }
+
+    if (replyEl) {
+      commentEl.appendChild(replyEl);
+    }
+
+    const dateEl = document.createElement('small');
+    dateEl.textContent = timestamp ? formatDate(timestamp) : 'Invalid Date';
+    commentEl.appendChild(dateEl);
+
+    commentsSection.appendChild(commentEl);
+  });
+
+  renderPaginationControls(totalPages);
+}
+
+function renderPaginationControls(totalPages) {
+
+  const existing = document.querySelector('.pagination');
+  if (existing) existing.remove();
+
+  const paginationContainer = document.createElement('div');
+  paginationContainer.className = 'pagination';
+  paginationContainer.style.textAlign = 'center';
+  paginationContainer.style.marginTop = '20px';
+
+  const prevBtn = document.createElement('button');
+  prevBtn.textContent = '← Prev';
+  prevBtn.className = 'submit-button';
+  prevBtn.disabled = (currentPage === 1);
+  prevBtn.onclick = () => { if (currentPage > 1) renderPage(currentPage - 1); };
+  paginationContainer.appendChild(prevBtn);
+
+  const createPageButton = (num) => {
+    const btn = document.createElement('button');
+    btn.textContent = num;
+    btn.className = 'submit-button';
+    btn.style.margin = '0 4px';
+    if (num === currentPage) {
+      btn.disabled = true;
+      btn.style.transform = 'scale(1.02)';
+    }
+    btn.onclick = () => renderPage(num);
+    return btn;
+  };
+
+  if (totalPages <= 10) {
+    for (let i = 1; i <= totalPages; i++) {
+      paginationContainer.appendChild(createPageButton(i));
+    }
+  } else {
+    paginationContainer.appendChild(createPageButton(1));
+    if (currentPage > 4) {
+      const dots = document.createElement('span'); dots.textContent = ' ... '; paginationContainer.appendChild(dots);
+    }
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+    for (let i = start; i <= end; i++) paginationContainer.appendChild(createPageButton(i));
+    if (currentPage < totalPages - 3) {
+      const dots2 = document.createElement('span'); dots2.textContent = ' ... '; paginationContainer.appendChild(dots2);
+    }
+    paginationContainer.appendChild(createPageButton(totalPages));
+  }
+
+  const nextBtn = document.createElement('button');
+  nextBtn.textContent = 'Next →';
+  nextBtn.className = 'submit-button';
+  nextBtn.disabled = (currentPage === totalPages);
+  nextBtn.onclick = () => { if (currentPage < totalPages) renderPage(currentPage + 1); };
+  paginationContainer.appendChild(nextBtn);
+
+  commentsSection.appendChild(paginationContainer);
 }
 
     function formatDate(timestamp) {
