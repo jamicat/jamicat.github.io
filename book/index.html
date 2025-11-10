@@ -300,7 +300,8 @@ label {
 
    </form>
    </div>
-	
+
+  <div id="comment-info" class="comment-count-info"></div>
   <div class="comments-section" id="comments-section"></div>
 
 <!--button id="mode-toggle" style="
@@ -409,6 +410,16 @@ function renderPage(pageNumber) {
   if (pageNumber > totalPages) pageNumber = totalPages;
   currentPage = pageNumber;
 
+	const totalPages = Math.max(1, Math.ceil(currentComments.length / COMMENTS_PER_PAGE));
+const totalComments = currentComments.length;
+const startIndex = (pageNumber - 1) * COMMENTS_PER_PAGE + 1;
+const endIndex = Math.min(startIndex + COMMENTS_PER_PAGE - 1, totalComments);
+
+const infoBox = document.getElementById('comment-info');
+if (infoBox) {
+  infoBox.textContent = `Page ${currentPage} of ${totalPages} — Showing comments ${startIndex}–${endIndex} of ${totalComments}`;
+}
+	
   commentsSection.innerHTML = '';
 
   const startIdx = (pageNumber - 1) * COMMENTS_PER_PAGE;
@@ -569,17 +580,6 @@ function renderPaginationControls(totalPages) {
  const totalComments = currentComments.length;
  const startIndex = (currentPage - 1) * COMMENTS_PER_PAGE + 1;
  const endIndex = Math.min(startIndex + COMMENTS_PER_PAGE - 1, totalComments);
-
- const infoEl = document.createElement('div');
- infoEl.className = 'comment-count-info';
- infoEl.textContent = `Showing comments ${startIndex}–${endIndex} of ${totalComments}`;
- infoEl.style.textAlign = 'center';
- infoEl.style.marginTop = '20px';
- infoEl.style.fontFamily = 'Nunito, sans-serif';
- infoEl.style.color = '#555';
- infoEl.style.fontSize = '0.95em';
-
- commentsSection.appendChild(infoEl);
 	
   const paginationContainer = document.createElement('div');
   paginationContainer.className = 'pagination';
