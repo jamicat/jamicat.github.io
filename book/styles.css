@@ -216,3 +216,11 @@ input::placeholder {
   color: #666;
   font-family: 'Nunito', sans-serif;
 }
+
+.comment-count-info {
+  text-align: center;
+  margin: 16px 0 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95em;
+  color: #555;
+}
