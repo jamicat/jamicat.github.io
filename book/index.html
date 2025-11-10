@@ -570,6 +570,11 @@ function renderPaginationControls(totalPages) {
   paginationContainer.className = 'pagination';
   paginationContainer.style.textAlign = 'center';
   paginationContainer.style.marginTop = '20px';
+  paginationContainer.style.display = 'flex';
+  paginationContainer.style.flexWrap = 'wrap';
+  paginationContainer.style.justifyContent = 'center';
+  paginationContainer.style.alignItems = 'center';
+  paginationContainer.style.gap = '6px';
 
   const prevBtn = document.createElement('button');
   prevBtn.textContent = '← Prev';
