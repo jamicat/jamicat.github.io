@@ -410,15 +410,14 @@ function renderPage(pageNumber) {
   if (pageNumber > totalPages) pageNumber = totalPages;
   currentPage = pageNumber;
 
-	const totalPages = Math.max(1, Math.ceil(currentComments.length / COMMENTS_PER_PAGE));
-const totalComments = currentComments.length;
-const startIndex = (pageNumber - 1) * COMMENTS_PER_PAGE + 1;
-const endIndex = Math.min(startIndex + COMMENTS_PER_PAGE - 1, totalComments);
+  const totalComments = currentComments.length;
+  const startIndex = (pageNumber - 1) * COMMENTS_PER_PAGE + 1;
+  const endIndex = Math.min(startIndex + COMMENTS_PER_PAGE - 1, totalComments);
 
-const infoBox = document.getElementById('comment-info');
-if (infoBox) {
-  infoBox.textContent = `Page ${currentPage} of ${totalPages} — Showing comments ${startIndex}–${endIndex} of ${totalComments}`;
-}
+  const infoBox = document.getElementById('comment-info');
+  if (infoBox) {
+    infoBox.textContent = `Page ${currentPage} of ${totalPages} — Showing comments ${startIndex}–${endIndex} of ${totalComments}`;
+  }
 	
   commentsSection.innerHTML = '';
 
