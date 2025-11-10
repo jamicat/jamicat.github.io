@@ -566,6 +566,21 @@ function renderPaginationControls(totalPages) {
   const existing = document.querySelector('.pagination');
   if (existing) existing.remove();
 
+ const totalComments = currentComments.length;
+ const startIndex = (currentPage - 1) * COMMENTS_PER_PAGE + 1;
+ const endIndex = Math.min(startIndex + COMMENTS_PER_PAGE - 1, totalComments);
+
+ const infoEl = document.createElement('div');
+ infoEl.className = 'comment-count-info';
+ infoEl.textContent = `Showing comments ${startIndex}–${endIndex} of ${totalComments}`;
+ infoEl.style.textAlign = 'center';
+ infoEl.style.marginTop = '20px';
+ infoEl.style.fontFamily = 'Nunito, sans-serif';
+ infoEl.style.color = '#555';
+ infoEl.style.fontSize = '0.95em';
+
+ commentsSection.appendChild(infoEl);
+	
   const paginationContainer = document.createElement('div');
   paginationContainer.className = 'pagination';
   paginationContainer.style.textAlign = 'center';
