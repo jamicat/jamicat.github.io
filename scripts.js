@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'qePhiiz7dtc,RhT1uKTlc2c',
+playlist: '1F7yhM4bWCo',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -206,7 +206,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'qePhiiz7dtc';
+const videoId = '1F7yhM4bWCo';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -299,16 +299,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "PALAYE ROYALE - No Love In LA",
-videoId: "qePhiiz7dtc",
-channelAvatar: "https://yt3.googleusercontent.com/4dWNJqHXMewnOehsg-Skv6txA9I_vPySXPi1UqJI0y1CvyWQGqt0ydoRGwBlS-xdi-ufoDKMmQ=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@PalayeRoyale"
-},
-{
-title: "YUNGBLUD - Fire",
-videoId: "RhT1uKTlc2c",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@YUNGBLUD"
+title: "Cavetown - let them know they're on your mind",
+videoId: "1F7yhM4bWCo",
+channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
 }
 ];
 
@@ -805,6 +799,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
