@@ -180,3 +180,11 @@ input::placeholder {
 
 }
 
+.pagination .submit-button {
+  margin: 6px 4px;
+  padding: 8px 10px;
+  font-family: 'nunito', sans-serif;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.pagination span { margin: 0 6px; color: #666; font-family: 'nunito', sans-serif; }
