@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '1F7yhM4bWCo,XXUuXxzTnHY',
+playlist: 'XXUuXxzTnHY,0lhDLwW-v1g',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -206,7 +206,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '1F7yhM4bWCo';
+const videoId = 'XXUuXxzTnHY';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -299,16 +299,16 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Cavetown - let them know they're on your mind",
-videoId: "1F7yhM4bWCo",
-channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@cavetown"
-},
-{
 title: "Chrissy Costanza - Weather",
 videoId: "XXUuXxzTnHY",
 channelAvatar: "https://yt3.googleusercontent.com/hRXMsDmW_hiQjcaVW1w-3L8Z6kv_Ya1Wtt7rhNHckXoHTBotBnf-r7M-3Agt7NfrSNJhsm66lw=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@chrissycostanza"
+},
+{
+title: "YUNGBLUD - Ozzy Tribute Medley 2025 VMAs",
+videoId: "0lhDLwW-v1g",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ];
 
@@ -805,6 +805,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
