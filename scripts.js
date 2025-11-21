@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'cdavEE5fWV0',
+playlist: 'QgyW9qjgIf4',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -206,7 +206,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'cdavEE5fWV0';
+const videoId = 'QgyW9qjgIf4';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -299,10 +299,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "South Arcade",
-videoId: "cdavEE5fWV0",
-channelAvatar: "https://yt3.googleusercontent.com/1XVSDR-XAhQ6v_djDiG7lHCdk2v1JxiF1lh8FeH0dosLddhuMFfbKgfA-LZXfebNk84hstFgpQ=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@southarcadeuk"
+title: "Jane Remover — Dancing with your eyes closed",
+videoId: "QgyW9qjgIf4",
+channelAvatar: "https://yt3.googleusercontent.com/OwNIBpyWkwEtJTXSOuu7ojmBT2QwSZyul20FcTE79yy3R4Awcdns_jrUS-ynWceACPIHNwQLMA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@janeremover"
 }
 ];
 
@@ -799,6 +799,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
