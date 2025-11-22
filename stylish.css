@@ -4,7 +4,6 @@ src: url('nunito.ttf') format('truetype');
 } 
 
 html, body {
-cursor: url("rat.png"), auto;
 font-family: 'Nunito', sans-serif;
 margin: 0;
 padding: 0;
@@ -148,6 +147,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
