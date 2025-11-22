@@ -80,8 +80,8 @@ cursor: move;
 }
 
 .avatar-icon {
-width: 110px;
-height: 110px;
+width: 132px;
+height: 132px;
 border-radius: 50%;
 margin-right: 0.5rem;
 object-fit: cover;
@@ -147,6 +147,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
