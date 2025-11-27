@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '9DiJJVfZXUk,-itZVX-SUkI',
+playlist: '-itZVX-SUkI,uREGk0fT0GQ',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -206,7 +206,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '9DiJJVfZXUk';
+const videoId = '-itZVX-SUkI';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -299,18 +299,19 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Cavetown - Baby Spoon",
-videoId: "9DiJJVfZXUk",
-channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@cavetown"
-}
-,
-{
 title: "Cavetown – Lemon Boy",
 videoId: "-itZVX-SUkI",
 channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@cavetown"
 }
+,
+{
+title: "Cavetown - Boys Will Be Bugs",
+videoId: "uREGk0fT0GQ",
+channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
+}
+
 
 
 ];
@@ -808,6 +809,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
