@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'Ew3WUpPw2nA,pg4K9pfKl1U',
+playlist: '-YS2pCptOP0,kb0U4oTiddI',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -206,7 +206,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'Ew3WUpPw2nA';
+const videoId = '-YS2pCptOP0';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -299,15 +299,15 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Jane Remover — Magic I Want U",
-videoId: "Ew3WUpPw2nA",
-channelAvatar: "https://yt3.googleusercontent.com/OwNIBpyWkwEtJTXSOuu7ojmBT2QwSZyul20FcTE79yy3R4Awcdns_jrUS-ynWceACPIHNwQLMA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@janeremover"
+title: "YUNGBLUD - Problems",
+videoId: "-YS2pCptOP0",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ,
 {
-title: "YUGBLUD - I Love You, Will You Marry Me",
-videoId: "pg4K9pfKl1U",
+title: "YUNGBLUD - Wild Man",
+videoId: "kb0U4oTiddI",
 channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@yungblud"
 }
@@ -807,6 +807,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
