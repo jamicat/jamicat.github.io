@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '-itZVX-SUkI,uREGk0fT0GQ',
+playlist: 'pg4K9pfKl1U,9DiJJVfZXUk',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -206,7 +206,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '-itZVX-SUkI';
+const videoId = 'pg4K9pfKl1U';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -299,15 +299,15 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Cavetown – Lemon Boy",
-videoId: "-itZVX-SUkI",
-channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@cavetown"
+title: "YUGBLUD - I Love You, Will You Marry Me",
+videoId: "pg4K9pfKl1U",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ,
 {
-title: "Cavetown - Boys Will Be Bugs",
-videoId: "uREGk0fT0GQ",
+title: "Cavetown - Baby Spoon",
+videoId: "9DiJJVfZXUk",
 channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@cavetown"
 }
@@ -809,6 +809,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
