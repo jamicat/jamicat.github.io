@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'xgB7aDp40Y4',
+playlist: 'sUdxzX0WxhI',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -206,7 +206,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'xgB7aDp40Y4';
+const videoId = 'sUdxzX0WxhI';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -299,10 +299,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "cavetown",
-videoId: "xgB7aDp40Y4",
-channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@cavetown"
+title: "Wet Leg - pokemon",
+videoId: "sUdxzX0WxhI",
+channelAvatar: "https://yt3.googleusercontent.com/ctx8viOqBYgqYvhwkxh6IGZwaapW4j-QngUWO5yjRkLa7e2OajQaTZKDRp5NkSgOetijVpl1_Q=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@wetlegband"
 }
 ];
 
@@ -799,6 +799,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
