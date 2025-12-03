@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'Kvy25Z8Mq7k',
+playlist: 'Kvy25Z8Mq7k,G7ZK2LfDa-s',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -303,6 +303,13 @@ title: "cavetown",
 videoId: "Kvy25Z8Mq7k",
 channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@cavetown"
+}
+,
+{
+title: "c'est la vie ♫",
+videoId: "G7ZK2LfDa-s",
+channelAvatar: "https://yt3.googleusercontent.com/lo8p4JUiTOXejqRbVtc4pPWSZnvvJoVU3zg7Ce7dnhd3J18g7zigTbO9QdN64wpROwXyUohCTj4=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@comfibeats"
 }
 ];
 
@@ -799,6 +806,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
