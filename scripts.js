@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'Kvy25Z8Mq7k',
+playlist: 'xgB7aDp40Y4',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -206,7 +206,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'Kvy25Z8Mq7k';
+const videoId = 'xgB7aDp40Y4';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -300,7 +300,7 @@ function showList() {
 const playlist = [
 {
 title: "cavetown",
-videoId: "Kvy25Z8Mq7k",
+videoId: "xgB7aDp40Y4",
 channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@cavetown"
 }
@@ -799,6 +799,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
