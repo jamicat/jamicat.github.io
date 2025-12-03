@@ -165,7 +165,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '-YS2pCptOP0,kb0U4oTiddI',
+playlist: 'Kvy25Z8Mq7k',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -206,7 +206,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '-YS2pCptOP0';
+const videoId = 'Kvy25Z8Mq7k';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -299,19 +299,11 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - Problems",
-videoId: "-YS2pCptOP0",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@yungblud"
+title: "cavetown",
+videoId: "Kvy25Z8Mq7k",
+channelAvatar: "https://yt3.googleusercontent.com/JZgFH5N0uAcUAcDyudkURktZQrXcd4uVQDkEgyss2Re5AI5ytGPmyCEuIXmdEnKAvgxwHfcyFA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
 }
-,
-{
-title: "YUNGBLUD - Wild Man",
-videoId: "kb0U4oTiddI",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@yungblud"
-}
-
 ];
 
 let html = `<div class="space-y-4 mt-4">`;
@@ -807,6 +799,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
