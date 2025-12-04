@@ -89,7 +89,6 @@ function initTyped(themeName = 'Default') {
   const strings = [
     `<span class="text-white text-base mr-2 ${glow}">Meoeoeoeoeoeow, welcome!</span>`,
     `<span class="text-white text-base mr-2 ${glow}">Click on the galaxy icon!</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">Check out the guestbook!</span>`,
     `<span class="text-white text-base mr-2 ${glow}">ฅ(^ω^)ฅ</span>`,
     `<span class="text-white text-base mr-2 ${glow}">(๑•ω•́ฅ✧</span>`,
     `<span class="text-white text-base mr-2 ${glow}">(ฅ･ω･´)っ=</span>`,
@@ -799,41 +798,6 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
