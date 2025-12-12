@@ -38,7 +38,7 @@ function applyTheme(themeName) {
   document.documentElement.setAttribute('data-theme', themeName);
 
   document.querySelectorAll('.terminal-button').forEach(btn => {
-    btn.className = `terminal-button ${theme.buttonColor} ${theme.buttonTextColor} px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95`;
+    btn.className = `terminal-button ${theme.buttonColor} ${theme.buttonTextColor} px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95 text-sm`;
   });
 
   const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme');
@@ -812,6 +812,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
