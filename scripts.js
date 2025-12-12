@@ -6,7 +6,7 @@ const themes = {
     buttonTextColor: 'text-black',
     iconColor: 'text-red-300 hover:text-red-400',
     galaxyActive: 'text-purple-200',
-    galaxyInactive: 'text-pink-500',
+    galaxyInactive: 'text-pink-50',
     terminalColor: 'bg-default/10'
   },
   Yungblud: {
@@ -812,6 +812,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
