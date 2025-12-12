@@ -164,7 +164,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'v97FPN2US2o',
+playlist: 'q9ySYl-4SvU',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -205,7 +205,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '16QfyHfZt6o';
+const videoId = 'q9ySYl-4SvU';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -298,10 +298,10 @@ rewind10.click();
 function showList() {
 const playlist = [
 {
-title: "Joji - Daylight",
-videoId: "v97FPN2US2o",
-channelAvatar: "https://yt3.googleusercontent.com/LazwEX8dLuJiIKdATv0uzf6tSNF58dlPPLSPCWeV-RhuLziqCXCRBjfmyzCzdrWpGUvUfmq_rg=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@88rising"
+title: "lilypichu - breathe",
+videoId: "q9ySYl-4SvU",
+channelAvatar: "https://yt3.googleusercontent.com/lo8p4JUiTOXejqRbVtc4pPWSZnvvJoVU3zg7Ce7dnhd3J18g7zigTbO9QdN64wpROwXyUohCTj4=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@comfibeats"
 }
 ];
 
@@ -798,6 +798,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
