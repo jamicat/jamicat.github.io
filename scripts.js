@@ -87,14 +87,14 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-blue-glow';
 
   const strings = [
-    `<span class="text-white text-base mr-2 ${glow}">Meoeoeoeoeoeow, welcome!</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">Click on the galaxy icon!</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">ฅ(^ω^)ฅ</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">(๑•ω•́ฅ✧</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">(ฅ･ω･´)っ=</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">ฅ*•ω•*ฅ</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">ฅ^•ﻌ•^ฅ</span>`,
-    `<span class="text-white text-base mr-2 ${glow}">⊱ฅ•ω•ฅ⊰</span>`
+    `<span class="text-white text-xl mr-2 ${glow}">Meoeoeoeoeoeow, welcome!</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">Click on the galaxy icon!</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">ฅ(^ω^)ฅ</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">(๑•ω•́ฅ✧</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">(ฅ･ω･´)っ=</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">ฅ*•ω•*ฅ</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">ฅ^•ﻌ•^ฅ</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">⊱ฅ•ω•ฅ⊰</span>`
   ];
 
   typedInstance = new Typed('#typed', {
@@ -812,6 +812,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
