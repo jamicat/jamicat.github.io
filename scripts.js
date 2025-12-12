@@ -164,7 +164,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'q9ySYl-4SvU',
+playlist: 'gCYqZP70dLk,q9ySYl-4SvU',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -205,7 +205,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'q9ySYl-4SvU';
+const videoId = 'gCYqZP70dLk';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -297,6 +297,13 @@ rewind10.click();
 
 function showList() {
 const playlist = [
+{
+title: "lilypichu - into dust",
+videoId: "gCYqZP70dLk",
+channelAvatar: "https://yt3.googleusercontent.com/lo8p4JUiTOXejqRbVtc4pPWSZnvvJoVU3zg7Ce7dnhd3J18g7zigTbO9QdN64wpROwXyUohCTj4=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@comfibeats"
+}
+,
 {
 title: "lilypichu - breathe",
 videoId: "q9ySYl-4SvU",
@@ -798,6 +805,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
