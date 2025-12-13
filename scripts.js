@@ -9,7 +9,7 @@ const themes = {
     galaxyInactive: 'text-pink-50',
     terminalColor: 'bg-default/10'
   },
-  Galaxy: {
+  Yungblud: {
     glowPrimary: 'text-blue-glow',
     glowSecondary: 'text-pink-glow',
     buttonColor: 'bg-red-300 hover:bg-red-400',
@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const changeThemeBtn = document.getElementById('changeTheme');
   const tooltip = document.getElementById('tooltip');
   const defaultBtn = document.getElementById('themeDefault');
-  const galaxyBtn = document.getElementById('themeGalaxy');
+  const yungbludBtn = document.getElementById('themeYungblud');
   const aeroBtn = document.getElementById('themeAero');
 
   changeThemeBtn.addEventListener('click', (e) => {
@@ -373,9 +373,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initTyped('Default');
     hideTooltip();
   });
-  galaxyBtn.addEventListener('click', () => {
-    applyTheme('Galaxy');
-    initTyped('Galaxy');
+  yungbludBtn.addEventListener('click', () => {
+    applyTheme('Yungblud');
+    initTyped('Yungblud');
     hideTooltip();
   });
   aeroBtn.addEventListener('click', () => {
@@ -812,8 +812,6 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
-
-
 
 
 
