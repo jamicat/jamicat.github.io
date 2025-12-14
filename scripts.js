@@ -7,7 +7,7 @@ const themes = {
     iconColor: 'text-red-300 hover:text-red-400',
     galaxyActive: 'text-purple-200',
     galaxyInactive: 'text-pink-50',
-    terminalColor: 'bg-pink-200/10'
+    terminalColor: 'bg-default/10'
   },
   Stars: {
     glowPrimary: 'text-blue-glow',
@@ -17,7 +17,7 @@ const themes = {
     iconColor: 'text-red-300 hover:text-red-400',
     galaxyActive: 'text-purple-200',
     galaxyInactive: 'text-purple-50',
-    terminalColor: 'bg-pink-200/10'
+    terminalColor: 'bg-default/10'
   },
   Aero: {
     glowPrimary: 'text-blue-glow',
@@ -812,6 +812,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
