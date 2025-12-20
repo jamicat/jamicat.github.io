@@ -293,7 +293,7 @@ const theme = themes[themeName];
   }
 });
 
-rewind10.click();
+//rewind10.click();
 
 function showList() {
 const playlist = [
@@ -798,6 +798,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
