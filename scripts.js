@@ -164,7 +164,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'G7ZK2LfDa-s,gCYqZP70dLk,q9ySYl-4SvU',
+playlist: 'QiHDqw4q96c',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -205,7 +205,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'G7ZK2LfDa-s';
+const videoId = 'QiHDqw4q96c';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -298,24 +298,10 @@ rewind10.click();
 function showList() {
 const playlist = [
 {
-title: "lilypichu - c'est la vie",
-videoId: "G7ZK2LfDa-s",
-channelAvatar: "https://yt3.googleusercontent.com/lo8p4JUiTOXejqRbVtc4pPWSZnvvJoVU3zg7Ce7dnhd3J18g7zigTbO9QdN64wpROwXyUohCTj4=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@comfibeats"
-}
-,
-{
-title: "lilypichu - into dust",
-videoId: "gCYqZP70dLk",
-channelAvatar: "https://yt3.googleusercontent.com/lo8p4JUiTOXejqRbVtc4pPWSZnvvJoVU3zg7Ce7dnhd3J18g7zigTbO9QdN64wpROwXyUohCTj4=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@comfibeats"
-}
-,
-{
-title: "lilypichu - breathe",
-videoId: "q9ySYl-4SvU",
-channelAvatar: "https://yt3.googleusercontent.com/lo8p4JUiTOXejqRbVtc4pPWSZnvvJoVU3zg7Ce7dnhd3J18g7zigTbO9QdN64wpROwXyUohCTj4=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@comfibeats"
+title: "YUNGBLUD - Zombie (Acoustic)",
+videoId: "QiHDqw4q96c",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ];
 
@@ -812,6 +798,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
