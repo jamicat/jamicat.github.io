@@ -164,7 +164,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'QiHDqw4q96c',
+playlist: 'qGg-hitVZKQ',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -205,7 +205,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'QiHDqw4q96c';
+const videoId = 'qGg-hitVZKQ';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -298,10 +298,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - Zombie (Acoustic)",
-videoId: "QiHDqw4q96c",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@yungblud"
+title: "Wet Leg - Ur Mum",
+videoId: "qGg-hitVZKQ",
+channelAvatar: "https://yt3.googleusercontent.com/ctx8viOqBYgqYvhwkxh6IGZwaapW4j-QngUWO5yjRkLa7e2OajQaTZKDRp5NkSgOetijVpl1_Q=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@wetlegband"
 }
 ];
 
@@ -798,6 +798,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
