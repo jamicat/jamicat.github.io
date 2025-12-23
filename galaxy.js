@@ -6,6 +6,7 @@ import { TWEEN } from "https://cdn.skypack.dev/three@0.136.0/examples/jsm/libs/t
 
 
 console.clear()
+const canvas = document.getElementById("canvas")
 // ------------------------ //
 // SETUP
 
@@ -448,4 +449,5 @@ vec3 scatter (vec3 seed) {
 
   return vec3(x, y, z);
 }
+
 `
