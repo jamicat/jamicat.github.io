@@ -92,7 +92,7 @@ document.getElementById("weather-output").textContent = "unable to fetch.";
     });
 
     const videoList = [
-        "https://www.youtube.com/embed/NIWALAgvz2U?enablejsapi=1&autoplay=1",
+        "https://www.youtube.com/embed/wSumaFZoZpg?enablejsapi=1&autoplay=1",
         "https://www.youtube.com/embed/BMA171qWYZk?enablejsapi=1&autoplay=1"
     ];
 
@@ -442,4 +442,5 @@ typeEffect();
 window.addEventListener('load', () => {
     document.getElementById('music-toggle-button').click();
     /*document.querySelector('.button3').click();*/
+
 });
