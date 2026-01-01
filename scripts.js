@@ -164,7 +164,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'gCYqZP70dLk',
+playlist: '3tlzF2jtzEU',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -205,7 +205,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'gCYqZP70dLk';
+const videoId = '3tlzF2jtzEU';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -298,10 +298,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "into dust ♫",
-videoId: "gCYqZP70dLk",
-channelAvatar: "https://yt3.googleusercontent.com/lo8p4JUiTOXejqRbVtc4pPWSZnvvJoVU3zg7Ce7dnhd3J18g7zigTbO9QdN64wpROwXyUohCTj4=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@comfibeats"
+title: "YUNGBLUD - Zombie",
+videoId: "3tlzF2jtzEU",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ];
 
@@ -798,6 +798,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
