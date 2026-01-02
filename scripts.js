@@ -896,7 +896,7 @@ function resetTerminal() {
     <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
       <button class="terminal-button ml-4" onclick="siteFAQ()">About</button>
       <button class="terminal-button ml-2" onclick="showArt()">Art</button>
-      <button class="terminal-button ml-5" onclick="window.open('https://www.jmie.co.uk/book/', '_blank');">Guestbook</button>
+      <button class="terminal-button ml-5" onclick="loadGuestbookComments()">Guestbook</button>
       <button class="terminal-button" onclick="showList()">Playlist</button>
     </div>
   `);
@@ -916,6 +916,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
