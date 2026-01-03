@@ -700,7 +700,7 @@ return;
 }
 
 if (now - lastGbSubmissionTime < 300000) {
-alert("5 minutes between each submission.");
+alert("5 minutes between submits");
 return;
 }
 
@@ -770,7 +770,7 @@ async function loadGuestbookComments() {
     return;
   }
 
-  container.innerHTML = '<p class="text-pink-50 text-sm">Loading ฅᨐฅ...</p>';
+ container.innerHTML = '<p class="text-gray-200 text-sm">Loading ฅᨐฅ...</p>';
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
@@ -801,27 +801,29 @@ async function loadGuestbookComments() {
       return timeB - timeA; 
     });
 
-    container.innerHTML = '';
+   container.innerHTML = '';
 
-    comments.forEach(entry => {
-      const { name, comment, timestamp } = entry;
-      console.log('Rendering comment from:', name);
+comments.forEach(entry => {
+  const { name, comment, timestamp } = entry;
+  console.log('Rendering comment from:', name);
 
-      const div = document.createElement('div');
-      div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm text-pink-100';
+  const div = document.createElement('div');
+  div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
-      div.innerHTML = `
-        <div class="mb-1 font-semibold text-white text-blue-glow">${name || 'Anonymous'}</div>
-        <div class="mb-1">${comment || ''}</div>
-        <div class="text-pink-200 text-[0.65rem] leading-[1rem] text-right">${timestamp ? new Date(timestamp).toLocaleString() : ''}</div>
-      `;
+  div.innerHTML = `
+    <div class="mb-1 font-semibold ${themes[themeName].glowPrimary}">${name || 'Anonymous'}</div>
+    <div class="mb-1 text-gray-200">${comment || ''}</div>
+    <div class="text-gray-400 text-[0.65rem] leading-[1rem] text-right">
+      ${timestamp ? new Date(timestamp).toLocaleString() : ''}
+    </div>
+  `;
 
-      container.appendChild(div);
-    });
+  container.appendChild(div);
+});
 
   } catch (err) {
     console.error('Error loading comments:', err);
-    container.innerHTML = '<p class="text-red-400 text-sm">Failed to load comments.</p>';
+    container.innerHTML = '<p class="text-gray-400 text-sm">Failed to load comments.</p>';
   }
 }
 
@@ -917,6 +919,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
