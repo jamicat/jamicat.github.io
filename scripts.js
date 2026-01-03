@@ -597,7 +597,8 @@ var typed2 = new Typed('#typed2', {
   typeSpeed: 0,            
   backSpeed: 0,
   showCursor: false,
-  loop: false,
+  smartBackspace: false,
+  loop: false
 });
 
 const guestbookCommentBox = document.createElement('div');
@@ -921,6 +922,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
