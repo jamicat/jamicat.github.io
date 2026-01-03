@@ -4,7 +4,7 @@ const themes = {
     glowSecondary: 'text-red-glow',    
     buttonColor: 'bg-red-300 hover:bg-red-400',
     buttonTextColor: 'text-black',
-    iconColor: 'text-red-300 hover:text-red-400',
+    iconColor: 'text-red-300 hover:text-cyan-400',
     galaxyActive: 'text-purple-200',
     galaxyInactive: 'text-pink-50',
     terminalColor: 'bg-black/25'
@@ -15,7 +15,7 @@ const themes = {
     glowSecondary: 'text-pink-glow',    
     buttonColor: 'bg-red-300 hover:bg-red-400',
     buttonTextColor: 'text-white',
-    iconColor: 'text-red-300 hover:text-red-400',
+    iconColor: 'text-red-300 hover:text-cyan-400',
     galaxyActive: 'text-purple-200',
     galaxyInactive: 'text-purple-50',
     terminalColor: 'bg-black/20'
@@ -26,7 +26,7 @@ const themes = {
     glowSecondary: 'text-blue-glow',
     buttonColor: 'bg-sky-100 hover:bg-sky-300',
     buttonTextColor: 'text-black',
-    iconColor: 'text-sky-100 hover:text-sky-300',
+    iconColor: 'text-sky-100 hover:text-cyan-400',
     galaxyActive: 'text-purple-50',
     galaxyInactive: 'text-purple-50',
     terminalColor: 'bg-white/10'
@@ -919,6 +919,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
