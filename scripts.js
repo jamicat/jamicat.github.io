@@ -328,7 +328,7 @@ html += `
 
 html += `
   <div class="mt-6 flex justify-center">
-    <button class="terminal-button" onclick="resetTerminal()">Back</button>
+    <button class="terminal-button" onclick="resetTerminal()">back</button>
   </div>
 `;
 
@@ -398,7 +398,7 @@ $('#terminalContent').html(`
       </a>
     </div>
   <div class="mt-4 flex justify-center">
-  <button class="terminal-button" onclick="resetTerminal()">Back</button>
+  <button class="terminal-button" onclick="resetTerminal()">back</button>
     </div>
   `);
 
@@ -436,7 +436,7 @@ function siteFAQ() {
       </p>
     </div>
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="resetTerminal()">Back</button>
+      <button class="terminal-button" onclick="resetTerminal()">back</button>
     </div>
   `);
   //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
@@ -482,7 +482,7 @@ function aboutPost() {
     </div>
     
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="siteFAQ()">Back</button>
+      <button class="terminal-button" onclick="siteFAQ()">back</button>
     </div>
   `);
 
@@ -532,7 +532,7 @@ function somethingNew() {
     </div>
 
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="siteFAQ()">Back</button>
+      <button class="terminal-button" onclick="siteFAQ()">back</button>
     </div>
   `);
 
@@ -583,7 +583,7 @@ function showGuestBook() {
         <textarea id="message" name="message" placeholder="Message!"
           class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required></textarea>
         <div class="text-center">
-          <button type="submit" class="terminal-button">Submit</button>
+          <button type="submit" class="terminal-button">submit</button>
         </div>
       </form>
     </div>
@@ -845,8 +845,8 @@ document.getElementById('terminalContent').innerHTML = `
       <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-50" required>
       <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-50" required></textarea>
       <div class="flex justify-center space-x-4 flex-wrap">
-      <button type="submit" class="terminal-button">Submit</button>
-      <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
+      <button type="submit" class="terminal-button">submit</button>
+      <button type="button" class="terminal-button" onclick="resetTerminal()">back</button>
       </div>
       <div id="formResponse" class="text-pink-100 text-md mt-2 mb-4 text-center"></div>
     </form>
@@ -923,6 +923,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
