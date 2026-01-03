@@ -572,7 +572,7 @@ function showGuestBook() {
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
       <div class="text-pink-100 text-md mt-2 mb-4 text-center">
-       <p id="welcomeMessage" class="text-base">Welcome! Be nice.</p>
+       <p id="welcomeMessage" class="text-base">meow</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-white">
         <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-300 rounded border-opacity-50" required />
@@ -725,7 +725,7 @@ mode: "no-cors",
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
 const welcomeMessage = document.querySelector('p.text-base');
-welcomeMessage.textContent = "Thank you for your comment!";
+welcomeMessage.textContent = "meow!";
 
   setTimeout(() => {
     welcomeMessage.textContent = "Welcome! Be nice.";
@@ -916,6 +916,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
