@@ -112,6 +112,10 @@ text-shadow: 0 0 4px rgba(135, 206, 235, 0.8);
 text-shadow: 0 0 4px rgba(255, 105, 180, 0.8);
 }
 
+.text-cyan-glow {
+  text-shadow: 0 0 4px rgba(0, 255, 255, 0.8);
+}
+
 #typed {
 min-height: 2.5em; 
 }
@@ -156,6 +160,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
