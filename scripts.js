@@ -5,8 +5,8 @@ const themes = {
     buttonColor: 'bg-red-300 hover:bg-red-400',
     buttonTextColor: 'text-black',
     iconColor: 'text-red-300 hover:text-cyan-400',
-    galaxyActive: 'text-purple-200',
-    galaxyInactive: 'text-pink-50',
+    galaxyActive: 'text-red-300',
+    galaxyInactive: 'text-red-300',
     terminalColor: 'bg-black/25'
   },
 
@@ -16,8 +16,8 @@ const themes = {
     buttonColor: 'bg-red-300 hover:bg-red-400',
     buttonTextColor: 'text-white',
     iconColor: 'text-red-300 hover:text-cyan-400',
-    galaxyActive: 'text-purple-200',
-    galaxyInactive: 'text-purple-50',
+    galaxyActive: 'text-red-300',
+    galaxyInactive: 'text-red-300',
     terminalColor: 'bg-black/20'
   },
 
@@ -27,8 +27,8 @@ const themes = {
     buttonColor: 'bg-sky-100 hover:bg-sky-300',
     buttonTextColor: 'text-black',
     iconColor: 'text-sky-100 hover:text-cyan-400',
-    galaxyActive: 'text-purple-50',
-    galaxyInactive: 'text-purple-50',
+    galaxyActive: 'text-red-300',
+    galaxyInactive: 'text-red-300',
     terminalColor: 'bg-white/10'
   }
 };
@@ -95,6 +95,10 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-blue-glow';
 
   const strings = [
+    `<span class="text-white text-xl mr-2 ${glow}">meow</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">mew</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">nya</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">mrow</span>`,
     `<span class="text-white text-xl mr-2 ${glow}">meow</span>`,
     `<span class="text-white text-xl mr-2 ${glow}">mew</span>`,
     `<span class="text-white text-xl mr-2 ${glow}">nya</span>`,
@@ -919,6 +923,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
