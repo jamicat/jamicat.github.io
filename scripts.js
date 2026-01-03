@@ -390,9 +390,6 @@ $('#terminalContent').html(`
       <a href="sp.png" class="block rounded overflow-hidden">
     <img src="sp_thumb.png" alt="Jamie - Sketchpage" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
-  <a href="festival.jpg" class="block rounded overflow-hidden">
-    <img src="festival_thumb.jpg" alt="Jamie - Festival" class="rounded hover:scale-105 transition transform duration-200" />
-      </a>
     </div>
   <div class="mt-4 flex justify-center">
   <button class="terminal-button" onclick="resetTerminal()">Back</button>
@@ -916,6 +913,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
