@@ -592,7 +592,7 @@ function showGuestBook() {
 document.body.appendChild(guestBookWindow);
 
 var typed2= new Typed('#typed2', {
-  strings: ['<span class="text-white text-xl mr-2 text-blue-glow">guestbook</span>'],
+  strings: ['<span class="text-white text-xl mr-2 text-blue-glow no-theme-glow">guestbook</span>'],
   typeSpeed: 80,
   showCursor: false,
   cursorChar: '_',
@@ -923,6 +923,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
