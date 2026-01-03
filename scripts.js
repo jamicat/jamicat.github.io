@@ -1,7 +1,7 @@
 const themes = {
   Default: {
-    glowPrimary: 'text-pink-glow',
-    glowSecondary: 'text-red-glow',
+    glowPrimary: 'text-pink-glow',     
+    glowSecondary: 'text-red-glow',    
     buttonColor: 'bg-red-300 hover:bg-red-400',
     buttonTextColor: 'text-black',
     iconColor: 'text-red-300 hover:text-red-400',
@@ -11,8 +11,8 @@ const themes = {
   },
 
   Stars: {
-    glowPrimary: 'text-blue-glow',
-    glowSecondary: 'text-pink-glow',
+    glowPrimary: 'text-blue-glow',      
+    glowSecondary: 'text-pink-glow',    
     buttonColor: 'bg-red-300 hover:bg-red-400',
     buttonTextColor: 'text-white',
     iconColor: 'text-red-300 hover:text-red-400',
@@ -22,7 +22,7 @@ const themes = {
   },
 
   Aero: {
-    glowPrimary: 'text-blue-glow',
+    glowPrimary: 'text-cyan-glow',     
     glowSecondary: 'text-blue-glow',
     buttonColor: 'bg-sky-100 hover:bg-sky-300',
     buttonTextColor: 'text-black',
@@ -555,14 +555,14 @@ function showGuestBook() {
   guestBookWindow.id = 'guestBookWindow';
 
   guestBookWindow.innerHTML = `
-  <div class="drag-area text-pink-300 text-sm mb-2 select-none flex justify-between items-center">
+  <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
     <span class="flex items-center space-x-2">
       <img src="g1.gif" alt="Avatar2" class="avatar-icon2" />
-     <span id="typed2" class="text-pink-300 text-lg mt-4 mb-4"></span>
+      <span id="typed2" class="text-lg mt-4 mb-4"></span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
-      <button onclick="closeGuestBook()" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-300 hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <button onclick="closeGuestBook()" class="text-gray-400 hover:text-white transition-colors duration-200 text-lg leading-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -571,12 +571,14 @@ function showGuestBook() {
 
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
-      <div class="text-pink-100 text-md mt-2 mb-4 text-center">
-       <p id="welcomeMessage" class="text-base">meow</p>
+      <div class="text-gray-200 text-md mt-2 mb-4 text-center">
+        <p id="welcomeMessage" class="text-base">meow</p>
       </div>
-      <form id="guestbookForm" class="space-y-4 text-white">
-        <input id="name" type="text" name="name" placeholder="Name" class="w-full p-2 bg-black bg-opacity-20 border border-pink-300 rounded border-opacity-50" required />
-        <textarea id="message" name="message" placeholder="Message!" class="w-full p-2 bg-black bg-opacity-20 border border-pink-300 rounded border-opacity-50" required></textarea>
+      <form id="guestbookForm" class="space-y-4 text-gray-200">
+        <input id="name" type="text" name="name" placeholder="Name"
+          class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required />
+        <textarea id="message" name="message" placeholder="Message!"
+          class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required></textarea>
         <div class="text-center">
           <button type="submit" class="terminal-button">Submit</button>
         </div>
@@ -584,7 +586,6 @@ function showGuestBook() {
     </div>
   </div>
 `;
-
 document.body.appendChild(guestBookWindow);
 
 var typed2= new Typed('#typed2', {
@@ -916,6 +917,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
