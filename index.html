@@ -21,7 +21,7 @@ plugins: [
 function ({ addComponents }) {
 addComponents({
 '.terminal-button': {
-'@apply bg-red-300 text-[0.8em] text-sm text-white px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:bg-red-400 hover:bg-opacity-90 hover:scale-105 active:scale-95': {},
+'@apply bg-red-300 text-[0.8em] text-sm text-white px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:ring-1 hover:ring-cyan-400 hover:bg-red-400 hover:bg-opacity-90 hover:scale-105 active:scale-95': {},
 cursor: 'pointer',
 userSelect: 'none',
 },
@@ -44,7 +44,7 @@ userSelect: 'none',
 <!--span id="typed3" class="text-pink-300 text-lg mt-4 mb-4"></span-->
   </span>
 <div class="flex items-center space-x-2 mr-3 -mt-12">
-<button id="videoToggle" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
+<button id="videoToggle" class="text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none">
 <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-current hidden" viewBox="0 0 24 24">
 <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
 </svg>
@@ -52,14 +52,14 @@ userSelect: 'none',
 <path d="M8 5v14l11-7z" />
 </svg>
 </button>
-<button id="nextTrack" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none">
+<button id="nextTrack" class="text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none">
 <svg id="nextIcon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-current" viewBox="0 0 24 24">
 <path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2V6z"/>
 </svg>
 </button>
 <div class="relative inline-block">
   <button id="changeTheme"
-    class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none mt-3">
+    class="text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none mt-3">
     <svg id="themeIcon" class="w-6 h-6 fill-current mt-3" viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg">
       <path d="M5.6 11.6l-1.2-1.2c-0.8-0.2-2-0.1-2.7 1-0.8 1.1-0.3 2.8-1.7 4.6 0 0 3.5 0 4.8-1.3 1.2-1.2 1.2-2.2 1-3l-0.2-0.1z"/>
