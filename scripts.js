@@ -562,7 +562,7 @@ function showGuestBook() {
   <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
     <span class="flex items-center space-x-2">
       <img src="g1.gif" alt="Avatar2" class="avatar-icon2" />
-      <span id="typed2" class="text-lg mt-4 mb-4 text-blue-glow no-theme-glow"></span>
+      <span id="typed2" class="text-lg mt-4 mb-4 text-blue-glow no-theme-glow">guestbook</span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
       <button onclick="closeGuestBook()" class="text-gray-400 hover:text-white transition-colors duration-200 text-lg leading-none">
@@ -592,11 +592,11 @@ function showGuestBook() {
 `;
 document.body.appendChild(guestBookWindow);
 
-var typed2= new Typed('#typed2', {
-  strings: ['<span class="text-white text-xl mr-2 text-blue-glow no-theme-glow">guestbook</span>'],
-  typeSpeed: 80,
+var typed2 = new Typed('#typed2', {
+  strings: ['guestbook'],  
+  typeSpeed: 0,            
+  backSpeed: 0,
   showCursor: false,
-  cursorChar: '_',
   loop: false,
 });
 
@@ -921,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
