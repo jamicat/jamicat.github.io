@@ -27,8 +27,8 @@ const themes = {
     buttonColor: 'bg-sky-100 hover:bg-sky-300',
     buttonTextColor: 'text-black',
     iconColor: 'text-sky-100 hover:text-cyan-400',
-    galaxyActive: 'text-red-300',
-    galaxyInactive: 'text-red-300',
+    galaxyActive: 'text-sky-100',
+    galaxyInactive: 'text-sky-100',
     terminalColor: 'bg-white/10'
   }
 };
@@ -923,6 +923,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
