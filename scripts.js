@@ -56,14 +56,12 @@ if (terminal) {
   terminal.classList.add(theme.terminalColor);
 }
 
- const rewind10 = document.getElementById('rewind10');
+const rewind10 = document.getElementById('rewind10');
 if (rewind10) {
-  rewind10.classList.remove(
-  'text-purple-200',
-  'text-purple-50',
-  'text-pink-500',
-  'text-cyan-100'
-);
+  Object.values(themes).forEach(t => {
+    rewind10.classList.remove(t.galaxyActive, t.galaxyInactive);
+  });
+
   if (typeof galaxyVisible !== 'undefined' && galaxyVisible) {
     rewind10.classList.add(theme.galaxyActive);
   } else {
@@ -923,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
