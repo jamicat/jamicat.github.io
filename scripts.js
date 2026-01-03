@@ -578,9 +578,9 @@ function showGuestBook() {
         <p id="welcomeMessage" class="text-base">meow</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-gray-200">
-        <input id="name" type="text" name="name" placeholder="Name"
+        <input id="name" type="text" name="name" placeholder="name"
           class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required />
-        <textarea id="message" name="message" placeholder="Message!"
+        <textarea id="message" name="message" placeholder="message"
           class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required></textarea>
         <div class="text-center">
           <button type="submit" class="terminal-button">submit</button>
@@ -893,7 +893,7 @@ mode: "no-cors",
 
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
-document.getElementById("formResponse").textContent = "Thank you for your message!";
+document.getElementById("formResponse").textContent = "meow!";
 }
 
 function resetTerminal() {
@@ -923,6 +923,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
