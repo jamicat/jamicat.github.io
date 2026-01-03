@@ -557,7 +557,7 @@ function showGuestBook() {
   guestBookWindow.innerHTML = `
   <div class="drag-area text-pink-300 text-sm mb-2 select-none flex justify-between items-center">
     <span class="flex items-center space-x-2">
-      <img src="art1.jpg" alt="Avatar2" class="avatar-icon2" />
+      <img src="g1.gif" alt="Avatar2" class="avatar-icon2" />
      <span id="typed2" class="text-pink-300 text-lg mt-4 mb-4"></span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
@@ -916,6 +916,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
