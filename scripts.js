@@ -85,6 +85,9 @@ if (rewind10) {
 let typedInstance;
 
 function initTyped(themeName = 'Default') {
+  const typedEl = document.getElementById('typed');
+  if (!typedEl) return; 
+
   if (typedInstance) {
     typedInstance.destroy();
   }
@@ -94,13 +97,9 @@ function initTyped(themeName = 'Default') {
   const strings = [
     `<span class="text-white text-xl mr-2 ${glow}">meow</span>`,
     `<span class="text-white text-xl mr-2 ${glow}">mew</span>`,
-     `<span class="text-white text-xl mr-2 ${glow}">nya</span>`,
-     `<span class="text-white text-xl mr-2 ${glow}">mrow</span>`,
-     `<span class="text-white text-xl mr-2 ${glow}">meow</span>`,
-   `<span class="text-white text-xl mr-2 ${glow}">mew</span>`,
     `<span class="text-white text-xl mr-2 ${glow}">nya</span>`,
     `<span class="text-white text-xl mr-2 ${glow}">mrow</span>`,
-     `<span class="text-white text-xl mr-2 ${glow}">i made the most of what i know...</span>`
+    `<span class="text-white text-xl mr-2 ${glow}">i made the most of what i know...</span>`
   ];
 
   typedInstance = new Typed('#typed', {
@@ -898,19 +897,16 @@ document.getElementById("formResponse").textContent = "meow!";
 
 function resetTerminal() {
   $('#terminalContent').html(`
-    <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
-    <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-      <!-- <button class="terminal-button ml-4" onclick="siteFAQ()">about</button>  -->
-      <button class="terminal-button ml-2" onclick="showArt()">art</button>
-      <button class="terminal-button ml-5" onclick="showGuestBook()">guestbook</button>
-      <button class="terminal-button" onclick="showList()">playlist</button>
-    </div>
-  `);
-
-  const currentTheme = localStorage.getItem('theme') || 'Default';
-  applyTheme(currentTheme);
-  document.querySelector('#typed2').classList.add('text-blue-glow');
-  initTyped(currentTheme);
+  <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
+  <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
+    <button class="terminal-button ml-2" onclick="showArt()">art</button>
+    <button class="terminal-button ml-5" onclick="showGuestBook()">guestbook</button>
+    <button class="terminal-button" onclick="showList()">playlist</button>
+  </div>
+`);
+const currentTheme = localStorage.getItem('theme') || 'Default';
+applyTheme(currentTheme);
+initTyped(currentTheme);
 }
 
 
@@ -923,6 +919,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
