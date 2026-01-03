@@ -39,9 +39,9 @@ function applyTheme(themeName) {
 
   document.documentElement.setAttribute('data-theme', themeName);
 
-  document.querySelectorAll('.terminal-button').forEach(btn => {
+  document.querySelectorAll('.terminal-button:not(.guestbook-submit)').forEach(btn => {
     btn.className = `terminal-button ${theme.buttonColor} ${theme.buttonTextColor} px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95 text-sm`;
-  });
+});
 
   const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme');
   icons.forEach(icon => {
@@ -583,7 +583,7 @@ function showGuestBook() {
         <textarea id="message" name="message" placeholder="message"
           class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required></textarea>
         <div class="text-center">
-          <button type="submit" class="terminal-button">submit</button>
+          <button type="submit" class="terminal-button bg-sky-100 hover:bg-sky-300 text-black guestbook-submit">submit</button>
         </div>
       </form>
     </div>
@@ -773,7 +773,7 @@ async function loadGuestbookComments() {
     return;
   }
 
- container.innerHTML = '<p class="text-gray-200 text-sm">Loading ฅᨐฅ...</p>';
+ container.innerHTML = '<p class="text-gray-200 text-sm">loading ฅᨐฅ</p>';
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
@@ -923,6 +923,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
