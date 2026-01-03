@@ -729,7 +729,7 @@ const welcomeMessage = document.querySelector('p.text-base');
 welcomeMessage.textContent = "meow!";
 
   setTimeout(() => {
-    welcomeMessage.textContent = "Welcome! Be nice.";
+    welcomeMessage.textContent = "meow";
   }, 5000);
   loadGuestbookComments();
   });
@@ -811,7 +811,7 @@ comments.forEach(entry => {
   div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
   div.innerHTML = `
-    <div class="mb-1 font-semibold ${themes[themeName].glowPrimary}">${name || 'Anonymous'}</div>
+    <div class="mb-1 font-semibold text-white text-blue-glow">${name || 'Anonymous'}</div>
     <div class="mb-1 text-gray-200">${comment || ''}</div>
     <div class="text-gray-400 text-[0.65rem] leading-[1rem] text-right">
       ${timestamp ? new Date(timestamp).toLocaleString() : ''}
@@ -823,7 +823,7 @@ comments.forEach(entry => {
 
   } catch (err) {
     console.error('Error loading comments:', err);
-    container.innerHTML = '<p class="text-gray-400 text-sm">Failed to load comments.</p>';
+    container.innerHTML = '<p class="text-gray-400 text-sm">Failed to load.</p>';
   }
 }
 
@@ -919,6 +919,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
