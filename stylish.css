@@ -105,15 +105,15 @@ image-rendering: crisp-edges;
 }
 
 .text-blue-glow {
-text-shadow: 0 0 4px rgba(135, 206, 235, 0.8);
+  text-shadow: 0 0 2px rgba(135, 206, 235, 0.7);
 }
 
 .text-pink-glow {
-text-shadow: 0 0 4px rgba(255, 105, 180, 0.8);
+  text-shadow: 0 0 2px rgba(255, 105, 180, 0.7);
 }
 
 .text-cyan-glow {
-  text-shadow: 0 0 4px rgba(0, 255, 255, 0.8);
+  text-shadow: 0 0 2px rgba(0, 255, 255, 0.7);
 }
 
 #typed {
@@ -160,6 +160,7 @@ min-height: 2.5em;
   border-radius: 6px;
  
 }
+
 
 
 
