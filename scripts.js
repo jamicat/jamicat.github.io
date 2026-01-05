@@ -100,8 +100,7 @@ function initTyped(themeName = 'Default') {
     `<span class="text-white text-xl mr-2 ${glow}">meow</span>`,
     `<span class="text-white text-xl mr-2 ${glow}">mew</span>`,
     `<span class="text-white text-xl mr-2 ${glow}">nya</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">mrow</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">i made the most of what i know...</span>`
+    `<span class="text-white text-xl mr-2 ${glow}">mrow</span>`
   ];
 
   typedInstance = new Typed('#typed', {
@@ -922,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
