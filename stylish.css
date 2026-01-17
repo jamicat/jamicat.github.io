@@ -167,10 +167,11 @@ min-height: 2.5em;
 
 #guestbookComments:hover::-webkit-scrollbar-thumb {
   background-color: rgba(0, 255, 255, 0.6); 
-
+  
 .terminal-button:hover {
   transform: translateY(-0.5px) scale(1.02);
 }
   border-radius: 6px;
 }
+
 
