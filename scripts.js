@@ -134,10 +134,6 @@ interact('#terminal').draggable({
   listeners: {
     start(event) {
       const target = event.target;
-      
-      target.style.transition = 'filter 0.2s, box-shadow 0.2s';
-      target.style.filter = 'brightness(1.15)';
-      target.style.boxShadow = '0 0 12px rgba(255,255,255,0.05)';
 
       if (target.style.transform.includes('translate(-50%, -50%)')) {
         const rect = target.getBoundingClientRect();
@@ -155,16 +151,11 @@ interact('#terminal').draggable({
       const target = event.target;
       const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
       const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
+           
       target.style.transform = `translate(${x}px, ${y}px)`;
       target.setAttribute('data-x', x);
       target.setAttribute('data-y', y);
     },
-    end(event) {
-      const target = event.target;
-      target.style.filter = 'brightness(1)';
-      target.style.boxShadow = 'none';
-    }
   },
 });
 
@@ -930,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
