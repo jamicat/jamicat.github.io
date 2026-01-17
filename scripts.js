@@ -575,7 +575,7 @@ function showGuestBook() {
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
       <div class="text-gray-200 text-md mt-2 mb-4 text-center">
-        <p id="welcomeMessage" class="text-base">meow</p>
+        <p id="welcomeMessage" class="text-base text-white/80">meow</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-gray-200">
         <input id="name" type="text" name="name" placeholder="name"
@@ -921,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
