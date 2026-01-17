@@ -40,7 +40,7 @@ function applyTheme(themeName) {
   document.documentElement.setAttribute('data-theme', themeName);
 
   document.querySelectorAll('.terminal-button:not(.guestbook-submit)').forEach(btn => {
-    btn.className = `terminal-button ${theme.buttonColor} ${theme.buttonTextColor} px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95 text-sm`;
+    btn.className = `terminal-button ${theme.buttonColor} ${theme.buttonTextColor} px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95 text-sm tracking-[0.015em] font-medium transform hover:-translate-y-[0.5px] hover:shadow-[0_0_2px_rgba(0,255,255,0.3)]`;
 });
 
   const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme');
@@ -921,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
