@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'KaHvNbId7BY',
+playlist: '8aQz-aKvyQU',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'KaHvNbId7BY';
+const videoId = '8aQz-aKvyQU';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,8 +304,8 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Cavetown - Sailboat (feat. chloe moriondo)",
-videoId: "KaHvNbId7BY",
+title: "PVRIS - My House",
+videoId: "8aQz-aKvyQU",
 channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@cavetown"
 }
@@ -921,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
