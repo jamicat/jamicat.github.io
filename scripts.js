@@ -134,10 +134,10 @@ interact('#terminal').draggable({
   listeners: {
     start(event) {
       const target = event.target;
-
-    
-      target.style.transition = 'background-color 0.2s, filter 0.2s';
-      target.style.filter = 'brightness(1.05)';
+      
+      target.style.transition = 'filter 0.2s, box-shadow 0.2s';
+      target.style.filter = 'brightness(1.15)';
+      target.style.boxShadow = '0 0 12px rgba(255,255,255,0.05)';
 
       if (target.style.transform.includes('translate(-50%, -50%)')) {
         const rect = target.getBoundingClientRect();
@@ -162,8 +162,8 @@ interact('#terminal').draggable({
     },
     end(event) {
       const target = event.target;
-    
       target.style.filter = 'brightness(1)';
+      target.style.boxShadow = 'none';
     }
   },
 });
@@ -930,6 +930,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
