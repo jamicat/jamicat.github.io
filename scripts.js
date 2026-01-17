@@ -815,7 +815,7 @@ comments.forEach(entry => {
   div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
   div.innerHTML = `
-    <div class="mb-1 tracking-[0.015em] font-semibold text-white text-blue-glow no-theme-glow">${name || 'Anonymous'}</div>
+    <div class="mb-1 tracking-[0.015em] font-medium text-white text-blue-glow no-theme-glow">${name || 'Anonymous'}</div>
     <div class="mb-1 text-gray-200">${comment || ''}</div>
     <div class="text-gray-400 text-[0.65rem] leading-[1rem] text-right">
       ${timestamp ? new Date(timestamp).toLocaleString() : ''}
@@ -921,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
