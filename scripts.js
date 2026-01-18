@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '8aQz-aKvyQU',
+playlist: 'o1YGfBbck20,eAecjdKoCd8',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '8aQz-aKvyQU';
+const videoId = 'o1YGfBbck20';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,8 +304,14 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "PVRIS - My House",
-videoId: "8aQz-aKvyQU",
+title: "cavetown - First Time",
+videoId: "o1YGfBbck20",
+channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
+},
+{
+title: "cavetown - Running With Scissors",
+videoId: "eAecjdKoCd8",
 channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@cavetown"
 }
@@ -921,5 +927,6 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
