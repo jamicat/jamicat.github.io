@@ -556,7 +556,7 @@ function showGuestBook() {
   }
 
   const guestBookWindow = document.createElement('div');
-  guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px] bg-pink-200/15 border border-pink-200/20';
+  guestBookWindow.className = 'terminal2 absolute p-6 max-w-full w-[90vw] sm:w-[500px] bg-pink-200/15 border border-pink-200/20';
   guestBookWindow.style.zIndex = 11;
   guestBookWindow.style.top = '50%';
   guestBookWindow.style.left = '50%';
@@ -927,6 +927,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
