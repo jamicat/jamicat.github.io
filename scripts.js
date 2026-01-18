@@ -550,7 +550,7 @@ function showGuestBook() {
   }
 
   const guestBookWindow = document.createElement('div');
-  guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px]';
+  guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px] bg-pink-200/15 border border-pink-200/20';
   guestBookWindow.style.zIndex = 11;
   guestBookWindow.style.top = '50%';
   guestBookWindow.style.left = '50%';
@@ -583,7 +583,7 @@ function showGuestBook() {
         <textarea id="message" name="message" placeholder="message"
           class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 bg-opacity-30 text-blue-100/80" required></textarea>
         <div class="text-center">
-          <button type="submit" class="terminal-button bg-sky-100 hover:bg-sky-300 text-black guestbook-submit">submit</button>
+          <button type="submit" class="terminal-button bg-pink-100 hover:bg-pink-100 text-black guestbook-submit">submit</button>
         </div>
       </form>
     </div>
@@ -608,8 +608,8 @@ guestbookCommentBox.className = `
   p-4 
   w-[300px] 
   overflow-y-auto 
-  bg-black 
-  bg-opacity-20 
+  bg-pink-200/15
+  border-pink-200/20
   text-white 
   text-sm 
   scrollbar-thin 
@@ -774,7 +774,7 @@ async function loadGuestbookComments() {
     return;
   }
 
- container.innerHTML = '<p class="text-gray-200 text-sm">loading ฅᨐฅ</p>';
+ container.innerHTML = '<p class="text-blue-100 text-sm">loading ฅᨐฅ</p>';
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
@@ -816,8 +816,8 @@ comments.forEach(entry => {
 
   div.innerHTML = `
     <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">${name || 'Anonymous'}</div>
-    <div class="mb-1 text-gray-200">${comment || ''}</div>
-    <div class="text-gray-400 text-[0.65rem] leading-[1rem] text-right">
+    <div class="mb-1 text-blue-100">${comment || ''}</div>
+    <div class="text-blue-100 text-[0.65rem] leading-[1rem] text-right">
       ${timestamp ? new Date(timestamp).toLocaleString() : ''}
     </div>
   `;
@@ -827,7 +827,7 @@ comments.forEach(entry => {
 
   } catch (err) {
     console.error('Error loading comments:', err);
-    container.innerHTML = '<p class="text-gray-400 text-sm">Failed to load.</p>';
+    container.innerHTML = '<p class="text-blue-100 text-sm">Failed to load.</p>';
   }
 }
 
@@ -921,4 +921,5 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
