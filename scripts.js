@@ -581,7 +581,7 @@ function showGuestBook() {
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
       <div class="text-blue-100/80 text-md mt-2 mb-4 text-center">
-        <p id="welcomeMessage" class="text-base text-blue-100/90">meow</p>
+        <p id="welcomeMessage" class="text-base text-pink-100/80">meow</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-blue-100">
         <input id="name" type="text" name="name" placeholder="name"
@@ -823,7 +823,7 @@ comments.forEach(entry => {
   div.innerHTML = `
     <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">${name || 'Anonymous'}</div>
     <div class="mb-1 text-blue-100">${comment || ''}</div>
-    <div class="text-blue-100 text-[0.65rem] leading-[1rem] text-right">
+    <div class="text-blue-100 opacity-80 text-[0.65rem] leading-[1rem] text-right">
       ${timestamp ? new Date(timestamp).toLocaleString() : ''}
     </div>
   `;
@@ -927,6 +927,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
