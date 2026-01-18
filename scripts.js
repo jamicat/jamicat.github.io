@@ -550,7 +550,8 @@ function showGuestBook() {
   }
 
   const guestBookWindow = document.createElement('div');
-  guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px]';
+  guestBookWindow.className =
+    'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px] bg-pink-900/30 border border-pink-300/30 rounded-xl backdrop-blur-md';
   guestBookWindow.style.zIndex = 11;
   guestBookWindow.style.top = '50%';
   guestBookWindow.style.left = '50%';
@@ -561,12 +562,19 @@ function showGuestBook() {
   <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
     <span class="flex items-center space-x-2">
       <img src="g2.gif" alt="Avatar2" class="avatar-icon2" />
-      <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow">guestbook</span>
+       <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-pink-glow no-theme-glow">guestbook</span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
-      <button onclick="closeGuestBook()" class="text-gray-400 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      <button onclick="closeGuestBook()"
+        class="text-pink-300 hover:text-pink-100 transition-colors duration-200 text-lg leading-none">
+        <svg xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
     </div>
@@ -574,21 +582,36 @@ function showGuestBook() {
 
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
-      <div class="text-gray-200 text-md mt-2 mb-4 text-center">
-        <p id="welcomeMessage" class="text-base text-white/80">meow</p>
+      <div class="text-pink-200 text-md mt-2 mb-4 text-center">
+        <p id="welcomeMessage" class="text-base text-pink-100/80">meow</p>
       </div>
-      <form id="guestbookForm" class="space-y-4 text-gray-200">
+
+      <form id="guestbookForm" class="space-y-4 text-pink-200">
         <input id="name" type="text" name="name" placeholder="name"
-          class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required />
+          class="w-full p-2 rounded-lg border border-pink-300/40
+                 bg-pink-800/20 text-pink-100 placeholder-pink-300
+                 focus:outline-none focus:ring-2 focus:ring-pink-300"
+          required />
+
         <textarea id="message" name="message" placeholder="message"
-          class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required></textarea>
+          class="w-full p-2 rounded-lg border border-pink-300/40
+                 bg-pink-800/20 text-pink-100 placeholder-pink-300
+                 focus:outline-none focus:ring-2 focus:ring-pink-300"
+          required></textarea>
+
         <div class="text-center">
-          <button type="submit" class="terminal-button bg-sky-100 hover:bg-sky-300 text-black guestbook-submit">submit</button>
+          <button type="submit"
+            class="terminal-button bg-pink-200 hover:bg-pink-300
+                   text-pink-900 font-medium px-4 py-2 rounded-lg
+                   transition-colors duration-200 guestbook-submit">
+            submit
+          </button>
         </div>
       </form>
     </div>
   </div>
 `;
+  
 document.body.appendChild(guestBookWindow);
 
 /*var typed2 = new Typed('#typed2', {
@@ -774,7 +797,7 @@ async function loadGuestbookComments() {
     return;
   }
 
- container.innerHTML = '<p class="text-gray-200 text-sm">loading ฅᨐฅ</p>';
+ container.innerHTML = '<p class="text-pink-200 text-sm">loading ฅᨐฅ</p>';
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
@@ -815,19 +838,23 @@ comments.forEach(entry => {
   div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
   div.innerHTML = `
-    <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">${name || 'Anonymous'}</div>
-    <div class="mb-1 text-gray-200">${comment || ''}</div>
-    <div class="text-gray-400 text-[0.65rem] leading-[1rem] text-right">
-      ${timestamp ? new Date(timestamp).toLocaleString() : ''}
-    </div>
-  `;
+  <div class="mb-1 font-medium text-white text-pink-glow no-theme-glow">${name || 'Anonymous'}</div>
+    ${name || 'Anonymous'}
+  </div>
+  <div class="mb-1 text-pink-200">
+    ${comment || ''}
+  </div>
+  <div class="text-pink-300 text-[0.65rem] leading-[1rem] text-right opacity-80">
+    ${timestamp ? new Date(timestamp).toLocaleString() : ''}
+  </div>
+`;
 
   container.appendChild(div);
 });
 
   } catch (err) {
     console.error('Error loading comments:', err);
-    container.innerHTML = '<p class="text-gray-400 text-sm">Failed to load.</p>';
+    container.innerHTML = '<p class="text-pink-400 text-sm">Failed to load.</p>';
   }
 }
 
@@ -921,6 +948,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
