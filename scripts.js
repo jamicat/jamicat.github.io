@@ -822,7 +822,7 @@ comments.forEach(entry => {
 
   div.innerHTML = `
     <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">${name || 'Anonymous'}</div>
-    <div class="mb-1 text-pink-100">${comment || ''}</div>
+    <div class="mb-1 text-pink-100/90">${comment || ''}</div>
     <div class="text-blue-100 opacity-80 text-[0.65rem] leading-[1rem] text-right">
       ${timestamp ? new Date(timestamp).toLocaleString() : ''}
     </div>
@@ -927,6 +927,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
