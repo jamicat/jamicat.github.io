@@ -556,7 +556,7 @@ function showGuestBook() {
   }
 
   const guestBookWindow = document.createElement('div');
-  guestBookWindow.className = 'terminal2 absolute p-6 max-w-full w-[90vw] sm:w-[500px] bg-pink-200/15 border border-pink-200/20';
+  guestBookWindow.className = 'terminal2 absolute p-6 max-w-full w-[90vw] sm:w-[500px] text-white rounded-3xl bg-pink-200/15 border border-pink-200/20';
   guestBookWindow.style.zIndex = 11;
   guestBookWindow.style.top = '50%';
   guestBookWindow.style.left = '50%';
@@ -581,15 +581,15 @@ function showGuestBook() {
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
       <div class="text-blue-100/80 text-md mt-2 mb-4 text-center">
-        <p id="welcomeMessage" class="text-base text-blue-100/80">meow</p>
+        <p id="welcomeMessage" class="text-base text-blue-100/90">meow</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-blue-100">
         <input id="name" type="text" name="name" placeholder="name"
-          class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 bg-opacity-30 text-blue-100/80" required />
+          class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 bg-opacity-30 text-blue-100 placeholder-blue-100" required />
         <textarea id="message" name="message" placeholder="message"
-          class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 bg-opacity-30 text-blue-100/80" required></textarea>
+          class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 bg-opacity-30 text-blue-100 placeholder-blue-100" required></textarea>
         <div class="text-center">
-          <button type="submit" class="terminal-button bg-pink-100 hover:bg-pink-100 text-black guestbook-submit">submit</button>
+          <button type="submit" class="terminal-button bg-pink-50 hover:bg-pink-50 opacity-90 text-black guestbook-submit">submit</button>
         </div>
       </form>
     </div>
@@ -621,7 +621,7 @@ guestbookCommentBox.className = `
   scrollbar-thin 
   scrollbar-thumb-pink-300 
   scrollbar-track-black 
-  rounded-lg
+  rounded-3xl
 `;
 
 guestbookCommentBox.style.zIndex = 10;
@@ -927,6 +927,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
