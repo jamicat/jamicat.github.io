@@ -581,13 +581,13 @@ function showGuestBook() {
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
       <div class="text-blue-100/80 text-md mt-2 mb-4 text-center">
-        <p id="welcomeMessage" class="text-base text-pink-100/80">meow</p>
+        <p id="welcomeMessage" class="text-base text-pink-100/90">meow</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-blue-100">
         <input id="name" type="text" name="name" placeholder="name"
-          class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 bg-opacity-30 text-blue-100 placeholder-blue-100" required />
+          class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 bg-opacity-30 text-pink-100 placeholder-pink-100/80" required />
         <textarea id="message" name="message" placeholder="message"
-          class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 bg-opacity-30 text-blue-100 placeholder-blue-100" required></textarea>
+          class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 bg-opacity-30 text-pink-100 placeholder-pink-100/80" required></textarea>
         <div class="text-center">
           <button type="submit" class="terminal-button bg-pink-50 hover:bg-pink-50 opacity-90 text-black guestbook-submit">submit</button>
         </div>
@@ -822,7 +822,7 @@ comments.forEach(entry => {
 
   div.innerHTML = `
     <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">${name || 'Anonymous'}</div>
-    <div class="mb-1 text-blue-100">${comment || ''}</div>
+    <div class="mb-1 text-pink-100">${comment || ''}</div>
     <div class="text-blue-100 opacity-80 text-[0.65rem] leading-[1rem] text-right">
       ${timestamp ? new Date(timestamp).toLocaleString() : ''}
     </div>
@@ -927,6 +927,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
