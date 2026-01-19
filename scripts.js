@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'o1YGfBbck20,eAecjdKoCd8',
+playlist: 'I4qUDdbIGEw,SaYMu0-QaeY',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'o1YGfBbck20';
+const videoId = 'I4qUDdbIGEw';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,14 +304,14 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "cavetown - First Time",
-videoId: "o1YGfBbck20",
+title: "cavetown - Straight Through My Head (DO IT!!!)",
+videoId: "I4qUDdbIGEw",
 channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@cavetown"
 },
 {
-title: "cavetown - Running With Scissors",
-videoId: "eAecjdKoCd8",
+title: "cavetown - Reaper",
+videoId: "SaYMu0-QaeY",
 channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@cavetown"
 }
@@ -429,7 +429,7 @@ function changeTyped3(newText) {
   typed3.reset(true);
 }
 
-function siteFAQ() {
+/*function siteFAQ() {
   $('#terminalContent').html(`
     <div class="text-white text-sm space-y-2 mt-6">
       <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
@@ -544,7 +544,7 @@ function somethingNew() {
 
   const currentTheme = localStorage.getItem('theme') || 'Default';
   applyTheme(currentTheme);
-}
+}*/
 
 let lastSubmissionTime = 0;
 let lastGbSubmissionTime = 0;
@@ -927,6 +927,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
