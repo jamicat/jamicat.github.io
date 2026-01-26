@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'SJs9Lsq55yI',
+playlist: 'XLzEo60G_Vs',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'SJs9Lsq55yI';
+const videoId = 'XLzEo60G_Vs';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,10 +304,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - Life On Mars?",
-videoId: "SJs9Lsq55yI",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@yungblud"
+title: "jodi - if you do (Official Video)",
+videoId: "XLzEo60G_Vs",
+channelAvatar: "https://yt3.googleusercontent.com/tmqcEKdH2S-jZ9CrRbMipv5MupK4tZtnCJ51TqG2ad3agt_Nx02jHURzMMKBuwzXRZMOlCwahw=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@jodi-music"
 }
 ];
 
@@ -921,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
