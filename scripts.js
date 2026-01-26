@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'XLzEo60G_Vs,bass9XdfxtQ',
+playlist: '3GNVP865PAo,73gjDUe-s34',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'XLzEo60G_Vs';
+const videoId = '3GNVP865PAo';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,16 +304,16 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "jodi - if you do (Official Video)",
-videoId: "XLzEo60G_Vs",
-channelAvatar: "https://yt3.googleusercontent.com/tmqcEKdH2S-jZ9CrRbMipv5MupK4tZtnCJ51TqG2ad3agt_Nx02jHURzMMKBuwzXRZMOlCwahw=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@jodi-music"
+title: "wenszy - tell me (ft. mymy)",
+videoId: "3GNVP865PAo",
+channelAvatar: "https://yt3.googleusercontent.com/3IQTPtBbIg3MGfXs1JCs7giYJTfOKW9oMz356GZOIT--tr68gUnJUhCOQ4avS0ruEhFeXfjnyg=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@wenszy"
 },
 {
-title: "sherbet sky ♫",
-videoId: "bass9XdfxtQ",
-channelAvatar: "https://yt3.googleusercontent.com/lo8p4JUiTOXejqRbVtc4pPWSZnvvJoVU3zg7Ce7dnhd3J18g7zigTbO9QdN64wpROwXyUohCTj4=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@comfibeats"
+title: "mymy - admire me",
+videoId: "73gjDUe-s34",
+channelAvatar: "https://yt3.googleusercontent.com/Es7oaEZ4HSPJAaMtzTcLL8CgWteL14fcnItub5Wg-roPJ-Ng0psJl4qaWm0fZbwWgS1Xw-ntgPw=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@theuppermostinlife"
 }
 ];
 
@@ -927,6 +927,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
