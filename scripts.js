@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'QgyW9qjgIf4',
+playlist: 'SJs9Lsq55yI',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'QgyW9qjgIf4';
+const videoId = 'SJs9Lsq55yI';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,10 +304,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Jane Remover — Dancing with your eyes closed",
-videoId: "QgyW9qjgIf4",
-channelAvatar: "https://yt3.googleusercontent.com/OwNIBpyWkwEtJTXSOuu7ojmBT2QwSZyul20FcTE79yy3R4Awcdns_jrUS-ynWceACPIHNwQLMA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@jane_remover"
+title: "YUNGBLUD - Life On Mars?",
+videoId: "SJs9Lsq55yI",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ];
 
@@ -921,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
