@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'XLzEo60G_Vs',
+playlist: 'XLzEo60G_Vs,bass9XdfxtQ',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -308,6 +308,12 @@ title: "jodi - if you do (Official Video)",
 videoId: "XLzEo60G_Vs",
 channelAvatar: "https://yt3.googleusercontent.com/tmqcEKdH2S-jZ9CrRbMipv5MupK4tZtnCJ51TqG2ad3agt_Nx02jHURzMMKBuwzXRZMOlCwahw=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@jodi-music"
+},
+{
+title: "sherbet sky ♫",
+videoId: "bass9XdfxtQ",
+channelAvatar: "https://yt3.googleusercontent.com/lo8p4JUiTOXejqRbVtc4pPWSZnvvJoVU3zg7Ce7dnhd3J18g7zigTbO9QdN64wpROwXyUohCTj4=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@comfibeats"
 }
 ];
 
@@ -921,6 +927,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
