@@ -550,7 +550,7 @@ function showGuestBook() {
   }
 
   const guestBookWindow = document.createElement('div');
-  guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px]';
+  guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px] rounded-3xl';
   guestBookWindow.style.zIndex = 11;
   guestBookWindow.style.top = '50%';
   guestBookWindow.style.left = '50%';
@@ -615,7 +615,7 @@ guestbookCommentBox.className = `
   scrollbar-thin 
   scrollbar-thumb-pink-300 
   scrollbar-track-black 
-  rounded-lg
+  rounded-3xl
 `;
 
 guestbookCommentBox.style.zIndex = 10;
@@ -921,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
