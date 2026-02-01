@@ -561,7 +561,7 @@ function showGuestBook() {
   <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
     <span class="flex items-center space-x-2">
       <img src="g2.gif" alt="Avatar2" class="avatar-icon2" />
-      <span id="typed2" class="text-lg mt-4 mb-4 text-blue-glow no-theme-glow"></span>
+      <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow">guestbook</span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
       <button onclick="closeGuestBook()" class="text-gray-400 hover:text-white transition-colors duration-200 text-lg leading-none">
@@ -591,14 +591,14 @@ function showGuestBook() {
 `;
 document.body.appendChild(guestBookWindow);
 
-var typed2 = new Typed('#typed2', {
+/*var typed2 = new Typed('#typed2', {
   strings: ['guestbook'],  
   typeSpeed: 0,            
   backSpeed: 0,
   showCursor: false,
   smartBackspace: false,
   loop: false
-});
+});*/
 
 const guestbookCommentBox = document.createElement('div');
 guestbookCommentBox.id = 'guestbookComments';
@@ -815,7 +815,7 @@ comments.forEach(entry => {
  div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
 div.innerHTML = `
-    <div class="mb-1 font-semibold text-white text-blue-glow no-theme-glow">${name || 'Anonymous'}</div>
+    <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">${name || 'Anonymous'}</div>
     <div class="mb-1 text-gray-200">${comment || ''}</div>
     <div class="text-gray-400 text-[0.65rem] leading-[1rem] text-right">
       ${timestamp ? new Date(timestamp).toLocaleString() : ''}
@@ -921,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
