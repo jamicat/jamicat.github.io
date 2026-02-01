@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '3GNVP865PAo,73gjDUe-s34',
+playlist: 'e4j7FjwCCX0',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '3GNVP865PAo';
+const videoId = 'e4j7FjwCCX0';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,16 +304,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "wenszy - tell me (ft. mymy)",
-videoId: "3GNVP865PAo",
-channelAvatar: "https://yt3.googleusercontent.com/3IQTPtBbIg3MGfXs1JCs7giYJTfOKW9oMz356GZOIT--tr68gUnJUhCOQ4avS0ruEhFeXfjnyg=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@wenszy"
-},
-{
-title: "mymy - admire me",
-videoId: "73gjDUe-s34",
-channelAvatar: "https://yt3.googleusercontent.com/Es7oaEZ4HSPJAaMtzTcLL8CgWteL14fcnItub5Wg-roPJ-Ng0psJl4qaWm0fZbwWgS1Xw-ntgPw=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@theuppermostinlife"
+title: "YUNGBLUD - Cruel Kids",
+videoId: "e4j7FjwCCX0",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ];
 
@@ -927,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
