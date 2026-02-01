@@ -555,45 +555,45 @@ function showGuestBook() {
     return;
   }
 
- const guestBookWindow = document.createElement('div');
-guestBookWindow.className = 'terminal2 absolute p-6 max-w-full w-[90vw] sm:w-[500px] text-white rounded-3xl bg-red-200/15 border border-red-200/20';
-guestBookWindow.style.zIndex = 11;
-guestBookWindow.style.top = '50%';
-guestBookWindow.style.left = '50%';
-guestBookWindow.style.transform = 'translate(-50%, -50%)';
-guestBookWindow.id = 'guestBookWindow';
+  const guestBookWindow = document.createElement('div');
+  guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px]';
+  guestBookWindow.style.zIndex = 11;
+  guestBookWindow.style.top = '50%';
+  guestBookWindow.style.left = '50%';
+  guestBookWindow.style.transform = 'translate(-50%, -50%)';
+  guestBookWindow.id = 'guestBookWindow';
 
-guestBookWindow.innerHTML = `
-<div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
-  <span class="flex items-center space-x-2">
-    <img src="gf.gif" alt="Avatar2" class="avatar-icon2" />
-    <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-white-glow no-theme-glow">guestbook</span>
-  </span>
-  <div class="flex items-center space-x-2 mr-3 -mt-12">
-    <button onclick="closeGuestBook()" class="text-red-200 hover:text-red-100 transition-colors duration-200 text-lg leading-none">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-200 hover:text-red-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
-  </div>
-</div>
-
-<div class="flex flex-col sm:flex-row gap-6">
-  <div class="w-full">
-    <div class="text-white/80 text-md mt-2 mb-4 text-center">
-      <p id="welcomeMessage" class="text-base text-stone-100/100">meow</p>
+  guestBookWindow.innerHTML = `
+  <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
+    <span class="flex items-center space-x-2">
+      <img src="g1.gif" alt="Avatar2" class="avatar-icon2" />
+      <span id="typed2" class="text-lg mt-4 mb-4 text-blue-glow no-theme-glow"></span>
+    </span>
+    <div class="flex items-center space-x-2 mr-3 -mt-12">
+      <button onclick="closeGuestBook()" class="text-gray-400 hover:text-white transition-colors duration-200 text-lg leading-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
-    <form id="guestbookForm" class="space-y-4 text-white">
-      <input id="name" type="text" name="name" placeholder="name"
-        class="w-full p-2 rounded border border-red-100/40 bg-red-100/20 bg-opacity-30 text-red-100 placeholder-red-50/90" required />
-      <textarea id="message" name="message" placeholder="message"
-        class="w-full p-2 rounded border border-red-100/40 bg-red-100/20 bg-opacity-30 text-red-100 placeholder-red-50/90" required></textarea>
-      <div class="text-center">
-        <button type="submit" class="terminal-button bg-red-50 hover:bg-red-50 opacity-90 text-black guestbook-submit">submit</button>
-      </div>
-    </form>
   </div>
-</div>
+
+  <div class="flex flex-col sm:flex-row gap-6">
+    <div class="w-full">
+      <div class="text-gray-200 text-md mt-2 mb-4 text-center">
+        <p id="welcomeMessage" class="text-base">meow</p>
+      </div>
+      <form id="guestbookForm" class="space-y-4 text-gray-200">
+        <input id="name" type="text" name="name" placeholder="name"
+          class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required />
+        <textarea id="message" name="message" placeholder="message"
+          class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required></textarea>
+        <div class="text-center">
+          <button type="submit" class="terminal-button bg-sky-100 hover:bg-sky-300 text-black guestbook-submit">submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
 `;
 document.body.appendChild(guestBookWindow);
 
@@ -614,14 +614,14 @@ guestbookCommentBox.className = `
   p-4 
   w-[300px] 
   overflow-y-auto 
-  bg-red-100/15
-  border-red-200/20
+  bg-black 
+  bg-opacity-20 
   text-white 
   text-sm 
   scrollbar-thin 
-  scrollbar-thumb-red-300 
+  scrollbar-thumb-pink-300 
   scrollbar-track-black 
-  rounded-3xl
+  rounded-lg
 `;
 
 guestbookCommentBox.style.zIndex = 10;
@@ -780,7 +780,7 @@ async function loadGuestbookComments() {
     return;
   }
 
- container.innerHTML = '<p class="text-blue-100 text-sm">loading ฅᨐฅ</p>';
+ container.innerHTML = '<p class="text-gray-200 text-sm">loading ฅᨐฅ</p>';
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
@@ -818,14 +818,14 @@ comments.forEach(entry => {
   console.log('Rendering comment from:', name);
 
   const div = document.createElement('div');
- div.className = 'bg-red-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
+ div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
 div.innerHTML = `
-  <div class="mb-1 font-medium text-white text-white-glow no-theme-glow">${name || 'Anonymous'}</div>
-  <div class="mb-1 text-red-100">${comment || ''}</div>
-  <div class="text-stone opacity-80 text-[0.65rem] leading-[1rem] text-right">
-    ${timestamp ? new Date(timestamp).toLocaleString() : ''}
-  </div>
+    <div class="mb-1 font-semibold text-white text-blue-glow no-theme-glow">${name || 'Anonymous'}</div>
+    <div class="mb-1 text-gray-200">${comment || ''}</div>
+    <div class="text-gray-400 text-[0.65rem] leading-[1rem] text-right">
+      ${timestamp ? new Date(timestamp).toLocaleString() : ''}
+    </div>
 `;
 
   container.appendChild(div);
@@ -833,7 +833,7 @@ div.innerHTML = `
 
   } catch (err) {
     console.error('Error loading comments:', err);
-    container.innerHTML = '<p class="text-blue-100 text-sm">Failed to load.</p>';
+    container.innerHTML = '<p class="text-gray-400 text-sm">Failed to load.</p>';
   }
 }
 
@@ -927,6 +927,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
