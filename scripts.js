@@ -581,13 +581,13 @@ guestBookWindow.innerHTML = `
 <div class="flex flex-col sm:flex-row gap-6">
   <div class="w-full">
     <div class="text-white/80 text-md mt-2 mb-4 text-center">
-      <p id="welcomeMessage" class="text-base text-stone-100/95">meow</p>
+      <p id="welcomeMessage" class="text-base text-stone-100/100">meow</p>
     </div>
     <form id="guestbookForm" class="space-y-4 text-white">
       <input id="name" type="text" name="name" placeholder="name"
-        class="w-full p-2 rounded border border-red-100/40 bg-red-100/20 bg-opacity-30 text-red-100 placeholder-red-50/80" required />
+        class="w-full p-2 rounded border border-red-100/40 bg-red-100/20 bg-opacity-30 text-red-100 placeholder-red-50/90" required />
       <textarea id="message" name="message" placeholder="message"
-        class="w-full p-2 rounded border border-red-100/40 bg-red-100/20 bg-opacity-30 text-red-100 placeholder-red-50/80" required></textarea>
+        class="w-full p-2 rounded border border-red-100/40 bg-red-100/20 bg-opacity-30 text-red-100 placeholder-red-50/90" required></textarea>
       <div class="text-center">
         <button type="submit" class="terminal-button bg-red-50 hover:bg-red-50 opacity-90 text-black guestbook-submit">submit</button>
       </div>
@@ -927,6 +927,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
