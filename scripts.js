@@ -591,14 +591,14 @@ function showGuestBook() {
 `;
 document.body.appendChild(guestBookWindow);
 
-/*var typed2 = new Typed('#typed2', {
+var typed2 = new Typed('#typed2', {
   strings: ['guestbook'],  
   typeSpeed: 0,            
   backSpeed: 0,
   showCursor: false,
   smartBackspace: false,
   loop: false
-});*/
+});
 
 const guestbookCommentBox = document.createElement('div');
 guestbookCommentBox.id = 'guestbookComments';
@@ -921,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
