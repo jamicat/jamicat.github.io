@@ -575,13 +575,13 @@ guestBookWindow.innerHTML = `
 <div class="flex flex-col sm:flex-row gap-6">
   <div class="w-full">
     <div class="text-white/80 text-md mt-2 mb-4 text-center">
-      <p id="welcomeMessage" class="text-base text-red-100">meow</p>
+      <p id="welcomeMessage" class="text-base text-stone-100/95">meow</p>
     </div>
     <form id="guestbookForm" class="space-y-4 text-white">
       <input id="name" type="text" name="name" placeholder="name"
-        class="w-full p-2 rounded border border-red-200/40 bg-red-100/20 bg-opacity-30 text-red-100 placeholder-red-100/80" required />
+        class="w-full p-2 rounded border border-red-100/40 bg-red-100/20 bg-opacity-30 text-red-100 placeholder-red-50/80" required />
       <textarea id="message" name="message" placeholder="message"
-        class="w-full p-2 rounded border border-red-200/40 bg-red-100/20 bg-opacity-30 text-red-100 placeholder-red-100/80" required></textarea>
+        class="w-full p-2 rounded border border-red-100/40 bg-red-100/20 bg-opacity-30 text-red-100 placeholder-red-50/80" required></textarea>
       <div class="text-center">
         <button type="submit" class="terminal-button bg-red-50 hover:bg-red-50 opacity-90 text-black guestbook-submit">submit</button>
       </div>
@@ -608,7 +608,7 @@ guestbookCommentBox.className = `
   p-4 
   w-[300px] 
   overflow-y-auto 
-  bg-red-200/15
+  bg-red-100/15
   border-red-200/20
   text-white 
   text-sm 
@@ -817,7 +817,7 @@ comments.forEach(entry => {
 div.innerHTML = `
   <div class="mb-1 font-medium text-white text-white-glow no-theme-glow">${name || 'Anonymous'}</div>
   <div class="mb-1 text-red-100">${comment || ''}</div>
-  <div class="text-white opacity-80 text-[0.65rem] leading-[1rem] text-right">
+  <div class="text-stone opacity-80 text-[0.65rem] leading-[1rem] text-right">
     ${timestamp ? new Date(timestamp).toLocaleString() : ''}
   </div>
 `;
@@ -921,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
