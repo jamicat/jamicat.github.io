@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'pf3KyEnacJ8',
+playlist: '46azFIIHz9s',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'pf3KyEnacJ8';
+const videoId = '46azFIIHz9s';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,10 +304,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD, The Smashing Pumpkins - Zombie (Official Music Video)",
-videoId: "pf3KyEnacJ8",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@yungblud"
+title: "South Arcade - HOW 2 GET AWAY WITH MURDER (Official Video)",
+videoId: "46azFIIHz9s",
+channelAvatar: "https://yt3.googleusercontent.com/1XVSDR-XAhQ6v_djDiG7lHCdk2v1JxiF1lh8FeH0dosLddhuMFfbKgfA-LZXfebNk84hstFgpQ=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@southarcadeuk"
 }
 ];
 
@@ -921,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
