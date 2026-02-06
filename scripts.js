@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '46azFIIHz9s',
+playlist: '46azFIIHz9s,e4j7FjwCCX0',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -308,6 +308,12 @@ title: "South Arcade - HOW 2 GET AWAY WITH MURDER (Official Video)",
 videoId: "46azFIIHz9s",
 channelAvatar: "https://yt3.googleusercontent.com/1XVSDR-XAhQ6v_djDiG7lHCdk2v1JxiF1lh8FeH0dosLddhuMFfbKgfA-LZXfebNk84hstFgpQ=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@southarcadeuk"
+},
+{
+title: "YUNGBLUD - Cruel Kids (Official Visualiser)",
+videoId: "e4j7FjwCCX0",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ];
 
@@ -921,6 +927,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
