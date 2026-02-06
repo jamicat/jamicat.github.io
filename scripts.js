@@ -783,7 +783,7 @@ async function loadGuestbookComments() {
     return;
   }
 
- container.innerHTML = '<p class="text-blue-100 text-sm">loading ฅᨐฅ</p>';
+ container.innerHTML = '<p class="text-blue-100 text-sm">Loading ฅᨐฅ</p>';
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
@@ -930,6 +930,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
