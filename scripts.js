@@ -549,8 +549,8 @@ function showGuestBook() {
     return;
   }
 
-  const guestBookWindow = document.createElement('div');
-  guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px] rounded-3xl';
+   const guestBookWindow = document.createElement('div');
+  guestBookWindow.className = 'terminal2 absolute p-6 max-w-full w-[90vw] sm:w-[500px] text-white rounded-3xl bg-pink-200/15 border border-pink-200/20';
   guestBookWindow.style.zIndex = 11;
   guestBookWindow.style.top = '50%';
   guestBookWindow.style.left = '50%';
@@ -560,12 +560,12 @@ function showGuestBook() {
   guestBookWindow.innerHTML = `
   <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
     <span class="flex items-center space-x-2">
-      <img src="g2.gif" alt="Avatar2" class="avatar-icon2" />
+      <img src="cattp.gif" alt="Avatar2" class="avatar-icon2" />
       <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow">guestbook</span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
-      <button onclick="closeGuestBook()" class="text-gray-400 hover:text-white transition-colors duration-200 text-lg leading-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <button onclick="closeGuestBook()" class="text-pink-200 hover:text-pink-100 transition-colors duration-200 text-lg leading-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-200 hover:text-pink-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -574,16 +574,16 @@ function showGuestBook() {
 
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
-      <div class="text-gray-200 text-md mt-2 mb-4 text-center">
-        <p id="welcomeMessage" class="text-base">meow</p>
+      <div class="text-blue-100/80 text-md mt-2 mb-4 text-center">
+        <p id="welcomeMessage" class="text-base text-blue-50">meow</p>
       </div>
-      <form id="guestbookForm" class="space-y-4 text-gray-200">
+      <form id="guestbookForm" class="space-y-4 text-blue-100">
         <input id="name" type="text" name="name" placeholder="name"
-          class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required />
+          class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 bg-opacity-30 text-pink-100 placeholder-pink-100/80" required />
         <textarea id="message" name="message" placeholder="message"
-          class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required></textarea>
+          class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 bg-opacity-30 text-pink-100 placeholder-pink-100/80" required></textarea>
         <div class="text-center">
-          <button type="submit" class="terminal-button bg-sky-100 hover:bg-sky-300 text-black guestbook-submit">submit</button>
+          <button type="submit" class="terminal-button bg-pink-50 hover:bg-pink-50 opacity-90 text-black guestbook-submit">submit</button>
         </div>
       </form>
     </div>
@@ -603,13 +603,13 @@ document.body.appendChild(guestBookWindow);
 const guestbookCommentBox = document.createElement('div');
 guestbookCommentBox.id = 'guestbookComments';
 guestbookCommentBox.className = `
-  terminal 
+ terminal 
   absolute 
   p-4 
   w-[300px] 
   overflow-y-auto 
-  bg-black 
-  bg-opacity-20 
+  bg-pink-200/15
+  border-pink-200/20
   text-white 
   text-sm 
   scrollbar-thin 
@@ -774,7 +774,7 @@ async function loadGuestbookComments() {
     return;
   }
 
- container.innerHTML = '<p class="text-gray-200 text-sm">loading ฅᨐฅ</p>';
+ container.innerHTML = '<p class="text-blue-100 text-sm">loading ฅᨐฅ</p>';
 
   try {
     const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
@@ -811,23 +811,23 @@ comments.forEach(entry => {
   const { name, comment, timestamp } = entry;
   console.log('Rendering comment from:', name);
 
-  const div = document.createElement('div');
- div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
+   const div = document.createElement('div');
+  div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
-div.innerHTML = `
+  div.innerHTML = `
     <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">${name || 'Anonymous'}</div>
-    <div class="mb-1 text-gray-200">${comment || ''}</div>
-    <div class="text-gray-400 text-[0.65rem] leading-[1rem] text-right">
+    <div class="mb-1 text-pink-100">${comment || ''}</div>
+    <div class="text-blue-100 opacity-80 text-[0.65rem] leading-[1rem] text-right">
       ${timestamp ? new Date(timestamp).toLocaleString() : ''}
     </div>
-`;
+  `;
 
   container.appendChild(div);
 });
 
   } catch (err) {
     console.error('Error loading comments:', err);
-    container.innerHTML = '<p class="text-gray-400 text-sm">Failed to load.</p>';
+    container.innerHTML = '<p class="text-blue-100 text-sm">Failed to load.</p>';
   }
 }
 
@@ -921,6 +921,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
