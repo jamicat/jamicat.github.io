@@ -93,14 +93,14 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-blue-glow';
 
   const strings = [
-    `<span class="text-white text-xl mr-2 ${glow}">meow</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">mew</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">nya</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">mrow</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">meow</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">mew</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">nya</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">mrow</span>`
+    `<span class="text-white text-xl mr-2 ${glow}">MEOW</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">MEW</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">NYA</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">MROW</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">MEOW</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">MEW</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">NYA</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">MROW</span>`
   ];
 
   typedInstance = new Typed('#typed', {
@@ -334,7 +334,7 @@ html += `
 
 html += `
   <div class="mt-6 flex justify-center">
-    <button class="terminal-button" onclick="resetTerminal()">back</button>
+    <button class="terminal-button" onclick="resetTerminal()">Back</button>
   </div>
 `;
 
@@ -407,7 +407,7 @@ $('#terminalContent').html(`
       </a>
     </div>
   <div class="mt-4 flex justify-center">
-  <button class="terminal-button" onclick="resetTerminal()">back</button>
+  <button class="terminal-button" onclick="resetTerminal()">Back</button>
     </div>
   `);
 
@@ -445,7 +445,7 @@ function changeTyped3(newText) {
       </p>
     </div>
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="resetTerminal()">back</button>
+      <button class="terminal-button" onclick="resetTerminal()">Back</button>
     </div>
   `);
   //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
@@ -491,7 +491,7 @@ function aboutPost() {
     </div>
     
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="siteFAQ()">back</button>
+      <button class="terminal-button" onclick="siteFAQ()">Back</button>
     </div>
   `);
 
@@ -541,7 +541,7 @@ function somethingNew() {
     </div>
 
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="siteFAQ()">back</button>
+      <button class="terminal-button" onclick="siteFAQ()">Back</button>
     </div>
   `);
 
@@ -570,7 +570,7 @@ function showGuestBook() {
   <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
     <span class="flex items-center space-x-2">
       <img src="cattp.gif" alt="Avatar2" class="avatar-icon2" />
-      <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow">guestbook</span>
+      <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow">Guestbook</span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
       <button onclick="closeGuestBook()" class="text-pink-200 hover:text-pink-100 transition-colors duration-200 text-lg leading-none">
@@ -856,7 +856,7 @@ document.getElementById('terminalContent').innerHTML = `
       <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-50" required></textarea>
       <div class="flex justify-center space-x-4 flex-wrap">
       <button type="submit" class="terminal-button">submit</button>
-      <button type="button" class="terminal-button" onclick="resetTerminal()">back</button>
+      <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
       </div>
       <div id="formResponse" class="text-pink-100 text-md mt-2 mb-4 text-center"></div>
     </form>
@@ -910,9 +910,9 @@ function resetTerminal() {
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-    <button class="terminal-button ml-2" onclick="showArt()">art</button>
-    <button class="terminal-button ml-5" onclick="showGuestBook()">guestbook</button>
-    <button class="terminal-button" onclick="showList()">playlist</button>
+    <button class="terminal-button ml-2" onclick="showArt()">Art</button>
+    <button class="terminal-button ml-5" onclick="showGuestBook()">Guestbook</button>
+    <button class="terminal-button" onclick="showList()">Playlist</button>
   </div>
 `);
 const currentTheme = localStorage.getItem('theme') || 'Default';
@@ -930,6 +930,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
