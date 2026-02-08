@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '46azFIIHz9s,vfRHHFn9E9k',
+playlist: '4UGSBZm7IIU,vfRHHFn9E9k',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '46azFIIHz9s';
+const videoId = '4UGSBZm7IIU';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,19 +304,17 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "South Arcade - HOW 2 GET AWAY WITH MURDER (Official Video)",
-videoId: "46azFIIHz9s",
-channelAvatar: "https://yt3.googleusercontent.com/1XVSDR-XAhQ6v_djDiG7lHCdk2v1JxiF1lh8FeH0dosLddhuMFfbKgfA-LZXfebNk84hstFgpQ=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@southarcadeuk"
-}
-,
+title: "Jane Remover — Music Baby (audio)",
+videoId: "4UGSBZm7IIU",
+channelAvatar: "https://yt3.googleusercontent.com/OwNIBpyWkwEtJTXSOuu7ojmBT2QwSZyul20FcTE79yy3R4Awcdns_jrUS-ynWceACPIHNwQLMA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@jane_remover"
+},
 {
 title: "Cavetown - No Bark No Bite (Official Audio)",
 videoId: "vfRHHFn9E9k",
 channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@cavetown"
 }
-
 ];
 
 let html = `<div class="space-y-4 mt-4">`;
@@ -932,6 +930,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
