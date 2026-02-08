@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '4UGSBZm7IIU,vfRHHFn9E9k',
+playlist: '4UGSBZm7IIU,niGjenFNcpc',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -310,10 +310,10 @@ channelAvatar: "https://yt3.googleusercontent.com/OwNIBpyWkwEtJTXSOuu7ojmBT2QwSZ
 channelUrl: "https://www.youtube.com/@jane_remover"
 },
 {
-title: "Cavetown - No Bark No Bite (Official Audio)",
-videoId: "vfRHHFn9E9k",
-channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@cavetown"
+title: "Louis Tomlinson - Palaces (Visualiser)",
+videoId: "niGjenFNcpc",
+channelAvatar: "https://yt3.googleusercontent.com/TF8W62ZSwomyv-fdvm89BEmwVpbl55NeR9lTN7kBUq7-T2ULs4WRBtokCc5u0jb5QIjoHeoqIw=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@LouisTomlinson"
 }
 ];
 
@@ -930,6 +930,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
