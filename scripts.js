@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '4UGSBZm7IIU,niGjenFNcpc',
+playlist: 'niGjenFNcpc,4UGSBZm7IIU',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '4UGSBZm7IIU';
+const videoId = 'niGjenFNcpc';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,16 +304,17 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Jane Remover — Music Baby (audio)",
-videoId: "4UGSBZm7IIU",
-channelAvatar: "https://yt3.googleusercontent.com/OwNIBpyWkwEtJTXSOuu7ojmBT2QwSZyul20FcTE79yy3R4Awcdns_jrUS-ynWceACPIHNwQLMA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@jane_remover"
-},
-{
 title: "Louis Tomlinson - Palaces (Visualiser)",
 videoId: "niGjenFNcpc",
 channelAvatar: "https://yt3.googleusercontent.com/TF8W62ZSwomyv-fdvm89BEmwVpbl55NeR9lTN7kBUq7-T2ULs4WRBtokCc5u0jb5QIjoHeoqIw=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@LouisTomlinson"
+}
+,
+{
+title: "Jane Remover — Music Baby (audio)",
+videoId: "4UGSBZm7IIU",
+channelAvatar: "https://yt3.googleusercontent.com/OwNIBpyWkwEtJTXSOuu7ojmBT2QwSZyul20FcTE79yy3R4Awcdns_jrUS-ynWceACPIHNwQLMA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@jane_remover"
 }
 ];
 
@@ -930,6 +931,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
