@@ -304,17 +304,17 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Louis Tomlinson - Palaces (Visualiser)",
-videoId: "niGjenFNcpc",
-channelAvatar: "https://yt3.googleusercontent.com/TF8W62ZSwomyv-fdvm89BEmwVpbl55NeR9lTN7kBUq7-T2ULs4WRBtokCc5u0jb5QIjoHeoqIw=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@LouisTomlinson"
+title: "YUNGBLUD - cotton candy",
+videoId: "yDeIAllUAWc",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ,
 {
-title: "Jane Remover — Music Baby (audio)",
-videoId: "4UGSBZm7IIU",
-channelAvatar: "https://yt3.googleusercontent.com/OwNIBpyWkwEtJTXSOuu7ojmBT2QwSZyul20FcTE79yy3R4Awcdns_jrUS-ynWceACPIHNwQLMA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@jane_remover"
+title: "SILENCE",
+videoId: "O00fDLCNhTM",
+channelAvatar: "https://yt3.googleusercontent.com/KISIT97I6iAQJuvHtbKvOTDpQL7n1wu1ub750EjQOH48lm8A4OwGa6MsEeH6rHaT2Xz21I9qcw0=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@agentlilyofficial"
 }
 ];
 
@@ -931,6 +931,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
