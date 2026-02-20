@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '3tlzF2jtzEU',
+playlist: 'io5mLKLDwcc',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '3tlzF2jtzEU';
+const videoId = 'io5mLKLDwcc';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,8 +304,8 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - Zombie (Live From Hansa Studios)",
-videoId: "3tlzF2jtzEU",
+title: "YUNGBLUD - Suburban Requiem (Official Lyric Video)",
+videoId: "io5mLKLDwcc",
 channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@yungblud"
 }
@@ -924,6 +924,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
