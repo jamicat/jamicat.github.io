@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'b-QCLrTN5pE,O00fDLCNhTM',
+playlist: '3tlzF2jtzEU',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'b-QCLrTN5pE';
+const videoId = '3tlzF2jtzEU';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,17 +304,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "With That (feat. Duke)",
-videoId: "b-QCLrTN5pE",
-channelAvatar: "https://yt3.googleusercontent.com/aDNK7Ot5mqdrLQjlavDCRuFeTglGkEHBIu2pXZhgYMV-eyk1u3az2igH7m3yG_qw9U3nvb12vrs=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@youngthug"
-}
-,
-{
-title: "SILENCE",
-videoId: "O00fDLCNhTM",
-channelAvatar: "https://yt3.googleusercontent.com/KISIT97I6iAQJuvHtbKvOTDpQL7n1wu1ub750EjQOH48lm8A4OwGa6MsEeH6rHaT2Xz21I9qcw0=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@agentlilyofficial"
+title: "YUNGBLUD - Zombie (Live From Hansa Studios)",
+videoId: "3tlzF2jtzEU",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ];
 
@@ -931,6 +924,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
