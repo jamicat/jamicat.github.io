@@ -98,7 +98,6 @@ height: 132px;
 border-radius: 0%;
 margin-right: 0.5rem;
 object-fit: contain;
-image-rendering: crisp-edges;
 }
 
 .avatar-icon2 {
@@ -107,8 +106,6 @@ height: 132px;
 border-radius: 0%;
 margin-right: 0.5rem;
 object-fit: contain;
-image-rendering: pixelated;
-image-rendering: crisp-edges;
 }
 
 .text-blue-glow {
@@ -169,6 +166,7 @@ min-height: 2.5em;
   border-radius: 6px;
 }
   
+
 
 
 
