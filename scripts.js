@@ -304,12 +304,11 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "temachii a lambs lullaby - Live Session,
+title: "temachii a lambs lullaby - Live Session",
 videoId: "TrrPNfYCKKM",
 channelAvatar: "https://yt3.googleusercontent.com/cyguoc8R1IUsmD5rrQXk0Je_v1mV4xtAri-evsgzJX-VXvsfIqEzx1Y99ttlbAZIvXANkR83=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@therealtemachii"
-}
-,
+},
 {
 title: "wenszy - asphyxia ft. beth (lyric video)",
 videoId: "d5COcRyvE7Y",
@@ -932,6 +931,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
