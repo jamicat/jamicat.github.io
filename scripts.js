@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'TrrPNfYCKKM,jI8FcPWekBs',
+playlist: 'obaNXh1r3o0',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'TrrPNfYCKKM';
+const videoId = 'obaNXh1r3o0';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,16 +304,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "temachii a lambs lullaby - Live Session",
-videoId: "TrrPNfYCKKM",
-channelAvatar: "https://yt3.googleusercontent.com/cyguoc8R1IUsmD5rrQXk0Je_v1mV4xtAri-evsgzJX-VXvsfIqEzx1Y99ttlbAZIvXANkR83=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@therealtemachii"
-},
-{
-title: "Jane Remover — So What? (audio)",
-videoId: "jI8FcPWekBs",
-channelAvatar: "https://yt3.googleusercontent.com/OwNIBpyWkwEtJTXSOuu7ojmBT2QwSZyul20FcTE79yy3R4Awcdns_jrUS-ynWceACPIHNwQLMA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@jane_remover"
+title: "YUNGBLUD - I Need You (To Make The World Seem Fine)",
+videoId: "obaNXh1r3o0",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ];
 
@@ -930,6 +924,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
