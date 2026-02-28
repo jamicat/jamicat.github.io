@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '4xL_UnhA7Yo',
+playlist: 'TrrPNfYCKKM,4xL_UnhA7Yo',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '4xL_UnhA7Yo';
+const videoId = 'TrrPNfYCKKM';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,11 +304,19 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
+title: "temachii a lambs lullaby - Live Session,
+videoId: "TrrPNfYCKKM",
+channelAvatar: "https://yt3.googleusercontent.com/cyguoc8R1IUsmD5rrQXk0Je_v1mV4xtAri-evsgzJX-VXvsfIqEzx1Y99ttlbAZIvXANkR83=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@therealtemachii"
+}
+,
+{
 title: "lovin' lowly",
 videoId: "4xL_UnhA7Yo",
 channelAvatar: "https://yt3.googleusercontent.com/cyguoc8R1IUsmD5rrQXk0Je_v1mV4xtAri-evsgzJX-VXvsfIqEzx1Y99ttlbAZIvXANkR83=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@therealtemachii"
 }
+
 ];
 
 let html = `<div class="space-y-4 mt-4">`;
@@ -924,6 +932,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
