@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'TrrPNfYCKKM,4xL_UnhA7Yo',
+playlist: 'TrrPNfYCKKM,d5COcRyvE7Y',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -311,10 +311,10 @@ channelUrl: "https://www.youtube.com/@therealtemachii"
 }
 ,
 {
-title: "lovin' lowly",
-videoId: "4xL_UnhA7Yo",
-channelAvatar: "https://yt3.googleusercontent.com/cyguoc8R1IUsmD5rrQXk0Je_v1mV4xtAri-evsgzJX-VXvsfIqEzx1Y99ttlbAZIvXANkR83=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@therealtemachii"
+title: "wenszy - asphyxia ft. beth (lyric video)",
+videoId: "d5COcRyvE7Y",
+channelAvatar: "https://yt3.googleusercontent.com/3IQTPtBbIg3MGfXs1JCs7giYJTfOKW9oMz356GZOIT--tr68gUnJUhCOQ4avS0ruEhFeXfjnyg=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@wenszy"
 }
 
 ];
@@ -932,6 +932,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
