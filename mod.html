@@ -46,8 +46,6 @@ if(!ADMIN_KEY){
   throw new Error("Unauthorized")
 }
 
-/* LOAD PENDING COMMENTS */
-
 async function loadPending(){
 
   const res = await fetch("/api/pending")
@@ -70,11 +68,8 @@ async function loadPending(){
     `
 
     container.appendChild(div)
-
   })
 }
-
-/* LOAD APPROVED COMMENTS */
 
 async function loadApproved(){
 
@@ -95,13 +90,9 @@ async function loadApproved(){
       <small>${c.timestamp}</small><br>
       <button onclick="deleteApproved(${c.id})">Delete</button>
     `
-
     container.appendChild(div)
-
   })
 }
-
-/* APPROVE */
 
 async function approve(id){
 
@@ -109,33 +100,25 @@ async function approve(id){
 
   loadPending()
   loadApproved()
-
 }
-
-/* DELETE PENDING */
 
 async function deletePending(id){
 
   await fetch(`/api/deletePending/${id}?key=${ADMIN_KEY}`)
-
   loadPending()
-
 }
-
-/* DELETE APPROVED */
 
 async function deleteApproved(id){
 
   await fetch(`/api/delete/${id}?key=${ADMIN_KEY}`)
 
   loadApproved()
-
 }
 
 loadPending()
 loadApproved()
 
 </script>
-
 </body>
 </html>
+
