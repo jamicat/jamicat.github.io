@@ -5,7 +5,6 @@
 <title>Guestbook Moderation</title>
 
 <style>
-
 @font-face{
   font-family:"Nunito";
   src:url("nunito.ttf") format("truetype");
@@ -79,27 +78,19 @@ button{
 button:hover{
   transform:scale(1.04);
 }
-
 </style>
-
 </head>
 
 <body>
-
 <h2>Guestbook Moderation</h2>
-
 <div class="section">
-
 <h3>Pending Comments</h3>
 <div id="pending"></div>
-
 <h3>Approved Comments</h3>
 <div id="approved"></div>
-
 </div>
 
 <script>
-
 const ADMIN_KEY = prompt("Enter admin password")
 
 if(!ADMIN_KEY){
@@ -174,8 +165,7 @@ async function deleteApproved(id){
 
 loadPending()
 loadApproved()
-
 </script>
-
 </body>
 </html>
+
