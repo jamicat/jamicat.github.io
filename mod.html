@@ -65,7 +65,7 @@ button{
   margin-top:10px;
   margin-right:6px;
   padding:6px 14px;
-  border-radius:14px
+  border-radius:8px;
   border:none;
   cursor:pointer;
   background:#f3eaea;
@@ -78,9 +78,9 @@ button{
 button:hover{
   transform:scale(1.04);
 }
+
 </style>
 </head>
-
 <body>
 <h2>Guestbook Moderation</h2>
 <div class="section">
@@ -88,30 +88,44 @@ button:hover{
 <div id="pending"></div>
 <h3>Approved Comments</h3>
 <div id="approved"></div>
-</div>
 
+</div>
+  
 <script>
 const ADMIN_KEY = prompt("Enter admin password")
 
 if(!ADMIN_KEY){
-  document.body.innerHTML = "Unauthorized"
+  document.body.innerHTML="Unauthorized"
   throw new Error("Unauthorized")
+}
+
+async function verify(){
+
+  const res = await fetch(`/api/pending?key=${ADMIN_KEY}`)
+
+  if(res.status===403){
+    document.body.innerHTML="Unauthorized"
+    throw new Error("Unauthorized")
+  }
+
+  loadPending()
+  loadApproved()
 }
 
 async function loadPending(){
 
-  const res = await fetch("/api/pending")
+  const res = await fetch(`/api/pending?key=${ADMIN_KEY}`)
   const comments = await res.json()
 
   const container = document.getElementById("pending")
-  container.innerHTML = ""
+  container.innerHTML=""
 
-  comments.forEach(c => {
+  comments.forEach(c=>{
 
-    const div = document.createElement("div")
-    div.className = "comment"
+    const div=document.createElement("div")
+    div.className="comment"
 
-    div.innerHTML = `
+    div.innerHTML=`
       <div class="name">${c.name}</div>
       <div class="text">${c.comment}</div>
       <div class="time">${c.timestamp}</div>
@@ -120,6 +134,7 @@ async function loadPending(){
     `
 
     container.appendChild(div)
+
   })
 }
 
@@ -128,15 +143,15 @@ async function loadApproved(){
   const res = await fetch("/api/list")
   const data = await res.json()
 
-  const container = document.getElementById("approved")
-  container.innerHTML = ""
+  const container=document.getElementById("approved")
+  container.innerHTML=""
 
-  data.comments.forEach(c => {
+  data.comments.forEach(c=>{
 
-    const div = document.createElement("div")
-    div.className = "comment"
+    const div=document.createElement("div")
+    div.className="comment"
 
-    div.innerHTML = `
+    div.innerHTML=`
       <div class="name">${c.name}</div>
       <div class="text">${c.comment}</div>
       <div class="time">${c.timestamp}</div>
@@ -144,30 +159,33 @@ async function loadApproved(){
     `
 
     container.appendChild(div)
+
   })
 }
 
 async function approve(id){
+
   await fetch(`/api/approve/${id}?key=${ADMIN_KEY}`)
   loadPending()
   loadApproved()
+
 }
 
 async function deletePending(id){
+
   await fetch(`/api/deletePending/${id}?key=${ADMIN_KEY}`)
   loadPending()
+
 }
 
 async function deleteApproved(id){
+
   await fetch(`/api/delete/${id}?key=${ADMIN_KEY}`)
   loadApproved()
+
 }
 
-loadPending()
-loadApproved()
+verify()
 </script>
 </body>
 </html>
-
-
-
