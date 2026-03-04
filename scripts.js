@@ -772,18 +772,25 @@ welcomeMessage.textContent = "meow!";
     submitBtn.textContent = 'Submit';
   }
 });*/
-if (!guestbookSocket || guestbookSocket.readyState !== WebSocket.OPEN) {
-
+function connectGuestbookSocket() {
+  if (guestbookSocket && guestbookSocket.readyState === WebSocket.OPEN) {
+    return;
+  }
   guestbookSocket = new WebSocket(`wss://${location.host}/api/ws`);
   guestbookSocket.onmessage = (event) => {
     if (event.data === "refresh") {
       loadGuestbookComments();
     }
   };
+  guestbookSocket.onclose = () => {
+    console.log("Guestbook WS closed, reconnecting...");
+    setTimeout(connectGuestbookSocket, 2000);
+  };
   guestbookSocket.onerror = (err) => {
     console.error("Guestbook WS error:", err);
   };
 }
+connectGuestbookSocket();
 loadGuestbookComments();
 }
                                                           
@@ -923,6 +930,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
