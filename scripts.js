@@ -726,15 +726,14 @@ comment: `*${message}`,
 timestamp: new Date().toISOString(),
 };
 
-const url = "https://script.google.com/macros/s/AKfycbyHw5sLKQB5OWs3pRSed4T2e-0aX32fwg03OXbyVH_UB6pOyzhCntv_9PDaU8WXeuql/exec";
+const url = "/api/comments";
 
-fetch(url, {
+await fetch(url, {
 method: "POST",
 headers: {
 "Content-Type": "application/json",
 },
 body: JSON.stringify(data),
-mode: "no-cors",
 });
 
 document.getElementById("name").value = "";
@@ -787,18 +786,8 @@ async function loadGuestbookComments() {
  container.innerHTML = '<p class="text-blue-100 text-sm">Loading ฅᨐฅ</p>';
 
   try {
-    const response = await fetch('https://script.google.com/macros/s/AKfycbwcLIsPGubHvVtcUnP2XLYz6x9DKqKTJ64Yusz67w4-bUn9NHaMW21VqmV7f2v5g-T_Ig/exec');
-    const raw = await response.text();
-    console.log('RAW response:', raw);
-
-    let data;
-    try {
-      data = JSON.parse(raw);
-    } catch (jsonErr) {
-      console.error('Failed to parse JSON:', jsonErr);
-      container.innerHTML = '<p class="text-red-400 text-sm">Invalid JSON response.</p>';
-      return;
-    }
+    const response = await fetch('/api/list');
+    const data = await response.json();
 
     const { comments } = data;
     if (!Array.isArray(comments)) {
@@ -899,7 +888,6 @@ headers: {
 "Content-Type": "application/json",
 },
 body: JSON.stringify(data),
-mode: "no-cors",
 });
 
 document.getElementById("name").value = "";
@@ -931,6 +919,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
