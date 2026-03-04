@@ -5,31 +5,105 @@
 <title>Guestbook Moderation</title>
 
 <style>
-body{
-  font-family: Arial;
-  background:#111;
-  color:white;
-  padding:20px;
+
+@font-face{
+  font-family:"Nunito";
+  src:url("nunito.ttf") format("truetype");
 }
 
-button{
-  margin:5px;
-  padding:5px 10px;
-  cursor:pointer;
+body{
+  font-family:"Nunito",sans-serif;
+  background:radial-gradient(circle at top,#1a1a1a,#000);
+  color:white;
+  padding:40px;
+}
+
+h2{
+  font-weight:600;
+  margin-bottom:30px;
+  color:#ffffff;
+}
+
+h3{
+  margin-top:40px;
+  color:#9be7ff;
+}
+
+.section{
+  max-width:700px;
 }
 
 .comment{
   margin-bottom:15px;
-  padding:10px;
-  border:1px solid #333;
-  border-radius:6px;
+  padding:16px;
+  border-radius:14px;
+  background:linear-gradient(
+    135deg,
+    rgba(155,231,255,0.18),
+    rgba(255,182,206,0.18)
+  );
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.12);
+  box-shadow:
+    0 0 10px rgba(155,231,255,0.15),
+    0 0 10px rgba(255,182,206,0.15);
+  transition:0.25s;
 }
+
+.comment:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 0 18px rgba(155,231,255,0.25),
+    0 0 18px rgba(255,182,206,0.25);
+}
+
+.name{
+  font-weight:600;
+  color:#ffffff;
+}
+
+.text{
+  margin-top:4px;
+  color:#ffd6e5;
+}
+
+.time{
+  font-size:12px;
+  opacity:0.7;
+}
+
+button{
+  margin-top:8px;
+  margin-right:6px;
+  padding:6px 12px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  background:linear-gradient(
+    135deg,
+    #9be7ff,
+    #ffb6ce
+  );
+  color:#111;
+  font-weight:600;
+  transition:0.2s;
+}
+
+button:hover{
+  transform:scale(1.05);
+  filter:brightness(1.1);
+}
+
 </style>
 
 </head>
+
 <body>
 
 <h2>Guestbook Moderation</h2>
+
+<div class="section">
 
 <h3>Pending Comments</h3>
 <div id="pending"></div>
@@ -37,9 +111,11 @@ button{
 <h3>Approved Comments</h3>
 <div id="approved"></div>
 
+</div>
+
 <script>
 
-const ADMIN_KEY = prompt("Enter admin password")
+const ADMIN_KEY = prompt("Enter password")
 
 if(!ADMIN_KEY){
   document.body.innerHTML = "Unauthorized"
@@ -60,9 +136,9 @@ async function loadPending(){
     div.className = "comment"
 
     div.innerHTML = `
-      <b>${c.name}</b><br>
-      ${c.comment}<br>
-      <small>${c.timestamp}</small><br>
+      <div class="name">${c.name}</div>
+      <div class="text">${c.comment}</div>
+      <div class="time">${c.timestamp}</div>
       <button onclick="approve(${c.id})">Approve</button>
       <button onclick="deletePending(${c.id})">Delete</button>
     `
@@ -85,11 +161,12 @@ async function loadApproved(){
     div.className = "comment"
 
     div.innerHTML = `
-      <b>${c.name}</b><br>
-      ${c.comment}<br>
-      <small>${c.timestamp}</small><br>
+      <div class="name">${c.name}</div>
+      <div class="text">${c.comment}</div>
+      <div class="time">${c.timestamp}</div>
       <button onclick="deleteApproved(${c.id})">Delete</button>
     `
+
     container.appendChild(div)
   })
 }
@@ -97,7 +174,6 @@ async function loadApproved(){
 async function approve(id){
 
   await fetch(`/api/approve/${id}?key=${ADMIN_KEY}`)
-
   loadPending()
   loadApproved()
 }
@@ -111,7 +187,6 @@ async function deletePending(id){
 async function deleteApproved(id){
 
   await fetch(`/api/delete/${id}?key=${ADMIN_KEY}`)
-
   loadApproved()
 }
 
@@ -121,4 +196,3 @@ loadApproved()
 </script>
 </body>
 </html>
-
