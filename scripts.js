@@ -552,6 +552,7 @@ function somethingNew() {
 
 let lastSubmissionTime = 0;
 let lastGbSubmissionTime = 0;
+let guestbookSocket = null;
 
 function showGuestBook() {
 
@@ -771,7 +772,19 @@ welcomeMessage.textContent = "meow!";
     submitBtn.textContent = 'Submit';
   }
 });*/
-loadGuestbookComments();
+if (!guestbookSocket || guestbookSocket.readyState !== WebSocket.OPEN) {
+
+  guestbookSocket = new WebSocket(`wss://${location.host}/api/ws`);
+
+  guestbookSocket.onmessage = () => {
+    loadGuestbookComments();
+  };
+
+  guestbookSocket.onerror = (err) => {
+    console.error("Guestbook WS error:", err);
+  };
+
+}
 }
                                                           
 
@@ -919,8 +932,5 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
-
-
-
 
 
