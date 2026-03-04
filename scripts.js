@@ -787,62 +787,53 @@ if (!guestbookSocket || guestbookSocket.readyState !== WebSocket.OPEN) {
 }
 }
                                                           
-
-
 async function loadGuestbookComments() {
-  const container = document.getElementById('guestbookComments');
-  if (!container) {
-    console.error('guestbookComments container not found');
-    return;
-  }
 
- container.innerHTML = '<p class="text-blue-100 text-sm">Loading ฅᨐฅ</p>';
+  const container = document.getElementById('guestbookComments');
+  if (!container) return;
+
+  container.innerHTML = '<p class="text-blue-100 text-sm">Loading ฅᨐฅ</p>';
 
   try {
+
     const response = await fetch('/api/list');
     const data = await response.json();
 
-    const { comments } = data;
-    if (!Array.isArray(comments)) {
-      console.error('Expected comments array but got:', comments);
-      container.innerHTML = '<p class="text-red-400 text-sm">Unexpected data format.</p>';
-      return;
-    }
+    const comments = data.comments || [];
 
-    console.log('Parsed comments:', comments);
+    container.innerHTML = '';
 
-    comments.sort((a, b) => {
-      const timeA = new Date(a.timestamp).getTime() || 0;
-      const timeB = new Date(b.timestamp).getTime() || 0;
-      return timeB - timeA; 
+    comments.forEach(entry => {
+
+      const div = document.createElement('div');
+
+      div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
+
+      div.innerHTML = `
+        <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">
+          ${entry.name || 'Anonymous'}
+        </div>
+
+        <div class="mb-1 text-pink-100">
+          ${entry.comment || ''}
+        </div>
+
+        <div class="text-blue-100 opacity-80 text-[0.65rem] text-right">
+          ${entry.timestamp ? new Date(entry.timestamp).toLocaleString() : ''}
+        </div>
+      `;
+
+      container.appendChild(div);
+
     });
 
-   container.innerHTML = '';
-
-comments.forEach(entry => {
-  const { name, comment, timestamp } = entry;
-  console.log('Rendering comment from:', name);
-
-   const div = document.createElement('div');
-  div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
-
-  div.innerHTML = `
-    <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">${name || 'Anonymous'}</div>
-    <div class="mb-1 text-pink-100">${comment || ''}</div>
-    <div class="text-blue-100 opacity-80 text-[0.65rem] leading-[1rem] text-right">
-      ${timestamp ? new Date(timestamp).toLocaleString() : ''}
-    </div>
-  `;
-
-  container.appendChild(div);
-});
-
   } catch (err) {
-    console.error('Error loading comments:', err);
+
+    console.error("Guestbook load error:", err);
     container.innerHTML = '<p class="text-blue-100 text-sm">Failed to load.</p>';
+
   }
 }
-
 
 function closeGuestBook() {
   const gbWindow = document.getElementById('guestBookWindow');
@@ -932,5 +923,6 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
