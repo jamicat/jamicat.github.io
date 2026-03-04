@@ -722,8 +722,8 @@ return;
 lastGbSubmissionTime= now;
 
 const data = {
-name: `*${name}`,
-comment: `*${message}`,
+name: name,
+comment: message,
 timestamp: new Date().toISOString(),
 };
 
@@ -775,16 +775,16 @@ welcomeMessage.textContent = "meow!";
 if (!guestbookSocket || guestbookSocket.readyState !== WebSocket.OPEN) {
 
   guestbookSocket = new WebSocket(`wss://${location.host}/api/ws`);
-
-  guestbookSocket.onmessage = () => {
-    loadGuestbookComments();
+  guestbookSocket.onmessage = (event) => {
+    if (event.data === "refresh") {
+      loadGuestbookComments();
+    }
   };
-
   guestbookSocket.onerror = (err) => {
     console.error("Guestbook WS error:", err);
   };
-
 }
+loadGuestbookComments();
 }
                                                           
 async function loadGuestbookComments() {
@@ -923,6 +923,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
