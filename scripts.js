@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '9sxb8Tg_4Fw,XBmwQuMzrsg',
+playlist: 'XPY65e2-h_M,OcVFFpaVfck',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '9sxb8Tg_4Fw';
+const videoId = 'XPY65e2-h_M';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,17 +304,17 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Cavetown - Micah (Official Audio)",
-videoId: "9sxb8Tg_4Fw",
-channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@cavetown"
+title: "YUNGBLUD - Blueberry Hill (Official Audio)",
+videoId: "XPY65e2-h_M",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ,
 {
-title: "YUNGBLUD - War Pt. II (Official Audio)",
-videoId: "XBmwQuMzrsg",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@yungblud"
+title: "Purity Ring - many lives + part ii (Official Video)",
+videoId: "OcVFFpaVfck",
+channelAvatar: "https://yt3.googleusercontent.com/URDIXVV6HJ0CesXODWhRLhQq0JAWztGyy1u5U42B8dhFYyn3BrBKX2wRr2Z0JUU-U4PgnrwfmQ=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@purityring"
 }
 ];
 
@@ -930,6 +930,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
