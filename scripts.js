@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'AFpxNDyHUeM,6RrLVxTMeiw',
+playlist: 'osdQCYqZHkY,6RrLVxTMeiw',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'AFpxNDyHUeM';
+const videoId = 'osdQCYqZHkY';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,10 +304,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "daine - I RUN MY HANDS THRU IT",
-videoId: "AFpxNDyHUeM",
-channelAvatar: "https://yt3.googleusercontent.com/3q05uE26N1uBhYp5Q_ClLFNjgt4U6MfrE2nZKuUZ8fhLjzdoOv8yLZQSpBq4VfXhAoUC_-Fp=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@d4ine"
+title: "Baby Keem - Ca$ino (Official Audio)",
+videoId: "osdQCYqZHkY",
+channelAvatar: "https://yt3.googleusercontent.com/qntHcJHUXS75dFOFuousm5AyegfiWetPgQaGYO53i1OBrzSRoGHpIvV0YUetR10fd8WKtPoEqA0=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@babykeem"
 }
 ,
 {
@@ -930,6 +930,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
