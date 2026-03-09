@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'osdQCYqZHkY,6RrLVxTMeiw',
+playlist: 'RiwEzF3DsGk',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'osdQCYqZHkY';
+const videoId = 'RiwEzF3DsGk';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,17 +304,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Baby Keem - Ca$ino (Official Audio)",
-videoId: "osdQCYqZHkY",
-channelAvatar: "https://yt3.googleusercontent.com/qntHcJHUXS75dFOFuousm5AyegfiWetPgQaGYO53i1OBrzSRoGHpIvV0YUetR10fd8WKtPoEqA0=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@babykeem"
-}
-,
-{
-title: "G6 Anthem",
-videoId: "6RrLVxTMeiw",
-channelAvatar: "https://yt3.googleusercontent.com/la7O8B8B5tBdr7jfJ2qKy2ZmJBiiO1dVLsk361mIGowAKti81BPJkkcib9-1OgyRl0vBE2CT=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@bedroque00"
+title: "Jane Remover — JRJRJR",
+videoId: "RiwEzF3DsGk",
+channelAvatar: "https://yt3.googleusercontent.com/OwNIBpyWkwEtJTXSOuu7ojmBT2QwSZyul20FcTE79yy3R4Awcdns_jrUS-ynWceACPIHNwQLMA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@jane_remover"
 }
 ];
 
@@ -930,6 +923,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
