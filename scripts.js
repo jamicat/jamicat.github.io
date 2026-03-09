@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'XPY65e2-h_M,OcVFFpaVfck',
+playlist: 'AFpxNDyHUeM,6RrLVxTMeiw',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'XPY65e2-h_M';
+const videoId = 'AFpxNDyHUeM';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,17 +304,17 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - Blueberry Hill (Official Audio)",
-videoId: "XPY65e2-h_M",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@yungblud"
+title: "daine - I RUN MY HANDS THRU IT",
+videoId: "AFpxNDyHUeM",
+channelAvatar: "https://yt3.googleusercontent.com/3q05uE26N1uBhYp5Q_ClLFNjgt4U6MfrE2nZKuUZ8fhLjzdoOv8yLZQSpBq4VfXhAoUC_-Fp=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@d4ine"
 }
 ,
 {
-title: "Purity Ring - many lives + part ii (Official Video)",
-videoId: "OcVFFpaVfck",
-channelAvatar: "https://yt3.googleusercontent.com/URDIXVV6HJ0CesXODWhRLhQq0JAWztGyy1u5U42B8dhFYyn3BrBKX2wRr2Z0JUU-U4PgnrwfmQ=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@purityring"
+title: "G6 Anthem",
+videoId: "6RrLVxTMeiw",
+channelAvatar: "https://yt3.googleusercontent.com/la7O8B8B5tBdr7jfJ2qKy2ZmJBiiO1dVLsk361mIGowAKti81BPJkkcib9-1OgyRl0vBE2CT=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@bedroque00"
 }
 ];
 
@@ -930,6 +930,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
