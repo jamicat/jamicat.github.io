@@ -335,7 +335,7 @@ html += `
 
 html += `
   <div class="mt-6 flex justify-center">
-    <button class="terminal-button" onclick="resetTerminal()">Back</button>
+    <button class="terminal-button" onclick="resetTerminal()">back</button>
   </div>
 `;
 
@@ -408,7 +408,7 @@ $('#terminalContent').html(`
       </a>
     </div>
   <div class="mt-4 flex justify-center">
-  <button class="terminal-button" onclick="resetTerminal()">Back</button>
+  <button class="terminal-button" onclick="resetTerminal()">back</button>
     </div>
   `);
 
@@ -572,7 +572,7 @@ function showGuestBook() {
   <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
     <span class="flex items-center space-x-2">
       <img src="g2.gif" alt="Avatar2" class="avatar-icon2" />
-      <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow">Guestbook</span>
+      <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow">guestbook</span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
       <button onclick="closeGuestBook()" class="text-gray-400 hover:text-white transition-colors duration-200 text-lg leading-none">
@@ -589,12 +589,12 @@ function showGuestBook() {
         <p id="welcomeMessage" class="text-base">meow</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-gray-200">
-        <input id="name" type="text" name="name" placeholder="Name"
+        <input id="name" type="text" name="name" placeholder="name"
           class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required />
-        <textarea id="message" name="message" placeholder="Message"
+        <textarea id="message" name="message" placeholder="message"
           class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required></textarea>
         <div class="text-center">
-          <button type="submit" class="terminal-button bg-sky-100 hover:bg-sky-300 text-black guestbook-submit">Submit</button>
+          <button type="submit" class="terminal-button bg-sky-100 hover:bg-sky-300 text-black guestbook-submit">submit</button>
         </div>
       </form>
     </div>
@@ -857,7 +857,7 @@ document.getElementById('terminalContent').innerHTML = `
       <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-50" required></textarea>
       <div class="flex justify-center space-x-4 flex-wrap">
       <button type="submit" class="terminal-button">submit</button>
-      <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
+      <button type="button" class="terminal-button" onclick="resetTerminal()">back</button>
       </div>
       <div id="formResponse" class="text-pink-100 text-md mt-2 mb-4 text-center"></div>
     </form>
@@ -930,6 +930,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
