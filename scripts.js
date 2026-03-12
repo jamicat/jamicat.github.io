@@ -589,12 +589,12 @@ function showGuestBook() {
         <p id="welcomeMessage" class="text-base">meow</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-gray-200">
-        <input id="name" type="text" name="name" placeholder="name"
+        <input id="name" type="text" name="name" placeholder="Name"
           class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required />
-        <textarea id="message" name="message" placeholder="message"
+        <textarea id="message" name="message" placeholder="Message"
           class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required></textarea>
         <div class="text-center">
-          <button type="submit" class="terminal-button bg-sky-100 hover:bg-sky-300 text-black guestbook-submit">submit</button>
+          <button type="submit" class="terminal-button bg-sky-100 hover:bg-sky-300 text-black guestbook-submit">Submit</button>
         </div>
       </form>
     </div>
@@ -930,6 +930,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
