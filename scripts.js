@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'Z4ULhck7XJU',
+playlist: '_D5nHQTxDl0,Z4ULhck7XJU',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'Z4ULhck7XJU';
+const videoId = '_D5nHQTxDl0';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -303,6 +303,13 @@ const theme = themes[themeName];
 
 function showList() {
 const playlist = [
+{
+title: "Cavetown - alone (Official Music Video)",
+videoId: "_D5nHQTxDl0",
+channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
+}
+,
 {
 title: "Running With Scissors",
 videoId: "Z4ULhck7XJU",
@@ -923,6 +930,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
