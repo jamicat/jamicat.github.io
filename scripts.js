@@ -170,7 +170,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '6RrLVxTMeiw',
+playlist: 'Z4ULhck7XJU',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -211,7 +211,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '6RrLVxTMeiw';
+const videoId = 'Z4ULhck7XJU';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -304,10 +304,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "G6 Anthem",
-videoId: "6RrLVxTMeiw",
-channelAvatar: "https://yt3.googleusercontent.com/la7O8B8B5tBdr7jfJ2qKy2ZmJBiiO1dVLsk361mIGowAKti81BPJkkcib9-1OgyRl0vBE2CT=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@bedroque00"
+title: "Running With Scissors",
+videoId: "Z4ULhck7XJU",
+channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
 }
 ];
 
@@ -923,6 +923,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
