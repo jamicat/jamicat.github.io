@@ -93,14 +93,14 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-blue-glow';
 
   const strings = [
-    `<span class="text-white text-xl mr-2 ${glow}">MEOW</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">MEW</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">NYA</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">MROW</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">MEOW</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">MEW</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">NYA</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">MROW</span>`
+    `<span class="text-white text-xl mr-2 ${glow}">meow</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">mew</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">nya</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">mrow</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">meow</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">mew</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">nya</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">mrow</span>`
   ];
 
   typedInstance = new Typed('#typed', {
@@ -923,6 +923,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
