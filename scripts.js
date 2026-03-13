@@ -76,15 +76,6 @@ if (rewind10) {
   el.classList.remove('text-blue-glow', 'text-pink-glow', 'text-red-glow', 'text-green-glow', 'text-cyan-glow');
   el.classList.add(theme.glowPrimary);
 });
-
-const discordActivityEl = document.getElementById('discordActivity');
-if (discordActivityEl) {
-  Object.values(themes).forEach(t => {
-    discordActivityEl.classList.remove(t.buttonTextColor);
-  });
-  discordActivityEl.classList.add(theme.buttonTextColor);
-}
-
   localStorage.setItem('theme', themeName);
 }
 
@@ -938,6 +929,7 @@ window.addEventListener('DOMContentLoaded', () => {
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
+
 
 
 
