@@ -13,6 +13,11 @@ nunitoFont.textContent = `
   font-family: 'Nunito', sans-serif;
   font-weight: 500;
 }
+
+#discordName {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 500;
+}
 `;
 document.head.appendChild(nunitoFont);
 
@@ -134,5 +139,6 @@ statusContainer.addEventListener("mousemove", (e) => {
 statusContainer.addEventListener("mouseleave", () => {
   statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
 });
+
 
 
