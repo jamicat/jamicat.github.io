@@ -37,14 +37,6 @@ statusContainer.innerHTML = `
 
 document.body.appendChild(statusContainer);
 
-const discordActivityEl = document.getElementById('discordActivity');
-if (discordActivityEl) {
-  Object.values(themes).forEach(t => {
-    discordActivityEl.classList.remove(t.buttonTextColor);
-  });
-  discordActivityEl.classList.add(theme.buttonTextColor);
-}
-
 let lastOnline = Date.now();
 
 async function fetchDiscordStatus() {
@@ -145,6 +137,7 @@ statusContainer.addEventListener("mousemove", (e) => {
 statusContainer.addEventListener("mouseleave", () => {
   statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
 });
+
 
 
 
