@@ -11,12 +11,10 @@ nunitoFont.textContent = `
 
 #discordStatus {
   font-family: 'Nunito', sans-serif;
-  font-weight: 500;
 }
 
 #discordName {
   font-family: 'Nunito', sans-serif;
-  font-weight: 500;
 }
 `;
 document.head.appendChild(nunitoFont);
@@ -32,8 +30,8 @@ statusContainer.innerHTML = `
     <span id="statusDot" class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-black"></span>
   </div>
   <div id="discordText" class="flex flex-col leading-tight">
-    <span id="discordName" class="text-white text-[16px] font-semibold text-blue-glow">Loading...</span>
-    <span id="discordActivity" class="text-red-300 text-[13.5px] opacity-90 italic">Fetching status...</span>
+    <span id="discordName" class="text-white text-[16px] font-semibold font-medium text-blue-glow">Loading...</span>
+    <span id="discordActivity" class="text-red-300 text-[13.5px] opacity-90 italic font-medium">Fetching status...</span>
   </div>
 `;
 
@@ -139,6 +137,7 @@ statusContainer.addEventListener("mousemove", (e) => {
 statusContainer.addEventListener("mouseleave", () => {
   statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
 });
+
 
 
 
