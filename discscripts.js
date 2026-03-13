@@ -4,13 +4,14 @@ const nunitoFont = document.createElement("style");
 nunitoFont.textContent = `
 @font-face {
   font-family: 'Nunito';
-  src: url('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/Nunito-Regular.ttf') format('truetype');
+  src: url('nunito.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 #discordStatus {
   font-family: 'Nunito', sans-serif;
+  font-weight: 500;
 }
 `;
 document.head.appendChild(nunitoFont);
@@ -133,4 +134,5 @@ statusContainer.addEventListener("mousemove", (e) => {
 statusContainer.addEventListener("mouseleave", () => {
   statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
 });
+
 
