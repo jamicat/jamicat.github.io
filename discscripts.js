@@ -16,8 +16,6 @@ statusContainer.innerHTML = `
 </div>
 `;
 
-document.body.appendChild(statusContainer);
-
 let lastOnline = Date.now();
 
 async function fetchDiscordStatus() {
@@ -119,4 +117,5 @@ statusContainer.addEventListener("mousemove", (e) => {
 statusContainer.addEventListener("mouseleave", () => {
   statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
 });
+
 
