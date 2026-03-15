@@ -425,16 +425,12 @@ function changeTyped3(newText) {
   typed3.reset(true);
 }
 
-/*function siteFAQ() {
+function siteFAQ() {
   $('#terminalContent').html(`
     <div class="text-white text-sm space-y-2 mt-6">
       <p class="cursor-pointer hover:text-white transition" onclick="somethingNew()">
-        <span class="text-pink-glow">[13/10]</span> - 
-        <span class="underline text-blue-glow">Hello Heaven, Hello</span>
-      </p>
-      <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
-        <span class="text-pink-glow">[15/08]</span> - 
-        <span class="underline text-blue-glow">About</span>
+        <span class="text-pink-glow">[15/13/26]</span> - 
+        <span class="underline text-blue-glow">Little Whispers</span>
       </p>
     </div>
     <div id="buttonRow" class="flex justify-center mt-4">
@@ -447,46 +443,65 @@ function changeTyped3(newText) {
 }
 
 function aboutPost() {
-  $('#terminalContent').html(`
+   $('#terminalContent').html(`
     <div class="text-pink-100 text-sm mb-4 mt-4 space-y-4">
+
+      <p class="text-pink-200 font-semibold">Once a month</p>
+<p class="text-pink-300 text-xs">Entry 1</p>
+
+ <div class="flex justify-center mt-4">
       <p>
-        Welcome to my little corner of the internet. I almost typed bespoke for lack of a better word, 
-        and though it feels a bit loaded, it is exactly what this is: a small piece of shared personal space. 
-        I like to litter it with occasional fur art updates, music I have been attached to lately, and bits 
-        of code that refuse to stay foldered. Really, it is just whatever I feel in the moment, on a whim, 
-        and if you are reading this, I hope that you find something worth your time.
+        <a href="https://www.youtube.com/watch?v=Q4algeaPdqs" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="text-blue-glow hover:text-white hover:underline transition">
+          🎱Cavetown & Frankie Cosmos - magic 8 ball
+        </a>
       </p>
+      </div>
+
       <p>
-        A creative outlet has always been a kind of lifeline for me. For some fellow furs and friends, 
-        it loops back into the IT world we claim to despise, creating a curious middle ground between work and play. One friend of 
-        mine has coined the phrase <em>working in hating IT</em>, which we jokingly called copium jargon, 
-        and so naturally we adopted that too. 
+        A whisper into the internet’s void, honestly
       </p>
+
       <p>
-        This site is my playful contradiction, a place where my busy 
-        mind channels itself into something more hobbyesque, proving, ironically, that less can be more in an 
-        age of information overload.
+        The internet can be an isolating place, and not everybody is friends or even acquainted.
+        I guess, mostly as a bit of mental exercise, I feel a quiet urge to share a small piece of
+        myself publicly in this vast space, and without the usual social filters. Whether it’s
+        worth your time or not is subjective, but one nice way to think about this is as a soft
+        brain dump corner.
       </p>
+
       <p>
-        Now go and click on something, or nothing. 
-        <span class="text-blue-glow text-white relative inline-block group cursor-pointer underline">
-          >Thanks for visiting!
-          <img src="thankyou.png" alt="Thank you!"
-               class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-[300px] h-[311px] max-w-none z-50 rounded shadow-lg opacity-0 invisible transition-opacity duration-150 group-hover:opacity-100 group-hover:visible pointer-events-none"/>
-        </span>
+        Work has been its usual busy self. I'm managing my usual fizzy caffeine and bubble tea (xd)
+        habits, and keeping my British cynicism on a reasonably short leash so it doesn’t gobble me
+        whole. There’s always a lot I want to say, but due to time and life’s whims, I won’t always
+        get the chance to lay these stray cat parts of my mind out.
       </p>
-      <p class="flex items-center space-x-1">
-        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" viewBox="20 20">
-          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20" fill="pink">tldr :3</text>
-        </svg>
-        <span> - dog pics soon</span>
+
+      <p>
+        Over the past few months, borrowing Cavetown’s album name (and apparently the title of some
+        book my Mum once mentioned), I feel like I’ve been <em>running with scissors</em>… enjoying a lot of
+        things on impulse and without giving them much mindful appreciation.
       </p>
+
+      <p>
+        Obviously that’s kind of normal, and some things are probably better left that way. But maybe
+        this first post can be the beginning of a small mindful thread, a tiny attempt to slow down.
+      </p>
+
+      <p>
+        Thank you for reading all of this, if you did. And feel free to leave a ping in the guestbook
+        to let me know of your lush existence!!
+      </p>
+
     </div>
-    
+
     <div id="buttonRow" class="flex justify-center mt-4">
       <button class="terminal-button" onclick="siteFAQ()">Back</button>
     </div>
   `);
+
 
  const currentTheme = localStorage.getItem('theme') || 'Default';
  applyTheme(currentTheme);
