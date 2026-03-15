@@ -555,7 +555,7 @@ function somethingNew() {
 
   const currentTheme = localStorage.getItem('theme') || 'Default';
   applyTheme(currentTheme);
-}*/
+}
 
 let lastSubmissionTime = 0;
 let lastGbSubmissionTime = 0;
