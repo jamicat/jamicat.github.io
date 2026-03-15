@@ -454,7 +454,7 @@ terminal.classList.remove('sm:w-[480px]');
 terminal.classList.add('sm:w-[600px]');
   
    $('#terminalContent').html(`
-    <div class="text-pink-100 text-sm font-medium space-y-4">
+    <div class="text-pink-100 text-[13px] font-medium space-y-4">
 
  <div class="flex justify-center">
       <p>
