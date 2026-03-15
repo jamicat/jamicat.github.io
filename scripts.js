@@ -444,17 +444,17 @@ function siteFAQ() {
 
 function aboutPost() {
    $('#terminalContent').html(`
-    <div class="text-pink-100 text-sm mb-4 mt-4 space-y-4">
+    <div class="text-pink-100 text-sm font-medium mb-4 mt-4 space-y-4">
 
-      <p class="text-pink-200 font-semibold">Once a month</p>
-<p class="text-pink-300 text-xs">Entry 1</p>
+<p class="text-pink-200 font-medium">Once a month</p>
+<p class="text-pink-300 font-medium text-xs">Entry 1</p>
 
  <div class="flex justify-center mt-4">
       <p>
         <a href="https://www.youtube.com/watch?v=Q4algeaPdqs" 
            target="_blank" 
            rel="noopener noreferrer" 
-           class="text-blue-glow hover:text-white hover:underline transition">
+           class="text-blue-glow hover:text-white hover:underline transition font-medium">
           🎱Cavetown & Frankie Cosmos - magic 8 ball
         </a>
       </p>
