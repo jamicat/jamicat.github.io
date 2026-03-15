@@ -476,25 +476,25 @@ terminal.classList.add('sm:w-[600px]');
         I guess, mostly as a bit of mental exercise, I feel a quiet urge to share a small piece of
         myself publicly in this vast space, and without the usual social filters. Whether it’s
         worth your time or not is subjective, but one nice way to think about this is as a soft
-        brain dump corner.
+        brain dump corner
       </p>
 
       <p>
         Work has been its usual busy self. I'm managing my usual fizzy caffeine and bubble tea (xd)
         habits, and keeping my British cynicism on a reasonably short leash so it doesn’t gobble me
         whole. There’s always a lot I want to say, but due to time and life’s whims, I won’t always
-        get the chance to lay these stray cat parts of my mind out.
+        get the chance to lay these stray cat parts of my mind out
       </p>
 
       <p>
         Over the past few months, borrowing Cavetown’s album name (and apparently the title of some
         book my Mum once mentioned), I feel like I’ve been <em>running with scissors</em>… enjoying a lot of
-        things on impulse and without giving them much mindful appreciation.
+        things on impulse and without giving them much mindful appreciation
       </p>
 
       <p>
         Obviously that’s kind of normal, and some things are probably better left that way. But maybe
-        this first post can be the beginning of a small mindful thread, a tiny attempt to slow down.
+        this first post can be the beginning of a small mindful thread, a tiny attempt to slow down
       </p>
 
       <p>
