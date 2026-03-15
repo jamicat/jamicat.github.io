@@ -443,13 +443,15 @@ function siteFAQ() {
 }
 
 function aboutPost() {
+
+const terminal = document.getElementById('terminal');
+terminal.classList.remove('sm:w-[500px]');
+terminal.classList.add('sm:w-[600px]');
+  
    $('#terminalContent').html(`
-    <div class="text-pink-100 text-sm font-medium mb-4 mt-4 space-y-4">
+    <div class="text-pink-100 text-sm font-medium space-y-4">
 
-<p class="text-pink-200 font-medium">Once a month</p>
-<p class="text-pink-300 font-medium text-xs">Entry 1</p>
-
- <div class="flex justify-center mt-4">
+ <div class="flex justify-center">
       <p>
         <a href="https://www.youtube.com/watch?v=Q4algeaPdqs" 
            target="_blank" 
@@ -872,6 +874,11 @@ document.getElementById("formResponse").textContent = "meow!";
 }
 
 function resetTerminal() {
+
+const terminal = document.getElementById('terminal');
+terminal.classList.remove('sm:w-[600px]');
+terminal.classList.add('sm:w-[500px]');
+  
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
