@@ -429,7 +429,7 @@ function siteFAQ() {
   
 const terminal = document.getElementById('terminal');
 terminal.classList.remove('sm:w-[600px]');
-terminal.classList.add('sm:w-[500px]');
+terminal.classList.add('sm:w-[480px]');
   
   $('#terminalContent').html(`
     <div class="text-white text-sm space-y-2 mt-6">
@@ -450,7 +450,7 @@ terminal.classList.add('sm:w-[500px]');
 function aboutPost() {
 
 const terminal = document.getElementById('terminal');
-terminal.classList.remove('sm:w-[500px]');
+terminal.classList.remove('sm:w-[480px]');
 terminal.classList.add('sm:w-[600px]');
   
    $('#terminalContent').html(`
@@ -882,7 +882,7 @@ function resetTerminal() {
 
 const terminal = document.getElementById('terminal');
 terminal.classList.remove('sm:w-[600px]');
-terminal.classList.add('sm:w-[500px]');
+terminal.classList.add('sm:w-[480px]');
   
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
