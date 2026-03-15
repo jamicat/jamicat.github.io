@@ -426,6 +426,11 @@ function changeTyped3(newText) {
 }
 
 function siteFAQ() {
+  
+const terminal = document.getElementById('terminal');
+terminal.classList.remove('sm:w-[600px]');
+terminal.classList.add('sm:w-[500px]');
+  
   $('#terminalContent').html(`
     <div class="text-white text-sm space-y-2 mt-6">
       <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
