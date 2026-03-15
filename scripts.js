@@ -474,7 +474,7 @@ terminal.classList.add('sm:w-[600px]');
       <p>
         The internet can be an isolating place, and not everybody is friends or even acquainted.
         I guess, mostly as a bit of mental exercise, I feel a quiet urge to share a small piece of
-        myself publicly in this vast space, and without the usual social filters. Whether it’s
+        myself publicly, and without the usual social filters. Whether it’s
         worth your time or not is subjective, but one nice way to think about this is as a soft
         brain dump corner
       </p>
