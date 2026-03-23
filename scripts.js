@@ -396,8 +396,8 @@ function showArt() {
 $('#terminalContent').html(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
   <div id="artGallery" class="grid grid-cols-3 gap-4">
-   <a href="art1.jpg" class="block rounded overflow-hidden">
-    <img src="art1_thumb.jpg" alt="Jamie - Pearl" class="rounded hover:scale-105 transition transform duration-200" />
+   <a href="2.jpg" class="block rounded overflow-hidden">
+    <img src="2.jpg" alt="Jamie - saproena" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
   <a href="chibi.png" class="block rounded overflow-hidden">
     <img src="chibi_thumb.png" alt="Jamie - Smolbeans Chibi" class="rounded hover:scale-105 transition transform duration-200" />
