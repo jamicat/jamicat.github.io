@@ -169,7 +169,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'fotb02vfks0',
+playlist: 'fotb02vfks0,lfb_VxX-ZZA',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -305,6 +305,13 @@ const playlist = [
 {
 title: "Cavetown - Baby Spoon (Acoustic)",
 videoId: "fotb02vfks0",
+channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
+}
+,
+{
+title: "Tarmac",
+videoId: "lfb_VxX-ZZA",
 channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@cavetown"
 }
