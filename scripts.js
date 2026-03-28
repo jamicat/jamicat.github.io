@@ -432,7 +432,7 @@ function changeTyped3(newText) {
   typed3.reset(true);
 }
 
-function siteFAQ() {
+/*function siteFAQ() {
   
 const terminal = document.getElementById('terminal');
 terminal.classList.remove('sm:w-[600px]');
@@ -454,7 +454,6 @@ terminal.classList.add('sm:w-[480px]');
   applyTheme(currentTheme);
 }
 
-/*
 function aboutPost() {
 
 const terminal = document.getElementById('terminal');
