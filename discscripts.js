@@ -47,9 +47,16 @@ async function fetchDiscordStatus() {
 
     const user = data.discord_user;
     const username = `${user.username}${user.discriminator && user.discriminator !== "0" ? `#${user.discriminator}` : ""}`;
-    const avatar = user.avatar
-      ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`
-      : "https://cdn.discordapp.com/embed/avatars/0.png";
+    let avatar;
+
+if (user.avatar) {
+  const isAnimated = user.avatar.startsWith("a_");
+  const extension = isAnimated ? "gif" : "png";
+
+  avatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${extension}?size=128`;
+} else {
+  avatar = "https://cdn.discordapp.com/embed/avatars/0.png";
+}
 
     const status = data.discord_status;
     const activities = data.activities || [];
