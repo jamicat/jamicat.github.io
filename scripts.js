@@ -801,7 +801,7 @@ async function loadGuestbookComments() {
           ${entry.name || 'Anonymous'}
         </div>
 
-        <div class="mb-1 text-gray-200">
+        <div class="mb-1 text-gray-200 break-all">
           ${entry.comment || ''}
         </div>
 
