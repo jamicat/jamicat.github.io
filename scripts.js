@@ -169,7 +169,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '4e0efqBbf_A',
+playlist: '4UOmjMLsxJ8,4e0efqBbf_A',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -210,7 +210,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '4e0efqBbf_A';
+const videoId = '4UOmjMLsxJ8';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -303,11 +303,19 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Cavetown - Baby Spoon (Acoustic)",
+title: "Streets Of London",
+videoId: "4UOmjMLsxJ8",
+channelAvatar: "https://yt3.googleusercontent.com/6lH5B1Yz0-PCRkjUTsNeWKTBdxtdrdMMDzoxnMccnGwPxXFMURvT0g8A_nbGmvLoJHo7m5BB=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@jpodbury"
+}
+,
+{
+title: "my dear friends - [an original song by beetlebug]",
 videoId: "4e0efqBbf_A",
 channelAvatar: "https://yt3.googleusercontent.com/zuw1vd2r87ydvGCj3D6jeosObilt47sZaEGZ2X-JsOQXEQHfKokoUKJoKOcJbfWaGxSgTn4abg=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@auribeetlebug"
 }
+
 ];
 
 let html = `<div class="space-y-4 mt-4">`;
