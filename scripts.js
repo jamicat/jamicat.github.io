@@ -169,7 +169,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '',
+playlist: 'dKUThdW3HBw',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -210,7 +210,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '';
+const videoId = 'dKUThdW3HBw';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
