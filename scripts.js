@@ -487,7 +487,7 @@ terminal.classList.add('sm:w-[600px]');
       </p>
 
       <p>
-       But not all ghosting lands the same. It's one thing to drift in and out of conversations, and another to genuinely ignore friend you know, especially when you've had the time to respond and their message actually meant something. Everyone has their reasons, and life does get messy, but repeated avoidance starts to blur into quiet disregard. When that becomes normal, it can create a strange little cycle of people filling each other's gaps instead of really showing up. The good news is it doesn't take much to disrupt that, just a tiny bit of mindfulness, a moment of care, to break the cycle for yourself and possibly your friends
+       But not all ghosting lands the same. It's one thing to drift in and out of conversations, and another to genuinely ignore a friend you know, especially when you've had the time to respond and their message actually meant something. Everyone has their reasons, and life does get messy, but repeated avoidance starts to blur into quiet disregard. When that becomes normal, it can create a strange little cycle of people filling each other's gaps instead of really showing up. The good news is it doesn't take much to disrupt that, just a tiny bit of mindfulness, a moment of care, to break the cycle for yourself and possibly your friends
       </p>
 
       <p>
