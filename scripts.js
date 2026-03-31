@@ -441,7 +441,7 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
     <div class="text-white text-sm space-y-2 mt-6">
       <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
-        <span class="text-pink-glow">[31/03/2026]</span> - 
+        <span class="text-pink-glow">[31/03/26]</span> - 
         <span class="underline text-blue-glow">Ramble & done</span>
       </p>
     </div>
