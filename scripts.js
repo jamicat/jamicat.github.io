@@ -169,7 +169,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'LfbwvFrRvPQ,IXuB0o-U8oY',
+playlist: 'KaHvNbId7BY',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -210,7 +210,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'LfbwvFrRvPQ';
+const videoId = 'KaHvNbId7BY';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -303,17 +303,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "two birds - regina spektor (cover)",
-videoId: "LfbwvFrRvPQ",
-channelAvatar: "https://yt3.googleusercontent.com/zuw1vd2r87ydvGCj3D6jeosObilt47sZaEGZ2X-JsOQXEQHfKokoUKJoKOcJbfWaGxSgTn4abg=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@auribeetlebug"
-}
-,
-{
-title: "moon girl",
-videoId: "IXuB0o-U8oY",
-channelAvatar: "https://yt3.googleusercontent.com/cyguoc8R1IUsmD5rrQXk0Je_v1mV4xtAri-evsgzJX-VXvsfIqEzx1Y99ttlbAZIvXANkR83=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@therealtemachii"
+title: "Cavetown - Sailboat feat. chloe moriondo",
+videoId: "KaHvNbId7BY",
+channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
 }
 ];
 
@@ -432,6 +425,7 @@ function changeTyped3(newText) {
   typed3.reset(true);
 }
 
+/*
 function siteFAQ() {
   
 const terminal = document.getElementById('terminal');
@@ -465,37 +459,23 @@ terminal.classList.add('sm:w-[600px]');
 
  <div class="flex justify-center">
       <p>
-        <a href="https://www.youtube.com/watch?v=vfRHHFn9E9k" 
+        <a href="https://www.youtube.com/" 
            target="_blank" 
            rel="noopener noreferrer" 
            class="text-blue-glow hover:text-white hover:underline transition font-medium">
-          ✂️Cavetown - No Bark No Bite
+          Song title
         </a>
       </p>
       </div>
 
       <p>
-        Ramble & done
+    
       </p>
       
-      <p>
-        Ghosting is something we all do now and then, and honestly, a lot of the time it's harmless. We've got our own lives, routines, and boundaries, and it's healthy to not want constant attention, especially from people we don't know well
-      </p>
+    
 
       <p>
-        A little distance can be a good sign, it can mean independence, trust, and comfort. Not every pause needs a meaning behind it. Part of growing socially is letting interactions breathe a little, without tying them too tightly to our sense of worth, or accidentally projecting that feeling onto others. And with the right people, there’s that kind of gooey closeness where things just feel easy, where time apart doesn’t really shake anything
-      </p>
-
-      <p>
-       But not all ghosting lands the same. It's one thing to drift in and out of conversations, and another to genuinely ignore a friend you know, especially when you've had the time to respond and their message actually meant something. Everyone has their reasons, and life does get messy, but repeated avoidance starts to blur into quiet disregard. When that becomes normal, it can create a strange little cycle of people filling each other's gaps instead of really showing up. The good news is it doesn't take much to disrupt that, just a tiny bit of mindfulness, a moment of care, to break the cycle for yourself and possibly your friends
-      </p>
-
-      <p>
-        Like Robbie from cavetown says, <em>“you set the precedent, signature the deal.”</em> The tone we set in how we show up for each other echoes
-      </p>
-
-      <p>
-        Think a little more kindly of yourself, and maybe set the precedent ฅ ฅ🧡
+       
       </p>
     </div>
 
@@ -515,7 +495,7 @@ function somethingNew() {
 
   const currentTheme = localStorage.getItem('theme') || 'Default';
   applyTheme(currentTheme);
-}
+}*/
 
 let lastSubmissionTime = 0;
 let lastGbSubmissionTime = 0;
@@ -882,7 +862,6 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-    <button class="terminal-button ml-4" onclick="siteFAQ()">Blog!</button>
     <button class="terminal-button ml-2" onclick="showArt()">Art</button>
     <button class="terminal-button ml-5" onclick="showGuestBook()">Guestbook</button>
     <button class="terminal-button" onclick="showList()">Playlist</button>
