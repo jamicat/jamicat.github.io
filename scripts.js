@@ -169,7 +169,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'LfbwvFrRvPQ',
+playlist: 'LfbwvFrRvPQ,IXuB0o-U8oY',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -307,6 +307,13 @@ title: "two birds - regina spektor (cover)",
 videoId: "LfbwvFrRvPQ",
 channelAvatar: "https://yt3.googleusercontent.com/zuw1vd2r87ydvGCj3D6jeosObilt47sZaEGZ2X-JsOQXEQHfKokoUKJoKOcJbfWaGxSgTn4abg=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@auribeetlebug"
+}
+,
+{
+title: "moon girl",
+videoId: "IXuB0o-U8oY",
+channelAvatar: "https://yt3.googleusercontent.com/cyguoc8R1IUsmD5rrQXk0Je_v1mV4xtAri-evsgzJX-VXvsfIqEzx1Y99ttlbAZIvXANkR83=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@therealtemachii"
 }
 ];
 
