@@ -495,7 +495,7 @@ terminal.classList.add('sm:w-[600px]');
       </p>
 
       <p>
-        Think a little more kindly of yourself, and let that care extend outward, too ฅ ฅ🧡
+        Think a little more kindly of yourself, and let that care extend outwards ฅ ฅ🧡
       </p>
     </div>
 
