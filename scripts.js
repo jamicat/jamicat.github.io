@@ -491,11 +491,11 @@ terminal.classList.add('sm:w-[600px]');
       </p>
 
       <p>
-        Like cavetown says, <em>“you set the precedent, signature the deal.”</em> The tone we set in how we show up for each other tends to echo
+        Like Robbie from cavetown says, <em>“you set the precedent, signature the deal.”</em> The tone we set in how we show up for each other echoes
       </p>
 
       <p>
-        Think a little more kindly of yourself, and let that care extend outward ฅ ฅ🧡
+        Think a little more kindly of yourself, and maybe set the precedent ฅ ฅ🧡
       </p>
     </div>
 
