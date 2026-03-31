@@ -507,7 +507,7 @@ terminal.classList.add('sm:w-[600px]');
 
  const currentTheme = localStorage.getItem('theme') || 'Default';
  applyTheme(currentTheme);
-}*/
+}
 
 function somethingNew() {
   $('#terminalContent').html(`
