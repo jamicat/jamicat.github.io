@@ -432,7 +432,7 @@ function changeTyped3(newText) {
   typed3.reset(true);
 }
 
-/*function siteFAQ() {
+function siteFAQ() {
   
 const terminal = document.getElementById('terminal');
 terminal.classList.remove('sm:w-[600px]');
@@ -441,8 +441,8 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
     <div class="text-white text-sm space-y-2 mt-6">
       <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
-        <span class="text-pink-glow">#1 [15/03/26]</span> - 
-        <span class="underline text-blue-glow">Running With Scissors</span>
+        <span class="text-pink-glow">[31/03/2026]</span> - 
+        <span class="underline text-blue-glow">Ramble & done</span>
       </p>
     </div>
     <div id="buttonRow" class="flex justify-center mt-4">
@@ -465,50 +465,38 @@ terminal.classList.add('sm:w-[600px]');
 
  <div class="flex justify-center">
       <p>
-        <a href="https://www.youtube.com/watch?v=Q4algeaPdqs" 
+        <a href="https://www.youtube.com/watch?v=vfRHHFn9E9k" 
            target="_blank" 
            rel="noopener noreferrer" 
            class="text-blue-glow hover:text-white hover:underline transition font-medium">
-          🎱Cavetown & Frankie Cosmos - magic 8 ball
+          ✂️Cavetown - No Bark No Bite
         </a>
       </p>
       </div>
 
       <p>
-        A whisper into the internet’s void, honestly
+        Ramble & done
+      </p>
+      
+      <p>
+        Ghosting is something we all do now and then, and honestly, a lot of the time it's harmless. We've got our own lives, routines, and boundaries, and it's healthy to not want constant attention, especially from people we don't know well
       </p>
 
       <p>
-        The internet can be an isolating place, and not everybody is friends or even acquainted.
-        I guess, mostly as a bit of mental exercise, I feel a quiet urge to share a small piece of
-        myself publicly, and without the usual social filters. Whether it’s
-        worth your time or not is subjective, but one nice way to think about this is as a soft
-        brain dump corner
+        A little distance can be a good sign, it can mean independence, trust, and comfort. Not every pause needs a meaning behind it. Part of growing socially is letting interactions breathe a little, without tying them too tightly to our sense of worth, or accidentally projecting that feeling onto others. And with the right people, there’s that kind of gooey closeness where things just feel easy, where time apart doesn’t really shake anything
       </p>
 
       <p>
-        Work has been its usual busy self. I'm managing my usual fizzy caffeine and bubble tea (xd)
-        habits, and keeping my British cynicism on a reasonably short leash so it doesn’t gobble me
-        whole. There’s always a lot I want to say, but due to time and life’s whims, I won’t always
-        get the chance to lay these stray cat parts of my mind out
+       But not all ghosting lands the same. It's one thing to drift in and out of conversations, and another to genuinely ignore friend you know, especially when you've had the time to respond and their message actually meant something. Everyone has their reasons, and life does get messy, but repeated avoidance starts to blur into quiet disregard. When that becomes normal, it can create a strange little cycle of people filling each other's gaps instead of really showing up. The good news is it doesn't take much to disrupt that, just a tiny bit of mindfulness, a moment of care, to break the cycle for yourself and possibly your friends
       </p>
 
       <p>
-        Over the past few months, borrowing Cavetown’s album name (and apparently the title of some
-        book my Mum once mentioned), I feel like I’ve been <em>running with scissors</em>… enjoying a lot of
-        things on impulse and without giving them much mindful appreciation
+        Like cavetown says, <em>“you set the precedent, signature the deal.”</em> The tone we set in how we show up for each other tends to echo
       </p>
 
       <p>
-        Obviously that’s kind of normal, and some things are probably better left that way. But maybe
-        this first post can be the beginning of a small mindful thread, a tiny attempt to slow down
+        Think a little more kindly of yourself, and let that care extend outward, too 🐾
       </p>
-
-      <p>
-        Thank you for reading all of this, if you did. And feel free to leave a ping in the guestbook
-        to let me know of your lush existence!!
-      </p>
-
     </div>
 
     <div id="buttonRow" class="flex justify-center mt-4">
@@ -894,6 +882,7 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
+    <button class="terminal-button ml-4" onclick="siteFAQ()">Blog!</button>
     <button class="terminal-button ml-2" onclick="showArt()">Art</button>
     <button class="terminal-button ml-5" onclick="showGuestBook()">Guestbook</button>
     <button class="terminal-button" onclick="showList()">Playlist</button>
