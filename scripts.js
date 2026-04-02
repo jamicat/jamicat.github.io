@@ -169,7 +169,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'KaHvNbId7BY',
+playlist: '3T5qM2mH3mw,AZKcl4-tcuo',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -210,7 +210,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'KaHvNbId7BY';
+const videoId = '3T5qM2mH3mw';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -303,10 +303,16 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Cavetown - Sailboat feat. chloe moriondo",
-videoId: "KaHvNbId7BY",
-channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@cavetown"
+title: "YUNGBLUD - Ghosts (Live From Hansa Studios)",
+videoId: "3T5qM2mH3mw",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
+},
+{
+title: "David Bowie - Life On Mars? (Official Video)",
+videoId: "AZKcl4-tcuo",
+channelAvatar: "https://yt3.googleusercontent.com/S8HBQAekRCOxvMmZ6a0Kd0bis1HIdmbkmec1b_t-X6fa3ZUJBtF1n_rK274bamaY_i8if1uuy-8=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@davidbowie"
 }
 ];
 
