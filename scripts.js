@@ -169,7 +169,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'NV39h7GHDYs',
+playlist: 'NV39h7GHDYs,vV_D6KvAUqE',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -307,6 +307,12 @@ title: "Wolf Alice - Smile",
 videoId: "NV39h7GHDYs",
 channelAvatar: "https://yt3.googleusercontent.com/Q_Q7wjtlswnz5IwbYQP2qrsDYOGz-zRRZ-UZjeGGHNH4OoknQ9nRPBAxsCZeUkP0ixX58L4sKQ=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@wolfaliceband"
+},
+{
+title: "PALAYE ROYALE - Showbiz (Official Music Video)",
+videoId: "vV_D6KvAUqE",
+channelAvatar: "https://yt3.googleusercontent.com/0wSYqaUVQchPTN_S7evpJxDf4ySZKZ1mdLfZv9wjKrO0xEMIy-xFquuB60IMXIB22JPSh6Huzc8=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@SumerianRecords"
 }
 ];
 
