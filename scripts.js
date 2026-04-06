@@ -169,7 +169,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'NV39h7GHDYs,vV_D6KvAUqE',
+playlist: 'vV_D6KvAUqE',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -210,7 +210,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'NV39h7GHDYs';
+const videoId = 'vV_D6KvAUqE';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -302,12 +302,6 @@ const theme = themes[themeName];
 
 function showList() {
 const playlist = [
-{
-title: "Wolf Alice - Smile",
-videoId: "NV39h7GHDYs",
-channelAvatar: "https://yt3.googleusercontent.com/Q_Q7wjtlswnz5IwbYQP2qrsDYOGz-zRRZ-UZjeGGHNH4OoknQ9nRPBAxsCZeUkP0ixX58L4sKQ=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@wolfaliceband"
-},
 {
 title: "PALAYE ROYALE - Showbiz (Official Music Video)",
 videoId: "vV_D6KvAUqE",
