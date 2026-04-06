@@ -92,14 +92,12 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-blue-glow';
 
   const strings = [
-    `<span class="text-white text-xl mr-2 ${glow}">Meow</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">Mew</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">Nya</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">Mrow</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">Meow</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">Mew</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">Nya</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">Mrow</span>`
+    `<span class="text-white text-xl mr-2 ${glow}">ฅ(^ω^)ฅ</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">(๑•ω•́ฅ✧</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">(ฅ･ω･´)っ=</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">ฅ*•ω•*ฅ</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">ฅ^•ﻌ•^ฅ</span>`,
+    `<span class="text-white text-xl mr-2 ${glow}">⊱ฅ•ω•ฅ⊰</span>`,
   ];
 
   typedInstance = new Typed('#typed', {
