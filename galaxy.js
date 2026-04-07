@@ -1,9 +1,19 @@
-import { AdditiveBlending, BufferAttribute, BufferGeometry, CanvasTexture, Color, PerspectiveCamera, Points, RawShaderMaterial, Scene, WebGLRenderer } from "https://cdn.skypack.dev/three@0.136.0"
-import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.136.0/examples/jsm/controls/OrbitControls.js"
-import GUI from "https://cdn.skypack.dev/three@0.136.0/examples/jsm/libs/lil-gui.module.min.js"
-import { TWEEN } from "https://cdn.skypack.dev/three@0.136.0/examples/jsm/libs/tween.module.min.js"
+import {
+  AdditiveBlending,
+  BufferAttribute,
+  BufferGeometry,
+  CanvasTexture,
+  Color,
+  PerspectiveCamera,
+  Points,
+  RawShaderMaterial,
+  Scene,
+  WebGLRenderer
+} from "https://esm.sh/three@0.136.0"
 
-
+import { OrbitControls } from "https://esm.sh/three@0.136.0/examples/jsm/controls/OrbitControls.js"
+import GUI from "https://esm.sh/three@0.136.0/examples/jsm/libs/lil-gui.module.min.js"
+import { TWEEN } from "https://esm.sh/three@0.136.0/examples/jsm/libs/tween.module.min.js"
 
 console.clear()
 const canvas = document.getElementById("canvas")
