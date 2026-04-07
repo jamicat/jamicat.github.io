@@ -298,7 +298,7 @@ const theme = themes[themeName];
 
 //rewind10.click();
 
-function showList() {LqtCRoLtyNI
+function showList() {
 const playlist = [
 {
 title: "YUNGBLUD - Medication",
