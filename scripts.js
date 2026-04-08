@@ -1,17 +1,6 @@
 const themes = {
   Default: {
-    glowPrimary: 'text-pink-glow',     
-    glowSecondary: 'text-red-glow',    
-    buttonColor: 'bg-red-300 hover:bg-red-400',
-    buttonTextColor: 'text-black',
-    iconColor: 'text-red-300 hover:text-pink-500',
-    galaxyActive: 'text-pink-500',
-    galaxyInactive: 'text-pink-500',
-    terminalColor: 'bg-black/25'
-  },
-
-  Stars: {
-       glowPrimary: 'text-blue-glow',      
+    glowPrimary: 'text-blue-glow',      
     glowSecondary: 'text-pink-glow',    
     buttonColor: 'bg-red-300 hover:bg-red-400',
     buttonTextColor: 'text-white',
@@ -19,6 +8,17 @@ const themes = {
     galaxyActive: 'text-red-300',
     galaxyInactive: 'text-red-300',
     terminalColor: 'bg-black/20'
+  },
+
+  Stars: {
+   glowPrimary: 'text-pink-glow',     
+    glowSecondary: 'text-red-glow',    
+    buttonColor: 'bg-red-300 hover:bg-red-400',
+    buttonTextColor: 'text-black',
+    iconColor: 'text-red-300 hover:text-cyan-400',
+    galaxyActive: 'text-red-300',
+    galaxyInactive: 'text-red-300',
+    terminalColor: 'bg-black/25'
   },
 
   Aero: {
