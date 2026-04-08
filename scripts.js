@@ -167,7 +167,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'B1QfQlM8C9g',
+playlist: 'LlASHLHKREQ',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -208,7 +208,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'B1QfQlM8C9g';
+const videoId = 'LlASHLHKREQ';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -301,10 +301,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - Happier (feat. Oli Sykes Of Bring Me The Horizon)",
-videoId: "B1QfQlM8C9g",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@yungblud"
+title: "Trying Not To Cry",
+videoId: "LlASHLHKREQ",
+channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@cavetown"
 }
 ];
 
