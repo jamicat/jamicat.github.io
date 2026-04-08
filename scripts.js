@@ -167,7 +167,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'LlASHLHKREQ',
+playlist: 'LlASHLHKREQ,IZAgVmowDOU',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -305,6 +305,12 @@ title: "Trying Not To Cry",
 videoId: "LlASHLHKREQ",
 channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
 channelUrl: "https://www.youtube.com/@cavetown"
+},
+{
+title: "YUNGBLUD - Zombie (Live from BLUDFEST)",
+videoId: "IZAgVmowDOU",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ];
 
