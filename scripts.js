@@ -129,12 +129,12 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
   const strings = [
-    `<span class="text-white text-xl mr-2 ${glow}">ฅ(^ω^)ฅ</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">(๑•ω•́ฅ✧</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">(ฅ･ω･´)っ=</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">ฅ*•ω•*ฅ</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">ฅ^•ﻌ•^ฅ</span>`,
-    `<span class="text-white text-xl mr-2 ${glow}">⊱ฅ•ω•ฅ⊰</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">ฅ(^ω^)ฅ</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">(๑•ω•́ฅ✧</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">(ฅ･ω･´)っ=</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">ฅ*•ω•*ฅ</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">ฅ^•ﻌ•^ฅ</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">⊱ฅ•ω•ฅ⊰</span>`,
   ];
 
   typedInstance = new Typed('#typed', {
@@ -563,9 +563,9 @@ function showGuestBook() {
 
   guestBookWindow.innerHTML = `
   <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
-    <span class="flex items-center space-x-2">
+    <span class="flex space-x-5">
       <img src="cattp.gif" alt="Avatar2" class="avatar-icon2" />
-      <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow">Guestbook</span>
+      <span id="typed2" class="font-medium text-3xl mt-12 mb-4 text-cyan-glow no-theme-glow">Guestbook</span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
       <button onclick="closeGuestBook()" class="text-pink-200 hover:text-pink-100 transition-colors duration-200 text-lg leading-none">
