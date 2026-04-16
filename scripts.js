@@ -5,6 +5,7 @@ const themes = {
     buttonColor: 'bg-orange-300 hover:bg-orange-400',
     buttonTextColor: 'text-black',
     iconColor: 'text-orange-400 hover:text-teal-400',
+    hoverRing: 'hover:ring-teal-400',
     galaxyActive: 'text-teal-400',
     galaxyInactive: 'text-orange-400',
     terminalColor: 'bg-black/20'
@@ -16,6 +17,7 @@ const themes = {
     buttonColor: 'bg-red-300 hover:bg-red-400',
     buttonTextColor: 'text-black',
     iconColor: 'text-red-300 hover:text-cyan-400',
+    hoverRing: 'hover:ring-cyan-400',
     galaxyActive: 'text-red-300',
     galaxyInactive: 'text-red-300',
     terminalColor: 'bg-black/25'
@@ -27,6 +29,7 @@ const themes = {
     buttonColor: 'bg-sky-100 hover:bg-sky-300',
     buttonTextColor: 'text-black',
     iconColor: 'text-sky-100 hover:text-cyan-400',
+    hoverRing: 'hover:ring-cyan-400',
     galaxyActive: 'text-sky-100',
     galaxyInactive: 'text-sky-100',
     terminalColor: 'bg-white/10'
@@ -40,7 +43,7 @@ function applyTheme(themeName) {
   document.documentElement.setAttribute('data-theme', themeName);
 
   document.querySelectorAll('.terminal-button:not(.guestbook-submit)').forEach(btn => {
-    btn.className = `terminal-button ${theme.buttonColor} ${theme.buttonTextColor} px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95 text-sm font-medium transform hover:-translate-y-[0.5px] hover:shadow-[0_0_2px_rgba(0,255,255,0.3)]`;
+    btn.className = `terminal-button ${theme.buttonColor} ${theme.buttonTextColor} ${theme.hoverRing} px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95 text-sm font-medium transform hover:-translate-y-[0.5px] hover:shadow-[0_0_2px_rgba(0,255,255,0.3)]`;
 });
 
   const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme');
