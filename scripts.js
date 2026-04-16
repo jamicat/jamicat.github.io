@@ -167,7 +167,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'FUVQ-GdzgV4,ZW-99zcGMu8',
+playlist: 'RiwEzF3DsGk',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -208,7 +208,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'FUVQ-GdzgV4';
+const videoId = 'RiwEzF3DsGk';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -301,17 +301,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "South Arcade - SUPERMAN (Official Video)",
-videoId: "FUVQ-GdzgV4",
-channelAvatar: "https://yt3.googleusercontent.com/1XVSDR-XAhQ6v_djDiG7lHCdk2v1JxiF1lh8FeH0dosLddhuMFfbKgfA-LZXfebNk84hstFgpQ=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@southarcadeuk"
-}
-,
-{
-title: "Cavetown - Cryptid (Official Video)",
-videoId: "ZW-99zcGMu8",
-channelAvatar: "https://yt3.googleusercontent.com/RGUMD69glGEkYdGzvG6H3LwJIzCE3ABWAQfEiUuekf_sH31SjBZ17lUjWLbDFhHRxc2Pl7-OpA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@cavetown"
+title: "Jane Remover — JRJRJR",
+videoId: "RiwEzF3DsGk",
+channelAvatar: "https://yt3.googleusercontent.com/OwNIBpyWkwEtJTXSOuu7ojmBT2QwSZyul20FcTE79yy3R4Awcdns_jrUS-ynWceACPIHNwQLMA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@jane_remover"
 }
 ];
 
