@@ -8,7 +8,10 @@ const themes = {
     hoverRing: 'hover:ring-teal-400',
     galaxyActive: 'text-teal-400',
     galaxyInactive: 'text-orange-400',
+    playActive: 'text-teal-400',
+    playInactive: 'text-orange-400',
     terminalColor: 'bg-black/20'
+    
   },
 
   Stars: {
@@ -20,6 +23,8 @@ const themes = {
     hoverRing: 'hover:ring-cyan-400',
     galaxyActive: 'text-cyan-400',
     galaxyInactive: 'text-red-300',
+    playActive: 'text-cyan-400',
+    playInactive: 'text-red-300',
     terminalColor: 'bg-black/25'
   },
 
@@ -32,6 +37,8 @@ const themes = {
     hoverRing: 'hover:ring-sky-400',
     galaxyActive: 'text-sky-100',
     galaxyInactive: 'text-sky-100',
+    playActive: 'text-cyan-400',
+    playInactive: 'text-sky-100',
     terminalColor: 'bg-white/10'
   }
 };
@@ -71,6 +78,19 @@ if (rewind10) {
     rewind10.classList.add(theme.galaxyInactive);
   }
 }
+
+const toggleBtn = document.getElementById('videoToggle');
+if (toggleBtn) {
+  Object.values(themes).forEach(t => {
+    toggleBtn.classList.remove(t.playActive, t.playInactive);
+  });
+
+  if (isPlaying) {
+    toggleBtn.classList.add(theme.playActive);
+  } else {
+    toggleBtn.classList.add(theme.playInactive);
+  }
+}
   
   document.querySelectorAll(
   '.text-blue-glow, .text-pink-glow, .text-red-glow, .text-aquag-glow, .text-cyan-glow'
@@ -80,6 +100,8 @@ if (rewind10) {
   el.classList.add(theme.glowPrimary);
 });
   localStorage.setItem('theme', themeName);
+
+  
 }
 
 let typedInstance;
@@ -231,17 +253,23 @@ const pauseIcon = document.getElementById('pauseIcon');
 const themeBtn = document.getElementById('changeTheme');
 
 toggleBtn.addEventListener('click', () => {
-if (!player) return;
-if (isPlaying) {
-player.pauseVideo();
-playIcon.classList.remove('hidden');
-pauseIcon.classList.add('hidden');
-} else {
-player.playVideo();
-pauseIcon.classList.remove('hidden');
-playIcon.classList.add('hidden');
-}
-isPlaying = !isPlaying;
+  if (!player) return;
+  const themeName = localStorage.getItem('theme') || 'Default';
+  const theme = themes[themeName];
+  if (isPlaying) {
+    player.pauseVideo();
+    playIcon.classList.remove('hidden');
+    pauseIcon.classList.add('hidden');
+    toggleBtn.classList.remove(theme.playActive);
+    toggleBtn.classList.add(theme.playInactive);
+  } else {
+    player.playVideo();
+    pauseIcon.classList.remove('hidden');
+    playIcon.classList.add('hidden');
+    toggleBtn.classList.remove(theme.playInactive);
+    toggleBtn.classList.add(theme.playActive);
+  }
+  isPlaying = !isPlaying;
 });
 
 document.getElementById('nextTrack').addEventListener('click', () => {
