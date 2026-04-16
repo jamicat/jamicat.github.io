@@ -114,7 +114,10 @@ image-rendering: crisp-edges;
 
 .text-blue-glow {
   text-shadow: 0 0 2px rgba(0, 255, 200, 0.7);
-  /*text-shadow: 0 0 2px rgba(135, 206, 235, 0.7);*/
+}
+
+.text-blue2-glow {
+  text-shadow: 0 0 2px rgba(135, 206, 235, 0.7);
 }
 
 .text-pink-glow {
