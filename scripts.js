@@ -5,7 +5,7 @@ const themes = {
     buttonColor: 'bg-orange-400 hover:bg-orange-500',
     buttonTextColor: 'text-white',
     iconColor: 'text-orange-400 hover:text-teal-400',
-    galaxyActive: 'text-orange-400',
+    galaxyActive: 'text-teal-400',
     galaxyInactive: 'text-orange-400',
     terminalColor: 'bg-black/20'
   },
