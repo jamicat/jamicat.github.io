@@ -112,7 +112,7 @@ image-rendering: pixelated;
 image-rendering: crisp-edges;
 }
 
-.text-aqua-glow {
+.text-aquag-glow {
   text-shadow: 0 0 2px rgba(0, 255, 200, 0.7);
 }
 
