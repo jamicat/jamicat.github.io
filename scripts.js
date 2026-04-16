@@ -50,7 +50,11 @@ function applyTheme(themeName) {
   document.documentElement.setAttribute('data-theme', themeName);
 
   document.querySelectorAll('.terminal-button:not(.guestbook-submit)').forEach(btn => {
-    btn.className = `terminal-button ${theme.buttonColor} ${theme.buttonTextColor} ${theme.hoverRing} px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95 text-sm font-medium transform hover:-translate-y-[0.5px] hover:shadow-[0_0_2px_rgba(0,255,255,0.3)]`;
+  Object.values(themes).forEach(t => {
+    btn.classList.remove(t.buttonColor, t.buttonTextColor, t.hoverRing);
+  });
+
+  btn.classList.add(theme.buttonColor, theme.buttonTextColor, theme.hoverRing);
 });
 
   const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme');
@@ -79,6 +83,17 @@ if (rewind10) {
   }
 }
 
+const themeBtn = document.getElementById('changeTheme');
+if (themeBtn) {
+  Object.values(themes).forEach(t => {
+    themeBtn.classList.remove(t.galaxyActive);
+  });
+
+  if (themeBtn.classList.contains('theme-open')) {
+    themeBtn.classList.add(theme.galaxyActive);
+  }
+}
+  
 const toggleBtn = document.getElementById('videoToggle');
 if (toggleBtn) {
   Object.values(themes).forEach(t => {
@@ -256,28 +271,34 @@ toggleBtn.addEventListener('click', () => {
   if (!player) return;
   const themeName = localStorage.getItem('theme') || 'Default';
   const theme = themes[themeName];
-  if (isPlaying) {
-    player.pauseVideo();
-    playIcon.classList.remove('hidden');
-    pauseIcon.classList.add('hidden');
-    toggleBtn.classList.remove(theme.playActive);
-    toggleBtn.classList.add(theme.playInactive);
-  } else {
-    player.playVideo();
-    pauseIcon.classList.remove('hidden');
-    playIcon.classList.add('hidden');
-    toggleBtn.classList.remove(theme.playInactive);
-    toggleBtn.classList.add(theme.playActive);
-  }
-  isPlaying = !isPlaying;
+ if (isPlaying) {
+  player.pauseVideo();
+  playIcon.classList.remove('opacity-0', 'scale-75');
+  playIcon.classList.add('opacity-100', 'scale-100');
+  pauseIcon.classList.remove('opacity-100', 'scale-100');
+  pauseIcon.classList.add('opacity-0', 'scale-75');
+  toggleBtn.classList.remove(theme.playActive);
+  toggleBtn.classList.add(theme.playInactive);
+} else {
+  player.playVideo();
+  pauseIcon.classList.remove('opacity-0', 'scale-75');
+  pauseIcon.classList.add('opacity-100', 'scale-100');
+  playIcon.classList.remove('opacity-100', 'scale-100');
+  playIcon.classList.add('opacity-0', 'scale-75');
+  toggleBtn.classList.remove(theme.playInactive);
+  toggleBtn.classList.add(theme.playActive);
+}
+isPlaying = !isPlaying;
 });
 
 document.getElementById('nextTrack').addEventListener('click', () => {
 if (player && typeof player.nextVideo === 'function') {
 player.nextVideo();
 isPlaying = true;
-pauseIcon.classList.remove('hidden');
-playIcon.classList.add('hidden');
+pauseIcon.classList.remove('opacity-0', 'scale-75');
+pauseIcon.classList.add('opacity-100', 'scale-100');
+playIcon.classList.remove('opacity-100', 'scale-100');
+playIcon.classList.add('opacity-0', 'scale-75');
 }   
 });
 
@@ -406,10 +427,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function showTooltip() {
     tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.add('opacity-100');
+    changeThemeBtn.classList.add('theme-open');
   }
   function hideTooltip() {
     tooltip.classList.add('opacity-0', 'pointer-events-none', 'invisible');
     tooltip.classList.remove('opacity-100');
+    changeThemeBtn.classList.remove('theme-open');
   }
 });
 
