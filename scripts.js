@@ -579,7 +579,7 @@ function showGuestBook() {
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
       <div class="text-blue-100/80 text-md mt-2 mb-4 text-center">
-       <p id="welcomeMessage" class="text-base text-blue-100">meow</p>
+       <p id="welcomeMessage" class="text-base text-[15px] text-blue-100">meow</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-blue-100">
         <input id="name" type="text" name="name" placeholder="Name"
@@ -733,7 +733,7 @@ body: JSON.stringify(data),
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
 const welcomeMessage = document.querySelector('p.text-base');
-welcomeMessage.textContent = "meow!";
+welcomeMessage.textContent = "meow!!";
 
   setTimeout(() => {
     welcomeMessage.textContent = "meow";
