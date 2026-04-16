@@ -4,7 +4,7 @@ const themes = {
     glowSecondary: 'text-pink-glow',    
     buttonColor: 'bg-orange-300 hover:bg-orange-400',
     buttonTextColor: 'text-black',
-    iconColor: 'text-teal-400 hover:text-teal-400',
+    iconColor: 'text-orange-400 hover:text-teal-400',
     galaxyActive: 'text-teal-400',
     galaxyInactive: 'text-orange-400',
     terminalColor: 'bg-black/20'
