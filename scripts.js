@@ -1,6 +1,6 @@
 const themes = {
   Default: {
-    glowPrimary: 'text-blue-glow',      
+    glowPrimary: 'text-aquag-glow',      
     glowSecondary: 'text-pink-glow',    
     buttonColor: 'bg-orange-300 hover:bg-orange-400',
     buttonTextColor: 'text-black',
@@ -70,10 +70,10 @@ if (rewind10) {
 }
   
   document.querySelectorAll(
-  '.text-blue-glow, .text-pink-glow, .text-red-glow, .text-green-glow, .text-cyan-glow'
+  '.text-blue-glow, .text-pink-glow, .text-red-glow, .text-aquag-glow, .text-cyan-glow'
 ).forEach(el => {
   if (el.classList.contains('no-theme-glow')) return; 
-  el.classList.remove('text-blue-glow', 'text-pink-glow', 'text-red-glow', 'text-green-glow', 'text-cyan-glow');
+  el.classList.remove('text-blue-glow', 'text-pink-glow', 'text-red-glow', 'text-aquag-glow', 'text-cyan-glow');
   el.classList.add(theme.glowPrimary);
 });
   localStorage.setItem('theme', themeName);
@@ -89,7 +89,7 @@ function initTyped(themeName = 'Default') {
     typedInstance.destroy();
   }
 
-  const glow = themes[themeName].glowPrimary || 'text-blue-glow';
+  const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
   const strings = [
     `<span class="text-white text-xl mr-2 ${glow}">ฅ(^ω^)ฅ</span>`,
@@ -517,7 +517,7 @@ function showGuestBook() {
   <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
     <span class="flex items-center space-x-2">
       <img src="cattp.gif" alt="Avatar2" class="avatar-icon2" />
-      <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-pink-glow no-theme-glow">Guestbook</span>
+      <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow">Guestbook</span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
       <button onclick="closeGuestBook()" class="text-pink-200 hover:text-pink-100 transition-colors duration-200 text-lg leading-none">
@@ -762,7 +762,7 @@ async function loadGuestbookComments() {
       div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
       div.innerHTML = `
-        <div class="mb-1 font-medium text-white text-pink-glow no-theme-glow">
+        <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">
           ${entry.name || 'Anonymous'}
         </div>
 
