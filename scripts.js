@@ -517,7 +517,7 @@ function showGuestBook() {
   <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
     <span class="flex items-center space-x-2">
       <img src="cattp.gif" alt="Avatar2" class="avatar-icon2" />
-      <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow">Guestbook</span>
+      <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-pink-glow no-theme-glow">Guestbook</span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
       <button onclick="closeGuestBook()" class="text-pink-200 hover:text-pink-100 transition-colors duration-200 text-lg leading-none">
@@ -762,7 +762,7 @@ async function loadGuestbookComments() {
       div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
       div.innerHTML = `
-        <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">
+        <div class="mb-1 font-medium text-white text-pink-glow no-theme-glow">
           ${entry.name || 'Anonymous'}
         </div>
 
