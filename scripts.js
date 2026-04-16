@@ -2,7 +2,7 @@ const themes = {
   Default: {
     glowPrimary: 'text-blue-glow',      
     glowSecondary: 'text-pink-glow',    
-    buttonColor: 'bg-orange-400 hover:bg-orange-500',
+    buttonColor: 'bg-orange-400 hover:bg-orange-300',
     buttonTextColor: 'text-white',
     iconColor: 'text-orange-400 hover:text-teal-400',
     galaxyActive: 'text-teal-400',
