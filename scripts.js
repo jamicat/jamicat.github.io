@@ -18,7 +18,7 @@ const themes = {
     buttonTextColor: 'text-black',
     iconColor: 'text-red-300 hover:text-cyan-400',
     hoverRing: 'hover:ring-cyan-400',
-    galaxyActive: 'text-red-300',
+    galaxyActive: 'text-cyan-400',
     galaxyInactive: 'text-red-300',
     terminalColor: 'bg-black/25'
   },
@@ -29,7 +29,7 @@ const themes = {
     buttonColor: 'bg-sky-100 hover:bg-sky-300',
     buttonTextColor: 'text-black',
     iconColor: 'text-sky-100 hover:text-cyan-400',
-    hoverRing: 'hover:ring-cyan-400',
+    hoverRing: 'hover:ring-sky-400',
     galaxyActive: 'text-sky-100',
     galaxyInactive: 'text-sky-100',
     terminalColor: 'bg-white/10'
