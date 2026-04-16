@@ -100,8 +100,20 @@ if (toggleBtn) {
   el.classList.add(theme.glowPrimary);
 });
   localStorage.setItem('theme', themeName);
+}
 
-  
+function updatePlayButtonTheme() {
+  const themeName = localStorage.getItem('theme') || 'Default';
+  const theme = themes[themeName];
+  const toggleBtn = document.getElementById('videoToggle');
+  Object.values(themes).forEach(t => {
+    toggleBtn.classList.remove(t.playActive, t.playInactive);
+  });
+  if (isPlaying) {
+    toggleBtn.classList.add(theme.playActive);
+  } else {
+    toggleBtn.classList.add(theme.playInactive);
+  }
 }
 
 let typedInstance;
@@ -270,15 +282,20 @@ toggleBtn.addEventListener('click', () => {
     toggleBtn.classList.add(theme.playActive);
   }
   isPlaying = !isPlaying;
+  updatePlayButtonTheme();
 });
 
 document.getElementById('nextTrack').addEventListener('click', () => {
-if (player && typeof player.nextVideo === 'function') {
-player.nextVideo();
-isPlaying = true;
-pauseIcon.classList.remove('hidden');
-playIcon.classList.add('hidden');
-}   
+  if (player && typeof player.nextVideo === 'function') {
+    player.nextVideo();
+    isPlaying = true;
+    playIcon.classList.add('hidden');
+    pauseIcon.classList.remove('hidden');
+    const themeName = localStorage.getItem('theme') || 'Default';
+    const theme = themes[themeName];
+    toggleBtn.classList.remove(theme.playInactive);
+    toggleBtn.classList.add(theme.playActive);
+  }
 });
 
 let galaxyScriptLoaded = false;
