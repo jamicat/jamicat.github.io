@@ -565,7 +565,7 @@ function showGuestBook() {
   <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
     <span class="flex space-x-5">
       <img src="cattp.gif" alt="Avatar2" class="avatar-icon2" />
-      <span id="typed2" class="font-medium text-3xl mt-12 mb-4 text-cyan-glow no-theme-glow">Guestbook</span>
+      <span id="typed2" class="font-medium text-xl mt-12 mb-4 text-cyan-glow no-theme-glow">Guestbook</span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
       <button onclick="closeGuestBook()" class="text-pink-200 hover:text-pink-100 transition-colors duration-200 text-lg leading-none">
