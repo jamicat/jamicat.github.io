@@ -563,7 +563,7 @@ function showGuestBook() {
 
   guestBookWindow.innerHTML = `
   <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
-    <span class="flex space-x-5">
+    <span class="flex space-x-2">
       <img src="cattp.gif" alt="Avatar2" class="avatar-icon2" />
       <span id="typed2" class="font-medium text-xl mt-12 mb-4 text-cyan-glow no-theme-glow">Guestbook</span>
     </span>
