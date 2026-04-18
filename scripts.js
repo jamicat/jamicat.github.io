@@ -204,7 +204,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'xGRH6MvX2Oo',
+playlist: '02T6xLNXEE0',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -245,7 +245,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'xGRH6MvX2Oo';
+const videoId = '02T6xLNXEE0';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -349,10 +349,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "The Warning - Kerosene (Official Video)",
-videoId: "xGRH6MvX2Oo",
-channelAvatar: "https://yt3.googleusercontent.com/POSi7PPa_cl4X6iwHYb0QF_UZ6Y-V8jopvM1F_tTvERCa1fNSW4z69s2R-GGdIeCeGt0BxOJ5w=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@TheWarning"
+title: "YUNGBLUD - The Funeral (Official Video)",
+videoId: "02T6xLNXEE0",
+channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/@yungblud"
 }
 ];
 
