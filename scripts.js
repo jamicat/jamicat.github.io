@@ -441,7 +441,7 @@ $('#terminalContent').html(`
     <img src="2.png" alt="Jamie - saproena" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
     <a href="anim_jami.gif" class="block rounded overflow-hidden">
-    <img src="anim_thumb.jpg" alt="Jamie - saproena" class="rounded hover:scale-105 transition transform duration-200" />
+    <img src="anim_thumb.jpg" alt="Jamie - Xandy" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
       <a href="sp.png" class="block rounded overflow-hidden">
     <img src="sp_thumb.png" alt="Jamie - Smolbeans Sketchpage" class="rounded hover:scale-105 transition transform duration-200" />
