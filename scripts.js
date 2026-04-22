@@ -824,8 +824,8 @@ div.innerHTML = `
     entry.reply
       ? `
       <div class="border-t border-dashed border-gray-500 my-2 opacity-40"></div>
-      <div class="text-pink-300 break-all">
-        <span class="text-pink-glow">Jamie:</span> ${entry.reply}
+      <div class="text-gray-200 break-all">
+        <span class="text-blue-glow no-theme-glow">Jamie:</span> ${entry.reply}
       </div>
       `
       : ''
