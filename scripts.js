@@ -830,7 +830,7 @@ div.innerHTML = `
       <div class="border-t border-dashed border-gray-500 my-3 opacity-40"></div>
 
       <div class="mb-1 font-medium text-white text-blue-glow flex items-center gap-1">
-  <img id="discordAvatar" class="w-8 h-8 rounded-full shadow-md object-cover" src="https://cdn.discordapp.com/avatars/160899636637204482/fc654ecfb980071ae5ae5941b65f4e84.png?size=128" alt="Discord Avatar">
+  <img class="replyAvatar w-8 h-8 rounded-full shadow-md object-cover" alt="Discord Avatar">
   <span>Jamie</span>
 </div>
 
