@@ -440,7 +440,7 @@ $('#terminalContent').html(`
    <a href="2.png" class="block rounded overflow-hidden">
     <img src="2.png" alt="jamie - saproena" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
-    <a href="anim_jami.gif" class="block rounded overflow-hidden">
+    <a href="anim_jam.gif" class="block rounded overflow-hidden">
     <img src="anim_thumb.jpg" alt="jamie - xandy" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
       <a href="sp.png" class="block rounded overflow-hidden">
