@@ -853,6 +853,8 @@ div.innerHTML = `
       container.appendChild(div);
 
     });
+    
+    applyTheme(localStorage.getItem('theme') || 'Default');
 
   } catch (err) {
 
