@@ -830,9 +830,9 @@ div.innerHTML = `
       ? `
       <div class="border-t border-dashed border-gray-500 my-3 opacity-40"></div>
 
-      <div class="mb-1 font-medium text-white text-blue-glow flex items-center gap-1">
+      <div class="mb-1 flex items-center gap-1 font-medium">
   <img class="replyAvatar w-8 h-8 rounded-full shadow-md object-cover" alt="Discord Avatar">
-  <span>Jamie</span>
+  <span class="text-white text-blue-glow">Jamie</span>
 </div>
 
       <div class="mb-1 text-gray-200 break-all">
