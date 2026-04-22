@@ -813,7 +813,7 @@ async function loadGuestbookComments() {
       div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
 div.innerHTML = `
-  <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">
+  <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow break-all">
     ${entry.name || 'Anonymous'}
   </div>
 
