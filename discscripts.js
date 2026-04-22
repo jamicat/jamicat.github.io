@@ -73,6 +73,10 @@ if (user.avatar) {
     avatarEl.src = avatar;
     nameEl.textContent = username;
 
+    document.querySelectorAll(".replyAvatar").forEach(img => {
+  img.src = avatar;
+});
+
     let dotColor = "bg-gray-500";
     if (status === "online") dotColor = "bg-green-400";
     if (status === "idle") dotColor = "bg-yellow-400";
