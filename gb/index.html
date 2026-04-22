@@ -129,7 +129,7 @@ async function loadPending(){
     div.innerHTML=`
       <div style="overflow-wrap:anywhere; word-break:break-word;" class="name">${c.name}</div>
       <div class="text">${c.comment}</div>
-      <div class="time">${c.timestamp}</div>
+      <br><div class="time">${c.timestamp}</div>
       <button onclick="approve(${c.id})">Approve</button>
       <button onclick="deletePending(${c.id})">Delete</button>
     `
@@ -169,7 +169,7 @@ async function loadApproved(){
     : ''
 }
 
-  <div class="time">${c.timestamp}</div>
+  <br><div class="time">${c.timestamp}</div>
 
   <button onclick="toggleReplyBox(${c.id})">Reply</button>
   <button onclick="deleteApproved(${c.id})">Delete</button>
