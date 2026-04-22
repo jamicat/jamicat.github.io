@@ -612,8 +612,8 @@ guestbookCommentBox.className = `
   p-4 
   w-[300px] 
   overflow-y-auto 
-  bg-black
-  border-pink-200/20
+  bg-black 
+  bg-opacity-20 
   text-white 
   text-sm 
   scrollbar-thin 
