@@ -830,7 +830,7 @@ div.innerHTML = `
       <div class="border-t border-dashed border-gray-500 my-3 opacity-40"></div>
 
       <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">
-        Jamie
+        Jamie's reply: 
       </div>
 
       <div class="mb-1 text-gray-200 break-all">
