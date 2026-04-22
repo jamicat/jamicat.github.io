@@ -791,6 +791,8 @@ loadGuestbookComments();
                                                           
 async function loadGuestbookComments() {
 
+  fetchDiscordStatus();
+
   const container = document.getElementById('guestbookComments');
   if (!container) return;
 
@@ -855,6 +857,7 @@ div.innerHTML = `
     
     const theme = localStorage.getItem('theme') || 'Default';
     applyTheme(theme);
+    fetchDiscordStatus();
 
   } catch (err) {
 
