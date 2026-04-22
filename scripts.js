@@ -129,14 +129,14 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
   const strings = [
-    `<span class="text-white text-2xl mr-2 ${glow}">Meow</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">Mew</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">Nya</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">Mrow</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">Meow</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">Mew</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">Nya</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">Mrow</span>`
+    `<span class="text-white text-2xl mr-2 ${glow}">meow</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">mew</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">nya</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">mrow</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">meow</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">mew</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">nya</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">mrow</span>`
   ];
 
   typedInstance = new Typed('#typed', {
@@ -375,7 +375,7 @@ html += `
 
 html += `
   <div class="mt-6 flex justify-center">
-    <button class="terminal-button" onclick="resetTerminal()">Back</button>
+    <button class="terminal-button" onclick="resetTerminal()">back</button>
   </div>
 `;
 
@@ -438,17 +438,17 @@ $('#terminalContent').html(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
   <div id="artGallery" class="grid grid-cols-3 gap-4">
    <a href="2.png" class="block rounded overflow-hidden">
-    <img src="2.png" alt="Jamie - saproena" class="rounded hover:scale-105 transition transform duration-200" />
+    <img src="2.png" alt="jamie - saproena" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
     <a href="anim_jami.gif" class="block rounded overflow-hidden">
-    <img src="anim_thumb.jpg" alt="Jamie - Xandy" class="rounded hover:scale-105 transition transform duration-200" />
+    <img src="anim_thumb.jpg" alt="jamie - xandy" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
       <a href="sp.png" class="block rounded overflow-hidden">
-    <img src="sp_thumb.png" alt="Jamie - Smolbeans" class="rounded hover:scale-105 transition transform duration-200" />
+    <img src="sp_thumb.png" alt="jamie - smolbeans" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
     </div>
   <div class="mt-4 flex justify-center">
-  <button class="terminal-button" onclick="resetTerminal()">Back</button>
+  <button class="terminal-button" onclick="resetTerminal()">back</button>
     </div>
   `);
 
@@ -567,7 +567,7 @@ function showGuestBook() {
   <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
     <span class="flex space-x-2">
       <img src="6.png" alt="Avatar2" class="avatar-icon2" />
-      <span id="typed2" class="font-medium text-xl mt-12 mb-4 text-cyan-glow no-theme-glow">Guestbook</span>
+      <span id="typed2" class="font-medium text-xl mt-12 mb-4 text-cyan-glow no-theme-glow">guestbook</span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
       <button onclick="closeGuestBook()" class="text-gray-400 hover:text-white transition-colors duration-200 text-lg leading-none">
@@ -584,12 +584,12 @@ function showGuestBook() {
        <p id="welcomeMessage" class="text-base text-[15px]">meow</p>
       </div>
       <form id="guestbookForm" class="space-y-4 text-gray-200">
-        <input id="name" type="text" name="name" placeholder="Name"
+        <input id="name" type="text" name="name" placeholder="name"
           class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required />
-        <textarea id="message" name="message" placeholder="Message"
+        <textarea id="message" name="message" placeholder="message"
           class="w-full p-2 rounded border border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required></textarea>
         <div class="text-center">
-          <button type="submit" class="terminal-button bg-sky-100 hover:bg-sky-300 text-black guestbook-submit">Submit</button>
+          <button type="submit" class="terminal-button bg-sky-100 hover:bg-sky-300 text-black guestbook-submit">submit</button>
         </div>
       </form>
     </div>
@@ -852,7 +852,7 @@ document.getElementById('terminalContent').innerHTML = `
       <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-50" required></textarea>
       <div class="flex justify-center space-x-4 flex-wrap">
       <button type="submit" class="terminal-button">submit</button>
-      <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
+      <button type="button" class="terminal-button" onclick="resetTerminal()">back</button>
       </div>
       <div id="formResponse" class="text-pink-100 text-md mt-2 mb-4 text-center"></div>
     </form>
@@ -910,9 +910,9 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-    <button class="terminal-button ml-2" onclick="showArt()">Art</button>
-    <button class="terminal-button ml-5" onclick="showGuestBook()">Guestbook</button>
-    <button class="terminal-button" onclick="showList()">Playlist</button>
+    <button class="terminal-button ml-2" onclick="showArt()">art</button>
+    <button class="terminal-button ml-5" onclick="showGuestBook()">guestbook</button>
+    <button class="terminal-button" onclick="showList()">playlist</button>
   </div>
 `);
 const currentTheme = localStorage.getItem('theme') || 'Default';
