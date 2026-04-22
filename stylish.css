@@ -98,7 +98,7 @@ height: 132px;
 border-radius: 0%;
 margin-right: 0.5rem;
 object-fit: contain;
-image-rendering: pixelated;
+/*image-rendering: pixelated;*/
 image-rendering: crisp-edges;
 }
 
@@ -108,7 +108,7 @@ height: 132px;
 border-radius: 0%;
 margin-right: 0.5rem;
 object-fit: contain;
-image-rendering: pixelated;
+/*image-rendering: pixelated;*/
 image-rendering: crisp-edges;
 }
 
