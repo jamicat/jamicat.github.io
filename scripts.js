@@ -820,20 +820,32 @@ div.innerHTML = `
     ${entry.comment || ''}
   </div>
 
+  <div class="text-gray-400 opacity-80 text-[0.65rem] text-right">
+    ${entry.timestamp ? new Date(entry.timestamp).toLocaleString() : ''}
+  </div>
+
   ${
     entry.reply
       ? `
-      <div class="border-t border-dashed border-gray-500 my-2 opacity-40"></div>
-      <div class="text-gray-200 break-all">
-        <span class="text-blue-glow no-theme-glow">Jamie:</span> ${entry.reply}
+      <div class="border-t border-dashed border-gray-500 my-3 opacity-40"></div>
+
+      <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">
+        Jamie
+      </div>
+
+      <div class="mb-1 text-gray-200 break-all">
+        ${entry.reply}
+      </div>
+
+      <div class="text-gray-400 opacity-80 text-[0.65rem] text-right">
+        ${entry.reply_timestamp
+          ? new Date(entry.reply_timestamp).toLocaleString()
+          : ''
+        }
       </div>
       `
       : ''
   }
-
-  <div class="text-gray-400 opacity-80 text-[0.65rem] text-right">
-    ${entry.timestamp ? new Date(entry.timestamp).toLocaleString() : ''}
-  </div>
 `;
 
       container.appendChild(div);
