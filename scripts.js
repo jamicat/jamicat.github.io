@@ -554,7 +554,7 @@ function showGuestBook() {
   }
 
    const guestBookWindow = document.createElement('div');
-  guestBookWindow.className = 'terminal2 absolute p-6 max-w-full w-[90vw] sm:w-[500px] text-white rounded-3xl bg-pink-200/15 border border-pink-200/20';
+  guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px] rounded-3xl';
   guestBookWindow.style.zIndex = 11;
   guestBookWindow.style.top = '50%';
   guestBookWindow.style.left = '50%';
