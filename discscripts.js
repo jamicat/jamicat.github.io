@@ -69,7 +69,9 @@ if (user.avatar) {
     const nameEl = document.getElementById("discordName");
     const activityEl = document.getElementById("discordActivity");
     const statusDot = document.getElementById("statusDot");
-
+    
+if (!avatarEl || !nameEl || !activityEl || !statusDot) return;
+    
     avatarEl.src = avatar;
     nameEl.textContent = username;
 
