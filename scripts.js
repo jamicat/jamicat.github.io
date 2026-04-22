@@ -434,12 +434,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function showArt() {
 $('#terminalContent').html(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
-  <div id="artGallery" class="grid grid-cols-3 gap-4">
+  <div id="artGallery" class="grid grid-cols-2 gap-4">
    <a href="2.png" class="block rounded overflow-hidden">
     <img src="2.png" alt="Jamie - saproena" class="rounded hover:scale-105 transition transform duration-200" />
-      </a>
-  <a href="chibi.png" class="block rounded overflow-hidden">
-    <img src="chibi_thumb.png" alt="Jamie - Smolbeans Chibi" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
       <a href="sp.png" class="block rounded overflow-hidden">
     <img src="sp_thumb.png" alt="Jamie - Smolbeans Sketchpage" class="rounded hover:scale-105 transition transform duration-200" />
