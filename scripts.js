@@ -791,6 +791,7 @@ loadGuestbookComments();
                                                           
 async function loadGuestbookComments() {
 
+  fetchDiscordStatus();
   const container = document.getElementById('guestbookComments');
   if (!container) return;
 
