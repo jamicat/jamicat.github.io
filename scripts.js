@@ -444,7 +444,7 @@ $('#terminalContent').html(`
     <img src="anim_thumb.jpg" alt="Jamie - Xandy" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
       <a href="sp.png" class="block rounded overflow-hidden">
-    <img src="sp_thumb.png" alt="Jamie - Smolbeans Sketchpage" class="rounded hover:scale-105 transition transform duration-200" />
+    <img src="sp_thumb.png" alt="Jamie - Smolbeans" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
     </div>
   <div class="mt-4 flex justify-center">
