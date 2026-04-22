@@ -2,7 +2,7 @@ const themes = {
   Default: {
     glowPrimary: 'text-aquag-glow',      
     glowSecondary: 'text-pink-glow',    
-    buttonColor: 'bg-[#fed4b1] hover:bg-[#ffb17c]',
+    buttonColor: 'bg-[#fed4b1] hover:bg-[#f37a5c]',
     buttonTextColor: 'text-black',
     iconColor: 'text-[#f37a5c] hover:text-teal-400',
     hoverRing: 'hover:ring-teal-400',
