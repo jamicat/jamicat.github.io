@@ -791,7 +791,6 @@ loadGuestbookComments();
                                                           
 async function loadGuestbookComments() {
 
-  fetchDiscordStatus();
   const container = document.getElementById('guestbookComments');
   if (!container) return;
 
@@ -854,7 +853,8 @@ div.innerHTML = `
 
     });
     
-    applyTheme(localStorage.getItem('theme') || 'Default');
+    const theme = localStorage.getItem('theme') || 'Default';
+    applyTheme(theme);
 
   } catch (err) {
 
