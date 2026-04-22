@@ -2,14 +2,14 @@ const themes = {
   Default: {
     glowPrimary: 'text-aquag-glow',      
     glowSecondary: 'text-pink-glow',    
-    buttonColor: 'bg-orange-200 hover:bg-orange-300',
+    buttonColor: 'bg-[#fed4b1] hover:bg-[#f37a5c]',
     buttonTextColor: 'text-black',
-    iconColor: 'text-orange-400 hover:text-teal-400',
+    iconColor: 'text-[#f37a5c] hover:text-teal-400',
     hoverRing: 'hover:ring-teal-400',
     galaxyActive: 'text-teal-400',
-    galaxyInactive: 'text-orange-400',
+    galaxyInactive: 'text-[#f37a5c]',
     playActive: 'text-teal-400',
-    playInactive: 'text-orange-400',
+    playInactive: 'text-[#f37a5c]',
     terminalColor: 'bg-black/20'
     
   },
