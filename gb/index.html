@@ -127,7 +127,7 @@ async function loadPending(){
     div.className="comment"
 
     div.innerHTML=`
-      <div class="name">${c.name}</div>
+      <div style="overflow-wrap:anywhere; word-break:break-word;" class="name">${c.name}</div>
       <div class="text">${c.comment}</div>
       <div class="time">${c.timestamp}</div>
       <button onclick="approve(${c.id})">Approve</button>
