@@ -417,17 +417,13 @@ new TWEEN.Tween({
 // LOOPER
 
 const t = 0.001
-let isRunning = true
-function animate() {
-  if (!isRunning) return
+renderer.setAnimationLoop(() => {
   galaxyMaterial.uniforms.uTime.value += t / 2
   universeMaterial.uniforms.uTime.value += t / 3
   TWEEN.update()
   orbit.update()
   renderer.render(scene, camera)
-  requestAnimationFrame(animate)
-}
-animate()
+})
 
 
 
@@ -465,14 +461,3 @@ vec3 scatter (vec3 seed) {
 }
 
 `
-window.galaxyControls = {
-  start() {
-    if (!isRunning) {
-      isRunning = true
-      animate()
-    }
-  },
-  stop() {
-    isRunning = false
-  }
-}
