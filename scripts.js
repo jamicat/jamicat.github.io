@@ -337,12 +337,14 @@ const theme = themes[themeName];
     rewind10.classList.add(theme.galaxyInactive);
     canvas.style.opacity = '0';
     canvas.style.pointerEvents = 'none';
+    window.galaxyControls?.stop();
   } else {
     galaxyVisible = true;
     rewind10.classList.remove(theme.galaxyInactive);
     rewind10.classList.add(theme.galaxyActive);
     canvas.style.opacity = '1';
     canvas.style.pointerEvents = 'auto';
+    window.galaxyControls?.start();
   }
 });
 
