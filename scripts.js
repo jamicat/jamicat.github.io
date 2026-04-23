@@ -346,7 +346,7 @@ const theme = themes[themeName];
   }
 });
 
-rewind10.click();
+//rewind10.click();
 
 function showList() {
 const playlist = [
