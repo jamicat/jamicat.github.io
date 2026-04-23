@@ -312,10 +312,10 @@ galaxyScriptLoaded = true;
 const guiElement = document.querySelector('.lil-gui');
 
 if (guiElement) {
-if (getComputedStyle(guiElement).display === 'none') {
-  guiElement.style.display = 'block';
+if (guiElement.style.display === 'none' || !guiElement.style.display) {
+guiElement.style.display = 'block';
 } else {
-  guiElement.style.display = 'none';
+guiElement.style.display = 'none';
 }
 }
 
