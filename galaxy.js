@@ -346,9 +346,7 @@ scene.add(universe)
 // ------------------------ //
 // GUIs
 
-const gui = new GUI({ autoPlace: false })
-gui.domElement.style.display = 'none'
-document.body.appendChild(gui.domElement)
+const gui = new GUI().close()
 const u = galaxyMaterial.uniforms
 
 gui.add(u.uSize, "value", 0, 4, 0.01)
