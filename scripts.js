@@ -206,7 +206,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '02T6xLNXEE0',
+playlist: 'GVr6Te5GWu0',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -247,7 +247,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '02T6xLNXEE0';
+const videoId = 'GVr6Te5GWu0';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -351,10 +351,10 @@ rewind10.click();
 function showList() {
 const playlist = [
 {
-title: "YUNGBLUD - The Funeral (Official Video)",
-videoId: "02T6xLNXEE0",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/@yungblud"
+title: "Sweet Trip - Pretending",
+videoId: "GVr6Te5GWu0",
+channelAvatar: "https://yt3.googleusercontent.com/Jlz297FT_bwUSxVnYND-RsMc7ZP8UpJUGwnv1oRw53SupxfZV6bjCMijY5tQcAcqi-8VNOEVkCk=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/channel/UCZyhfRLA0lvbZGi3wBoB1jA"
 }
 ];
 
