@@ -206,7 +206,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'GVr6Te5GWu0',
+playlist: 'r6XSODVxnPw',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -247,7 +247,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'GVr6Te5GWu0';
+const videoId = 'r6XSODVxnPw';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -351,10 +351,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Sweet Trip - Pretending",
-videoId: "GVr6Te5GWu0",
-channelAvatar: "https://yt3.googleusercontent.com/Jlz297FT_bwUSxVnYND-RsMc7ZP8UpJUGwnv1oRw53SupxfZV6bjCMijY5tQcAcqi-8VNOEVkCk=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/channel/UCZyhfRLA0lvbZGi3wBoB1jA"
+title: "idialedyournumber - Bunny Goes 2 Business School",
+videoId: "r6XSODVxnPw",
+channelAvatar: "https://yt3.googleusercontent.com/09oGqWL9F2BT0-oJ7WtpAP8Ffu0FOpA2erorEsC7WcGDZ6VHjjG7xVRs_Wr2r-xinNYeEzSifQ=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/idialedyournumber"
 }
 ];
 
