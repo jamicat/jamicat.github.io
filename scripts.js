@@ -206,7 +206,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'r6XSODVxnPw',
+playlist: 'wGDdsxgwquc',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -247,7 +247,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'r6XSODVxnPw';
+const videoId = 'wGDdsxgwquc';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -351,10 +351,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "idialedyournumber - Bunny Goes 2 Business School",
-videoId: "r6XSODVxnPw",
-channelAvatar: "https://yt3.googleusercontent.com/09oGqWL9F2BT0-oJ7WtpAP8Ffu0FOpA2erorEsC7WcGDZ6VHjjG7xVRs_Wr2r-xinNYeEzSifQ=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/idialedyournumber"
+title: "Jane Remover — TURN UP OR DIE (audio)",
+videoId: "wGDdsxgwquc",
+channelAvatar: "https://yt3.googleusercontent.com/ibJJHFoWHpzlHbschEVHpEoOAM5rxKlz7mfBS6bSkx0WqIuFV0JT2-qbEhPth-ULYBUGEo0qSA=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/jane_remover"
 }
 ];
 
