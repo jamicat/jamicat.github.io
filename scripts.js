@@ -206,7 +206,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'wGDdsxgwquc',
+playlist: 'KHocVRUlvkk',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -247,7 +247,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'wGDdsxgwquc';
+const videoId = 'KHocVRUlvkk';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -348,13 +348,13 @@ const theme = themes[themeName];
 
 //rewind10.click();
 
-function showList() {
+function showList() {KHocVRUlvkk
 const playlist = [
 {
-title: "Jane Remover — TURN UP OR DIE (audio)",
-videoId: "wGDdsxgwquc",
-channelAvatar: "https://yt3.googleusercontent.com/ibJJHFoWHpzlHbschEVHpEoOAM5rxKlz7mfBS6bSkx0WqIuFV0JT2-qbEhPth-ULYBUGEo0qSA=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/jane_remover"
+title: "Fontaines D.C. - Starburster (Official Video)",
+videoId: "KHocVRUlvkk",
+channelAvatar: "https://yt3.googleusercontent.com/45_J5snu-qaaLOITwCP3LGr9QU-6rEziWjWcl1i6zJEuMCF0K0ExhaLd1w2mHtTxJioDGoETdw=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/fontainesdc"
 }
 ];
 
