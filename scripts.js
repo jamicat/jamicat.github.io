@@ -348,7 +348,7 @@ const theme = themes[themeName];
 
 //rewind10.click();
 
-function showList() {KHocVRUlvkk
+function showList() {
 const playlist = [
 {
 title: "Fontaines D.C. - Starburster (Official Video)",
