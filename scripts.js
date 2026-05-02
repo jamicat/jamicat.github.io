@@ -206,7 +206,7 @@ autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: 'KHocVRUlvkk',
+playlist: '5sywV5H0PMY',
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -247,7 +247,7 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = 'KHocVRUlvkk';
+const videoId = '5sywV5H0PMY';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -351,10 +351,10 @@ const theme = themes[themeName];
 function showList() {
 const playlist = [
 {
-title: "Fontaines D.C. - Starburster (Official Video)",
-videoId: "KHocVRUlvkk",
-channelAvatar: "https://yt3.googleusercontent.com/45_J5snu-qaaLOITwCP3LGr9QU-6rEziWjWcl1i6zJEuMCF0K0ExhaLd1w2mHtTxJioDGoETdw=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/fontainesdc"
+title: "Kina, Cavetown - Trying Not To Cry (Official Video)",
+videoId: "5sywV5H0PMY",
+channelAvatar: "https://yt3.googleusercontent.com/zPO8BfbK2t5GV6fc6Kohu1TK9Lo8Ur_c-MtJiJOZnWIvZO4bP2DikOURNSN1AILI2egoAQKLq5g=s160-c-k-c0x00ffffff-no-rj",
+channelUrl: "https://www.youtube.com/kinabeats"
 }
 ];
 
