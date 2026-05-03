@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Playlist</title>
+<title>Playlist Admin</title>
 
 <style>
 @font-face{
@@ -33,7 +33,7 @@ h2 {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .card input {
@@ -49,8 +49,6 @@ h2 {
   color: white;
 
   outline: none;
-
-  overflow-wrap: anywhere;
 }
 
 button {
@@ -80,7 +78,7 @@ button:hover {
 
 <body>
 
-<h2>Playlist Admin</h2>
+<h2>Playlist</h2>
 
 <div id="list"></div>
 
@@ -111,11 +109,11 @@ async function verify() {
 }
 
 async function load() {
-  const res = await fetch('/api/playlist?key=' + ADMIN_KEY)
+  const res = await fetch(`/api/playlist?key=${ADMIN_KEY}`)
 
   if (res.status === 403) {
     document.body.innerHTML = "Unauthorized"
-    return
+    throw new Error("Unauthorized")
   }
 
   playlist = await res.json()
@@ -131,19 +129,19 @@ function render() {
     div.className = "card"
 
     div.innerHTML = `
-      <input value="${song.videoId}" 
+      <input value="${song.videoId || ''}" 
         onchange="playlist[${i}].videoId=this.value" 
         placeholder="videoId">
 
-      <input value="${song.title}" 
+      <input value="${song.title || ''}" 
         onchange="playlist[${i}].title=this.value" 
         placeholder="title">
 
-      <input value="${song.channelAvatar}" 
+      <input value="${song.channelAvatar || ''}" 
         onchange="playlist[${i}].channelAvatar=this.value" 
         placeholder="avatar">
 
-      <input value="${song.channelUrl}" 
+      <input value="${song.channelUrl || ''}" 
         onchange="playlist[${i}].channelUrl=this.value" 
         placeholder="channel url">
 
@@ -177,8 +175,8 @@ async function save() {
   })
 
   if (res.status === 403) {
-    alert("Unauthorized")
-    return
+    document.body.innerHTML = "Unauthorized"
+    throw new Error("Unauthorized")
   }
 
   alert("Saved!")
