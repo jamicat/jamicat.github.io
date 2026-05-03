@@ -10,6 +10,11 @@
   src:url("nunito.ttf") format("truetype");
 }
 
+/* ✅ FIX: prevents all overflow math issues */
+* {
+  box-sizing: border-box;
+}
+
 body{
   font-family:"Nunito",sans-serif;
   background:radial-gradient(circle at top,#1a1a1a,#000);
@@ -35,6 +40,9 @@ h2{
   -webkit-backdrop-filter:blur(12px);
   border:1px solid rgba(255,255,255,0.08);
   transition:0.2s;
+
+  /* ✅ FIX: keeps inputs contained */
+  overflow:hidden;
 }
 
 .card:hover{
@@ -43,6 +51,8 @@ h2{
 
 input{
   width:100%;
+  max-width:100%;
+  display:block;
   margin:6px 0;
   padding:10px 12px;
   border-radius:10px;
