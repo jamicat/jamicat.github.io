@@ -30,10 +30,13 @@ h2 {
   padding: 12px;
   border-radius: 12px;
   margin-bottom: 10px;
+
   display: flex;
   flex-direction: column;
   gap: 8px;
+
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .card input {
@@ -48,6 +51,8 @@ h2 {
   color: white;
 
   outline: none;
+
+  overflow-wrap: anywhere;
 }
 
 button {
@@ -87,44 +92,45 @@ button:hover {
 </div>
 
 <script>
-const ADMIN_KEY = prompt("Enter password")
+const ADMIN_KEY = prompt("Enter password");
 
 if (!ADMIN_KEY) {
-  document.body.innerHTML = "Unauthorized"
-  throw new Error("Unauthorized")
+  document.body.innerHTML = "Unauthorized";
+  throw new Error("Unauthorized");
 }
 
-let playlist = []
+let playlist = [];
 
 async function verify() {
-  const res = await fetch(`/api/playlist/update?key=${ADMIN_KEY}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify([]) 
-  })
+  const res = await fetch(`/api/playlist`);
 
-  if (res.status === 403) {
-    document.body.innerHTML = "Unauthorized"
-    throw new Error("Unauthorized")
+  if (!res.ok) {
+    document.body.innerHTML = "Unauthorized";
+    throw new Error("Unauthorized");
   }
 
-  load()
+  await load();
 }
 
 async function load() {
-  const res = await fetch('/api/playlist')
+  const res = await fetch('/api/playlist');
 
-  playlist = await res.json()
-  render()
+  if (!res.ok) {
+    document.body.innerHTML = "Unauthorized";
+    throw new Error("Unauthorized");
+  }
+
+  playlist = await res.json();
+  render();
 }
 
 function render() {
-  const el = document.getElementById("list")
-  el.innerHTML = ""
+  const el = document.getElementById("list");
+  el.innerHTML = "";
 
   playlist.forEach((song, i) => {
-    const div = document.createElement("div")
-    div.className = "card"
+    const div = document.createElement("div");
+    div.className = "card";
 
     div.innerHTML = `
       <input value="${song.videoId || ''}" 
@@ -144,10 +150,10 @@ function render() {
         placeholder="channel url">
 
       <button onclick="remove(${i})">Remove</button>
-    `
+    `;
 
-    el.appendChild(div)
-  })
+    el.appendChild(div);
+  });
 }
 
 function addSong() {
@@ -156,13 +162,13 @@ function addSong() {
     title: "",
     channelAvatar: "",
     channelUrl: ""
-  })
-  render()
+  });
+  render();
 }
 
 function remove(i) {
-  playlist.splice(i, 1)
-  render()
+  playlist.splice(i, 1);
+  render();
 }
 
 async function save() {
@@ -170,17 +176,17 @@ async function save() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(playlist)
-  })
+  });
 
   if (res.status === 403) {
-    document.body.innerHTML = "Unauthorized"
-    throw new Error("Unauthorized")
+    document.body.innerHTML = "Unauthorized";
+    throw new Error("Unauthorized");
   }
 
-  alert("Saved!")
+  alert("Saved!");
 }
 
-verify()
+verify();
 </script>
 
 </body>
