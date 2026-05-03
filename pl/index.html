@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Playlist Admin</title>
+
+<style>
+body {
+  font-family: Nunito, sans-serif;
+  background: #000;
+  color: white;
+  padding: 40px;
+}
+
+input {
+  width: 100%;
+  margin: 6px 0;
+  padding: 8px;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+button {
+  margin-top: 6px;
+  padding: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Playlist Admin</h2>
+
+<div id="list"></div>
+
+<button onclick="addSong()">+ Add Song</button>
+<button onclick="save()">Save</button>
+
+<script>
+const ADMIN_KEY = prompt("Enter password")
+
+let playlist = []
+
+async function load() {
+  const res = await fetch('/api/playlist')
+  playlist = await res.json()
+  render()
+}
+
+function render() {
+  const el = document.getElementById("list")
+  el.innerHTML = ""
+
+  playlist.forEach((song, i) => {
+    const div = document.createElement("div")
+    div.className = "card"
+
+    div.innerHTML = `
+      <input value="${song.videoId}" onchange="playlist[${i}].videoId=this.value" placeholder="videoId">
+      <input value="${song.title}" onchange="playlist[${i}].title=this.value" placeholder="title">
+      <input value="${song.channelAvatar}" onchange="playlist[${i}].channelAvatar=this.value" placeholder="avatar">
+      <input value="${song.channelUrl}" onchange="playlist[${i}].channelUrl=this.value" placeholder="channel url">
+      <button onclick="remove(${i})">Remove</button>
+    `
+
+    el.appendChild(div)
+  })
+}
+
+function addSong() {
+  playlist.push({
+    videoId: "",
+    title: "",
+    channelAvatar: "",
+    channelUrl: ""
+  })
+  render()
+}
+
+function remove(i) {
+  playlist.splice(i, 1)
+  render()
+}
+
+async function save() {
+  await fetch(`/api/playlist/update?key=${ADMIN_KEY}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(playlist)
+  })
+
+  alert("Saved!")
+}
+
+load()
+</script>
+
+</body>
+</html>
