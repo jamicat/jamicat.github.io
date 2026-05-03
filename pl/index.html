@@ -10,7 +10,6 @@
   src:url("nunito.ttf") format("truetype");
 }
 
-/* ✅ FIX: prevents all overflow math issues */
 * {
   box-sizing: border-box;
 }
@@ -40,8 +39,6 @@ h2{
   -webkit-backdrop-filter:blur(12px);
   border:1px solid rgba(255,255,255,0.08);
   transition:0.2s;
-
-  /* ✅ FIX: keeps inputs contained */
   overflow:hidden;
 }
 
