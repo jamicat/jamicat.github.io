@@ -197,7 +197,7 @@ interact('#terminal').draggable({
 
 const PLAYLIST = [
   {
-    videoId: "Mo0cMBwQMn0",
+    videoId: "0lhDLwW-v1g",
     title: "YUNGBLUD - Zombie (Live from Brisbane)",
     channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
     channelUrl: "https://www.youtube.com/yungblud"
