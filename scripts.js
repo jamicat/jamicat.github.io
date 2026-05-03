@@ -195,40 +195,47 @@ interact('#terminal').draggable({
   },
 });
 
-const PLAYLIST = [
-   {
-    videoId: "Mo0cMBwQMn0",
-    title: "YUNGBLUD - Zombie (Live from Brisbane)",
-    channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-    channelUrl: "https://www.youtube.com/yungblud"
-  },
-  {
-    videoId: "0lhDLwW-v1g",
-    title: "YUNGBLUD, Steven Tyler, Joe Perry, & Nuno Bettencourt Perform Ozzy Tribute Medley | 2025 VMAs",
-    channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-    channelUrl: "https://www.youtube.com/yungblud"
-  }
-];
+let PLAYLIST = []
+
+async function loadPlaylist() {
+  const res = await fetch('/api/playlist');
+  PLAYLIST = await res.json();
+  return PLAYLIST;
+}
 
 let player;
 let isPlaying = false;
 let galaxyVisible = false;
+loadPlaylist().then(() => {
+  initTyped(localStorage.getItem('theme') || 'Default');
+  if (PLAYLIST?.length) {
+    const posterEl = document.getElementById('videoPoster');
+    const currentVideoId = PLAYLIST[0].videoId;
+
+    if (posterEl && currentVideoId) {
+      const highRes = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
+      posterEl.style.backgroundImage = `url(${highRes})`;
+    }
+  }
+  window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+});
 function onYouTubeIframeAPIReady() {
-player = new YT.Player('background-video-iframe', {
-videoId: PLAYLIST[0].videoId,
-playerVars: {
-autoplay: 0,
-mute: 0,
-controls: 0,
-loop: 1,
-playlist: PLAYLIST.map(v => v.videoId).join(','),
-playsinline: 1,
-modestbranding: 1,
-rel: 0,
-fs: 0,
-showinfo: 0,
-iv_load_policy: 3
-},
+
+  player = new YT.Player('background-video-iframe', {
+    videoId: PLAYLIST?.[0]?.videoId || '',
+    playerVars: {
+      autoplay: 0,
+      mute: 0,
+      controls: 0,
+      loop: 1,
+      playlist: PLAYLIST.map(v => v.videoId).join(','),
+      playsinline: 1,
+      modestbranding: 1,
+      rel: 0,
+      fs: 0,
+      showinfo: 0,
+      iv_load_policy: 3
+    },
 events: {
 /*onReady: () => {
        toggleBtn.click(); 
@@ -261,17 +268,16 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const posterEl = document.getElementById('videoPoster');
-const iframeEl = document.getElementById('background-video-iframe');
-const currentVideoId = PLAYLIST?.[0]?.videoId;
-if (currentVideoId && posterEl) {
+async function initPoster() {
+  const posterEl = document.getElementById('videoPoster');
+  const currentVideoId = PLAYLIST?.[0]?.videoId;
+  if (!currentVideoId || !posterEl) return;
   const highRes = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
   const fallback = `https://img.youtube.com/vi/${currentVideoId}/hqdefault.jpg`;
   const img = new Image();
   img.onload = () => {
     posterEl.style.backgroundImage = `url(${highRes})`;
   };
-
   img.onerror = () => {
     posterEl.style.backgroundImage = `url(${fallback})`;
   };
