@@ -2,32 +2,81 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Playlist Admin</title>
+<title>Playlist</title>
 
 <style>
-body {
-  font-family: Nunito, sans-serif;
-  background: #000;
-  color: white;
-  padding: 40px;
+@font-face{
+  font-family:"Nunito";
+  src:url("nunito.ttf") format("truetype");
 }
 
-input {
-  width: 100%;
-  margin: 6px 0;
-  padding: 8px;
+body{
+  font-family:"Nunito",sans-serif;
+  background:radial-gradient(circle at top,#1a1a1a,#000);
+  color:white;
+  padding:40px;
 }
 
-.card {
-  background: rgba(255,255,255,0.05);
-  padding: 12px;
-  border-radius: 12px;
-  margin-bottom: 10px;
+h2{
+  font-weight:600;
+  margin-bottom:30px;
 }
 
-button {
-  margin-top: 6px;
-  padding: 8px;
+.section{
+  max-width:700px;
+}
+
+.card{
+  margin-bottom:15px;
+  padding:16px;
+  border-radius:16px;
+  background:rgba(255,182,206,0.08);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.08);
+  transition:0.2s;
+}
+
+.card:hover{
+  transform:translateY(-1px);
+}
+
+input{
+  width:100%;
+  margin:6px 0;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(0,0,0,0.25);
+  color:white;
+  outline:none;
+  font-family:"Nunito",sans-serif;
+}
+
+input:focus{
+  border-color:#9be7ff;
+}
+
+input::placeholder{
+  color:rgba(255,255,255,0.4);
+}
+
+button{
+  margin-top:8px;
+  margin-right:6px;
+  padding:6px 14px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  background:#f3eaea;
+  color:#000;
+  font-family:"Nunito",sans-serif;
+  font-weight:600;
+  transition:0.15s;
+}
+
+button:hover{
+  transform:scale(1.04);
 }
 </style>
 </head>
@@ -36,10 +85,12 @@ button {
 
 <h2>Playlist Admin</h2>
 
-<div id="list"></div>
+<div id="list" class="section"></div>
 
-<button onclick="addSong()">+ Add Song</button>
-<button onclick="save()">Save</button>
+<div style="margin-top:20px;">
+  <button onclick="addSong()">+ Add Song</button>
+  <button onclick="save()">Save</button>
+</div>
 
 <script>
 const ADMIN_KEY = prompt("Enter password")
