@@ -38,7 +38,6 @@ h2 {
 
 .card input {
   width: 100%;
-  max-width: 100%;
   box-sizing: border-box;
 
   padding: 8px;
@@ -98,7 +97,11 @@ if (!ADMIN_KEY) {
 let playlist = []
 
 async function verify() {
-  const res = await fetch(`/api/playlist?key=${ADMIN_KEY}`)
+  const res = await fetch(`/api/playlist/update?key=${ADMIN_KEY}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify([]) 
+  })
 
   if (res.status === 403) {
     document.body.innerHTML = "Unauthorized"
@@ -109,12 +112,7 @@ async function verify() {
 }
 
 async function load() {
-  const res = await fetch(`/api/playlist?key=${ADMIN_KEY}`)
-
-  if (res.status === 403) {
-    document.body.innerHTML = "Unauthorized"
-    throw new Error("Unauthorized")
-  }
+  const res = await fetch('/api/playlist')
 
   playlist = await res.json()
   render()
