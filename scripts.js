@@ -195,18 +195,27 @@ interact('#terminal').draggable({
   },
 });
 
+const PLAYLIST = [
+  {
+    videoId: "0lhDLwW-v1g",
+    title: "YUNGBLUD, Steven Tyler, Joe Perry, Ozzy Tribute Medley",
+    channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
+    channelUrl: "https://www.youtube.com/yungblud"
+  }
+];
+
 let player;
 let isPlaying = false;
 let galaxyVisible = false;
 function onYouTubeIframeAPIReady() {
 player = new YT.Player('background-video-iframe', {
-videoId: videoId,
+videoId: PLAYLIST[0].videoId,
 playerVars: {
 autoplay: 0,
 mute: 0,
 controls: 0,
 loop: 1,
-playlist: '0lhDLwW-v1g',
+playlist: PLAYLIST.map(v => v.videoId).join(','),
 playsinline: 1,
 modestbranding: 1,
 rel: 0,
@@ -247,7 +256,6 @@ iframeEl.style.opacity = '0';
 });
 }
 
-const videoId = '0lhDLwW-v1g';
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
 const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -289,7 +297,9 @@ toggleBtn.addEventListener('click', () => {
 
 document.getElementById('nextTrack').addEventListener('click', () => {
   if (player && typeof player.nextVideo === 'function') {
-    player.nextVideo();
+    const currentIndex = PLAYLIST.findIndex(v => v.videoId === player.getVideoData().video_id);
+    const nextIndex = (currentIndex + 1) % PLAYLIST.length;
+    player.loadVideoById(PLAYLIST[nextIndex].videoId);
     isPlaying = true;
     playIcon.classList.add('hidden');
     pauseIcon.classList.remove('hidden');
@@ -349,42 +359,32 @@ const theme = themes[themeName];
 //rewind10.click();
 
 function showList() {
-const playlist = [
-{
-title: "YUNGBLUD, Steven Tyler, Joe Perry, Ozzy Tribute Medley",
-videoId: "0lhDLwW-v1g",
-channelAvatar: "https://yt3.googleusercontent.com/nYTKh5VVSOqq9vK5CoEQY8HWlMxKshHQ0H_eM0lBraA7YtQqwDavCFTYRUHH5DG07SWwRNfn=s160-c-k-c0x00ffffff-no-rj",
-channelUrl: "https://www.youtube.com/yungblud"
-}
-];
 
-let html = `<div class="space-y-4 mt-4">`;
+  let html = `<div class="space-y-4 mt-4">`;
 
-playlist.forEach(item => {
-html += `
-    <div class="flex items-center space-x-3">
-      <a href="${item.channelUrl}" target="_blank">
-         <img src="${item.channelAvatar}" width="40" height="40" class="rounded-full border border-opacity-0 border-white" alt="avatar">
-      </a>
-      <a href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" class="text-blue-500 text-base">
-        ${item.title}
-      </a>
+  PLAYLIST.forEach(item => {
+    html += `
+      <div class="flex items-center space-x-3">
+        <a href="${item.channelUrl}" target="_blank">
+          <img src="${item.channelAvatar}" width="40" height="40" class="rounded-full" />
+        </a>
+        <a href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" class="text-blue-500 text-base">
+          ${item.title}
+        </a>
+      </div>
+    `;
+  });
+
+  html += `
+    <div class="mt-6 flex justify-center">
+      <button class="terminal-button" onclick="resetTerminal()">back</button>
     </div>
   `;
-});
 
-html += `
-  <div class="mt-6 flex justify-center">
-    <button class="terminal-button" onclick="resetTerminal()">back</button>
-  </div>
-`;
+  $('#terminalContent').html(html);
 
-$('#terminalContent').html(html);
-
-const currentTheme = localStorage.getItem('theme') || 'Default';
-applyTheme(currentTheme);
-
-//changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Playlist</span>');
+  const currentTheme = localStorage.getItem('theme') || 'Default';
+  applyTheme(currentTheme);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
