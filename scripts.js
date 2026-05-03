@@ -257,16 +257,20 @@ iframeEl.style.opacity = '0';
 
 const posterEl = document.getElementById('videoPoster');
 const iframeEl = document.getElementById('background-video-iframe');
-const highRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-const fallback = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-const img = new Image();
-img.onload = () => {
-posterEl.style.backgroundImage = `url(${highRes})`;
-};
-img.onerror = () => {
-posterEl.style.backgroundImage = `url(${fallback})`;
-};
-img.src = highRes;
+const currentVideoId = PLAYLIST?.[0]?.videoId;
+if (currentVideoId && posterEl) {
+  const highRes = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
+  const fallback = `https://img.youtube.com/vi/${currentVideoId}/hqdefault.jpg`;
+  const img = new Image();
+  img.onload = () => {
+    posterEl.style.backgroundImage = `url(${highRes})`;
+  };
+
+  img.onerror = () => {
+    posterEl.style.backgroundImage = `url(${fallback})`;
+  };
+  img.src = highRes;
+}
 
 const toggleBtn = document.getElementById('videoToggle');
 const playIcon = document.getElementById('playIcon');
