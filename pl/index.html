@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Playlist</title>
+<title>Playlist Admin</title>
 
 <style>
 @font-face{
@@ -10,80 +10,70 @@
   src:url("nunito.ttf") format("truetype");
 }
 
-* {
+body {
+  font-family: Nunito, sans-serif;
+  background: #000;
+  color: white;
+  padding: 40px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+#list {
+  max-width: 700px;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden; 
+}
+
+.card input {
+  width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
+
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+
+  background: rgba(255,255,255,0.08);
+  color: white;
+
+  outline: none;
+
+  overflow-wrap: anywhere;
 }
 
-body{
-  font-family:"Nunito",sans-serif;
-  background:radial-gradient(circle at top,#1a1a1a,#000);
-  color:white;
-  padding:40px;
+button {
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #f3eaea;
+  color: #000;
+  font-family: Nunito, sans-serif;
+  font-weight: 600;
+  transition: 0.15s;
 }
 
-h2{
-  font-weight:600;
-  margin-bottom:30px;
+button:hover {
+  transform: scale(1.03);
 }
 
-.section{
-  max-width:700px;
-}
-
-.card{
-  margin-bottom:15px;
-  padding:16px;
-  border-radius:16px;
-  background:rgba(255,182,206,0.08);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,0.08);
-  transition:0.2s;
-  overflow:hidden;
-}
-
-.card:hover{
-  transform:translateY(-1px);
-}
-
-input{
-  width:100%;
-  max-width:100%;
-  display:block;
-  margin:6px 0;
-  padding:10px 12px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.15);
-  background:rgba(0,0,0,0.25);
-  color:white;
-  outline:none;
-  font-family:"Nunito",sans-serif;
-}
-
-input:focus{
-  border-color:#9be7ff;
-}
-
-input::placeholder{
-  color:rgba(255,255,255,0.4);
-}
-
-button{
-  margin-top:8px;
-  margin-right:6px;
-  padding:6px 14px;
-  border-radius:8px;
-  border:none;
-  cursor:pointer;
-  background:#f3eaea;
-  color:#000;
-  font-family:"Nunito",sans-serif;
-  font-weight:600;
-  transition:0.15s;
-}
-
-button:hover{
-  transform:scale(1.04);
+.controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
 }
 </style>
 </head>
@@ -92,9 +82,9 @@ button:hover{
 
 <h2>Playlist Admin</h2>
 
-<div id="list" class="section"></div>
+<div id="list"></div>
 
-<div style="margin-top:20px;">
+<div class="controls">
   <button onclick="addSong()">+ Add Song</button>
   <button onclick="save()">Save</button>
 </div>
@@ -102,10 +92,32 @@ button:hover{
 <script>
 const ADMIN_KEY = prompt("Enter password")
 
+if (!ADMIN_KEY) {
+  document.body.innerHTML = "Unauthorized"
+  throw new Error("Unauthorized")
+}
+
 let playlist = []
 
+async function verify() {
+  const res = await fetch(`/api/playlist?key=${ADMIN_KEY}`)
+
+  if (res.status === 403) {
+    document.body.innerHTML = "Unauthorized"
+    throw new Error("Unauthorized")
+  }
+
+  load()
+}
+
 async function load() {
-  const res = await fetch('/api/playlist')
+  const res = await fetch('/api/playlist?key=' + ADMIN_KEY)
+
+  if (res.status === 403) {
+    document.body.innerHTML = "Unauthorized"
+    return
+  }
+
   playlist = await res.json()
   render()
 }
@@ -119,10 +131,22 @@ function render() {
     div.className = "card"
 
     div.innerHTML = `
-      <input value="${song.videoId}" onchange="playlist[${i}].videoId=this.value" placeholder="videoId">
-      <input value="${song.title}" onchange="playlist[${i}].title=this.value" placeholder="title">
-      <input value="${song.channelAvatar}" onchange="playlist[${i}].channelAvatar=this.value" placeholder="avatar">
-      <input value="${song.channelUrl}" onchange="playlist[${i}].channelUrl=this.value" placeholder="channel url">
+      <input value="${song.videoId}" 
+        onchange="playlist[${i}].videoId=this.value" 
+        placeholder="videoId">
+
+      <input value="${song.title}" 
+        onchange="playlist[${i}].title=this.value" 
+        placeholder="title">
+
+      <input value="${song.channelAvatar}" 
+        onchange="playlist[${i}].channelAvatar=this.value" 
+        placeholder="avatar">
+
+      <input value="${song.channelUrl}" 
+        onchange="playlist[${i}].channelUrl=this.value" 
+        placeholder="channel url">
+
       <button onclick="remove(${i})">Remove</button>
     `
 
@@ -146,16 +170,21 @@ function remove(i) {
 }
 
 async function save() {
-  await fetch(`/api/playlist/update?key=${ADMIN_KEY}`, {
+  const res = await fetch(`/api/playlist/update?key=${ADMIN_KEY}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(playlist)
   })
 
+  if (res.status === 403) {
+    alert("Unauthorized")
+    return
+  }
+
   alert("Saved!")
 }
 
-load()
+verify()
 </script>
 
 </body>
