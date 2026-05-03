@@ -237,7 +237,6 @@ iframeEl.style.opacity = '1';
 
 if (event.data === YT.PlayerState.PAUSED) {
 const currentVideoId = player.getVideoData().video_id;
-
 const highRes = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
 const fallback = `https://img.youtube.com/vi/${currentVideoId}/hqdefault.jpg`;
 const thumbImg = new Image();
