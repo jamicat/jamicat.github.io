@@ -51,8 +51,6 @@ h2 {
   color: white;
 
   outline: none;
-
-  overflow-wrap: anywhere;
 }
 
 button {
@@ -101,26 +99,35 @@ if (!ADMIN_KEY) {
 
 let playlist = [];
 
-async function verify() {
-  const res = await fetch(`/api/playlist`);
+async function fetchMeta(videoId) {
+  if (!videoId) return null;
 
-  if (!res.ok) {
-    document.body.innerHTML = "Unauthorized";
-    throw new Error("Unauthorized");
-  }
+  const res = await fetch(`/api/youtube/meta?id=${videoId}`);
 
-  await load();
+  if (!res.ok) return null;
+
+  return await res.json();
 }
 
 async function load() {
   const res = await fetch('/api/playlist');
 
-  if (!res.ok) {
-    document.body.innerHTML = "Unauthorized";
-    throw new Error("Unauthorized");
-  }
-
   playlist = await res.json();
+
+  render();
+}
+
+async function autoFill(i) {
+  const videoId = playlist[i].videoId;
+
+  const meta = await fetchMeta(videoId);
+
+  if (!meta) return;
+
+  playlist[i].title = meta.title;
+  playlist[i].channelAvatar = meta.avatar;
+  playlist[i].channelUrl = meta.channelUrl;
+
   render();
 }
 
@@ -136,6 +143,8 @@ function render() {
       <input value="${song.videoId || ''}" 
         onchange="playlist[${i}].videoId=this.value" 
         placeholder="videoId">
+
+      <button onclick="autoFill(${i})">Auto-fill</button>
 
       <input value="${song.title || ''}" 
         onchange="playlist[${i}].title=this.value" 
@@ -186,8 +195,7 @@ async function save() {
   alert("Saved!");
 }
 
-verify();
+load();
 </script>
-
 </body>
 </html>
