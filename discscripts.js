@@ -1,158 +1,81 @@
 const discordUserId = "160899636637204482";
 
-const nunitoFont = document.createElement("style");
-nunitoFont.textContent = `
-@font-face {
-  font-family: 'Nunito';
-  src: url('nunito.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-#discordStatus {
-  font-family: 'Nunito', sans-serif;
-}
-
-#discordName {
-  font-family: 'Nunito', sans-serif;
-}
-`;
-document.head.appendChild(nunitoFont);
-
-const statusContainer = document.createElement("div");
-statusContainer.id = "discordStatus";
-statusContainer.className =
-  "absolute top-6 left-6 flex items-center space-x-3 p-2.5 rounded-3xl bg-black/15 backdrop-blur-md shadow-lg transition-transform duration-300 ease-in-out z-[9] hover:bg-black/25 hover:border-white/30 text-base perspective-[800px]";
-
-statusContainer.innerHTML = `
-  <div class="relative">
-    <img id="discordAvatar" class="w-14 h-14 rounded-full shadow-md object-cover" src="" alt="Discord Avatar">
-    <span id="statusDot" class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-black"></span>
-  </div>
-  <div id="discordText" class="flex flex-col leading-tight">
-    <span id="discordName" class="text-white text-[16px] font-semibold font-medium text-blue-glow">Loading...</span>
-    <span id="discordActivity" class="text-red-300 text-[13.5px] opacity-90 italic font-medium">Fetching status...</span>
-  </div>
-`;
-
-//document.body.appendChild(statusContainer);
-
+let discordAvatarURL = "";
 let lastOnline = Date.now();
 
 async function fetchDiscordStatus() {
   try {
-    const response = await fetch(`https://api.lanyard.rest/v1/users/${discordUserId}`);
+    const response = await fetch(
+      `https://api.lanyard.rest/v1/users/${discordUserId}`
+    );
     const { data } = await response.json();
     if (!data) return;
 
     const user = data.discord_user;
-    const username = `${user.username}${user.discriminator && user.discriminator !== "0" ? `#${user.discriminator}` : ""}`;
+    const username = `${user.username}${
+      user.discriminator && user.discriminator !== "0"
+        ? `#${user.discriminator}`
+        : ""
+    }`;
+
     let avatar;
+    if (user.avatar) {
+      const isAnimated = user.avatar.startsWith("a_");
+      const extension = isAnimated ? "gif" : "png";
 
-if (user.avatar) {
-  const isAnimated = user.avatar.startsWith("a_");
-  const extension = isAnimated ? "gif" : "png";
+      avatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${extension}?size=128`;
+    } else {
+      avatar = "https://cdn.discordapp.com/embed/avatars/0.png";
+    }
 
-  avatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${extension}?size=128`;
-} else {
-  avatar = "https://cdn.discordapp.com/embed/avatars/0.png";
-}
+    discordAvatarURL = avatar;
+
+    document.querySelectorAll(".replyAvatar").forEach((img) => {
+      img.src = discordAvatarURL;
+    });
 
     const status = data.discord_status;
     const activities = data.activities || [];
-    const customStatus = activities.find(a => a.type === 4);
-    const playing = activities.find(a => a.type === 0);
-    const listening = activities.find(a => a.id === "spotify:1" || a.name === "Spotify");
-    const watching = activities.find(a => a.type === 3);
 
-    const avatarEl = document.getElementById("discordAvatar");
-    const nameEl = document.getElementById("discordName");
-    const activityEl = document.getElementById("discordActivity");
-    const statusDot = document.getElementById("statusDot");
-    
-if (!avatarEl || !nameEl || !activityEl || !statusDot) return;
-    
-    avatarEl.src = avatar;
-    nameEl.textContent = username;
+    const customStatus = activities.find((a) => a.type === 4);
+    const playing = activities.find((a) => a.type === 0);
+    const listening = activities.find(
+      (a) => a.id === "spotify:1" || a.name === "Spotify"
+    );
+    const watching = activities.find((a) => a.type === 3);
 
-    document.querySelectorAll(".replyAvatar").forEach(img => {
-  img.src = avatar;
-});
-
-    let dotColor = "bg-gray-500";
-    if (status === "online") dotColor = "bg-green-400";
-    if (status === "idle") dotColor = "bg-yellow-400";
-    if (status === "dnd") dotColor = "bg-red-500";
-
-    statusDot.className = `absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-black ${dotColor}`;
+    console.log("Discord user:", username, status);
 
     if (status === "offline") {
       const now = Date.now();
-      const diffMs = now - lastOnline;
-      const diffMins = Math.floor(diffMs / 60000);
-      let offlineText = "Offline";
+      const diffMins = Math.floor((now - lastOnline) / 60000);
 
-      if (diffMins >= 60) {
-        const diffHours = Math.floor(diffMins / 60);
-        offlineText = `Offline for ${diffHours} hour${diffHours > 1 ? "s" : ""}`;
-      } else if (diffMins > 0) {
-        offlineText = `Offline for ${diffMins} min${diffMins > 1 ? "s" : ""}`;
-      }
-
-      activityEl.textContent = offlineText;
+      console.log(
+        diffMins >= 60
+          ? `Offline for ${Math.floor(diffMins / 60)}h`
+          : `Offline for ${diffMins}m`
+      );
     } else {
       lastOnline = Date.now();
 
-      if (listening && listening.details && listening.state) {
-        const song = listening.details;
-        const artist = listening.state;
-        const album = listening.assets?.large_text || "";
-        activityEl.textContent = `Listening to ${song} — ${artist}${album ? ` (${album})` : ""}`;
+      if (listening?.details && listening?.state) {
+        console.log(
+          `Listening to ${listening.details} — ${listening.state}`
+        );
       } else if (playing) {
-        activityEl.textContent = `Playing ${playing.name}`;
+        console.log(`Playing ${playing.name}`);
       } else if (watching) {
-        activityEl.textContent = `Watching ${watching.name}`;
-      } else if (customStatus && customStatus.state) {
-        activityEl.textContent = customStatus.state;
+        console.log(`Watching ${watching.name}`);
+      } else if (customStatus?.state) {
+        console.log(customStatus.state);
       } else {
-        const prettyStatus =
-          status === "online"
-            ? "Online"
-            : status === "idle"
-            ? "Idle"
-            : status === "dnd"
-            ? "Do Not Disturb"
-            : "Offline";
-        activityEl.textContent = prettyStatus;
+        console.log(status);
       }
     }
   } catch (error) {
     console.error("Failed to fetch Discord status:", error);
-    document.getElementById("discordName").textContent = "Unavailable";
-    document.getElementById("discordActivity").textContent = "Could not fetch status";
   }
 }
 
 fetchDiscordStatus();
 setInterval(fetchDiscordStatus, 20000);
-
-statusContainer.addEventListener("mousemove", (e) => {
-  const rect = statusContainer.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  const centerX = rect.width / 2;
-  const centerY = rect.height / 2;
-  const rotateX = ((y - centerY) / centerY) * 3;
-  const rotateY = ((x - centerX) / centerX) * -3;
-  statusContainer.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
-});
-
-statusContainer.addEventListener("mouseleave", () => {
-  statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
-});
-
-
-
-
-
-
