@@ -35,7 +35,7 @@ statusContainer.innerHTML = `
   </div>
 `;
 
-document.body.appendChild(statusContainer);
+//document.body.appendChild(statusContainer);
 
 let lastOnline = Date.now();
 
