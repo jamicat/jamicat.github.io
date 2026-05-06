@@ -1,5 +1,19 @@
 const themes = {
   Default: {
+    glowPrimary: 'text-blue-glow',      
+    glowSecondary: 'text-pink-glow',    
+    buttonColor: 'bg-red-300 hover:bg-red-400',
+    buttonTextColor: 'text-white',
+    iconColor: 'text-red-300 hover:text-cyan-400',
+    hoverRing: 'hover:ring-cyan-400',
+    galaxyActive: 'text-red-300',
+    galaxyInactive: 'text-red-300',
+    playActive: 'text-cyan-400',
+    playInactive: 'text-red-300',
+    terminalColor: 'bg-black/20'
+  },
+
+  Cat: {
     glowPrimary: 'text-aquag-glow',      
     glowSecondary: 'text-pink-glow',    
     buttonColor: 'bg-[#fed4b1] hover:bg-[#f37a5c]',
@@ -11,7 +25,6 @@ const themes = {
     playActive: 'text-teal-400',
     playInactive: 'text-[#f37a5c]',
     terminalColor: 'bg-black/20'
-    
   },
 
   Stars: {
@@ -465,6 +478,7 @@ function showList() {
 document.addEventListener('DOMContentLoaded', () => {
   const changeThemeBtn = document.getElementById('changeTheme');
   const tooltip = document.getElementById('tooltip');
+  const catBtn = document.getElementById('themeCat');
   const defaultBtn = document.getElementById('themeDefault');
   const starsBtn = document.getElementById('themeStars');
   const aeroBtn = document.getElementById('themeAero');
@@ -482,6 +496,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  catBtn.addEventListener('click', () => {
+    applyTheme('Cat');
+    initTyped('Cat');
+    hideTooltip();
+  });
   defaultBtn.addEventListener('click', () => {
     applyTheme('Default');
     initTyped('Default');
