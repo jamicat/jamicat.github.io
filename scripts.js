@@ -6,7 +6,7 @@ const themes = {
     buttonTextColor: 'text-white',
     iconColor: 'text-red-300 hover:text-cyan-400',
     hoverRing: 'hover:ring-cyan-400',
-    galaxyActive: 'text-red-300',
+    galaxyActive: 'text-cyan-400',
     galaxyInactive: 'text-red-300',
     playActive: 'text-cyan-400',
     playInactive: 'text-red-300',
