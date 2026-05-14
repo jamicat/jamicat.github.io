@@ -25,6 +25,16 @@ z-index: 5;
 opacity: 0;    
 }
 
+.flag-top-left {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 40px;
+  height: auto;
+  z-index: 1; 
+  pointer-events: none;
+}
+
 .lil-gui {
 display: none;
 }
