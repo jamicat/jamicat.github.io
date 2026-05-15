@@ -563,13 +563,13 @@ $('#terminalContent').html(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
   <div id="artGallery" class="grid grid-cols-3 gap-4">
    <a href="2.png" class="block rounded overflow-hidden">
-    <img src="2.png" alt="jamie - saproena" class="rounded hover:scale-105 transition transform duration-200" />
+    <img src="2.png" alt="Jamie - saproena" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
     <a href="anim_jam.gif" class="block rounded overflow-hidden">
-    <img src="anim_thumb.jpg" alt="jamie - xandy" class="rounded hover:scale-105 transition transform duration-200" />
+    <img src="anim_thumb.jpg" alt="Jamie - xandy" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
       <a href="sp.png" class="block rounded overflow-hidden">
-    <img src="sp_thumb.png" alt="jamie - smolbeans" class="rounded hover:scale-105 transition transform duration-200" />
+    <img src="sp_thumb.png" alt="Jamie - smolbeans" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
     </div>
   <div class="mt-4 flex justify-center">
