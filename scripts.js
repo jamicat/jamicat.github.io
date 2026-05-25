@@ -526,38 +526,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-function showPictures() {
-$('#terminalContent').html(`
-<div class="text-pink-300 text-lg mb-4 mt-4"></div>
-  <div id="artGallery" class="grid grid-cols-3 gap-4">
-   <a href="tilly1.jpg" class="block rounded overflow-hidden">
-    <img src="tilly1_thumb.jpg" alt="Tilly in bluebells!" class="rounded hover:scale-105 transition transform duration-200" />
-      </a>
-    <a href="tilly2.jpg" class="block rounded overflow-hidden">
-    <img src="tilly2_thumb.jpg" alt="Tilly rolling" class="rounded hover:scale-105 transition transform duration-200" />
-      </a>
-      <a href="tilly3.jpg" class="block rounded overflow-hidden">
-    <img src="tilly3_thumb.jpg" alt="Tilly at the Loch" class="rounded hover:scale-105 transition transform duration-200" />
-      </a>
-    </div>
-  <div class="mt-4 flex justify-center">
-  <button class="terminal-button" onclick="resetTerminal()">back</button>
-    </div>
-  `);
-
-setTimeout(() => {
-lightGallery(document.getElementById('artGallery'), {
-thumbnail: true,
-zoom: true,
-download: false,
-});
-}, 100); 
-  
-const currentTheme = localStorage.getItem('theme') || 'Default';
-applyTheme(currentTheme);
-//changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Art</span>');
-}
-
 function showArt() {
 $('#terminalContent').html(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
@@ -1066,7 +1034,6 @@ terminal.classList.add('sm:w-[480px]');
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
     <button class="terminal-button ml-2" onclick="showArt()">art</button>
-    <button class="terminal-button ml-2" onclick="showPictures()">pictures</button>
     <button class="terminal-button ml-5" onclick="showGuestBook()">guestbook</button>
     <button class="terminal-button" onclick="showList()">playlist</button>
   </div>
