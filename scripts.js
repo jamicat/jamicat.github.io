@@ -911,11 +911,11 @@ div.innerHTML = `
   <span class="text-white text-blue-glow">Jamie</span>
 </div>
 
-      <div class="mb-1 text-gray-200 break-all">
+      <div class="mb-1 text-pink-100 break-all">
         ${entry.reply}
       </div>
 
-      <div class="text-gray-400 opacity-80 text-[0.65rem] text-right">
+      <div class="text-blue-100 opacity-80 text-[0.65rem] text-right">
         ${entry.reply_timestamp
           ? new Date(entry.reply_timestamp).toLocaleString()
           : ''
