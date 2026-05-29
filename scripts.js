@@ -806,10 +806,10 @@ body: JSON.stringify(data),
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
 const welcomeMessage = document.querySelector('p.text-base');
-welcomeMessage.textContent = "meow!!";
+welcomeMessage.textContent = "submitted!";
 
   setTimeout(() => {
-    welcomeMessage.textContent = "meow";
+    welcomeMessage.textContent = "welcome! be nice.";
   }, 5000);
   loadGuestbookComments();
   });
