@@ -683,7 +683,7 @@ document.body.appendChild(guestBookWindow);
 const guestbookCommentBox = document.createElement('div');
 guestbookCommentBox.id = 'guestbookComments';
 guestbookCommentBox.className = `
-  terminal2
+  terminal
   absolute
   p-4
   w-[300px]
