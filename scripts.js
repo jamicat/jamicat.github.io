@@ -911,7 +911,7 @@ div.innerHTML = `
         ${entry.reply}
       </div>
 
-      <div class="text-blue-100 opacity-80 text-[0.65rem] text-right">
+      <div class="text-pink-200 opacity-80 text-[0.65rem] text-right">
         ${entry.reply_timestamp
           ? new Date(entry.reply_timestamp).toLocaleString()
           : ''
