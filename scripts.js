@@ -1,3 +1,646 @@
+const themes = {
+  Default: {
+    glowPrimary: 'text-blue-glow',      
+    glowSecondary: 'text-pink-glow',    
+    buttonColor: 'bg-red-300 hover:bg-red-400',
+    buttonTextColor: 'text-white',
+    iconColor: 'text-red-300 hover:text-cyan-400',
+    hoverRing: 'hover:ring-cyan-400',
+    galaxyActive: 'text-cyan-400',
+    galaxyInactive: 'text-red-300',
+    playActive: 'text-cyan-400',
+    playInactive: 'text-red-300',
+    terminalColor: 'bg-black/20'
+  },
+
+  Cat: {
+    glowPrimary: 'text-aquag-glow',      
+    glowSecondary: 'text-pink-glow',    
+    buttonColor: 'bg-[#fed4b1] hover:bg-[#f37a5c]',
+    buttonTextColor: 'text-black',
+    iconColor: 'text-[#f37a5c] hover:text-teal-400',
+    hoverRing: 'hover:ring-teal-400',
+    galaxyActive: 'text-teal-400',
+    galaxyInactive: 'text-[#f37a5c]',
+    playActive: 'text-teal-400',
+    playInactive: 'text-[#f37a5c]',
+    terminalColor: 'bg-black/20'
+  },
+
+  Stars: {
+   glowPrimary: 'text-pink-glow',     
+    glowSecondary: 'text-red-glow',    
+    buttonColor: 'bg-red-300 hover:bg-red-400',
+    buttonTextColor: 'text-black',
+    iconColor: 'text-red-300 hover:text-cyan-400',
+    hoverRing: 'hover:ring-cyan-400',
+    galaxyActive: 'text-cyan-400',
+    galaxyInactive: 'text-red-300',
+    playActive: 'text-cyan-400',
+    playInactive: 'text-red-300',
+    terminalColor: 'bg-black/25'
+  },
+
+  Aero: {
+    glowPrimary: 'text-cyan-glow',     
+    glowSecondary: 'text-blue-glow',
+    buttonColor: 'bg-sky-100 hover:bg-sky-300',
+    buttonTextColor: 'text-black',
+    iconColor: 'text-sky-100 hover:text-cyan-400',
+    hoverRing: 'hover:ring-sky-400',
+    galaxyActive: 'text-sky-100',
+    galaxyInactive: 'text-sky-100',
+    playActive: 'text-cyan-400',
+    playInactive: 'text-sky-100',
+    terminalColor: 'bg-white/10'
+  }
+};
+
+function applyTheme(themeName) {
+  const theme = themes[themeName];
+  if (!theme) return console.warn(`Theme not found: ${themeName}`);
+
+  document.documentElement.setAttribute('data-theme', themeName);
+
+  document.querySelectorAll('.terminal-button:not(.guestbook-submit)').forEach(btn => {
+    btn.className = `terminal-button ${theme.buttonColor} ${theme.buttonTextColor} px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95 text-sm font-medium transform hover:-translate-y-[0.5px]`;
+});
+
+  const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme');
+  icons.forEach(icon => {
+    icon.className = `${theme.iconColor} transition-colors duration-200 text-lg leading-none`;
+  });
+
+const terminal = document.getElementById('terminal');
+if (terminal) {
+  terminal.classList.forEach(cls => {
+    if (cls.startsWith('bg-')) terminal.classList.remove(cls);
+  });
+  terminal.classList.add(theme.terminalColor);
+}
+
+const rewind10 = document.getElementById('rewind10');
+if (rewind10) {
+  Object.values(themes).forEach(t => {
+    rewind10.classList.remove(t.galaxyActive, t.galaxyInactive);
+  });
+
+  if (typeof galaxyVisible !== 'undefined' && galaxyVisible) {
+    rewind10.classList.add(theme.galaxyActive);
+  } else {
+    rewind10.classList.add(theme.galaxyInactive);
+  }
+}
+
+const toggleBtn = document.getElementById('videoToggle');
+if (toggleBtn) {
+  Object.values(themes).forEach(t => {
+    toggleBtn.classList.remove(t.playActive, t.playInactive);
+  });
+
+  if (isPlaying) {
+    toggleBtn.classList.add(theme.playActive);
+  } else {
+    toggleBtn.classList.add(theme.playInactive);
+  }
+}
+  
+  document.querySelectorAll(
+  '.text-blue-glow, .text-pink-glow, .text-red-glow, .text-aquag-glow, .text-cyan-glow'
+).forEach(el => {
+  if (el.classList.contains('no-theme-glow')) return; 
+  el.classList.remove('text-blue-glow', 'text-pink-glow', 'text-red-glow', 'text-aquag-glow', 'text-cyan-glow');
+  el.classList.add(theme.glowPrimary);
+});
+  localStorage.setItem('theme', themeName);
+}
+
+function updatePlayButtonTheme() {
+  const themeName = localStorage.getItem('theme') || 'Default';
+  const theme = themes[themeName];
+  const toggleBtn = document.getElementById('videoToggle');
+  Object.values(themes).forEach(t => {
+    toggleBtn.classList.remove(t.playActive, t.playInactive);
+  });
+  if (isPlaying) {
+    toggleBtn.classList.add(theme.playActive);
+  } else {
+    toggleBtn.classList.add(theme.playInactive);
+  }
+}
+
+let typedInstance;
+
+function initTyped(themeName = 'Default') {
+  const typedEl = document.getElementById('typed');
+  if (!typedEl) return; 
+
+  if (typedInstance) {
+    typedInstance.destroy();
+  }
+
+  const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
+
+  const strings = [
+    `<span class="text-white text-2xl mr-2 ${glow}">meow</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">mew</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">nya</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">mrow</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">meow</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">mew</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">nya</span>`,
+    `<span class="text-white text-2xl mr-2 ${glow}">mrow</span>`
+  ];
+
+  typedInstance = new Typed('#typed', {
+    strings,
+    typeSpeed: 60,
+    backSpeed: 30,
+    showCursor: false,
+    smartBackspace: false,
+    loop: true
+  });
+}
+
+/*var typed3 = new Typed('#typed3', {
+  strings: ['<span class="text-white text-xl mr-2 text-blue-glow">Jamie</span>'],
+  typeSpeed: 80,
+  backspeed: 70,
+  showCursor: false,
+  cursorChar: '_',
+  loop: false,
+});*/
+
+interact('#terminal').draggable({
+  allowFrom: '.drag-area',
+  inertia: true,
+  modifiers: [
+    interact.modifiers.restrictRect({
+      restriction: 'parent',
+      endOnly: true,
+    }),
+  ],
+  listeners: {
+    start(event) {
+      const target = event.target;
+
+      if (target.style.transform.includes('translate(-50%, -50%)')) {
+        const rect = target.getBoundingClientRect();
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+        target.style.top = rect.top + scrollTop + 'px';
+        target.style.left = rect.left + scrollLeft + 'px';
+        target.style.transform = 'translate(0, 0)';
+        target.setAttribute('data-x', 0);
+        target.setAttribute('data-y', 0);
+      }
+    },
+    move(event) {
+      const target = event.target;
+      const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+      const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+           
+      target.style.transform = `translate(${x}px, ${y}px)`;
+      target.setAttribute('data-x', x);
+      target.setAttribute('data-y', y);
+    },
+  },
+});
+
+let PLAYLIST = []
+
+async function loadPlaylist() {
+  const res = await fetch('/api/playlist');
+  PLAYLIST = await res.json();
+  return PLAYLIST;
+}
+
+let player;
+let isPlaying = false;
+let galaxyVisible = false;
+let playerReady = false;
+let ytReady = false;
+let playlistReady = false;
+loadPlaylist().then(() => {
+  playlistReady = true;
+  initTyped(localStorage.getItem('theme') || 'Default');
+
+  if (PLAYLIST?.length) {
+    const posterEl = document.getElementById('videoPoster');
+    const currentVideoId = PLAYLIST[0].videoId;
+
+    if (posterEl && currentVideoId) {
+      const highRes = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
+      posterEl.style.backgroundImage = `url(${highRes})`;
+    }
+  }
+  maybeInitPlayer();
+});
+window.onYouTubeIframeAPIReady = () => {
+  ytReady = true;
+  maybeInitPlayer();
+};
+
+function maybeInitPlayer() {
+  if (!ytReady || !playlistReady) return;
+  player = new YT.Player('background-video-iframe', {
+    videoId: PLAYLIST[0].videoId,
+    playerVars: {
+      autoplay: 0,
+      mute: 0,
+      controls: 0,
+      loop: 1,
+      playlist: PLAYLIST.map(v => v.videoId).join(','),
+      playsinline: 1,
+      modestbranding: 1,
+      rel: 0,
+      fs: 0,
+      showinfo: 0,
+      iv_load_policy: 3
+    },
+    events: {
+      onReady: () => {
+        playerReady = true;
+      },
+      onStateChange: (event) => {
+        const posterEl = document.getElementById('videoPoster');
+        const iframeEl = document.getElementById('background-video-iframe');
+
+        if (event.data === YT.PlayerState.PLAYING) {
+          posterEl.style.opacity = '0';
+          iframeEl.style.opacity = '1';
+        }
+        
+        if (event.data === YT.PlayerState.PAUSED) {
+          const currentVideoId = player.getVideoData().video_id;
+          const highRes = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
+          const fallback = `https://img.youtube.com/vi/${currentVideoId}/hqdefault.jpg`;
+
+          const thumbImg = new Image();
+          thumbImg.onload = () => {
+            posterEl.style.backgroundImage = `url(${highRes})`;
+          };
+          thumbImg.onerror = () => {
+            posterEl.style.backgroundImage = `url(${fallback})`;
+          };
+          thumbImg.src = highRes;
+          posterEl.style.opacity = '1';
+          iframeEl.style.opacity = '0';
+        }
+      }
+    }
+  });
+}
+
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('background-video-iframe', {
+    videoId: PLAYLIST?.[0]?.videoId || '',
+    playerVars: {
+      autoplay: 0,
+      mute: 0,
+      controls: 0,
+      loop: 1,
+      playlist: PLAYLIST.map(v => v.videoId).join(','),
+      playsinline: 1,
+      modestbranding: 1,
+      rel: 0,
+      fs: 0,
+      showinfo: 0,
+      iv_load_policy: 3
+    },
+events: {
+/*onReady: () => {
+       toggleBtn.click(); 
+     },*/
+onStateChange: (event) => {
+const posterEl = document.getElementById('videoPoster');
+const iframeEl = document.getElementById('background-video-iframe');
+if (event.data === YT.PlayerState.PLAYING) {
+posterEl.style.opacity = '0';
+iframeEl.style.opacity = '1';
+}
+
+if (event.data === YT.PlayerState.PAUSED) {
+const currentVideoId = player.getVideoData().video_id;
+const highRes = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
+const fallback = `https://img.youtube.com/vi/${currentVideoId}/hqdefault.jpg`;
+const thumbImg = new Image();
+thumbImg.onload = () => {
+posterEl.style.backgroundImage = `url(${highRes})`;
+};
+thumbImg.onerror = () => {
+posterEl.style.backgroundImage = `url(${fallback})`;
+};
+thumbImg.src = highRes;
+posterEl.style.opacity = '1';
+iframeEl.style.opacity = '0';
+}
+}
+}
+});
+}
+
+async function initPoster() {
+  const posterEl = document.getElementById('videoPoster');
+  const currentVideoId = PLAYLIST?.[0]?.videoId;
+  if (!currentVideoId || !posterEl) return;
+  const highRes = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
+  const fallback = `https://img.youtube.com/vi/${currentVideoId}/hqdefault.jpg`;
+  const img = new Image();
+  img.onload = () => {
+    posterEl.style.backgroundImage = `url(${highRes})`;
+  };
+  img.onerror = () => {
+    posterEl.style.backgroundImage = `url(${fallback})`;
+  };
+  img.src = highRes;
+}
+
+const toggleBtn = document.getElementById('videoToggle');
+const playIcon = document.getElementById('playIcon');
+const pauseIcon = document.getElementById('pauseIcon');
+const themeBtn = document.getElementById('changeTheme');
+
+toggleBtn.addEventListener('click', () => {
+  if (!player || !playerReady) return;
+  const themeName = localStorage.getItem('theme') || 'Default';
+  const theme = themes[themeName];
+  if (isPlaying) {
+    player.pauseVideo();
+    playIcon.classList.remove('hidden');
+    pauseIcon.classList.add('hidden');
+    toggleBtn.classList.remove(theme.playActive);
+    toggleBtn.classList.add(theme.playInactive);
+  } else {
+    player.playVideo();
+    pauseIcon.classList.remove('hidden');
+    playIcon.classList.add('hidden');
+    toggleBtn.classList.remove(theme.playInactive);
+    toggleBtn.classList.add(theme.playActive);
+  }
+  isPlaying = !isPlaying;
+  updatePlayButtonTheme();
+});
+
+document.getElementById('nextTrack').addEventListener('click', () => {
+  if (player && typeof player.nextVideo === 'function') {
+    const currentIndex = PLAYLIST.findIndex(v => v.videoId === player.getVideoData().video_id);
+    const nextIndex = (currentIndex + 1) % PLAYLIST.length;
+    player.loadVideoById(PLAYLIST[nextIndex].videoId);
+    isPlaying = true;
+    playIcon.classList.add('hidden');
+    pauseIcon.classList.remove('hidden');
+    const themeName = localStorage.getItem('theme') || 'Default';
+    const theme = themes[themeName];
+    toggleBtn.classList.remove(theme.playInactive);
+    toggleBtn.classList.add(theme.playActive);
+  }
+});
+
+let galaxyScriptLoaded = false;
+
+rewind10.addEventListener('click', async () => {
+
+if (!galaxyScriptLoaded) {
+await import('./galaxy.js');
+galaxyScriptLoaded = true;
+}
+
+const guiElement = document.querySelector('.lil-gui');
+
+if (guiElement) {
+if (guiElement.style.display === 'none' || !guiElement.style.display) {
+guiElement.style.display = 'block';
+} else {
+guiElement.style.display = 'none';
+}
+}
+
+const canvas = document.getElementById('canvas');  
+
+rewind10.classList.remove(
+  'text-purple-200',
+  'text-purple-50',
+  'text-pink-500',
+  'text-cyan-100'
+);
+  
+const themeName = localStorage.getItem('theme') || 'Default';
+const theme = themes[themeName];
+  
+  if (galaxyVisible) {
+    galaxyVisible = false;
+    rewind10.classList.remove(theme.galaxyActive);
+    rewind10.classList.add(theme.galaxyInactive);
+    canvas.style.opacity = '0';
+    canvas.style.pointerEvents = 'none';
+  } else {
+    galaxyVisible = true;
+    rewind10.classList.remove(theme.galaxyInactive);
+    rewind10.classList.add(theme.galaxyActive);
+    canvas.style.opacity = '1';
+    canvas.style.pointerEvents = 'auto';
+  }
+});
+
+rewind10.click();
+
+function showList() {
+
+  let html = `<div class="space-y-4 mt-4">`;
+
+  PLAYLIST.forEach(item => {
+    html += `
+      <div class="flex items-center space-x-3">
+        <a href="${item.channelUrl}" target="_blank">
+          <img src="${item.channelAvatar}" width="40" height="40" class="rounded-full" />
+        </a>
+        <a href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" class="text-blue-500 text-base">
+          ${item.title}
+        </a>
+      </div>
+    `;
+  });
+
+  html += `
+    <div class="mt-6 flex justify-center">
+      <button class="terminal-button" onclick="resetTerminal()">back</button>
+    </div>
+  `;
+
+  $('#terminalContent').html(html);
+
+  const currentTheme = localStorage.getItem('theme') || 'Default';
+  applyTheme(currentTheme);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const changeThemeBtn = document.getElementById('changeTheme');
+  const tooltip = document.getElementById('tooltip');
+  const catBtn = document.getElementById('themeCat');
+  const defaultBtn = document.getElementById('themeDefault');
+  const starsBtn = document.getElementById('themeStars');
+  const aeroBtn = document.getElementById('themeAero');
+
+  changeThemeBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); 
+    const isVisible = tooltip.classList.contains('opacity-100');
+    if (isVisible) hideTooltip();
+    else showTooltip();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!tooltip.contains(e.target) && e.target !== changeThemeBtn) {
+      hideTooltip();
+    }
+  });
+
+  catBtn.addEventListener('click', () => {
+    applyTheme('Cat');
+    initTyped('Cat');
+    hideTooltip();
+  });
+  defaultBtn.addEventListener('click', () => {
+    applyTheme('Default');
+    initTyped('Default');
+    hideTooltip();
+  });
+  starsBtn.addEventListener('click', () => {
+    applyTheme('Stars');
+    initTyped('Stars');
+    hideTooltip();
+  });
+  aeroBtn.addEventListener('click', () => {
+    applyTheme('Aero');
+    initTyped('Aero');
+    hideTooltip();
+  });
+  function showTooltip() {
+    tooltip.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
+    tooltip.classList.add('opacity-100');
+  }
+  function hideTooltip() {
+    tooltip.classList.add('opacity-0', 'pointer-events-none', 'invisible');
+    tooltip.classList.remove('opacity-100');
+  }
+});
+
+function showArt() {
+$('#terminalContent').html(`
+<div class="text-pink-300 text-lg mb-4 mt-4"></div>
+  <div id="artGallery" class="grid grid-cols-3 gap-4">
+   <a href="2.png" class="block rounded overflow-hidden">
+    <img src="2.png" alt="Jamie - saproena" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
+    <a href="anim_jam.gif" class="block rounded overflow-hidden">
+    <img src="anim_thumb.jpg" alt="Jamie - xandy" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
+      <a href="sp.png" class="block rounded overflow-hidden">
+    <img src="sp_thumb.png" alt="Jamie - smolbeans" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
+    </div>
+  <div class="mt-4 flex justify-center">
+  <button class="terminal-button" onclick="resetTerminal()">back</button>
+    </div>
+  `);
+
+setTimeout(() => {
+lightGallery(document.getElementById('artGallery'), {
+thumbnail: true,
+zoom: true,
+download: false,
+});
+}, 100); 
+  
+const currentTheme = localStorage.getItem('theme') || 'Default';
+applyTheme(currentTheme);
+//changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Art</span>');
+}
+
+function changeTyped3(newText) {
+  if (!typed3) return;
+
+  typed3.strings = [newText];
+
+  typed3.reset(true);
+}
+
+/*
+function siteFAQ() {
+  
+const terminal = document.getElementById('terminal');
+terminal.classList.remove('sm:w-[600px]');
+terminal.classList.add('sm:w-[480px]');
+  
+  $('#terminalContent').html(`
+    <div class="text-white text-sm space-y-2 mt-6">
+      <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
+        <span class="text-pink-glow">[31/03/26]</span> - 
+        <span class="underline text-blue-glow">Ramble & done</span>
+      </p>
+    </div>
+    <div id="buttonRow" class="flex justify-center mt-4">
+      <button class="terminal-button" onclick="resetTerminal()">Back</button>
+    </div>
+  `);
+  //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
+  const currentTheme = localStorage.getItem('theme') || 'Default';
+  applyTheme(currentTheme);
+}
+
+function aboutPost() {
+
+const terminal = document.getElementById('terminal');
+terminal.classList.remove('sm:w-[480px]');
+terminal.classList.add('sm:w-[600px]');
+  
+   $('#terminalContent').html(`
+    <div class="text-pink-100 text-[13px] font-medium space-y-4">
+
+ <div class="flex justify-center">
+      <p>
+        <a href="https://www.youtube.com/" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="text-blue-glow hover:text-white hover:underline transition font-medium">
+          Song title
+        </a>
+      </p>
+      </div>
+
+      <p>
+    
+      </p>
+      
+    
+
+      <p>
+       
+      </p>
+    </div>
+
+    <div id="buttonRow" class="flex justify-center mt-4">
+      <button class="terminal-button" onclick="siteFAQ()">Back</button>
+    </div>
+  `);
+
+
+ const currentTheme = localStorage.getItem('theme') || 'Default';
+ applyTheme(currentTheme);
+}
+
+function somethingNew() {
+  $('#terminalContent').html(`
+  `);
+
+  const currentTheme = localStorage.getItem('theme') || 'Default';
+  applyTheme(currentTheme);
+}*/
+
+let lastSubmissionTime = 0;
+let lastGbSubmissionTime = 0;
+let guestbookSocket = null;
 
 function showGuestBook() {
 
@@ -6,7 +649,7 @@ function showGuestBook() {
   }
 
    const guestBookWindow = document.createElement('div');
-  guestBookWindow.className = 'terminal2 absolute p-6 max-w-full w-[90vw] sm:w-[500px] text-white rounded-3xl bg-pink-200/15 border border-pink-200/20';
+  guestBookWindow.className = 'terminal absolute p-6 max-w-full w-[90vw] sm:w-[500px] rounded-3xl';
   guestBookWindow.style.zIndex = 11;
   guestBookWindow.style.top = '50%';
   guestBookWindow.style.left = '50%';
@@ -15,13 +658,13 @@ function showGuestBook() {
 
   guestBookWindow.innerHTML = `
   <div class="drag-area flex justify-between items-center select-none mb-2 text-sm">
-    <span class="flex items-center space-x-2">
-      <img src="g2.gif" alt="Avatar2" class="avatar-icon2" />
-      <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow">Guestbook</span>
+    <span class="flex space-x-2">
+      <img src="7.png" alt="Avatar2" class="avatar-icon2" />
+      <span id="typed2" class="font-medium text-xl mt-12 mb-4 text-cyan-glow no-theme-glow">guestbook</span>
     </span>
     <div class="flex items-center space-x-2 mr-3 -mt-12">
-      <button onclick="closeGuestBook()" class="text-pink-200 hover:text-pink-100 transition-colors duration-200 text-lg leading-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-200 hover:text-pink-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <button onclick="closeGuestBook()" class="text-gray-400 hover:text-white transition-colors duration-200 text-lg leading-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -30,16 +673,16 @@ function showGuestBook() {
 
   <div class="flex flex-col sm:flex-row gap-6">
     <div class="w-full">
-      <div class="text-blue-100/80 text-md mt-2 mb-4 text-center">
-       <p id="welcomeMessage" class="text-base text-blue-100">meow</p>
+      <div class="text-gray-200 text-md mt-2 mb-4 text-center">
+       <p id="welcomeMessage" class="text-base text-[15px]">meow</p>
       </div>
-      <form id="guestbookForm" class="space-y-4 text-blue-100">
-        <input id="name" type="text" name="name" placeholder="Name"
-          class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 bg-opacity-30 text-pink-100 placeholder-pink-100/80" required />
-        <textarea id="message" name="message" placeholder="Message"
-          class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 bg-opacity-30 text-pink-100 placeholder-pink-100/80" required></textarea>
+      <form id="guestbookForm" class="space-y-4 text-gray-200">
+        <input id="name" type="text" name="name" placeholder="name"
+          class="w-full p-2 rounded border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required />
+        <textarea id="message" name="message" placeholder="message"
+          class="w-full p-2 rounded border border border-gray-500 bg-gray-800 bg-opacity-30 text-white" required></textarea>
         <div class="text-center">
-          <button type="submit" class="terminal-button bg-pink-50 hover:bg-pink-50 opacity-90 text-black guestbook-submit">Submit</button>
+          <button type="submit" class="terminal-button bg-sky-100 hover:bg-sky-300 text-black guestbook-submit">submit</button>
         </div>
       </form>
     </div>
@@ -64,8 +707,8 @@ guestbookCommentBox.className = `
   p-4 
   w-[300px] 
   overflow-y-auto 
-  bg-pink-200/15
-  border-pink-200/20
+  bg-black 
+  bg-opacity-20 
   text-white 
   text-sm 
   scrollbar-thin 
@@ -185,7 +828,7 @@ body: JSON.stringify(data),
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
 const welcomeMessage = document.querySelector('p.text-base');
-welcomeMessage.textContent = "meow!";
+welcomeMessage.textContent = "meow!!";
 
   setTimeout(() => {
     welcomeMessage.textContent = "meow";
@@ -241,10 +884,12 @@ loadGuestbookComments();
                                                           
 async function loadGuestbookComments() {
 
+  fetchDiscordStatus();
+
   const container = document.getElementById('guestbookComments');
   if (!container) return;
 
-  container.innerHTML = '<p class="text-blue-100 text-sm">Loading ฅᨐฅ</p>';
+  container.innerHTML = '<p class="text-gray-200 text-sm">Loading ฅᨐฅ</p>';
 
   try {
 
@@ -261,28 +906,56 @@ async function loadGuestbookComments() {
 
       div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
-      div.innerHTML = `
-        <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow">
-          ${entry.name || 'Anonymous'}
-        </div>
+div.innerHTML = `
+  <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow break-all">
+    ${entry.name || 'Anonymous'}
+  </div>
 
-        <div class="mb-1 text-pink-100">
-          ${entry.comment || ''}
-        </div>
+  <div class="mb-1 text-gray-200 break-all">
+    ${entry.comment || ''}
+  </div>
 
-        <div class="text-blue-100 opacity-80 text-[0.65rem] text-right">
-          ${entry.timestamp ? new Date(entry.timestamp).toLocaleString() : ''}
-        </div>
-      `;
+  <div class="text-gray-400 opacity-80 text-[0.65rem] text-right">
+    ${entry.timestamp ? new Date(entry.timestamp).toLocaleString() : ''}
+  </div>
+
+  ${
+    entry.reply
+      ? `
+      <div class="border-t border-dashed border-gray-500 my-3 opacity-40"></div>
+
+      <div class="mb-1 flex items-center gap-1 font-medium">
+  <img class="replyAvatar w-8 h-8 rounded-full shadow-md object-cover" alt="Discord Avatar">
+  <span class="text-white text-blue-glow">Jamie</span>
+</div>
+
+      <div class="mb-1 text-gray-200 break-all">
+        ${entry.reply}
+      </div>
+
+      <div class="text-gray-400 opacity-80 text-[0.65rem] text-right">
+        ${entry.reply_timestamp
+          ? new Date(entry.reply_timestamp).toLocaleString()
+          : ''
+        }
+      </div>
+      `
+      : ''
+  }
+`;
 
       container.appendChild(div);
 
     });
+    
+    const theme = localStorage.getItem('theme') || 'Default';
+    applyTheme(theme);
+    fetchDiscordStatus();
 
   } catch (err) {
 
     console.error("Guestbook load error:", err);
-    container.innerHTML = '<p class="text-blue-100 text-sm">Failed to load.</p>';
+    container.innerHTML = '<p class="text-gray-400 text-sm">Failed to load.</p>';
 
   }
 }
@@ -293,3 +966,90 @@ function closeGuestBook() {
   if (gbWindow) gbWindow.remove();
   if (commentBox) commentBox.remove();
 }
+
+function showMessageForm() {
+
+document.getElementById('terminalContent').innerHTML = `
+    <form id="guestbookForm" class="space-y-4 mt-4">
+      <input id="name" type="text" name="name" placeholder="meower" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-50" required>
+      <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-50" required></textarea>
+      <div class="flex justify-center space-x-4 flex-wrap">
+      <button type="submit" class="terminal-button">submit</button>
+      <button type="button" class="terminal-button" onclick="resetTerminal()">back</button>
+      </div>
+      <div id="formResponse" class="text-pink-100 text-md mt-2 mb-4 text-center"></div>
+    </form>
+  `;
+
+const form = document.getElementById('guestbookForm');
+form.addEventListener('submit', submitMessage);
+}
+
+function submitMessage(event) {
+event.preventDefault();
+const name = document.getElementById("name").value.trim();
+const message = document.getElementById("message").value.trim();
+const now = Date.now();
+
+if (!name || !message) {
+alert("Fill in the fields!");
+return;
+}
+
+if (now - lastSubmissionTime < 300000) {
+alert("5 minutes between each message.");
+return;
+}
+
+lastSubmissionTime = now;
+
+const data = {
+name: name,
+comment: message,
+timestamp: new Date().toISOString(),
+};
+
+const url = "https://script.google.com/macros/s/AKfycbyHw5sLKQB5OWs3pRSed4T2e-0aX32fwg03OXbyVH_UB6pOyzhCntv_9PDaU8WXeuql/exec";
+
+fetch(url, {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+},
+body: JSON.stringify(data),
+});
+
+document.getElementById("name").value = "";
+document.getElementById("message").value = "";
+document.getElementById("formResponse").textContent = "meow!";
+}
+
+function resetTerminal() {
+
+const terminal = document.getElementById('terminal');
+terminal.classList.remove('sm:w-[600px]');
+terminal.classList.add('sm:w-[480px]');
+  
+  $('#terminalContent').html(`
+  <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
+  <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
+    <button class="terminal-button ml-2" onclick="showArt()">art</button>
+    <button class="terminal-button ml-5" onclick="showGuestBook()">guestbook</button>
+    <button class="terminal-button" onclick="showList()">playlist</button>
+  </div>
+`);
+const currentTheme = localStorage.getItem('theme') || 'Default';
+applyTheme(currentTheme);
+initTyped(currentTheme);
+}
+
+
+const tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(tag);
+
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme') || 'Default';
+  applyTheme(savedTheme);
+  initTyped(savedTheme);
+});
