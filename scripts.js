@@ -904,7 +904,7 @@ div.innerHTML = `
   ${
     entry.reply
       ? `
-      <div class="border-t border-dashed border-gray-500 my-3 opacity-40"></div>
+      <div class="border-t border-dashed border-pink-200/30 my-3 opacity-60"></div>
 
       <div class="mb-1 flex items-center gap-1 font-medium">
   <img class="replyAvatar w-8 h-8 rounded-full shadow-md object-cover" alt="Discord Avatar">
