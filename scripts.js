@@ -650,7 +650,7 @@ function showGuestBook() {
 
    const guestBookWindow = document.createElement('div');
   guestBookWindow.className = `
-  terminal
+  terminal2
   absolute
   p-6
   max-w-full
@@ -658,6 +658,9 @@ function showGuestBook() {
   sm:w-[500px]
   text-white
   rounded-3xl
+  bg-pink-200/15
+  border
+  border-pink-200/20
 `;
   guestBookWindow.style.zIndex = 11;
   guestBookWindow.style.top = '50%';
@@ -665,7 +668,7 @@ function showGuestBook() {
   guestBookWindow.style.transform = 'translate(-50%, -50%)';
   guestBookWindow.id = 'guestBookWindow';
 
- guestBookWindow.innerHTML = `<div class="drag-area flex justify-between items-center select-none mb-2 text-sm"> <span class="flex items-center space-x-2"> <img src="cattp.gif" alt="Avatar2" class="avatar-icon2" /> <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow"> guestwall </span> </span> <div class="flex items-center space-x-2 mr-3 -mt-12"> <button onclick="closeGuestBook()" class="text-red-300 hover:text-red-400 transition-colors duration-200 text-lg leading-none"> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-300 hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"> <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /> </svg> </button> </div> </div> <div class="flex flex-col sm:flex-row gap-6"> <div class="w-full"> <div class="text-pink-100 text-md mt-2 mb-4 text-center"> <p id="welcomeMessage" class="text-base text-pink-100"> welcome! be nice. </p> </div> <form id="guestbookForm" class="space-y-4 text-white"> <input id="name" type="text" name="name" placeholder="name" class="w-full p-2 rounded border bg-black bg-opacity-20 text-white border-pink-200 rounded border-opacity-50" required /> <textarea id="message" name="message" placeholder="message" class="w-full p-2 rounded border border bg-black bg-opacity-20 text-white border-pink-200 rounded border-opacity-50" required ></textarea> <div class="text-center"> <button type="submit" class="terminal-button text-black guestbook-submit" > submit </button> </div> </form> </div> </div>`;
+ guestBookWindow.innerHTML = `<div class="drag-area flex justify-between items-center select-none mb-2 text-sm"> <span class="flex items-center space-x-2"> <img src="cattp.gif" alt="Avatar2" class="avatar-icon2" /> <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow"> guestwall </span> </span> <div class="flex items-center space-x-2 mr-3 -mt-12"> <button onclick="closeGuestBook()" class="text-pink-200 hover:text-pink-100 transition-colors duration-200 text-lg leading-none"> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-200 hover:text-pink-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"> <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /> </svg> </button> </div> </div> <div class="flex flex-col sm:flex-row gap-6"> <div class="w-full"> <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> <p id="welcomeMessage" class="text-base text-blue-100"> meow </p> </div> <form id="guestbookForm" class="space-y-4 text-blue-100"> <input id="name" type="text" name="name" placeholder="name" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 text-pink-100 placeholder-pink-100/80" required /> <textarea id="message" name="message" placeholder="message" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 text-pink-100 placeholder-pink-100/80" required ></textarea> <div class="text-center"> <button type="submit" class="terminal-button bg-pink-50 hover:bg-pink-100 text-black guestbook-submit" > submit </button> </div> </form> </div> </div>`;
 document.body.appendChild(guestBookWindow);
 
 /*var typed2 = new Typed('#typed2', {
@@ -685,10 +688,11 @@ guestbookCommentBox.className = `
   p-4
   w-[300px]
   overflow-y-auto
- bg-black 
-  bg-opacity-20 
-  text-white 
-  text-sm 
+  bg-pink-200/15
+  border
+  border-pink-200/20
+  text-white
+  text-sm
   scrollbar-thin
   scrollbar-thumb-pink-300
   scrollbar-track-transparent
@@ -806,10 +810,10 @@ body: JSON.stringify(data),
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
 const welcomeMessage = document.querySelector('p.text-base');
-welcomeMessage.textContent = "submitted!";
+welcomeMessage.textContent = "meow!!";
 
   setTimeout(() => {
-    welcomeMessage.textContent = "welcome! be nice.";
+    welcomeMessage.textContent = "meow";
   }, 5000);
   loadGuestbookComments();
   });
@@ -882,25 +886,25 @@ async function loadGuestbookComments() {
 
       const div = document.createElement('div');
 
-      div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm text-pink-100';
+      div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
 div.innerHTML = `
   <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow break-all">
     ${entry.name || 'Anonymous'}
   </div>
 
-  <div class="mb-1 break-all">
+  <div class="mb-1 text-pink-100 break-all">
     ${entry.comment || ''}
   </div>
 
-  <div class="text-pink-200 opacity-80 text-[0.65rem] text-right">
+  <div class="text-blue-100 opacity-80 text-[0.65rem] text-right">
     ${entry.timestamp ? new Date(entry.timestamp).toLocaleString() : ''}
   </div>
 
   ${
     entry.reply
       ? `
-      <div class="border-t border-dashed border-pink-100/80 my-3 opacity-60"></div>
+      <div class="border-t border-dashed border-blue-100/80 my-3 opacity-60"></div>
 
       <div class="mb-1 flex items-center gap-1 font-medium">
   <img class="replyAvatar w-8 h-8 rounded-full shadow-md object-cover" alt="Discord Avatar">
@@ -911,7 +915,7 @@ div.innerHTML = `
         ${entry.reply}
       </div>
 
-      <div class="text-pink-200 opacity-80 text-[0.65rem] text-right">
+      <div class="text-blue-100 opacity-80 text-[0.65rem] text-right">
         ${entry.reply_timestamp
           ? new Date(entry.reply_timestamp).toLocaleString()
           : ''
@@ -999,7 +1003,7 @@ body: JSON.stringify(data),
 
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
-document.getElementById("formResponse").textContent = "thanks!";
+document.getElementById("formResponse").textContent = "meow!";
 }
 
 function resetTerminal() {
