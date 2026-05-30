@@ -142,14 +142,7 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
   const strings = [
-    `<span class="text-white text-2xl mr-2 ${glow}">mhmeow</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">mhhheow</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">mmmheow</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">nyaeh</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">mhhew</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">mmmhew</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">mreeow</span>`,
-    `<span class="text-white text-2xl mr-2 ${glow}">mmmrowhh</span>`
+    `<span class="text-white text-2xl mr-2 ${glow}">select one!</span>`,
   ];
 
   typedInstance = new Typed('#typed', {
@@ -158,7 +151,7 @@ function initTyped(themeName = 'Default') {
     backSpeed: 30,
     showCursor: false,
     smartBackspace: false,
-    loop: true
+    loop: false
   });
 }
 
