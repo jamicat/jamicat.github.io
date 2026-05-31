@@ -658,7 +658,33 @@ function showGuestBook() {
   guestBookWindow.style.transform = 'translate(-50%, -50%)';
   guestBookWindow.id = 'guestBookWindow';
 
- guestBookWindow.innerHTML = `<div class="drag-area flex justify-between items-center select-none mb-2 text-sm"> <span class="flex items-center space-x-2"> <img src="cattp.gif" alt="Avatar2" class="avatar-icon2" /> <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow"> guestwall </span> </span> <div class="flex items-center space-x-2 mr-3 -mt-12"> <button onclick="closeGuestBook()" class="text-pink-200 hover:text-pink-100 transition-colors duration-200 text-lg leading-none"> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-200 hover:text-pink-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"> <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /> </svg> </button> </div> </div> <div class="flex flex-col sm:flex-row gap-6"> <div class="w-full"> <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> <p id="welcomeMessage" class="text-base text-blue-100"> leave a message! </p> </div> <form id="guestbookForm" class="space-y-4 text-blue-100"> <input id="name" type="text" name="name" placeholder="name" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 text-pink-100 placeholder-pink-100/80" required /> <textarea id="message" name="message" placeholder="message" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 text-pink-100 placeholder-pink-100/80" required ></textarea> <div class="text-center"> <button type="submit" class="terminal-button bg-pink-50 hover:bg-pink-100 text-black guestbook-submit" > submit </button> </div> </form> </div> </div>`;
+ guestBookWindow.innerHTML = `<div class="drag-area flex justify-between items-center select-none mb-2 text-sm"> 
+ <span class="flex items-center space-x-2"> 
+ <img src="cattp.gif" alt="Avatar2" class="avatar-icon2" /> 
+ <span id="typed2" class="font-medium text-lg mt-4 mb-4 text-blue-glow no-theme-glow"> guestwall 
+ </span> 
+ </span> 
+ <div class="flex items-center space-x-2 mr-3 -mt-12"> 
+ <button onclick="closeGuestBook()" class="text-pink-200 hover:text-pink-100 transition-colors duration-200 text-lg leading-none"> 
+ <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-200 hover:text-pink-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"> 
+ <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /> 
+ </svg> 
+ </button> 
+ </div> 
+ </div> 
+ <div class="flex flex-col sm:flex-row gap-6"> 
+ <div class="w-full">
+ <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> 
+ <p id="welcomeMessage" class="text-base text-blue-100"> leave a message! </p> </div> 
+ <form id="guestbookForm" class="space-y-4 text-blue-100"> 
+ <input id="name" type="text" name="name" placeholder="name" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 text-pink-100 placeholder-blue-100/80" required /> 
+ <textarea id="message" name="message" placeholder="message" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 text-pink-100 placeholder-blue-100/80" required ></textarea> 
+ <div class="text-center"> 
+ <button type="submit" class="terminal-button bg-pink-50 hover:bg-pink-100 text-black guestbook-submit" > submit </button> 
+ </div> 
+ </form> 
+ </div> 
+ </div>`;
 document.body.appendChild(guestBookWindow);
 
 /*var typed2 = new Typed('#typed2', {
