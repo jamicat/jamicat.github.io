@@ -4,7 +4,9 @@ function createSparkle(el) {
   const isBig = Math.random() > 0.7;
   sparkle.className = `sparkle-dot ${isBig ? "big" : "small"}`;
 
-  const rect = el.getBoundingClientRect();
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  const rect = range.getBoundingClientRect();
 
   const x = Math.random() * rect.width;
   const y = Math.random() * rect.height;
