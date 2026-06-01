@@ -95,13 +95,10 @@ height: 250%;
 
 .terminal {
   background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 2px solid rgba(255,255,255,0.15);
 
   box-shadow:
-    0 0 20px rgba(255,255,255,0.04);
+    4px 4px 0 rgba(255,255,255,0.08);
 }
 
 .terminal p, .terminal div { 
