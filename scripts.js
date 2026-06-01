@@ -24,7 +24,7 @@ const themes = {
     galaxyInactive: 'text-[#f37a5c]',
     playActive: 'text-teal-400',
     playInactive: 'text-[#f37a5c]',
-    terminalColor: 'bg-black/20'
+    terminalColor: 'bg-transparent'
   },
 
   Stars: {
@@ -38,7 +38,7 @@ const themes = {
     galaxyInactive: 'text-red-300',
     playActive: 'text-cyan-400',
     playInactive: 'text-red-300',
-    terminalColor: 'bg-black/25'
+    terminalColor: 'bg-transparent'
   },
 
   Aero: {
@@ -52,7 +52,7 @@ const themes = {
     galaxyInactive: 'text-sky-100',
     playActive: 'text-cyan-400',
     playInactive: 'text-sky-100',
-    terminalColor: 'bg-white/10'
+    terminalColor: 'bg-transparent'
   }
 };
 
