@@ -6,12 +6,8 @@
 
 .sparkle-dot {
   position: absolute;
-  pointer-events: none;
-  border-radius: 50%;
-  background: white;
-  box-shadow: 0 0 8px white;
-  opacity: 0.9;
   transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 .sparkle-dot.small {
