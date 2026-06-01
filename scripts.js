@@ -648,7 +648,7 @@ function showGuestBook() {
   sm:w-[500px]
   text-white
   rounded-3xl
-  bg-pink-200/15
+  bg-transparent
   border
   border-pink-200/20
 `;
@@ -704,7 +704,7 @@ guestbookCommentBox.className = `
   p-4
   w-[300px]
   overflow-y-auto
-  bg-pink-200/15
+  bg-transparent
   border
   border-pink-200/20
   text-white
