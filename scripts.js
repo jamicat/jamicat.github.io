@@ -11,8 +11,8 @@ const themes = {
     playActive: 'text-cyan-400',
     playInactive: 'text-red-300',
     terminalColor: 'bg-transparent',
-    borderColor: 'rgba(252, 165, 165, 0.25)', 
-    shadowColor: 'rgba(252, 165, 165, 0.15)'
+    borderColor: 'rgba(255,255,255,0.15)', 
+    shadowColor: 'rgba(255,255,255,0.08)'
     
   },
 
@@ -28,8 +28,8 @@ const themes = {
     playActive: 'text-teal-400',
     playInactive: 'text-[#f37a5c]',
     terminalColor: 'bg-transparent',
-    borderColor: 'rgba(254, 212, 177, 0.25)',
-    shadowColor: 'rgba(254, 212, 177, 0.15)'
+    borderColor: 'rgba(254, 212, 177, 0.15)',
+    shadowColor: 'rgba(254, 212, 177, 0.08)'
   },
 
   Stars: {
@@ -44,8 +44,8 @@ const themes = {
     playActive: 'text-cyan-400',
     playInactive: 'text-red-300',
     terminalColor: 'bg-transparent',
-    borderColor: 'rgba(252, 165, 165, 0.25)', 
-    shadowColor: 'rgba(252, 165, 165, 0.15)'
+    borderColor: 'rgba(252, 165, 165, 0.15)', 
+    shadowColor: 'rgba(252, 165, 165, 0.08)'
   },
 
   Aero: {
@@ -60,8 +60,8 @@ const themes = {
     playActive: 'text-cyan-400',
     playInactive: 'text-sky-100',
     terminalColor: 'bg-transparent',
-    borderColor: 'rgba(224, 242, 254, 0.25)', 
-    shadowColor: 'rgba(224, 242, 254, 0.15)'
+    borderColor: 'rgba(224, 242, 254, 0.15)', 
+    shadowColor: 'rgba(224, 242, 254, 0.08)'
   }
 };
 
@@ -719,7 +719,7 @@ document.body.appendChild(guestBookWindow);
 const guestbookCommentBox = document.createElement('div');
 guestbookCommentBox.id = 'guestbookComments';
 guestbookCommentBox.className = `
-  terminal
+  gwterminal
   absolute
   p-4
   w-[300px]
