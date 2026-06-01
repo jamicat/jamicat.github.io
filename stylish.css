@@ -95,10 +95,8 @@ height: 250%;
 
 .terminal {
   background: transparent;
-  border: 2px solid rgba(255,255,255,0.15);
-
-  box-shadow:
-    4px 4px 0 rgba(255,255,255,0.08);
+  border: 2px solid;
+  border-radius: 1rem;
 }
 
 .terminal p, .terminal div { 
