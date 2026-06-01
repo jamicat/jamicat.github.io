@@ -1,9 +1,10 @@
 .sparkle-text {
   position: relative;
   display: inline-block;
+  line-height: 1;
+  vertical-align: middle;
 }
 
-/* sparkle style */
 .sparkle-dot {
   position: absolute;
   width: 6px;
