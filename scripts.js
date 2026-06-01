@@ -695,7 +695,7 @@ function showGuestBook() {
  <div class="flex flex-col sm:flex-row gap-6"> 
  <div class="w-full">
  <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> 
- <p id="welcomeMessage" class="text-base text-blue-100"> leave a message! </p> </div> 
+ <p id="welcomeMessage" class="text-base italic text-blue-100"> leave a message! </p> </div> 
  <form id="guestbookForm" class="space-y-4 text-blue-100"> 
  <input id="name" type="text" name="name" placeholder="name" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 text-pink-100 placeholder-blue-100/80" required /> 
  <textarea id="message" name="message" placeholder="message" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/20 text-pink-100 placeholder-blue-100/80" required ></textarea> 
