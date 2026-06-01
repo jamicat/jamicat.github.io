@@ -1,5 +1,12 @@
 const particles = [];
 
+function getCenter(el) {
+  return {
+    x: el.offsetWidth / 2,
+    y: el.offsetHeight / 2
+  };
+}
+
 function createParticle(el) {
   const p = document.createElement("div");
 
@@ -8,41 +15,27 @@ function createParticle(el) {
 
   el.appendChild(p);
 
-  const range = document.createRange();
-  range.selectNodeContents(el);
-  const rect = range.getBoundingClientRect();
-
-  const cx = rect.width / 2;
-  const cy = rect.height / 2;
-
-  const radius = 10 + Math.random() * 25; // orbit distance
+  const radius = 8 + Math.random() * 20;
   const angle = Math.random() * Math.PI * 2;
-  const speed = 0.01 + Math.random() * 0.02;
+  const speed = 0.008 + Math.random() * 0.015;
 
   particles.push({
     el: p,
     parent: el,
     angle,
     speed,
-    radius,
-    cx,
-    cy
+    radius
   });
 }
 
 function updateParticles() {
   for (const p of particles) {
-    const range = document.createRange();
-    range.selectNodeContents(p.parent);
-    const rect = range.getBoundingClientRect();
-
-    const cx = rect.width / 2;
-    const cy = rect.height / 2;
+    const center = getCenter(p.parent);
 
     p.angle += p.speed;
 
-    const x = cx + Math.cos(p.angle) * p.radius;
-    const y = cy + Math.sin(p.angle) * p.radius;
+    const x = center.x + Math.cos(p.angle) * p.radius;
+    const y = center.y + Math.sin(p.angle) * p.radius;
 
     p.el.style.left = `${x}px`;
     p.el.style.top = `${y}px`;
@@ -55,10 +48,10 @@ function startSparkles(selector) {
   const el = document.querySelector(selector);
   if (!el) return;
 
-  const MAX_PARTICLES = 25;
+  const MAX = 18; // lower = tighter, cleaner
 
   setInterval(() => {
-    if (particles.length < MAX_PARTICLES) {
+    if (particles.length < MAX) {
       createParticle(el);
     }
   }, 120);
