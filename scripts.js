@@ -10,7 +10,7 @@ const themes = {
     galaxyInactive: 'text-red-300',
     playActive: 'text-cyan-400',
     playInactive: 'text-red-300',
-    terminalColor: 'bg-black/20'
+    terminalColor: 'bg-transparent'
   },
 
   Cat: {
