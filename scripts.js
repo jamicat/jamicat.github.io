@@ -10,7 +10,10 @@ const themes = {
     galaxyInactive: 'text-red-300',
     playActive: 'text-cyan-400',
     playInactive: 'text-red-300',
-    terminalColor: 'bg-transparent'
+    terminalColor: 'bg-transparent',
+    borderColor: 'rgba(252, 165, 165, 0.25)', 
+    shadowColor: 'rgba(252, 165, 165, 0.15)'
+    
   },
 
   Cat: {
@@ -24,7 +27,9 @@ const themes = {
     galaxyInactive: 'text-[#f37a5c]',
     playActive: 'text-teal-400',
     playInactive: 'text-[#f37a5c]',
-    terminalColor: 'bg-transparent'
+    terminalColor: 'bg-transparent',
+    borderColor: 'rgba(254, 212, 177, 0.25)',
+    shadowColor: 'rgba(254, 212, 177, 0.15)'
   },
 
   Stars: {
@@ -38,7 +43,9 @@ const themes = {
     galaxyInactive: 'text-red-300',
     playActive: 'text-cyan-400',
     playInactive: 'text-red-300',
-    terminalColor: 'bg-transparent'
+    terminalColor: 'bg-transparent',
+    borderColor: 'rgba(252, 165, 165, 0.25)', 
+    shadowColor: 'rgba(252, 165, 165, 0.15)'
   },
 
   Aero: {
@@ -52,7 +59,9 @@ const themes = {
     galaxyInactive: 'text-sky-100',
     playActive: 'text-cyan-400',
     playInactive: 'text-sky-100',
-    terminalColor: 'bg-transparent'
+    terminalColor: 'bg-transparent',
+    borderColor: 'rgba(224, 242, 254, 0.25)', 
+    shadowColor: 'rgba(224, 242, 254, 0.15)'
   }
 };
 
@@ -77,6 +86,17 @@ if (terminal) {
     if (cls.startsWith('bg-')) terminal.classList.remove(cls);
   });
   terminal.classList.add(theme.terminalColor);
+}
+
+terminal.style.boxShadow = `
+  3px 3px 0 ${theme.shadowColor}
+`;
+  
+ if (terminal) {
+  terminal.style.borderColor = theme.borderColor;
+  terminal.style.boxShadow = `
+    3px 3px 0 ${theme.shadowColor}
+  `;
 }
 
 const rewind10 = document.getElementById('rewind10');
