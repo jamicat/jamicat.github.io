@@ -1052,7 +1052,7 @@ terminal.classList.add('sm:w-[480px]');
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
     <button class="terminal-button ml-2" onclick="showArt()">art</button>
-    <button class="terminal-button ml-5" onclick="showGuestBook()">guestwall</button>
+    <button class="terminal-button ml-5" onclick="showGuestBook()">guest wall</button>
     <button class="terminal-button" onclick="showList()">playlist</button>
   </div>
 `);
