@@ -697,8 +697,8 @@ function showGuestBook() {
  <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> 
  <p id="welcomeMessage" class="text-base italic text-blue-100"> leave a message! </p> </div> 
  <form id="guestbookForm" class="space-y-4 text-blue-100"> 
- <input id="name" type="text" name="name" placeholder="name" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/5 text-pink-100 placeholder-blue-100/80" required /> 
- <textarea id="message" name="message" placeholder="message" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/5 text-pink-100 placeholder-blue-100/80" required ></textarea> 
+ <input id="name" type="text" name="name" placeholder="name" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
+ <textarea id="message" name="message" placeholder="message" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
  <div class="text-center"> 
  <button type="submit" class="terminal-button bg-pink-50 hover:bg-pink-100 text-black guestbook-submit" > submit </button> 
  </div> 
