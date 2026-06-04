@@ -162,7 +162,7 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
   const strings = [
-    `<span class="text-white text-2xl mr-2 ${glow}">select one!</span>`,
+    `<span class="text-white text-sm mr-2 ${glow}">select one!</span>`,
   ];
 
   typedInstance = new Typed('#typed', {
