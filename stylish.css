@@ -5,7 +5,7 @@ src: url('nunito.ttf') format('truetype');
 
 @font-face {
   font-family: 'Fink';
-  src: url('/fonts/fink.ttf') format('truetype');
+  src: url('fink.ttf') format('truetype');
 }
 
 html, body {
