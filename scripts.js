@@ -162,7 +162,7 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
   const strings = [
-    `<span class="text-white text-sm mr-2 ${glow}">select one!</span>`,
+    `<span class="text-white font-['nintendoh'] text-xs mr-2 ${glow}">select one!</span>`,
   ];
 
   typedInstance = new Typed('#typed', {
@@ -686,7 +686,7 @@ function showGuestBook() {
  </span> 
  <div class="flex items-center space-x-2 mr-3 -mt-12"> 
  <button onclick="closeGuestBook()" class="text-pink-200 hover:text-pink-100 transition-colors duration-200 text-lg leading-none"> 
- <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-pink-200 hover:text-pink-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"> 
+ <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-200 hover:text-pink-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"> 
  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /> 
  </svg> 
  </button> 
@@ -695,12 +695,12 @@ function showGuestBook() {
  <div class="flex flex-col sm:flex-row gap-6"> 
  <div class="w-full">
  <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> 
- <p id="welcomeMessage" class="text-base italic text-blue-100"> leave a message! </p> </div> 
+ <p id="welcomeMessage" class="text-base italic text-blue-100 font-['nintendoh'] text-xs"> leave a message! </p> </div> 
  <form id="guestbookForm" class="space-y-4 text-blue-100"> 
- <input id="name" type="text" name="name" placeholder="name" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
- <textarea id="message" name="message" placeholder="message" class="w-full p-2 rounded border border-pink-200/40 bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
+ <input id="name" type="text" name="name" placeholder="name" class="font-['nintendoh'] text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
+ <textarea id="message" name="message" placeholder="message" class="font-['nintendoh'] text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
  <div class="text-center"> 
- <button type="submit" class="terminal-button bg-pink-50 hover:bg-pink-100 text-black guestbook-submit" > submit </button> 
+ <button type="submit" class="font-['nintendoh'] text-xs terminal-button bg-pink-50 hover:bg-pink-100 text-black guestbook-submit" > submit </button> 
  </div> 
  </form> 
  </div> 
@@ -849,7 +849,7 @@ const welcomeMessage = document.querySelector('p.text-base');
 welcomeMessage.textContent = "submitted ᨐ";
 
   setTimeout(() => {
-    welcomeMessage.textContent = "meow";
+    welcomeMessage.textContent = "leave a message!";
   }, 5000);
   loadGuestbookComments();
   });
@@ -925,15 +925,15 @@ async function loadGuestbookComments() {
       div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
 div.innerHTML = `
-  <div class="mb-1 font-medium text-white text-blue-glow no-theme-glow break-all">
+  <div class="font-['nintendoh'] text-sm mb-1 font-medium text-white text-blue-glow no-theme-glow break-all">
     ${entry.name || 'Anonymous'}
   </div>
 
-  <div class="mb-1 text-pink-100 break-all">
+  <div class="font-['nintendoh'] text-xs mb-1 text-pink-100 break-all">
     ${entry.comment || ''}
   </div>
 
-  <div class="text-blue-100 opacity-80 text-[0.65rem] text-right">
+  <div class="text-blue-100 opacity-80 text-[0.55rem] text-right">
     ${entry.timestamp ? new Date(entry.timestamp).toLocaleString() : ''}
   </div>
 
@@ -944,14 +944,14 @@ div.innerHTML = `
 
       <div class="mb-1 flex items-center gap-1 font-medium">
   <img class="replyAvatar w-8 h-8 rounded-full shadow-md object-cover" alt="Discord Avatar">
-  <span class="text-white text-blue-glow">Jamie</span>
+  <span class="font-['nintendoh'] text-sm text-white text-blue-glow">Jamie</span>
 </div>
 
-      <div class="mb-1 text-pink-100 break-all">
+      <div class="font-['nintendoh'] text-xs mb-1 text-pink-100 break-all">
         ${entry.reply}
       </div>
 
-      <div class="text-blue-100 opacity-80 text-[0.65rem] text-right">
+      <div class="text-blue-100 opacity-80 text-[0.55rem] text-right">
         ${entry.reply_timestamp
           ? new Date(entry.reply_timestamp).toLocaleString()
           : ''
@@ -1051,9 +1051,9 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-    <button class="terminal-button ml-2" onclick="showArt()">art</button>
-    <button class="terminal-button ml-5" onclick="showGuestBook()">guest wall</button>
-    <button class="terminal-button" onclick="showList()">playlist</button>
+    <button class="font-['nintendoh'] text-xs terminal-button ml-2" onclick="showArt()">art</button>
+    <button class="font-['nintendoh'] text-xs terminal-button ml-5" onclick="showGuestBook()">guest wall</button>
+    <button class="font-['nintendoh'] text-xs terminal-button" onclick="showList()">playlist</button>
   </div>
 `);
 const currentTheme = localStorage.getItem('theme') || 'Default';
