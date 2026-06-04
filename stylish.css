@@ -8,6 +8,11 @@ src: url('nunito.ttf') format('truetype');
   src: url('/fink.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: "nintendoh";
+  src: url("/nintendoh.otf") format("opentype");
+}
+
 html, body {
 font-family: 'Nunito', sans-serif;
 margin: 0;
