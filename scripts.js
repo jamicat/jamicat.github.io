@@ -700,7 +700,7 @@ function showGuestBook() {
  <input id="name" type="text" name="name" placeholder="name" class="font-['nintendoh'] text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
  <textarea id="message" name="message" placeholder="message" class="font-['nintendoh'] text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
  <div class="text-center"> 
- <button type="submit" class="font-['nintendoh'] text-xs terminal-button bg-pink-50 hover:bg-pink-100 text-white guestbook-submit" > submit </button> 
+ <button type="submit" class="font-['nintendoh'] text-xs terminal-button text-white guestbook-submit" > submit </button> 
  </div> 
  </form> 
  </div> 
