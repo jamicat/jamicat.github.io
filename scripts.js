@@ -695,10 +695,10 @@ function showGuestBook() {
  <div class="flex flex-col sm:flex-row gap-6"> 
  <div class="w-full">
  <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> 
- <p id="welcomeMessage" class="text-blue-50 font-['nintendoh'] text-sm"> leave a message! </p> </div>
+ <p id="welcomeMessage" class="text-blue-glow text-white font-['nintendoh'] text-sm"> leave a message! </p> </div>
  <form id="guestbookForm" class="space-y-4 text-blue-100"> 
- <input id="name" type="text" name="name" placeholder="name" class="font-['nintendoh'] text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-50/80" required /> 
- <textarea id="message" name="message" placeholder="message" class="font-['nintendoh'] text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-50/80" required ></textarea> 
+ <input id="name" type="text" name="name" placeholder="name" class="font-['nintendoh'] text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
+ <textarea id="message" name="message" placeholder="message" class="font-['nintendoh'] text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
  <div class="text-center"> 
  <button type="submit" class="font-['nintendoh'] text-xs terminal-button bg-pink-50 hover:bg-pink-100 text-black guestbook-submit" > submit </button> 
  </div> 
