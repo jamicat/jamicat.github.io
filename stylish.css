@@ -214,8 +214,52 @@ min-height: 2.5em;
   border-radius: 6px;
 }
 
+.terminal-button {
+  position: relative;
+  background: transparent;
+  border: none;
+  outline: none;
+}
 
+.terminal-button::after {
+  content: "";
+  position: absolute;
 
+  left: 50%;
+  top: 115%;
+
+  width: 40px;
+  height: 40px;
+
+  background-image: url("arrow.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  transform: translateX(-50%);
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition: opacity 0.25s ease;
+}
+
+.terminal-button:hover::after {
+  opacity: 0.25;
+  animation: bob 2s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0% {
+    transform: translateX(-50%) translateY(0px);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-3px);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0px);
+  }
+}
 
 
 
