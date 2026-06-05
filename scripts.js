@@ -2,7 +2,7 @@ const themes = {
   Default: {
     glowPrimary: 'text-blue-glow',      
     glowSecondary: 'text-pink-glow',    
-    buttonColor: 'bg-red-300 hover:bg-red-400',
+    buttonColor: 'bg-transparent hover:bg-transparent'',
     buttonTextColor: 'text-white',
     iconColor: 'text-red-300 hover:text-cyan-400',
     hoverRing: 'hover:ring-cyan-400',
@@ -19,7 +19,7 @@ const themes = {
   Cat: {
     glowPrimary: 'text-aquag-glow',      
     glowSecondary: 'text-pink-glow',    
-    buttonColor: 'bg-[#fed4b1] hover:bg-[#f37a5c]',
+    buttonColor: 'bg-transparent hover:bg-transparent'',
     buttonTextColor: 'text-black',
     iconColor: 'text-[#f37a5c] hover:text-teal-400',
     hoverRing: 'hover:ring-teal-400',
@@ -35,7 +35,7 @@ const themes = {
   Stars: {
    glowPrimary: 'text-pink-glow',     
     glowSecondary: 'text-red-glow',    
-    buttonColor: 'bg-red-300 hover:bg-red-400',
+    buttonColor: 'bg-transparent hover:bg-transparent'',
     buttonTextColor: 'text-black',
     iconColor: 'text-red-300 hover:text-cyan-400',
     hoverRing: 'hover:ring-cyan-400',
@@ -51,7 +51,7 @@ const themes = {
   Aero: {
     glowPrimary: 'text-cyan-glow',     
     glowSecondary: 'text-blue-glow',
-    buttonColor: 'bg-sky-100 hover:bg-sky-300',
+    buttonColor: 'bg-transparent hover:bg-transparent'',
     buttonTextColor: 'text-black',
     iconColor: 'text-sky-100 hover:text-cyan-400',
     hoverRing: 'hover:ring-sky-400',
