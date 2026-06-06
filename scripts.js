@@ -388,11 +388,9 @@ let muted = false;
 if (volumeSlider) {
   volumeSlider.addEventListener('input', (e) => {
     if (!player || !playerReady) return;
-
     const volume = parseInt(e.target.value, 10);
     player.setVolume(volume);
     localStorage.setItem('volume', volume);
-
     if (volume === 0) {
       muted = true;
       document.getElementById('wave1').style.display = 'none';
@@ -409,6 +407,28 @@ if (volumeSlider) {
     }
   });
 }
+
+volumeIcon.addEventListener('click', () => {
+  if (!player || !playerReady) return;
+  if (!muted) {
+    previousVolume = parseInt(volumeSlider.value, 10);
+    player.setVolume(0);
+    volumeSlider.value = 0;
+    document.getElementById('wave1').style.display = 'none';
+    document.getElementById('wave2').style.display = 'none';
+    document.getElementById('muteLine1').style.display = '';
+    document.getElementById('muteLine2').style.display = '';
+    muted = true;
+  } else {
+    player.setVolume(previousVolume);
+    volumeSlider.value = previousVolume;
+    document.getElementById('wave1').style.display = '';
+    document.getElementById('wave2').style.display = '';
+    document.getElementById('muteLine1').style.display = 'none';
+    document.getElementById('muteLine2').style.display = 'none';
+    muted = false;
+  }
+});
 
 toggleBtn.addEventListener('click', () => {
   if (!player || !playerReady) return;
