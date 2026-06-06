@@ -274,8 +274,14 @@ function maybeInitPlayer() {
     },
     events: {
       onReady: () => {
-        playerReady = true;
-      },
+  playerReady = true;
+  const savedVolume =
+    parseInt(localStorage.getItem('volume') || '50', 10);
+  player.setVolume(savedVolume);
+  if (volumeSlider) {
+    volumeSlider.value = savedVolume;
+  }
+},
       onStateChange: (event) => {
         const posterEl = document.getElementById('videoPoster');
         const iframeEl = document.getElementById('background-video-iframe');
@@ -374,6 +380,19 @@ const toggleBtn = document.getElementById('videoToggle');
 const playIcon = document.getElementById('playIcon');
 const pauseIcon = document.getElementById('pauseIcon');
 const themeBtn = document.getElementById('changeTheme');
+const volumeSlider = document.getElementById('volumeSlider');
+
+if (volumeSlider) {
+  volumeSlider.addEventListener('input', (e) => {
+    if (!player || !playerReady) return;
+
+    const volume = parseInt(e.target.value, 10);
+
+    player.setVolume(volume);
+
+    localStorage.setItem('volume', volume);
+  });
+}
 
 toggleBtn.addEventListener('click', () => {
   if (!player || !playerReady) return;
