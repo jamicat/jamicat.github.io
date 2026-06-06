@@ -261,6 +261,37 @@ min-height: 2.5em;
   }
 }
 
+.volume-wrap {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 10px;
+
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.12);
+
+  backdrop-filter: blur(16px);
+
+  border-radius: 999px;
+
+  z-index: 9999;
+}
+
+.volume-icon {
+  width: 12px;
+  height: 12px;
+  color: #fca5a5;
+}
+
+#volumeSlider {
+  width: 60px;
+}
+
 
 
 
