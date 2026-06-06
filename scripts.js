@@ -381,16 +381,32 @@ const playIcon = document.getElementById('playIcon');
 const pauseIcon = document.getElementById('pauseIcon');
 const themeBtn = document.getElementById('changeTheme');
 const volumeSlider = document.getElementById('volumeSlider');
+const volumeIcon = document.getElementById('volumeIcon');
+let previousVolume = 50;
+let muted = false;
 
 if (volumeSlider) {
   volumeSlider.addEventListener('input', (e) => {
     if (!player || !playerReady) return;
 
     const volume = parseInt(e.target.value, 10);
-
     player.setVolume(volume);
-
     localStorage.setItem('volume', volume);
+
+    if (volume === 0) {
+      muted = true;
+      document.getElementById('wave1').style.display = 'none';
+      document.getElementById('wave2').style.display = 'none';
+      document.getElementById('muteLine1').style.display = '';
+      document.getElementById('muteLine2').style.display = '';
+    } else {
+      previousVolume = volume;
+      muted = false;
+      document.getElementById('wave1').style.display = '';
+      document.getElementById('wave2').style.display = '';
+      document.getElementById('muteLine1').style.display = 'none';
+      document.getElementById('muteLine2').style.display = 'none';
+    }
   });
 }
 
