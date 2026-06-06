@@ -102,20 +102,38 @@ class="w-5 h-5 fill-current"
 </div>
 </div>
 <div class="volume-wrap">
-  <svg
-    class="volume-icon"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M11 5L6 9H3v6h3l5 4V5z"
-    />
-  </svg>
+ <svg
+  id="volumeIcon"
+  class="volume-icon"
+  xmlns="http://www.w3.org/2000/svg"
+  fill="none"
+  viewBox="0 0 24 24"
+  stroke="currentColor"
+>
+  <path
+    id="speakerBody"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    d="M11 5L6 9H3v6h3l5 4V5z"
+  />
+
+  <path
+    id="wave1"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    d="M15.5 8.5a5 5 0 010 7"
+  />
+
+  <path
+    id="wave2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    d="M18 6a8 8 0 010 12"
+  />
+</svg>
   <input
     id="volumeSlider"
     type="range"
