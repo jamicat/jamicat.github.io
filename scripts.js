@@ -52,7 +52,7 @@ const themes = {
     headingFont: 'nunito',
     bodyFont: 'nunito',
     buttonColor: 'bg-red-300 hover:bg-red-400',
-    buttonTextColor: 'text-white text-pink-glow',
+    buttonTextColor: 'text-black',
     iconColor: 'text-red-300 hover:text-cyan-400',
     hoverRing: 'hover:ring-cyan-400',
     galaxyActive: 'text-cyan-400',
