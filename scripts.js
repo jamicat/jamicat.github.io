@@ -94,6 +94,11 @@ function applyTheme(themeName) {
   if (!theme) return console.warn(`Theme not found: ${themeName}`);
 
   document.documentElement.setAttribute('data-theme', themeName);
+  document.documentElement.setAttribute('data-theme', themeName);
+  document.documentElement.classList.toggle(
+  'theme-stars',
+  themeName === 'Stars'
+ );
 
   const mainAvatar = document.getElementById('mainAvatar');
   if (mainAvatar && theme.avatar) {
