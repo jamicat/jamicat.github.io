@@ -40,8 +40,8 @@ addComponents({
 <div id="terminal" class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[480px] rounded-3xl" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
 <div class="drag-area text-pink-600 text-xs mb-2 select-none flex justify-between items-center">
 <span class="flex items-center space-x-3">
-<img src="acl.png" alt="Avatar" class="avatar-icon" />
-<span id="typed3" class="font-['Fink'] font-medium text-3xl mt-9 text-white text-2xl mt-4 mb-1 text-blue-glow">Jamie</span>
+<img id="mainAvatar" src="acl.png" alt="Avatar" class="avatar-icon" />
+<span id="typed3" class="theme-heading font-medium text-3xl mt-9 text-white text-2xl mt-4 mb-1 text-blue-glow">Jamie</span>
   </span>
 <div class="flex items-center space-x-2 mr-3 -mt-12">
 <button id="videoToggle" class="text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none">
@@ -71,10 +71,10 @@ addComponents({
     class="absolute left-1/2 top-full mt-2 -translate-x-1/2 rounded-3xl bg-transparent text-sm text-white
     transition-all duration-300 py-2 px-3 flex flex-col gap-1 z-50 shadow-lg backdrop-blur-sm 
     border border-white/5 min-w-[8rem] opacity-0 pointer-events-none invisible">
-    <button id="themeDefault" class="font-['nintendoh'] text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">cavetown</button>
-    <button id="themeCat" class="font-['nintendoh'] text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">cat</button>
-    <button id="themeStars" class="font-['nintendoh'] text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">galaxy</button>
-    <button id="themeAero" class="font-['nintendoh'] text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">sky</button>
+    <button id="themeDefault" class="theme-body text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">cavetown</button>
+    <button id="themeCat" class="theme-body text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">cat</button>
+    <button id="themeStars" class="theme-body text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">galaxy</button>
+    <button id="themeAero" class="theme-body text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">sky</button>
   </div>
 </div>
 <button id="rewind10" class="text-pink-100 -translate-x-[6px] transition-colors duration-200 text-lg leading-none">
@@ -94,10 +94,10 @@ class="w-5 h-5 fill-current"
 <div id="terminalContent">
 <div class="font-medium text-pink-600 mt-5 mb-4 text-center" id="typed"></div>
 <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-<button class="terminal-button ml-2 font-['nintendoh'] text-xs" onclick="showArt()">art</button>
-<button class="terminal-button ml-5 font-['nintendoh'] text-xs" onclick="showGuestBook()">guest wall</button>
+<button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">art</button>
+<button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">guest wall</button>
 <!--button class="terminal-button ml-3" onclick="showMessageForm()">message</button-->
-<button class="terminal-button font-['nintendoh'] text-xs" onclick="showList()">playlist</button>
+<button class="terminal-button theme-body text-xs" onclick="showList()">playlist</button>
 </div>
 </div>
 </div>
