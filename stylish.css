@@ -372,13 +372,20 @@ min-height: 2.5em;
   box-shadow: none !important;
 }
 
-html[data-theme="Stars"] .avatar-icon,
-html[data-theme="Stars"] .avatar-icon2 {
+.theme-stars .avatar-icon,
+.theme-stars .avatar-icon2 {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
 
-html[data-theme="Stars"] .terminal-button {
-  font-size: 0.875rem; 
+.theme-stars .terminal-button {
+  font-size: 0.875rem;
 }
 
+.theme-stars #typed {
+  font-size: 1.5rem !important;
+}
+
+.theme-stars #typed3 {
+  font-size: 1.5rem !important;
+}
