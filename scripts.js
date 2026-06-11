@@ -777,7 +777,7 @@ function showGuestBook() {
 
  guestBookWindow.innerHTML = `<div class="drag-area flex justify-between items-center select-none mb-2 text-sm"> 
  <span class="flex items-center space-x-2"> 
- <img id="guestAvatar" src="aclolly.png" alt="Avatar2" class="avatar-icon2" />
+ <img id="gbAvatar" src="aclolly.png" alt="Avatar2" class="avatar-icon2" />
  <span id="typed2" class="theme-heading font-medium text-3xl mt-10 mb-3 text-blue-glow no-theme-glow"> guest wall!
  </span> 
  </span> 
