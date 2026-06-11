@@ -62,8 +62,8 @@ const themes = {
     terminalColor: 'bg-black/20',
     terminal2Bg: 'bg-black/20',
     gwterminalBg: 'bg-black/20',
- borderColor: 'rgba(0,0,0,0.25)',
-shadowColor: 'rgba(0,0,0,0.35)'
+borderColor: 'rgba(0,0,0,0.4)',
+shadowColor: 'rgba(0,0,0,0.5)'
   },
 
   Aero: {
@@ -100,7 +100,7 @@ function applyTheme(themeName) {
     mainAvatar.src = theme.avatar;
   }
 
-  const gbAvatar = document.getElementById('guestAvatar');
+  const gbAvatar = document.getElementById('gbAvatar');
   if (gbAvatar && theme.guestAvatar) {
     gbAvatar.src = theme.guestAvatar;
   }
