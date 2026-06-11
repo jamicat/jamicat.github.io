@@ -62,8 +62,8 @@ const themes = {
     terminalColor: 'bg-black/20',
     terminal2Bg: 'bg-black/20',
     gwterminalBg: 'bg-black/20',
-borderColor: 'rgba(0,0,0,0.4)',
-shadowColor: 'rgba(0,0,0,0.5)'
+    borderColor: 'transparent',
+    shadowColor: 'none'
   },
 
   Aero: {
@@ -139,12 +139,24 @@ function applyTheme(themeName) {
   });
 
 const terminal = document.getElementById('terminal');
+
+if (terminal) {
+  terminal.classList.remove('no-decor');
+
+  if (themeName === 'Stars') {
+    terminal.classList.add('no-decor');
+  }
+}
+  
 if (terminal) {
   terminal.classList.forEach(cls => {
     if (cls.startsWith('bg-')) terminal.classList.remove(cls);
   });
   terminal.classList.add(theme.terminalColor);
-  terminal.style.boxShadow = `3px 3px 0 ${theme.shadowColor}`;
+  terminal.style.boxShadow =
+  themeName === 'Stars'
+    ? 'none'
+    : `3px 3px 0 ${theme.shadowColor}`;
   terminal.style.borderColor = theme.borderColor;
 }
 
@@ -195,8 +207,16 @@ document.querySelectorAll('.gwterminal').forEach(el => {
     el.classList.remove(t.gwterminalBg);
   });
   el.classList.add(theme.gwterminalBg);
+  el.classList.remove('no-decor');
+  if (themeName === 'Stars') {
+    el.classList.add('no-decor');
+  }
   el.style.borderColor = theme.borderColor;
-  el.style.boxShadow = `3px 3px 0 ${theme.shadowColor}`;
+
+  el.style.boxShadow =
+    themeName === 'Stars'
+      ? 'none'
+      : `3px 3px 0 ${theme.shadowColor}`;
 });
   
 }
