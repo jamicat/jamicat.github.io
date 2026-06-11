@@ -43,10 +43,10 @@ const themes = {
   Stars: {
    glowPrimary: 'text-pink-glow',     
     glowSecondary: 'text-red-glow',    
-    avatar: 'acl.png',
-    gbAvatar: 'aclolly.png',
-    headingFont: 'Fink',
-    bodyFont: 'nintendoh',
+    avatar: 'g1.gif',
+    gbAvatar: 'pbcat.gif',
+    headingFont: 'nunito',
+    bodyFont: 'nunito',
     buttonColor: 'bg-transparent hover:bg-transparent',
     buttonTextColor: 'text-white text-pink-glow',
     iconColor: 'text-red-300 hover:text-cyan-400',
@@ -55,7 +55,7 @@ const themes = {
     galaxyInactive: 'text-red-300',
     playActive: 'text-cyan-400',
     playInactive: 'text-red-300',
-    terminalColor: 'bg-transparent',
+    terminalColor: 'bg-black/20',
     borderColor: 'rgba(255,255,255,0.15)', 
     shadowColor: 'rgba(255,255,255,0.08)'
   },
