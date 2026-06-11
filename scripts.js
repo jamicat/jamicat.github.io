@@ -51,7 +51,7 @@ const themes = {
     gbAvatar: 'pbcat.gif',
     headingFont: 'nunito',
     bodyFont: 'nunito',
-    buttonColor: 'bg-transparent hover:bg-transparent',
+    buttonColor: 'bg-red-300 hover:bg-red-400',
     buttonTextColor: 'text-white text-pink-glow',
     iconColor: 'text-red-300 hover:text-cyan-400',
     hoverRing: 'hover:ring-cyan-400',
