@@ -126,14 +126,20 @@ function applyTheme(themeName) {
     theme.bodyFont
   );
 
-  document.querySelectorAll('.terminal-button:not(.guestbook-submit)').forEach(btn => {
+ document.querySelectorAll('.terminal-button:not(.guestbook-submit)').forEach(btn => {
   btn.classList.add('theme-body');
   Object.values(themes).forEach(t => {
     t.buttonTextColor.split(' ').forEach(cls => {
       btn.classList.remove(cls);
     });
+    t.buttonColor.split(' ').forEach(cls => {
+      btn.classList.remove(cls);
+    });
   });
   theme.buttonTextColor.split(' ').forEach(cls => {
+    btn.classList.add(cls);
+  });
+  theme.buttonColor.split(' ').forEach(cls => {
     btn.classList.add(cls);
   });
 });
