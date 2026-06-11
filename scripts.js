@@ -101,8 +101,8 @@ function applyTheme(themeName) {
   }
 
   const gbAvatar = document.getElementById('gbAvatar');
-  if (gbAvatar && theme.guestAvatar) {
-    gbAvatar.src = theme.guestAvatar;
+  if (gbAvatar && theme.gbAvatar) {
+    gbAvatar.src = theme.gbAvatar;
   }
 
   document.querySelectorAll('.replyAvatar').forEach(img => {
