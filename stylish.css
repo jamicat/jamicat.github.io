@@ -367,5 +367,8 @@ min-height: 2.5em;
   font-family: var(--body-font);
 }
 
-
+.no-decor {
+  border: none !important;
+  box-shadow: none !important;
+}
 
