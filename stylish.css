@@ -354,7 +354,18 @@ min-height: 2.5em;
   background: white;
 }
 
+:root {
+  --heading-font: 'Fink';
+  --body-font: 'nintendoh';
+}
 
+.theme-heading {
+  font-family: var(--heading-font);
+}
+
+.theme-body {
+  font-family: var(--body-font);
+}
 
 
 
