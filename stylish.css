@@ -378,3 +378,7 @@ html[data-theme="Stars"] .avatar-icon2 {
   image-rendering: crisp-edges;
 }
 
+html[data-theme="Stars"] .terminal-button {
+  font-size: 0.875rem; 
+}
+
