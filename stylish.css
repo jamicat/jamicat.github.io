@@ -389,3 +389,7 @@ min-height: 2.5em;
 .theme-stars #typed3 {
   font-size: 1.5rem !important;
 }
+
+.theme-stars .terminal2 {
+  border: none !important;
+}
