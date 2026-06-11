@@ -382,11 +382,13 @@ min-height: 2.5em;
   font-size: 0.875rem;
 }
 
-.theme-stars #typed {
+.theme-stars #typed,
+.theme-stars #typed3 {
   font-size: 1.5rem !important;
 }
 
-.theme-stars #typed3 {
+.theme-stars #typed span,
+.theme-stars #typed3 span {
   font-size: 1.5rem !important;
 }
 
