@@ -122,7 +122,15 @@ function applyTheme(themeName) {
   );
 
   document.querySelectorAll('.terminal-button:not(.guestbook-submit)').forEach(btn => {
-    btn.className = `terminal-button ${theme.buttonColor} ${theme.buttonTextColor} px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95 text-xs font-medium transform hover:-translate-y-[0.5px]`;
+  btn.classList.add('theme-body');
+  Object.values(themes).forEach(t => {
+    t.buttonTextColor.split(' ').forEach(cls => {
+      btn.classList.remove(cls);
+    });
+  });
+  theme.buttonTextColor.split(' ').forEach(cls => {
+    btn.classList.add(cls);
+  });
 });
 
   const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme');
@@ -187,6 +195,8 @@ document.querySelectorAll('.gwterminal').forEach(el => {
     el.classList.remove(t.gwterminalBg);
   });
   el.classList.add(theme.gwterminalBg);
+  el.style.borderColor = theme.borderColor;
+  el.style.boxShadow = `3px 3px 0 ${theme.shadowColor}`;
 });
   
 }
