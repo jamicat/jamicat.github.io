@@ -2,6 +2,10 @@ const themes = {
   Default: {
     glowPrimary: 'text-blue-glow',      
     glowSecondary: 'text-pink-glow',    
+    avatar: 'acl.png',
+    gbAvatar: 'aclolly.png',
+    headingFont: 'Fink',
+    bodyFont: 'nintendoh',
     buttonColor: 'bg-transparent hover:bg-transparent',
     buttonTextColor: 'text-white text-blue-glow',
     iconColor: 'text-red-300 hover:text-cyan-400',
@@ -19,6 +23,10 @@ const themes = {
   Cat: {
     glowPrimary: 'text-aquag-glow',      
     glowSecondary: 'text-pink-glow',    
+    avatar: 'acl.png',
+    gbAvatar: 'aclolly.png',
+    headingFont: 'Fink',
+    bodyFont: 'nintendoh',
     buttonColor: 'bg-transparent hover:bg-transparent',
     buttonTextColor: 'text-white text-aquag-glow',
     iconColor: 'text-[#f37a5c] hover:text-teal-400',
@@ -35,6 +43,10 @@ const themes = {
   Stars: {
    glowPrimary: 'text-pink-glow',     
     glowSecondary: 'text-red-glow',    
+    avatar: 'acl.png',
+    gbAvatar: 'aclolly.png',
+    headingFont: 'Fink',
+    bodyFont: 'nintendoh',
     buttonColor: 'bg-transparent hover:bg-transparent',
     buttonTextColor: 'text-white text-pink-glow',
     iconColor: 'text-red-300 hover:text-cyan-400',
@@ -51,6 +63,10 @@ const themes = {
   Aero: {
     glowPrimary: 'text-cyan-glow',     
     glowSecondary: 'text-blue-glow',
+    avatar: 'acl.png',
+    gbAvatar: 'aclolly.png',
+    headingFont: 'Fink',
+    bodyFont: 'nintendoh',
     buttonColor: 'bg-transparent hover:bg-transparent',
     buttonTextColor: 'text-white text-cyan-glow',
     iconColor: 'text-sky-100 hover:text-cyan-400',
@@ -70,6 +86,32 @@ function applyTheme(themeName) {
   if (!theme) return console.warn(`Theme not found: ${themeName}`);
 
   document.documentElement.setAttribute('data-theme', themeName);
+
+  const mainAvatar = document.getElementById('mainAvatar');
+  if (mainAvatar && theme.avatar) {
+    mainAvatar.src = theme.avatar;
+  }
+
+  const guestAvatar = document.getElementById('guestAvatar');
+  if (guestAvatar && theme.guestAvatar) {
+    guestAvatar.src = theme.guestAvatar;
+  }
+
+  document.querySelectorAll('.replyAvatar').forEach(img => {
+    if (theme.replyAvatar) {
+      img.src = theme.replyAvatar;
+    }
+  });
+
+  document.documentElement.style.setProperty(
+    '--heading-font',
+    theme.headingFont
+  );
+  
+  document.documentElement.style.setProperty(
+    '--body-font',
+    theme.bodyFont
+  );
 
   document.querySelectorAll('.terminal-button:not(.guestbook-submit)').forEach(btn => {
     btn.className = `terminal-button ${theme.buttonColor} ${theme.buttonTextColor} px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95 text-xs font-medium transform hover:-translate-y-[0.5px]`;
@@ -162,7 +204,7 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
   const strings = [
-    `<span class="text-white font-['nintendoh'] text-sm mr-2 ${glow}">select one!</span>`,
+    `<span class="text-white theme-body text-sm mr-2 ${glow}">select one!</span>`,
   ];
 
   typedInstance = new Typed('#typed', {
@@ -735,8 +777,8 @@ function showGuestBook() {
 
  guestBookWindow.innerHTML = `<div class="drag-area flex justify-between items-center select-none mb-2 text-sm"> 
  <span class="flex items-center space-x-2"> 
- <img src="aclolly.png" alt="Avatar2" class="avatar-icon2" /> 
- <span id="typed2" class="font-['Fink'] font-medium text-3xl mt-10 mb-3 text-blue-glow no-theme-glow"> guest wall!
+ <img id="guestAvatar" src="aclolly.png" alt="Avatar2" class="avatar-icon2" />
+ <span id="typed2" class="theme-heading font-medium text-3xl mt-10 mb-3 text-blue-glow no-theme-glow"> guest wall!
  </span> 
  </span> 
  <div class="flex items-center space-x-2 mr-3 -mt-12"> 
@@ -750,12 +792,12 @@ function showGuestBook() {
  <div class="flex flex-col sm:flex-row gap-6"> 
  <div class="w-full">
  <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> 
- <p id="welcomeMessage" class="text-blue-glow text-white font-['nintendoh'] text-sm"> leave a message! </p> </div>
+ <p id="welcomeMessage" class="text-blue-glow text-white theme-body text-sm"> leave a message! </p> </div>
  <form id="guestbookForm" class="space-y-4 text-blue-100"> 
- <input id="name" type="text" name="name" placeholder="name" class="font-['nintendoh'] text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
- <textarea id="message" name="message" placeholder="message" class="font-['nintendoh'] text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
+ <input id="name" type="text" name="name" placeholder="name" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
+ <textarea id="message" name="message" placeholder="message" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
  <div class="text-center"> 
- <button type="submit" class="font-['nintendoh'] text-xs terminal-button text-white guestbook-submit" > submit </button> 
+ <button type="submit" class="theme-body text-xs terminal-button text-white guestbook-submit" > submit </button> 
  </div> 
  </form> 
  </div> 
@@ -953,6 +995,9 @@ function connectGuestbookSocket() {
 }
 connectGuestbookSocket();
 loadGuestbookComments();
+
+const currentTheme = localStorage.getItem('theme') || 'Default';
+applyTheme(currentTheme);
 }
                                                           
 async function loadGuestbookComments() {
@@ -980,11 +1025,11 @@ async function loadGuestbookComments() {
       div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
 div.innerHTML = `
-  <div class="font-['nintendoh'] text-sm mb-1 font-medium text-white text-blue-glow no-theme-glow break-all">
+  <div class="theme-body text-sm mb-1 font-medium text-white text-blue-glow no-theme-glow break-all">
     ${entry.name || 'Anonymous'}
   </div>
 
-  <div class="font-['nintendoh'] text-[0.70rem] mb-1 text-pink-100 break-all">
+  <div class="theme-body text-[0.70rem] mb-1 text-pink-100 break-all">
     ${entry.comment || ''}
   </div>
 
@@ -999,10 +1044,10 @@ div.innerHTML = `
 
       <div class="mb-1 flex items-center gap-1 font-medium">
   <img class="replyAvatar w-8 h-8 rounded-full shadow-md object-cover" alt="Discord Avatar">
-  <span class="font-['nintendoh'] text-sm text-white text-blue-glow">Jamie</span>
+  <span class="theme-body text-sm text-white text-blue-glow">Jamie</span>
 </div>
 
-      <div class="font-['nintendoh'] text-[0.70rem] mb-1 text-pink-100 break-all">
+      <div class="theme-body text-[0.70rem] mb-1 text-pink-100 break-all">
         ${entry.reply}
       </div>
 
@@ -1106,9 +1151,9 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-    <button class="font-['nintendoh'] text-xs terminal-button ml-2" onclick="showArt()">art</button>
-    <button class="font-['nintendoh'] text-xs terminal-button ml-5" onclick="showGuestBook()">guest wall</button>
-    <button class="font-['nintendoh'] text-xs terminal-button" onclick="showList()">playlist</button>
+    <button class="theme-body text-xs terminal-button ml-2" onclick="showArt()">art</button>
+    <button class="theme-body text-xs terminal-button ml-5" onclick="showGuestBook()">guest wall</button>
+    <button class="theme-body text-xs terminal-button" onclick="showList()">playlist</button>
   </div>
 `);
 const currentTheme = localStorage.getItem('theme') || 'Default';
