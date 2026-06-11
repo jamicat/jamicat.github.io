@@ -15,6 +15,8 @@ const themes = {
     playActive: 'text-cyan-400',
     playInactive: 'text-red-300',
     terminalColor: 'bg-transparent',
+    terminal2Bg: 'bg-transparent',
+    gwterminalBg: 'bg-transparent',
     borderColor: 'rgba(255,255,255,0.15)', 
     shadowColor: 'rgba(255,255,255,0.08)'
     
@@ -36,6 +38,8 @@ const themes = {
     playActive: 'text-teal-400',
     playInactive: 'text-[#f37a5c]',
     terminalColor: 'bg-transparent',
+    terminal2Bg: 'bg-transparent',
+    gwterminalBg: 'bg-transparent',
     borderColor: 'rgba(255,255,255,0.15)', 
     shadowColor: 'rgba(255,255,255,0.08)'
   },
@@ -56,6 +60,8 @@ const themes = {
     playActive: 'text-cyan-400',
     playInactive: 'text-red-300',
     terminalColor: 'bg-black/20',
+    terminal2Bg: 'bg-black/20',
+    gwterminalBg: 'bg-black/20',
     borderColor: 'rgba(255,255,255,0.15)', 
     shadowColor: 'rgba(255,255,255,0.08)'
   },
@@ -76,6 +82,8 @@ const themes = {
     playActive: 'text-cyan-400',
     playInactive: 'text-sky-100',
     terminalColor: 'bg-transparent',
+    terminal2Bg: 'bg-transparent',
+    gwterminalBg: 'bg-transparent',
     borderColor: 'rgba(255,255,255,0.15)', 
     shadowColor: 'rgba(255,255,255,0.08)'
   }
@@ -128,17 +136,8 @@ if (terminal) {
     if (cls.startsWith('bg-')) terminal.classList.remove(cls);
   });
   terminal.classList.add(theme.terminalColor);
-}
-
-terminal.style.boxShadow = `
-  3px 3px 0 ${theme.shadowColor}
-`;
-  
- if (terminal) {
+  terminal.style.boxShadow = `3px 3px 0 ${theme.shadowColor}`;
   terminal.style.borderColor = theme.borderColor;
-  terminal.style.boxShadow = `
-    3px 3px 0 ${theme.shadowColor}
-  `;
 }
 
 const rewind10 = document.getElementById('rewind10');
@@ -175,6 +174,21 @@ if (toggleBtn) {
   el.classList.add(theme.glowPrimary);
 });
   localStorage.setItem('theme', themeName);
+
+  document.querySelectorAll('.terminal2').forEach(el => {
+  Object.values(themes).forEach(t => {
+    el.classList.remove(t.terminal2Bg);
+  });
+  el.classList.add(theme.terminal2Bg);
+});
+
+document.querySelectorAll('.gwterminal').forEach(el => {
+  Object.values(themes).forEach(t => {
+    el.classList.remove(t.gwterminalBg);
+  });
+  el.classList.add(theme.gwterminalBg);
+});
+  
 }
 
 function updatePlayButtonTheme() {
@@ -765,7 +779,6 @@ function showGuestBook() {
   sm:w-[500px]
   text-white
   rounded-3xl
-  bg-transparent
   border
   border-pink-200/20
 `;
@@ -821,7 +834,6 @@ guestbookCommentBox.className = `
   p-4
   w-[300px]
   overflow-y-auto
-  bg-transparent
   border
   border-pink-200/20
   text-white
