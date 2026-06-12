@@ -1052,12 +1052,12 @@ function connectGuestbookSocket() {
     console.error("Guestbook WS error:", err);
   };
 }
+
 connectGuestbookSocket();
 loadGuestbookComments();
 
 const currentTheme = localStorage.getItem('theme') || 'Default';
 applyTheme(currentTheme);
-}
                                                           
 async function loadGuestbookComments() {
 
