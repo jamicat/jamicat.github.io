@@ -734,7 +734,7 @@ function siteFAQ() {
 $('#terminalContent').html(`
       <div class="text-blue-glow text-white theme-body text-sm mb-4 mt-4">libraries used:</div>
       <ul class="list-disc list-inside text-white space-y-1">
-      <li class="text-blue-glow text-white theme-body text-xs">jquery, typed.js, interact.js, tailwind, youtube api, lightgallery, threejs, theme tokens, css selectors</li>
+      <li class="text-blue-glow text-white theme-body text-xs">jquery, typed.js, interact.js, tailwind css, youtube iframe api, lightgallery, three.js, cloudflare workers, websockets (live guest wall updates), custom guest wall api, local storage (theme persistence)</li>
       </ul>
       </div>
       <div id="buttonRow" class="flex justify-center">
