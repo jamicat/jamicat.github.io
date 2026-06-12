@@ -397,3 +397,7 @@ min-height: 2.5em;
 .theme-stars .terminal2 {
   border: none !important;
 }
+
+.theme-stars .terminal-button::after {
+  display: none !important;
+}
