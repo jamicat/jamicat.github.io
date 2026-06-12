@@ -728,21 +728,10 @@ function changeTyped3(newText) {
   typed3.reset(true);
 }
 
-
+/*
 function siteFAQ() {
-
-$('#terminalContent').html(`
-<div class="text-pink-300 text-lg mb-4 mt-4"></div>
- <span class="text-blue-glow font-medium theme-body">libraries/things used: tailwind, typed.js, lightgallery.js, interact.js, youtube api, cloudflare workers & api, threejs, jquery, inline css, theme token css, css selectors</span>
-  <div class="mt-4 flex justify-center">
-  <button class="terminal-button" onclick="resetTerminal()">back</button>
-    </div>
-  `);
-
-const currentTheme = localStorage.getItem('theme') || 'Default';
-applyTheme(currentTheme);
   
-/*const terminal = document.getElementById('terminal');
+const terminal = document.getElementById('terminal');
 terminal.classList.remove('sm:w-[600px]');
 terminal.classList.add('sm:w-[480px]');
   
@@ -759,10 +748,9 @@ terminal.classList.add('sm:w-[480px]');
   `);
   //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
   const currentTheme = localStorage.getItem('theme') || 'Default';
-  applyTheme(currentTheme);*/
+  applyTheme(currentTheme);
 }
 
-/*
 function aboutPost() {
 
 const terminal = document.getElementById('terminal');
@@ -782,9 +770,15 @@ terminal.classList.add('sm:w-[600px]');
         </a>
       </p>
       </div>
+
       <p>
+    
       </p>
+      
+    
+
       <p>
+       
       </p>
     </div>
 
@@ -792,6 +786,7 @@ terminal.classList.add('sm:w-[600px]');
       <button class="terminal-button" onclick="siteFAQ()">Back</button>
     </div>
   `);
+
 
  const currentTheme = localStorage.getItem('theme') || 'Default';
  applyTheme(currentTheme);
@@ -803,11 +798,11 @@ function somethingNew() {
 
   const currentTheme = localStorage.getItem('theme') || 'Default';
   applyTheme(currentTheme);
-}
+}*/
 
 let lastSubmissionTime = 0;
 let lastGbSubmissionTime = 0;
-let guestbookSocket = null;*/
+let guestbookSocket = null;
 
 function showGuestBook() {
 
@@ -1033,7 +1028,6 @@ welcomeMessage.textContent = "submitted ᨐ";
     submitBtn.textContent = 'Submit';
   }
 });*/
-}
 function connectGuestbookSocket() {
   if (guestbookSocket && guestbookSocket.readyState === WebSocket.OPEN) {
     return;
@@ -1052,12 +1046,12 @@ function connectGuestbookSocket() {
     console.error("Guestbook WS error:", err);
   };
 }
-
 connectGuestbookSocket();
 loadGuestbookComments();
 
 const currentTheme = localStorage.getItem('theme') || 'Default';
 applyTheme(currentTheme);
+}
                                                           
 async function loadGuestbookComments() {
 
@@ -1210,7 +1204,6 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-    <button class="theme-body text-xs terminal-button ml-2" onclick="siteFAQ()">about</button>
     <button class="theme-body text-xs terminal-button ml-2" onclick="showArt()">art</button>
     <button class="theme-body text-xs terminal-button ml-5" onclick="showGuestBook()">guest wall</button>
     <button class="theme-body text-xs terminal-button" onclick="showList()">playlist</button>
