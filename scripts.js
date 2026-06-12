@@ -733,7 +733,7 @@ function siteFAQ() {
 
 $('#terminalContent').html(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
- <span class="text-blue-glow font-medium theme-body">libraries/things used: tailwind, typed.js, lightgallery.js, interact.js, threejs, jquery, inline css, theme token css, css selectors</span>
+ <span class="text-blue-glow font-medium theme-body">libraries/things used: tailwind, typed.js, lightgallery.js, interact.js, youtube api, cloudflare workers & api, threejs, jquery, inline css, theme token css, css selectors</span>
   <div class="mt-4 flex justify-center">
   <button class="terminal-button" onclick="resetTerminal()">back</button>
     </div>
@@ -762,6 +762,7 @@ terminal.classList.add('sm:w-[480px]');
   applyTheme(currentTheme);*/
 }
 
+/*
 function aboutPost() {
 
 const terminal = document.getElementById('terminal');
@@ -781,15 +782,9 @@ terminal.classList.add('sm:w-[600px]');
         </a>
       </p>
       </div>
-
       <p>
-    
       </p>
-      
-    
-
       <p>
-       
       </p>
     </div>
 
@@ -797,7 +792,6 @@ terminal.classList.add('sm:w-[600px]');
       <button class="terminal-button" onclick="siteFAQ()">Back</button>
     </div>
   `);
-
 
  const currentTheme = localStorage.getItem('theme') || 'Default';
  applyTheme(currentTheme);
@@ -809,11 +803,11 @@ function somethingNew() {
 
   const currentTheme = localStorage.getItem('theme') || 'Default';
   applyTheme(currentTheme);
-}*/
+}
 
 let lastSubmissionTime = 0;
 let lastGbSubmissionTime = 0;
-let guestbookSocket = null;
+let guestbookSocket = null;*/
 
 function showGuestBook() {
 
@@ -1039,6 +1033,7 @@ welcomeMessage.textContent = "submitted ᨐ";
     submitBtn.textContent = 'Submit';
   }
 });*/
+}
 function connectGuestbookSocket() {
   if (guestbookSocket && guestbookSocket.readyState === WebSocket.OPEN) {
     return;
