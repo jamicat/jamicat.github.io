@@ -401,3 +401,11 @@ min-height: 2.5em;
 .theme-stars .terminal-button::after {
   display: none !important;
 }
+
+.theme-stars .guestbook-submit {
+  background-color: rgb(252 231 243) !important;
+}
+
+.theme-stars .guestbook-submit:hover {
+  background-color: rgb(251 207 232) !important;
+}
