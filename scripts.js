@@ -728,30 +728,25 @@ function changeTyped3(newText) {
   typed3.reset(true);
 }
 
-/*
+
 function siteFAQ() {
   
-const terminal = document.getElementById('terminal');
-terminal.classList.remove('sm:w-[600px]');
-terminal.classList.add('sm:w-[480px]');
-  
-  $('#terminalContent').html(`
-    <div class="text-white text-sm space-y-2 mt-6">
-      <p class="cursor-pointer hover:text-white transition" onclick="aboutPost()">
-        <span class="text-pink-glow">[31/03/26]</span> - 
-        <span class="underline text-blue-glow">Ramble & done</span>
-      </p>
-    </div>
-    <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="resetTerminal()">Back</button>
-    </div>
-  `);
+$('#terminalContent').html(`
+      <div class="text-blue-glow text-white theme-body text-sm mb-4 mt-4">libraries used:</div>
+      <ul class="list-disc list-inside text-white space-y-1">
+      <li class="text-blue-glow text-white theme-body text-xs">jquery, typed.js, interact.js, tailwind, youtube api, lightgallery, threejs, theme tokens, css selectors</li>
+      </ul>
+      </div>
+      <div id="buttonRow" class="flex justify-center">
+      <button class="terminal-button" onclick="resetTerminal()">back</button>
+      </div>
+      `);
   //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
   const currentTheme = localStorage.getItem('theme') || 'Default';
   applyTheme(currentTheme);
 }
 
-function aboutPost() {
+/*function aboutPost() {
 
 const terminal = document.getElementById('terminal');
 terminal.classList.remove('sm:w-[480px]');
