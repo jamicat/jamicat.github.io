@@ -18,6 +18,11 @@ src: url('nunito.ttf') format('truetype');
   src: url("/nintendoh2.otf") format("opentype");
 }
 
+.logo {
+    font-family: 'all_starregular', sans-serif;
+    font-size: 72px;
+}
+
 html, body {
 font-family: 'Nunito', sans-serif;
 margin: 0;
