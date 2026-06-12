@@ -27,7 +27,7 @@ const themes = {
     glowSecondary: 'text-pink-glow',    
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
-    headingFont: 'Fink',
+    headingFont: 'all_starregular',
     bodyFont: 'nintendoh',
     buttonColor: 'bg-transparent hover:bg-transparent',
     buttonTextColor: 'text-white text-aquag-glow',
