@@ -4,6 +4,8 @@ const themes = {
     glowSecondary: 'text-pink-glow',   
     typed2Text: 'guest wall!',
     typed3Text: 'Jamie',
+    typedText: 'select one!',
+    welcomeMessage: 'leave a message!',
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
     headingFont: 'Fink',
@@ -30,6 +32,8 @@ const themes = {
     typedOverride: 'text-rose-200',
     typed2Text: 'guest wall"',
     typed3Text: '-Jamie',
+    typedText: 'select one!',
+    welcomeMessage: 'leave a message!',
     avatar: 'haato1.png',
     gbAvatar: 'haatowing.png',
     headingFont: 'all_starregular',
@@ -54,6 +58,8 @@ const themes = {
     glowSecondary: 'text-red-glow',   
     typed2Text: 'guest wall!',
     typed3Text: 'Jamie',
+    typedText: 'select one!',
+    welcomeMessage: 'leave a message!',
     avatar: 'g1.gif',
     gbAvatar: 'pbcat.gif',
     headingFont: 'nunito',
@@ -274,6 +280,11 @@ if (typedEl) {
 }
 }
 
+const welcome = document.getElementById('welcomeMessage');
+if (welcome) {
+  welcome.textContent = theme.welcomeMessage || 'leave a message!';
+}
+
 function updatePlayButtonTheme() {
   const themeName = localStorage.getItem('theme') || 'Default';
   const theme = themes[themeName];
@@ -301,8 +312,8 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
   const strings = [
-    `<span class="text-white theme-body text-sm mr-2 ${glow}">select one!</span>`,
-  ];
+  `<span class="text-white theme-body text-sm mr-2 ${glow}">${themes[themeName].typedText || 'select one!'}</span>`,
+];
 
   typedInstance = new Typed('#typed', {
     strings,
@@ -883,7 +894,7 @@ function showGuestBook() {
  <div class="flex flex-col sm:flex-row gap-6"> 
  <div class="w-full">
  <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> 
- <p id="welcomeMessage" class="text-blue-glow text-white theme-body text-sm"> leave a message! </p> </div>
+ <p id="welcomeMessage" class="text-blue-glow text-white theme-body text-sm"> </p> </div>
  <form id="guestbookForm" class="space-y-4 text-blue-100"> 
  <input id="name" type="text" name="name" placeholder="name" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
  <textarea id="message" name="message" placeholder="message" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
@@ -1032,11 +1043,14 @@ body: JSON.stringify(data),
 
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
-const welcomeMessage = document.querySelector('p.text-base');
-welcomeMessage.textContent = "submitted ᨐ";
-
+const welcomeMessage = document.getElementById("welcomeMessage");
+if (welcomeMessage) {
+  welcomeMessage.textContent = "submitted ᨐ";
   setTimeout(() => {
-    welcomeMessage.textContent = "leave a message!";
+    const themeName = localStorage.getItem('theme') || 'Default';
+    const theme = themes[themeName];
+    welcomeMessage.textContent =
+      theme.welcomeMessage || "leave a message!";
   }, 5000);
   loadGuestbookComments();
   });
