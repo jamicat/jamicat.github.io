@@ -25,9 +25,9 @@ const themes = {
   },
 
   Cat: {
-    glowPrimary: 'text-aquag-glow',      
+    glowPrimary: 'text-darkblue-glow',      
     glowSecondary: 'text-pink-glow',    
-    typed2Text: 'guest wall',
+    typed2Text: 'guest wall"',
     typed3Text: '-Jamie',
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
