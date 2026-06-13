@@ -26,7 +26,8 @@ const themes = {
 
   Cat: {
     glowPrimary: 'text-blue-glow',      
-    glowSecondary: 'text-pink-glow',    
+    glowSecondary: 'text-pink-glow',  
+    typedOverride: 'text-rose-200',
     typed2Text: 'guest wall"',
     typed3Text: '-Jamie',
     avatar: 'acl.png',
@@ -254,6 +255,23 @@ document.querySelectorAll('.gwterminal').forEach(el => {
       ? 'none'
       : `3px 3px 0 ${theme.shadowColor}`;
 });
+
+const typedEl = document.getElementById('typed');
+if (typedEl) {
+  const allowed = [
+    'text-blue-glow',
+    'text-pink-glow',
+    'text-red-glow',
+    'text-aquag-glow',
+    'text-cyan-glow',
+    'text-darkblue-glow'
+  ];
+
+  typedEl.classList.remove(...allowed);
+  if (theme.typedOverride) {
+    typedEl.classList.add(theme.typedOverride);
+  }
+}
 }
 
 function updatePlayButtonTheme() {
