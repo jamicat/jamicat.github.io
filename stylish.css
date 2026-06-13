@@ -459,7 +459,7 @@ min-height: 2.5em;
 }
 
 .theme-cat .gb-comment {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
 }
 
 .theme-cat .gb-name {
@@ -467,5 +467,9 @@ min-height: 2.5em;
 }
 
 .theme-cat #name {
+  font-size: 1rem;
+}
+
+.theme-cat #message {
   font-size: 1rem;
 }
