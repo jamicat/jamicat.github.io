@@ -251,7 +251,7 @@ document.querySelectorAll('.gwterminal').forEach(el => {
   el.style.borderColor = theme.borderColor;
 
   el.style.boxShadow =
-    themeName === 'Stars'
+     themeName === 'Stars' || themeName === 'Cat'
       ? 'none'
       : `3px 3px 0 ${theme.shadowColor}`;
 });
