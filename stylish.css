@@ -175,9 +175,10 @@ image-rendering: crisp-edges;*/
 }
 
 .text-darkblue-glow {
+ color: #1d4ed8; 
   text-shadow:
-    0 0 4px rgba(37, 99, 235, 0.9),
-    0 0 8px rgba(29, 78, 216, 0.7);
+    0 0 2px rgba(29, 78, 216, 0.6),
+    0 0 4px rgba(29, 78, 216, 0.35);
 }
 
 #typed {
