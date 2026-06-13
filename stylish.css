@@ -253,7 +253,7 @@ min-height: 2.5em;
   width: 30px;
   height: 30px;
 
-  background-image: url("arrow.png");
+  background-image: var(--arrow-image, url("arrow.png"));
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -379,6 +379,7 @@ min-height: 2.5em;
 :root {
   --heading-font: 'Fink';
   --body-font: 'nintendoh';
+  --arrow-image: url("arrow.png");
 }
 
 .theme-heading {
@@ -486,4 +487,8 @@ min-height: 2.5em;
 
 .theme-cat #message::placeholder {
   color: #fecdd3 !important;
+}
+
+.theme-cat {
+  --arrow-image: url("starcat.png");
 }
