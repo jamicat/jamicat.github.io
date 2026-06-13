@@ -456,10 +456,12 @@ min-height: 2.5em;
 
 .theme-cat #welcomeMessage {
   font-size: 1.125rem;
+  color: #fecdd3!important;
 }
 
 .theme-cat .gb-comment {
   font-size: 0.75rem;
+  color: #fecdd3!important;
 }
 
 .theme-cat .gb-name {
@@ -468,8 +470,18 @@ min-height: 2.5em;
 
 .theme-cat #name {
   font-size: 1rem;
+  color: #fecdd3 !important;
+}
+
+.theme-cat #name::placeholder {
+  color: #fecdd3!important;
 }
 
 .theme-cat #message {
   font-size: 1rem;
+  color: #fecdd3 !important;
+}
+
+.theme-cat #message::placeholder {
+  color: #fecdd3 !important;
 }
