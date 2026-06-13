@@ -442,6 +442,26 @@ min-height: 2.5em;
   font-size: 1.5rem !important;
 }
 
+.theme-cat #typed {
+  font-size: 1.25rem !important;
+}
+
+.theme-cat #typed span {
+  font-size: 1.25rem !important;
+}
+
+.theme-cat .terminal-button {
+  font-size: 1.125rem;
+}
+
 .theme-cat #welcomeMessage {
+  font-size: 1.125em;
+}
+
+.theme-cat .gb-comment {
+  font-size: 0.7em;
+}
+
+.theme-cat .gb-name {
   font-size: 1.125em;
 }
