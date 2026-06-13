@@ -108,6 +108,11 @@ function applyTheme(themeName) {
   themeName === 'Stars'
  );
 
+document.documentElement.classList.toggle(
+  'theme-cat',
+  themeName === 'Cat'
+);
+
   const mainAvatar = document.getElementById('mainAvatar');
   if (mainAvatar && theme.avatar) {
     mainAvatar.src = theme.avatar;
