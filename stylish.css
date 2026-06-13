@@ -441,3 +441,7 @@ min-height: 2.5em;
 .theme-cat #typed2 span {
   font-size: 1.5rem !important;
 }
+
+.theme-cat #welcomeMessage {
+  font-size: 1.125em;
+}
