@@ -32,7 +32,7 @@ const themes = {
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
     headingFont: 'all_starregular',
-    bodyFont: 'nintendoh',
+    bodyFont: 'spirits',
     buttonColor: 'bg-transparent hover:bg-transparent',
     buttonTextColor: 'text-white text-aquag-glow',
     iconColor: 'text-[#f37a5c] hover:text-teal-400',
