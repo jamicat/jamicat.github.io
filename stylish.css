@@ -159,18 +159,22 @@ image-rendering: crisp-edges;*/
 }
 
 .text-aquag-glow {
+  color: #ffffff;
   text-shadow: 0 0 2px rgba(0, 255, 200, 0.7);
 }
 
 .text-blue-glow {
+  color: #ffffff;
   text-shadow: 0 0 2px rgba(135, 206, 235, 0.7);
 }
 
 .text-pink-glow {
+  color: #ffffff;
   text-shadow: 0 0 2px rgba(255, 105, 180, 0.7);
 }
 
 .text-cyan-glow {
+  color: #ffffff;
   text-shadow: 0 0 2px rgba(0, 255, 255, 0.7);
 }
 
