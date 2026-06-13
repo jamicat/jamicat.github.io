@@ -46,7 +46,7 @@ const themes = {
     terminal2Bg: 'bg-blue-200/5',
     gwterminalBg: 'bg-blue-200/5',
     borderColor: 'rgba(255,255,255,0.15)', 
-    shadowColor: 'rgba(255,255,255,0.08)'
+    shadowColor: 'none'
   },
 
   Stars: {
