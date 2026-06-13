@@ -25,7 +25,7 @@ const themes = {
   },
 
   Cat: {
-    glowPrimary: 'text-darkblue-glow',      
+    glowPrimary: 'text-blue-glow',      
     glowSecondary: 'text-pink-glow',    
     typed2Text: 'guest wall"',
     typed3Text: '-Jamie',
@@ -34,7 +34,7 @@ const themes = {
     headingFont: 'all_starregular',
     bodyFont: 'spirits',
     buttonColor: 'bg-transparent hover:bg-transparent',
-    buttonTextColor: 'text-white text-aquag-glow',
+    buttonTextColor: 'text-white text-blue-glow',
     iconColor: 'text-[#f37a5c] hover:text-teal-400',
     hoverRing: 'hover:ring-teal-400',
     galaxyActive: 'text-teal-400',
@@ -43,7 +43,7 @@ const themes = {
     playInactive: 'text-[#f37a5c]',
     terminalColor: 'bg-blue-200/5',
     terminal2Bg: 'bg-blue-200/5',
-    gwterminalBg: 'bg-blue-200/10',
+    gwterminalBg: 'bg-blue-200/5',
     borderColor: 'rgba(255,255,255,0.15)', 
     shadowColor: 'rgba(255,255,255,0.08)'
   },
