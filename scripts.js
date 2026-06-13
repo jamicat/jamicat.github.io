@@ -28,7 +28,7 @@ const themes = {
     glowPrimary: 'text-aquag-glow',      
     glowSecondary: 'text-pink-glow',    
     typed2Text: 'guest wall',
-    typed3Text: '★ Jamie',
+    typed3Text: '-Jamie',
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
     headingFont: 'all_starregular',
