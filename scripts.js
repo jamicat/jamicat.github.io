@@ -225,7 +225,7 @@ if (toggleBtn) {
   document.querySelectorAll(
   '.text-blue-glow, .text-pink-glow, .text-red-glow, .text-aquag-glow, .text-cyan-glow, .text-darkblue-glow'
 ).forEach(el => {
-  if (el.classList.contains('no-theme-glow') && themeName !== 'Cat') return;
+  if (el.classList.contains('no-theme-glow')) return;
   el.classList.remove('text-blue-glow', 'text-pink-glow', 'text-red-glow', 'text-aquag-glow', 'text-cyan-glow', 'text-darkblue-glow');
   el.classList.add(theme.glowPrimary);
 });
