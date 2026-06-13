@@ -1258,7 +1258,11 @@ tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
 
 window.addEventListener('DOMContentLoaded', () => {
-  const savedTheme = localStorage.getItem('theme') || 'Default';
+  let savedTheme = localStorage.getItem('theme');
+  if (!savedTheme) {
+    savedTheme = 'Cat';
+    localStorage.setItem('theme', savedTheme);
+  }
   applyTheme(savedTheme);
   initTyped(savedTheme);
 });
