@@ -249,13 +249,6 @@ document.querySelectorAll('.gwterminal').forEach(el => {
       ? 'none'
       : `3px 3px 0 ${theme.shadowColor}`;
 });
-
-const typed3El = document.getElementById('typed3');
-
-if (typed3El) {
-  typed3El.textContent = theme.typed3Text || 'Jamie';
-}
-  
 }
 
 function updatePlayButtonTheme() {
