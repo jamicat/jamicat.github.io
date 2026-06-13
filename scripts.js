@@ -31,7 +31,7 @@ const themes = {
     typed2Text: 'guest wall"',
     typed3Text: '-Jamie',
     avatar: 'haato1.png',
-    gbAvatar: 'haatowings.png',
+    gbAvatar: 'haatowing.png',
     headingFont: 'all_starregular',
     bodyFont: 'spirits',
     buttonColor: 'bg-transparent hover:bg-transparent',
