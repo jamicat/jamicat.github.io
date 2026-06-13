@@ -472,18 +472,18 @@ min-height: 2.5em;
 
 .theme-cat #name {
   font-size: 1rem;
-  color: #fecdd3 !important;
+  color: rgba(255, 255, 255, 0.9) !important;
 }
 
 .theme-cat #name::placeholder {
-  color: #fecdd3 !important;
+  color: rgba(255, 255, 255, 0.9) !important;
 }
 
 .theme-cat #message {
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.9) !important;
+  color: #fecdd3 !important;
 }
 
 .theme-cat #message::placeholder {
-  color: rgba(255, 255, 255, 0.9) !important;
+  color: #fecdd3 !important;
 }
