@@ -1,7 +1,9 @@
 const themes = {
   Default: {
     glowPrimary: 'text-blue-glow',      
-    glowSecondary: 'text-pink-glow',    
+    glowSecondary: 'text-pink-glow',   
+    typed2Text: 'guest wall!',
+    typed3Text: 'Jamie',
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
     headingFont: 'Fink',
@@ -25,6 +27,8 @@ const themes = {
   Cat: {
     glowPrimary: 'text-aquag-glow',      
     glowSecondary: 'text-pink-glow',    
+    typed2Text: 'guest wall',
+    typed3Text: '★ Jamie',
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
     headingFont: 'all_starregular',
@@ -46,7 +50,9 @@ const themes = {
 
   Stars: {
    glowPrimary: 'text-pink-glow',     
-    glowSecondary: 'text-red-glow',    
+    glowSecondary: 'text-red-glow',   
+    typed2Text: 'guest wall!',
+    typed3Text: 'Jamie',
     avatar: 'g1.gif',
     gbAvatar: 'pbcat.gif',
     headingFont: 'nunito',
@@ -69,6 +75,8 @@ const themes = {
   Aero: {
     glowPrimary: 'text-cyan-glow',     
     glowSecondary: 'text-blue-glow',
+    typed2Text: 'guest wall!',
+    typed3Text: 'Jamie',
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
     headingFont: 'Fink',
@@ -125,6 +133,18 @@ function applyTheme(themeName) {
     '--body-font',
     theme.bodyFont
   );
+
+const typed3El = document.getElementById('typed3');
+
+if (typed3El) {
+  typed3El.textContent = theme.typed3Text || 'Jamie';
+}
+
+const typed2El = document.getElementById('typed2');
+
+if (typed2El) {
+  typed2El.textContent = theme.typed2Text || 'guest wall!';
+}
 
  document.querySelectorAll('.terminal-button:not(.guestbook-submit)').forEach(btn => {
   btn.classList.add('theme-body');
@@ -229,6 +249,12 @@ document.querySelectorAll('.gwterminal').forEach(el => {
       ? 'none'
       : `3px 3px 0 ${theme.shadowColor}`;
 });
+
+const typed3El = document.getElementById('typed3');
+
+if (typed3El) {
+  typed3El.textContent = theme.typed3Text || 'Jamie';
+}
   
 }
 
