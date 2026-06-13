@@ -465,3 +465,7 @@ min-height: 2.5em;
 .theme-cat .gb-name {
   font-size: 1.125rem;
 }
+
+.theme-cat #name {
+  font-size: 1rem;
+}
