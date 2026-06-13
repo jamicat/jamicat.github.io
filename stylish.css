@@ -405,16 +405,24 @@ min-height: 2.5em;
   font-size: 0.875rem;
 }
 
-.theme-stars #typed,
 .theme-stars #typed2,
 .theme-stars #typed3 {
   font-size: 1.5rem !important;
 }
 
-.theme-stars #typed span,
 .theme-stars #typed2 span,
 .theme-stars #typed3 span {
   font-size: 1.5rem !important;
+}
+
+.theme-stars #typed
+{
+font-size: 1.25rem !important;
+}
+
+.theme-stars #typed span
+{
+font-size: 1.25rem !important;
 }
 
 .theme-stars .terminal2 {
