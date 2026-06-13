@@ -471,7 +471,7 @@ font-size: 1.25rem !important;
 }
 
 .theme-cat .gb-comment {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #ffe4e6 !important;
 }
 
@@ -480,7 +480,7 @@ font-size: 1.25rem !important;
 }
 
 .theme-cat #name {
-  font-size: 1.00rem;
+  font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.9) !important;
 }
 
@@ -489,7 +489,7 @@ font-size: 1.25rem !important;
 }
 
 .theme-cat #message {
-  font-size: 1.00rem;
+  font-size: 0.95rem;
   color: #fecdd3 !important;
 }
 
