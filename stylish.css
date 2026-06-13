@@ -444,10 +444,12 @@ min-height: 2.5em;
 
 .theme-cat #typed {
   font-size: 1.25rem !important;
+  color: #fecdd3 !important;
 }
 
 .theme-cat #typed span {
   font-size: 1.25rem !important;
+  color: #fecdd3 !important;
 }
 
 .theme-cat .terminal-button {
@@ -456,12 +458,12 @@ min-height: 2.5em;
 
 .theme-cat #welcomeMessage {
   font-size: 1.125rem;
-  color: #fecdd3!important;
+  color: #fecdd3 !important;
 }
 
 .theme-cat .gb-comment {
   font-size: 0.75rem;
-  color: #fecdd3!important;
+  color: #fecdd3 !important;
 }
 
 .theme-cat .gb-name {
@@ -474,7 +476,7 @@ min-height: 2.5em;
 }
 
 .theme-cat #name::placeholder {
-  color: #fecdd3!important;
+  color: #fecdd3 !important;
 }
 
 .theme-cat #message {
