@@ -159,8 +159,6 @@ height: 132px;
 border-radius: 0%;
 margin-right: 0.5rem;
 object-fit: contain;
-/*image-rendering: pixelated;
-image-rendering: crisp-edges;*/
 }
 
 .avatar-icon2 {
@@ -169,8 +167,6 @@ height: 132px;
 border-radius: 0%;
 margin-right: 0.5rem;
 object-fit: contain;
-/*image-rendering: pixelated;
-image-rendering: crisp-edges;*/
 }
 
 .text-aquag-glow {
@@ -200,22 +196,13 @@ image-rendering: crisp-edges;*/
     0 0 4px rgba(29, 78, 216, 0.35);
 }
 
-#typed {
-min-height: 2.5em; 
-}
-
-#typed2 {
-min-height: 2.5em; 
-}
-
+#typed,
+#typed2,
 #typed3 {
-min-height: 2.5em;
+  min-height: 2.5em;
 }
 
-#typed2 .typed-cursor {
-  color: white !important;
-}
-
+#typed2 .typed-cursor,
 #typed3 .typed-cursor {
   color: white !important;
 }
@@ -225,11 +212,6 @@ min-height: 2.5em;
   scrollbar-gutter: stable; 
   -ms-overflow-style: none;        
   scrollbar-color: #fce7f3 rgba(0, 0, 0, 0.001);
-}
-
-#guestbookComments::-webkit-scrollbar {
-  width: 4px;
-  background: transparent;
 }
 
 #guestbookComments::-webkit-scrollbar {
@@ -416,23 +398,15 @@ min-height: 2.5em;
 }
 
 .theme-stars #typed2,
-.theme-stars #typed3 {
-  font-size: 1.5rem !important;
-}
-
+.theme-stars #typed3,
 .theme-stars #typed2 span,
 .theme-stars #typed3 span {
   font-size: 1.5rem !important;
 }
 
-.theme-stars #typed
-{
-font-size: 1.25rem !important;
-}
-
-.theme-stars #typed span
-{
-font-size: 1.25rem !important;
+.theme-stars #typed,
+.theme-stars #typed span {
+  font-size: 1.25rem !important;
 }
 
 .theme-stars .terminal2 {
@@ -453,19 +427,12 @@ font-size: 1.25rem !important;
   color: black !important;
 }
 
-.theme-cat #typed2 {
-  font-size: 1.5rem !important;
-}
-
+.theme-cat #typed2,
 .theme-cat #typed2 span {
   font-size: 1.5rem !important;
 }
 
-.theme-cat #typed {
-  font-size: 1.25rem !important;
-  color: #fecdd3 !important;
-}
-
+.theme-cat #typed,
 .theme-cat #typed span {
   font-size: 1.25rem !important;
   color: #fecdd3 !important;
@@ -491,18 +458,18 @@ font-size: 1.25rem !important;
 
 .theme-cat #name {
   font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.9) !important;
 }
 
+.theme-cat #name,
 .theme-cat #name::placeholder {
   color: rgba(255, 255, 255, 0.9) !important;
 }
 
 .theme-cat #message {
   font-size: 0.95rem;
-  color: #fecdd3 !important;
 }
 
+.theme-cat #message,
 .theme-cat #message::placeholder {
   color: #fecdd3 !important;
 }
