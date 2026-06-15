@@ -474,8 +474,8 @@ object-fit: contain;
   color: #fecdd3 !important;
 }
 
-.theme-cat {
-  --arrow-image: url("catstar.png");
+.theme-cat #about {
+  font-family: 'Nunito';
 }
 
 .theme-cat #themeCat,
@@ -483,4 +483,8 @@ object-fit: contain;
 .theme-cat #themeDefault,
 .theme-cat #themeAero {
   font-family: 'Nunito';
+}
+
+.theme-cat {
+  --arrow-image: url("catstar.png");
 }
