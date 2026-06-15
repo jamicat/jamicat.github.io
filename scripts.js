@@ -306,7 +306,7 @@ function initTyped(themeName = 'Default') {
 
   typedInstance = new Typed('#typed', {
     strings,
-    typeSpeed: 60,
+    typeSpeed: 30,
     backSpeed: 30,
     showCursor: false,
     smartBackspace: false,
