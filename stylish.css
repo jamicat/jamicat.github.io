@@ -510,3 +510,10 @@ font-size: 1.25rem !important;
 .theme-cat {
   --arrow-image: url("catstar.png");
 }
+
+.theme-cat #themeCat,
+.theme-cat #themeStars,
+.theme-cat #themeDefault,
+.theme-cat #themeAero {
+  font-family: 'Nunito';
+}
