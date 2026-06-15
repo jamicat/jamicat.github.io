@@ -1119,7 +1119,7 @@ div.innerHTML = `
     ${entry.name || 'Anonymous'}
   </div>
 
-  <div class="gb-comment theme-body text-[0.70rem] mb-1 text-pink-100 break-all">
+  <div class="gb-comment theme-body text-[0.65rem] mb-1 text-pink-100 break-all">
     ${entry.comment || ''}
   </div>
 
