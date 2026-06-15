@@ -474,8 +474,10 @@ object-fit: contain;
   color: #fecdd3 !important;
 }
 
-.theme-cat #about {
+.theme-cat #about,
+.theme-stars #about {
   font-family: 'Nunito';
+  font-size: 0.65rem;
 }
 
 .theme-cat #themeCat,
