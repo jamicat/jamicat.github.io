@@ -191,7 +191,7 @@ if (terminal) {
   });
   terminal.classList.add(theme.terminalColor);
   terminal.style.boxShadow =
-  themeName === 'Stars'
+  themeName === 'Stars' || themeName === 'Cat'
     ? 'none'
     : `3px 3px 0 ${theme.shadowColor}`;
   terminal.style.borderColor = theme.borderColor;
