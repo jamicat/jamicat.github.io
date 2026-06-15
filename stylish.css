@@ -24,6 +24,16 @@ src: url('nunito.ttf') format('truetype');
 }
 
 @font-face {
+  font-family: "spiritsoft";
+  src: url("/spiritsoft.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "spiritsharp";
+  src: url("/spiritsharp.otf") format("opentype");
+}
+
+@font-face {
     font-family: 'all_starregular';
     src: url('/all-star-webfont.woff2') format('woff2'),
          url('/all-star-webfont.woff') format('woff');
