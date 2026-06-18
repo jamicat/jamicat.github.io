@@ -498,3 +498,7 @@ object-fit: contain;
 .theme-cat {
   --arrow-image: url("catstar.png");
 }
+
+.theme-cat .guestbook-submit::after {
+  background-image: url("catstar2.png");
+}
