@@ -130,11 +130,17 @@ height: 250%;
 }
 
 .terminal {
+  scale: 0.9;
   background: transparent;
   border: 2px solid;
 }
 
+.terminal2 {
+  scale: 0.9;
+}
+
 .gwterminal {
+  scale: 0.9;
   background: transparent;
   border: 2px solid rgba(255,255,255,0.15);
   box-shadow:
@@ -280,6 +286,9 @@ object-fit: contain;
   top: 16px;
   left: 16px;
 
+  scale: 0.9;
+  transform-origin: top left;
+  
   display: flex;
   align-items: center;
 
