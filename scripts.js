@@ -3,7 +3,7 @@ const themes = {
     glowPrimary: 'text-blue-glow',      
     glowSecondary: 'text-pink-glow',   
     typed2Text: 'guest wall!',
-    typed3Text: 'Jamie',
+    typed3Text: 'jamie',
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
     headingFont: 'Fink',
@@ -29,7 +29,7 @@ const themes = {
     glowSecondary: 'text-pink-glow',  
     typedOverride: 'text-rose-200',
     typed2Text: 'guest wall"',
-    typed3Text: '-Jamie',
+    typed3Text: '-jamie',
     avatar: 'haato1.png',
     gbAvatar: 'haatowing.png',
     headingFont: 'all_starregular',
@@ -53,7 +53,7 @@ const themes = {
    glowPrimary: 'text-pink-glow',     
     glowSecondary: 'text-red-glow',   
     typed2Text: 'guest wall!',
-    typed3Text: 'Jamie',
+    typed3Text: 'jamie',
     avatar: 'jamiey.png',
     gbAvatar: 'pbcat.gif',
     headingFont: 'nunito',
@@ -77,7 +77,7 @@ const themes = {
     glowPrimary: 'text-cyan-glow',     
     glowSecondary: 'text-blue-glow',
     typed2Text: 'guest wall!',
-    typed3Text: 'Jamie',
+    typed3Text: 'jamie',
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
     headingFont: 'Fink',
@@ -143,7 +143,7 @@ document.documentElement.classList.toggle(
 const typed3El = document.getElementById('typed3');
 
 if (typed3El) {
-  typed3El.textContent = theme.typed3Text || 'Jamie';
+  typed3El.textContent = theme.typed3Text || 'jamie';
 }
 
 const typed2El = document.getElementById('typed2');
