@@ -497,3 +497,7 @@ object-fit: contain;
 .theme-cat {
   --arrow-image: url("catstar.png");
 }
+
+.theme-stars #typed3 {
+  display: none;
+}
