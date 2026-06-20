@@ -54,7 +54,7 @@ const themes = {
     glowSecondary: 'text-red-glow',   
     typed2Text: 'guest wall!',
     typed3Text: 'Jamie',
-    avatar: 'g1.gif',
+    avatar: 'jamiey.png',
     gbAvatar: 'pbcat.gif',
     headingFont: 'nunito',
     bodyFont: 'nunito',
@@ -1260,7 +1260,7 @@ document.head.appendChild(tag);
 window.addEventListener('DOMContentLoaded', () => {
   let savedTheme = localStorage.getItem('theme');
   if (!savedTheme) {
-    savedTheme = 'Cat';
+    savedTheme = 'Stars';
     localStorage.setItem('theme', savedTheme);
   }
   applyTheme(savedTheme);
