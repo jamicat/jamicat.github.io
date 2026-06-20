@@ -502,23 +502,7 @@ object-fit: contain;
   display: none;
 }
 
-.theme-cat .avatar-icon {
-width: 110px;
-height: 101px;
-
-.theme-cat .avatar-icon2 {
-width: 110px;
-height: 112px;
-  
 .theme-stars .avatar-icon {
 width: 106px;
 height: 132px;
 }
-
-.theme-stars .avatar-icon2 {
-width: 110px;
-height: 132px;
-}
-
-
-
