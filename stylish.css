@@ -501,8 +501,3 @@ object-fit: contain;
 .theme-stars #typed3 {
   display: none;
 }
-
-.theme-stars .avatar-icon {
-width: 106px;
-height: 132px;
-}
