@@ -160,7 +160,7 @@ cursor: move;
 
 .avatar-icon {
 width: 110px;
-height: 132px;
+height: 101px;
 border-radius: 0%;
 margin-right: 0.5rem;
 object-fit: contain;
@@ -168,7 +168,7 @@ object-fit: contain;
 
 .avatar-icon2 {
 width: 110px;
-height: 132px;
+height: 112px;
 border-radius: 0%;
 margin-right: 0.5rem;
 object-fit: contain;
