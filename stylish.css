@@ -395,6 +395,7 @@ object-fit: contain;
   box-shadow: none !important;
 }
 
+.theme-stars .avatar-icon,
 .theme-stars .avatar-icon2 {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
