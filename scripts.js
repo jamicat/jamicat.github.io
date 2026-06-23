@@ -54,7 +54,7 @@ const themes = {
     glowSecondary: 'text-red-glow',   
     typed2Text: 'guest wall!',
     typed3Text: 'jamie',
-    avatar: 'jamiey.png',
+    avatar: 'g1.gif',
     gbAvatar: 'pbcat.gif',
     headingFont: 'nunito',
     bodyFont: 'nunito',
