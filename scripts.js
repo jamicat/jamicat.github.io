@@ -1243,6 +1243,7 @@ terminal.classList.add('sm:w-[480px]');
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
     <button class="theme-body text-xs terminal-button ml-2" onclick="showArt()">art</button>
     <button class="theme-body text-xs terminal-button" onclick="showList()">playlist</button>
+    <button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">guest wall</button>
     <button class="theme-body text-xs terminal-button ml-2" onclick="siteFAQ()">about</button>
   </div>
 `);
