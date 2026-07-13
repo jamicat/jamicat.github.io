@@ -1258,7 +1258,7 @@ tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
 
 window.addEventListener('DOMContentLoaded', () => {
-  let savedTheme = localStorage.getItem('theme');
+  let savedTheme = localStorage.getItem('Default');
   if (!savedTheme) {
     savedTheme = 'Stars';
     localStorage.setItem('theme', savedTheme);
