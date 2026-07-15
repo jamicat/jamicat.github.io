@@ -10,70 +10,99 @@
   src:url("nunito.ttf") format("truetype");
 }
 
-body {
-  font-family: Nunito, sans-serif;
-  background: #000;
-  color: white;
-  padding: 40px;
+body{
+  font-family:Nunito,sans-serif;
+  background:
+    radial-gradient(circle at top,#1b355d 0%,#0b1524 45%,#05080d 100%);
+  color:white;
+  padding:40px;
 }
 
-h2 {
-  margin-bottom: 20px;
+h2{
+  margin-bottom:20px;
+  color:#ffffff;
 }
 
-#list {
-  max-width: 700px;
+#list{
+  max-width:700px;
 }
 
-.card {
-  background: rgba(255,255,255,0.05);
-  padding: 12px;
-  border-radius: 12px;
-  margin-bottom: 10px;
+.card{
+  background:rgba(73,132,201,0.10);
 
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  padding:12px;
 
-  overflow: hidden;
-  box-sizing: border-box;
+  border-radius:14px;
+
+  margin-bottom:10px;
+
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+
+  overflow:hidden;
+  box-sizing:border-box;
+
+  border:1px solid rgba(120,199,255,.15);
+
+  transition:.2s;
 }
 
-.card input {
-  width: 100%;
-  box-sizing: border-box;
-
-  padding: 8px;
-  border-radius: 8px;
-  border: none;
-
-  background: rgba(255,255,255,0.08);
-  color: white;
-
-  outline: none;
+.card:hover{
+  border-color:rgba(255,170,72,.35);
+  box-shadow:0 0 18px rgba(255,170,72,.12);
 }
 
-button {
-  margin-top: 6px;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  background: #f3eaea;
-  color: #000;
-  font-family: Nunito, sans-serif;
-  font-weight: 600;
-  transition: 0.15s;
+.card input{
+  width:100%;
+  box-sizing:border-box;
+
+  padding:8px;
+
+  border-radius:8px;
+  border:none;
+
+  background:rgba(255,255,255,.08);
+  color:white;
+
+  outline:none;
 }
 
-button:hover {
-  transform: scale(1.03);
+.card input::placeholder{
+  color:#9fb7d2;
 }
 
-.controls {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
+.card input:focus{
+  box-shadow:0 0 0 2px rgba(120,199,255,.35);
+}
+
+button{
+  margin-top:6px;
+  padding:8px 10px;
+
+  border-radius:8px;
+  border:none;
+
+  cursor:pointer;
+
+  background:linear-gradient(135deg,#ffb15b,#ff8d3a);
+  color:#08131f;
+
+  font-family:Nunito,sans-serif;
+  font-weight:700;
+
+  transition:.15s;
+}
+
+button:hover{
+  transform:scale(1.03);
+  box-shadow:0 0 16px rgba(255,160,70,.35);
+}
+
+.controls{
+  margin-top:20px;
+  display:flex;
+  gap:10px;
 }
 </style>
 </head>
