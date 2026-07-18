@@ -119,6 +119,7 @@ button:hover{
 </div>
 
 <script>
+const API = "https://jamicat.ahrly.workers.dev";
 const ADMIN_KEY = prompt("Enter password");
 
 if (!ADMIN_KEY) {
@@ -131,7 +132,7 @@ let playlist = [];
 async function fetchMeta(videoId) {
   if (!videoId) return null;
 
-  const res = await fetch(`/api/youtube/meta?id=${videoId}`);
+  const res = await fetch(`${API}/api/youtube/meta?id=${videoId}`);
 
   if (!res.ok) return null;
 
@@ -139,7 +140,7 @@ async function fetchMeta(videoId) {
 }
 
 async function load() {
-  const res = await fetch('/api/playlist');
+  const res = await fetch(`${API}/api/playlist`);
 
   playlist = await res.json();
 
@@ -210,7 +211,7 @@ function remove(i) {
 }
 
 async function save() {
-  const res = await fetch(`/api/playlist/update?key=${ADMIN_KEY}`, {
+  const res = await fetch(`${API}/api/playlist/update?key=${ADMIN_KEY}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(playlist)
