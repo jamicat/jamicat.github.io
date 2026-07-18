@@ -10,6 +10,10 @@ nunitoFont.textContent = `
 }
 
 #discordStatus {
+  transform: scale(0.8) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
+  transform-origin: top right;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
   font-family: 'Nunito', sans-serif;
 }
 
@@ -25,6 +29,26 @@ statusContainer.className =
   "absolute top-6 right-6 flex items-center space-x-3 p-2.5 rounded-3xl bg-black/15 backdrop-blur-md shadow-lg transition-transform duration-300 ease-in-out z-[9] hover:bg-black/25 hover:border-white/30 text-base perspective-[800px]";
 
 statusContainer.style.transform = "scale(0.8)";
+statusContainer.style.transformOrigin = "top right";
+
+statusContainer.addEventListener("mousemove", (e) => {
+  const rect = statusContainer.getBoundingClientRect();
+
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  const rotateX = ((y / rect.height) - 0.5) * -6;
+  const rotateY = ((x / rect.width) - 0.5) * 6;
+
+  statusContainer.style.setProperty("--rotateX", `${rotateX}deg`);
+  statusContainer.style.setProperty("--rotateY", `${rotateY}deg`);
+});
+
+statusContainer.addEventListener("mouseleave", () => {
+  statusContainer.style.setProperty("--rotateX", "0deg");
+  statusContainer.style.setProperty("--rotateY", "0deg");
+});
+
 statusContainer.innerHTML = `
   <div class="relative">
     <img id="discordAvatar" class="w-14 h-14 rounded-full shadow-md object-cover" src="" alt="Discord Avatar">
@@ -136,25 +160,6 @@ if (!avatarEl || !nameEl || !activityEl || !statusDot) return;
 
 fetchDiscordStatus();
 setInterval(fetchDiscordStatus, 20000);
-
-statusContainer.addEventListener("mousemove", (e) => {
-  const rect = statusContainer.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  const centerX = rect.width / 2;
-  const centerY = rect.height / 2;
-
-  const rotateX = ((y - centerY) / centerY) * 3;
-  const rotateY = ((x - centerX) / centerX) * -3;
-
-  statusContainer.style.transform =
-    `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(0.8)`;
-});
-
-statusContainer.addEventListener("mouseleave", () => {
-  statusContainer.style.transform =
-    "rotateX(0deg) rotateY(0deg) scale(0.8)";
-});
 
 
 
