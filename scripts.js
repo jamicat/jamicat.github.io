@@ -360,10 +360,12 @@ interact('#terminal').draggable({
   },
 });
 
+const API = "https://jamicat.ahrly.workers.dev";
+
 let PLAYLIST = []
 
 async function loadPlaylist() {
-  const res = await fetch('/api/playlist');
+  const res = await fetch(`${API}/api/playlist`);
   PLAYLIST = await res.json();
   return PLAYLIST;
 }
@@ -1020,7 +1022,7 @@ comment: message,
 timestamp: new Date().toISOString(),
 };
 
-const url = '/api/comments';
+const url = `${API}/api/comments`;
 
 await fetch(url, {
 method: "POST",
@@ -1069,7 +1071,8 @@ function connectGuestbookSocket() {
   if (guestbookSocket && guestbookSocket.readyState === WebSocket.OPEN) {
     return;
   }
- guestbookSocket = new WebSocket(`wss://${location.host}/api/ws`);
+  guestbookSocket = new WebSocket(
+  "wss://jamicat.ahrly.workers.dev/api/ws"
 );
   guestbookSocket.onmessage = (event) => {
     if (event.data === "refresh") {
@@ -1102,7 +1105,7 @@ async function loadGuestbookComments() {
 
   try {
 
-    const response = await fetch('/api//list');
+    const response = await fetch(`${API}/api//list`);
     const data = await response.json();
 
     const comments = data.comments || [];
