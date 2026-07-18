@@ -1105,7 +1105,7 @@ async function loadGuestbookComments() {
 
   try {
 
-    const response = await fetch(`${API}/api//list`);
+    const response = await fetch(`${API}/api/list`);
     const data = await response.json();
 
     const comments = data.comments || [];
