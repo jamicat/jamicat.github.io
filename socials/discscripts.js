@@ -143,16 +143,18 @@ statusContainer.addEventListener("mousemove", (e) => {
   const y = e.clientY - rect.top;
   const centerX = rect.width / 2;
   const centerY = rect.height / 2;
+
   const rotateX = ((y - centerY) / centerY) * 3;
   const rotateY = ((x - centerX) / centerX) * -3;
-  statusContainer.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
+
+  statusContainer.style.transform =
+    `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(0.8)`;
 });
 
 statusContainer.addEventListener("mouseleave", () => {
-  statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
+  statusContainer.style.transform =
+    "rotateX(0deg) rotateY(0deg) scale(0.8)";
 });
-
-
 
 
 
