@@ -116,7 +116,6 @@ textarea::placeholder{
 </div>
   
 <script>
-const API = "https://jamicat.ahrly.workers.dev";
 const ADMIN_KEY = prompt("Enter password")
 
 if(!ADMIN_KEY){
@@ -126,7 +125,7 @@ if(!ADMIN_KEY){
 
 async function verify(){
 
-  const res = await fetch(`${API}/api/pending?key=${ADMIN_KEY}`)
+  const res = await fetch('/api/pending?key=${ADMIN_KEY}')
 
   if(res.status===403){
     document.body.innerHTML="Unauthorized"
@@ -139,7 +138,7 @@ async function verify(){
 
 async function loadPending(){
 
-  const res = await fetch(`${API}/api/pending?key=${ADMIN_KEY}`)
+  const res = await fetch('/api/pending?key=${ADMIN_KEY}')
   const comments = await res.json()
 
   const container = document.getElementById("pending")
@@ -165,7 +164,7 @@ async function loadPending(){
 
 async function loadApproved(){
 
-  const res = await fetch(`${API}/api/list`)
+  const res = await fetch('/api/list')
   const data = await res.json()
 
   const container=document.getElementById("approved")
@@ -215,7 +214,7 @@ async function loadApproved(){
 
 async function approve(id){
 
-  await fetch(`${API}/api/approve/${id}?key=${ADMIN_KEY}`)
+  await fetch('/api/approve/${id}?key=${ADMIN_KEY}')
   loadPending()
   loadApproved()
 
@@ -223,14 +222,14 @@ async function approve(id){
 
 async function deletePending(id){
 
- await fetch(`${API}/api/deletePending/${id}?key=${ADMIN_KEY}`)
+ await fetch('/api/deletePending/${id}?key=${ADMIN_KEY}')
   loadPending()
 
 }
 
 async function deleteApproved(id){
 
-  await fetch(`${API}/api/delete/${id}?key=${ADMIN_KEY}`)
+  await fetch('/api/delete/${id}?key=${ADMIN_KEY}')
   loadApproved()
 
 }
@@ -247,7 +246,7 @@ async function deleteReply(id){
 
   if(!confirm("Delete this reply?")) return
 
-  await fetch(`${API}/api/reply/${id}?key=${ADMIN_KEY}`, {
+  await fetch('/api/reply/${id}?key=${ADMIN_KEY}', {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -270,7 +269,7 @@ async function submitReply(id){
     return
   }
 
-  await fetch(`${API}/api/reply/${id}?key=${ADMIN_KEY}`, {
+  await fetch('/api/reply/${id}?key=${ADMIN_KEY}', {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
