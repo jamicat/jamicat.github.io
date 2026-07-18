@@ -24,6 +24,7 @@ statusContainer.id = "discordStatus";
 statusContainer.className =
   "absolute top-6 right-6 flex items-center space-x-3 p-2.5 rounded-3xl bg-black/15 backdrop-blur-md shadow-lg transition-transform duration-300 ease-in-out z-[9] hover:bg-black/25 hover:border-white/30 text-base perspective-[800px]";
 
+statusContainer.style.transform = "scale(0.8)";
 statusContainer.innerHTML = `
   <div class="relative">
     <img id="discordAvatar" class="w-14 h-14 rounded-full shadow-md object-cover" src="" alt="Discord Avatar">
