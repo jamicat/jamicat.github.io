@@ -76,13 +76,17 @@ this.connect();
 
         this.window = windowElement;
 
-        this.messages = document.getElementById("chatMessages");
+       this.messages =
+    this.window.querySelector("#chatMessages");
 
-        this.nameInput = document.getElementById("chatName");
+this.nameInput =
+    this.window.querySelector("#chatName");
 
-        this.messageInput = document.getElementById("chatMessage");
+this.messageInput =
+    this.window.querySelector("#chatMessage");
 
-        this.sendButton = document.getElementById("chatSend");
+this.sendButton =
+    this.window.querySelector("#chatSend");
 		
 		this.sendButton.addEventListener(
     "click",
@@ -100,8 +104,6 @@ this.messageInput.addEventListener(
 );
 
     }
-
-}
 
 async loadHistory() {
 
@@ -304,6 +306,7 @@ setupDragging() {
 
     });
 
+}
 }
 
 window.addEventListener("DOMContentLoaded", () => {
