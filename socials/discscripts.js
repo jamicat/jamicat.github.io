@@ -19,14 +19,12 @@ nunitoFont.textContent = `
 
   transform-origin: top right;
   transition: transform 0.25s cubic-bezier(.2,.8,.2,1),
-              box-shadow 0.25s ease;
   will-change: transform;
   font-family: 'Nunito', sans-serif;
 }
 
 #discordStatus:hover {
-  --scale: 1;
-  box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+  --scale: 0.9;
 }
 
 #discordName {
