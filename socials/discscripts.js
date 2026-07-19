@@ -10,11 +10,21 @@ nunitoFont.textContent = `
 }
 
 #discordStatus {
-  transform: scale(0.8) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
+  --scale: 0.8;
+
+  transform:
+    scale(var(--scale))
+    rotateX(var(--rotateX, 0deg))
+    rotateY(var(--rotateY, 0deg));
+
   transform-origin: top right;
-  transition: transform 0.15s ease-out;
+  transition: transform 0.25s cubic-bezier(.2,.8,.2,1);
   will-change: transform;
   font-family: 'Nunito', sans-serif;
+}
+
+#discordStatus:hover {
+  --scale: 1;
 }
 
 #discordName {
@@ -26,9 +36,8 @@ document.head.appendChild(nunitoFont);
 const statusContainer = document.createElement("div");
 statusContainer.id = "discordStatus";
 statusContainer.className =
-  "absolute top-6 right-6 flex items-center space-x-3 p-2.5 rounded-3xl bg-black/15 backdrop-blur-md shadow-lg transition-transform duration-300 ease-in-out z-[9] hover:bg-black/25 hover:border-white/30 text-base perspective-[800px]";
+  "absolute top-6 right-6 flex items-center space-x-3 p-2.5 rounded-3xl bg-black/15 backdrop-blur-md shadow-lg z-[9] hover:bg-black/25 hover:border-white/30 text-base perspective-[800px]";
 
-statusContainer.style.transform = "scale(0.8)";
 statusContainer.style.transformOrigin = "top right";
 
 statusContainer.addEventListener("mousemove", (e) => {
