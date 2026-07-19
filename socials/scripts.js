@@ -1141,7 +1141,7 @@ div.innerHTML = `
   <span class="gb-name theme-body text-sm text-white text-blue-glow">jamie</span>
 </div>
 
-      <div class="gb-comment theme-body text-[0.70rem] mb-1 text-pink-100 break-all">
+      <div class="gb-comment theme-body text-[0.60rem] mb-1 text-pink-100 break-all">
         ${entry.reply}
       </div>
 
