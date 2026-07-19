@@ -435,6 +435,14 @@ object-fit: contain;
   color: black !important;
 }
 
+.theme-stars #typed3 {
+  display: none;
+}
+
+.theme-stars .gb-comment {
+font-size: 0.65rem;
+}
+
 .theme-cat #typed2,
 .theme-cat #typed2 span {
   font-size: 1.5rem !important;
@@ -497,8 +505,4 @@ object-fit: contain;
 
 .theme-cat {
   --arrow-image: url("catstar.png");
-}
-
-.theme-stars #typed3 {
-  display: none;
 }
