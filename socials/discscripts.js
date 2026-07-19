@@ -18,7 +18,7 @@ nunitoFont.textContent = `
     rotateY(var(--rotateY, 0deg));
 
   transform-origin: top right;
-  transition: transform 0.25s cubic-bezier(.2,.8,.2,1),
+  transition: transform 0.15s ease-out;
   will-change: transform;
   font-family: 'Nunito', sans-serif;
 }
