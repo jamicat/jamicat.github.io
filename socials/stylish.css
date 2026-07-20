@@ -130,13 +130,13 @@ height: 250%;
 }
 
 .terminal {
-  scale: 0.8;
+  scale: 0.9;
   background: transparent;
   border: 2px solid;
 }
 
 .terminal2 {
-  scale: 0.8;
+  scale: 0.9;
 }
 
 .gwterminal {
@@ -285,7 +285,7 @@ object-fit: contain;
   top: 16px;
   left: 16px;
 
-  scale: 0.8;
+  scale: 0.9;
   transform-origin: top left;
   
   display: flex;
