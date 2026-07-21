@@ -68,9 +68,19 @@
 
 }
 
-#chatControls input{
+#chatWindow input {
 
     width:100%;
+
+    background:rgba(0,0,0,.35);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:white;
+
+    padding:8px;
+
+    outline:none;
 
     box-sizing:border-box;
 
@@ -101,3 +111,26 @@
     word-break:break-word;
 
 }
+
+#chatWindow button {
+
+    background:rgba(255,255,255,.05);
+
+    color:white;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    padding:8px;
+
+    cursor:pointer;
+
+}
+
+#chatWindow *{
+
+    box-sizing:border-box;
+
+    color:white;
+
+}
+
