@@ -944,14 +944,14 @@ createBanManagerButton() {
         const row =
             document.createElement("div");
 
-        row.className = [
+       row.className = [
     "chatMessage",
     "group",
     "relative",
     "flex",
     "items-start",
     isContinuation
-        ? "gap-3 py-0.5"
+        ? "py-0.5"
         : "gap-3 py-2"
 ].join(" ");
 
@@ -1220,7 +1220,7 @@ addMessage(message) {
         document.createElement("div");
 
     compactContent.className =
-        "min-w-0 flex-1 pl-12 pr-24";
+         "min-w-0 flex-1 pl-12 pr-24";
 
     const text =
         document.createElement("div");
@@ -1237,19 +1237,16 @@ addMessage(message) {
         document.createElement("span");
 
     compactTime.className = [
-       "absolute",
+    "absolute",
     "right-10",
     "top-1",
     "z-10",
     "whitespace-nowrap",
-    "rounded",
-    "bg-black/75",
-    "px-1",
     "text-[8px]",
     "text-white/0",
     "transition",
     "group-hover:text-white/45"
-    ].join(" ");
+].join(" ");
 
     compactTime.textContent =
         formattedTime;
@@ -1276,7 +1273,7 @@ addMessage(message) {
         avatar.alt = "";
 
         avatar.className =
-            "pixel-avatar mt-1 h-9 w-9 shrink-0 object-contain";
+            "pixel-avatar h-9 w-9 shrink-0 object-contain";
 
         avatar.addEventListener(
             "error",
@@ -1293,7 +1290,7 @@ addMessage(message) {
             document.createElement("div");
 
         content.className =
-            "min-w-0 flex-1 self-center pr-24";
+           "min-w-0 flex-1 pr-24";
 
         const header =
             document.createElement("div");
