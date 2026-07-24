@@ -1034,7 +1034,7 @@ createBanManagerButton() {
 ) {
     const confirmed =
         window.confirm(
-            `Unban ${
+            `unban ${
                 name || "this user"
             }?`
         );
@@ -1044,7 +1044,7 @@ createBanManagerButton() {
     }
 
     button.disabled = true;
-    button.textContent = "Unbanning...";
+    button.textContent = "unbanning...";
 
     try {
         const response = await fetch(
@@ -1080,7 +1080,7 @@ createBanManagerButton() {
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `Unban failed (${response.status})`
+                `unban failed (${response.status})`
             );
         }
 
@@ -1099,18 +1099,18 @@ createBanManagerButton() {
         await this.loadBannedUsers();
     } catch (error) {
         console.error(
-            "Could not unban client:",
+            "could not unban client:",
             error
         );
 
         window.alert(
-            `Could not unban user: ${
+            `could not unban user: ${
                 error.message
             }`
         );
 
         button.disabled = false;
-        button.textContent = "Unban";
+        button.textContent = "unban";
     }
 }
 
@@ -1778,7 +1778,7 @@ openMemberModerationMenu(x, y, member) {
 
     const confirmed =
         window.confirm(
-            `Permanently ban ${name || "this user"}?\n\nReason: ${reason}`
+            `permanently ban ${name || "this user"}?\n\nreason: ${reason}`
         );
 
     if (!confirmed) {
