@@ -351,9 +351,8 @@ transition-[height] duration-200
         id="chatEmojiPicker"
         class="
             invisible pointer-events-none opacity-0
-            absolute bottom-full right-0 z-30
-            mb-2
-            transition-opacity duration-150
+    fixed z-[100002]
+    transition-opacity duration-150
         "
     ></div>
 </div>
@@ -2384,12 +2383,83 @@ setupNameSaving() {
         );
     }
 }
+
+	positionEmojiPicker() {
+    if (
+        !this.emojiPickerContainer ||
+        !this.emojiButton
+    ) {
+        return;
+    }
+
+    const buttonRect =
+        this.emojiButton.getBoundingClientRect();
+
+    const pickerRect =
+        this.emojiPickerContainer.getBoundingClientRect();
+
+    const viewportPadding = 12;
+    const gap = 8;
+
+    let left =
+        buttonRect.right -
+        pickerRect.width;
+
+    left = Math.max(
+        viewportPadding,
+        Math.min(
+            left,
+            window.innerWidth -
+                pickerRect.width -
+                viewportPadding
+        )
+    );
+
+    let top =
+        buttonRect.top -
+        pickerRect.height -
+        gap;
+
+    /*
+     * If there is not enough space above,
+     * place it below the button instead.
+     */
+    if (top < viewportPadding) {
+        top =
+            buttonRect.bottom +
+            gap;
+    }
+
+    top = Math.min(
+        top,
+        window.innerHeight -
+            pickerRect.height -
+            viewportPadding
+    );
+
+    this.emojiPickerContainer.style.left =
+        `${left}px`;
+
+    this.emojiPickerContainer.style.top =
+        `${Math.max(viewportPadding, top)}px`;
+}
 	
 setupEmojiPicker() {
     /*
      * Custom categories appear alongside Emoji Mart's
      * standard Unicode categories.
      */
+
+	window.addEventListener(
+    "resize",
+    () => {
+        if (this.emojiPickerOpen) {
+            this.positionEmojiPicker();
+        }
+    }
+);
+
+	
     this.customEmojiCategories = [
     {
         id: "custom",
@@ -2516,6 +2586,9 @@ const customSection =
     document.createElement("div");
 
 customSection.className = [
+    "w-fit",
+    "max-w-full",
+    "self-start",
     "rounded-t-xl",
     "border",
     "border-b-0",
@@ -2540,8 +2613,9 @@ const customTray =
     document.createElement("div");
 
 customTray.className = [
-    "grid",
-    "grid-cols-7",
+    "flex",
+    "max-w-full",
+    "flex-wrap",
     "gap-1"
 ].join(" ");
 
@@ -2564,8 +2638,9 @@ for (const category of this.customEmojiCategories) {
 
         button.className = [
             "flex",
-            "h-12",
-            "w-full",
+    "h-11",
+    "w-11",
+    "shrink-0",
             "items-center",
             "justify-center",
             "rounded-lg",
@@ -2682,6 +2757,14 @@ this.emojiPickerContainer.append(
     this.emojiPicker
 );
 
+/*
+ * Move the picker outside #chatWindow so the chat's
+ * overflow-hidden rule cannot clip it.
+ */
+document.body.appendChild(
+    this.emojiPickerContainer
+);
+
     this.emojiButton.addEventListener(
         "click",
         event => {
@@ -2748,6 +2831,10 @@ openEmojiPicker() {
     this.emojiPickerContainer.classList.add(
         "opacity-100"
     );
+
+	requestAnimationFrame(() => {
+    this.positionEmojiPicker();
+});
 
     this.emojiButton.setAttribute(
         "aria-expanded",
