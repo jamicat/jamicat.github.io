@@ -1171,7 +1171,7 @@ addMessage(message) {
     "items-start",
     isContinuation
         ? "py-0"
-        : "gap-3 py-2"
+        : "gap-3 pt-2 pb-1"
 ].join(" ");
 
     const messageId =
