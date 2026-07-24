@@ -872,12 +872,23 @@ setupDragging() {
 
         inertia: true,
 
-        modifiers: [
-            interact.modifiers.restrictRect({
-                restriction: "parent",
-                endOnly: true
-            })
-        ],
+       modifiers: [
+    interact.modifiers.restrictRect({
+        restriction: {
+            top: 0,
+            left: 0,
+            right: window.innerWidth,
+            bottom: window.innerHeight
+        },
+        elementRect: {
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 1
+        },
+        endOnly: false
+    })
+],
 
         listeners: {
             move(event) {
@@ -1003,17 +1014,36 @@ keepInViewport() {
     const margin = 8;
     const rect = this.window.getBoundingClientRect();
 
+    const availableWidth =
+        window.innerWidth - margin * 2;
+
+    const availableHeight =
+        window.innerHeight - margin * 2;
+
     let correctionX = 0;
     let correctionY = 0;
 
-    if (rect.left < margin) {
+    /*
+     * If the chat is wider than the viewport, prioritize
+     * keeping its left edge visible.
+     */
+    if (rect.width > availableWidth) {
+        correctionX = margin - rect.left;
+    } else if (rect.left < margin) {
         correctionX = margin - rect.left;
     } else if (rect.right > window.innerWidth - margin) {
         correctionX =
             window.innerWidth - margin - rect.right;
     }
 
-    if (rect.top < margin) {
+    /*
+     * If the chat is taller than the viewport, prioritize
+     * keeping the title bar visible. The bottom may overflow,
+     * but the user will always be able to drag or minimize it.
+     */
+    if (rect.height > availableHeight) {
+        correctionY = margin - rect.top;
+    } else if (rect.top < margin) {
         correctionY = margin - rect.top;
     } else if (rect.bottom > window.innerHeight - margin) {
         correctionY =
@@ -1033,8 +1063,8 @@ keepInViewport() {
     const nextX = currentX + correctionX;
     const nextY = currentY + correctionY;
 
-    this.window.dataset.x = nextX;
-    this.window.dataset.y = nextY;
+    this.window.dataset.x = String(nextX);
+    this.window.dataset.y = String(nextY);
 
     this.window.style.transform =
         `translate(${nextX}px, ${nextY}px)`;
