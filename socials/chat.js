@@ -945,14 +945,15 @@ createBanManagerButton() {
             document.createElement("div");
 
         row.className = [
-            "mb-2",
-            "rounded-xl",
-            "border",
-            "border-white/10",
-            "bg-white/5",
-            "p-3",
-            "last:mb-0"
-        ].join(" ");
+    "chatMessage",
+    "group",
+    "relative",
+    "flex",
+    "items-start",
+    isContinuation
+        ? "gap-3 py-0.5"
+        : "gap-3 py-2"
+].join(" ");
 
         const name =
             document.createElement("div");
@@ -1169,8 +1170,8 @@ addMessage(message) {
         "relative",
         "flex",
         isContinuation
-            ? "items-start gap-3 py-0.5"
-            : "items-center gap-3 py-2"
+    ? "items-start gap-3 py-0.5"
+    : "items-start gap-3 py-2"
     ].join(" ");
 
     const messageId =
@@ -1219,7 +1220,7 @@ addMessage(message) {
         document.createElement("div");
 
     compactContent.className =
-        "min-w-0 flex-1 pl-12 pr-14";
+        "min-w-0 flex-1 pl-12 pr-24";
 
     const text =
         document.createElement("div");
@@ -1236,15 +1237,18 @@ addMessage(message) {
         document.createElement("span");
 
     compactTime.className = [
-        "absolute",
-        "right-9",
-        "top-1/2",
-        "-translate-y-1/2",
-        "whitespace-nowrap",
-        "text-[8px]",
-        "text-white/0",
-        "transition",
-        "group-hover:text-white/35"
+       "absolute",
+    "right-10",
+    "top-1",
+    "z-10",
+    "whitespace-nowrap",
+    "rounded",
+    "bg-black/75",
+    "px-1",
+    "text-[8px]",
+    "text-white/0",
+    "transition",
+    "group-hover:text-white/45"
     ].join(" ");
 
     compactTime.textContent =
@@ -1272,7 +1276,7 @@ addMessage(message) {
         avatar.alt = "";
 
         avatar.className =
-            "pixel-avatar h-9 w-9 shrink-0 object-contain";
+            "pixel-avatar mt-1 h-9 w-9 shrink-0 object-contain";
 
         avatar.addEventListener(
             "error",
@@ -1289,7 +1293,7 @@ addMessage(message) {
             document.createElement("div");
 
         content.className =
-            "min-w-0 flex-1 self-center";
+            "min-w-0 flex-1 self-center pr-24";
 
         const header =
             document.createElement("div");
@@ -1357,7 +1361,7 @@ if (
         "chatAdminButton",
         "absolute",
         "right-2",
-        "top-1/2",
+        "top-1",
         "-translate-y-1/2",
         "hidden",
         "group-hover:flex",
