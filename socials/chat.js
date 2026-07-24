@@ -1,36 +1,32 @@
 class ChatWidget {
 
-    constructor() {
+ constructor() {
 
-        this.API = "https://jamicat.ahrly.workers.dev";
+    console.log("Constructor");
 
-        this.events = null;
+    this.API = "https://jamicat.ahrly.workers.dev";
 
-        this.messages = null;
+    this.events = null;
 
-        this.window = null;
+    ...
 
-        this.nameInput = null;
+    this.createWindow();
 
-        this.messageInput = null;
+    console.log("Window created");
 
-        this.sendButton = null;
+    this.restoreSettings();
 
-        this.avatar = "default";
+    this.setupNameSaving();
 
-       this.createWindow();
+    this.setupDragging();
 
-this.restoreSettings();
+    this.loadHistory();
 
-this.setupNameSaving();
+    console.log("Calling connect");
 
-this.setupDragging();
+    this.connect();
 
-this.loadHistory();
-
-this.connect();
-
-    }
+}
 
     createWindow() {
 
@@ -159,9 +155,13 @@ addMessage(message) {
 
 connect() {
 
+     console.log("connect() called");
+
     this.events = new EventSource(
         `${this.API}/api/chat/events`
     );
+
+    console.log("EventSource created");
 
     this.events.onopen = () => {
         console.log("SSE OPEN");
