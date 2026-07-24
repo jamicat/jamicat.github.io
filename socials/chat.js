@@ -1235,7 +1235,11 @@ const isFirstContinuation =
         document.createElement("div");
 
     text.className =
-        "chatText break-words leading-relaxed";
+         "chatText messageLine break-words leading-relaxed";
+
+	   if (isFirstContinuation) {
+    text.classList.add("firstContinuationLine");
+}
 
     this.renderMessageContent(
         text,
@@ -1337,7 +1341,7 @@ const text =
     document.createElement("div");
 
         text.className =
-            "chatText mt-1 break-words leading-relaxed";
+            "chatText messageLine break-words leading-relaxed";
 
         this.renderMessageContent(
             text,
