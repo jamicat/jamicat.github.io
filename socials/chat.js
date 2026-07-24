@@ -136,7 +136,7 @@ this.restoreSettings();
             "
         >
 
-	<div class="flex items-start gap-2">
+	<div class="flex items-stretch gap-2">
     <div class="relative shrink-0">
         <button
             id="chatAvatarButton"
@@ -158,7 +158,7 @@ this.restoreSettings();
                 id="chatAvatarPreview"
                 src="/avatars/original.gif"
                 alt=""
-                class="h-9 w-9 object-contain"
+                class="pixel-avatar h-10 w-10 object-contain"
             >
         </button>
 
@@ -203,7 +203,7 @@ this.restoreSettings();
         placeholder="name"
         class="
             theme-body
-            min-w-0 flex-1 rounded-xl
+            h-11 min-w-0 flex-1 rounded-xl
             border border-white/10
             bg-black/30 px-3 py-2
             text-xs text-white
@@ -316,7 +316,7 @@ addMessage(message) {
 
     avatar.alt = "";
     avatar.className =
-        "h-9 w-9 shrink-0 object-contain";
+    "pixel-avatar h-10 w-10 shrink-0 object-contain";
 
     avatar.addEventListener("error", () => {
         avatar.src = "/avatars/original.gif";
@@ -610,7 +610,7 @@ renderAvatarPicker() {
         image.src = `/avatars/${filename}`;
         image.alt = "";
         image.className =
-            "h-full w-full object-contain";
+                "pixel-avatar h-full w-full object-contain";
 
         button.appendChild(image);
 
