@@ -2334,8 +2334,8 @@ setupNameSaving() {
             image.className = [
     "mx-0.5",
     "inline-block",
-    "h-8",
-    "w-8",
+    "h-9",
+    "w-9",
     "align-middle",
     "object-contain"
 ].join(" ");
@@ -2564,7 +2564,7 @@ for (const category of this.customEmojiCategories) {
 
         button.className = [
             "flex",
-            "h-11",
+            "h-12",
             "w-full",
             "items-center",
             "justify-center",
@@ -2634,11 +2634,11 @@ this.emojiPicker =
             return response.json();
         },
 
-        custom: this.customEmojiCategories,
+        //custom: this.customEmojiCategories,
 
-emojiSize: 30,
-emojiButtonSize: 40,
-perLine: 8,
+emojiSize: 22,
+emojiButtonSize: 32,
+perLine: 10,
 
 onEmojiSelect: emoji => {
             this.insertSelectedEmoji(emoji);
@@ -2646,10 +2646,10 @@ onEmojiSelect: emoji => {
     });
 
 this.emojiPickerContainer.style.width =
-    "352px";
+    "420px";
 
 this.emojiPickerContainer.style.maxWidth =
-    "calc(100vw - 3rem)";
+    "calc(100vw - 2rem)";
 
 this.emojiPickerContainer.style.display =
     "flex";
@@ -2658,7 +2658,7 @@ this.emojiPickerContainer.style.flexDirection =
     "column";
 
 this.emojiPickerContainer.style.maxHeight =
-    "390px";
+    "500px";
 
 this.emojiPickerContainer.style.overflow =
     "hidden";
@@ -2675,7 +2675,7 @@ this.emojiPicker.style.maxWidth =
  * height leaves room for the tray above it.
  */
 this.emojiPicker.style.height =
-    "280px";
+    "370px";
 
 this.emojiPickerContainer.append(
     customSection,
