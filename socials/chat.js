@@ -517,61 +517,56 @@ addMessage(message) {
     message.message || ""
 );
 
-   const adminButton =
-    document.createElement("button");
-
-adminButton.type = "button";
-
-adminButton.className = [
-    "chatAdminButton",
-    "ml-auto",
-    "hidden",
-    "group-hover:flex",
-    "h-6",
-    "w-6",
-    "items-center",
-    "justify-center",
-    "rounded",
-    "text-white/40",
-    "hover:bg-white/10",
-    "hover:text-white"
-].join(" ");
-
-adminButton.textContent = "⋮";
-
-adminButton.addEventListener(
-    "click",
-    event => {
-        event.stopPropagation();
-
-        console.log(
-            "Moderate message",
-            row.dataset.messageId
-        );
-    }
-);
-
-if (!this.isAdmin) {
-    adminButton.remove();
-}
-
-header.append(
+   header.append(
     name,
-    time,
-    adminButton
+    time
 );
 
-adminButton.addEventListener(
-    "click",
-    event => {
-        event.stopPropagation();
+if (this.isAdmin && row.dataset.messageId) {
+    const adminButton =
+        document.createElement("button");
 
-        console.log(
-            "Moderate message",
-            row.dataset.messageId
-        );
-    }
-);
+    adminButton.type = "button";
+
+    adminButton.className = [
+        "chatAdminButton",
+        "ml-auto",
+        "hidden",
+        "group-hover:flex",
+        "h-6",
+        "w-6",
+        "items-center",
+        "justify-center",
+        "rounded",
+        "text-white/40",
+        "hover:bg-white/10",
+        "hover:text-white"
+    ].join(" ");
+
+    adminButton.textContent = "⋮";
+
+    adminButton.setAttribute(
+        "aria-label",
+        `Moderate message ${row.dataset.messageId}`
+    );
+
+    adminButton.title =
+        "Moderate message";
+
+    adminButton.addEventListener(
+        "click",
+        event => {
+            event.stopPropagation();
+
+            console.log(
+                "Moderate message",
+                row.dataset.messageId
+            );
+        }
+    );
+
+    header.appendChild(adminButton);
+}
 
 content.append(
     header,
