@@ -28,8 +28,12 @@ this.emojiPickerOpen = false;
 
 this.customEmojiCategories = [];
 this.customEmojiLookup = new Map();
-this.isAdmin =
-    sessionStorage.getItem("chat_admin") === "true";
+this.adminKey =
+    sessionStorage.getItem(
+        "chat_admin_key"
+    ) || "";
+
+this.isAdmin = false;
 this.moderationMenu = null;
 this.isMinimized = false;
 	this.membersPanel = null;
@@ -47,9 +51,10 @@ localStorage.setItem(
     this.clientId
 );
 
- this.createWindow();
+this.createWindow();
 this.applyCurrentTheme();
 this.restoreSettings();
+this.setupAdminAuthentication();
 	this.setupAvatarPicker();
 	this.setupEmojiPicker();
 	this.setupMembersToggle();
@@ -438,7 +443,144 @@ document.addEventListener(
 	   
 	
 }
+setupAdminAuthentication() {
+    const title =
+        this.window.querySelector(
+            "#chatTitle"
+        );
 
+    if (!title) {
+        return;
+    }
+
+    title.title =
+        "Double-click for admin login";
+
+    title.addEventListener(
+        "dblclick",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            this.promptForAdminLogin();
+        }
+    );
+
+    if (this.adminKey) {
+        this.verifyAdminKey(
+            this.adminKey
+        ).then(isValid => {
+            if (isValid) {
+                this.enableAdminMode(
+                    this.adminKey
+                );
+                return;
+            }
+
+            this.disableAdminMode();
+        });
+    }
+}
+	async promptForAdminLogin() {
+    const key = window.prompt(
+        "Enter the chat admin key:"
+    );
+
+    if (key === null) {
+        return;
+    }
+
+    const cleanedKey =
+        key.trim();
+
+    if (!cleanedKey) {
+        window.alert(
+            "Admin key cannot be empty."
+        );
+        return;
+    }
+
+    const isValid =
+        await this.verifyAdminKey(
+            cleanedKey
+        );
+
+    if (!isValid) {
+        window.alert(
+            "Incorrect admin key."
+        );
+        return;
+    }
+
+    this.enableAdminMode(cleanedKey);
+
+    window.alert(
+        "Chat moderation enabled."
+    );
+}
+	async verifyAdminKey(key) {
+    try {
+        const response = await fetch(
+            `${this.API}/api/admin/login`,
+            {
+                method: "POST",
+                headers: {
+                    "Authorization":
+                        `Bearer ${key}`
+                }
+            }
+        );
+
+        return response.ok;
+    } catch (error) {
+        console.error(
+            "Could not verify admin key:",
+            error
+        );
+
+        return false;
+    }
+}
+	enableAdminMode(key) {
+    this.adminKey = key;
+    this.isAdmin = true;
+
+    sessionStorage.setItem(
+        "chat_admin_key",
+        key
+    );
+
+    /*
+     * Re-render existing messages so their
+     * moderation buttons appear.
+     */
+    this.loadHistory();
+}
+
+	disableAdminMode() {
+    this.adminKey = "";
+    this.isAdmin = false;
+
+    sessionStorage.removeItem(
+        "chat_admin_key"
+    );
+
+    this.closeModerationMenu();
+
+    /*
+     * Re-render messages without moderation
+     * controls.
+     */
+    this.loadHistory();
+}
+
+	logoutAdmin() {
+    this.disableAdminMode();
+
+    window.alert(
+        "Chat moderation disabled."
+    );
+}
 async loadHistory() {
 
     const res = await fetch(`${this.API}/api/chat`);
