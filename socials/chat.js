@@ -869,15 +869,7 @@ closeAvatarPicker() {
 setupDragging() {
     interact(this.window).draggable({
         allowFrom: ".chat-drag-area",
-
-		interact(this.window).draggable({
-    allowFrom: ".chat-drag-area",
-    ignoreFrom: "button, input, a",
-
-    listeners: {
-        // existing dragging code
-    }
-});
+        ignoreFrom: "button, input, a",
 
         inertia: true,
 
