@@ -1170,7 +1170,7 @@ addMessage(message) {
     "items-start",
     isContinuation
         ? ""
-        : "gap-3"
+        : "mt-3 gap-3"
 ].join(" ");
 	
 	row.dataset.continuation =
