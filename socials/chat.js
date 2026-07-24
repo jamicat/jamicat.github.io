@@ -2334,8 +2334,8 @@ setupNameSaving() {
             image.className = [
     "mx-0.5",
     "inline-block",
-    "h-8",
-    "w-8",
+    "h-6",
+    "w-6",
     "align-middle",
     "object-contain"
 ].join(" ");
@@ -2636,9 +2636,9 @@ this.emojiPicker =
 
         custom: this.customEmojiCategories,
 
-emojiSize: 30,
-emojiButtonSize: 40,
-perLine: 8,
+emojiSize: 16,
+emojiButtonSize: 26,
+perLine: 10,
 
 onEmojiSelect: emoji => {
             this.insertSelectedEmoji(emoji);
