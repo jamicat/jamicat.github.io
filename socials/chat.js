@@ -2894,7 +2894,11 @@ insertIntoMessageInput(value) {
      * can support both GIF and PNG files.
      */
     this.avatars = [
-        "original.gif"
+        "original.gif",
+		"orange.gif",
+		"blue.gif",
+		"pink.gif",
+		"black.gif"
     ];
 
     this.avatarPreview.src =
