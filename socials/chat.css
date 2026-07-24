@@ -1,92 +1,37 @@
-#chatWindow{
+/*
+ * Theming hooks and properties that are easier to maintain
+ * outside Tailwind utility strings.
+ */
 
-    position:fixed;
-
-    right:20px;
-
-    bottom:20px;
-
-    width:360px;
-
-    height:450px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    backdrop-filter:blur(12px);
-
-    background:rgba(20,20,20,.55);
-
-    border:1px solid rgba(255,255,255,.15);
-
-    border-radius:8px;
-
-    overflow:hidden;
-
-    z-index:99999;
-
-    font-family:Consolas,monospace;
-
-}
-
-#chatTitleBar {
-    min-height: 36px;
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
-    cursor: move;
-    user-select: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(0, 0, 0, 0.12);
+#chatWindow {
+    font-family: var(--body-font, Consolas, monospace);
+    touch-action: none;
 }
 
 #chatTitle {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-family: var(--heading-font, Consolas, monospace);
 }
 
 #chatMessages {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    padding: 8px 12px;
     scrollbar-width: thin;
     scrollbar-color:
-        rgba(255, 255, 255, 0.25)
+        rgba(255, 255, 255, 0.22)
         transparent;
 }
 
-#chatControls{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:8px;
-
-    padding:10px;
-
+#chatMessages::-webkit-scrollbar {
+    width: 6px;
 }
 
-#chatWindow input {
-
-    width:100%;
-
-    background:rgba(0,0,0,.35);
-
-    border:1px solid rgba(255,255,255,.08);
-
-    color:white;
-
-    padding:8px;
-
-    outline:none;
-
-    box-sizing:border-box;
-
+#chatMessages::-webkit-scrollbar-track {
+    background: transparent;
 }
+
+#chatMessages::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.20);
+    border-radius: 999px;
+}
+
 #chatWindow .chatMessage {
     display: flex;
     align-items: baseline;
@@ -101,73 +46,31 @@
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-#chatWindow .chatMessageName {
-    flex: 0 0 auto;
-    margin-right: 6px;
-    color: rgba(255, 255, 255, 0.95) !important;
-    font-weight: 700;
-}
-
 #chatWindow .chatTime {
     flex: 0 0 auto;
-    margin-right: 3px;
+    margin-right: 7px;
     color: rgba(255, 255, 255, 0.42) !important;
     font-size: 9px;
     white-space: nowrap;
 }
 
+#chatWindow .chatMessageName {
+    flex: 0 0 auto;
+    margin-right: 4px;
+    font-weight: 700;
+}
+
 #chatWindow .chatSeparator {
     flex: 0 0 auto;
     margin-right: 6px;
-    color: rgba(255, 255, 255, 0.55) !important;
+    opacity: 0.55;
 }
 
 #chatWindow .chatText {
     flex: 1 1 auto;
     min-width: 0;
-    color: rgba(255, 255, 255, 0.82) !important;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
     word-break: break-word;
     text-align: left;
 }
-
-#chatWindow button {
-
-    background:rgba(255,255,255,.05);
-
-    color:white;
-
-    border:1px solid rgba(255,255,255,.08);
-
-    padding:8px;
-
-    cursor:pointer;
-
-}
-
-#chatWindow *{
-
-    box-sizing:border-box;
-
-    color:white;
-
-}
-
-.chatTime {
-    display: inline-block;
-    margin-right: 6px;
-    color: rgba(255,255,255,.45);
-    font-size: 10px;
-    white-space: nowrap;
-}
-
-.chatMessageName {
-    margin-right: 5px;
-    font-weight: 700;
-}
-
-.chatSeparator {
-    margin-right: 6px;
-}
-
