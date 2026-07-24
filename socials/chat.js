@@ -2354,8 +2354,8 @@ setupNameSaving() {
             image.className = [
     "mx-0.5",
     "inline-block",
-    "h-8",
-    "w-8",
+    "h-10",
+    "w-10",
     "align-middle",
     "object-contain"
 ].join(" ");
