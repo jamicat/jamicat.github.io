@@ -1328,7 +1328,7 @@ const text =
     document.createElement("div");
 
         text.className =
-            "chatText mt-0.5 break-words leading-relaxed";
+            "chatText break-words leading-relaxed";
 
         this.renderMessageContent(
             text,
