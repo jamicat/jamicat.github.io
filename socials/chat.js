@@ -1163,16 +1163,25 @@ addMessage(message) {
     const row =
         document.createElement("div");
 
-    row.className = [
+   row.className = [
     "chatMessage",
     "group",
     "relative",
     "flex",
     "items-start",
     isContinuation
-        ? "py-0"
-        : "gap-3 pt-2 pb-1"
+        ? ""
+        : "gap-3"
 ].join(" ");
+
+	const previousWasContinuation =
+    previousRow?.dataset.continuation === "true";
+
+const isFirstContinuation =
+    isContinuation && !previousWasContinuation;
+
+	row.dataset.continuation =
+    isContinuation ? "true" : "false";
 
     const messageId =
         Number(message.id);
