@@ -2,7 +2,7 @@ class ChatWidget {
 
 constructor() {
     this.API = "https://jamicat.ahrly.workers.dev";
-
+    this.titleBar = null;
     this.socket = null;
     this.reconnectTimer = null;
 
@@ -45,7 +45,7 @@ this.restoreSettings();
     this.setupNameSaving();
     this.setupDragging();
 	window.addEventListener("resize", () => {
-    this.keepInViewport();
+    this.keepTitleBarInViewport();
 });
     this.loadHistory();
     this.connect();
@@ -320,7 +320,8 @@ transition-[height] duration-200
         this.window.querySelector("#chatConnectionStatus");
 	   this.avatarButton =
     this.window.querySelector("#chatAvatarButton");
-
+this.titleBar =
+    this.window.querySelector("#chatTitleBar");
 this.avatarPreview =
     this.window.querySelector("#chatAvatarPreview");
 
@@ -869,29 +870,10 @@ setupDragging() {
     interact(this.window).draggable({
         allowFrom: ".chat-drag-area",
         ignoreFrom: "button, input, a",
-
         inertia: true,
 
-       modifiers: [
-    interact.modifiers.restrictRect({
-        restriction: {
-            top: 0,
-            left: 0,
-            right: window.innerWidth,
-            bottom: window.innerHeight
-        },
-        elementRect: {
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 1
-        },
-        endOnly: false
-    })
-],
-
         listeners: {
-            move(event) {
+            move: event => {
                 const target = event.target;
 
                 const x =
@@ -902,14 +884,22 @@ setupDragging() {
                     (parseFloat(target.dataset.y) || 0) +
                     event.dy;
 
+                target.dataset.x = String(x);
+                target.dataset.y = String(y);
+
                 target.style.transform =
                     `translate(${x}px, ${y}px)`;
 
-                target.dataset.x = x;
-                target.dataset.y = y;
+                /*
+                 * Clamp the draggable title bar rather than
+                 * the entire 500px chat window.
+                 */
+                this.keepTitleBarInViewport();
             },
 
-            end: (event) => {
+            end: event => {
+                this.keepTitleBarInViewport();
+
                 localStorage.setItem(
                     "chat_x",
                     event.target.dataset.x || "0"
@@ -919,8 +909,6 @@ setupDragging() {
                     "chat_y",
                     event.target.dataset.y || "0"
                 );
-
-				this.keepInViewport();
             }
         }
     });
@@ -1002,55 +990,63 @@ setMinimized(minimized) {
         this.closeAvatarPicker();
     }
 	requestAnimationFrame(() => {
-    this.keepInViewport();
+    this.keepTitleBarInViewport();
 });
 
 	setTimeout(() => {
-    this.keepInViewport();
+    this.keepTitleBarInViewport();
 }, 220);
 }
 
-keepInViewport() {
+keepTitleBarInViewport() {
+    if (!this.window || !this.titleBar) {
+        return;
+    }
+
     const margin = 8;
-    const rect = this.window.getBoundingClientRect();
-
-    const availableWidth =
-        window.innerWidth - margin * 2;
-
-    const availableHeight =
-        window.innerHeight - margin * 2;
+    const titleRect =
+        this.titleBar.getBoundingClientRect();
 
     let correctionX = 0;
     let correctionY = 0;
 
     /*
-     * If the chat is wider than the viewport, prioritize
-     * keeping its left edge visible.
+     * Keep the full title bar horizontally visible.
      */
-    if (rect.width > availableWidth) {
-        correctionX = margin - rect.left;
-    } else if (rect.left < margin) {
-        correctionX = margin - rect.left;
-    } else if (rect.right > window.innerWidth - margin) {
+    if (titleRect.left < margin) {
         correctionX =
-            window.innerWidth - margin - rect.right;
+            margin - titleRect.left;
+    } else if (
+        titleRect.right >
+        window.innerWidth - margin
+    ) {
+        correctionX =
+            window.innerWidth -
+            margin -
+            titleRect.right;
     }
 
     /*
-     * If the chat is taller than the viewport, prioritize
-     * keeping the title bar visible. The bottom may overflow,
-     * but the user will always be able to drag or minimize it.
+     * Only constrain the title bar vertically.
+     * The chat body may extend below the viewport.
      */
-    if (rect.height > availableHeight) {
-        correctionY = margin - rect.top;
-    } else if (rect.top < margin) {
-        correctionY = margin - rect.top;
-    } else if (rect.bottom > window.innerHeight - margin) {
+    if (titleRect.top < margin) {
         correctionY =
-            window.innerHeight - margin - rect.bottom;
+            margin - titleRect.top;
+    } else if (
+        titleRect.bottom >
+        window.innerHeight - margin
+    ) {
+        correctionY =
+            window.innerHeight -
+            margin -
+            titleRect.bottom;
     }
 
-    if (correctionX === 0 && correctionY === 0) {
+    if (
+        correctionX === 0 &&
+        correctionY === 0
+    ) {
         return;
     }
 
@@ -1060,17 +1056,30 @@ keepInViewport() {
     const currentY =
         parseFloat(this.window.dataset.y) || 0;
 
-    const nextX = currentX + correctionX;
-    const nextY = currentY + correctionY;
+    const nextX =
+        currentX + correctionX;
 
-    this.window.dataset.x = String(nextX);
-    this.window.dataset.y = String(nextY);
+    const nextY =
+        currentY + correctionY;
+
+    this.window.dataset.x =
+        String(nextX);
+
+    this.window.dataset.y =
+        String(nextY);
 
     this.window.style.transform =
         `translate(${nextX}px, ${nextY}px)`;
 
-    localStorage.setItem("chat_x", String(nextX));
-    localStorage.setItem("chat_y", String(nextY));
+    localStorage.setItem(
+        "chat_x",
+        String(nextX)
+    );
+
+    localStorage.setItem(
+        "chat_y",
+        String(nextY)
+    );
 }
 	
 	applyCurrentTheme() {
