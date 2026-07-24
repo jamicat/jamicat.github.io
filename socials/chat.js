@@ -12,12 +12,19 @@ constructor() {
     this.messageInput = null;
     this.sendButton = null;
 
-    this.avatar =
-        localStorage.getItem("chat_avatar") || "default";
+	this.avatarButton = null;
+this.avatarPreview = null;
+this.avatarPicker = null;
+this.avatarGrid = null;
+this.membersElement = null;
+
+   this.avatar =
+    localStorage.getItem("chat_avatar") || "original.gif";
 
  this.createWindow();
 this.applyCurrentTheme();
 this.restoreSettings();
+	this.setupAvatarPicker();
     this.setupNameSaving();
     this.setupDragging();
     this.loadHistory();
@@ -36,7 +43,7 @@ this.restoreSettings();
     windowElement.className = `
     terminal2
     fixed right-4 bottom-4 sm:right-8 sm:bottom-8 z-[99999]
-    flex h-[450px] w-[360px] max-w-[calc(100vw-1rem)]
+    flex h-[500px] w-[480px] max-w-[calc(100vw-2rem)]
     flex-col overflow-hidden
     rounded-3xl border border-white/15
     bg-black/20 text-white
@@ -73,17 +80,52 @@ this.restoreSettings();
                 connecting
             </span>
         </div>
+<div
+    id="chatMain"
+    class="flex min-h-0 flex-1"
+>
+    <div
+        id="chatMessages"
+        class="
+            min-h-0 min-w-0 flex-1
+            overflow-y-auto
+            px-3 py-3
+            theme-body text-xs
+        "
+        aria-live="polite"
+    ></div>
+
+    <aside
+        id="chatMembersPanel"
+        class="
+            hidden w-28 shrink-0
+            border-l border-white/10
+            bg-black/5
+            px-2 py-3
+            sm:block
+        "
+    >
+        <div
+            class="
+                theme-heading
+                mb-3 text-[9px]
+                font-bold uppercase tracking-widest
+                text-white/50
+            "
+        >
+            members
+        </div>
 
         <div
-            id="chatMessages"
-            class="
-                min-h-0 flex-1
-                overflow-y-auto
-                px-3 py-2
-                theme-body text-xs
-            "
-            aria-live="polite"
-        ></div>
+            id="chatMembers"
+            class="space-y-2 theme-body text-[10px]"
+        >
+            <div class="text-white/35">
+                loading...
+            </div>
+        </div>
+    </aside>
+</div>
 
         <div
             id="chatControls"
@@ -93,6 +135,66 @@ this.restoreSettings();
                 bg-black/10 p-3
             "
         >
+
+		<div class="relative">
+    <button
+        id="chatAvatarButton"
+        type="button"
+        class="
+            flex w-full items-center gap-3
+            rounded-xl
+            border border-white/10
+            bg-black/20 px-3 py-2
+            text-left
+            transition
+            hover:bg-white/5
+        "
+        aria-expanded="false"
+        aria-controls="chatAvatarPicker"
+    >
+        <img
+            id="chatAvatarPreview"
+            src="/avatars/original.gif"
+            alt="Selected chat avatar"
+            class="h-9 w-9 shrink-0 object-contain"
+        >
+
+        <span class="theme-body text-xs text-white/70">
+            choose avatar
+        </span>
+    </button>
+
+    <div
+        id="chatAvatarPicker"
+        class="
+            terminal2
+            invisible pointer-events-none opacity-0
+            absolute bottom-full left-0 z-20
+            mb-2 w-full
+            rounded-2xl border border-white/15
+            p-3
+            shadow-lg
+            backdrop-blur-xl
+            transition-opacity
+        "
+    >
+        <div
+            class="
+                theme-heading
+                mb-3 text-[10px]
+                font-bold uppercase tracking-widest
+                text-white/60
+            "
+        >
+            select avatar
+        </div>
+
+        <div
+            id="chatAvatarGrid"
+            class="grid grid-cols-5 gap-2"
+        ></div>
+    </div>
+</div>
             <input
                 id="chatName"
                 type="text"
@@ -159,6 +261,20 @@ this.restoreSettings();
     this.sendButton = this.window.querySelector("#chatSend");
     this.connectionStatus =
         this.window.querySelector("#chatConnectionStatus");
+	   this.avatarButton =
+    this.window.querySelector("#chatAvatarButton");
+
+this.avatarPreview =
+    this.window.querySelector("#chatAvatarPreview");
+
+this.avatarPicker =
+    this.window.querySelector("#chatAvatarPicker");
+
+this.avatarGrid =
+    this.window.querySelector("#chatAvatarGrid");
+
+this.membersElement =
+    this.window.querySelector("#chatMembers");
 
     this.sendButton.addEventListener(
         "click",
@@ -188,14 +304,47 @@ async loadHistory() {
 
 addMessage(message) {
     const row = document.createElement("div");
-    row.className = "chatMessage";
+
+    row.className =
+        "chatMessage flex items-start gap-2 py-2";
+
+    const avatar = document.createElement("img");
+
+    avatar.src =
+        `/avatars/${message.avatar || "original.gif"}`;
+
+    avatar.alt = "";
+    avatar.className =
+        "h-9 w-9 shrink-0 object-contain";
+
+    avatar.addEventListener("error", () => {
+        avatar.src = "/avatars/original.gif";
+    }, {
+        once: true
+    });
+
+    const content = document.createElement("div");
+
+    content.className =
+        "min-w-0 flex-1";
+
+    const header = document.createElement("div");
+
+    header.className =
+        "flex items-baseline gap-2";
 
     const name = document.createElement("span");
-    name.className = "chatMessageName";
-    name.textContent = message.name || "Anonymous";
+
+    name.className =
+        "chatMessageName font-bold";
+
+    name.textContent =
+        message.name || "Anonymous";
 
     const time = document.createElement("span");
-    time.className = "chatTime";
+
+    time.className =
+        "chatTime text-[9px] text-white/35";
 
     const date = new Date(message.created_at);
 
@@ -206,18 +355,22 @@ addMessage(message) {
             minute: "2-digit"
         });
 
-    const separator = document.createElement("span");
-    separator.className = "chatSeparator";
-    separator.textContent = "•";
+    const text = document.createElement("div");
 
-    const text = document.createElement("span");
-    text.className = "chatText";
-    text.textContent = message.message || "";
+    text.className =
+        "chatText mt-0.5 break-words leading-relaxed";
 
-row.append(time, name, separator, text);
+    text.textContent =
+        message.message || "";
+
+    header.append(name, time);
+    content.append(header, text);
+    row.append(avatar, content);
 
     this.messages.appendChild(row);
-    this.messages.scrollTop = this.messages.scrollHeight;
+
+    this.messages.scrollTop =
+        this.messages.scrollHeight;
 }
 
 connect() {
@@ -391,6 +544,137 @@ setupNameSaving() {
 
     });
 
+}
+	setupAvatarPicker() {
+    /*
+     * Replace these names with the exact GIF and PNG filenames
+     * you place inside /avatars/.
+     *
+     * Store filenames including their extensions so the picker
+     * can support both GIF and PNG files.
+     */
+    this.avatars = [
+        "original.gif"
+    ];
+
+    this.avatarPreview.src =
+        `/avatars/${this.avatar}`;
+
+    this.renderAvatarPicker();
+
+    this.avatarButton.addEventListener("click", event => {
+        event.stopPropagation();
+
+        const isOpen =
+            this.avatarPicker.classList.contains("opacity-100");
+
+        if (isOpen) {
+            this.closeAvatarPicker();
+        } else {
+            this.openAvatarPicker();
+        }
+    });
+
+    this.avatarPicker.addEventListener("click", event => {
+        event.stopPropagation();
+    });
+
+    document.addEventListener("click", () => {
+        this.closeAvatarPicker();
+    });
+}
+
+renderAvatarPicker() {
+    this.avatarGrid.replaceChildren();
+
+    for (const filename of this.avatars) {
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className = `
+            flex aspect-square items-center justify-center
+            rounded-lg bg-black/10 p-1
+            transition
+            hover:bg-white/10
+        `;
+
+        button.dataset.avatar = filename;
+        button.setAttribute(
+            "aria-label",
+            `Select ${filename}`
+        );
+
+        const image = document.createElement("img");
+
+        image.src = `/avatars/${filename}`;
+        image.alt = "";
+        image.className =
+            "h-full w-full object-contain";
+
+        button.appendChild(image);
+
+        if (filename === this.avatar) {
+            button.classList.add(
+                "ring-1",
+                "ring-white/50"
+            );
+        }
+
+        button.addEventListener("click", () => {
+            this.selectAvatar(filename);
+        });
+
+        this.avatarGrid.appendChild(button);
+    }
+}
+
+selectAvatar(filename) {
+    this.avatar = filename;
+
+    localStorage.setItem(
+        "chat_avatar",
+        filename
+    );
+
+    this.avatarPreview.src =
+        `/avatars/${filename}`;
+
+    this.renderAvatarPicker();
+    this.closeAvatarPicker();
+}
+
+openAvatarPicker() {
+    this.avatarPicker.classList.remove(
+        "invisible",
+        "pointer-events-none",
+        "opacity-0"
+    );
+
+    this.avatarPicker.classList.add(
+        "opacity-100"
+    );
+
+    this.avatarButton.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+}
+
+closeAvatarPicker() {
+    this.avatarPicker.classList.add(
+        "invisible",
+        "pointer-events-none",
+        "opacity-0"
+    );
+
+    this.avatarPicker.classList.remove(
+        "opacity-100"
+    );
+
+    this.avatarButton.setAttribute(
+        "aria-expanded",
+        "false"
+    );
 }
 
 setupDragging() {
