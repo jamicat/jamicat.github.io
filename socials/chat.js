@@ -2418,7 +2418,7 @@ setupEmojiPicker() {
             {
                 id: "blueblob",
                 name: "blue wobble",
-                keywords: ["blue", "blob"],
+                keywords: ["blue", "blob", "cat"],
                 skins: [
                     {
                         src: "/emojis/blueblob.gif"
@@ -2426,6 +2426,26 @@ setupEmojiPicker() {
                 ]
             },
             {
+                id: "pinkblob",
+                name: "pink wobble",
+                keywords: ["pink", "blob", "cat"],
+                skins: [
+                    {
+                        src: "/emojis/pinkblob.gif"
+                    }
+                ]
+            },
+			{
+                id: "yellowblob",
+                name: "yellow wobble",
+                keywords: ["yellow", "blob", "cat"],
+                skins: [
+                    {
+                        src: "/emojis/yellowblob.gif"
+                    }
+                ]
+            },
+			 {
                 id: "catcooking",
                 name: "cat cooking",
                 keywords: ["cat", "cooking", "food"],
@@ -2446,16 +2466,6 @@ setupEmojiPicker() {
                 ]
             },
             {
-                id: "pinkblob",
-                name: "pink wobble",
-                keywords: ["pink", "blob"],
-                skins: [
-                    {
-                        src: "/emojis/pinkblob.gif"
-                    }
-                ]
-            },
-            {
                 id: "pointandlaugh",
                 name: "point and laugh",
                 keywords: ["point", "laugh", "funny"],
@@ -2468,20 +2478,30 @@ setupEmojiPicker() {
             {
                 id: "tongue",
                 name: "tongue",
-                keywords: ["tongue", "silly", "tease"],
+                keywords: ["tongue", "silly", "tease", "cat"],
                 skins: [
                     {
                         src: "/emojis/tongue.gif"
                     }
                 ]
             },
-            {
-                id: "yellowblob",
-                name: "yellow wobble",
-                keywords: ["yellow", "blob"],
+			{
+                id: "catflip",
+                name: "table flip",
+                keywords: ["table", "flip", "cat"],
                 skins: [
                     {
-                        src: "/emojis/yellowblob.gif"
+                        src: "/emojis/catflip.gif"
+                    }
+                ]
+            },
+			{
+                id: "catdance",
+                name: "dancedance",
+                keywords: ["dance", "cat"],
+                skins: [
+                    {
+                        src: "/emojis/catdance.gif"
                     }
                 ]
             }
