@@ -548,7 +548,7 @@ setupAdminAuthentication() {
 }
 	async promptForAdminLogin() {
     const key = window.prompt(
-        "Enter the chat admin key:"
+        "enter the chat admin key:"
     );
 
     if (key === null) {
@@ -560,7 +560,7 @@ setupAdminAuthentication() {
 
     if (!cleanedKey) {
         window.alert(
-            "Admin key cannot be empty."
+            "admin key cannot be empty."
         );
         return;
     }
@@ -572,7 +572,7 @@ setupAdminAuthentication() {
 
     if (!isValid) {
         window.alert(
-            "Incorrect admin key."
+            "incorrect admin key."
         );
         return;
     }
@@ -580,7 +580,7 @@ setupAdminAuthentication() {
     this.enableAdminMode(cleanedKey);
 
     window.alert(
-        "Chat moderation enabled."
+        "chat moderation enabled."
     );
 }
 	async verifyAdminKey(key) {
@@ -599,7 +599,7 @@ setupAdminAuthentication() {
         return response.ok;
     } catch (error) {
         console.error(
-            "Could not verify admin key:",
+            "could not verify admin key:",
             error
         );
 
@@ -675,7 +675,7 @@ createBanManagerButton() {
     ].join(" ");
 
     button.title =
-        "Manage banned users";
+        "manage banned users";
 
     button.addEventListener(
         "click",
@@ -714,7 +714,7 @@ createBanManagerButton() {
         !this.adminKey
     ) {
         window.alert(
-            "Admin authentication is required."
+            "admin authentication is required."
         );
 
         return;
@@ -773,7 +773,7 @@ createBanManagerButton() {
                     font-bold uppercase tracking-widest
                 "
             >
-                Banned users
+                banned users
             </div>
 
             <button
@@ -786,7 +786,7 @@ createBanManagerButton() {
                     hover:bg-white/10
                     hover:text-white
                 "
-                aria-label="Close banned users panel"
+                aria-label="close banned users panel"
             >
                 ×
             </button>
@@ -801,7 +801,7 @@ createBanManagerButton() {
             "
         >
             <div class="text-white/40">
-                Loading...
+                loading...
             </div>
         </div>
     `;
@@ -847,7 +847,7 @@ createBanManagerButton() {
 
     list.innerHTML = `
         <div class="text-white/40">
-            Loading...
+            loading...
         </div>
     `;
 
@@ -870,7 +870,7 @@ createBanManagerButton() {
             this.disableAdminMode();
 
             window.alert(
-                "Your admin session is no longer valid."
+                "your admin session is no longer valid."
             );
 
             return;
@@ -879,7 +879,7 @@ createBanManagerButton() {
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `Could not load bans (${response.status})`
+                `could not load bans (${response.status})`
             );
         }
 
@@ -888,7 +888,7 @@ createBanManagerButton() {
         );
     } catch (error) {
         console.error(
-            "Could not load banned users:",
+            "could not load banned users:",
             error
         );
 
@@ -934,7 +934,7 @@ createBanManagerButton() {
             "text-white/40";
 
         empty.textContent =
-            "Nobody is banned.";
+            "nobody is banned.";
 
         list.appendChild(empty);
         return;
@@ -988,7 +988,7 @@ createBanManagerButton() {
             document.createElement("button");
 
         unbanButton.type = "button";
-        unbanButton.textContent = "Unban";
+        unbanButton.textContent = "unban";
 
         unbanButton.className = [
             "mt-3",
@@ -1087,7 +1087,7 @@ createBanManagerButton() {
 
         if (!result.removed) {
             window.alert(
-                "That client was not currently banned."
+                "that client was not currently banned."
             );
         } else {
             window.alert(
@@ -1505,7 +1505,7 @@ openModerationMenu(button, message) {
 
  const deleteButton =
     this.createModerationMenuButton(
-        "Delete message",
+        "delete message",
         () => {
             this.closeModerationMenu();
 
@@ -1517,7 +1517,7 @@ openModerationMenu(button, message) {
 
    const banButton =
     this.createModerationMenuButton(
-        `Ban ${message.name || "user"}`,
+        `ban ${message.name || "user"}`,
         async () => {
             this.closeModerationMenu();
 
@@ -1530,7 +1530,7 @@ openModerationMenu(button, message) {
 
     const copyButton =
         this.createModerationMenuButton(
-            "Copy message ID",
+            "copy message ID",
             async () => {
                 try {
                     await navigator.clipboard.writeText(
@@ -1701,7 +1701,7 @@ openModerationMenu(button, message) {
 	async banClient(clientId, name) {
     if (!clientId) {
         window.alert(
-            "This message has no client ID and cannot be banned."
+            "this message has no client ID and cannot be banned."
         );
 
         return;
@@ -1721,8 +1721,8 @@ openModerationMenu(button, message) {
 
     const reasonInput =
         window.prompt(
-            `Reason for banning ${name || "this user"}:`,
-            "Spam"
+            `reason for banning ${name || "this user"}:`,
+            ""
         );
 
     if (reasonInput === null) {
@@ -1731,7 +1731,7 @@ openModerationMenu(button, message) {
 
     const reason =
         reasonInput.trim() ||
-        "No reason provided";
+        "no reason provided";
 
     const confirmed =
         window.confirm(
@@ -1769,7 +1769,7 @@ openModerationMenu(button, message) {
             this.disableAdminMode();
 
             window.alert(
-                "Your admin session is no longer valid."
+                "your admin session is no longer valid."
             );
 
             return;
@@ -2036,7 +2036,7 @@ connect() {
             : "This ban is permanent.";
 
     window.alert(
-        `You have been banned.\n\n` +
+        `you have been banned.\n\n` +
         `Reason: ${reason}\n\n` +
         durationText
     );
@@ -2166,7 +2166,7 @@ async sendMessage() {
     }
 
     this.sendButton.disabled = true;
-    this.sendButton.textContent = "Sending...";
+    this.sendButton.textContent = "sending...";
 
     try {
         const response = await fetch(`${this.API}/api/chat`, {
@@ -2187,7 +2187,7 @@ async sendMessage() {
 
 if (
     response.status === 403 &&
-    result.error === "Banned"
+    result.error === "banned"
 ) {
     this.isBanned = true;
 
@@ -2201,10 +2201,10 @@ if (
             : "This ban is permanent.";
 
     window.alert(
-        `You have been banned.\n\n` +
-        `Reason: ${
+        `you have been banned.\n\n` +
+        `reason: ${
             result.reason ||
-            "No reason provided"
+            "no reason provided"
         }\n\n` +
         durationText
     );
@@ -2218,7 +2218,7 @@ if (
     ) {
         this.socket.close(
             4003,
-            "Banned"
+            "banned"
         );
     }
 
@@ -2244,8 +2244,8 @@ this.messageInput.focus();
 
     this.sendButton.textContent =
         this.isBanned
-            ? "Banned"
-            : "Send";
+            ? "banned"
+            : "send";
 }
 }
 
