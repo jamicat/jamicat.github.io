@@ -1,25 +1,24 @@
 class ChatWidget {
 
 constructor() {
-    this.API = "https://jamicat.ahrly.workers.dev";
-    this.titleBar = null;
-    this.socket = null;
+this.API = "https://jamicat.ahrly.workers.dev";
+this.titleBar = null;
+this.socket = null;
 this.reconnectTimer = null;
 this.isBanned = false;
 this.unreadCount = 0;
 this.userHasScrolledUp = false;
-	this.typingTimer = null;
+this.typingTimer = null;
 this.typingUsers = new Map();
 this.typingElement = null;
 this.notificationSoundEnabled = true;
 this.lastNotificationTime = 0;
-    this.messages = null;
-    this.window = null;
-    this.nameInput = null;
-    this.messageInput = null;
-    this.sendButton = null;
-
-	this.avatarButton = null;
+this.messages = null;
+this.window = null;
+this.nameInput = null;
+this.messageInput = null;
+this.sendButton = null;
+this.avatarButton = null;
 this.avatarPreview = null;
 this.avatarPicker = null;
 this.avatarGrid = null;
@@ -29,7 +28,7 @@ this.controlsElement = null;
 this.minimizeButton = null;
 this.membersToggle = null;
 this.chatTitle = null;
-	this.emojiButton = null;
+this.emojiButton = null;
 this.emojiPickerContainer = null;
 this.emojiPicker = null;
 this.emojiPickerOpen = false;
@@ -46,32 +45,32 @@ this.moderationMenu = null;
 this.banManager = null;
 this.banManagerButton = null;
 this.isMinimized = false;
-	this.membersPanel = null;
+this.membersPanel = null;
 this.membersVisible = true;
 
-   this.avatar =
-    localStorage.getItem("chat_avatar") || "original.gif";
+this.avatar =
+localStorage.getItem("chat_avatar") || "original.gif";
 
-	this.clientId =
-    localStorage.getItem("chat_client_id") ||
-    crypto.randomUUID();
+this.clientId =
+localStorage.getItem("chat_client_id") ||
+crypto.randomUUID();
 
 localStorage.setItem(
-    "chat_client_id",
-    this.clientId
+"chat_client_id",
+this.clientId
 );
 
 this.createWindow();
 this.applyCurrentTheme();
 this.restoreSettings();
 this.setupAdminAuthentication();
-	this.setupAvatarPicker();
-	this.setupEmojiPicker();
-	this.setupMembersToggle();
-    this.setupNameSaving();
-    this.setupDragging();
-    this.loadHistory();
-    this.connect();
+this.setupAvatarPicker();
+this.setupEmojiPicker();
+this.setupMembersToggle();
+this.setupNameSaving();
+this.setupDragging();
+this.loadHistory();
+this.connect();
 }
 
    createWindow() {
