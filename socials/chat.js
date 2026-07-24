@@ -17,6 +17,11 @@ this.avatarPreview = null;
 this.avatarPicker = null;
 this.avatarGrid = null;
 this.membersElement = null;
+this.mainElement = null;
+this.controlsElement = null;
+this.minimizeButton = null;
+this.membersToggle = null;
+this.isMinimized = false;
 	this.membersPanel = null;
 this.membersToggle = null;
 this.membersVisible = true;
@@ -61,6 +66,7 @@ this.restoreSettings();
     rounded-3xl border border-white/15
     bg-black/20 text-white
     shadow-lg backdrop-blur-xl
+transition-[height] duration-200
 `;
 
     windowElement.innerHTML = `
@@ -100,6 +106,7 @@ this.restoreSettings();
         hide members
     </button>
 
+    <div class="flex items-center gap-3">
     <span
         id="chatConnectionStatus"
         class="text-[9px] text-white/40"
@@ -107,6 +114,25 @@ this.restoreSettings();
     >
         connecting
     </span>
+
+    <button
+        id="chatMinimize"
+        type="button"
+        class="
+            flex h-6 w-6 items-center justify-center
+            rounded-md
+            text-sm leading-none text-white/55
+            transition
+            hover:bg-white/10
+            hover:text-white
+        "
+        aria-label="Minimize live chat"
+        aria-expanded="true"
+        title="Minimize chat"
+    >
+        −
+    </button>
+</div>
 </div>
         </div>
 <div
@@ -310,11 +336,35 @@ this.membersElement =
 
 this.membersToggle =
     this.window.querySelector("#chatMembersToggle");
+	   this.mainElement =
+    this.window.querySelector("#chatMain");
+
+this.controlsElement =
+    this.window.querySelector("#chatControls");
+
+this.minimizeButton =
+    this.window.querySelector("#chatMinimize");
+
+this.membersToggle =
+    this.window.querySelector("#chatMembersToggle");
 
     this.sendButton.addEventListener(
         "click",
         () => this.sendMessage()
     );
+
+	   this.minimizeButton.addEventListener(
+    "click",
+    event => {
+        /*
+         * Prevent clicking the button from also beginning
+         * a title-bar drag.
+         */
+        event.stopPropagation();
+
+        this.toggleMinimized();
+    }
+);
 
     this.messageInput.addEventListener("keydown", event => {
         if (event.key === "Enter" && !event.shiftKey) {
@@ -820,6 +870,15 @@ setupDragging() {
     interact(this.window).draggable({
         allowFrom: ".chat-drag-area",
 
+		interact(this.window).draggable({
+    allowFrom: ".chat-drag-area",
+    ignoreFrom: "button, input, a",
+
+    listeners: {
+        // existing dragging code
+    }
+});
+
         inertia: true,
 
         modifiers: [
@@ -864,7 +923,81 @@ setupDragging() {
 }
 
 	
+toggleMinimized() {
+    this.setMinimized(!this.isMinimized);
+}
 
+setMinimized(minimized) {
+    this.isMinimized = minimized;
+
+    this.mainElement.classList.toggle(
+        "hidden",
+        minimized
+    );
+
+    this.controlsElement.classList.toggle(
+        "hidden",
+        minimized
+    );
+
+    /*
+     * This control has no purpose while the entire
+     * chat body is hidden.
+     */
+    if (this.membersToggle) {
+        this.membersToggle.classList.toggle(
+            "hidden",
+            minimized
+        );
+    }
+
+    /*
+     * The normal window has h-[500px].
+     * Remove it while minimized so only the title bar remains.
+     */
+    this.window.classList.toggle(
+        "h-[500px]",
+        !minimized
+    );
+
+    this.window.classList.toggle(
+        "h-10",
+        minimized
+    );
+
+    /*
+     * Remove the bottom rounding while expanded only if your
+     * existing design requires it. The normal rounded-3xl class
+     * works fine for both states.
+     */
+    this.minimizeButton.textContent =
+        minimized ? "+" : "−";
+
+    this.minimizeButton.setAttribute(
+        "aria-expanded",
+        String(!minimized)
+    );
+
+    this.minimizeButton.setAttribute(
+        "aria-label",
+        minimized
+            ? "Restore live chat"
+            : "Minimize live chat"
+    );
+
+    this.minimizeButton.title =
+        minimized
+            ? "Restore chat"
+            : "Minimize chat";
+
+    /*
+     * Close the avatar popup if the chat is minimized
+     * while that popup is open.
+     */
+    if (minimized) {
+        this.closeAvatarPicker();
+    }
+}
 	
 	applyCurrentTheme() {
     const themeName =
