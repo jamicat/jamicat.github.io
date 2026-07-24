@@ -1250,7 +1250,7 @@ messageBody.appendChild(text);
     compactTime.className = [
     "absolute",
     "right-10",
-    "top-[5px]",
+    "top-[8px]",
     "z-10",
     "whitespace-nowrap",
     "text-[8px]",
