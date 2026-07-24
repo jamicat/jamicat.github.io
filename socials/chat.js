@@ -77,11 +77,6 @@ this.connect();
     const windowElement = document.createElement("div");
 
     windowElement.id = "chatWindow";
-
-    /*
-     * terminal2 allows your existing applyTheme() function
-     * to theme the chat automatically.
-     */
     windowElement.className = `
     terminal2
     fixed right-4 bottom-4 sm:right-8 sm:bottom-8 z-[99999]
@@ -434,12 +429,7 @@ this.minimizeButton =
 	   this.minimizeButton.addEventListener(
     "click",
     event => {
-        /*
-         * Prevent clicking the button from also beginning
-         * a title-bar drag.
-         */
         event.stopPropagation();
-
         this.toggleMinimized();
     }
 );
@@ -614,10 +604,6 @@ setupAdminAuthentication() {
         key
     );
 
-    /*
-     * Re-render existing messages so their
-     * moderation buttons appear.
-     */
     this.loadHistory();
 		this.createBanManagerButton();
 }
@@ -635,11 +621,6 @@ setupAdminAuthentication() {
     this.closeModerationMenu();
 	this.closeBanManager();
 this.removeBanManagerButton();
-
-    /*
-     * Re-render messages without moderation
-     * controls.
-     */
     this.loadHistory();
 }
 
@@ -1699,7 +1680,7 @@ openMemberModerationMenu(x, y, member) {
             result =
                 await response.json();
         } catch {
-            // The response may not contain JSON.
+            
         }
 
         if (response.status === 401) {
@@ -1719,12 +1700,6 @@ openMemberModerationMenu(x, y, member) {
             );
         }
 
-        /*
-         * Do not remove it here.
-         *
-         * The Durable Object will broadcast the
-         * deletion to every client, including this one.
-         */
         console.log(
             "Deleted message",
             id
@@ -1995,10 +1970,6 @@ this.typingElement.textContent =
 	
 
 connect() {
-    /*
-     * Avoid creating a duplicate connection.
-     */
-
 	 if (this.isBanned) {
         return;
     }
@@ -2040,9 +2011,6 @@ connect() {
 });
 
     this.socket.addEventListener("message", event => {
-    /*
-     * Ignore optional ping/pong traffic.
-     */
     if (event.data === "pong") {
         return;
     }
@@ -2204,14 +2172,10 @@ if (!this.isBanned) {
     this.socket.addEventListener("error", error => {
         console.error("Chat WebSocket error:", error);
 
-        /*
-         * Closing causes the close handler above to schedule
-         * the reconnect in one place.
-         */
         try {
             this.socket.close();
         } catch {
-            // The socket may already be closed.
+            
         }
     });
 }
@@ -2345,14 +2309,6 @@ setupNameSaving() {
             ? message
             : "";
 
-    /*
-     * Match shortcode-style custom emojis.
-     *
-     * Examples:
-     * :jamicat:
-     * :partycat:
-     * :heartpixel:
-     */
     const pattern =
         /:([a-z0-9_+-]+):/gi;
 
@@ -2362,9 +2318,6 @@ setupNameSaving() {
     while (
         (match = pattern.exec(value)) !== null
     ) {
-        /*
-         * Preserve ordinary text before the emoji.
-         */
         if (match.index > lastIndex) {
             container.appendChild(
                 document.createTextNode(
@@ -2418,9 +2371,6 @@ setupNameSaving() {
 
             container.appendChild(image);
         } else {
-            /*
-             * Unknown shortcodes stay visible as text.
-             */
             container.appendChild(
                 document.createTextNode(
                     match[0]
@@ -2432,9 +2382,6 @@ setupNameSaving() {
             pattern.lastIndex;
     }
 
-    /*
-     * Preserve any remaining text after the final match.
-     */
     if (lastIndex < value.length) {
         container.appendChild(
             document.createTextNode(
@@ -2445,10 +2392,7 @@ setupNameSaving() {
 }
 	
 setupEmojiPicker() {
-    /*
-     * Custom categories appear alongside Emoji Mart's
-     * standard Unicode categories.
-     */
+
     this.customEmojiCategories = [
     {
         id: "custom",
@@ -2548,9 +2492,6 @@ setupEmojiPicker() {
     }
 ];
 
-    /*
-     * Build a trusted lookup used when rendering messages.
-     */
     this.customEmojiLookup.clear();
 
     for (const category of this.customEmojiCategories) {
@@ -2588,9 +2529,6 @@ setupEmojiPicker() {
         return;
     }
 
- /*
- * Custom emojis shown permanently above the Unicode picker.
- */
 const customSection =
     document.createElement("div");
 
@@ -2695,9 +2633,6 @@ for (const category of this.customEmojiCategories) {
     customTray
 );
 
-/*
- * Normal Unicode Emoji Mart picker.
- */
 this.emojiPicker =
     new window.EmojiMart.Picker({
         data: async () => {
@@ -2749,11 +2684,6 @@ this.emojiPicker.style.width =
 this.emojiPicker.style.maxWidth =
     "100%";
 
-/*
- * Emoji Mart's normal picker is tall enough to push
- * the custom tray outside the chat window. Reducing its
- * height leaves room for the tray above it.
- */
 this.emojiPicker.style.height =
     "280px";
 
@@ -2770,11 +2700,6 @@ this.emojiPickerContainer.append(
         }
     );
 
-    /*
-     * A document click closes the picker. Clicks originating
-     * inside Emoji Mart's Shadow DOM are handled through
-     * composedPath().
-     */
     document.addEventListener(
         "click",
         event => {
@@ -2866,9 +2791,6 @@ closeEmojiPicker() {
         return;
     }
 
-    /*
-     * Standard Unicode emoji.
-     */
     if (typeof emoji.native === "string") {
         this.insertIntoMessageInput(
             emoji.native
@@ -2877,12 +2799,6 @@ closeEmojiPicker() {
         return;
     }
 
-    /*
-     * Custom Emoji Mart emoji.
-     *
-     * Store it as a plain-text shortcode so it can pass
-     * safely through D1, HTTP, and WebSockets.
-     */
     if (
         typeof emoji.id === "string" &&
         this.customEmojiLookup.has(
@@ -2915,9 +2831,6 @@ insertIntoMessageInput(value) {
         value +
         currentValue.slice(selectionEnd);
 
-    /*
-     * Preserve your existing maxlength="250" rule.
-     */
     if (nextValue.length > input.maxLength) {
         return;
     }
@@ -2934,9 +2847,6 @@ insertIntoMessageInput(value) {
         nextCursor
     );
 
-    /*
-     * Notify any other input listeners.
-     */
     input.dispatchEvent(
         new Event("input", {
             bubbles: true
@@ -2945,13 +2855,6 @@ insertIntoMessageInput(value) {
 }
 	
 	setupAvatarPicker() {
-    /*
-     * Replace these names with the exact GIF and PNG filenames
-     * you place inside /avatars/.
-     *
-     * Store filenames including their extensions so the picker
-     * can support both GIF and PNG files.
-     */
     this.avatars = [
         "original.gif",
 		"orange.gif",
@@ -3184,9 +3087,6 @@ setupDragging() {
 
     observer.observe(this.window);
 
-    /*
-     * Your height transition lasts 200ms.
-     */
     setTimeout(() => {
         observer.disconnect();
 
@@ -3229,10 +3129,6 @@ setMinimized(minimized) {
         minimized
     );
 
-    /*
-     * This control has no purpose while the entire
-     * chat body is hidden.
-     */
     if (this.membersToggle) {
         this.membersToggle.classList.toggle(
             "hidden",
@@ -3251,12 +3147,6 @@ if (minimized) {
     this.closeBanManager();
 }
 
-	
-
-    /*
-     * The normal window has h-[500px].
-     * Remove it while minimized so only the title bar remains.
-     */
     this.window.classList.toggle(
         "h-[500px]",
         !minimized
@@ -3267,11 +3157,6 @@ if (minimized) {
         minimized
     );
 
-    /*
-     * Remove the bottom rounding while expanded only if your
-     * existing design requires it. The normal rounded-3xl class
-     * works fine for both states.
-     */
     this.minimizeButton.textContent =
         minimized ? "+" : "−";
 
@@ -3292,10 +3177,6 @@ if (minimized) {
             ? "Restore chat"
             : "Minimize chat";
 
-    /*
-     * Close the avatar popup if the chat is minimized
-     * while that popup is open.
-     */
     if (minimized) {
         this.closeAvatarPicker();
 		this.closeEmojiPicker();
@@ -3315,9 +3196,6 @@ keepTitleBarInViewport() {
     let correctionX = 0;
     let correctionY = 0;
 
-    /*
-     * Keep the full title bar horizontally visible.
-     */
     if (titleRect.left < margin) {
         correctionX =
             margin - titleRect.left;
@@ -3331,10 +3209,6 @@ keepTitleBarInViewport() {
             titleRect.right;
     }
 
-    /*
-     * Only constrain the title bar vertically.
-     * The chat body may extend below the viewport.
-     */
     if (titleRect.top < margin) {
         correctionY =
             margin - titleRect.top;
