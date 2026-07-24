@@ -404,7 +404,7 @@ this.minimizeButton =
 
     this.sendButton.addEventListener(
         "click",
-        () => this.sendMessage()
+        () => this.
     );
 
 	   this.minimizeButton.addEventListener(
@@ -423,7 +423,7 @@ this.minimizeButton =
     this.messageInput.addEventListener("keydown", event => {
         if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
-            this.sendMessage();
+            this.;
         }
     });
 document.addEventListener(
@@ -1209,11 +1209,12 @@ async sendMessage() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                name,
-                message,
-                avatar: this.avatar
-            })
+           body: JSON.stringify({
+    clientId: this.clientId,
+    name,
+    message,
+    avatar: this.avatar
+})
         });
 
         if (!response.ok) {
