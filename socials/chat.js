@@ -2399,10 +2399,12 @@ setupNameSaving() {
         this.emojiPickerContainer;
 
     const pickerWidth =
-        picker.offsetWidth || 400;
+    picker.getBoundingClientRect().width ||
+    400;
 
     const pickerHeight =
-        picker.offsetHeight || 480;
+    picker.getBoundingClientRect().height ||
+    460;
 
     const gap = 8;
     const padding = 12;
@@ -2716,6 +2718,7 @@ this.emojiPicker =
         emojiSize: 22,
         emojiButtonSize: 32,
         perLine: 10,
+		height: 360,
 
         onEmojiSelect: emoji => {
             this.insertSelectedEmoji(emoji);
@@ -2728,30 +2731,35 @@ this.emojiPickerContainer.style.width =
 this.emojiPickerContainer.style.maxWidth =
     "calc(100vw - 24px)";
 
-this.emojiPickerContainer.style.display =
-    "flex";
-
-this.emojiPickerContainer.style.flexDirection =
-    "column";
-
 this.emojiPickerContainer.style.maxHeight =
-    "480px";
+    "calc(100vh - 24px)";
 
-this.emojiPickerContainer.style.overflow =
+this.emojiPickerContainer.style.overflowY =
+    "auto";
+
+this.emojiPickerContainer.style.overflowX =
     "hidden";
 
+this.emojiPickerContainer.style.borderRadius =
+    "16px";
+
+this.emojiPickerContainer.style.boxShadow =
+    "0 18px 50px rgba(0, 0, 0, 0.45)";
+
+/*
+ * Let Emoji Mart keep its natural internal height.
+ * Forcing a flex-basis/height can collapse the
+ * web component's rendered picker.
+ */
 this.emojiPicker.style.display =
     "block";
 
 this.emojiPicker.style.width =
     "100%";
 
-this.emojiPicker.style.height =
-    "350px";
+this.emojiPicker.style.maxWidth =
+    "100%";
 
-this.emojiPicker.style.flex =
-    "0 0 350px";
-	
 this.emojiPickerContainer.append(
     customSection,
     this.emojiPicker
@@ -2786,8 +2794,10 @@ document.body.appendChild(
                     ? event.composedPath()
                     : [];
 
-            const clickedPicker =
-                path.includes(this.emojiPicker);
+            cconst clickedPicker =
+    path.includes(
+        this.emojiPickerContainer
+    );
 
             const clickedButton =
                 path.includes(this.emojiButton);
