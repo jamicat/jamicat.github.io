@@ -457,6 +457,26 @@ addMessage(message) {
     }
 }
 
+	sendPresence() {
+    if (
+        !this.socket ||
+        this.socket.readyState !== WebSocket.OPEN
+    ) {
+        return;
+    }
+
+    const name =
+        this.nameInput.value.trim() || "Anonymous";
+
+    this.socket.send(JSON.stringify({
+        type: "presence",
+        clientId: this.clientId,
+        name,
+        avatar: this.avatar
+    }));
+}
+	
+
 connect() {
     /*
      * Avoid creating a duplicate connection.
@@ -494,6 +514,7 @@ connect() {
             "text-emerald-300"
         );
     }
+		this.sendPresence();
 });
 
     this.socket.addEventListener("message", event => {
@@ -842,24 +863,7 @@ setupDragging() {
     });
 }
 
-	sendPresence() {
-    if (
-        !this.socket ||
-        this.socket.readyState !== WebSocket.OPEN
-    ) {
-        return;
-    }
-
-    const name =
-        this.nameInput.value.trim() || "Anonymous";
-
-    this.socket.send(JSON.stringify({
-        type: "presence",
-        clientId: this.clientId,
-        name,
-        avatar: this.avatar
-    }));
-}
+	
 
 	
 	applyCurrentTheme() {
