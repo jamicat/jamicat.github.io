@@ -2608,7 +2608,7 @@ const customTitle =
     document.createElement("div");
 
 customTitle.textContent =
-    "Custom";
+    "custom";
 
 customTitle.className = [
     "mb-1",
