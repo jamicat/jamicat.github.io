@@ -131,36 +131,25 @@ addMessage(message) {
     div.className = "chatMessage";
 
     div.innerHTML = `
-
         <div class="chatMessageHeader">
-
             <strong>${message.name}</strong>
 
-            <span>
-
-                ${new Date(message.created_at)
-                    .toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    })}
-
+            <span class="chatTime">
+                ${new Date(message.created_at).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                })}
             </span>
-
         </div>
 
         <div class="chatText">
-
             ${message.message}
-
         </div>
-
     `;
 
     this.messages.appendChild(div);
 
-    this.messages.scrollTop =
-        this.messages.scrollHeight;
-
+    this.messages.scrollTop = this.messages.scrollHeight;
 }
 
 connect() {
