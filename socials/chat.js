@@ -28,6 +28,8 @@ this.emojiPickerOpen = false;
 
 this.customEmojiCategories = [];
 this.customEmojiLookup = new Map();
+this.isAdmin =
+    sessionStorage.getItem("chat_admin") === "true";
 this.isMinimized = false;
 	this.membersPanel = null;
 this.membersVisible = true;
@@ -515,21 +517,60 @@ addMessage(message) {
     message.message || ""
 );
 
-    const idLabel =
-    document.createElement("span");
+   const adminButton =
+    document.createElement("button");
 
-idLabel.className =
-    "text-[8px] text-white/20";
+adminButton.type = "button";
 
-idLabel.textContent =
-    row.dataset.messageId
-        ? `#${row.dataset.messageId}`
-        : "#?";
+adminButton.className = [
+    "chatAdminButton",
+    "ml-auto",
+    "hidden",
+    "group-hover:flex",
+    "h-6",
+    "w-6",
+    "items-center",
+    "justify-center",
+    "rounded",
+    "text-white/40",
+    "hover:bg-white/10",
+    "hover:text-white"
+].join(" ");
+
+adminButton.textContent = "⋮";
+
+adminButton.addEventListener(
+    "click",
+    event => {
+        event.stopPropagation();
+
+        console.log(
+            "Moderate message",
+            row.dataset.messageId
+        );
+    }
+);
+
+if (!this.isAdmin) {
+    adminButton.remove();
+}
 
 header.append(
     name,
     time,
-    idLabel
+    adminButton
+);
+
+adminButton.addEventListener(
+    "click",
+    event => {
+        event.stopPropagation();
+
+        console.log(
+            "Moderate message",
+            row.dataset.messageId
+        );
+    }
 );
 
 content.append(
