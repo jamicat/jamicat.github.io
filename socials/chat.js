@@ -1223,7 +1223,7 @@ addMessage(message) {
         document.createElement("div");
 
     compactContent.className =
-         "min-w-0 flex-1 pl-12 pr-24";
+         "min-w-0 flex-1 pl-12 pr-3"
 
     const messageBody =
     document.createElement("div");
@@ -1249,10 +1249,10 @@ messageBody.appendChild(text);
 
     compactTime.className = [
     "absolute",
-    "right-10",
+    "left-0",
     "top-[8px]",
-    "z-10",
-    "whitespace-nowrap",
+    "w-8",
+    "text-right",
     "text-[8px]",
     "text-white/0",
     "transition",
@@ -1301,7 +1301,7 @@ messageBody.appendChild(text);
             document.createElement("div");
 
         content.className =
-           "min-w-0 flex-1 pr-24";
+            "min-w-0 flex-1 pr-3";
 
         const header =
             document.createElement("div");
