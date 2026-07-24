@@ -2334,8 +2334,8 @@ setupNameSaving() {
             image.className = [
     "mx-0.5",
     "inline-block",
-    "h-6",
-    "w-6",
+    "h-8",
+    "w-8",
     "align-middle",
     "object-contain"
 ].join(" ");
@@ -2541,8 +2541,8 @@ const customTray =
 
 customTray.className = [
     "grid",
-    "grid-cols-7",
-    "gap-1"
+    "grid-cols-10",
+    "gap-0.5"
 ].join(" ");
 
 customTray.setAttribute(
@@ -2563,16 +2563,16 @@ for (const category of this.customEmojiCategories) {
         button.type = "button";
 
         button.className = [
-            "flex",
-            "h-11",
-            "w-full",
-            "items-center",
-            "justify-center",
-            "rounded-lg",
-            "transition",
-            "hover:bg-white/10",
-            "active:scale-95"
-        ].join(" ");
+    "flex",
+    "h-[26px]",
+    "w-full",
+    "items-center",
+    "justify-center",
+    "rounded-md",
+    "transition",
+    "hover:bg-white/10",
+    "active:scale-95"
+].join(" ");
 
         button.title =
             emoji.name || emoji.id;
@@ -2588,10 +2588,10 @@ for (const category of this.customEmojiCategories) {
         image.alt = `:${emoji.id}:`;
 
         image.className = [
-            "h-8",
-            "w-8",
-            "object-contain"
-        ].join(" ");
+    "h-5",
+    "w-5",
+    "object-contain"
+].join(" ");
 
         button.appendChild(image);
 
