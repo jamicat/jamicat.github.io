@@ -1118,28 +1118,20 @@ connect() {
 
         console.log("Chat WebSocket data:", data);
 
-        if (data.type === "members") {
-            this.renderMembers(data.members);
-            return;
-        }
-
-		if (data.type === "members") {
+      if (data.type === "members") {
     this.renderMembers(data.members);
     return;
 }
 
 if (data.type === "delete") {
     const messageElement =
-        this.findMessageElement(
-            data.id
-        );
+        this.findMessageElement(data.id);
 
     if (messageElement) {
         messageElement.remove();
     }
 
     this.closeModerationMenu();
-
     return;
 }
 
@@ -1148,15 +1140,10 @@ if (data.type === "message") {
     return;
 }
 
-        if (data.type === "message") {
-            this.addMessage(data.message);
-            return;
-        }
-
-        if (data.name && data.message) {
-            this.addMessage(data);
-        }
-    } catch (error) {
+if (data.name && data.message) {
+    this.addMessage(data);
+}
+	} catch (error) {
         console.error(
             "Could not parse chat WebSocket message:",
             error,
