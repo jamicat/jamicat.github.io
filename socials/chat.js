@@ -1316,68 +1316,13 @@ addMessage(message) {
         time.title =
             fullTimestamp;
 
-        header.append(
-            name,
-            time
-        );
+       header.append(
+    name,
+    time
+);
 
-        if (
-            this.isAdmin &&
-            row.dataset.messageId
-        ) {
-            const adminButton =
-                document.createElement("button");
-
-            adminButton.type =
-                "button";
-
-            adminButton.className = [
-                "chatAdminButton",
-                "ml-auto",
-                "hidden",
-                "group-hover:flex",
-                "h-6",
-                "w-6",
-                "items-center",
-                "justify-center",
-                "rounded",
-                "text-white/40",
-                "hover:bg-white/10",
-                "hover:text-white"
-            ].join(" ");
-
-            adminButton.textContent =
-                "⋮";
-
-            adminButton.setAttribute(
-                "aria-label",
-                `Moderate message ${
-                    row.dataset.messageId
-                }`
-            );
-
-            adminButton.title =
-                "Moderate message";
-
-            adminButton.addEventListener(
-                "click",
-                event => {
-                    event.stopPropagation();
-
-                    this.openModerationMenu(
-                        adminButton,
-                        message
-                    );
-                }
-            );
-
-            header.appendChild(
-                adminButton
-            );
-        }
-
-        const text =
-            document.createElement("div");
+const text =
+    document.createElement("div");
 
         text.className =
             "chatText mt-0.5 break-words leading-relaxed";
@@ -1397,7 +1342,53 @@ addMessage(message) {
             content
         );
     }
+if (
+    this.isAdmin &&
+    row.dataset.messageId
+) {
+    const adminButton =
+        document.createElement("button");
 
+    adminButton.type = "button";
+
+    adminButton.className = [
+        "chatAdminButton",
+        "absolute",
+        "right-2",
+        "top-1/2",
+        "-translate-y-1/2",
+        "hidden",
+        "group-hover:flex",
+        "h-6",
+        "w-6",
+        "items-center",
+        "justify-center",
+        "rounded",
+        "text-white/40",
+        "hover:bg-white/10",
+        "hover:text-white"
+    ].join(" ");
+
+    adminButton.textContent = "⋮";
+
+    adminButton.title =
+        "Moderate message";
+
+    adminButton.addEventListener(
+        "click",
+        event => {
+            event.stopPropagation();
+
+            this.openModerationMenu(
+                adminButton,
+                message
+            );
+        }
+    );
+
+    row.appendChild(adminButton);
+}
+		
     this.messages.appendChild(row);
 
     if (
