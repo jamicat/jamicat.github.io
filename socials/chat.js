@@ -1097,9 +1097,6 @@ openEmojiPicker() {
         return;
     }
 
-    /*
-     * Avoid having both popups open simultaneously.
-     */
     this.closeAvatarPicker();
 
     this.emojiPickerOpen = true;
@@ -1118,6 +1115,29 @@ openEmojiPicker() {
         "aria-expanded",
         "true"
     );
+
+    /*
+     * Emoji Mart places custom categories after the
+     * built-in categories. Click our custom category
+     * tab automatically whenever the picker opens.
+     */
+    requestAnimationFrame(() => {
+        const pickerRoot =
+            this.emojiPicker.shadowRoot;
+
+        if (!pickerRoot) {
+            return;
+        }
+
+        const customButton =
+            pickerRoot.querySelector(
+                '[data-id="custom"]'
+            );
+
+        if (customButton) {
+            customButton.click();
+        }
+    });
 }
 
 closeEmojiPicker() {
