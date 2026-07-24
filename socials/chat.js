@@ -1284,7 +1284,7 @@ messageBody.appendChild(text);
         avatar.alt = "";
 
         avatar.className =
-            "pixel-avatar h-9 w-9 shrink-0 object-contain";
+            "pixel-avatar h-9 w-9 shrink-0 object-contain -mt-1";
 
         avatar.addEventListener(
             "error",
