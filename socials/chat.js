@@ -1225,7 +1225,7 @@ addMessage(message) {
     compactContent.className =
          "min-w-0 flex-1 pl-12 pr-24";
 
-    cconst messageBody =
+    const messageBody =
     document.createElement("div");
 
 messageBody.className =
