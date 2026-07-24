@@ -1207,22 +1207,23 @@ const isFirstContinuation =
     const date =
         new Date(message.created_at);
 
-    const formattedTime =
-        Number.isNaN(date.getTime())
-            ? "--:--"
-            : date.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit"
-            })
-	.replace(/\s/g, "");
+   const formattedTime =
+    Number.isNaN(date.getTime())
+        ? "--:--"
+        : date.toLocaleTimeString(undefined, {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false
+          });
 
     const fullTimestamp =
-        Number.isNaN(date.getTime())
-            ? "Unknown time"
-            : date.toLocaleString([], {
-                dateStyle: "full",
-                timeStyle: "medium"
-            });
+    Number.isNaN(date.getTime())
+        ? "Unknown time"
+        : date.toLocaleString(undefined, {
+              dateStyle: "full",
+              timeStyle: "medium",
+              hour12: false
+          });
 
    if (isContinuation) {
     const compactContent =
