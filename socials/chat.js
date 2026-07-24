@@ -1172,18 +1172,9 @@ addMessage(message) {
         ? ""
         : "gap-3"
 ].join(" ");
-
-	const previousWasContinuation =
-    previousRow?.dataset.continuation === "true";
-
-const isFirstContinuation =
-    isContinuation && !previousWasContinuation;
-
+	
 	row.dataset.continuation =
     isContinuation ? "true" : "false";
-
-	row.dataset.firstContinuation =
-    isFirstContinuation ? "true" : "false";
 
     const messageId =
         Number(message.id);
@@ -1234,16 +1225,24 @@ const isFirstContinuation =
     compactContent.className =
          "min-w-0 flex-1 pl-12 pr-24";
 
-    const text =
-        document.createElement("div");
+    cconst messageBody =
+    document.createElement("div");
 
-    text.className =
-         "chatText break-words leading-relaxed";
-	   
-    this.renderMessageContent(
-        text,
-        message.message || ""
-    );
+messageBody.className =
+    "messageBody";
+
+const text =
+    document.createElement("div");
+
+text.className =
+    "chatText break-words leading-relaxed";
+
+this.renderMessageContent(
+    text,
+    message.message || ""
+);
+
+messageBody.appendChild(text);
 
     const compactTime =
         document.createElement("span");
@@ -1266,7 +1265,7 @@ const isFirstContinuation =
     compactTime.title =
         fullTimestamp;
 
-    compactContent.appendChild(text);
+    compactContent.appendChild(messageBody);
 
     row.append(
         compactContent,
@@ -1336,21 +1335,29 @@ const isFirstContinuation =
     time
 );
 
+const messageBody =
+    document.createElement("div");
+
+messageBody.className =
+    "messageBody";
+
 const text =
     document.createElement("div");
 
-        text.className =
-            "chatText mt-1 break-words leading-relaxed";
+text.className =
+    "chatText break-words leading-relaxed";
 
-        this.renderMessageContent(
-            text,
-            message.message || ""
-        );
+this.renderMessageContent(
+    text,
+    message.message || ""
+);
 
-        content.append(
-            header,
-            text
-        );
+messageBody.appendChild(text);
+
+content.append(
+    header,
+    messageBody
+);
 
         row.append(
             avatar,
