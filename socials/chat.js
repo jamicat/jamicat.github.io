@@ -314,7 +314,7 @@ transition-[height] duration-200
             aria-controls="chatEmojiPicker"
             title="Choose emoji"
         >
-            🙂
+            🐱
         </button>
     </div>
 
