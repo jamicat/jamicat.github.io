@@ -1250,7 +1250,7 @@ messageBody.appendChild(text);
     compactTime.className = [
     "absolute",
     "left-0",
-    "top-[8px]",
+    "top-[10px]",
     "w-8",
     "text-right",
     "text-[8px]",
@@ -1376,7 +1376,7 @@ if (
     adminButton.className = [
     "chatAdminButton",
     "absolute",
-    "right-2",
+    "-right-1",
     "top-[-0.1px]",
     "hidden",
     "group-hover:flex",
