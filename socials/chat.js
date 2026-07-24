@@ -797,18 +797,17 @@ openModerationMenu(button, message) {
     menu.style.top =
         `${buttonRect.bottom + 4}px`;
 
-    const deleteButton =
-        this.createModerationMenuButton(
-            "Delete message",
-            () => {
-                console.log(
-                    "Delete message",
-                    message.id
-                );
+ const deleteButton =
+    this.createModerationMenuButton(
+        "Delete message",
+        () => {
+            this.closeModerationMenu();
 
-                this.closeModerationMenu();
-            }
-        );
+            this.deleteMessage(
+                message.id
+            );
+        }
+    );
 
     const banButton =
         this.createModerationMenuButton(
@@ -894,7 +893,108 @@ openModerationMenu(button, message) {
     return button;
 }
 
-	
+	async deleteMessage(messageId) {
+    const id =
+        Number(messageId);
+
+    if (
+        !Number.isInteger(id) ||
+        id <= 0
+    ) {
+        console.error(
+            "Cannot delete invalid message ID:",
+            messageId
+        );
+
+        return;
+    }
+
+    const confirmed =
+        window.confirm(
+            `Delete message #${id}?`
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    if (
+        !this.isAdmin ||
+        !this.adminKey
+    ) {
+        window.alert(
+            "Admin authentication is required."
+        );
+
+        this.disableAdminMode();
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${this.API}/api/admin/chat/delete`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json",
+
+                    "Authorization":
+                        `Bearer ${this.adminKey}`
+                },
+                body: JSON.stringify({
+                    id
+                })
+            }
+        );
+
+        let result = null;
+
+        try {
+            result =
+                await response.json();
+        } catch {
+            // The response may not contain JSON.
+        }
+
+        if (response.status === 401) {
+            this.disableAdminMode();
+
+            window.alert(
+                "Your admin session is no longer valid."
+            );
+
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `Delete failed (${response.status})`
+            );
+        }
+
+        /*
+         * Do not remove it here.
+         *
+         * The Durable Object will broadcast the
+         * deletion to every client, including this one.
+         */
+        console.log(
+            "Deleted message",
+            id
+        );
+    } catch (error) {
+        console.error(
+            "Could not delete message:",
+            error
+        );
+
+        window.alert(
+            `Could not delete message: ${error.message}`
+        );
+    }
+}
 
 	renderMembers(members) {
     this.membersElement.replaceChildren();
@@ -1022,6 +1122,31 @@ connect() {
             this.renderMembers(data.members);
             return;
         }
+
+		if (data.type === "members") {
+    this.renderMembers(data.members);
+    return;
+}
+
+if (data.type === "delete") {
+    const messageElement =
+        this.findMessageElement(
+            data.id
+        );
+
+    if (messageElement) {
+        messageElement.remove();
+    }
+
+    this.closeModerationMenu();
+
+    return;
+}
+
+if (data.type === "message") {
+    this.addMessage(data.message);
+    return;
+}
 
         if (data.type === "message") {
             this.addMessage(data.message);
