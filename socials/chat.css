@@ -47,7 +47,15 @@
     padding-bottom: 0;
 }
 
-#chatWindow .chatMessage[data-first-continuation="true"] {
+#chatWindow .messageLine {
+    margin-top: 4px;
+}
+
+#chatWindow .chatMessage[data-continuation="true"] .messageLine {
+    margin-top: 0;
+}
+
+#chatWindow .chatMessage[data-first-continuation="true"] .messageLine {
     margin-top: 4px;
 }
 
