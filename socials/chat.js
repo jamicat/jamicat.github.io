@@ -1250,7 +1250,7 @@ messageBody.appendChild(text);
     compactTime.className = [
     "absolute",
     "right-10",
-    "top-1",
+    "top-[5px]",
     "z-10",
     "whitespace-nowrap",
     "text-[8px]",
@@ -1385,6 +1385,7 @@ if (
     "items-center",
     "justify-center",
     "rounded",
+	"leading-none",
     "text-white/40",
     "hover:bg-white/10",
     "hover:text-white"
