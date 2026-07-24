@@ -402,10 +402,10 @@ this.controlsElement =
 this.minimizeButton =
     this.window.querySelector("#chatMinimize");
 
-    this.sendButton.addEventListener(
-        "click",
-        () => this.
-    );
+  this.sendButton.addEventListener(
+    "click",
+    () => this.sendMessage()
+);
 
 	   this.minimizeButton.addEventListener(
     "click",
@@ -421,11 +421,11 @@ this.minimizeButton =
 );
 
     this.messageInput.addEventListener("keydown", event => {
-        if (event.key === "Enter" && !event.shiftKey) {
-            event.preventDefault();
-            this.;
-        }
-    });
+    if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        this.sendMessage();
+    }
+});
 document.addEventListener(
     "click",
     event => {
