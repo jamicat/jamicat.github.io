@@ -32,9 +32,9 @@ this.emojiButton = null;
 this.emojiPickerContainer = null;
 this.emojiPicker = null;
 this.emojiPickerOpen = false;
-
 this.customEmojiCategories = [];
 this.customEmojiLookup = new Map();
+	
 this.adminKey =
     sessionStorage.getItem(
         "chat_admin_key"
@@ -59,7 +59,7 @@ localStorage.setItem(
 "chat_client_id",
 this.clientId
 );
-
+	
 this.createWindow();
 this.applyCurrentTheme();
 this.restoreSettings();
