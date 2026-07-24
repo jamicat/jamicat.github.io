@@ -1183,6 +1183,9 @@ const isFirstContinuation =
 	row.dataset.continuation =
     isContinuation ? "true" : "false";
 
+	row.dataset.firstContinuation =
+    isFirstContinuation ? "true" : "false";
+
     const messageId =
         Number(message.id);
 
