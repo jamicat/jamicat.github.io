@@ -1,8 +1,3 @@
-/*
- * Theming hooks and properties that are easier to maintain
- * outside Tailwind utility strings.
- */
-
 #chatWindow {
     font-family: var(--body-font, Consolas, monospace);
     touch-action: none;
