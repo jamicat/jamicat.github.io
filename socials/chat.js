@@ -1,42 +1,26 @@
 class ChatWidget {
 
- constructor() {
-
-    console.log("Constructor");
-
+constructor() {
     this.API = "https://jamicat.ahrly.workers.dev";
 
-  this.socket = null;
-this.reconnectTimer = null;
+    this.socket = null;
+    this.reconnectTimer = null;
 
     this.messages = null;
-
     this.window = null;
-
     this.nameInput = null;
-
     this.messageInput = null;
-
     this.sendButton = null;
 
-    this.avatar = "default";
+    this.avatar =
+        localStorage.getItem("chat_avatar") || "default";
 
     this.createWindow();
-
-    console.log("Window created");
-
     this.restoreSettings();
-
     this.setupNameSaving();
-
     this.setupDragging();
-
     this.loadHistory();
-
-    console.log("Calling connect");
-
     this.connect();
-
 }
 
     createWindow() {
@@ -234,50 +218,44 @@ connect() {
 }
 
 async sendMessage() {
+    const name = this.nameInput.value.trim();
+    const message = this.messageInput.value.trim();
 
-    const name =
-        this.nameInput.value.trim();
-
-    const message =
-        this.messageInput.value.trim();
-
-    if (!name || !message)
+    if (!name || !message || this.sendButton.disabled) {
         return;
+    }
 
     this.sendButton.disabled = true;
+    this.sendButton.textContent = "Sending...";
 
     try {
-
-        await fetch(`${this.API}/api/chat`, {
-
+        const response = await fetch(`${this.API}/api/chat`, {
             method: "POST",
-
             headers: {
                 "Content-Type": "application/json"
             },
-
             body: JSON.stringify({
-
                 name,
-
-                message
-
+                message,
+                avatar: this.avatar
             })
-
         });
 
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(
+                `Chat request failed (${response.status}): ${errorText}`
+            );
+        }
+
         this.messageInput.value = "";
-
         this.messageInput.focus();
-
-    }
-
-    finally {
-
+    } catch (error) {
+        console.error("Could not send chat message:", error);
+    } finally {
         this.sendButton.disabled = false;
-
+        this.sendButton.textContent = "Send";
     }
-
 }
 
 restoreSettings() {
