@@ -8,7 +8,17 @@ class ChatWidget {
 
     this.events = null;
 
-    ...
+    this.messages = null;
+
+    this.window = null;
+
+    this.nameInput = null;
+
+    this.messageInput = null;
+
+    this.sendButton = null;
+
+    this.avatar = "default";
 
     this.createWindow();
 
