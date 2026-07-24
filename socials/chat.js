@@ -44,9 +44,6 @@ this.restoreSettings();
 	this.setupMembersToggle();
     this.setupNameSaving();
     this.setupDragging();
-	window.addEventListener("resize", () => {
-    this.keepTitleBarInViewport();
-});
     this.loadHistory();
     this.connect();
 }
@@ -870,10 +867,18 @@ setupDragging() {
     interact(this.window).draggable({
         allowFrom: ".chat-drag-area",
         ignoreFrom: "button, input, a",
+
         inertia: true,
 
+        modifiers: [
+            interact.modifiers.restrictRect({
+                restriction: "parent",
+                endOnly: true
+            })
+        ],
+
         listeners: {
-            move: event => {
+            move(event) {
                 const target = event.target;
 
                 const x =
@@ -884,22 +889,14 @@ setupDragging() {
                     (parseFloat(target.dataset.y) || 0) +
                     event.dy;
 
-                target.dataset.x = String(x);
-                target.dataset.y = String(y);
-
                 target.style.transform =
                     `translate(${x}px, ${y}px)`;
 
-                /*
-                 * Clamp the draggable title bar rather than
-                 * the entire 500px chat window.
-                 */
-                this.keepTitleBarInViewport();
+                target.dataset.x = String(x);
+                target.dataset.y = String(y);
             },
 
-            end: event => {
-                this.keepTitleBarInViewport();
-
+            end(event) {
                 localStorage.setItem(
                     "chat_x",
                     event.target.dataset.x || "0"
@@ -914,12 +911,62 @@ setupDragging() {
     });
 }
 
+	preserveTitleBarDuringResize() {
+    const lockedTop =
+        this.titleBar.getBoundingClientRect().top;
+
+    const observer = new ResizeObserver(() => {
+        const currentTop =
+            this.titleBar.getBoundingClientRect().top;
+
+        const correctionY =
+            lockedTop - currentTop;
+
+        if (Math.abs(correctionY) < 0.5) {
+            return;
+        }
+
+        const currentX =
+            parseFloat(this.window.dataset.x) || 0;
+
+        const currentY =
+            parseFloat(this.window.dataset.y) || 0;
+
+        const nextY =
+            currentY + correctionY;
+
+        this.window.dataset.y = String(nextY);
+
+        this.window.style.transform =
+            `translate(${currentX}px, ${nextY}px)`;
+    });
+
+    observer.observe(this.window);
+
+    /*
+     * Your height transition lasts 200ms.
+     */
+    setTimeout(() => {
+        observer.disconnect();
+
+        localStorage.setItem(
+            "chat_x",
+            this.window.dataset.x || "0"
+        );
+
+        localStorage.setItem(
+            "chat_y",
+            this.window.dataset.y || "0"
+        );
+    }, 240);
+}
 	
 toggleMinimized() {
     this.setMinimized(!this.isMinimized);
 }
 
 setMinimized(minimized) {
+	this.preserveTitleBarDuringResize();
     this.isMinimized = minimized;
 
     this.mainElement.classList.toggle(
@@ -989,13 +1036,6 @@ setMinimized(minimized) {
     if (minimized) {
         this.closeAvatarPicker();
     }
-	requestAnimationFrame(() => {
-    this.keepTitleBarInViewport();
-});
-
-	setTimeout(() => {
-    this.keepTitleBarInViewport();
-}, 220);
 }
 
 keepTitleBarInViewport() {
