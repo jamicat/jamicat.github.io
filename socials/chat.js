@@ -1203,7 +1203,8 @@ addMessage(message) {
             : date.toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit"
-            });
+            })
+	.replace(/\s/g, "");
 
     const fullTimestamp =
         Number.isNaN(date.getTime())
@@ -1218,9 +1219,10 @@ addMessage(message) {
             document.createElement("span");
 
         compactTime.className = [
-            "w-9",
+            "w-12",
             "shrink-0",
             "pt-1",
+			"whitespace-nowrap",
             "text-right",
             "text-[8px]",
             "text-white/0",
@@ -1293,7 +1295,7 @@ addMessage(message) {
             document.createElement("div");
 
         header.className =
-            "flex items-baseline gap-2";
+    "flex min-w-0 items-baseline gap-2";
 
         const name =
             document.createElement("span");
@@ -1308,7 +1310,7 @@ addMessage(message) {
             document.createElement("span");
 
         time.className =
-            "chatTime text-[9px] text-white/35";
+    "chatTime shrink-0 whitespace-nowrap text-[9px] text-white/35";
 
         time.textContent =
             formattedTime;
