@@ -275,7 +275,7 @@ transition-[height] duration-200
     >
 </div>
 
-            <<div class="relative">
+            <div class="relative">
     <div class="flex items-stretch gap-2">
         <input
             id="chatMessage"
@@ -1235,7 +1235,7 @@ insertIntoMessageInput(value) {
         if (isOpen) {
             this.closeAvatarPicker();
         } else {
-            this.openAvatarPicker();
+            this.closeAvatarPicker();
 			this.openAvatarPicker();
         }
     });
