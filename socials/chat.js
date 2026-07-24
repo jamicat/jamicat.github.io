@@ -167,6 +167,8 @@ connect() {
         console.log("SSE OPEN");
     };
 
+
+
     this.events.onmessage = event => {
 
         console.log("SSE MESSAGE:", event.data);
