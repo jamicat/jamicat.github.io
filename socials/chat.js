@@ -44,6 +44,9 @@ this.restoreSettings();
 	this.setupMembersToggle();
     this.setupNameSaving();
     this.setupDragging();
+	window.addEventListener("resize", () => {
+    this.keepInViewport();
+});
     this.loadHistory();
     this.connect();
 }
@@ -895,7 +898,7 @@ setupDragging() {
                 target.dataset.y = y;
             },
 
-            end(event) {
+            end: (event) => {
                 localStorage.setItem(
                     "chat_x",
                     event.target.dataset.x || "0"
@@ -905,6 +908,8 @@ setupDragging() {
                     "chat_y",
                     event.target.dataset.y || "0"
                 );
+
+				this.keepInViewport();
             }
         }
     });
@@ -985,6 +990,57 @@ setMinimized(minimized) {
     if (minimized) {
         this.closeAvatarPicker();
     }
+	requestAnimationFrame(() => {
+    this.keepInViewport();
+});
+
+	setTimeout(() => {
+    this.keepInViewport();
+}, 220);
+}
+
+keepInViewport() {
+    const margin = 8;
+    const rect = this.window.getBoundingClientRect();
+
+    let correctionX = 0;
+    let correctionY = 0;
+
+    if (rect.left < margin) {
+        correctionX = margin - rect.left;
+    } else if (rect.right > window.innerWidth - margin) {
+        correctionX =
+            window.innerWidth - margin - rect.right;
+    }
+
+    if (rect.top < margin) {
+        correctionY = margin - rect.top;
+    } else if (rect.bottom > window.innerHeight - margin) {
+        correctionY =
+            window.innerHeight - margin - rect.bottom;
+    }
+
+    if (correctionX === 0 && correctionY === 0) {
+        return;
+    }
+
+    const currentX =
+        parseFloat(this.window.dataset.x) || 0;
+
+    const currentY =
+        parseFloat(this.window.dataset.y) || 0;
+
+    const nextX = currentX + correctionX;
+    const nextY = currentY + correctionY;
+
+    this.window.dataset.x = nextX;
+    this.window.dataset.y = nextY;
+
+    this.window.style.transform =
+        `translate(${nextX}px, ${nextY}px)`;
+
+    localStorage.setItem("chat_x", String(nextX));
+    localStorage.setItem("chat_y", String(nextY));
 }
 	
 	applyCurrentTheme() {
