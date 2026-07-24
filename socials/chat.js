@@ -34,14 +34,14 @@ this.restoreSettings();
      * to theme the chat automatically.
      */
     windowElement.className = `
-        terminal2
-        fixed right-5 bottom-5 z-[99999]
-        flex h-[450px] w-[360px] max-w-[calc(100vw-1rem)]
-        flex-col overflow-hidden
-        rounded-3xl border border-white/15
-        bg-black/20 text-white
-        shadow-lg backdrop-blur-xl
-    `;
+    terminal2
+    fixed right-4 bottom-4 sm:right-8 sm:bottom-8 z-[99999]
+    flex h-[450px] w-[360px] max-w-[calc(100vw-1rem)]
+    flex-col overflow-hidden
+    rounded-3xl border border-white/15
+    bg-black/20 text-white
+    shadow-lg backdrop-blur-xl
+`;
 
     windowElement.innerHTML = `
         <div
