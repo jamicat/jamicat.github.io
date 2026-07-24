@@ -1377,7 +1377,7 @@ if (
     "chatAdminButton",
     "absolute",
     "right-2",
-    "top-1",
+    "top-[-0.1px]",
     "hidden",
     "group-hover:flex",
     "h-6",
