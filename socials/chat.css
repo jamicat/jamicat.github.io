@@ -155,7 +155,11 @@
 }
 
 .chatTime {
-    margin-right: 8px;
+    display: inline-block;
+    margin-right: 6px;
+    color: rgba(255,255,255,.45);
+    font-size: 10px;
+    white-space: nowrap;
 }
 
 .chatMessageName {
