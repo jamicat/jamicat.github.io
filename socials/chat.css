@@ -42,11 +42,6 @@
     text-align: left;
 }
 
-#chatWindow .chatMessage[data-continuation="true"] {
-    padding-top: 0;
-    padding-bottom: 0;
-}
-
 #chatWindow .messageLine {
     margin-top: 4px;
 }
@@ -55,7 +50,12 @@
     margin-top: 0;
 }
 
-#chatWindow .chatMessage[data-first-continuation="true"] .messageLine {
+#chatWindow .chatMessage[data-continuation="true"] {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#chatWindow .chatMessage[data-first-continuation="true"] {
     margin-top: 4px;
 }
 
