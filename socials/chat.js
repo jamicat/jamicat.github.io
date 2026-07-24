@@ -809,22 +809,18 @@ openModerationMenu(button, message) {
         }
     );
 
-    const banButton =
-        this.createModerationMenuButton(
-            `Ban ${message.name || "user"}`,
-            () => {
-                console.log(
-                    "Ban user",
-                    {
-                        messageId: message.id,
-                        clientId: message.client_id,
-                        name: message.name
-                    }
-                );
+   const banButton =
+    this.createModerationMenuButton(
+        `Ban ${message.name || "user"}`,
+        async () => {
+            this.closeModerationMenu();
 
-                this.closeModerationMenu();
-            }
-        );
+            await this.banClient(
+                message.client_id,
+                message.name
+            );
+        }
+    );
 
     const copyButton =
         this.createModerationMenuButton(
@@ -992,6 +988,105 @@ openModerationMenu(button, message) {
 
         window.alert(
             `Could not delete message: ${error.message}`
+        );
+    }
+}
+
+	async banClient(clientId, name) {
+    if (!clientId) {
+        window.alert(
+            "This message has no client ID and cannot be banned."
+        );
+
+        return;
+    }
+
+    if (
+        !this.isAdmin ||
+        !this.adminKey
+    ) {
+        window.alert(
+            "Admin authentication is required."
+        );
+
+        this.disableAdminMode();
+        return;
+    }
+
+    const reasonInput =
+        window.prompt(
+            `Reason for banning ${name || "this user"}:`,
+            "Spam"
+        );
+
+    if (reasonInput === null) {
+        return;
+    }
+
+    const reason =
+        reasonInput.trim() ||
+        "No reason provided";
+
+    const confirmed =
+        window.confirm(
+            `Permanently ban ${name || "this user"}?\n\nReason: ${reason}`
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${this.API}/api/admin/chat/ban`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json",
+
+                    "Authorization":
+                        `Bearer ${this.adminKey}`
+                },
+                body: JSON.stringify({
+                    clientId,
+                    name,
+                    reason
+                })
+            }
+        );
+
+        const result =
+            await response.json();
+
+        if (response.status === 401) {
+            this.disableAdminMode();
+
+            window.alert(
+                "Your admin session is no longer valid."
+            );
+
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `Ban failed (${response.status})`
+            );
+        }
+
+        window.alert(
+            `${name || "User"} has been permanently banned.`
+        );
+    } catch (error) {
+        console.error(
+            "Could not ban client:",
+            error
+        );
+
+        window.alert(
+            `Could not ban user: ${error.message}`
         );
     }
 }
@@ -1217,12 +1312,13 @@ async sendMessage() {
 })
         });
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(
-                `Chat request failed (${response.status}): ${errorText}`
-            );
-        }
+      if (!response.ok) {
+    const errorText = await response.text();
+
+    throw new Error(
+        `Chat request failed (${response.status}): ${errorText}`
+    );
+}
 
         this.messageInput.value = "";
         this.messageInput.focus();
