@@ -24,6 +24,15 @@ this.membersVisible = true;
    this.avatar =
     localStorage.getItem("chat_avatar") || "original.gif";
 
+	this.clientId =
+    localStorage.getItem("chat_client_id") ||
+    crypto.randomUUID();
+
+localStorage.setItem(
+    "chat_client_id",
+    this.clientId
+);
+
  this.createWindow();
 this.applyCurrentTheme();
 this.restoreSettings();
@@ -399,6 +408,55 @@ addMessage(message) {
         this.messages.scrollHeight;
 }
 
+	renderMembers(members) {
+    this.membersElement.replaceChildren();
+
+    if (!Array.isArray(members) || members.length === 0) {
+        const empty = document.createElement("div");
+
+        empty.className = "text-white/35";
+        empty.textContent = "nobody online";
+
+        this.membersElement.appendChild(empty);
+        return;
+    }
+
+    for (const member of members) {
+        const row = document.createElement("div");
+
+        row.className =
+            "flex min-w-0 items-center gap-2";
+
+        const avatar = document.createElement("img");
+
+        avatar.src =
+            `/avatars/${member.avatar || "original.gif"}`;
+
+        avatar.alt = "";
+        avatar.className =
+            "pixel-avatar h-7 w-7 shrink-0 object-contain";
+
+        avatar.addEventListener(
+            "error",
+            () => {
+                avatar.src = "/avatars/original.gif";
+            },
+            { once: true }
+        );
+
+        const name = document.createElement("span");
+
+        name.className =
+            "min-w-0 truncate text-white/75";
+
+        name.textContent =
+            member.name || "Anonymous";
+
+        row.append(avatar, name);
+        this.membersElement.appendChild(row);
+    }
+}
+
 connect() {
     /*
      * Avoid creating a duplicate connection.
@@ -427,6 +485,7 @@ connect() {
 
     if (this.connectionStatus) {
         this.connectionStatus.textContent = "online";
+		this.sendPresence();
         this.connectionStatus.classList.remove(
             "text-white/40",
             "text-red-300"
@@ -438,27 +497,39 @@ connect() {
 });
 
     this.socket.addEventListener("message", event => {
-        /*
-         * Ignore optional ping/pong traffic.
-         */
-        if (event.data === "pong") {
+    /*
+     * Ignore optional ping/pong traffic.
+     */
+    if (event.data === "pong") {
+        return;
+    }
+
+    try {
+        const data = JSON.parse(event.data);
+
+        console.log("Chat WebSocket data:", data);
+
+        if (data.type === "members") {
+            this.renderMembers(data.members);
             return;
         }
 
-        try {
-            const message = JSON.parse(event.data);
-
-            console.log("Chat WebSocket message:", message);
-
-            this.addMessage(message);
-        } catch (error) {
-            console.error(
-                "Could not parse chat WebSocket message:",
-                error,
-                event.data
-            );
+        if (data.type === "message") {
+            this.addMessage(data.message);
+            return;
         }
-    });
+
+        if (data.name && data.message) {
+            this.addMessage(data);
+        }
+    } catch (error) {
+        console.error(
+            "Could not parse chat WebSocket message:",
+            error,
+            event.data
+        );
+    }
+});
 
     this.socket.addEventListener("close", event => {
         console.log(
@@ -560,16 +631,14 @@ restoreSettings() {
 }
 
 setupNameSaving() {
-
     this.nameInput.addEventListener("input", () => {
-
         localStorage.setItem(
             "chat_name",
             this.nameInput.value
         );
 
+        this.sendPresence();
     });
-
 }
 	setupAvatarPicker() {
     /*
@@ -656,6 +725,7 @@ renderAvatarPicker() {
 
 selectAvatar(filename) {
     this.avatar = filename;
+	
 
     localStorage.setItem(
         "chat_avatar",
@@ -667,6 +737,7 @@ selectAvatar(filename) {
 
     this.renderAvatarPicker();
     this.closeAvatarPicker();
+	this.sendPresence();
 }
 
 openAvatarPicker() {
@@ -770,6 +841,27 @@ setupDragging() {
         }
     });
 }
+
+	sendPresence() {
+    if (
+        !this.socket ||
+        this.socket.readyState !== WebSocket.OPEN
+    ) {
+        return;
+    }
+
+    const name =
+        this.nameInput.value.trim() || "Anonymous";
+
+    this.socket.send(JSON.stringify({
+        type: "presence",
+        clientId: this.clientId,
+        name,
+        avatar: this.avatar
+    }));
+}
+
+	
 	applyCurrentTheme() {
     const themeName =
         localStorage.getItem("theme") || "Default";
