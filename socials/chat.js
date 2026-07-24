@@ -30,6 +30,7 @@ this.customEmojiCategories = [];
 this.customEmojiLookup = new Map();
 this.isAdmin =
     sessionStorage.getItem("chat_admin") === "true";
+this.moderationMenu = null;
 this.isMinimized = false;
 	this.membersPanel = null;
 this.membersVisible = true;
@@ -420,6 +421,22 @@ this.minimizeButton =
             this.sendMessage();
         }
     });
+document.addEventListener(
+    "click",
+    event => {
+        if (
+            this.moderationMenu &&
+            !this.moderationMenu.contains(
+                event.target
+            )
+        ) {
+            this.closeModerationMenu();
+        }
+    }
+);
+
+	   
+	
 }
 
 async loadHistory() {
@@ -554,16 +571,16 @@ if (this.isAdmin && row.dataset.messageId) {
         "Moderate message";
 
     adminButton.addEventListener(
-        "click",
-        event => {
-            event.stopPropagation();
+    "click",
+    event => {
+        event.stopPropagation();
 
-            console.log(
-                "Moderate message",
-                row.dataset.messageId
-            );
-        }
-    );
+        this.openModerationMenu(
+            adminButton,
+            message
+        );
+    }
+);
 
     header.appendChild(adminButton);
 }
@@ -597,6 +614,145 @@ findMessageElement(messageId) {
             return element.dataset.messageId === id;
         }) || null;
 }
+
+closeModerationMenu() {
+    if (!this.moderationMenu) {
+        return;
+    }
+
+    this.moderationMenu.remove();
+    this.moderationMenu = null;
+}
+
+openModerationMenu(button, message) {
+    this.closeModerationMenu();
+
+    const menu =
+        document.createElement("div");
+
+    menu.className = [
+        "fixed",
+        "z-[100000]",
+        "w-44",
+        "overflow-hidden",
+        "rounded-xl",
+        "border",
+        "border-white/15",
+        "bg-black/90",
+        "py-1",
+        "text-[11px]",
+        "text-white",
+        "shadow-xl",
+        "backdrop-blur-xl"
+    ].join(" ");
+
+    const buttonRect =
+        button.getBoundingClientRect();
+
+    menu.style.left =
+        `${buttonRect.right - 176}px`;
+
+    menu.style.top =
+        `${buttonRect.bottom + 4}px`;
+
+    const deleteButton =
+        this.createModerationMenuButton(
+            "Delete message",
+            () => {
+                console.log(
+                    "Delete message",
+                    message.id
+                );
+
+                this.closeModerationMenu();
+            }
+        );
+
+    const banButton =
+        this.createModerationMenuButton(
+            `Ban ${message.name || "user"}`,
+            () => {
+                console.log(
+                    "Ban user",
+                    {
+                        messageId: message.id,
+                        clientId: message.client_id,
+                        name: message.name
+                    }
+                );
+
+                this.closeModerationMenu();
+            }
+        );
+
+    const copyButton =
+        this.createModerationMenuButton(
+            "Copy message ID",
+            async () => {
+                try {
+                    await navigator.clipboard.writeText(
+                        String(message.id)
+                    );
+
+                    console.log(
+                        "Copied message ID",
+                        message.id
+                    );
+                } catch (error) {
+                    console.error(
+                        "Could not copy message ID:",
+                        error
+                    );
+                }
+
+                this.closeModerationMenu();
+            }
+        );
+
+    menu.append(
+        deleteButton,
+        banButton,
+        copyButton
+    );
+
+    document.body.appendChild(menu);
+
+    this.moderationMenu = menu;
+}
+
+	createModerationMenuButton(
+    label,
+    onClick
+) {
+    const button =
+        document.createElement("button");
+
+    button.type = "button";
+
+    button.className = [
+        "block",
+        "w-full",
+        "px-3",
+        "py-2",
+        "text-left",
+        "transition",
+        "hover:bg-white/10"
+    ].join(" ");
+
+    button.textContent = label;
+
+    button.addEventListener(
+        "click",
+        event => {
+            event.stopPropagation();
+            onClick();
+        }
+    );
+
+    return button;
+}
+
+	
 
 	renderMembers(members) {
     this.membersElement.replaceChildren();
