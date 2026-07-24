@@ -2393,7 +2393,7 @@ setupEmojiPicker() {
     this.customEmojiCategories = [
     {
         id: "custom",
-        name: "Custom",
+        name: "custom",
         emojis: [
             {
                 id: "blueblob",
