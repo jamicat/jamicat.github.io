@@ -436,8 +436,27 @@ async loadHistory() {
 addMessage(message) {
     const row = document.createElement("div");
 
-    row.className =
-        "chatMessage flex items-center gap-3 py-2";
+    row.className = [
+        "chatMessage",
+        "group",
+        "relative",
+        "flex",
+        "items-center",
+        "gap-3",
+        "py-2"
+    ].join(" ");
+
+    /*
+     * Store the database message ID on the rendered row.
+     * This will allow moderation actions to target exactly
+     * one message later.
+     */
+    const messageId = Number(message.id);
+
+    if (Number.isInteger(messageId) && messageId > 0) {
+        row.dataset.messageId =
+            String(messageId);
+    }
 
     const avatar = document.createElement("img");
 
@@ -496,14 +515,51 @@ addMessage(message) {
     message.message || ""
 );
 
-    header.append(name, time);
-    content.append(header, text);
-    row.append(avatar, content);
+    const idLabel =
+    document.createElement("span");
+
+idLabel.className =
+    "text-[8px] text-white/20";
+
+idLabel.textContent =
+    row.dataset.messageId
+        ? `#${row.dataset.messageId}`
+        : "#?";
+
+header.append(
+    name,
+    time,
+    idLabel
+);
+
+content.append(
+    header,
+    text
+);
+
+row.append(
+    avatar,
+    content
+);
 
     this.messages.appendChild(row);
 
     this.messages.scrollTop =
         this.messages.scrollHeight;
+}
+
+findMessageElement(messageId) {
+    const id = String(messageId);
+
+    return Array
+        .from(
+            this.messages.querySelectorAll(
+                "[data-message-id]"
+            )
+        )
+        .find(element => {
+            return element.dataset.messageId === id;
+        }) || null;
 }
 
 	renderMembers(members) {
