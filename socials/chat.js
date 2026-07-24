@@ -36,6 +36,8 @@ this.adminKey =
 
 this.isAdmin = false;
 this.moderationMenu = null;
+this.banManager = null;
+this.banManagerButton = null;
 this.isMinimized = false;
 	this.membersPanel = null;
 this.membersVisible = true;
@@ -438,6 +440,17 @@ document.addEventListener(
         ) {
             this.closeModerationMenu();
         }
+
+        if (
+            this.banManager &&
+            !this.banManager.contains(
+                event.target
+            ) &&
+            event.target !==
+                this.banManagerButton
+        ) {
+            this.closeBanManager();
+        }
     }
 );
 
@@ -556,7 +569,10 @@ setupAdminAuthentication() {
      * moderation buttons appear.
      */
     this.loadHistory();
+		this.createBanManagerButton();
 }
+
+	
 
 	disableAdminMode() {
     this.adminKey = "";
@@ -567,6 +583,8 @@ setupAdminAuthentication() {
     );
 
     this.closeModerationMenu();
+	this.closeBanManager();
+this.removeBanManagerButton();
 
     /*
      * Re-render messages without moderation
@@ -582,6 +600,471 @@ setupAdminAuthentication() {
         "Chat moderation disabled."
     );
 }
+
+createBanManagerButton() {
+    if (
+        this.banManagerButton ||
+        !this.membersToggle
+    ) {
+        return;
+    }
+
+    const button =
+        document.createElement("button");
+
+    button.type = "button";
+    button.textContent = "bans";
+
+    button.className = [
+        "theme-body",
+        "text-[9px]",
+        "text-white/50",
+        "transition",
+        "hover:text-white"
+    ].join(" ");
+
+    button.title =
+        "Manage banned users";
+
+    button.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (this.banManager) {
+                this.closeBanManager();
+            } else {
+                this.openBanManager();
+            }
+        }
+    );
+
+    this.membersToggle.insertAdjacentElement(
+        "beforebegin",
+        button
+    );
+
+    this.banManagerButton = button;
+}
+
+	removeBanManagerButton() {
+    if (!this.banManagerButton) {
+        return;
+    }
+
+    this.banManagerButton.remove();
+    this.banManagerButton = null;
+}
+
+	async openBanManager() {
+    if (
+        !this.isAdmin ||
+        !this.adminKey
+    ) {
+        window.alert(
+            "Admin authentication is required."
+        );
+
+        return;
+    }
+
+    this.closeBanManager();
+
+    const panel =
+        document.createElement("div");
+
+    panel.className = [
+        "fixed",
+        "z-[100001]",
+        "w-72",
+        "max-w-[calc(100vw-2rem)]",
+        "overflow-hidden",
+        "rounded-2xl",
+        "border",
+        "border-white/15",
+        "bg-black/95",
+        "text-white",
+        "shadow-xl",
+        "backdrop-blur-xl"
+    ].join(" ");
+
+    const chatRect =
+        this.window.getBoundingClientRect();
+
+    panel.style.right =
+        `${Math.max(
+            16,
+            window.innerWidth -
+            chatRect.right
+        )}px`;
+
+    panel.style.bottom =
+        `${Math.max(
+            16,
+            window.innerHeight -
+            chatRect.top +
+            8
+        )}px`;
+
+    panel.innerHTML = `
+        <div
+            class="
+                flex items-center justify-between
+                border-b border-white/10
+                px-4 py-3
+            "
+        >
+            <div
+                class="
+                    theme-heading
+                    text-[10px]
+                    font-bold uppercase tracking-widest
+                "
+            >
+                Banned users
+            </div>
+
+            <button
+                type="button"
+                data-close-ban-manager
+                class="
+                    rounded px-2 py-1
+                    text-white/50
+                    transition
+                    hover:bg-white/10
+                    hover:text-white
+                "
+                aria-label="Close banned users panel"
+            >
+                ×
+            </button>
+        </div>
+
+        <div
+            data-ban-list
+            class="
+                max-h-80 overflow-y-auto
+                p-3
+                theme-body text-[11px]
+            "
+        >
+            <div class="text-white/40">
+                Loading...
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(panel);
+
+    this.banManager = panel;
+
+    panel
+        .querySelector(
+            "[data-close-ban-manager]"
+        )
+        .addEventListener(
+            "click",
+            () => this.closeBanManager()
+        );
+
+    await this.loadBannedUsers();
+}
+
+	closeBanManager() {
+    if (!this.banManager) {
+        return;
+    }
+
+    this.banManager.remove();
+    this.banManager = null;
+}
+
+	async loadBannedUsers() {
+    if (!this.banManager) {
+        return;
+    }
+
+    const list =
+        this.banManager.querySelector(
+            "[data-ban-list]"
+        );
+
+    if (!list) {
+        return;
+    }
+
+    list.innerHTML = `
+        <div class="text-white/40">
+            Loading...
+        </div>
+    `;
+
+    try {
+        const response = await fetch(
+            `${this.API}/api/admin/chat/bans`,
+            {
+                method: "GET",
+                headers: {
+                    "Authorization":
+                        `Bearer ${this.adminKey}`
+                }
+            }
+        );
+
+        const result =
+            await response.json();
+
+        if (response.status === 401) {
+            this.disableAdminMode();
+
+            window.alert(
+                "Your admin session is no longer valid."
+            );
+
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `Could not load bans (${response.status})`
+            );
+        }
+
+        this.renderBannedUsers(
+            result.bans || []
+        );
+    } catch (error) {
+        console.error(
+            "Could not load banned users:",
+            error
+        );
+
+        list.innerHTML = "";
+
+        const message =
+            document.createElement("div");
+
+        message.className =
+            "text-red-300";
+
+        message.textContent =
+            error.message;
+
+        list.appendChild(message);
+    }
+}
+
+	renderBannedUsers(bans) {
+    if (!this.banManager) {
+        return;
+    }
+
+    const list =
+        this.banManager.querySelector(
+            "[data-ban-list]"
+        );
+
+    if (!list) {
+        return;
+    }
+
+    list.replaceChildren();
+
+    if (
+        !Array.isArray(bans) ||
+        bans.length === 0
+    ) {
+        const empty =
+            document.createElement("div");
+
+        empty.className =
+            "text-white/40";
+
+        empty.textContent =
+            "Nobody is banned.";
+
+        list.appendChild(empty);
+        return;
+    }
+
+    for (const ban of bans) {
+        const row =
+            document.createElement("div");
+
+        row.className = [
+            "mb-2",
+            "rounded-xl",
+            "border",
+            "border-white/10",
+            "bg-white/5",
+            "p-3",
+            "last:mb-0"
+        ].join(" ");
+
+        const name =
+            document.createElement("div");
+
+        name.className =
+            "font-bold text-white";
+
+        name.textContent =
+            ban.name || "Unknown user";
+
+        const reason =
+            document.createElement("div");
+
+        reason.className =
+            "mt-1 break-words text-white/60";
+
+        reason.textContent =
+            `Reason: ${
+                ban.reason ||
+                "No reason provided"
+            }`;
+
+        const clientId =
+            document.createElement("div");
+
+        clientId.className =
+            "mt-1 break-all text-[9px] text-white/30";
+
+        clientId.textContent =
+            ban.client_id;
+
+        const unbanButton =
+            document.createElement("button");
+
+        unbanButton.type = "button";
+        unbanButton.textContent = "Unban";
+
+        unbanButton.className = [
+            "mt-3",
+            "w-full",
+            "rounded-lg",
+            "border",
+            "border-white/10",
+            "bg-white/5",
+            "px-3",
+            "py-2",
+            "text-[10px]",
+            "transition",
+            "hover:bg-white/10",
+            "disabled:cursor-not-allowed",
+            "disabled:opacity-40"
+        ].join(" ");
+
+        unbanButton.addEventListener(
+            "click",
+            () => {
+                this.unbanClient(
+                    ban.client_id,
+                    ban.name,
+                    unbanButton
+                );
+            }
+        );
+
+        row.append(
+            name,
+            reason,
+            clientId,
+            unbanButton
+        );
+
+        list.appendChild(row);
+    }
+}
+
+	async unbanClient(
+    clientId,
+    name,
+    button
+) {
+    const confirmed =
+        window.confirm(
+            `Unban ${
+                name || "this user"
+            }?`
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Unbanning...";
+
+    try {
+        const response = await fetch(
+            `${this.API}/api/admin/chat/unban`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json",
+
+                    "Authorization":
+                        `Bearer ${this.adminKey}`
+                },
+                body: JSON.stringify({
+                    clientId
+                })
+            }
+        );
+
+        const result =
+            await response.json();
+
+        if (response.status === 401) {
+            this.disableAdminMode();
+
+            window.alert(
+                "Your admin session is no longer valid."
+            );
+
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `Unban failed (${response.status})`
+            );
+        }
+
+        if (!result.removed) {
+            window.alert(
+                "That client was not currently banned."
+            );
+        } else {
+            window.alert(
+                `${
+                    name || "User"
+                } has been unbanned.`
+            );
+        }
+
+        await this.loadBannedUsers();
+    } catch (error) {
+        console.error(
+            "Could not unban client:",
+            error
+        );
+
+        window.alert(
+            `Could not unban user: ${
+                error.message
+            }`
+        );
+
+        button.disabled = false;
+        button.textContent = "Unban";
+    }
+}
+
+	
 async loadHistory() {
 
     const res = await fetch(`${this.API}/api/chat`);
@@ -2332,6 +2815,19 @@ setMinimized(minimized) {
         );
     }
 
+	if (this.banManagerButton) {
+    this.banManagerButton.classList.toggle(
+        "hidden",
+        minimized
+    );
+}
+
+if (minimized) {
+    this.closeBanManager();
+}
+
+	
+
     /*
      * The normal window has h-[500px].
      * Remove it while minimized so only the title bar remains.
@@ -2378,6 +2874,7 @@ setMinimized(minimized) {
     if (minimized) {
         this.closeAvatarPicker();
 		this.closeEmojiPicker();
+		this.closeBanManager();
     }
 }
 
