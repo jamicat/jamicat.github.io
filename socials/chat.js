@@ -131,13 +131,13 @@ addMessage(message) {
 
     const separator = document.createElement("span");
     separator.className = "chatSeparator";
-    separator.textContent = ":";
+    separator.textContent = "•";
 
     const text = document.createElement("span");
     text.className = "chatText";
     text.textContent = message.message || "";
 
-    row.append(name, time, separator, text);
+row.append(time, name, separator, text);
 
     this.messages.appendChild(row);
     this.messages.scrollTop = this.messages.scrollHeight;
