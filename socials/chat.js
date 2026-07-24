@@ -2794,7 +2794,7 @@ document.body.appendChild(
                     ? event.composedPath()
                     : [];
 
-            cconst clickedPicker =
+            const clickedPicker =
     path.includes(
         this.emojiPickerContainer
     );
