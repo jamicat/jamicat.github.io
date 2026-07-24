@@ -23,7 +23,6 @@ this.minimizeButton = null;
 this.membersToggle = null;
 this.isMinimized = false;
 	this.membersPanel = null;
-this.membersToggle = null;
 this.membersVisible = true;
 
    this.avatar =
@@ -344,9 +343,6 @@ this.controlsElement =
 
 this.minimizeButton =
     this.window.querySelector("#chatMinimize");
-
-this.membersToggle =
-    this.window.querySelector("#chatMembersToggle");
 
     this.sendButton.addEventListener(
         "click",
