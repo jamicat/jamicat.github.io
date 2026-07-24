@@ -944,15 +944,14 @@ createBanManagerButton() {
         const row =
             document.createElement("div");
 
-       row.className = [
-    "chatMessage",
-    "group",
-    "relative",
-    "flex",
-    "items-start",
-    isContinuation
-        ? "py-0.5"
-        : "gap-3 py-2"
+  row.className = [
+    "mb-2",
+    "rounded-xl",
+    "border",
+    "border-white/10",
+    "bg-white/5",
+    "p-3",
+    "last:mb-0"
 ].join(" ");
 
         const name =
@@ -1165,14 +1164,15 @@ addMessage(message) {
         document.createElement("div");
 
     row.className = [
-        "chatMessage",
-        "group",
-        "relative",
-        "flex",
-        isContinuation
-    ? "items-start gap-3 py-0.5"
-    : "items-start gap-3 py-2"
-    ].join(" ");
+    "chatMessage",
+    "group",
+    "relative",
+    "flex",
+    "items-start",
+    isContinuation
+        ? "py-0.5"
+        : "gap-3 py-2"
+].join(" ");
 
     const messageId =
         Number(message.id);
@@ -1355,22 +1355,21 @@ if (
     adminButton.type = "button";
 
     adminButton.className = [
-        "chatAdminButton",
-        "absolute",
-        "right-2",
-        "top-1",
-        "-translate-y-1/2",
-        "hidden",
-        "group-hover:flex",
-        "h-6",
-        "w-6",
-        "items-center",
-        "justify-center",
-        "rounded",
-        "text-white/40",
-        "hover:bg-white/10",
-        "hover:text-white"
-    ].join(" ");
+    "chatAdminButton",
+    "absolute",
+    "right-2",
+    "top-1",
+    "hidden",
+    "group-hover:flex",
+    "h-6",
+    "w-6",
+    "items-center",
+    "justify-center",
+    "rounded",
+    "text-white/40",
+    "hover:bg-white/10",
+    "hover:text-white"
+].join(" ");
 
     adminButton.textContent = "⋮";
 
