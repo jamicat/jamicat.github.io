@@ -1583,6 +1583,29 @@ openModerationMenu(button, message) {
     this.moderationMenu = menu;
 }
 
+openMemberModerationMenu(x, y, member) {
+    const menu = document.createElement("div");
+
+    menu.className =
+        "fixed z-[100000] w-44 rounded-xl border border-white/15 bg-black/90 py-1 text-[11px] text-white shadow-xl backdrop-blur-xl";
+
+    menu.style.left = `${x}px`;
+    menu.style.top = `${y}px`;
+
+    const banButton = this.createModerationMenuButton(
+        `ban ${member.name}`,
+        async () => {
+            this.closeModerationMenu();
+            await this.banClient(member.clientId, member.name);
+        }
+    );
+
+    menu.appendChild(banButton);
+
+    document.body.appendChild(menu);
+    this.moderationMenu = menu;
+}
+
 	createModerationMenuButton(
     label,
     onClick
@@ -1863,6 +1886,22 @@ openModerationMenu(button, message) {
 
         row.append(avatar, name);
         this.membersElement.appendChild(row);
+
+		if (this.isAdmin) {
+    row.classList.add("cursor-pointer");
+
+    row.addEventListener("contextmenu", event => {
+        event.preventDefault();
+
+        this.closeModerationMenu();
+
+        this.openMemberModerationMenu(
+            event.clientX,
+            event.clientY,
+            member
+        );
+    });
+}
     }
 }
 
