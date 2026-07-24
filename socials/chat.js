@@ -348,13 +348,13 @@ transition-[height] duration-200
     </div>
 
     <div
-        id="chatEmojiPicker"
-        class="
-            invisible pointer-events-none opacity-0
-    fixed z-[100002]
-    transition-opacity duration-150
-        "
-    ></div>
+    id="chatEmojiPicker"
+    class="
+        invisible pointer-events-none opacity-0
+        fixed z-[100002]
+        transition-opacity duration-150
+    "
+></div>
 </div>
 
             <button
@@ -2395,53 +2395,58 @@ setupNameSaving() {
     const buttonRect =
         this.emojiButton.getBoundingClientRect();
 
-    const pickerRect =
-        this.emojiPickerContainer.getBoundingClientRect();
+    const picker =
+        this.emojiPickerContainer;
 
-    const viewportPadding = 12;
+    const pickerWidth =
+        picker.offsetWidth || 400;
+
+    const pickerHeight =
+        picker.offsetHeight || 480;
+
     const gap = 8;
+    const padding = 12;
 
     let left =
-        buttonRect.right -
-        pickerRect.width;
+        buttonRect.right - pickerWidth;
 
     left = Math.max(
-        viewportPadding,
+        padding,
         Math.min(
             left,
             window.innerWidth -
-                pickerRect.width -
-                viewportPadding
+                pickerWidth -
+                padding
         )
     );
 
     let top =
         buttonRect.top -
-        pickerRect.height -
+        pickerHeight -
         gap;
 
     /*
-     * If there is not enough space above,
-     * place it below the button instead.
+     * If it cannot fit above the button,
+     * place it below the button.
      */
-    if (top < viewportPadding) {
+    if (top < padding) {
         top =
             buttonRect.bottom +
             gap;
     }
 
-    top = Math.min(
-        top,
-        window.innerHeight -
-            pickerRect.height -
-            viewportPadding
+    top = Math.max(
+        padding,
+        Math.min(
+            top,
+            window.innerHeight -
+                pickerHeight -
+                padding
+        )
     );
 
-    this.emojiPickerContainer.style.left =
-        `${left}px`;
-
-    this.emojiPickerContainer.style.top =
-        `${Math.max(viewportPadding, top)}px`;
+    picker.style.left = `${left}px`;
+    picker.style.top = `${top}px`;
 }
 	
 setupEmojiPicker() {
@@ -2586,9 +2591,8 @@ const customSection =
     document.createElement("div");
 
 customSection.className = [
-    "w-fit",
-    "max-w-full",
-    "self-start",
+    "w-full",
+    "shrink-0",
     "rounded-t-xl",
     "border",
     "border-b-0",
@@ -2614,7 +2618,7 @@ const customTray =
 
 customTray.className = [
     "flex",
-    "max-w-full",
+    "w-full",
     "flex-wrap",
     "gap-1"
 ].join(" ");
@@ -2636,18 +2640,18 @@ for (const category of this.customEmojiCategories) {
 
         button.type = "button";
 
-        button.className = [
-            "flex",
+      button.className = [
+    "flex",
     "h-11",
     "w-11",
     "shrink-0",
-            "items-center",
-            "justify-center",
-            "rounded-lg",
-            "transition",
-            "hover:bg-white/10",
-            "active:scale-95"
-        ].join(" ");
+    "items-center",
+    "justify-center",
+    "rounded-lg",
+    "transition",
+    "hover:bg-white/10",
+    "active:scale-95"
+].join(" ");
 
         button.title =
             emoji.name || emoji.id;
@@ -2709,22 +2713,20 @@ this.emojiPicker =
             return response.json();
         },
 
-        //custom: this.customEmojiCategories,
+        emojiSize: 22,
+        emojiButtonSize: 32,
+        perLine: 10,
 
-emojiSize: 22,
-emojiButtonSize: 32,
-perLine: 10,
-
-onEmojiSelect: emoji => {
+        onEmojiSelect: emoji => {
             this.insertSelectedEmoji(emoji);
         }
     });
 
 this.emojiPickerContainer.style.width =
-    "420px";
+    "400px";
 
 this.emojiPickerContainer.style.maxWidth =
-    "calc(100vw - 2rem)";
+    "calc(100vw - 24px)";
 
 this.emojiPickerContainer.style.display =
     "flex";
@@ -2733,34 +2735,28 @@ this.emojiPickerContainer.style.flexDirection =
     "column";
 
 this.emojiPickerContainer.style.maxHeight =
-    "500px";
+    "480px";
 
 this.emojiPickerContainer.style.overflow =
     "hidden";
 
+this.emojiPicker.style.display =
+    "block";
+
 this.emojiPicker.style.width =
     "100%";
 
-this.emojiPicker.style.maxWidth =
-    "100%";
-
-/*
- * Emoji Mart's normal picker is tall enough to push
- * the custom tray outside the chat window. Reducing its
- * height leaves room for the tray above it.
- */
 this.emojiPicker.style.height =
-    "370px";
+    "350px";
 
+this.emojiPicker.style.flex =
+    "0 0 350px";
+	
 this.emojiPickerContainer.append(
     customSection,
     this.emojiPicker
 );
 
-/*
- * Move the picker outside #chatWindow so the chat's
- * overflow-hidden rule cannot clip it.
- */
 document.body.appendChild(
     this.emojiPickerContainer
 );
@@ -2832,15 +2828,26 @@ openEmojiPicker() {
         "opacity-100"
     );
 
-	requestAnimationFrame(() => {
-    this.positionEmojiPicker();
-});
-
     this.emojiButton.setAttribute(
         "aria-expanded",
         "true"
     );
 
+    /*
+     * Wait until the browser has measured the picker,
+     * then position it above the emoji button.
+     */
+    requestAnimationFrame(() => {
+        this.positionEmojiPicker();
+
+        /*
+         * Emoji Mart may finish sizing after the
+         * first animation frame.
+         */
+        requestAnimationFrame(() => {
+            this.positionEmojiPicker();
+        });
+    });
 }
 
 closeEmojiPicker() {
