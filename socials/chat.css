@@ -86,30 +86,32 @@
 
 }
 
-.chatMessage{
-
-    margin-bottom:10px;
-
+.chatMessage {
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
 }
 
-.chatMessageHeader{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    font-size:12px;
-
+.chatMessageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
 }
 
-.chatText{
+.chatMessageHeader strong {
+    color: white;
+}
 
-    margin-top:2px;
+.chatTime {
+    color: rgba(255,255,255,.55);
+    font-size: 11px;
+}
 
-    white-space:pre-wrap;
-
-    word-break:break-word;
-
+.chatText {
+    color: rgba(255,255,255,.9);
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 #chatWindow button {
