@@ -1170,7 +1170,7 @@ addMessage(message) {
     "flex",
     "items-start",
     isContinuation
-        ? "mt-1 py-0.5"
+        ? "py-0"
         : "gap-3 py-2"
 ].join(" ");
 
