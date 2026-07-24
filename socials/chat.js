@@ -351,7 +351,8 @@ transition-[height] duration-200
     id="chatEmojiPicker"
     class="
         invisible pointer-events-none opacity-0
-        fixed z-[100002]
+        absolute bottom-full right-0 z-30
+        mb-2
         transition-opacity duration-150
     "
 ></div>
@@ -2384,88 +2385,12 @@ setupNameSaving() {
     }
 }
 
-	positionEmojiPicker() {
-    if (
-        !this.emojiPickerContainer ||
-        !this.emojiButton
-    ) {
-        return;
-    }
-
-    const buttonRect =
-        this.emojiButton.getBoundingClientRect();
-
-    const picker =
-        this.emojiPickerContainer;
-
-    const pickerWidth =
-    picker.getBoundingClientRect().width ||
-    400;
-
-    const pickerHeight =
-    picker.getBoundingClientRect().height ||
-    460;
-
-    const gap = 8;
-    const padding = 12;
-
-    let left =
-        buttonRect.right - pickerWidth;
-
-    left = Math.max(
-        padding,
-        Math.min(
-            left,
-            window.innerWidth -
-                pickerWidth -
-                padding
-        )
-    );
-
-    let top =
-        buttonRect.top -
-        pickerHeight -
-        gap;
-
-    /*
-     * If it cannot fit above the button,
-     * place it below the button.
-     */
-    if (top < padding) {
-        top =
-            buttonRect.bottom +
-            gap;
-    }
-
-    top = Math.max(
-        padding,
-        Math.min(
-            top,
-            window.innerHeight -
-                pickerHeight -
-                padding
-        )
-    );
-
-    picker.style.left = `${left}px`;
-    picker.style.top = `${top}px`;
-}
 	
 setupEmojiPicker() {
     /*
      * Custom categories appear alongside Emoji Mart's
      * standard Unicode categories.
      */
-
-	window.addEventListener(
-    "resize",
-    () => {
-        if (this.emojiPickerOpen) {
-            this.positionEmojiPicker();
-        }
-    }
-);
-
 	
     this.customEmojiCategories = [
     {
@@ -2729,28 +2654,20 @@ this.emojiPickerContainer.style.width =
     "400px";
 
 this.emojiPickerContainer.style.maxWidth =
-    "calc(100vw - 24px)";
+    "calc(100vw - 2rem)";
+
+this.emojiPickerContainer.style.display =
+    "flex";
+
+this.emojiPickerContainer.style.flexDirection =
+    "column";
 
 this.emojiPickerContainer.style.maxHeight =
-    "calc(100vh - 24px)";
+    "470px";
 
-this.emojiPickerContainer.style.overflowY =
-    "auto";
-
-this.emojiPickerContainer.style.overflowX =
+this.emojiPickerContainer.style.overflow =
     "hidden";
 
-this.emojiPickerContainer.style.borderRadius =
-    "16px";
-
-this.emojiPickerContainer.style.boxShadow =
-    "0 18px 50px rgba(0, 0, 0, 0.45)";
-
-/*
- * Let Emoji Mart keep its natural internal height.
- * Forcing a flex-basis/height can collapse the
- * web component's rendered picker.
- */
 this.emojiPicker.style.display =
     "block";
 
@@ -2760,13 +2677,12 @@ this.emojiPicker.style.width =
 this.emojiPicker.style.maxWidth =
     "100%";
 
+this.emojiPicker.style.height =
+    "350px";
+
 this.emojiPickerContainer.append(
     customSection,
     this.emojiPicker
-);
-
-document.body.appendChild(
-    this.emojiPickerContainer
 );
 
     this.emojiButton.addEventListener(
@@ -2847,17 +2763,6 @@ openEmojiPicker() {
      * Wait until the browser has measured the picker,
      * then position it above the emoji button.
      */
-    requestAnimationFrame(() => {
-        this.positionEmojiPicker();
-
-        /*
-         * Emoji Mart may finish sizing after the
-         * first animation frame.
-         */
-        requestAnimationFrame(() => {
-            this.positionEmojiPicker();
-        });
-    });
 }
 
 closeEmojiPicker() {
