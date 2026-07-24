@@ -1294,6 +1294,7 @@ if (
 ) {
     this.scrollMessagesToBottom();
 }
+}
 
 	scrollMessagesToBottom() {
     if (!this.messages) {
