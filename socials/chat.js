@@ -1916,16 +1916,28 @@ renderTypingUsers() {
     this.typingElement.classList.remove(
         "hidden"
     );
-
-    if (names.length === 1) {
-        this.typingElement.textContent =
-            `${names[0]} is typing...`;
-
-        return;
-    }
-
+if (names.length === 1) {
     this.typingElement.textContent =
-        `${names.slice(0, 2).join(", ")} are typing...`;
+        `${names[0]} is typing...`;
+
+    return;
+}
+
+if (names.length === 2) {
+    this.typingElement.textContent =
+        `${names[0]} and ${names[1]} are typing...`;
+
+    return;
+}
+
+const remainingCount =
+    names.length - 2;
+
+this.typingElement.textContent =
+    `${names[0]}, ${names[1]} and ` +
+    `${remainingCount} ` +
+    `${remainingCount === 1 ? "other" : "others"} ` +
+    `are typing...`;
 }
 
 	
