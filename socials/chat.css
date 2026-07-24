@@ -34,9 +34,7 @@
 
 #chatWindow .chatMessage {
     display: flex;
-    align-items: baseline;
     width: 100%;
-    padding: 6px 2px;
     font-size: 12px;
     line-height: 1.4;
     text-align: left;
