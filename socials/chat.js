@@ -1236,11 +1236,6 @@ const isFirstContinuation =
 
     text.className =
          "chatText messageLine break-words leading-relaxed";
-
-	   if (isFirstContinuation) {
-    text.classList.add("firstContinuationLine");
-}
-
     this.renderMessageContent(
         text,
         message.message || ""
