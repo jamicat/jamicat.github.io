@@ -4,7 +4,8 @@ constructor() {
     this.API = "https://jamicat.ahrly.workers.dev";
     this.titleBar = null;
     this.socket = null;
-    this.reconnectTimer = null;
+this.reconnectTimer = null;
+this.isBanned = false;
 
     this.messages = null;
     this.window = null;
@@ -1164,6 +1165,11 @@ connect() {
     /*
      * Avoid creating a duplicate connection.
      */
+
+	 if (this.isBanned) {
+        return;
+    }
+	
     if (
         this.socket &&
         (
@@ -1213,7 +1219,51 @@ connect() {
 
         console.log("Chat WebSocket data:", data);
 
-      if (data.type === "members") {
+      if (data.type === "ban") {
+    this.isBanned = true;
+
+    clearTimeout(this.reconnectTimer);
+
+    const reason =
+        data.reason ||
+        "No reason provided";
+
+    const durationText =
+        data.expires_at
+            ? `Ban expires: ${
+                new Date(
+                    data.expires_at
+                ).toLocaleString()
+            }`
+            : "This ban is permanent.";
+
+    window.alert(
+        `You have been banned.\n\n` +
+        `Reason: ${reason}\n\n` +
+        durationText
+    );
+
+    this.messageInput.disabled = true;
+    this.sendButton.disabled = true;
+
+    if (this.connectionStatus) {
+        this.connectionStatus.textContent =
+            "banned";
+
+        this.connectionStatus.classList.remove(
+            "text-emerald-300",
+            "text-white/40"
+        );
+
+        this.connectionStatus.classList.add(
+            "text-red-300"
+        );
+    }
+
+    return;
+}
+
+if (data.type === "members") {
     this.renderMembers(data.members);
     return;
 }
@@ -1257,19 +1307,26 @@ if (data.name && data.message) {
         this.socket = null;
 
 		if (this.connectionStatus) {
-    this.connectionStatus.textContent = "reconnecting";
+    this.connectionStatus.textContent =
+        this.isBanned
+            ? "banned"
+            : "reconnecting";
+
     this.connectionStatus.classList.remove(
         "text-emerald-300"
     );
+
     this.connectionStatus.classList.add(
         "text-red-300"
     );
 }
-		
-        this.reconnectTimer = setTimeout(
-            () => this.connect(),
-            3000
-        );
+
+if (!this.isBanned) {
+    this.reconnectTimer = setTimeout(
+        () => this.connect(),
+        3000
+    );
+}
     });
 
     this.socket.addEventListener("error", error => {
@@ -1312,11 +1369,53 @@ async sendMessage() {
 })
         });
 
-      if (!response.ok) {
-    const errorText = await response.text();
+  const result =
+    await response.json();
 
+if (
+    response.status === 403 &&
+    result.error === "Banned"
+) {
+    this.isBanned = true;
+
+    const durationText =
+        result.expires_at
+            ? `Ban expires: ${
+                new Date(
+                    result.expires_at
+                ).toLocaleString()
+            }`
+            : "This ban is permanent.";
+
+    window.alert(
+        `You have been banned.\n\n` +
+        `Reason: ${
+            result.reason ||
+            "No reason provided"
+        }\n\n` +
+        durationText
+    );
+
+    this.messageInput.disabled = true;
+    this.sendButton.disabled = true;
+
+    if (
+        this.socket &&
+        this.socket.readyState === WebSocket.OPEN
+    ) {
+        this.socket.close(
+            4003,
+            "Banned"
+        );
+    }
+
+    return;
+}
+
+if (!response.ok) {
     throw new Error(
-        `Chat request failed (${response.status}): ${errorText}`
+        result?.error ||
+        `Chat request failed (${response.status})`
     );
 }
 
@@ -1325,9 +1424,14 @@ async sendMessage() {
     } catch (error) {
         console.error("Could not send chat message:", error);
     } finally {
-        this.sendButton.disabled = false;
-        this.sendButton.textContent = "Send";
-    }
+    this.sendButton.disabled =
+        this.isBanned;
+
+    this.sendButton.textContent =
+        this.isBanned
+            ? "Banned"
+            : "Send";
+}
 }
 
 restoreSettings() {
