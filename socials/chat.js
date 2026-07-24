@@ -163,22 +163,37 @@ connect() {
         `${this.API}/api/chat/events`
     );
 
+    this.events.onopen = () => {
+        console.log("SSE OPEN");
+    };
+
     this.events.onmessage = event => {
 
-        const message = JSON.parse(event.data);
+        console.log("SSE MESSAGE:", event.data);
 
-        this.addMessage(message);
+        try {
+
+            const message = JSON.parse(event.data);
+
+            console.log("Parsed:", message);
+
+            this.addMessage(message);
+
+        } catch (err) {
+
+            console.error("Parse error:", err);
+
+        }
 
     };
 
-    this.events.onerror = () => {
+    this.events.onerror = event => {
+
+        console.log("SSE ERROR", event);
 
         this.events.close();
 
-        setTimeout(
-            () => this.connect(),
-            3000
-        );
+        setTimeout(() => this.connect(), 3000);
 
     };
 
