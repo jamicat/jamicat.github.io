@@ -136,82 +136,83 @@ this.restoreSettings();
             "
         >
 
-		<div class="relative">
-    <button
-        id="chatAvatarButton"
-        type="button"
-        class="
-            flex w-full items-center gap-3
-            rounded-xl
-            border border-white/10
-            bg-black/20 px-3 py-2
-            text-left
-            transition
-            hover:bg-white/5
-        "
-        aria-expanded="false"
-        aria-controls="chatAvatarPicker"
-    >
-        <img
-            id="chatAvatarPreview"
-            src="/avatars/original.gif"
-            alt="Selected chat avatar"
-            class="h-9 w-9 shrink-0 object-contain"
-        >
-
-        <span class="theme-body text-xs text-white/70">
-            choose avatar
-        </span>
-    </button>
-
-    <div
-        id="chatAvatarPicker"
-        class="
-            terminal2
-            invisible pointer-events-none opacity-0
-            absolute bottom-full left-0 z-20
-            mb-2 w-full
-            rounded-2xl border border-white/15
-            p-3
-            shadow-lg
-            backdrop-blur-xl
-            transition-opacity
-        "
-    >
-        <div
+	<div class="flex items-start gap-2">
+    <div class="relative shrink-0">
+        <button
+            id="chatAvatarButton"
+            type="button"
             class="
-                theme-heading
-                mb-3 text-[10px]
-                font-bold uppercase tracking-widest
-                text-white/60
+                flex h-11 w-11
+                items-center justify-center
+                rounded-xl
+                border border-white/10
+                bg-black/20
+                transition
+                hover:bg-white/5
+            "
+            aria-label="Choose avatar"
+            aria-expanded="false"
+            aria-controls="chatAvatarPicker"
+        >
+            <img
+                id="chatAvatarPreview"
+                src="/avatars/original.gif"
+                alt=""
+                class="h-9 w-9 object-contain"
+            >
+        </button>
+
+        <div
+            id="chatAvatarPicker"
+            class="
+                terminal2
+                invisible pointer-events-none opacity-0
+                absolute bottom-full left-0 z-20
+                mb-2 w-56
+                rounded-2xl
+                border border-white/15
+                p-3
+                shadow-lg
+                backdrop-blur-xl
+                transition-opacity
             "
         >
-            select avatar
-        </div>
-
-        <div
-            id="chatAvatarGrid"
-            class="grid grid-cols-5 gap-2"
-        ></div>
-    </div>
-</div>
-            <input
-                id="chatName"
-                type="text"
-                maxlength="20"
-                autocomplete="nickname"
-                placeholder="name"
+            <div
                 class="
-                    theme-body
-                    w-full rounded-xl
-                    border border-white/10
-                    bg-black/30 px-3 py-2
-                    text-xs text-white
-                    placeholder:text-white/35
-                    outline-none
-                    focus:border-white/25
+                    theme-heading
+                    mb-3 text-[10px]
+                    font-bold uppercase tracking-widest
+                    text-white/60
                 "
             >
+                select avatar
+            </div>
+
+            <div
+                id="chatAvatarGrid"
+                class="grid grid-cols-5 gap-2"
+            ></div>
+        </div>
+    </div>
+
+    <input
+        id="chatName"
+        type="text"
+        maxlength="20"
+        autocomplete="nickname"
+        placeholder="name"
+        class="
+            theme-body
+            min-w-0 flex-1 rounded-xl
+            border border-white/10
+            bg-black/30 px-3 py-2
+            text-xs text-white
+            placeholder:text-white/35
+            outline-none
+            focus:border-white/25
+        "
+    >
+</div>
 
             <input
                 id="chatMessage"
