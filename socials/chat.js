@@ -1328,7 +1328,7 @@ const text =
     document.createElement("div");
 
         text.className =
-            "chatText break-words leading-relaxed";
+            "chatText mt-1 break-words leading-relaxed";
 
         this.renderMessageContent(
             text,
@@ -2516,6 +2516,7 @@ const customSection =
     document.createElement("div");
 
 customSection.className = [
+	"overflow-hidden",
     "rounded-t-xl",
     "border",
     "border-b-0",
@@ -2646,7 +2647,7 @@ onEmojiSelect: emoji => {
     });
 
 this.emojiPickerContainer.style.width =
-    "352px";
+    "260px";
 
 this.emojiPickerContainer.style.maxWidth =
     "calc(100vw - 3rem)";
