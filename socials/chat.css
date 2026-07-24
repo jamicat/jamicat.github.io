@@ -36,10 +36,15 @@
     display: flex;
     align-items: flex-start;
     width: 100%;
-    padding: 6px 2px;
+    padding: 4px 10px;
     font-size: 12px;
     line-height: 1.4;
     text-align: left;
+}
+
+#chatWindow .chatMessage[data-continuation="true"] {
+    padding-top: 1px;
+    padding-bottom: 1px;
 }
 
 #chatWindow .chatMessage + .chatMessage {
