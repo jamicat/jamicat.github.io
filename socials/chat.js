@@ -991,7 +991,92 @@ setupEmojiPicker() {
         return;
     }
 
- this.emojiPicker =
+ /*
+ * Custom emojis shown permanently above the Unicode picker.
+ */
+const customTray = document.createElement("div");
+
+customTray.className = [
+    "grid",
+    "grid-cols-7",
+    "gap-1",
+    "rounded-t-xl",
+    "border",
+    "border-b-0",
+    "border-white/10",
+    "bg-[#1f1f1f]",
+    "p-2"
+].join(" ");
+
+customTray.setAttribute(
+    "aria-label",
+    "Custom emojis"
+);
+
+for (const category of this.customEmojiCategories) {
+    for (const emoji of category.emojis) {
+        const source = emoji.skins?.[0]?.src;
+
+        if (!emoji.id || !source) {
+            continue;
+        }
+
+        const button = document.createElement("button");
+
+        button.type = "button";
+
+        button.className = [
+            "flex",
+            "h-11",
+            "w-full",
+            "items-center",
+            "justify-center",
+            "rounded-lg",
+            "transition",
+            "hover:bg-white/10",
+            "active:scale-95"
+        ].join(" ");
+
+        button.title =
+            emoji.name || emoji.id;
+
+        button.setAttribute(
+            "aria-label",
+            emoji.name || emoji.id
+        );
+
+        const image = document.createElement("img");
+
+        image.src = source;
+        image.alt = `:${emoji.id}:`;
+
+        image.className = [
+            "h-8",
+            "w-8",
+            "object-contain"
+        ].join(" ");
+
+        button.appendChild(image);
+
+        button.addEventListener(
+            "click",
+            event => {
+                event.stopPropagation();
+
+                this.insertIntoMessageInput(
+                    `:${emoji.id.toLowerCase()}:`
+                );
+            }
+        );
+
+        customTray.appendChild(button);
+    }
+}
+
+/*
+ * Normal Unicode Emoji Mart picker.
+ */
+this.emojiPicker =
     new window.EmojiMart.Picker({
         data: async () => {
             const response = await fetch(
@@ -1007,42 +1092,31 @@ setupEmojiPicker() {
             return response.json();
         },
 
-        /*
-         * The standard categories appear in this order.
-         * The custom category is supplied separately and appears first.
-         */
-        categories: [
-            "people",
-            "nature",
-            "foods",
-            "activity",
-            "places",
-            "objects",
-            "symbols",
-            "flags"
-        ],
-
-        custom: this.customEmojiCategories,
-
         emojiSize: 30,
-emojiButtonSize: 40,
-perLine: 8,
+        emojiButtonSize: 40,
+        perLine: 8,
 
         onEmojiSelect: emoji => {
             this.insertSelectedEmoji(emoji);
         }
     });
 
-    /*
-     * Keep the picker narrower than the chat window.
-     */
-    this.emojiPicker.style.width = "352px";
-    this.emojiPicker.style.maxWidth =
-        "calc(100vw - 3rem)";
+this.emojiPickerContainer.style.width =
+    "352px";
 
-    this.emojiPickerContainer.appendChild(
-        this.emojiPicker
-    );
+this.emojiPickerContainer.style.maxWidth =
+    "calc(100vw - 3rem)";
+
+this.emojiPicker.style.width =
+    "100%";
+
+this.emojiPicker.style.maxWidth =
+    "100%";
+
+this.emojiPickerContainer.append(
+    customTray,
+    this.emojiPicker
+);
 
     this.emojiButton.addEventListener(
         "click",
@@ -1116,28 +1190,6 @@ openEmojiPicker() {
         "true"
     );
 
-    /*
-     * Emoji Mart places custom categories after the
-     * built-in categories. Click our custom category
-     * tab automatically whenever the picker opens.
-     */
-    requestAnimationFrame(() => {
-        const pickerRoot =
-            this.emojiPicker.shadowRoot;
-
-        if (!pickerRoot) {
-            return;
-        }
-
-        const customButton =
-            pickerRoot.querySelector(
-                '[data-id="custom"]'
-            );
-
-        if (customButton) {
-            customButton.click();
-        }
-    });
 }
 
 closeEmojiPicker() {
@@ -1274,8 +1326,8 @@ insertIntoMessageInput(value) {
         if (isOpen) {
             this.closeAvatarPicker();
         } else {
-            this.closeAvatarPicker();
-			this.openAvatarPicker();
+            this.closeEmojiPicker();
+    this.openAvatarPicker();
         }
     });
 
