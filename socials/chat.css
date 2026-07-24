@@ -154,3 +154,16 @@
 
 }
 
+.chatTime {
+    margin-right: 8px;
+}
+
+.chatMessageName {
+    margin-right: 5px;
+    font-weight: 700;
+}
+
+.chatSeparator {
+    margin-right: 6px;
+}
+
