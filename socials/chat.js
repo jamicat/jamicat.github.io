@@ -21,6 +21,13 @@ this.mainElement = null;
 this.controlsElement = null;
 this.minimizeButton = null;
 this.membersToggle = null;
+	this.emojiButton = null;
+this.emojiPickerContainer = null;
+this.emojiPicker = null;
+this.emojiPickerOpen = false;
+
+this.customEmojiCategories = [];
+this.customEmojiLookup = new Map();
 this.isMinimized = false;
 	this.membersPanel = null;
 this.membersVisible = true;
@@ -41,6 +48,7 @@ localStorage.setItem(
 this.applyCurrentTheme();
 this.restoreSettings();
 	this.setupAvatarPicker();
+	this.setupEmojiPicker();
 	this.setupMembersToggle();
     this.setupNameSaving();
     this.setupDragging();
@@ -267,23 +275,59 @@ transition-[height] duration-200
     >
 </div>
 
-            <input
-                id="chatMessage"
-                type="text"
-                maxlength="250"
-                autocomplete="off"
-                placeholder="type a message..."
-                class="
-                    theme-body
-                    w-full rounded-xl
-                    border border-white/10
-                    bg-black/30 px-3 py-2
-                    text-xs text-white
-                    placeholder:text-white/35
-                    outline-none
-                    focus:border-white/25
-                "
-            >
+            <<div class="relative">
+    <div class="flex items-stretch gap-2">
+        <input
+            id="chatMessage"
+            type="text"
+            maxlength="250"
+            autocomplete="off"
+            placeholder="type a message..."
+            class="
+                theme-body
+                min-w-0 flex-1 rounded-xl
+                border border-white/10
+                bg-black/30 px-3 py-2
+                text-xs text-white
+                placeholder:text-white/35
+                outline-none
+                focus:border-white/25
+            "
+        >
+
+        <button
+            id="chatEmojiButton"
+            type="button"
+            class="
+                flex h-9 w-9 shrink-0
+                items-center justify-center
+                rounded-xl
+                border border-white/10
+                bg-black/20
+                text-base leading-none
+                transition
+                hover:bg-white/5
+                active:scale-95
+            "
+            aria-label="Choose emoji"
+            aria-expanded="false"
+            aria-controls="chatEmojiPicker"
+            title="Choose emoji"
+        >
+            🙂
+        </button>
+    </div>
+
+    <div
+        id="chatEmojiPicker"
+        class="
+            invisible pointer-events-none opacity-0
+            absolute bottom-full right-0 z-30
+            mb-2
+            transition-opacity duration-150
+        "
+    ></div>
+</div>
 
             <button
                 id="chatSend"
@@ -313,6 +357,11 @@ transition-[height] duration-200
     this.nameInput = this.window.querySelector("#chatName");
     this.messageInput = this.window.querySelector("#chatMessage");
     this.sendButton = this.window.querySelector("#chatSend");
+	this.emojiButton =
+    this.window.querySelector("#chatEmojiButton");
+
+this.emojiPickerContainer =
+    this.window.querySelector("#chatEmojiPicker");
     this.connectionStatus =
         this.window.querySelector("#chatConnectionStatus");
 	   this.avatarButton =
@@ -442,8 +491,10 @@ addMessage(message) {
     text.className =
         "chatText mt-0.5 break-words leading-relaxed";
 
-    text.textContent =
-        message.message || "";
+    this.renderMessageContent(
+    text,
+    message.message || ""
+);
 
     header.append(name, time);
     content.append(header, text);
@@ -708,6 +759,456 @@ setupNameSaving() {
         this.sendPresence();
     });
 }
+
+	renderMessageContent(container, message) {
+    container.replaceChildren();
+
+    const value =
+        typeof message === "string"
+            ? message
+            : "";
+
+    /*
+     * Match shortcode-style custom emojis.
+     *
+     * Examples:
+     * :jamicat:
+     * :partycat:
+     * :heartpixel:
+     */
+    const pattern =
+        /:([a-z0-9_+-]+):/gi;
+
+    let lastIndex = 0;
+    let match;
+
+    while (
+        (match = pattern.exec(value)) !== null
+    ) {
+        /*
+         * Preserve ordinary text before the emoji.
+         */
+        if (match.index > lastIndex) {
+            container.appendChild(
+                document.createTextNode(
+                    value.slice(
+                        lastIndex,
+                        match.index
+                    )
+                )
+            );
+        }
+
+        const emojiId =
+            match[1].toLowerCase();
+
+        const customEmoji =
+            this.customEmojiLookup.get(emojiId);
+
+        if (customEmoji) {
+            const image =
+                document.createElement("img");
+
+            image.src = customEmoji.src;
+            image.alt = `:${customEmoji.id}:`;
+            image.title = customEmoji.name;
+
+            image.className = [
+                "mx-0.5",
+                "inline-block",
+                "h-6",
+                "w-6",
+                "align-middle",
+                "object-contain"
+            ].join(" ");
+
+            image.loading = "lazy";
+            image.decoding = "async";
+
+            image.addEventListener(
+                "error",
+                () => {
+                    image.replaceWith(
+                        document.createTextNode(
+                            `:${customEmoji.id}:`
+                        )
+                    );
+                },
+                {
+                    once: true
+                }
+            );
+
+            container.appendChild(image);
+        } else {
+            /*
+             * Unknown shortcodes stay visible as text.
+             */
+            container.appendChild(
+                document.createTextNode(
+                    match[0]
+                )
+            );
+        }
+
+        lastIndex =
+            pattern.lastIndex;
+    }
+
+    /*
+     * Preserve any remaining text after the final match.
+     */
+    if (lastIndex < value.length) {
+        container.appendChild(
+            document.createTextNode(
+                value.slice(lastIndex)
+            )
+        );
+    }
+}
+	
+setupEmojiPicker() {
+    /*
+     * Custom categories appear alongside Emoji Mart's
+     * standard Unicode categories.
+     */
+    this.customEmojiCategories = [
+    {
+        id: "custom",
+        name: "Custom",
+        emojis: [
+            {
+                id: "blueblob",
+                name: "blue wobble",
+                keywords: ["blue", "blob"],
+                skins: [
+                    {
+                        src: "/emojis/blueblob.gif"
+                    }
+                ]
+            },
+            {
+                id: "catcooking",
+                name: "cat cooking",
+                keywords: ["cat", "cooking", "food"],
+                skins: [
+                    {
+                        src: "/emojis/catcooking.gif"
+                    }
+                ]
+            },
+            {
+                id: "drooling",
+                name: "drooling",
+                keywords: ["drool", "hungry", "food"],
+                skins: [
+                    {
+                        src: "/emojis/drooling.gif"
+                    }
+                ]
+            },
+            {
+                id: "pinkblob",
+                name: "pink wobble",
+                keywords: ["pink", "blob"],
+                skins: [
+                    {
+                        src: "/emojis/pinkblob.gif"
+                    }
+                ]
+            },
+            {
+                id: "pointandlaugh",
+                name: "point and laugh",
+                keywords: ["point", "laugh", "funny"],
+                skins: [
+                    {
+                        src: "/emojis/pointandlaugh.png"
+                    }
+                ]
+            },
+            {
+                id: "tongue",
+                name: "tongue",
+                keywords: ["tongue", "silly", "tease"],
+                skins: [
+                    {
+                        src: "/emojis/tongue.gif"
+                    }
+                ]
+            },
+            {
+                id: "yellowblob",
+                name: "yellow wobble",
+                keywords: ["yellow", "blob"],
+                skins: [
+                    {
+                        src: "/emojis/yellowblob.gif"
+                    }
+                ]
+            }
+        ]
+    }
+];
+
+    /*
+     * Build a trusted lookup used when rendering messages.
+     */
+    this.customEmojiLookup.clear();
+
+    for (const category of this.customEmojiCategories) {
+        for (const emoji of category.emojis) {
+            const source =
+                emoji.skins?.[0]?.src;
+
+            if (!emoji.id || !source) {
+                continue;
+            }
+
+            this.customEmojiLookup.set(
+                emoji.id.toLowerCase(),
+                {
+                    id: emoji.id,
+                    name: emoji.name || emoji.id,
+                    src: source
+                }
+            );
+        }
+    }
+
+    if (
+        typeof window.EmojiMart === "undefined" ||
+        typeof window.EmojiMart.Picker !== "function"
+    ) {
+        console.error(
+            "Emoji Mart did not load."
+        );
+
+        this.emojiButton.disabled = true;
+        this.emojiButton.title =
+            "Emoji picker unavailable";
+
+        return;
+    }
+
+    this.emojiPicker =
+        new window.EmojiMart.Picker({
+            data: async () => {
+                const response = await fetch(
+                    "https://cdn.jsdelivr.net/npm/@emoji-mart/data@1.2.1"
+                );
+
+                if (!response.ok) {
+                    throw new Error(
+                        `Emoji data failed (${response.status})`
+                    );
+                }
+
+                return response.json();
+            },
+
+            custom: this.customEmojiCategories,
+
+            onEmojiSelect: emoji => {
+                this.insertSelectedEmoji(emoji);
+            }
+        });
+
+    /*
+     * Keep the picker narrower than the chat window.
+     */
+    this.emojiPicker.style.width = "352px";
+    this.emojiPicker.style.maxWidth =
+        "calc(100vw - 3rem)";
+
+    this.emojiPickerContainer.appendChild(
+        this.emojiPicker
+    );
+
+    this.emojiButton.addEventListener(
+        "click",
+        event => {
+            event.stopPropagation();
+            this.toggleEmojiPicker();
+        }
+    );
+
+    /*
+     * A document click closes the picker. Clicks originating
+     * inside Emoji Mart's Shadow DOM are handled through
+     * composedPath().
+     */
+    document.addEventListener(
+        "click",
+        event => {
+            if (!this.emojiPickerOpen) {
+                return;
+            }
+
+            const path =
+                typeof event.composedPath === "function"
+                    ? event.composedPath()
+                    : [];
+
+            const clickedPicker =
+                path.includes(this.emojiPicker);
+
+            const clickedButton =
+                path.includes(this.emojiButton);
+
+            if (!clickedPicker && !clickedButton) {
+                this.closeEmojiPicker();
+            }
+        }
+    );
+}
+toggleEmojiPicker() {
+    if (this.emojiPickerOpen) {
+        this.closeEmojiPicker();
+    } else {
+        this.openEmojiPicker();
+    }
+}
+
+openEmojiPicker() {
+    if (
+        !this.emojiPickerContainer ||
+        !this.emojiPicker
+    ) {
+        return;
+    }
+
+    /*
+     * Avoid having both popups open simultaneously.
+     */
+    this.closeAvatarPicker();
+
+    this.emojiPickerOpen = true;
+
+    this.emojiPickerContainer.classList.remove(
+        "invisible",
+        "pointer-events-none",
+        "opacity-0"
+    );
+
+    this.emojiPickerContainer.classList.add(
+        "opacity-100"
+    );
+
+    this.emojiButton.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+}
+
+closeEmojiPicker() {
+    if (!this.emojiPickerContainer) {
+        return;
+    }
+
+    this.emojiPickerOpen = false;
+
+    this.emojiPickerContainer.classList.add(
+        "invisible",
+        "pointer-events-none",
+        "opacity-0"
+    );
+
+    this.emojiPickerContainer.classList.remove(
+        "opacity-100"
+    );
+
+    if (this.emojiButton) {
+        this.emojiButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
+}
+
+	insertSelectedEmoji(emoji) {
+    if (!emoji) {
+        return;
+    }
+
+    /*
+     * Standard Unicode emoji.
+     */
+    if (typeof emoji.native === "string") {
+        this.insertIntoMessageInput(
+            emoji.native
+        );
+
+        return;
+    }
+
+    /*
+     * Custom Emoji Mart emoji.
+     *
+     * Store it as a plain-text shortcode so it can pass
+     * safely through D1, HTTP, and WebSockets.
+     */
+    if (
+        typeof emoji.id === "string" &&
+        this.customEmojiLookup.has(
+            emoji.id.toLowerCase()
+        )
+    ) {
+        this.insertIntoMessageInput(
+            `:${emoji.id.toLowerCase()}:`
+        );
+    }
+}
+
+insertIntoMessageInput(value) {
+    const input = this.messageInput;
+
+    if (!input || typeof value !== "string") {
+        return;
+    }
+
+    const currentValue = input.value;
+
+    const selectionStart =
+        input.selectionStart ?? currentValue.length;
+
+    const selectionEnd =
+        input.selectionEnd ?? selectionStart;
+
+    const nextValue =
+        currentValue.slice(0, selectionStart) +
+        value +
+        currentValue.slice(selectionEnd);
+
+    /*
+     * Preserve your existing maxlength="250" rule.
+     */
+    if (nextValue.length > input.maxLength) {
+        return;
+    }
+
+    input.value = nextValue;
+
+    const nextCursor =
+        selectionStart + value.length;
+
+    input.focus();
+
+    input.setSelectionRange(
+        nextCursor,
+        nextCursor
+    );
+
+    /*
+     * Notify any other input listeners.
+     */
+    input.dispatchEvent(
+        new Event("input", {
+            bubbles: true
+        })
+    );
+}
+	
 	setupAvatarPicker() {
     /*
      * Replace these names with the exact GIF and PNG filenames
@@ -735,6 +1236,7 @@ setupNameSaving() {
             this.closeAvatarPicker();
         } else {
             this.openAvatarPicker();
+			this.openAvatarPicker();
         }
     });
 
@@ -1035,6 +1537,7 @@ setMinimized(minimized) {
      */
     if (minimized) {
         this.closeAvatarPicker();
+		this.closeEmojiPicker();
     }
 }
 
