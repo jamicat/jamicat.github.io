@@ -814,13 +814,13 @@ setupNameSaving() {
             image.title = customEmoji.name;
 
             image.className = [
-                "mx-0.5",
-                "inline-block",
-                "h-6",
-                "w-6",
-                "align-middle",
-                "object-contain"
-            ].join(" ");
+    "mx-0.5",
+    "inline-block",
+    "h-8",
+    "w-8",
+    "align-middle",
+    "object-contain"
+].join(" ");
 
             image.loading = "lazy";
             image.decoding = "async";
@@ -991,28 +991,47 @@ setupEmojiPicker() {
         return;
     }
 
-    this.emojiPicker =
-        new window.EmojiMart.Picker({
-            data: async () => {
-                const response = await fetch(
-                    "https://cdn.jsdelivr.net/npm/@emoji-mart/data@1.2.1"
+ this.emojiPicker =
+    new window.EmojiMart.Picker({
+        data: async () => {
+            const response = await fetch(
+                "https://cdn.jsdelivr.net/npm/@emoji-mart/data@1.2.1"
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    `Emoji data failed (${response.status})`
                 );
-
-                if (!response.ok) {
-                    throw new Error(
-                        `Emoji data failed (${response.status})`
-                    );
-                }
-
-                return response.json();
-            },
-
-            custom: this.customEmojiCategories,
-
-            onEmojiSelect: emoji => {
-                this.insertSelectedEmoji(emoji);
             }
-        });
+
+            return response.json();
+        },
+
+        /*
+         * The standard categories appear in this order.
+         * The custom category is supplied separately and appears first.
+         */
+        categories: [
+            "people",
+            "nature",
+            "foods",
+            "activity",
+            "places",
+            "objects",
+            "symbols",
+            "flags"
+        ],
+
+        custom: this.customEmojiCategories,
+
+        emojiSize: 30,
+emojiButtonSize: 40,
+perLine: 8,
+
+        onEmojiSelect: emoji => {
+            this.insertSelectedEmoji(emoji);
+        }
+    });
 
     /*
      * Keep the picker narrower than the chat window.
