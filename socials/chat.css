@@ -87,41 +87,51 @@
     box-sizing:border-box;
 
 }
-
-.chatMessage {
-    display: block;
-    padding: 5px 2px;
-    line-height: 1.45;
+#chatWindow .chatMessage {
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    padding: 6px 2px;
     font-size: 12px;
-    overflow-wrap: anywhere;
+    line-height: 1.4;
+    text-align: left;
 }
 
-.chatMessage + .chatMessage {
-    border-top: 1px solid rgba(255, 255, 255, 0.045);
+#chatWindow .chatMessage + .chatMessage {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.chatTime {
-    display: inline-block;
-    margin-right: 8px;
-    color: rgba(255, 255, 255, 0.45) !important;
-    font-size: 10px;
-    white-space: nowrap;
-}
-
-.chatMessageName {
+#chatWindow .chatMessageName {
+    flex: 0 0 auto;
+    margin-right: 6px;
     color: rgba(255, 255, 255, 0.95) !important;
     font-weight: 700;
 }
 
-.chatSeparator {
+#chatWindow .chatTime {
+    flex: 0 0 auto;
+    margin-right: 3px;
+    color: rgba(255, 255, 255, 0.42) !important;
+    font-size: 9px;
+    white-space: nowrap;
+}
+
+#chatWindow .chatSeparator {
+    flex: 0 0 auto;
     margin-right: 6px;
     color: rgba(255, 255, 255, 0.55) !important;
 }
 
-.chatText {
+#chatWindow .chatText {
+    flex: 1 1 auto;
+    min-width: 0;
     color: rgba(255, 255, 255, 0.82) !important;
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    text-align: left;
 }
+
 #chatWindow button {
 
     background:rgba(255,255,255,.05);
