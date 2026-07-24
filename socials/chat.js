@@ -90,7 +90,7 @@ transition-[height] duration-200
                     text-white text-blue-glow
                 "
             >
-                LIVE CHAT
+                CAT CHAT
             </span>
 
            <div class="flex items-center gap-3">
