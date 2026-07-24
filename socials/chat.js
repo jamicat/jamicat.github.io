@@ -6,7 +6,13 @@ constructor() {
     this.socket = null;
 this.reconnectTimer = null;
 this.isBanned = false;
-
+this.unreadCount = 0;
+this.userHasScrolledUp = false;
+	this.typingTimer = null;
+this.typingUsers = new Map();
+this.typingElement = null;
+this.notificationSoundEnabled = true;
+this.lastNotificationTime = 0;
     this.messages = null;
     this.window = null;
     this.nameInput = null;
@@ -22,6 +28,7 @@ this.mainElement = null;
 this.controlsElement = null;
 this.minimizeButton = null;
 this.membersToggle = null;
+this.chatTitle = null;
 	this.emojiButton = null;
 this.emojiPickerContainer = null;
 this.emojiPicker = null;
@@ -199,6 +206,17 @@ transition-[height] duration-200
     </aside>
 </div>
 
+<div
+    id="chatTyping"
+    class="
+        hidden
+        border-t border-white/5
+        px-3 py-1
+        theme-body
+        text-[9px] text-white/45
+    "
+></div>
+
         <div
             id="chatControls"
             class="
@@ -365,6 +383,10 @@ transition-[height] duration-200
 
     this.window = windowElement;
     this.messages = this.window.querySelector("#chatMessages");
+	this.typingElement =
+    this.window.querySelector("#chatTyping");
+	this.chatTitle =
+    this.window.querySelector("#chatTitle");
     this.nameInput = this.window.querySelector("#chatName");
     this.messageInput = this.window.querySelector("#chatMessage");
     this.sendButton = this.window.querySelector("#chatSend");
@@ -423,6 +445,35 @@ this.minimizeButton =
     }
 );
 
+	   this.messages.addEventListener(
+    "scroll",
+    () => {
+        this.userHasScrolledUp =
+            !this.isMessagesNearBottom();
+
+        if (!this.userHasScrolledUp) {
+            this.clearUnreadCount();
+        }
+    }
+);
+
+	   this.messageInput.addEventListener(
+    "input",
+    () => {
+        this.sendTypingState(true);
+
+        clearTimeout(this.typingTimer);
+
+        this.typingTimer = setTimeout(
+            () => {
+                this.sendTypingState(false);
+            },
+            1200
+        );
+    }
+);
+	   
+	   
     this.messageInput.addEventListener("keydown", event => {
     if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
@@ -1073,8 +1124,11 @@ async loadHistory() {
 
     this.messages.innerHTML = "";
 
-    for (const message of messages)
-        this.addMessage(message);
+    for (const message of messages) {
+    this.addMessage(message);
+}
+
+this.scrollMessagesToBottom();
 
 }
 
@@ -1141,14 +1195,25 @@ addMessage(message) {
     time.className =
         "chatTime text-[9px] text-white/35";
 
-    const date = new Date(message.created_at);
+  const date =
+    new Date(message.created_at);
 
-    time.textContent = Number.isNaN(date.getTime())
-        ? "--:--"
-        : date.toLocaleTimeString([], {
+if (Number.isNaN(date.getTime())) {
+    time.textContent = "--:--";
+    time.title = "Unknown time";
+} else {
+    time.textContent =
+        date.toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit"
         });
+
+    time.title =
+        date.toLocaleString([], {
+            dateStyle: "full",
+            timeStyle: "medium"
+        });
+}
 
     const text = document.createElement("div");
 
@@ -1223,9 +1288,60 @@ row.append(
 
     this.messages.appendChild(row);
 
+if (
+    !this.userHasScrolledUp &&
+    !this.isMinimized
+) {
+    this.scrollMessagesToBottom();
+}
+
+	scrollMessagesToBottom() {
+    if (!this.messages) {
+        return;
+    }
+
     this.messages.scrollTop =
         this.messages.scrollHeight;
+
+    this.userHasScrolledUp = false;
 }
+
+isMessagesNearBottom() {
+    if (!this.messages) {
+        return true;
+    }
+
+    const distanceFromBottom =
+        this.messages.scrollHeight -
+        this.messages.scrollTop -
+        this.messages.clientHeight;
+
+    return distanceFromBottom < 60;
+}
+
+incrementUnreadCount() {
+    this.unreadCount++;
+
+    this.updateUnreadDisplay();
+}
+
+clearUnreadCount() {
+    this.unreadCount = 0;
+
+    this.updateUnreadDisplay();
+}
+
+updateUnreadDisplay() {
+    if (!this.chatTitle) {
+        return;
+    }
+
+    this.chatTitle.textContent =
+        this.unreadCount > 0
+            ? `CAT CHAT (${this.unreadCount})`
+            : "CAT CHAT";
+}
+	
 
 findMessageElement(messageId) {
     const id = String(messageId);
@@ -1642,6 +1758,63 @@ openModerationMenu(button, message) {
         avatar: this.avatar
     }));
 }
+
+	sendTypingState(isTyping) {
+    if (
+        !this.socket ||
+        this.socket.readyState !== WebSocket.OPEN ||
+        this.isBanned
+    ) {
+        return;
+    }
+
+    this.socket.send(
+        JSON.stringify({
+            type: "typing",
+            clientId: this.clientId,
+            name:
+                this.nameInput.value.trim() ||
+                "Anonymous",
+            isTyping
+        })
+    );
+}
+
+renderTypingUsers() {
+    if (!this.typingElement) {
+        return;
+    }
+
+    const names =
+        Array.from(
+            this.typingUsers.values()
+        );
+
+    if (names.length === 0) {
+        this.typingElement.textContent = "";
+
+        this.typingElement.classList.add(
+            "hidden"
+        );
+
+        return;
+    }
+
+    this.typingElement.classList.remove(
+        "hidden"
+    );
+
+    if (names.length === 1) {
+        this.typingElement.textContent =
+            `${names[0]} is typing...`;
+
+        return;
+    }
+
+    this.typingElement.textContent =
+        `${names.slice(0, 2).join(", ")} are typing...`;
+}
+
 	
 
 connect() {
@@ -1701,6 +1874,30 @@ connect() {
         const data = JSON.parse(event.data);
 
         console.log("Chat WebSocket data:", data);
+
+	if (data.type === "typing") {
+    if (
+        data.clientId ===
+        this.clientId
+    ) {
+        return;
+    }
+
+    if (data.isTyping) {
+        this.typingUsers.set(
+            data.clientId,
+            data.name || "Anonymous"
+        );
+    } else {
+        this.typingUsers.delete(
+            data.clientId
+        );
+    }
+
+    this.renderTypingUsers();
+
+    return;
+}
 
       if (data.type === "ban") {
     this.isBanned = true;
@@ -1764,7 +1961,20 @@ if (data.type === "delete") {
 }
 
 if (data.type === "message") {
+    const shouldCountUnread =
+        this.isMinimized ||
+        this.userHasScrolledUp;
+
     this.addMessage(data.message);
+
+    if (shouldCountUnread) {
+        this.incrementUnreadCount();
+    }
+
+    this.playNotificationSound(
+        data.message
+    );
+
     return;
 }
 
@@ -1788,6 +1998,8 @@ if (data.name && data.message) {
         );
 
         this.socket = null;
+		this.typingUsers.clear();
+this.renderTypingUsers();
 
 		if (this.connectionStatus) {
     this.connectionStatus.textContent =
@@ -1904,6 +2116,8 @@ if (!response.ok) {
 
         this.messageInput.value = "";
         this.messageInput.focus();
+		clearTimeout(this.typingTimer);
+this.sendTypingState(false);
     } catch (error) {
         console.error("Could not send chat message:", error);
     } finally {
@@ -2793,6 +3007,15 @@ toggleMinimized() {
 setMinimized(minimized) {
 	this.preserveTitleBarDuringResize();
     this.isMinimized = minimized;
+
+	if (!minimized) {
+    this.clearUnreadCount();
+
+    requestAnimationFrame(() => {
+        this.scrollMessagesToBottom();
+    });
+}
+	
 
     this.mainElement.classList.toggle(
         "hidden",
