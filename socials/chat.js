@@ -332,7 +332,7 @@ addMessage(message) {
     const row = document.createElement("div");
 
     row.className =
-        "chatMessage flex items-start gap-2 py-2";
+        "chatMessage flex items-center gap-3 py-2";
 
     const avatar = document.createElement("img");
 
@@ -341,7 +341,7 @@ addMessage(message) {
 
     avatar.alt = "";
     avatar.className =
-    "pixel-avatar h-10 w-10 shrink-0 object-contain";
+     "pixel-avatar h-9 w-9 shrink-0 object-contain";
 
     avatar.addEventListener("error", () => {
         avatar.src = "/avatars/original.gif";
@@ -352,7 +352,7 @@ addMessage(message) {
     const content = document.createElement("div");
 
     content.className =
-        "min-w-0 flex-1";
+        "min-w-0 flex-1 self-center";
 
     const header = document.createElement("div");
 
