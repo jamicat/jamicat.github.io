@@ -6,7 +6,8 @@ class ChatWidget {
 
     this.API = "https://jamicat.ahrly.workers.dev";
 
-    this.events = null;
+  this.socket = null;
+this.reconnectTimer = null;
 
     this.messages = null;
 
@@ -153,51 +154,83 @@ addMessage(message) {
 }
 
 connect() {
+    /*
+     * Avoid creating a duplicate connection.
+     */
+    if (
+        this.socket &&
+        (
+            this.socket.readyState === WebSocket.OPEN ||
+            this.socket.readyState === WebSocket.CONNECTING
+        )
+    ) {
+        return;
+    }
 
-     console.log("connect() called");
+    clearTimeout(this.reconnectTimer);
 
-    this.events = new EventSource(
-        `${this.API}/api/chat/events`
-    );
+    const socketUrl =
+        "wss://jamicat.ahrly.workers.dev/api/chat/socket";
 
-    console.log("EventSource created");
+    console.log("Connecting chat WebSocket...");
 
-    this.events.onopen = () => {
-        console.log("SSE OPEN");
-    };
+    this.socket = new WebSocket(socketUrl);
 
+    this.socket.addEventListener("open", () => {
+        console.log("Chat WebSocket connected");
+    });
 
-
-    this.events.onmessage = event => {
-
-        console.log("SSE MESSAGE:", event.data);
-
-        try {
-
-            const message = JSON.parse(event.data);
-
-            console.log("Parsed:", message);
-
-            this.addMessage(message);
-
-        } catch (err) {
-
-            console.error("Parse error:", err);
-
+    this.socket.addEventListener("message", event => {
+        /*
+         * Ignore optional ping/pong traffic.
+         */
+        if (event.data === "pong") {
+            return;
         }
 
-    };
+        try {
+            const message = JSON.parse(event.data);
 
-    this.events.onerror = event => {
+            console.log("Chat WebSocket message:", message);
 
-        console.log("SSE ERROR", event);
+            this.addMessage(message);
+        } catch (error) {
+            console.error(
+                "Could not parse chat WebSocket message:",
+                error,
+                event.data
+            );
+        }
+    });
 
-        this.events.close();
+    this.socket.addEventListener("close", event => {
+        console.log(
+            "Chat WebSocket closed:",
+            event.code,
+            event.reason
+        );
 
-        setTimeout(() => this.connect(), 3000);
+        this.socket = null;
 
-    };
+        this.reconnectTimer = setTimeout(
+            () => this.connect(),
+            3000
+        );
+    });
 
+    this.socket.addEventListener("error", error => {
+        console.error("Chat WebSocket error:", error);
+
+        /*
+         * Closing causes the close handler above to schedule
+         * the reconnect in one place.
+         */
+        try {
+            this.socket.close();
+        } catch {
+            // The socket may already be closed.
+        }
+    });
 }
 
 async sendMessage() {
