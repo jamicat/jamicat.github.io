@@ -17,6 +17,9 @@ this.avatarPreview = null;
 this.avatarPicker = null;
 this.avatarGrid = null;
 this.membersElement = null;
+	this.membersPanel = null;
+this.membersToggle = null;
+this.membersVisible = true;
 
    this.avatar =
     localStorage.getItem("chat_avatar") || "original.gif";
@@ -25,6 +28,7 @@ this.membersElement = null;
 this.applyCurrentTheme();
 this.restoreSettings();
 	this.setupAvatarPicker();
+	this.setupMembersToggle();
     this.setupNameSaving();
     this.setupDragging();
     this.loadHistory();
@@ -72,13 +76,29 @@ this.restoreSettings();
                 LIVE CHAT
             </span>
 
-            <span
-                id="chatConnectionStatus"
-                class="text-[9px] text-white/40"
-                aria-live="polite"
-            >
-                connecting
-            </span>
+           <div class="flex items-center gap-3">
+    <button
+        id="chatMembersToggle"
+        type="button"
+        class="
+            theme-body
+            text-[9px] text-white/50
+            transition hover:text-white
+        "
+        aria-controls="chatMembersPanel"
+        aria-expanded="true"
+    >
+        hide members
+    </button>
+
+    <span
+        id="chatConnectionStatus"
+        class="text-[9px] text-white/40"
+        aria-live="polite"
+    >
+        connecting
+    </span>
+</div>
         </div>
 <div
     id="chatMain"
@@ -95,16 +115,15 @@ this.restoreSettings();
         aria-live="polite"
     ></div>
 
-    <aside
-        id="chatMembersPanel"
-        class="
-            hidden w-28 shrink-0
-            border-l border-white/10
-            bg-black/5
-            px-2 py-3
-            sm:block
-        "
-    >
+   <aside
+    id="chatMembersPanel"
+    class="
+        w-28 shrink-0
+        border-l border-white/10
+        bg-black/5
+        px-2 py-3
+    "
+>
         <div
             class="
                 theme-heading
@@ -276,6 +295,12 @@ this.avatarGrid =
 
 this.membersElement =
     this.window.querySelector("#chatMembers");
+
+	   this.membersPanel =
+    this.window.querySelector("#chatMembersPanel");
+
+this.membersToggle =
+    this.window.querySelector("#chatMembersToggle");
 
     this.sendButton.addEventListener(
         "click",
@@ -678,6 +703,27 @@ closeAvatarPicker() {
     );
 }
 
+	setupMembersToggle() {
+    this.membersToggle.addEventListener("click", () => {
+        this.membersVisible = !this.membersVisible;
+
+        this.membersPanel.classList.toggle(
+            "hidden",
+            !this.membersVisible
+        );
+
+        this.membersToggle.textContent =
+            this.membersVisible
+                ? "hide members"
+                : "show members";
+
+        this.membersToggle.setAttribute(
+            "aria-expanded",
+            String(this.membersVisible)
+        );
+    });
+}
+	
 setupDragging() {
     interact(this.window).draggable({
         allowFrom: ".chat-drag-area",
