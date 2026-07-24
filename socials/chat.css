@@ -74,3 +74,8 @@
     word-break: break-word;
     text-align: left;
 }
+
+.pixel-avatar {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
