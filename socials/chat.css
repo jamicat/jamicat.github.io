@@ -43,8 +43,12 @@
 }
 
 #chatWindow .chatMessage[data-continuation="true"] {
-    padding-top: 1px;
-    padding-bottom: 1px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#chatWindow .chatMessage[data-first-continuation="true"] {
+    margin-top: 4px;
 }
 
 #chatWindow .chatMessage + .chatMessage {
