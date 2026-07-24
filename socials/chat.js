@@ -348,14 +348,14 @@ transition-[height] duration-200
     </div>
 
     <div
-    id="chatEmojiPicker"
-    class="
-        invisible pointer-events-none opacity-0
-        absolute bottom-full right-0 z-30
-        mb-2
-        transition-opacity duration-150
-    "
-></div>
+        id="chatEmojiPicker"
+        class="
+            invisible pointer-events-none opacity-0
+            absolute bottom-full right-0 z-30
+            mb-2
+            transition-opacity duration-150
+        "
+    ></div>
 </div>
 
             <button
@@ -2334,8 +2334,8 @@ setupNameSaving() {
             image.className = [
     "mx-0.5",
     "inline-block",
-    "h-9",
-    "w-9",
+    "h-8",
+    "w-8",
     "align-middle",
     "object-contain"
 ].join(" ");
@@ -2384,14 +2384,12 @@ setupNameSaving() {
         );
     }
 }
-
 	
 setupEmojiPicker() {
     /*
      * Custom categories appear alongside Emoji Mart's
      * standard Unicode categories.
      */
-	
     this.customEmojiCategories = [
     {
         id: "custom",
@@ -2518,8 +2516,6 @@ const customSection =
     document.createElement("div");
 
 customSection.className = [
-    "w-full",
-    "shrink-0",
     "rounded-t-xl",
     "border",
     "border-b-0",
@@ -2544,9 +2540,8 @@ const customTray =
     document.createElement("div");
 
 customTray.className = [
-    "flex",
-    "w-full",
-    "flex-wrap",
+    "grid",
+    "grid-cols-7",
     "gap-1"
 ].join(" ");
 
@@ -2567,18 +2562,17 @@ for (const category of this.customEmojiCategories) {
 
         button.type = "button";
 
-      button.className = [
-    "flex",
-    "h-11",
-    "w-11",
-    "shrink-0",
-    "items-center",
-    "justify-center",
-    "rounded-lg",
-    "transition",
-    "hover:bg-white/10",
-    "active:scale-95"
-].join(" ");
+        button.className = [
+            "flex",
+            "h-11",
+            "w-full",
+            "items-center",
+            "justify-center",
+            "rounded-lg",
+            "transition",
+            "hover:bg-white/10",
+            "active:scale-95"
+        ].join(" ");
 
         button.title =
             emoji.name || emoji.id;
@@ -2640,21 +2634,22 @@ this.emojiPicker =
             return response.json();
         },
 
-        emojiSize: 22,
-        emojiButtonSize: 32,
-        perLine: 10,
-		height: 360,
+        custom: this.customEmojiCategories,
 
-        onEmojiSelect: emoji => {
+emojiSize: 30,
+emojiButtonSize: 40,
+perLine: 8,
+
+onEmojiSelect: emoji => {
             this.insertSelectedEmoji(emoji);
         }
     });
 
 this.emojiPickerContainer.style.width =
-    "400px";
+    "352px";
 
 this.emojiPickerContainer.style.maxWidth =
-    "calc(100vw - 2rem)";
+    "calc(100vw - 3rem)";
 
 this.emojiPickerContainer.style.display =
     "flex";
@@ -2663,13 +2658,10 @@ this.emojiPickerContainer.style.flexDirection =
     "column";
 
 this.emojiPickerContainer.style.maxHeight =
-    "470px";
+    "390px";
 
 this.emojiPickerContainer.style.overflow =
     "hidden";
-
-this.emojiPicker.style.display =
-    "block";
 
 this.emojiPicker.style.width =
     "100%";
@@ -2677,8 +2669,13 @@ this.emojiPicker.style.width =
 this.emojiPicker.style.maxWidth =
     "100%";
 
+/*
+ * Emoji Mart's normal picker is tall enough to push
+ * the custom tray outside the chat window. Reducing its
+ * height leaves room for the tray above it.
+ */
 this.emojiPicker.style.height =
-    "350px";
+    "280px";
 
 this.emojiPickerContainer.append(
     customSection,
@@ -2711,9 +2708,7 @@ this.emojiPickerContainer.append(
                     : [];
 
             const clickedPicker =
-    path.includes(
-        this.emojiPickerContainer
-    );
+                path.includes(this.emojiPicker);
 
             const clickedButton =
                 path.includes(this.emojiButton);
@@ -2759,10 +2754,6 @@ openEmojiPicker() {
         "true"
     );
 
-    /*
-     * Wait until the browser has measured the picker,
-     * then position it above the emoji button.
-     */
 }
 
 closeEmojiPicker() {
