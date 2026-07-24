@@ -1133,167 +1133,279 @@ this.scrollMessagesToBottom();
 }
 
 addMessage(message) {
-    const row = document.createElement("div");
+    const previousRow =
+        this.messages.lastElementChild;
+
+    const currentTime =
+        new Date(message.created_at).getTime();
+
+    const previousTime =
+        Number(
+            previousRow?.dataset.timestamp || 0
+        );
+
+    const sameAuthor =
+        Boolean(previousRow) &&
+        Boolean(message.client_id) &&
+        previousRow.dataset.clientId ===
+            message.client_id;
+
+    const closeInTime =
+        Number.isFinite(currentTime) &&
+        previousTime > 0 &&
+        currentTime - previousTime <
+            5 * 60 * 1000;
+
+    const isContinuation =
+        sameAuthor &&
+        closeInTime;
+
+    const row =
+        document.createElement("div");
 
     row.className = [
         "chatMessage",
         "group",
         "relative",
         "flex",
-        "items-center",
-        "gap-3",
-        "py-2"
+        isContinuation
+            ? "items-start gap-3 py-0.5"
+            : "items-center gap-3 py-2"
     ].join(" ");
 
-    /*
-     * Store the database message ID on the rendered row.
-     * This will allow moderation actions to target exactly
-     * one message later.
-     */
-    const messageId = Number(message.id);
+    const messageId =
+        Number(message.id);
 
-    if (Number.isInteger(messageId) && messageId > 0) {
+    if (
+        Number.isInteger(messageId) &&
+        messageId > 0
+    ) {
         row.dataset.messageId =
             String(messageId);
     }
 
-    const avatar = document.createElement("img");
+    row.dataset.clientId =
+        message.client_id || "";
 
-    avatar.src =
-        `/avatars/${message.avatar || "original.gif"}`;
+    row.dataset.timestamp =
+        String(
+            Number.isFinite(currentTime)
+                ? currentTime
+                : Date.now()
+        );
 
-    avatar.alt = "";
-    avatar.className =
-     "pixel-avatar h-9 w-9 shrink-0 object-contain";
+    const date =
+        new Date(message.created_at);
 
-    avatar.addEventListener("error", () => {
-        avatar.src = "/avatars/original.gif";
-    }, {
-        once: true
-    });
+    const formattedTime =
+        Number.isNaN(date.getTime())
+            ? "--:--"
+            : date.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
 
-    const content = document.createElement("div");
+    const fullTimestamp =
+        Number.isNaN(date.getTime())
+            ? "Unknown time"
+            : date.toLocaleString([], {
+                dateStyle: "full",
+                timeStyle: "medium"
+            });
 
-    content.className =
-        "min-w-0 flex-1 self-center";
+    if (isContinuation) {
+        const compactTime =
+            document.createElement("span");
 
-    const header = document.createElement("div");
+        compactTime.className = [
+            "w-9",
+            "shrink-0",
+            "pt-1",
+            "text-right",
+            "text-[8px]",
+            "text-white/0",
+            "transition",
+            "group-hover:text-white/30"
+        ].join(" ");
 
-    header.className =
-        "flex items-baseline gap-2";
+        compactTime.textContent =
+            formattedTime;
 
-    const name = document.createElement("span");
+        compactTime.title =
+            fullTimestamp;
 
-    name.className =
-        "chatMessageName font-bold";
+        const compactContent =
+            document.createElement("div");
 
-    name.textContent =
-        message.name || "Anonymous";
+        compactContent.className =
+            "min-w-0 flex-1";
 
-    const time = document.createElement("span");
+        const text =
+            document.createElement("div");
 
-    time.className =
-        "chatTime text-[9px] text-white/35";
+        text.className =
+            "chatText break-words leading-relaxed";
 
-  const date =
-    new Date(message.created_at);
+        this.renderMessageContent(
+            text,
+            message.message || ""
+        );
 
-if (Number.isNaN(date.getTime())) {
-    time.textContent = "--:--";
-    time.title = "Unknown time";
-} else {
-    time.textContent =
-        date.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-        });
+        compactContent.appendChild(text);
 
-    time.title =
-        date.toLocaleString([], {
-            dateStyle: "full",
-            timeStyle: "medium"
-        });
-}
+        row.append(
+            compactTime,
+            compactContent
+        );
+    } else {
+        const avatar =
+            document.createElement("img");
 
-    const text = document.createElement("div");
+        avatar.src =
+            `/avatars/${
+                message.avatar ||
+                "original.gif"
+            }`;
 
-    text.className =
-        "chatText mt-0.5 break-words leading-relaxed";
+        avatar.alt = "";
 
-    this.renderMessageContent(
-    text,
-    message.message || ""
-);
+        avatar.className =
+            "pixel-avatar h-9 w-9 shrink-0 object-contain";
 
-   header.append(
-    name,
-    time
-);
+        avatar.addEventListener(
+            "error",
+            () => {
+                avatar.src =
+                    "/avatars/original.gif";
+            },
+            {
+                once: true
+            }
+        );
 
-if (this.isAdmin && row.dataset.messageId) {
-    const adminButton =
-        document.createElement("button");
+        const content =
+            document.createElement("div");
 
-    adminButton.type = "button";
+        content.className =
+            "min-w-0 flex-1 self-center";
 
-    adminButton.className = [
-        "chatAdminButton",
-        "ml-auto",
-        "hidden",
-        "group-hover:flex",
-        "h-6",
-        "w-6",
-        "items-center",
-        "justify-center",
-        "rounded",
-        "text-white/40",
-        "hover:bg-white/10",
-        "hover:text-white"
-    ].join(" ");
+        const header =
+            document.createElement("div");
 
-    adminButton.textContent = "⋮";
+        header.className =
+            "flex items-baseline gap-2";
 
-    adminButton.setAttribute(
-        "aria-label",
-        `Moderate message ${row.dataset.messageId}`
-    );
+        const name =
+            document.createElement("span");
 
-    adminButton.title =
-        "Moderate message";
+        name.className =
+            "chatMessageName font-bold";
 
-    adminButton.addEventListener(
-    "click",
-    event => {
-        event.stopPropagation();
+        name.textContent =
+            message.name || "Anonymous";
 
-        this.openModerationMenu(
-            adminButton,
-            message
+        const time =
+            document.createElement("span");
+
+        time.className =
+            "chatTime text-[9px] text-white/35";
+
+        time.textContent =
+            formattedTime;
+
+        time.title =
+            fullTimestamp;
+
+        header.append(
+            name,
+            time
+        );
+
+        if (
+            this.isAdmin &&
+            row.dataset.messageId
+        ) {
+            const adminButton =
+                document.createElement("button");
+
+            adminButton.type =
+                "button";
+
+            adminButton.className = [
+                "chatAdminButton",
+                "ml-auto",
+                "hidden",
+                "group-hover:flex",
+                "h-6",
+                "w-6",
+                "items-center",
+                "justify-center",
+                "rounded",
+                "text-white/40",
+                "hover:bg-white/10",
+                "hover:text-white"
+            ].join(" ");
+
+            adminButton.textContent =
+                "⋮";
+
+            adminButton.setAttribute(
+                "aria-label",
+                `Moderate message ${
+                    row.dataset.messageId
+                }`
+            );
+
+            adminButton.title =
+                "Moderate message";
+
+            adminButton.addEventListener(
+                "click",
+                event => {
+                    event.stopPropagation();
+
+                    this.openModerationMenu(
+                        adminButton,
+                        message
+                    );
+                }
+            );
+
+            header.appendChild(
+                adminButton
+            );
+        }
+
+        const text =
+            document.createElement("div");
+
+        text.className =
+            "chatText mt-0.5 break-words leading-relaxed";
+
+        this.renderMessageContent(
+            text,
+            message.message || ""
+        );
+
+        content.append(
+            header,
+            text
+        );
+
+        row.append(
+            avatar,
+            content
         );
     }
-);
-
-    header.appendChild(adminButton);
-}
-
-content.append(
-    header,
-    text
-);
-
-row.append(
-    avatar,
-    content
-);
 
     this.messages.appendChild(row);
 
-if (
-    !this.userHasScrolledUp &&
-    !this.isMinimized
-) {
-    this.scrollMessagesToBottom();
-}
+    if (
+        !this.userHasScrolledUp &&
+        !this.isMinimized
+    ) {
+        this.scrollMessagesToBottom();
+    }
 }
 
 	scrollMessagesToBottom() {
