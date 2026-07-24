@@ -1374,7 +1374,7 @@ if (
     adminButton.textContent = "⋮";
 
     adminButton.title =
-        "Moderate message";
+        "moderate message";
 
     adminButton.addEventListener(
         "click",
