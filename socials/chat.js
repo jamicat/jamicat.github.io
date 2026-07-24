@@ -994,18 +994,37 @@ setupEmojiPicker() {
  /*
  * Custom emojis shown permanently above the Unicode picker.
  */
-const customTray = document.createElement("div");
+const customSection =
+    document.createElement("div");
 
-customTray.className = [
-    "grid",
-    "grid-cols-7",
-    "gap-1",
+customSection.className = [
     "rounded-t-xl",
     "border",
     "border-b-0",
     "border-white/10",
     "bg-[#1f1f1f]",
     "p-2"
+].join(" ");
+
+const customTitle =
+    document.createElement("div");
+
+customTitle.textContent =
+    "Custom";
+
+customTitle.className = [
+    "mb-1",
+    "text-xs",
+    "text-white/70"
+].join(" ");
+
+const customTray =
+    document.createElement("div");
+
+customTray.className = [
+    "grid",
+    "grid-cols-7",
+    "gap-1"
 ].join(" ");
 
 customTray.setAttribute(
@@ -1073,6 +1092,11 @@ for (const category of this.customEmojiCategories) {
     }
 }
 
+	customSection.append(
+    customTitle,
+    customTray
+);
+
 /*
  * Normal Unicode Emoji Mart picker.
  */
@@ -1092,11 +1116,13 @@ this.emojiPicker =
             return response.json();
         },
 
-        emojiSize: 30,
-        emojiButtonSize: 40,
-        perLine: 8,
+        custom: this.customEmojiCategories,
 
-        onEmojiSelect: emoji => {
+emojiSize: 30,
+emojiButtonSize: 40,
+perLine: 8,
+
+onEmojiSelect: emoji => {
             this.insertSelectedEmoji(emoji);
         }
     });
@@ -1107,14 +1133,34 @@ this.emojiPickerContainer.style.width =
 this.emojiPickerContainer.style.maxWidth =
     "calc(100vw - 3rem)";
 
+this.emojiPickerContainer.style.display =
+    "flex";
+
+this.emojiPickerContainer.style.flexDirection =
+    "column";
+
+this.emojiPickerContainer.style.maxHeight =
+    "390px";
+
+this.emojiPickerContainer.style.overflow =
+    "hidden";
+
 this.emojiPicker.style.width =
     "100%";
 
 this.emojiPicker.style.maxWidth =
     "100%";
 
+/*
+ * Emoji Mart's normal picker is tall enough to push
+ * the custom tray outside the chat window. Reducing its
+ * height leaves room for the tray above it.
+ */
+this.emojiPicker.style.height =
+    "280px";
+
 this.emojiPickerContainer.append(
-    customTray,
+    customSection,
     this.emojiPicker
 );
 
