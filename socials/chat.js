@@ -1214,52 +1214,52 @@ addMessage(message) {
                 timeStyle: "medium"
             });
 
-    if (isContinuation) {
-        const compactTime =
-            document.createElement("span");
+   if (isContinuation) {
+    const compactContent =
+        document.createElement("div");
 
-        compactTime.className = [
-            "w-12",
-            "shrink-0",
-            "pt-1",
-			"whitespace-nowrap",
-            "text-right",
-            "text-[8px]",
-            "text-white/0",
-            "transition",
-            "group-hover:text-white/30"
-        ].join(" ");
+    compactContent.className =
+        "min-w-0 flex-1 pl-12 pr-14";
 
-        compactTime.textContent =
-            formattedTime;
+    const text =
+        document.createElement("div");
 
-        compactTime.title =
-            fullTimestamp;
+    text.className =
+        "chatText break-words leading-relaxed";
 
-        const compactContent =
-            document.createElement("div");
+    this.renderMessageContent(
+        text,
+        message.message || ""
+    );
 
-        compactContent.className =
-            "min-w-0 flex-1";
+    const compactTime =
+        document.createElement("span");
 
-        const text =
-            document.createElement("div");
+    compactTime.className = [
+        "absolute",
+        "right-9",
+        "top-1/2",
+        "-translate-y-1/2",
+        "whitespace-nowrap",
+        "text-[8px]",
+        "text-white/0",
+        "transition",
+        "group-hover:text-white/35"
+    ].join(" ");
 
-        text.className =
-            "chatText break-words leading-relaxed";
+    compactTime.textContent =
+        formattedTime;
 
-        this.renderMessageContent(
-            text,
-            message.message || ""
-        );
+    compactTime.title =
+        fullTimestamp;
 
-        compactContent.appendChild(text);
+    compactContent.appendChild(text);
 
-        row.append(
-            compactTime,
-            compactContent
-        );
-    } else {
+    row.append(
+        compactContent,
+        compactTime
+    );
+} else {
         const avatar =
             document.createElement("img");
 
