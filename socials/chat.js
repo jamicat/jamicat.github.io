@@ -110,30 +110,36 @@ async loadHistory() {
 }
 
 addMessage(message) {
+    const row = document.createElement("div");
+    row.className = "chatMessage";
 
-    const div = document.createElement("div");
+    const name = document.createElement("span");
+    name.className = "chatMessageName";
+    name.textContent = message.name || "Anonymous";
 
-    div.className = "chatMessage";
+    const time = document.createElement("span");
+    time.className = "chatTime";
 
-    div.innerHTML = `
-        <div class="chatMessageHeader">
-            <strong>${message.name}</strong>
+    const date = new Date(message.created_at);
 
-            <span class="chatTime">
-                ${new Date(message.created_at).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit"
-                })}
-            </span>
-        </div>
+    time.textContent = Number.isNaN(date.getTime())
+        ? "--:--"
+        : date.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
 
-        <div class="chatText">
-            ${message.message}
-        </div>
-    `;
+    const separator = document.createElement("span");
+    separator.className = "chatSeparator";
+    separator.textContent = ":";
 
-    this.messages.appendChild(div);
+    const text = document.createElement("span");
+    text.className = "chatText";
+    text.textContent = message.message || "";
 
+    row.append(name, time, separator, text);
+
+    this.messages.appendChild(row);
     this.messages.scrollTop = this.messages.scrollHeight;
 }
 
