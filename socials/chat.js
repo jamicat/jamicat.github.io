@@ -2113,11 +2113,11 @@ if (!response.ok) {
         `Chat request failed (${response.status})`
     );
 }
-
-        this.messageInput.value = "";
-        this.messageInput.focus();
-		clearTimeout(this.typingTimer);
+clearTimeout(this.typingTimer);
 this.sendTypingState(false);
+
+this.messageInput.value = "";
+this.messageInput.focus();
     } catch (error) {
         console.error("Could not send chat message:", error);
     } finally {
