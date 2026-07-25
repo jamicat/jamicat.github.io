@@ -301,7 +301,7 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
   const strings = [
-    `<span class="text-white theme-body text-sm mr-2 ${glow}">select one!</span>`,
+    `<span class="text-white theme-body text-sm mr-2 ${glow}">select one ฅ</span>`,
   ];
 
   typedInstance = new Typed('#typed', {
@@ -885,7 +885,7 @@ function showGuestBook() {
  <div class="flex flex-col sm:flex-row gap-6"> 
  <div class="w-full">
  <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> 
- <p id="welcomeMessage" class="text-blue-glow text-white theme-body text-sm"> meow! </p> </div>
+ <p id="welcomeMessage" class="text-blue-glow text-white theme-body text-sm"> meow </p> </div>
  <form id="guestbookForm" class="space-y-4 text-blue-100"> 
  <input id="name" type="text" name="name" placeholder="name" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
  <textarea id="message" name="message" placeholder="message" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
@@ -1119,11 +1119,11 @@ async function loadGuestbookComments() {
       div.className = 'bg-pink-50 bg-opacity-[0.03] rounded p-3 mb-2 text-sm';
 
 div.innerHTML = `
-  <div class="gb-name theme-body text-sm mb-1 font-medium text-white text-blue-glow no-theme-glow break-all">
+  <div class="gb-name theme-body text-xs mb-1 font-medium text-white text-blue-glow no-theme-glow break-all">
     ${entry.name || 'Anonymous'}
   </div>
 
-  <div class="gb-comment theme-body text-[0.65rem] mb-1 text-pink-100 break-all">
+  <div class="gb-comment theme-body text-[0.60rem] mb-1 text-pink-100 break-all">
     ${entry.comment || ''}
   </div>
 
@@ -1137,11 +1137,10 @@ div.innerHTML = `
       <div class="border-b border-blue-100/20 my-3 opacity-60"></div>
 
       <div class="mb-1 flex items-center gap-1 font-medium">
-  <img class="replyAvatar w-8 h-8 rounded-full shadow-md object-cover" alt="Discord Avatar">
-  <span class="gb-name theme-body text-sm text-white text-blue-glow">jamie</span>
+  <span class="gb-name theme-body text-xs text-white text-blue-glow">jamie</span>
 </div>
 
-      <div class="gb-comment theme-body text-[0.70rem] mb-1 text-pink-100 break-all">
+      <div class="gb-comment theme-body text-[0.60rem] mb-1 text-pink-100 break-all">
         ${entry.reply}
       </div>
 
@@ -1233,7 +1232,7 @@ body: JSON.stringify(data),
 
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
-document.getElementById("formResponse").textContent = "meow!";
+document.getElementById("formResponse").textContent = "meow";
 }
 
 function resetTerminal() {
