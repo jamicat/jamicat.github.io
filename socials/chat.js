@@ -1227,7 +1227,7 @@ const fullTimestamp =
         document.createElement("div");
 
     compactContent.className =
-         "min-w-0 flex-1 pl-12 pr-1";
+         "min-w-0 flex-1 pl-12 pr-3";
 
     const messageBody =
     document.createElement("div");
@@ -1305,7 +1305,7 @@ messageBody.appendChild(text);
             document.createElement("div");
 
         content.className =
-             "min-w-0 flex-1 pr-1";
+             "min-w-0 flex-1 pr-3";
 
         const header =
             document.createElement("div");
