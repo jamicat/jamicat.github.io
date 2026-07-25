@@ -184,15 +184,17 @@ async function loadApproved(){
  ${
   c.reply
     ? `
+    < <div style="
+      border-bottom:1px solid rgba(219,234,254,0.2);
+      margin:12px 0;
+      opacity:0.6;
+    "></div>
+
     <div style="
-  margin-top:8px;
-  padding:6px 0;
-  border-top:1px solid rgba(219,234,254,0.8);
-  border-bottom:1px solid rgba(219,234,254,0.8);
-  color:#b9deff;
-  overflow-wrap:anywhere;
-  word-break:break-word;
-">
+      color:#b9deff;
+      overflow-wrap:anywhere;
+      word-break:break-word;
+    ">
       <strong>Jamie:</strong> ${c.reply}
       <br>
       <button onclick="deleteReply(${c.id})" style="margin-top:6px;">Delete Reply</button>
