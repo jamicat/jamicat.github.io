@@ -16,9 +16,9 @@ const themes = {
     galaxyInactive: 'text-red-300',
     playActive: 'text-blue-200',
     playInactive: 'text-red-300',
-    terminalColor: 'bg-transparent',
-    terminal2Bg: 'bg-transparent',
-    gwterminalBg: 'bg-transparent',
+    terminalColor: 'bg-black/5',
+    terminal2Bg: 'bg-black/5',
+    gwterminalBg: 'bg-black/5',
     borderColor: 'rgba(255,255,255,0.15)', 
     shadowColor: 'rgba(255,255,255,0.08)'
     
