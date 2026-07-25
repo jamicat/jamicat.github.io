@@ -1137,7 +1137,6 @@ div.innerHTML = `
       <div class="border-b border-blue-100/20 my-3 opacity-60"></div>
 
       <div class="mb-1 flex items-center gap-1 font-medium">
-  <img class="replyAvatar w-8 h-8 rounded-full shadow-md object-cover" alt="Discord Avatar">
   <span class="gb-name theme-body text-xs text-white text-blue-glow">jamie</span>
 </div>
 
