@@ -1178,26 +1178,49 @@ addMessage(message) {
                 : Date.now()
         );
 
-    const date =
-        new Date(message.created_at);
+   const date =
+    new Date(message.created_at);
 
-   const formattedTime =
-    Number.isNaN(date.getTime())
-        ? "--:--"
-        : date.toLocaleTimeString(undefined, {
+const hasValidDate =
+    !Number.isNaN(date.getTime());
+
+const formattedTime =
+    hasValidDate
+        ? date.toLocaleTimeString(undefined, {
               hour: "2-digit",
               minute: "2-digit",
               hour12: false
-          });
+          })
+        : "--:--";
 
-    const fullTimestamp =
-    Number.isNaN(date.getTime())
-        ? "Unknown time"
-        : date.toLocaleString(undefined, {
+const messageAge =
+    hasValidDate
+        ? Date.now() - date.getTime()
+        : 0;
+
+const isOlderThan24Hours =
+    hasValidDate &&
+    messageAge >= 24 * 60 * 60 * 1000;
+
+const groupTimestamp =
+    !hasValidDate
+        ? "--:--"
+        : isOlderThan24Hours
+            ? date.toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "2-digit"
+              })
+            : formattedTime;
+
+const fullTimestamp =
+    hasValidDate
+        ? date.toLocaleString(undefined, {
               dateStyle: "full",
               timeStyle: "medium",
               hour12: false
-          });
+          })
+        : "Unknown time";
 
    if (isContinuation) {
     const compactContent =
@@ -1305,11 +1328,11 @@ messageBody.appendChild(text);
         time.className =
     "chatTime shrink-0 whitespace-nowrap text-[9px] text-white/35";
 
-        time.textContent =
-            formattedTime;
+       time.textContent =
+    groupTimestamp;
 
-        time.title =
-            fullTimestamp;
+time.title =
+    fullTimestamp;
 
        header.append(
     name,
