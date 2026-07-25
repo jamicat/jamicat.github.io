@@ -1131,9 +1131,16 @@ div.innerHTML = `
     ${entry.comment || ''}
   </div>
 
-  <div class="text-blue-100 opacity-80 text-[0.55rem] text-right">
-    ${entry.timestamp ? new Date(entry.timestamp).toLocaleString() : ''}
-  </div>
+ <div class="text-blue-100 opacity-80 text-[0.55rem] text-right">
+  ${entry.timestamp
+    ? `${new Date(entry.timestamp).toLocaleDateString("en-GB")} ${new Date(entry.timestamp).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      })}`
+    : ""
+  }
+</div>
 
   ${
     entry.reply
@@ -1147,13 +1154,17 @@ div.innerHTML = `
       <div class="gb-comment theme-body text-[0.60rem] mb-1 text-pink-100 break-all">
         ${entry.reply}
       </div>
-
-      <div class="text-blue-100 opacity-80 text-[0.55rem] text-right">
-        ${entry.reply_timestamp
-          ? new Date(entry.reply_timestamp).toLocaleString()
-          : ''
-        }
-      </div>
+<div class="text-blue-100 opacity-80 text-[0.55rem] text-right">
+  ${
+    entry.reply_timestamp
+      ? `${new Date(entry.reply_timestamp).toLocaleDateString("en-GB")} ${new Date(entry.reply_timestamp).toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false
+        })}`
+      : ""
+  }
+</div>
       `
       : ''
   }
