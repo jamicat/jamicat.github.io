@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="stylesheet" href="stylish.css"/>
+<link rel="stylesheet" href="stylish.css?v=1.00"/>
 <link rel="stylesheet" href="stylesheet.css"/>
+<link rel="stylesheet" href="chat.css?v=vf">
 <title>jamie</title>
 <canvas id="canvas"></canvas>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -17,7 +18,6 @@
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-window.location.href = "/socials/";
 tailwind.config = {
 plugins: [
 function ({ addComponents }) {
@@ -39,7 +39,7 @@ addComponents({
 <div id="background-video-iframe" style="opacity: 0; transition: opacity 0.5s;"></div>
 </div>
 
-<div id="terminal" class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[480px] rounded-3xl" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+<div id="terminal" class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[480px] rounded-3xl shadow-lg backdrop-blur-xl" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
 <div class="drag-area text-pink-600 text-xs mb-2 select-none flex justify-between items-center">
 <span class="flex items-center space-x-3">
 <img id="mainAvatar" src="acl.png" alt="Avatar" class="avatar-icon" />
@@ -74,7 +74,7 @@ addComponents({
     transition-all duration-300 py-2 px-3 flex flex-col gap-1 z-50 shadow-lg backdrop-blur-sm 
     border border-white/5 min-w-[8rem] opacity-0 pointer-events-none invisible">
     <button id="themeDefault" class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">animal crossing</button>
-    <button id="themeStars" class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">original</button>
+    <button id="themeStars" class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">cat</button>
     <button id="themeCat" class="hidden theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">starcat</button>
     <button id="themeAero" class="hidden theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">sky</button>
   </div>
@@ -99,7 +99,7 @@ class="w-4 h-4 fill-current"
 <button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">art</button>
 <button class="terminal-button theme-body text-xs" onclick="showList()">playlist</button>
 <button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">guest wall</button>
-<button class="theme-body text-xs terminal-button" onclick="siteFAQ()">about</button>
+<button class="hidden theme-body text-xs terminal-button" onclick="siteFAQ()">about</button>
 </div>
 </div>
 </div>
@@ -160,7 +160,15 @@ class="w-4 h-4 fill-current"
     value="50"
   >
 </div>
-<script src="scripts.js"></script>
+<script src="scripts.js?v=1"></script>
 <script src="discscripts.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"
+    defer
+></script>
+<script
+    src="chat.js?v=vf"
+    defer
+></script>
 </body>
 </html>
