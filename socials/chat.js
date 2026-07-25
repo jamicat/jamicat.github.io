@@ -1178,6 +1178,25 @@ addMessage(message) {
                 : Date.now()
         );
 
+
+	row.addEventListener("contextmenu", event => {
+    if (!this.isAdmin) {
+        return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.closeModerationMenu();
+
+    this.openModerationMenu(
+        event.clientX,
+        event.clientY,
+        message
+    );
+});
+
+	
    const date =
     new Date(message.created_at);
 
@@ -1321,23 +1340,6 @@ messageBody.appendChild(text);
 
         name.textContent =
             message.name || "anonymous";
-
-	   name.addEventListener("contextmenu", event => {
-    if (!this.isAdmin) {
-        return;
-    }
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.closeModerationMenu();
-
-    this.openModerationMenu(
-        event.clientX,
-        event.clientY,
-        message
-    );
-});
 
         const time =
             document.createElement("span");
