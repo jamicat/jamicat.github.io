@@ -858,6 +858,8 @@ function showGuestBook() {
   w-[90vw]
   sm:w-[500px]
   text-white
+  shadow-lg 
+  backdrop-blur-xl
   rounded-3xl
   border
   border-pink-200/20
@@ -916,6 +918,8 @@ guestbookCommentBox.className = `
   overflow-y-auto
   border
   border-pink-200/20
+  shadow-lg 
+  backdrop-blur-xl
   text-white
   text-sm
   scrollbar-thin
