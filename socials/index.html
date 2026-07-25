@@ -23,7 +23,7 @@ plugins: [
 function ({ addComponents }) {
 addComponents({
 '.terminal-button': {
-  '@apply relative bg-transparent border-0 text-white px-3 shadow-lg backdrop-blur-xl py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95 text-xs font-medium transform hover:-translate-y-[0.5px]': {},
+  '@apply relative bg-transparent border-0 text-white px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95 text-xs font-medium transform hover:-translate-y-[0.5px]': {},
   cursor: 'pointer',
   userSelect: 'none',
 },
@@ -39,7 +39,7 @@ addComponents({
 <div id="background-video-iframe" style="opacity: 0; transition: opacity 0.5s;"></div>
 </div>
 
-<div id="terminal" class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[480px] rounded-3xl" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+<div id="terminal" class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[480px] rounded-3xl shadow-lg backdrop-blur-xl" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
 <div class="drag-area text-pink-600 text-xs mb-2 select-none flex justify-between items-center">
 <span class="flex items-center space-x-3">
 <img id="mainAvatar" src="acl.png" alt="Avatar" class="avatar-icon" />
