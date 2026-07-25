@@ -2521,7 +2521,107 @@ setupEmojiPicker() {
                         src: "/emojis/catdance.gif"
                     }
                 ]
-            }
+            },
+			{
+    id: "bulbasip",
+    name: "bulba sip",
+    keywords: ["bulbasaur", "pokemon", "sip", "drink", "tea"],
+    skins: [
+        {
+            src: "/emojis/bulbasip.png"
+        }
+    ]
+},
+{
+    id: "cantlook",
+    name: "can't look",
+    keywords: ["eevee", "pokemon", "shy", "embarrassed"],
+    skins: [
+        {
+            src: "/emojis/cantlook.png"
+        }
+    ]
+},
+{
+    id: "espeonconfetti",
+    name: "espeon confetti",
+    keywords: ["espeon", "pokemon", "party", "celebrate", "confetti"],
+    skins: [
+        {
+            src: "/emojis/espeonconfetti.gif"
+        }
+    ]
+},
+{
+    id: "huh",
+    name: "huh",
+    keywords: ["psyduck", "pokemon", "confused", "huh", "what"],
+    skins: [
+        {
+            src: "/emojis/huh.gif"
+        }
+    ]
+},
+{
+    id: "pikagrin",
+    name: "pika grin",
+    keywords: ["pikachu", "pokemon", "grin", "smug"],
+    skins: [
+        {
+            src: "/emojis/pikagrin.png"
+        }
+    ]
+},
+{
+    id: "pikasideeye",
+    name: "pika sideeye",
+    keywords: ["pikachu", "pokemon", "side eye", "sus", "judging"],
+    skins: [
+        {
+            src: "/emojis/pikasideeye.png"
+        }
+    ]
+},
+{
+    id: "pikatea",
+    name: "pika tea",
+    keywords: ["pikachu", "pokemon", "tea", "drink", "sip"],
+    skins: [
+        {
+            src: "/emojis/pikatea.png"
+        }
+    ]
+},
+{
+    id: "pikathink",
+    name: "pika thinking",
+    keywords: ["pikachu", "pokemon", "think", "hmm"],
+    skins: [
+        {
+            src: "/emojis/pikathink.png"
+        }
+    ]
+},
+{
+    id: "pokecharge",
+    name: "charge",
+    keywords: ["pokemon", "charge", "energy", "power"],
+    skins: [
+        {
+            src: "/emojis/pokecharge.gif"
+        }
+    ]
+},
+{
+    id: "wooperyay",
+    name: "wooper yay",
+    keywords: ["wooper", "pokemon", "yay", "happy", "excited"],
+    skins: [
+        {
+            src: "/emojis/wooperyay.gif"
+        }
+    ]
+}
         ]
     }
 ];
