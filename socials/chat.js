@@ -1320,7 +1320,24 @@ messageBody.appendChild(text);
             "chatMessageName font-bold";
 
         name.textContent =
-            message.name || "Anonymous";
+            message.name || "anonymous";
+
+	   name.addEventListener("contextmenu", event => {
+    if (!this.isAdmin) {
+        return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.closeModerationMenu();
+
+    this.openModerationMenu(
+        event.clientX,
+        event.clientY,
+        message
+    );
+});
 
         const time =
             document.createElement("span");
@@ -1368,53 +1385,7 @@ content.append(
             content
         );
     }
-if (
-    this.isAdmin &&
-    row.dataset.messageId
-) {
-    const adminButton =
-        document.createElement("button");
-
-    adminButton.type = "button";
-
-    adminButton.className = [
-    "chatAdminButton",
-    "absolute",
-    "-right-1",
-    "top-[-0.1px]",
-    "hidden",
-    "group-hover:flex",
-    "h-6",
-    "w-6",
-    "items-center",
-    "justify-center",
-    "rounded",
-	"leading-none",
-    "text-white/40",
-    "hover:bg-white/10",
-    "hover:text-white"
-].join(" ");
-
-    adminButton.textContent = "⋮";
-
-    adminButton.title =
-        "moderate message";
-
-    adminButton.addEventListener(
-        "click",
-        event => {
-            event.stopPropagation();
-
-            this.openModerationMenu(
-                adminButton,
-                message
-            );
-        }
-    );
-
-    row.appendChild(adminButton);
-}
-		
+	
     this.messages.appendChild(row);
 
     if (
@@ -1496,7 +1467,7 @@ closeModerationMenu() {
     this.moderationMenu = null;
 }
 
-openModerationMenu(button, message) {
+openModerationMenu(x, y, message) {
     this.closeModerationMenu();
 
     const menu =
@@ -1518,14 +1489,29 @@ openModerationMenu(button, message) {
         "backdrop-blur-xl"
     ].join(" ");
 
-    const buttonRect =
-        button.getBoundingClientRect();
+    const menuWidth = 176;
+const menuHeight = 130;
+const viewportPadding = 8;
 
-    menu.style.left =
-        `${buttonRect.right - 176}px`;
+const left = Math.min(
+    x,
+    window.innerWidth -
+        menuWidth -
+        viewportPadding
+);
 
-    menu.style.top =
-        `${buttonRect.bottom + 4}px`;
+const top = Math.min(
+    y,
+    window.innerHeight -
+        menuHeight -
+        viewportPadding
+);
+
+menu.style.left =
+    `${Math.max(viewportPadding, left)}px`;
+
+menu.style.top =
+    `${Math.max(viewportPadding, top)}px`;
 
  const deleteButton =
     this.createModerationMenuButton(
@@ -1593,8 +1579,29 @@ openMemberModerationMenu(x, y, member) {
     menu.className =
         "fixed z-[100000] w-44 rounded-xl border border-white/15 bg-black/90 py-1 text-[11px] text-white shadow-xl backdrop-blur-xl";
 
-    menu.style.left = `${x}px`;
-    menu.style.top = `${y}px`;
+    const menuWidth = 176;
+const menuHeight = 60;
+const viewportPadding = 8;
+
+const left = Math.min(
+    x,
+    window.innerWidth -
+        menuWidth -
+        viewportPadding
+);
+
+const top = Math.min(
+    y,
+    window.innerHeight -
+        menuHeight -
+        viewportPadding
+);
+
+menu.style.left =
+    `${Math.max(viewportPadding, left)}px`;
+
+menu.style.top =
+    `${Math.max(viewportPadding, top)}px`;
 
     const banButton = this.createModerationMenuButton(
         `ban ${member.name}`,
@@ -1888,17 +1895,22 @@ openMemberModerationMenu(x, y, member) {
 		if (this.isAdmin) {
     row.classList.add("cursor-pointer");
 
-    row.addEventListener("contextmenu", event => {
-        event.preventDefault();
+  row.addEventListener("contextmenu", event => {
+    if (!this.isAdmin) {
+        return;
+    }
 
-        this.closeModerationMenu();
+    event.preventDefault();
+    event.stopPropagation();
 
-        this.openMemberModerationMenu(
-            event.clientX,
-            event.clientY,
-            member
-        );
-    });
+    this.closeModerationMenu();
+
+    this.openMemberModerationMenu(
+        event.clientX,
+        event.clientY,
+        member
+    );
+});
 }
     }
 }
