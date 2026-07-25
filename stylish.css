@@ -142,8 +142,6 @@ height: 250%;
 .gwterminal {
   background: transparent;
   border: 2px solid rgba(255,255,255,0.15);
-  box-shadow:
-    4px 4px 0 rgba(255,255,255,0.08);
 }
 
 .terminal p, .terminal div { 
@@ -435,6 +433,14 @@ object-fit: contain;
   color: black !important;
 }
 
+.theme-stars #typed3 {
+  display: none;
+}
+
+.theme-stars .gb-comment {
+font-size: 0.65rem;
+}
+
 .theme-cat #typed2,
 .theme-cat #typed2 span {
   font-size: 1.5rem !important;
@@ -497,8 +503,4 @@ object-fit: contain;
 
 .theme-cat {
   --arrow-image: url("catstar.png");
-}
-
-.theme-stars #typed3 {
-  display: none;
 }
