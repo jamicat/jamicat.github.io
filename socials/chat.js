@@ -163,7 +163,7 @@ transition-[height] duration-200
         class="
             min-h-0 min-w-0 flex-1
             overflow-y-auto
-            px-3 py-3
+            pl-3 pr-1 py-3
             theme-body text-xs
         "
         aria-live="polite"
