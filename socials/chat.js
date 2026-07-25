@@ -1892,10 +1892,8 @@ menu.style.top =
         row.append(avatar, name);
         this.membersElement.appendChild(row);
 
-		if (this.isAdmin) {
-    row.classList.add("cursor-pointer");
-
-  row.addEventListener("contextmenu", event => {
+		
+		row.addEventListener("contextmenu", event => {
     if (!this.isAdmin) {
         return;
     }
@@ -1911,7 +1909,6 @@ menu.style.top =
         member
     );
 });
-}
     }
 }
 
