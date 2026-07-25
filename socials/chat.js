@@ -1212,19 +1212,21 @@ const formattedTime =
           })
         : "--:--";
 
-const messageAge =
-    hasValidDate
-        ? Date.now() - date.getTime()
-        : 0;
+const now =
+    new Date();
 
-const isOlderThan24Hours =
+const isPreviousDay =
     hasValidDate &&
-    messageAge >= 24 * 60 * 60 * 1000;
+    (
+        date.getFullYear() !== now.getFullYear() ||
+        date.getMonth() !== now.getMonth() ||
+        date.getDate() !== now.getDate()
+    );
 
 const groupTimestamp =
     !hasValidDate
         ? "--:--"
-        : isOlderThan24Hours
+        : isPreviousDay
             ? date.toLocaleDateString("en-GB", {
                   day: "2-digit",
                   month: "2-digit",
