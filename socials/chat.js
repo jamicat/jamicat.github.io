@@ -1214,7 +1214,7 @@ setMotd(message) {
 
     const input =
         window.prompt(
-            "message of the day:\n\nLeave it empty to hide the bar.",
+            "message of the day:\n\nleave it empty to hide the bar",
             this.currentMotd
         );
 
