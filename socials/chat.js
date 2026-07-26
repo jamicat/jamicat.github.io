@@ -1006,17 +1006,94 @@ createBanManagerButton() {
                 "no reason provided"
             }`;
 
-        const clientId =
-            document.createElement("div");
+       const clientId =
+    document.createElement("div");
 
-        clientId.className =
-            "mt-1 break-all text-[9px] text-white/30";
+clientId.className =
+    "mt-1 break-all text-[9px] text-white/30";
 
-        clientId.textContent =
-            ban.client_id;
+clientId.textContent =
+    `Client ID: ${ban.client_id || "not available"}`;
 
-        const unbanButton =
-            document.createElement("button");
+const ipHash =
+    document.createElement("div");
+
+ipHash.className =
+    "mt-1 break-all text-[9px] text-white/40";
+
+const cleanedIpHash =
+    typeof ban.ip_hash === "string"
+        ? ban.ip_hash.trim()
+        : "";
+
+ipHash.textContent =
+    `IP hash: ${
+        cleanedIpHash || "not captured"
+    }`;
+
+		const copyIpHashButton =
+    document.createElement("button");
+
+copyIpHashButton.type = "button";
+copyIpHashButton.textContent =
+    cleanedIpHash
+        ? "copy IP hash"
+        : "no IP hash";
+
+copyIpHashButton.disabled =
+    !cleanedIpHash;
+
+copyIpHashButton.className = [
+    "mt-2",
+    "rounded-md",
+    "border",
+    "border-white/10",
+    "bg-white/5",
+    "px-2",
+    "py-1",
+    "text-[9px]",
+    "text-white/60",
+    "transition",
+    "hover:bg-white/10",
+    "hover:text-white",
+    "disabled:cursor-not-allowed",
+    "disabled:opacity-40"
+].join(" ");
+
+copyIpHashButton.addEventListener(
+    "click",
+    async () => {
+        if (!cleanedIpHash) {
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(
+                cleanedIpHash
+            );
+
+            copyIpHashButton.textContent =
+                "copied";
+
+            setTimeout(() => {
+                copyIpHashButton.textContent =
+                    "copy IP hash";
+            }, 1200);
+        } catch (error) {
+            console.error(
+                "could not copy IP hash:",
+                error
+            );
+
+            window.alert(
+                "could not copy the IP hash"
+            );
+        }
+    }
+);
+		
+const unbanButton =
+    document.createElement("button");
 
         unbanButton.type = "button";
         unbanButton.textContent = "unban";
@@ -1052,6 +1129,8 @@ createBanManagerButton() {
             name,
             reason,
             clientId,
+			ipHash,
+			copyIpHashButton,
             unbanButton
         );
 
