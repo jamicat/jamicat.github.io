@@ -1741,6 +1741,15 @@ menu.style.top =
         }
     );
 
+	const motdButton =
+    this.createModerationMenuButton(
+        "edit message of the day",
+        () => {
+            this.closeModerationMenu();
+            this.editMotd();
+        }
+    );
+
     const copyButton =
         this.createModerationMenuButton(
             "copy message ID",
@@ -1765,20 +1774,16 @@ menu.style.top =
             }
         );
 
-	const motdButton =
-    this.createModerationMenuButton(
-        "edit message of the day",
-        () => {
-            this.closeModerationMenu();
-            this.editMotd();
-        }
-    );
-
+const divider = document.createElement("div");
+divider.className =
+    "my-1 border-t border-white/10";
+	
     menu.append(
         deleteButton,
         banButton,
-        copyButton,
-		motdButton
+		divider,
+		motdButton,
+        copyButton
     );
 
     document.body.appendChild(menu);
