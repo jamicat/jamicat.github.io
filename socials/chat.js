@@ -1254,17 +1254,21 @@ setMotd(message) {
     this.motdTextElement.textContent =
         cleanedMessage;
 
-    if (cleanedMessage) {
-        this.motdElement.classList.remove(
-            "hidden"
-        );
-    } else {
-        this.motdElement.classList.add(
-            "hidden"
-        );
-    }
+const wasAtBottom = this.isMessagesNearBottom();
+
+if (cleanedMessage) {
+    this.motdElement.classList.remove("hidden");
+} else {
+    this.motdElement.classList.add("hidden");
 }
 
+if (wasAtBottom) {
+    requestAnimationFrame(() => {
+        this.scrollMessagesToBottom();
+    });
+}
+	
+}
 	async loadMotd() {
     try {
         const response = await fetch(
