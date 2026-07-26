@@ -174,6 +174,25 @@ if (typed2El) {
   });
 });
 
+const aboutBtn = document.getElementById('aboutButton');
+
+if (aboutBtn) {
+
+  Object.values(themes).forEach(t => {
+    if (!t.aboutButtonStyle) return;
+
+    t.aboutButtonStyle.split(' ').forEach(cls => {
+      aboutBtn.classList.remove(cls);
+    });
+  });
+
+  if (theme.aboutButtonStyle) {
+    theme.aboutButtonStyle.split(' ').forEach(cls => {
+      aboutBtn.classList.add(cls);
+    });
+  }
+}
+
   const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme');
   icons.forEach(icon => {
     icon.className = `${theme.iconColor} transition-colors duration-200 text-lg leading-none`;
