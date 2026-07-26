@@ -1259,10 +1259,10 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-   <button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">art</button>
+  <button class="terminal-button theme-body text-xs" onclick="siteFAQ()">about!</button>
+<button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">art</button>
 <button class="terminal-button theme-body text-xs" onclick="showList()">playlist</button>
 <button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">guestbook</button>
-<button class="hidden theme-body text-xs terminal-button" onclick="siteFAQ()">about</button>
   </div>
 `);
 const currentTheme = localStorage.getItem('theme') || 'Default';
