@@ -2,7 +2,7 @@ const themes = {
   Default: {
     glowPrimary: 'text-blue-glow',      
     glowSecondary: 'text-pink-glow',   
-    typed2Text: 'guest wall!',
+    typed2Text: 'guestbook!',
     typed3Text: 'jamie',
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
@@ -28,7 +28,7 @@ const themes = {
     glowPrimary: 'text-blue-glow',      
     glowSecondary: 'text-pink-glow',  
     typedOverride: 'text-rose-200',
-    typed2Text: 'guest wall"',
+    typed2Text: 'guestbook"',
     typed3Text: '-jamie',
     avatar: 'haato1.png',
     gbAvatar: 'haatowing.png',
@@ -52,7 +52,7 @@ const themes = {
   Stars: {
    glowPrimary: 'text-pink-glow',     
     glowSecondary: 'text-red-glow',   
-    typed2Text: 'guest wall!',
+    typed2Text: 'guestbook!',
     typed3Text: 'jamie',
     avatar: 'g1.gif',
     gbAvatar: 'pbcat.gif',
@@ -76,7 +76,7 @@ const themes = {
   Aero: {
     glowPrimary: 'text-cyan-glow',     
     glowSecondary: 'text-blue-glow',
-    typed2Text: 'guest wall!',
+    typed2Text: 'guestbook!',
     typed3Text: 'jamie',
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
@@ -1259,10 +1259,10 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-    <button class="theme-body text-xs terminal-button ml-2" onclick="showArt()">art</button>
-    <button class="theme-body text-xs terminal-button" onclick="showList()">playlist</button>
-    <button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">guest wall</button>
-    <button class="hidden theme-body text-xs terminal-button ml-2" onclick="siteFAQ()">about</button>
+    <button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">art gallery</button>
+<button class="terminal-button theme-body text-xs" onclick="showList()">playlist</button>
+<button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">live guestbook</button>
+<button class="hidden theme-body text-xs terminal-button" onclick="siteFAQ()">about</button>
   </div>
 `);
 const currentTheme = localStorage.getItem('theme') || 'Default';
