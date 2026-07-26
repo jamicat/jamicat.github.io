@@ -911,7 +911,7 @@ function siteFAQ() {
 </p>
 
 <p class="about-text">
-  I'm a feminine, gay guy who loves expressing himself through fashion,
+  I'm a feminine, gay guy who loves expressing myself through fashion,
   staying comfy, and experimenting with new aesthetics 💅. I'm always finding
   new outfits to obsess over and collecting new plushies (30+... I don't have
   a problem :3).
