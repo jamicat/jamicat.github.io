@@ -960,7 +960,15 @@ function siteFAQ() {
         </div>
       </div>
 
-      <button id="aboutButton" class="terminal-button theme-body text-xs flex justify-center pt-4" onclick="resetTerminal()">back</button>
+
+      <div id="buttonRow" class="flex justify-center pt-4">
+        <button id="aboutButton"
+          class="terminal-button theme-body text-xs"
+          onclick="resetTerminal()"
+        >
+          back
+        </button>
+      </div>
 
     </div>
   `);
