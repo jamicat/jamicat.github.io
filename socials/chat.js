@@ -1015,35 +1015,35 @@ clientId.className =
 clientId.textContent =
     `Client ID: ${ban.client_id || "not available"}`;
 
-const ipHash =
+const ipAddress =
     document.createElement("div");
 
-ipHash.className =
+ipAddress.className =
     "mt-1 break-all text-[9px] text-white/40";
 
-const cleanedIpHash =
-    typeof ban.ip_hash === "string"
-        ? ban.ip_hash.trim()
+const cleanedIpAddress =
+    typeof ban.ip_address === "string"
+        ? ban.ip_address.trim()
         : "";
 
-ipHash.textContent =
-    `IP hash: ${
-        cleanedIpHash || "not captured"
+ipAddress.textContent =
+    `IP: ${
+        cleanedIpAddress || "not captured"
     }`;
 
-		const copyIpHashButton =
+		const copyIpButton =
     document.createElement("button");
 
-copyIpHashButton.type = "button";
-copyIpHashButton.textContent =
-    cleanedIpHash
-        ? "copy IP hash"
-        : "no IP hash";
+copyIpButton.type = "button";
+copyIpButton.textContent =
+    cleanedIpAddress
+        ? "copy IP"
+        : "no IP";
 
-copyIpHashButton.disabled =
-    !cleanedIpHash;
+copyIpButton.disabled =
+    !cleanedIpAddress;
 
-copyIpHashButton.className = [
+copyIpButton.className = [
     "mt-2",
     "rounded-md",
     "border",
@@ -1060,33 +1060,33 @@ copyIpHashButton.className = [
     "disabled:opacity-40"
 ].join(" ");
 
-copyIpHashButton.addEventListener(
+copyIpButton.addEventListener(
     "click",
     async () => {
-        if (!cleanedIpHash) {
+        if (!cleanedIpAddress) {
             return;
         }
 
         try {
             await navigator.clipboard.writeText(
-                cleanedIpHash
+                cleanedIpAddress
             );
 
-            copyIpHashButton.textContent =
+            copyIpButton.textContent =
                 "copied";
 
             setTimeout(() => {
-                copyIpHashButton.textContent =
-                    "copy IP hash";
+                copyIpButton.textContent =
+                    "copy IP";
             }, 1200);
         } catch (error) {
             console.error(
-                "could not copy IP hash:",
+                "could not copy IP address:",
                 error
             );
 
             window.alert(
-                "could not copy the IP hash"
+                "could not copy the IP address"
             );
         }
     }
@@ -1129,8 +1129,8 @@ const unbanButton =
             name,
             reason,
             clientId,
-			ipHash,
-			copyIpHashButton,
+			ipAddress,
+			copyIpButton,
             unbanButton
         );
 
