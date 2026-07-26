@@ -28,6 +28,9 @@ this.controlsElement = null;
 this.minimizeButton = null;
 this.membersToggle = null;
 this.chatTitle = null;
+this.motdElement = null;
+this.motdTextElement = null;
+this.currentMotd = "";
 this.emojiButton = null;
 this.emojiPickerContainer = null;
 this.emojiPicker = null;
@@ -70,6 +73,7 @@ this.setupMembersToggle();
 this.setupNameSaving();
 this.setupDragging();
 this.loadHistory();
+this.loadMotd();
 this.connect();
 }
 
@@ -154,6 +158,33 @@ transition-[height] duration-200
 </div>
 </div>
         </div>
+
+		<div
+    id="chatMotd"
+    class="
+        theme-body
+        hidden
+        shrink-0
+        border-b border-white/10
+        bg-black/5
+        px-3 py-1.5
+        text-[9px]
+        leading-relaxed
+        text-white/65
+        select-none
+    "
+    title="Message of the day"
+>
+    <span class="font-semibold text-white/85">
+        message of the day:
+    </span>
+
+    <span
+        id="chatMotdText"
+        class="break-words"
+    ></span>
+</div>
+
 <div
     id="chatMain"
     class="flex min-h-0 flex-1"
@@ -381,6 +412,10 @@ transition-[height] duration-200
     this.window.querySelector("#chatTyping");
 	this.chatTitle =
     this.window.querySelector("#chatTitle");
+	this.motdElement =
+    this.window.querySelector("#chatMotd");
+    this.motdTextElement =
+    this.window.querySelector("#chatMotdText");
     this.nameInput = this.window.querySelector("#chatName");
     this.messageInput = this.window.querySelector("#chatMessage");
     this.sendButton = this.window.querySelector("#chatSend");
@@ -420,6 +455,20 @@ this.controlsElement =
 
 this.minimizeButton =
     this.window.querySelector("#chatMinimize");
+
+	   this.motdElement.addEventListener(
+    "contextmenu",
+    event => {
+        if (!this.isAdmin) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.editMotd();
+    }
+);
 
   this.sendButton.addEventListener(
     "click",
@@ -1095,6 +1144,156 @@ createBanManagerButton() {
     }
 }
 
+setMotd(message) {
+    if (
+        !this.motdElement ||
+        !this.motdTextElement
+    ) {
+        return;
+    }
+
+    const cleanedMessage =
+        typeof message === "string"
+            ? message.trim()
+            : "";
+
+    this.currentMotd = cleanedMessage;
+    this.motdTextElement.textContent =
+        cleanedMessage;
+
+    if (cleanedMessage) {
+        this.motdElement.classList.remove(
+            "hidden"
+        );
+    } else {
+        this.motdElement.classList.add(
+            "hidden"
+        );
+    }
+}
+
+	async loadMotd() {
+    try {
+        const response = await fetch(
+            `${this.API}/api/chat/motd`
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                `could not load MOTD (${response.status})`
+            );
+        }
+
+        const result =
+            await response.json();
+
+        this.setMotd(
+            result.message || ""
+        );
+    } catch (error) {
+        console.error(
+            "could not load chat MOTD:",
+            error
+        );
+
+        this.setMotd("");
+    }
+}
+
+	async editMotd() {
+    if (
+        !this.isAdmin ||
+        !this.adminKey
+    ) {
+        window.alert(
+            "admin authentication is required"
+        );
+
+        return;
+    }
+
+    const input =
+        window.prompt(
+            "message of the day:\n\nLeave it empty to hide the bar.",
+            this.currentMotd
+        );
+
+    if (input === null) {
+        return;
+    }
+
+    const message =
+        input.trim();
+
+    if (message.length > 200) {
+        window.alert(
+            "the message of the day must be 200 characters or fewer"
+        );
+
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${this.API}/api/admin/chat/motd`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json",
+
+                    "Authorization":
+                        `Bearer ${this.adminKey}`
+                },
+                body: JSON.stringify({
+                    message
+                })
+            }
+        );
+
+        let result = null;
+
+        try {
+            result =
+                await response.json();
+        } catch {
+            // The error below will handle
+            // an invalid response.
+        }
+
+        if (response.status === 401) {
+            this.disableAdminMode();
+
+            window.alert(
+                "your admin session is no longer valid"
+            );
+
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `could not update MOTD (${response.status})`
+            );
+        }
+
+        this.setMotd(
+            result.message ?? message
+        );
+    } catch (error) {
+        console.error(
+            "could not update chat MOTD:",
+            error
+        );
+
+        window.alert(
+            `could not update message of the day: ${error.message}`
+        );
+    }
+}
+
+	
 	
 async loadHistory() {
 
@@ -2056,6 +2255,8 @@ connect() {
 
         console.log("chat websocket data:", data);
 
+		
+
 	if (data.type === "typing") {
     if (
         data.clientId ===
@@ -2129,6 +2330,14 @@ if (data.type === "members") {
     return;
 }
 
+if (data.type === "motd") {
+    this.setMotd(
+        data.message || ""
+    );
+
+    return;
+}
+		
 if (data.type === "delete") {
     const messageElement =
         this.findMessageElement(data.id);
