@@ -815,16 +815,17 @@ function siteFAQ() {
     <div class="mt-3 text-white">
 
       <div
-        id="aboutScroll"
-        class="
-          max-h-[52vh]
-          sm:max-h-[58vh]
-          overflow-y-auto
-          overscroll-contain
-          pr-3
-          text-left
-        "
-      >
+  id="aboutScroll"
+  class="
+    themed-scrollbar
+    max-h-[52vh]
+    sm:max-h-[58vh]
+    overflow-y-auto
+    overscroll-contain
+    pr-3
+    text-left
+  "
+>
         <div class="space-y-5">
 
           <section class="space-y-3">
@@ -1101,6 +1102,7 @@ document.body.appendChild(guestBookWindow);
 const guestbookCommentBox = document.createElement('div');
 guestbookCommentBox.id = 'guestbookComments';
 guestbookCommentBox.className = `
+  themed-scrollbar
   gwterminal
   absolute
   p-4
