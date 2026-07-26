@@ -846,7 +846,7 @@ function siteFAQ() {
           </section>
 
           <section class="space-y-3">
-            <h3 class="about-heading text-blue-glow text-xl text-center">the website</h3>
+            <h3 class="about-heading text-blue-glow">the website</h3>
 
             <p class="about-text">
               The website is intentionally minimal, clutter-free and light. I
@@ -869,7 +869,7 @@ function siteFAQ() {
           </section>
 
           <section class="space-y-3">
-            <h3 class="about-heading text-blue-glow text-xl text-center">themes</h3>
+            <h3 class="about-heading text-blue-glow">themes</h3>
 
             <p class="about-text">
               The theme selector (the little brush icon) changes more than just
@@ -885,7 +885,7 @@ function siteFAQ() {
           </section>
 
           <section class="space-y-3">
-            <h3 class="about-heading text-blue-glow text-xl text-center">always a work in progress</h3>
+            <h3 class="about-heading text-blue-glow">always a work in progress</h3>
 
             <p class="about-text">
               This website will probably never be “finished”, and I love that.
@@ -901,7 +901,7 @@ function siteFAQ() {
           </section>
 
           <section class="space-y-3">
-            <h3 class="about-heading text-blue-glow text-xl text-center">away from the keyboard</h3>
+            <h3 class="about-heading text-blue-glow">away from the keyboard</h3>
 
             <p class="about-text">
               As a cat away from the keyboard, I'm a pretty feminine guy who's
@@ -918,7 +918,7 @@ function siteFAQ() {
           </section>
 
           <section class="space-y-3">
-            <h3 class="about-heading text-blue-glow text-xl text-center">working cat</h3>
+            <h3 class="about-heading text-blue-glow">working cat</h3>
 
             <p class="about-text">
               As a working cat, I'm an L2 NOC engineer. I spend my days
@@ -934,7 +934,7 @@ function siteFAQ() {
           </section>
 
           <section class="space-y-3">
-            <h3 class="about-heading text-blue-glow text-xl text-center">usually found...</h3>
+            <h3 class="about-heading text-blue-glow">usually found...</h3>
 
             <p class="about-text">
               When I'm not working, you'll probably find me playing games with
@@ -945,7 +945,7 @@ function siteFAQ() {
           </section>
 
           <section class="space-y-3 pb-2">
-            <h3 class="about-heading text-blue-glow text-xl text-center">libraries used</h3>
+            <h3 class="about-heading text-blue-glow">libraries used</h3>
 
             <p class="about-text opacity-90">
               jQuery, Typed.js, Interact.js, Tailwind CSS, YouTube IFrame API,
