@@ -213,7 +213,6 @@ object-fit: contain;
 .themed-scrollbar {
   scrollbar-width: thin;
   scrollbar-gutter: stable;
-  scrollbar-color: #fce7f3 transparent;
 }
 
 .themed-scrollbar::-webkit-scrollbar {
@@ -230,24 +229,31 @@ object-fit: contain;
 }
 
 .themed-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(252, 231, 243, 0.6);
   border-radius: 999px;
 }
 
-.themed-scrollbar:hover::-webkit-scrollbar-thumb {
+#guestbookComments {
+  scrollbar-color: #fce7f3 transparent;
+}
+
+#guestbookComments::-webkit-scrollbar-thumb {
+  background-color: rgba(252, 231, 243, 0.6);
+}
+
+#guestbookComments:hover::-webkit-scrollbar-thumb {
   background-color: rgba(252, 231, 243, 0.9);
 }
 
 #aboutScroll {
-  scrollbar-color: #bfdbfe transparent; 
+  scrollbar-color: var(--about-scrollbar-colour) transparent;
 }
 
 #aboutScroll::-webkit-scrollbar-thumb {
-  background-color: rgba(191, 219, 254, 0.65);
+  background-color: var(--about-scrollbar-colour);
 }
 
 #aboutScroll:hover::-webkit-scrollbar-thumb {
-  background-color: rgba(191, 219, 254, 0.9);
+  background-color: var(--about-scrollbar-hover-colour);
 }
 
 .terminal-button {
@@ -397,6 +403,8 @@ object-fit: contain;
   --heading-font: 'Fink';
   --body-font: 'nintendoh';
   --arrow-image: url("arrow.png");
+  --about-scrollbar-colour: rgba(191, 219, 254, 0.65);
+  --about-scrollbar-hover-colour: rgba(191, 219, 254, 0.9);
 }
 
 .theme-heading {
@@ -410,6 +418,11 @@ object-fit: contain;
 .no-decor {
   border: none !important;
   box-shadow: none !important;
+}
+
+.theme-stars {
+  --about-scrollbar-colour: rgba(255, 173, 99, 0.65);
+  --about-scrollbar-hover-colour: rgba(255, 173, 99, 0.9);
 }
 
 .theme-stars .avatar-icon,
@@ -522,6 +535,8 @@ font-size: 0.65rem;
 
 .theme-cat {
   --arrow-image: url("catstar.png");
+  --about-scrollbar-colour: rgba(191, 219, 254, 0.65);
+  --about-scrollbar-hover-colour: rgba(191, 219, 254, 0.9);
 }
 
 .about-text {
