@@ -31,7 +31,7 @@ statusContainer.innerHTML = `
   </div>
   <div id="discordText" class="flex flex-col leading-tight">
     <span id="discordName" class="text-white text-[16px] font-semibold font-medium text-blue-glow">Loading...</span>
-    <span id="discordActivity" class="text-red-300 text-[13.5px] opacity-90 italic font-medium">Fetching status...</span>
+    <span id="discordActivity" class="text-rose-300 text-[13.5px] opacity-90 italic font-medium">Fetching status...</span>
   </div>
 `;
 
