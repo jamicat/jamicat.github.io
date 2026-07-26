@@ -841,7 +841,7 @@ function siteFAQ() {
               showcase art commissions, and slowly build my own little comfy
               techy space on the web. I've poured a lot of love into this place,
               and hopefully that passion shines through! I hope you enjoy
-              exploring it as much as I've enjoyed making it.
+              exploring it as much as I've enjoyed making it 🎀.
             </p>
           </section>
 
@@ -880,7 +880,7 @@ function siteFAQ() {
               The Animal Crossing theme borrows little touches from the game's
               UI and interactions, while the default theme leans into pixel
               cats, terminal windows, and retro SSH vibes. I want every theme
-              to feel familiar, comfy, and just different enough.
+              to feel familiar, comfy, and just different enough ☁️.
             </p>
           </section>
 
