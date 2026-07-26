@@ -238,6 +238,18 @@ object-fit: contain;
   background-color: rgba(252, 231, 243, 0.9);
 }
 
+#aboutScroll {
+  scrollbar-color: #bfdbfe transparent; 
+}
+
+#aboutScroll::-webkit-scrollbar-thumb {
+  background-color: rgba(191, 219, 254, 0.65);
+}
+
+#aboutScroll:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(191, 219, 254, 0.9);
+}
+
 .terminal-button {
   position: relative;
   background: transparent;
