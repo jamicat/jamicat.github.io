@@ -213,7 +213,7 @@ object-fit: contain;
 .themed-scrollbar {
   scrollbar-width: thin;
   scrollbar-gutter: stable;
-  scrollbar-color: #f9a8d4 transparent;
+  scrollbar-color: #fce7f3 transparent;
 }
 
 .themed-scrollbar::-webkit-scrollbar {
@@ -230,12 +230,12 @@ object-fit: contain;
 }
 
 .themed-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(249, 168, 212, 0.65);
+  background-color: rgba(252, 231, 243, 0.6);
   border-radius: 999px;
 }
 
 .themed-scrollbar:hover::-webkit-scrollbar-thumb {
-  background-color: rgba(249, 168, 212, 0.9);
+  background-color: rgba(252, 231, 243, 0.9);
 }
 
 .terminal-button {
