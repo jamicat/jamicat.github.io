@@ -959,8 +959,8 @@ function siteFAQ() {
 
         </div>
       </div>
-
-      <div id="buttonRow" class="flex justify-center pt-4">
+      
+      <div id="aboutButton" class="terminal-button theme-body text-xs flex justify-center pt-4">
         <button
           class="terminal-button theme-body text-xs"
           onclick="resetTerminal()"
