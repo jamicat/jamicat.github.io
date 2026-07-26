@@ -145,9 +145,9 @@ transition-[height] duration-200
             hover:bg-white/10
             hover:text-white
         "
-        aria-label="Minimize live chat"
+        aria-label="minimize live chat"
         aria-expanded="true"
-        title="Minimize chat"
+        title="minimize chat"
     >
         −
     </button>
@@ -234,7 +234,7 @@ transition-[height] duration-200
                 transition
                 hover:bg-white/5
             "
-            aria-label="Choose avatar"
+            aria-label="choose avatar"
             aria-expanded="false"
             aria-controls="chatAvatarPicker"
         >
@@ -549,7 +549,7 @@ setupAdminAuthentication() {
 
     if (!cleanedKey) {
         window.alert(
-            "admin key cannot be empty."
+            "admin key cannot be empty"
         );
         return;
     }
@@ -561,7 +561,7 @@ setupAdminAuthentication() {
 
     if (!isValid) {
         window.alert(
-            "incorrect admin key."
+            "incorrect admin key"
         );
         return;
     }
@@ -569,7 +569,7 @@ setupAdminAuthentication() {
     this.enableAdminMode(cleanedKey);
 
     window.alert(
-        "chat moderation enabled."
+        "chat moderation enabled"
     );
 }
 	async verifyAdminKey(key) {
@@ -628,7 +628,7 @@ this.removeBanManagerButton();
     this.disableAdminMode();
 
     window.alert(
-        "Chat moderation disabled."
+        "chat moderation disabled"
     );
 }
 
@@ -694,7 +694,7 @@ createBanManagerButton() {
         !this.adminKey
     ) {
         window.alert(
-            "admin authentication is required."
+            "admin authentication is required"
         );
 
         return;
@@ -850,7 +850,7 @@ createBanManagerButton() {
             this.disableAdminMode();
 
             window.alert(
-                "your admin session is no longer valid."
+                "your admin session is no longer valid"
             );
 
             return;
@@ -914,7 +914,7 @@ createBanManagerButton() {
             "text-white/40";
 
         empty.textContent =
-            "nobody is banned.";
+            "nobody is banned";
 
         list.appendChild(empty);
         return;
@@ -941,7 +941,7 @@ createBanManagerButton() {
             "font-bold text-white";
 
         name.textContent =
-            ban.name || "Unknown user";
+            ban.name || "unknown user";
 
         const reason =
             document.createElement("div");
@@ -952,7 +952,7 @@ createBanManagerButton() {
         reason.textContent =
             `Reason: ${
                 ban.reason ||
-                "No reason provided"
+                "no reason provided"
             }`;
 
         const clientId =
@@ -1052,7 +1052,7 @@ createBanManagerButton() {
             this.disableAdminMode();
 
             window.alert(
-                "Your admin session is no longer valid."
+                "your admin session is no longer valid"
             );
 
             return;
@@ -1067,13 +1067,13 @@ createBanManagerButton() {
 
         if (!result.removed) {
             window.alert(
-                "that client was not currently banned."
+                "that client was not currently banned"
             );
         } else {
             window.alert(
                 `${
                     name || "User"
-                } has been unbanned.`
+                } has been unbanned`
             );
         }
 
@@ -1241,7 +1241,7 @@ const fullTimestamp =
               timeStyle: "medium",
               hour12: false
           })
-        : "Unknown time";
+        : "unknown time";
 
    if (isContinuation) {
     const compactContent =
@@ -1557,7 +1557,7 @@ menu.style.top =
                     );
                 } catch (error) {
                     console.error(
-                        "Could not copy message ID:",
+                        "could not copy message ID:",
                         error
                     );
                 }
@@ -1662,7 +1662,7 @@ menu.style.top =
         id <= 0
     ) {
         console.error(
-            "Cannot delete invalid message ID:",
+            "cannot delete invalid message ID:",
             messageId
         );
 
@@ -1671,7 +1671,7 @@ menu.style.top =
 
     const confirmed =
         window.confirm(
-            `Delete message #${id}?`
+            `delete message #${id}?`
         );
 
     if (!confirmed) {
@@ -1683,7 +1683,7 @@ menu.style.top =
         !this.adminKey
     ) {
         window.alert(
-            "Admin authentication is required."
+            "admin authentication is required"
         );
 
         this.disableAdminMode();
@@ -1721,7 +1721,7 @@ menu.style.top =
             this.disableAdminMode();
 
             window.alert(
-                "Your admin session is no longer valid."
+                "your admin session is no longer valid"
             );
 
             return;
@@ -1730,22 +1730,22 @@ menu.style.top =
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `Delete failed (${response.status})`
+                `delete failed (${response.status})`
             );
         }
 
         console.log(
-            "Deleted message",
+            "deleted message",
             id
         );
     } catch (error) {
         console.error(
-            "Could not delete message:",
+            "could not delete message:",
             error
         );
 
         window.alert(
-            `Could not delete message: ${error.message}`
+            `could not delete message: ${error.message}`
         );
     }
 }
@@ -1753,7 +1753,7 @@ menu.style.top =
 	async banClient(clientId, name) {
     if (!clientId) {
         window.alert(
-            "this message has no client ID and cannot be banned."
+            "this message has no client ID and cannot be banned"
         );
 
         return;
@@ -1764,7 +1764,7 @@ menu.style.top =
         !this.adminKey
     ) {
         window.alert(
-            "Admin authentication is required."
+            "admin authentication is required"
         );
 
         this.disableAdminMode();
@@ -1821,7 +1821,7 @@ menu.style.top =
             this.disableAdminMode();
 
             window.alert(
-                "your admin session is no longer valid."
+                "your admin session is no longer valid"
             );
 
             return;
@@ -1830,21 +1830,21 @@ menu.style.top =
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `Ban failed (${response.status})`
+                `ban failed (${response.status})`
             );
         }
 
         window.alert(
-            `${name || "User"} has been permanently banned.`
+            `${name || "user"} has been permanently banned`
         );
     } catch (error) {
         console.error(
-            "Could not ban client:",
+            "could not ban client:",
             error
         );
 
         window.alert(
-            `Could not ban user: ${error.message}`
+            `could not ban user: ${error.message}`
         );
     }
 }
@@ -1891,7 +1891,7 @@ menu.style.top =
             "min-w-0 truncate text-white/75";
 
         name.textContent =
-            member.name || "Anonymous";
+            member.name || "anonymous";
 
         row.append(avatar, name);
         this.membersElement.appendChild(row);
@@ -1925,7 +1925,7 @@ menu.style.top =
     }
 
     const name =
-        this.nameInput.value.trim() || "Anonymous";
+        this.nameInput.value.trim() || "anonymous";
 
     this.socket.send(JSON.stringify({
         type: "presence",
@@ -1950,7 +1950,7 @@ menu.style.top =
             clientId: this.clientId,
             name:
                 this.nameInput.value.trim() ||
-                "Anonymous",
+                "anonymous",
             isTyping
         })
     );
@@ -2025,12 +2025,12 @@ connect() {
     const socketUrl =
         "wss://jamicat.ahrly.workers.dev/api/chat/socket";
 
-    console.log("Connecting chat WebSocket...");
+    console.log("connecting chat websocket...");
 
     this.socket = new WebSocket(socketUrl);
 
     this.socket.addEventListener("open", () => {
-    console.log("Chat WebSocket connected");
+    console.log("chat websocket connected");
 
     if (this.connectionStatus) {
         this.connectionStatus.textContent = "online";
@@ -2054,7 +2054,7 @@ connect() {
     try {
         const data = JSON.parse(event.data);
 
-        console.log("Chat WebSocket data:", data);
+        console.log("chat websocket data:", data);
 
 	if (data.type === "typing") {
     if (
@@ -2067,7 +2067,7 @@ connect() {
     if (data.isTyping) {
         this.typingUsers.set(
             data.clientId,
-            data.name || "Anonymous"
+            data.name || "anonymous"
         );
     } else {
         this.typingUsers.delete(
@@ -2087,7 +2087,7 @@ connect() {
 
     const reason =
         data.reason ||
-        "No reason provided";
+        "no reason provided";
 
     const durationText =
         data.expires_at
@@ -2096,10 +2096,10 @@ connect() {
                     data.expires_at
                 ).toLocaleString()
             }`
-            : "This ban is permanent.";
+            : "this ban is permanent";
 
     window.alert(
-        `you have been banned.\n\n` +
+        `you have been banned\n\n` +
         `Reason: ${reason}\n\n` +
         durationText
     );
@@ -2164,7 +2164,7 @@ if (data.name && data.message) {
 }
 	} catch (error) {
         console.error(
-            "Could not parse chat WebSocket message:",
+            "could not parse chat WebSocket message:",
             error,
             event.data
         );
@@ -2173,7 +2173,7 @@ if (data.name && data.message) {
 
     this.socket.addEventListener("close", event => {
         console.log(
-            "Chat WebSocket closed:",
+            "chat websocket closed:",
             event.code,
             event.reason
         );
@@ -2206,7 +2206,7 @@ if (!this.isBanned) {
     });
 
     this.socket.addEventListener("error", error => {
-        console.error("Chat WebSocket error:", error);
+        console.error("chat websocket error:", error);
 
         try {
             this.socket.close();
@@ -2257,7 +2257,7 @@ if (
                     result.expires_at
                 ).toLocaleString()
             }`
-            : "This ban is permanent.";
+            : "this ban is permanent";
 
     window.alert(
         `you have been banned.\n\n` +
@@ -2287,7 +2287,7 @@ if (
 if (!response.ok) {
     throw new Error(
         result?.error ||
-        `Chat request failed (${response.status})`
+        `chat request failed (${response.status})`
     );
 }
 clearTimeout(this.typingTimer);
@@ -2296,7 +2296,7 @@ this.sendTypingState(false);
 this.messageInput.value = "";
 this.messageInput.focus();
     } catch (error) {
-        console.error("Could not send chat message:", error);
+        console.error("could not send chat message:", error);
     } finally {
     this.sendButton.disabled =
         this.isBanned;
@@ -2655,12 +2655,12 @@ setupEmojiPicker() {
         typeof window.EmojiMart.Picker !== "function"
     ) {
         console.error(
-            "Emoji Mart did not load."
+            "emoji mart did not load"
         );
 
         this.emojiButton.disabled = true;
         this.emojiButton.title =
-            "Emoji picker unavailable";
+            "emoji picker unavailable";
 
         return;
     }
@@ -2778,7 +2778,7 @@ this.emojiPicker =
 
             if (!response.ok) {
                 throw new Error(
-                    `Emoji data failed (${response.status})`
+                    `emoji data failed (${response.status})`
                 );
             }
 
@@ -3304,14 +3304,14 @@ if (minimized) {
     this.minimizeButton.setAttribute(
         "aria-label",
         minimized
-            ? "Restore live chat"
-            : "Minimize live chat"
+            ? "restore live chat"
+            : "minimize live chat"
     );
 
     this.minimizeButton.title =
         minimized
-            ? "Restore chat"
-            : "Minimize chat";
+            ? "restore chat"
+            : "minimize chat";
 
     if (minimized) {
         this.closeAvatarPicker();
