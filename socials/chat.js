@@ -2943,6 +2943,16 @@ setupEmojiPicker() {
             src: "/emojis/wooperyay.gif"
         }
     ]
+},
+			{
+    id: "sharkgirl",
+    name: "shark girl",
+    keywords: ["shark", "girl"],
+    skins: [
+        {
+            src: "/emojis/sharkgirl.png"
+        }
+    ]
 }
         ]
     }
