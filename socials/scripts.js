@@ -908,7 +908,7 @@ function siteFAQ() {
               When I'm not working, you'll probably find me playing games with
               friends, obsessing over whatever music is currently living
               rent-free in my head, dreaming about my next festival, or
-              (mostest likely) eeping. 😺💤
+              (mostest likely) eeping 😺💤.
             </p>
           </section>
 
