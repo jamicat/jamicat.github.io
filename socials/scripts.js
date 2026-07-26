@@ -903,18 +903,19 @@ function siteFAQ() {
           <section class="space-y-3">
             <h3 class="about-heading text-blue-glow">away from the keyboard</h3>
 
-            <p class="about-text">
-              As a cat away from the keyboard, I'm a pretty feminine guy who's
-              always felt happiest surrounded by cosy, cute, pastel-coloured
-              things, so it's only fitting that my fursona is a little more pastel-toned too.
-            </p>
+         <p class="about-text">
+  As a cat away from the keyboard, I've always felt happiest surrounded by
+  cosy, cute, pastel-coloured things. Being feminine has always been part of
+  who I am, so it's only fitting that my fursona is a little more
+  pastel-toned too.
+</p>
 
-            <p class="about-text">
-              I love expressing myself, staying comfy, and embracing my
-              feminine side 💅. I'm always experimenting with new aesthetics,
-              finding new outfits to obsess over, and collecting new plushies
-              (30+... I don't have a problem :3).
-            </p>
+<p class="about-text">
+  I'm a feminine, gay guy who loves expressing himself through fashion,
+  staying comfy, and experimenting with new aesthetics 💅. I'm always finding
+  new outfits to obsess over and collecting new plushies (30+... I don't have
+  a problem :3).
+</p>
           </section>
 
           <section class="space-y-3">
