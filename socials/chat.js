@@ -200,13 +200,17 @@ transition-[height] duration-200
         aria-live="polite"
     ></div>
 
-   <aside
+  <aside
     id="chatMembersPanel"
     class="
-        w-28 shrink-0
+        flex
+        flex-col
+        w-28
+        shrink-0
         border-l border-white/10
         bg-black/5
         px-2 py-3
+        min-h-0
     "
 >
         <div
@@ -221,9 +225,17 @@ transition-[height] duration-200
         </div>
 
         <div
-            id="chatMembers"
-            class="space-y-2 theme-body text-[10px]"
-        >
+    id="chatMembers"
+    class="
+        flex-1
+        min-h-0
+        overflow-y-auto
+        space-y-2
+        theme-body
+        text-[10px]
+        pr-1
+    "
+>
             <div class="text-white/35">
                 loading...
             </div>
@@ -2187,6 +2199,9 @@ menu.style.top =
 
         name.textContent =
             member.name || "anonymous";
+
+		name.title =
+    member.name || "anonymous";
 
         row.append(avatar, name);
         this.membersElement.appendChild(row);
