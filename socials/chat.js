@@ -1692,8 +1692,8 @@ openModerationMenu(x, y, message) {
         "backdrop-blur-xl"
     ].join(" ");
 
-    const menuWidth = 176;
-const menuHeight = 130;
+const menuWidth = 176;
+const menuHeight = 165;
 const viewportPadding = 8;
 
 const left = Math.min(
@@ -1765,10 +1765,20 @@ menu.style.top =
             }
         );
 
+	const motdButton =
+    this.createModerationMenuButton(
+        "edit message of the day",
+        () => {
+            this.closeModerationMenu();
+            this.editMotd();
+        }
+    );
+
     menu.append(
         deleteButton,
         banButton,
-        copyButton
+        copyButton,
+		motdButton
     );
 
     document.body.appendChild(menu);
