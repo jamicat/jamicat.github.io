@@ -210,44 +210,44 @@ object-fit: contain;
   color: white !important;
 }
 
-#guestbookComments,
-#aboutScroll {
+.themed-scrollbar {
   scrollbar-width: thin;
   scrollbar-gutter: stable;
+  scrollbar-color: #fce7f3 transparent;
 }
 
-#guestbookComments::-webkit-scrollbar,
-#aboutScroll::-webkit-scrollbar {
+.themed-scrollbar::-webkit-scrollbar {
   width: 4px;
   background: transparent;
 }
 
-#guestbookComments::-webkit-scrollbar-track,
-#aboutScroll::-webkit-scrollbar-track {
+.themed-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
 
-#guestbookComments::-webkit-scrollbar-thumb,
-#aboutScroll::-webkit-scrollbar-thumb {
-  background-color: transparent;
-  border-radius: 6px;
-}
-
-#guestbookComments:hover::-webkit-scrollbar-track,
-#aboutScroll:hover::-webkit-scrollbar-track {
+.themed-scrollbar:hover::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.05);
 }
 
-#guestbookComments:hover::-webkit-scrollbar-thumb {
-  background-color: #fce7f3;
+.themed-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(252, 231, 243, 0.6);
+  border-radius: 999px;
+}
+
+.themed-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(252, 231, 243, 0.9);
+}
+
+#aboutScroll {
+  scrollbar-color: #bfdbfe transparent; 
+}
+
+#aboutScroll::-webkit-scrollbar-thumb {
+  background-color: rgba(191, 219, 254, 0.65);
 }
 
 #aboutScroll:hover::-webkit-scrollbar-thumb {
-  background-color: #bfdbfe;
-}
-
-.theme-stars #aboutScroll:hover::-webkit-scrollbar-thumb {
-  background-color: #ffad63;
+  background-color: rgba(191, 219, 254, 0.9);
 }
 
 .terminal-button {
@@ -411,7 +411,6 @@ object-fit: contain;
   border: none !important;
   box-shadow: none !important;
 }
-
 
 .theme-stars .avatar-icon,
 .theme-stars .avatar-icon2 {
