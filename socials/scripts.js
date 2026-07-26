@@ -10,7 +10,7 @@ const themes = {
     bodyFont: 'nintendoh',
     buttonColor: 'bg-transparent hover:bg-transparent',
     buttonTextColor: 'text-white text-blue-glow',
-    aboutButtonStyle: 'text-blue-200',
+    aboutButtonStyle: 'bg-transparent hover:bg-transparent text-blue-200',
     iconColor: 'text-red-300 hover:text-blue-200',
     hoverRing: 'hover:ring-blue-200',
     galaxyActive: 'text-blue-200',
@@ -37,7 +37,7 @@ const themes = {
     bodyFont: 'spirits',
     buttonColor: 'bg-transparent hover:bg-transparent',
     buttonTextColor: 'text-white text-blue-glow',
-    aboutButtonStyle: 'bg-[#ffad63]',
+    aboutButtonStyle: 'bg-transparent hover:bg-transparent text-white',
     iconColor: 'text-rose-200 hover:text-white',
     hoverRing: 'hover:ring-teal-400',
     galaxyActive: 'text-white',
@@ -62,7 +62,7 @@ const themes = {
     bodyFont: 'nunito',
     buttonColor: 'bg-red-300 hover:bg-red-400',
     buttonTextColor: 'text-black',
-    aboutButtonStyle: 'bg-[#ffad63]',
+    aboutButtonStyle: 'bg-[#ffad63] hover:bg-[#ffad63] text-black',
     iconColor: 'text-red-300 hover:text-cyan-400',
     hoverRing: 'hover:ring-cyan-400',
     galaxyActive: 'text-cyan-400',
@@ -156,7 +156,9 @@ if (typed2El) {
   typed2El.textContent = theme.typed2Text || 'guest wall!';
 }
 
- document.querySelectorAll('.terminal-button:not(.guestbook-submit)').forEach(btn => {
+document.querySelectorAll(
+  '.terminal-button:not(.guestbook-submit):not(#aboutButton)'
+).forEach(btn => {
   btn.classList.add('theme-body');
   Object.values(themes).forEach(t => {
     t.buttonTextColor.split(' ').forEach(cls => {
@@ -177,20 +179,27 @@ if (typed2El) {
 const aboutBtn = document.getElementById('aboutButton');
 
 if (aboutBtn) {
+  aboutBtn.classList.add('theme-body');
 
   Object.values(themes).forEach(t => {
-    if (!t.aboutButtonStyle) return;
+    t.buttonTextColor
+      .split(' ')
+      .forEach(cls => aboutBtn.classList.remove(cls));
 
-    t.aboutButtonStyle.split(' ').forEach(cls => {
-      aboutBtn.classList.remove(cls);
-    });
+    t.buttonColor
+      .split(' ')
+      .forEach(cls => aboutBtn.classList.remove(cls));
+
+    if (t.aboutButtonStyle) {
+      t.aboutButtonStyle
+        .split(' ')
+        .forEach(cls => aboutBtn.classList.remove(cls));
+    }
   });
-
-  if (theme.aboutButtonStyle) {
-    theme.aboutButtonStyle.split(' ').forEach(cls => {
-      aboutBtn.classList.add(cls);
-    });
-  }
+  
+  theme.aboutButtonStyle
+    .split(' ')
+    .forEach(cls => aboutBtn.classList.add(cls));
 }
 
   const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme');
