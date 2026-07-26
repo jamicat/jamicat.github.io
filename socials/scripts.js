@@ -949,8 +949,8 @@ function siteFAQ() {
 
             <p class="about-text opacity-90">
               jQuery, Typed.js, Interact.js, Tailwind CSS, YouTube IFrame API,
-              LightGallery, Three.js, Cloudflare Workers and APIs, WebSockets
-              for guest-wall updates, SQLite, custom guest-wall and playlist
+              LightGallery, Three.js, Cloudflare Workers & API, Cloudflare Durable Objects for the live chat, WebSockets
+              for guestbook updates, SQLite, custom guestbook and playlist
               APIs, and local storage for themes.
             </p>
           </section>
