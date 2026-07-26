@@ -233,11 +233,11 @@ object-fit: contain;
 }
 
 #guestbookComments {
-  scrollbar-color: #fce7f3 transparent;
+  scrollbar-color: rgba(252, 231, 243, 0.65) transparent;
 }
 
 #guestbookComments::-webkit-scrollbar-thumb {
-  background-color: rgba(252, 231, 243, 0.6);
+  background-color: rgba(252, 231, 243, 0.65);
 }
 
 #guestbookComments:hover::-webkit-scrollbar-thumb {
