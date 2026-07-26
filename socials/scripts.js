@@ -774,18 +774,175 @@ function changeTyped3(newText) {
 
 
 function siteFAQ() {
-  
-$('#terminalContent').html(`
-      <div id="about" class="text-blue-glow text-white theme-body text-sm mb-4 mt-4">libraries used:</div>
-      <ul class="list-disc list-inside text-white space-y-1">
-      <li id="about" class="text-blue-glow text-white theme-body text-xs">jquery, typed.js, interact.js, tailwind css, youtube iframe api, lightgallery, three.js, cloudflare worker & apis, websockets (guest wall updates), sqlite db, custom guest wall api, custom playlist api, local storage (themes)</li>
-      </ul>
+  const terminal = document.getElementById('terminal');
+
+  terminal.classList.remove('sm:w-[480px]');
+  terminal.classList.add('sm:w-[600px]');
+
+  $('#terminalContent').html(`
+    <div class="mt-3 text-white">
+
+      <div
+        id="aboutScroll"
+        class="
+          max-h-[52vh]
+          sm:max-h-[58vh]
+          overflow-y-auto
+          overscroll-contain
+          pr-3
+          text-left
+        "
+      >
+        <div class="space-y-5">
+
+          <section class="space-y-3">
+            <h2 class="theme-heading text-blue-glow text-xl text-center">
+              about me
+            </h2>
+
+            <p class="about-text">
+              Hi! I'm Jamie, and welcome to my little corner of the internet! 🐾
+            </p>
+
+            <p class="about-text">
+              This is where I share the music I'm currently obsessed with,
+              showcase art commissions, and slowly build my own little comfy
+              techy space on the web. I've poured a lot of love into this place,
+              and hopefully that passion shines through! I hope you enjoy
+              exploring it as much as I've enjoyed making it.
+            </p>
+          </section>
+
+          <section class="space-y-3">
+            <h3 class="about-heading">the website</h3>
+
+            <p class="about-text">
+              The website is intentionally minimal, clutter-free and light. I
+              wanted it to feel calm and easy to browse without every pixel
+              screaming “this is Jamie!!”
+            </p>
+
+            <p class="about-text">
+              Instead, you'll find little hints of me scattered around—the
+              fursona artwork, the mascots, the soft design choices, and the
+              slightly excessive amount of nerdy optimisation hidden behind
+              the scenes.
+            </p>
+
+            <p class="about-text">
+              If you're into that sort of thing, there's a section below
+              showing off some of the libraries powering the interactive bits
+              too!
+            </p>
+          </section>
+
+          <section class="space-y-3">
+            <h3 class="about-heading">themes</h3>
+
+            <p class="about-text">
+              The theme selector—the little brush icon—changes more than just
+              the colours. Each theme has its own personality.
+            </p>
+
+            <p class="about-text">
+              The Animal Crossing theme borrows little touches from the game's
+              UI and interactions, while the default theme leans into pixel
+              cats, terminal windows, and retro SSH vibes. I want every theme
+              to feel familiar, comfy, and just different enough.
+            </p>
+          </section>
+
+          <section class="space-y-3">
+            <h3 class="about-heading">always a work in progress</h3>
+
+            <p class="about-text">
+              This website will probably never be “finished”, and I love that.
+              Keeping things simple means I can keep tinkering, adding new
+              ideas, making silly little themes, and nurturing this hobby for
+              as long as I like.
+            </p>
+
+            <p class="about-text">
+              There are always more things I want to build—my desktop is SO
+              messy.
+            </p>
+          </section>
+
+          <section class="space-y-3">
+            <h3 class="about-heading">away from the keyboard</h3>
+
+            <p class="about-text">
+              As a cat away from the keyboard, I'm a pretty feminine guy who's
+              always felt happiest surrounded by cosy, cute, pastel-coloured
+              things.
+            </p>
+
+            <p class="about-text">
+              I love expressing myself, staying comfy, and embracing my
+              feminine side. I'm always experimenting with new aesthetics,
+              finding new outfits to obsess over, and collecting new plushies
+              (30+... I don't have a problem).
+            </p>
+          </section>
+
+          <section class="space-y-3">
+            <h3 class="about-heading">working cat</h3>
+
+            <p class="about-text">
+              As a working cat, I'm an L2 NOC engineer. I spend my days
+              configuring and troubleshooting networks, working alongside
+              different teams to untangle complicated problems and keep things
+              running smoothly.
+            </p>
+
+            <p class="about-text">
+              It's rewarding work, but it definitely leaves me wanting a
+              creative outlet, and this place is exactly that.
+            </p>
+          </section>
+
+          <section class="space-y-3">
+            <h3 class="about-heading">usually found...</h3>
+
+            <p class="about-text">
+              When I'm not working, you'll probably find me playing games with
+              friends, obsessing over whatever music is currently living
+              rent-free in my head, dreaming about my next festival, or
+              (mostest likely) eeping. 😺💤
+            </p>
+          </section>
+
+          <section class="space-y-3 pb-2">
+            <h3 class="about-heading">libraries used</h3>
+
+            <p class="about-text opacity-90">
+              jQuery, Typed.js, Interact.js, Tailwind CSS, YouTube IFrame API,
+              LightGallery, Three.js, Cloudflare Workers and APIs, WebSockets
+              for guest-wall updates, SQLite, custom guest-wall and playlist
+              APIs, and local storage for themes.
+            </p>
+          </section>
+
+        </div>
       </div>
-      <div id="buttonRow" class="flex justify-center">
-      <button class="terminal-button" onclick="resetTerminal()">back</button>
+
+      <div id="buttonRow" class="flex justify-center pt-4">
+        <button
+          class="terminal-button theme-body text-xs"
+          onclick="resetTerminal()"
+        >
+          back
+        </button>
       </div>
-      `);
-  //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">About</span>');
+
+    </div>
+  `);
+
+  const aboutScroll = document.getElementById('aboutScroll');
+  if (aboutScroll) {
+    aboutScroll.scrollTop = 0;
+  }
+
   const currentTheme = localStorage.getItem('theme') || 'Default';
   applyTheme(currentTheme);
 }
