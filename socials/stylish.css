@@ -210,27 +210,32 @@ object-fit: contain;
   color: white !important;
 }
 
-.themed-scrollbar {
+#guestbookComments,
+#aboutScroll {
   scrollbar-width: thin;
   scrollbar-gutter: stable;
 }
 
-.themed-scrollbar::-webkit-scrollbar {
+#guestbookComments::-webkit-scrollbar,
+#aboutScroll::-webkit-scrollbar {
   width: 4px;
   background: transparent;
 }
 
-.themed-scrollbar::-webkit-scrollbar-track {
+#guestbookComments::-webkit-scrollbar-track,
+#aboutScroll::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.themed-scrollbar:hover::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.themed-scrollbar::-webkit-scrollbar-thumb {
+#guestbookComments::-webkit-scrollbar-thumb,
+#aboutScroll::-webkit-scrollbar-thumb {
   background-color: transparent;
   border-radius: 6px;
+}
+
+#guestbookComments:hover::-webkit-scrollbar-track,
+#aboutScroll:hover::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 #guestbookComments:hover::-webkit-scrollbar-thumb {
