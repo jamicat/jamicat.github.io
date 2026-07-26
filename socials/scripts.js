@@ -10,6 +10,7 @@ const themes = {
     bodyFont: 'nintendoh',
     buttonColor: 'bg-transparent hover:bg-transparent',
     buttonTextColor: 'text-white text-blue-glow',
+    aboutButtonStyle: 'text-blue-200',
     iconColor: 'text-red-300 hover:text-blue-200',
     hoverRing: 'hover:ring-blue-200',
     galaxyActive: 'text-blue-200',
@@ -36,6 +37,7 @@ const themes = {
     bodyFont: 'spirits',
     buttonColor: 'bg-transparent hover:bg-transparent',
     buttonTextColor: 'text-white text-blue-glow',
+    aboutButtonStyle: 'bg-[#ffad63]',
     iconColor: 'text-rose-200 hover:text-white',
     hoverRing: 'hover:ring-teal-400',
     galaxyActive: 'text-white',
@@ -60,6 +62,7 @@ const themes = {
     bodyFont: 'nunito',
     buttonColor: 'bg-red-300 hover:bg-red-400',
     buttonTextColor: 'text-black',
+    aboutButtonStyle: 'bg-[#ffad63]',
     iconColor: 'text-red-300 hover:text-cyan-400',
     hoverRing: 'hover:ring-cyan-400',
     galaxyActive: 'text-cyan-400',
@@ -84,6 +87,7 @@ const themes = {
     bodyFont: 'nintendoh',
     buttonColor: 'bg-transparent hover:bg-transparent',
     buttonTextColor: 'text-white text-cyan-glow',
+    aboutButtonStyle: 'bg-[#ffad63]',
     iconColor: 'text-sky-100 hover:text-cyan-400',
     hoverRing: 'hover:ring-sky-400',
     galaxyActive: 'text-sky-100',
@@ -1416,7 +1420,7 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-  <button class="terminal-button theme-body text-xs" onclick="siteFAQ()">about!</button>
+ <button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">about!</button>
 <button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">art</button>
 <button class="terminal-button theme-body text-xs" onclick="showList()">playlist</button>
 <button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">guestbook</button>
