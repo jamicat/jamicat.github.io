@@ -378,6 +378,8 @@ transition-[height] duration-200
             invisible pointer-events-none opacity-0
             absolute bottom-full right-0 z-30
             mb-2
+			isolate
+            transform-gpu
             transition-opacity duration-150
         "
     ></div>
