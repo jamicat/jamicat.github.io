@@ -1202,7 +1202,7 @@ const message = document.getElementById("message").value.trim();
 const now = Date.now();
 
 if (!name || !message) {
-alert("Fill in the fields!");
+alert("fill in the fields!");
 return;
 }
 
@@ -1232,10 +1232,10 @@ body: JSON.stringify(data),
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
 const welcomeMessage = document.querySelector('p.text-base');
-welcomeMessage.textContent = "submitted ᨐ";
+welcomeMessage.textContent = "ദ്ദി◝ ⩊ ◜.ᐟ";
 
   setTimeout(() => {
-    welcomeMessage.textContent = "leave a message!";
+    welcomeMessage.textContent = "/ᐠ > ˕ <マ";
   }, 5000);
   loadGuestbookComments();
   });
@@ -1298,7 +1298,7 @@ async function loadGuestbookComments() {
   const container = document.getElementById('guestbookComments');
   if (!container) return;
 
-  container.innerHTML = '<p class="text-blue-100 text-sm">Loading ฅᨐฅ</p>';
+  container.innerHTML = '<p class="text-blue-100 text-sm">loading ฅᨐฅ</p>';
 
   try {
 
@@ -1374,7 +1374,7 @@ div.innerHTML = `
   } catch (err) {
 
     console.error("Guestbook load error:", err);
-    container.innerHTML = '<p class="text-blue-100 text-sm">Failed to load.</p>';
+    container.innerHTML = '<p class="text-blue-100 text-sm">failed to load.</p>';
 
   }
 }
@@ -1440,7 +1440,7 @@ body: JSON.stringify(data),
 
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
-document.getElementById("formResponse").textContent = " ≽^-⩊-^≼ ";
+document.getElementById("formResponse").textContent = " ദ്ദി◝ ⩊ ◜.ᐟ ";
 }
 
 function resetTerminal() {
