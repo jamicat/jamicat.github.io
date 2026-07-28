@@ -150,6 +150,26 @@ if (typed3El) {
   typed3El.textContent = theme.typed3Text || 'jamie';
 }
 
+const terminalMinimizedLabel =
+  document.getElementById(
+    "terminalMinimizedLabel"
+  );
+
+if (terminalMinimizedLabel) {
+  terminalMinimizedLabel.textContent =
+    "jamie";
+
+  terminalMinimizedLabel.classList.toggle(
+    "hidden",
+    !document
+      .getElementById("terminal")
+      ?.classList.contains(
+        "terminal-minimized"
+      ) ||
+      themeName === "Stars"
+  );
+}
+
 const typed2El = document.getElementById('typed2');
 
 if (typed2El) {
@@ -203,7 +223,7 @@ if (aboutBtn) {
 }
 
 const icons = document.querySelectorAll(
-    "#videoToggle, #nextTrack, #changeTheme"
+    "#videoToggle, #nextTrack, #changeTheme, #terminalMinimize"
 );
 
 icons.forEach(icon => {
@@ -477,6 +497,31 @@ const pauseIcon =
 const themeBtn =
   document.getElementById("changeTheme");
 
+const terminal =
+  document.getElementById("terminal");
+
+const terminalMinimizeBtn =
+  document.getElementById(
+    "terminalMinimize"
+  );
+
+const terminalMinimizeIcon =
+  document.getElementById(
+    "terminalMinimizeIcon"
+  );
+
+const terminalRestoreIcon =
+  document.getElementById(
+    "terminalRestoreIcon"
+  );
+
+const terminalMinimizedLabel =
+  document.getElementById(
+    "terminalMinimizedLabel"
+  );
+
+let terminalMinimized = false;
+
 const volumeSlider =
   document.getElementById("volumeSlider");
 
@@ -485,6 +530,64 @@ const volumeIcon =
 
 let previousVolume = 50;
 let muted = false;
+
+function setTerminalMinimized(minimized) {
+  if (!terminal) {
+    return;
+  }
+
+  terminalMinimized =
+    minimized === true;
+
+  terminal.classList.toggle(
+    "terminal-minimized",
+    terminalMinimized
+  );
+
+  terminalMinimizeIcon?.classList.toggle(
+    "hidden",
+    terminalMinimized
+  );
+
+  terminalRestoreIcon?.classList.toggle(
+    "hidden",
+    !terminalMinimized
+  );
+
+  terminalMinimizeBtn?.setAttribute(
+    "aria-expanded",
+    terminalMinimized
+      ? "false"
+      : "true"
+  );
+
+  terminalMinimizeBtn?.setAttribute(
+    "aria-label",
+    terminalMinimized
+      ? "restore terminal"
+      : "minimize terminal"
+  );
+
+  terminalMinimizeBtn?.setAttribute(
+    "title",
+    terminalMinimized
+      ? "restore terminal"
+      : "minimize terminal"
+  );
+
+  const currentTheme =
+    localStorage.getItem("theme") ||
+    "Default";
+
+  terminalMinimizedLabel?.classList.toggle(
+    "hidden",
+    !terminalMinimized ||
+      currentTheme === "Stars"
+  );
+}
+
+window.setTerminalMinimized =
+  setTerminalMinimized;
 
 async function loadPlaylist() {
   try {
@@ -739,6 +842,10 @@ function applyWatchPartyState(state) {
   window.setTerminalPlaybackControlsVisible?.(
     !watchPartyState.enabled
   );
+
+  if (watchPartyState.enabled) {
+  window.setTerminalMinimized?.(true);
+}
 
   if (!player || !playerReady) {
     return;
@@ -1206,6 +1313,18 @@ window.setTerminalPlaybackControlsVisible =
       !visible
     );
   };
+
+terminalMinimizeBtn?.addEventListener(
+  "click",
+  event => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    setTerminalMinimized(
+      !terminalMinimized
+    );
+  }
+);
 
 toggleBtn?.addEventListener(
   "click",
