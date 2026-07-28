@@ -83,34 +83,6 @@ addComponents({
 </span>
   </span>
 <div class="flex items-center space-x-2 mr-3 -mt-12">
-<button
-  id="terminalMinimize"
-  type="button"
-  class="text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none"
-  aria-label="minimize terminal"
-  aria-expanded="true"
-  title="minimize terminal"
->
-  <svg
-    id="terminalMinimizeIcon"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    class="h-4 w-4 fill-current"
-    aria-hidden="true"
-  >
-    <path d="M5 11h14v2H5z" />
-  </svg>
-
-  <svg
-    id="terminalRestoreIcon"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    class="hidden h-4 w-4 fill-current"
-    aria-hidden="true"
-  >
-    <path d="M7 7h10v10H7V7zm2 2v6h6V9H9z" />
-  </svg>
-</button>
 <button id="videoToggle" class="text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none">
 <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-current hidden" viewBox="0 0 24 24">
 <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
@@ -155,6 +127,38 @@ class="w-4 h-4 fill-current"
 </g>
 </svg>
 </button>
+</svg>
+</button>
+<button
+  id="terminalMinimize"
+  type="button"
+  class="text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none"
+  aria-label="minimize terminal"
+  aria-expanded="true"
+  title="minimize terminal"
+>
+  <svg
+    id="terminalMinimizeIcon"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    class="h-4 w-4 fill-current"
+    aria-hidden="true"
+  >
+    <path d="M5 11h14v2H5z" />
+  </svg>
+
+  <svg
+    id="terminalRestoreIcon"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    class="hidden h-4 w-4 fill-current"
+    aria-hidden="true"
+  >
+    <path d="M7 7h10v10H7V7zm2 2v6h6V9H9z" />
+  </svg>
+</button>
+</div>
+</div>
 </div>
 </div>
 <div id="terminalContent" class="terminal-expanded-only">
