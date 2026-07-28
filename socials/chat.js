@@ -1453,10 +1453,9 @@ if (clearButton) {
         this.watchParty.enabled =
             shouldEnable;
 
-		if (shouldEnable) {
-    window.setTerminalMinimized?.(
-        true
-    );
+	window.setTerminalMinimized?.(
+    shouldEnable
+);
 }
 
         if (!shouldEnable) {
