@@ -2276,6 +2276,11 @@ const addInputSelectionStart =
     const isEnabled =
         this.watchParty.enabled === true;
 	
+this.watchPartyButton.classList.toggle(
+    "hidden",
+    !isEnabled
+);
+
 window.setTerminalPlaybackControlsVisible?.(
     !isEnabled
 );
