@@ -603,3 +603,9 @@ font-size: 0.65rem;
   align-items: center;
   justify-content: center;
 }
+
+.watch-party-time {
+    font-family: 'Nunito', sans-serif !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+}
