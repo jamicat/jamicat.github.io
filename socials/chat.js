@@ -1453,6 +1453,12 @@ if (clearButton) {
         this.watchParty.enabled =
             shouldEnable;
 
+		if (shouldEnable) {
+    window.setTerminalMinimized?.(
+        true
+    );
+}
+
         if (!shouldEnable) {
             this.watchParty.currentVideoId =
                 null;
