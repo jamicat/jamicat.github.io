@@ -2275,25 +2275,10 @@ const addInputSelectionStart =
 
     const isEnabled =
         this.watchParty.enabled === true;
-
-	if (this.musicPlayButton) {
-    this.musicPlayButton.classList.toggle(
-        "hidden",
-        isEnabled
-    );
-}
-
-if (this.musicNextButton) {
-    this.musicNextButton.classList.toggle(
-        "hidden",
-        isEnabled
-    );
-}
-
-    this.watchPartyButton.classList.toggle(
-        "hidden",
-        !isEnabled
-    );
+	
+window.setTerminalPlaybackControlsVisible?.(
+    !isEnabled
+);
 
    if (!isEnabled) {
     this.watchPartyOpen = false;
