@@ -25,8 +25,6 @@ this.watchParty = {
 };
 this.watchPartyButton = null;
 this.watchPartyPanel = null;
-this.musicPlayButton = null;
-this.musicNextButton = null;
 this.watchPartyOpen = false;
 this.watchPartyAddUrl = "";
 this.watchPartyAddMessage = "";
@@ -501,15 +499,6 @@ transition-[height] duration-200
     this.window.querySelector(
         "#chatWatchPartyButton"
     );
-this.musicPlayButton =
-    document.getElementById(
-        "videoToggle"
-    );
-this.musicNextButton =
-    document.getElementById(
-        "nextTrack"
-    );
-
 if (this.watchPartyButton) {
     this.watchPartyButton.classList.add(
         "hidden"
