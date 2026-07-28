@@ -668,6 +668,23 @@ function loadActiveVideo({
     player.loadVideoById(videoId);
   } else {
     player.cueVideoById(videoId);
+    const posterEl =
+    document.getElementById(
+        "videoPoster"
+    );
+
+const iframeEl =
+    document.getElementById(
+        "background-video-iframe"
+    );
+
+if (posterEl) {
+    posterEl.style.opacity = "1";
+}
+
+if (iframeEl) {
+    iframeEl.style.opacity = "0";
+}
   }
 }
 
