@@ -566,10 +566,17 @@ this.minimizeButton =
     }
 );
 	   
-	   this.watchPartyButton.addEventListener(
-    "click",
-    () => this.toggleWatchParty()
-);
+	  if (this.watchPartyButton) {
+    this.watchPartyButton.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            this.toggleWatchParty();
+        }
+    );
+}
 	   
 	   this.messages.addEventListener(
     "scroll",
