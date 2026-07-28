@@ -2857,21 +2857,71 @@ const playButton =
 if (playButton) {
     playButton.addEventListener(
         "click",
-        event => {
+        async event => {
             event.stopPropagation();
 
             if (!this.watchParty.currentVideoId) {
-    return;
-}
+                return;
+            }
 
-const playerState =
-    window.watchPartyPlayer?.getState?.();
+            const playerState =
+                window.watchPartyPlayer?.getState?.();
 
-if (playerState?.playing) {
-    window.watchPartyPlayer?.pause();
-} else {
-    window.watchPartyPlayer?.play();
-}
+            const endpoint =
+                playerState?.playing
+                    ? "pause"
+                    : "play";
+
+            const body = {
+                clientId: this.clientId
+            };
+
+            if (
+                Number.isFinite(
+                    playerState?.currentTime
+                )
+            ) {
+                body.currentTime =
+                    playerState.currentTime;
+            }
+
+            try {
+                const response =
+                    await fetch(
+                        `${this.API}/api/watchparty/${endpoint}`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body: JSON.stringify(body)
+                        }
+                    );
+
+                let result = null;
+
+                try {
+                    result =
+                        await response.json();
+                } catch {}
+
+                if (!response.ok) {
+                    throw new Error(
+                        result?.error ||
+                        `Playback request failed (${response.status})`
+                    );
+                }
+            } catch (error) {
+                console.error(
+                    "Watch Party playback failed:",
+                    error
+                );
+
+                window.alert(
+                    `Watch Party playback failed: ${error.message}`
+                );
+            }
         }
     );
 }
@@ -2884,11 +2934,53 @@ const nextButton =
 if (nextButton) {
     nextButton.addEventListener(
         "click",
-        event => {
+        async event => {
             event.stopPropagation();
-console.warn(
-    "Next will be connected to the Worker shortly."
-);
+
+            if (!this.watchParty.currentVideoId) {
+                return;
+            }
+
+            try {
+                const response =
+                    await fetch(
+                        `${this.API}/api/watchparty/next`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body: JSON.stringify({
+                                clientId:
+                                    this.clientId
+                            })
+                        }
+                    );
+
+                let result = null;
+
+                try {
+                    result =
+                        await response.json();
+                } catch {}
+
+                if (!response.ok) {
+                    throw new Error(
+                        result?.error ||
+                        `Next request failed (${response.status})`
+                    );
+                }
+            } catch (error) {
+                console.error(
+                    "Watch Party next failed:",
+                    error
+                );
+
+                window.alert(
+                    `Watch Party next failed: ${error.message}`
+                );
+            }
         }
     );
 }
