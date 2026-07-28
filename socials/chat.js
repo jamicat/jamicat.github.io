@@ -750,6 +750,7 @@ setupAdminAuthentication() {
 
     this.loadHistory();
 		this.createBanManagerButton();
+		this.renderWatchParty();
 }
 
 	
@@ -766,6 +767,7 @@ setupAdminAuthentication() {
 	this.closeBanManager();
 this.removeBanManagerButton();
     this.loadHistory();
+	this.renderWatchParty();
 }
 
 	logoutAdmin() {
@@ -1516,6 +1518,61 @@ renderWatchParty() {
                     item.videoId ===
                     this.watchParty.currentVideoId;
 
+                const queueId =
+                    Number(item.id);
+
+                const ownsItem =
+                    item.requestedByClientId ===
+                    this.clientId;
+
+                const canRemove =
+                    Number.isInteger(queueId) &&
+                    queueId > 0 &&
+                    (
+                        this.isAdmin ||
+                        ownsItem
+                    );
+
+                const removeButton =
+                    canRemove
+                        ? `
+                            <button
+                                type="button"
+                                data-watch-party-remove="${queueId}"
+                                class="
+                                    shrink-0
+                                    rounded-lg
+                                    border border-red-300/20
+                                    bg-red-500/10
+                                    px-2 py-1
+                                    text-[8px]
+                                    font-bold uppercase
+                                    tracking-wide
+                                    text-red-200
+                                    transition
+                                    hover:border-red-300/40
+                                    hover:bg-red-500/20
+                                    hover:text-red-100
+                                    disabled:cursor-wait
+                                    disabled:opacity-50
+                                "
+                                aria-label="Remove ${
+                                    this.escapeHtml(
+                                        item.title ||
+                                        "queued video"
+                                    )
+                                }"
+                                title="${
+                                    isCurrent
+                                        ? "Remove and skip to the next video"
+                                        : "Remove from queue"
+                                }"
+                            >
+                                remove
+                            </button>
+                        `
+                        : "";
+
                 return `
                     <div
                         class="
@@ -1548,11 +1605,13 @@ renderWatchParty() {
                                     }
                                 "
                                 title="${this.escapeHtml(
-                                    item.title || "Untitled video"
+                                    item.title ||
+                                    "Untitled video"
                                 )}"
                             >
                                 ${this.escapeHtml(
-                                    item.title || "Untitled video"
+                                    item.title ||
+                                    "Untitled video"
                                 )}
                             </div>
 
@@ -1570,6 +1629,8 @@ renderWatchParty() {
                                 )}
                             </div>
                         </div>
+
+                        ${removeButton}
                     </div>
                 `;
             }).join("")
@@ -1727,6 +1788,31 @@ renderWatchParty() {
             }
         );
     }
+
+    const removeButtons =
+        this.watchPartyPanel.querySelectorAll(
+            "[data-watch-party-remove]"
+        );
+
+    removeButtons.forEach(button => {
+        button.addEventListener(
+            "click",
+            event => {
+                event.stopPropagation();
+
+                const queueId =
+                    Number(
+                        button.dataset
+                            .watchPartyRemove
+                    );
+
+                this.removeWatchPartyItem(
+                    queueId,
+                    button
+                );
+            }
+        );
+    });
 }
 
 toggleWatchParty() {
@@ -1738,6 +1824,155 @@ toggleWatchParty() {
         !this.watchPartyOpen;
 
     this.renderWatchParty();
+}
+
+async removeWatchPartyItem(
+    queueId,
+    button
+) {
+    if (
+        !Number.isInteger(queueId) ||
+        queueId <= 0
+    ) {
+        window.alert(
+            "invalid Watch Party queue item"
+        );
+
+        return;
+    }
+
+    const item =
+        Array.isArray(this.watchParty.queue)
+            ? this.watchParty.queue.find(
+                queueItem =>
+                    Number(queueItem.id) ===
+                    queueId
+            )
+            : null;
+
+    if (!item) {
+        window.alert(
+            "that video is no longer in the queue"
+        );
+
+        await this.loadWatchParty();
+        return;
+    }
+
+    const isCurrent =
+        item.videoId ===
+        this.watchParty.currentVideoId;
+
+    const confirmed =
+        window.confirm(
+            isCurrent
+                ? `remove "${item.title || "this video"}" and skip to the next video?`
+                : `remove "${item.title || "this video"}" from the queue?`
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    if (button) {
+        button.disabled = true;
+        button.textContent = "removing...";
+    }
+
+    const headers = {
+        "Content-Type":
+            "application/json"
+    };
+
+    if (
+        this.isAdmin &&
+        this.adminKey
+    ) {
+        headers.Authorization =
+            `Bearer ${this.adminKey}`;
+    }
+
+    try {
+        const response = await fetch(
+            `${this.API}/api/watchparty/remove`,
+            {
+                method: "POST",
+                headers,
+                body: JSON.stringify({
+                    queueId,
+                    clientId:
+                        this.clientId
+                })
+            }
+        );
+
+        let result = null;
+
+        try {
+            result =
+                await response.json();
+        } catch {
+            // The general error below handles
+            // an invalid JSON response.
+        }
+
+        if (response.status === 401) {
+            this.disableAdminMode();
+
+            throw new Error(
+                "your admin session is no longer valid"
+            );
+        }
+
+        if (response.status === 403) {
+            throw new Error(
+                result?.error ||
+                "you can only remove videos you added"
+            );
+        }
+
+        if (response.status === 404) {
+            await this.loadWatchParty();
+
+            throw new Error(
+                result?.error ||
+                "that video is no longer in the queue"
+            );
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `could not remove video (${response.status})`
+            );
+        }
+
+        /*
+         * Do not manually edit this.watchParty.queue here.
+         *
+         * The Worker broadcasts the authoritative queue
+         * through the existing watchparty-state WebSocket.
+         */
+    } catch (error) {
+        console.error(
+            "could not remove Watch Party video:",
+            error
+        );
+
+        window.alert(
+            `could not remove video: ${
+                error.message
+            }`
+        );
+
+        if (
+            button &&
+            button.isConnected
+        ) {
+            button.disabled = false;
+            button.textContent = "remove";
+        }
+    }
 }
 
 escapeHtml(value) {
