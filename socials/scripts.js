@@ -460,6 +460,7 @@ let loadedVideoId = null;
 let currentWatchPartyState = null;
 let isPlaying = false;
 let suppressPlayerEvents = false;
+let watchPartySyncTimer = null;
 
 const toggleBtn =
   document.getElementById("videoToggle");
@@ -844,6 +845,93 @@ function applyWatchPartyState(state) {
   }
 }
 
+function correctWatchPartyDrift() {
+  if (
+    !player ||
+    !playerReady ||
+    playbackMode !== "watch-party" ||
+    !watchPartyState.enabled ||
+    watchPartyState.paused ||
+    !watchPartyState.currentVideoId ||
+    !Number.isFinite(
+      watchPartyState.startedAt
+    )
+  ) {
+    return;
+  }
+
+  if (
+    typeof player.getCurrentTime !==
+      "function" ||
+    typeof player.seekTo !==
+      "function"
+  ) {
+    return;
+  }
+
+  const playerState =
+    typeof player.getPlayerState ===
+      "function"
+      ? player.getPlayerState()
+      : null;
+
+  if (
+    playerState !==
+    YT.PlayerState.PLAYING
+  ) {
+    return;
+  }
+
+  const expectedTime =
+    Math.max(
+      0,
+      (
+        Date.now() -
+        watchPartyState.startedAt
+      ) / 1000
+    );
+
+  const actualTime =
+    player.getCurrentTime();
+
+  if (!Number.isFinite(actualTime)) {
+    return;
+  }
+
+  const drift =
+    expectedTime - actualTime;
+
+  if (Math.abs(drift) <= 0.75) {
+    return;
+  }
+
+  console.debug(
+    "Correcting Watch Party drift:",
+    {
+      expectedTime,
+      actualTime,
+      drift
+    }
+  );
+
+  player.seekTo(
+    expectedTime,
+    true
+  );
+}
+
+function startWatchPartySyncLoop() {
+  if (watchPartySyncTimer !== null) {
+    return;
+  }
+
+  watchPartySyncTimer =
+    window.setInterval(
+      correctWatchPartyDrift,
+      4000
+    );
+}
+
 function maybeInitPlayer() {
   if (
     !ytReady ||
@@ -878,6 +966,7 @@ function maybeInitPlayer() {
         events: {
           onReady: () => {
             playerReady = true;
+            startWatchPartySyncLoop();
 
             const savedVolume =
               parseInt(
