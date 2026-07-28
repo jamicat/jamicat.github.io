@@ -571,7 +571,7 @@ font-size: 0.65rem;
 
 #terminal.terminal-minimized {
   width: min(90vw, 320px) !important;
-  padding: 0.7rem 1rem !important;
+  padding: 0.55rem 1rem !important;
   border-radius: 1.5rem !important;
 }
 
