@@ -341,12 +341,10 @@ if (typedEl) {
   }
 }
 
-  if (window.chatWindow?.watchParty) {
-
+ if (window.chat?.watchParty) {
     window.setTerminalPlaybackControlsVisible(
-        !window.chatWindow.watchParty.enabled
+        !window.chat.watchParty.enabled
     );
-
 }
 }
 
