@@ -23,6 +23,7 @@ this.watchParty = {
     pausedAt: null,
     queue: []
 };
+this.watchPartyTimeTimer = null;
 this.watchPartyButton = null;
 this.watchPartyPanel = null;
 this.watchPartyOpen = false;
@@ -2271,6 +2272,51 @@ async loadWatchParty() {
         "auto";
 }
 
+	startWatchPartyTime() {
+    const timeLabel =
+        this.watchPartyPanel?.querySelector(
+            "#watchPartyTime"
+        );
+
+    if (!timeLabel) {
+        return;
+    }
+
+    clearInterval(
+        this.watchPartyTimeTimer
+    );
+
+    const updateTime = () => {
+        const player =
+            window.watchPartyPlayer;
+
+        if (!player?.getState) {
+            timeLabel.textContent =
+                "0:00 / 0:00";
+            return;
+        }
+
+        const state =
+            player.getState();
+
+        if (!state) {
+            return;
+        }
+
+        timeLabel.textContent =
+            `${this.formatDuration(
+                state.currentTime
+            )} / ${this.formatDuration(
+                state.duration
+            )}`;
+    };
+
+    updateTime();
+
+    this.watchPartyTimeTimer =
+        setInterval(updateTime, 500);
+}
+	
 renderWatchParty() {
 
 	const hadAddInputFocus =
@@ -2666,18 +2712,33 @@ const hasWatchPartyVideo =
             )}
         </div>
     </form>
+<div class="mt-3">
+    <div
+        class="
+            flex
+            items-center
+            gap-2
+            theme-heading
+            text-[9px]
+            uppercase
+            tracking-widest
+            text-white/40
+        "
+    >
+        <span>now playing</span>
 
-    <div class="mt-3">
-        <div
+        <span
+            id="watchPartyTime"
             class="
-                theme-heading
-                text-[9px]
-                uppercase tracking-widest
-                text-white/40
+                normal-case
+                tracking-normal
+                tabular-nums
+                text-white/30
             "
         >
-            now playing
-        </div>
+            0:00 / 0:00
+        </span>
+    </div>
 
             <div
                 class="
@@ -2814,6 +2875,8 @@ disabled:opacity-35
         </div>
     `;
 
+	this.startWatchPartyTime();
+	
     const closeButton =
         this.watchPartyPanel.querySelector(
             "[data-close-watch-party]"
@@ -4905,6 +4968,23 @@ restoreSettings() {
     this.window.style.transform =
         `translate(${x}px, ${y}px)`;
 
+}
+
+formatDuration(seconds) {
+    seconds = Math.max(
+        0,
+        Math.floor(seconds || 0)
+    );
+
+    const mins =
+        Math.floor(seconds / 60);
+
+    const secs =
+        seconds % 60;
+
+    return `${mins}:${secs
+        .toString()
+        .padStart(2, "0")}`;
 }
 
 setupNameSaving() {
