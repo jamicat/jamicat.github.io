@@ -26,6 +26,10 @@ this.watchParty = {
 this.watchPartyButton = null;
 this.watchPartyPanel = null;
 this.watchPartyOpen = false;
+this.watchPartyAddUrl = "";
+this.watchPartyAddMessage = "";
+this.watchPartyAddError = false;
+this.watchPartyAddBusy = false;
 this.window = null;
 this.nameInput = null;
 this.messageInput = null;
@@ -2236,6 +2240,22 @@ async loadWatchParty() {
 }
 
 renderWatchParty() {
+
+	const hadAddInputFocus =
+    document.activeElement?.matches?.(
+        "[data-watch-party-add-input]"
+    ) === true;
+
+const addInputSelectionStart =
+    hadAddInputFocus &&
+    Number.isInteger(
+        document.activeElement
+            ?.selectionStart
+    )
+        ? document.activeElement
+            .selectionStart
+        : null;
+
     if (
         !this.watchPartyButton ||
         !this.watchPartyPanel
@@ -2251,9 +2271,13 @@ renderWatchParty() {
         !isEnabled
     );
 
-    if (!isEnabled) {
-        this.watchPartyOpen = false;
-    }
+   if (!isEnabled) {
+    this.watchPartyOpen = false;
+    this.watchPartyAddUrl = "";
+    this.watchPartyAddMessage = "";
+    this.watchPartyAddError = false;
+    this.watchPartyAddBusy = false;
+}
 
     this.watchPartyButton.setAttribute(
         "aria-expanded",
@@ -2467,19 +2491,139 @@ renderWatchParty() {
             >
                 ×
             </button>
+           </div>
+
+    <form
+        data-watch-party-add-form
+        class="
+            mt-3
+            border-b border-white/10
+            pb-4
+        "
+    >
+        <label
+            for="chatWatchPartyUrl"
+            class="
+                theme-heading
+                block
+                text-[9px]
+                uppercase tracking-widest
+                text-white/40
+            "
+        >
+            add YouTube video
+        </label>
+
+        <div
+            class="
+                mt-2
+                flex gap-2
+            "
+        >
+            <input
+                id="chatWatchPartyUrl"
+                type="url"
+                inputmode="url"
+                autocomplete="off"
+                spellcheck="false"
+                data-watch-party-add-input
+                value="${this.escapeHtml(
+                    this.watchPartyAddUrl
+                )}"
+                placeholder="Paste a YouTube URL"
+                class="
+                    min-w-0
+                    flex-1
+                    rounded-xl
+                    border border-white/10
+                    bg-black/20
+                    px-3 py-2
+                    text-[10px]
+                    text-white
+                    outline-none
+                    transition
+                    placeholder:text-white/25
+                    focus:border-white/25
+                    focus:bg-black/30
+                    disabled:cursor-wait
+                    disabled:opacity-50
+                "
+                ${
+                    this.watchPartyAddBusy
+                        ? "disabled"
+                        : ""
+                }
+            >
+
+            <button
+                type="submit"
+                data-watch-party-add-button
+                class="
+                    shrink-0
+                    rounded-xl
+                    border border-emerald-300/20
+                    bg-emerald-500/10
+                    px-3 py-2
+                    text-[9px]
+                    font-bold uppercase
+                    tracking-wide
+                    text-emerald-200
+                    transition
+                    hover:border-emerald-300/40
+                    hover:bg-emerald-500/20
+                    hover:text-emerald-100
+                    disabled:cursor-wait
+                    disabled:opacity-50
+                "
+                ${
+                    this.watchPartyAddBusy
+                        ? "disabled"
+                        : ""
+                }
+            >
+                ${
+                    this.watchPartyAddBusy
+                        ? "adding..."
+                        : "add"
+                }
+            </button>
         </div>
 
-        <div class="mt-3">
-            <div
-                class="
-                    theme-heading
-                    text-[9px]
-                    uppercase tracking-widest
-                    text-white/40
-                "
-            >
-                now playing
-            </div>
+        <div
+            data-watch-party-add-message
+            class="
+                mt-2
+                min-h-[14px]
+                text-[9px]
+                ${
+                    this.watchPartyAddError
+                        ? "text-red-300"
+                        : "text-emerald-300"
+                }
+            "
+            role="${
+                this.watchPartyAddError
+                    ? "alert"
+                    : "status"
+            }"
+        >
+            ${this.escapeHtml(
+                this.watchPartyAddMessage
+            )}
+        </div>
+    </form>
+
+    <div class="mt-3">
+        <div
+            class="
+                theme-heading
+                text-[9px]
+                uppercase tracking-widest
+                text-white/40
+            "
+        >
+            now playing
+        </div>
 
             <div
                 class="
@@ -2572,6 +2716,58 @@ renderWatchParty() {
         );
     }
 
+	const addForm =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-add-form]"
+    );
+
+const addInput =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-add-input]"
+    );
+
+if (addInput) {
+    addInput.addEventListener(
+        "input",
+        event => {
+            this.watchPartyAddUrl =
+                event.target.value;
+
+            if (this.watchPartyAddMessage) {
+                this.watchPartyAddMessage = "";
+                this.watchPartyAddError = false;
+
+                const messageElement =
+                    this.watchPartyPanel.querySelector(
+                        "[data-watch-party-add-message]"
+                    );
+
+                if (messageElement) {
+                    messageElement.textContent = "";
+                    messageElement.classList.remove(
+                        "text-red-300"
+                    );
+                    messageElement.classList.add(
+                        "text-emerald-300"
+                    );
+                }
+            }
+        }
+    );
+}
+
+if (addForm) {
+    addForm.addEventListener(
+        "submit",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            this.addWatchPartyVideo();
+        }
+    );
+}
+	
     const removeButtons =
         this.watchPartyPanel.querySelectorAll(
             "[data-watch-party-remove]"
@@ -2596,6 +2792,32 @@ renderWatchParty() {
             }
         );
     });
+
+	if (hadAddInputFocus) {
+    requestAnimationFrame(() => {
+        const input =
+            this.watchPartyPanel.querySelector(
+                "[data-watch-party-add-input]"
+            );
+
+        if (!input) {
+            return;
+        }
+
+        input.focus();
+
+        if (
+            Number.isInteger(
+                addInputSelectionStart
+            )
+        ) {
+            input.setSelectionRange(
+                addInputSelectionStart,
+                addInputSelectionStart
+            );
+        }
+    });
+}
 }
 
 toggleWatchParty() {
@@ -2607,6 +2829,209 @@ toggleWatchParty() {
         !this.watchPartyOpen;
 
     this.renderWatchParty();
+}
+
+	async addWatchPartyVideo() {
+    if (!this.watchParty.enabled) {
+        this.watchPartyAddMessage =
+            "The Watch Party is no longer active.";
+
+        this.watchPartyAddError = true;
+        this.renderWatchParty();
+        return;
+    }
+
+    if (this.watchPartyAddBusy) {
+        return;
+    }
+
+    const url =
+        String(
+            this.watchPartyAddUrl || ""
+        ).trim();
+
+    if (!url) {
+        this.watchPartyAddMessage =
+            "Paste a YouTube URL first.";
+
+        this.watchPartyAddError = true;
+        this.renderWatchParty();
+
+        requestAnimationFrame(() => {
+            this.watchPartyPanel
+                ?.querySelector(
+                    "[data-watch-party-add-input]"
+                )
+                ?.focus();
+        });
+
+        return;
+    }
+
+    let parsedUrl;
+
+    try {
+        parsedUrl = new URL(url);
+    } catch {
+        this.watchPartyAddMessage =
+            "Enter a valid YouTube URL.";
+
+        this.watchPartyAddError = true;
+        this.renderWatchParty();
+        return;
+    }
+
+    const hostname =
+        parsedUrl.hostname
+            .toLowerCase()
+            .replace(/^www\./, "");
+
+    const isYouTubeHost =
+        hostname === "youtube.com" ||
+        hostname === "m.youtube.com" ||
+        hostname === "music.youtube.com" ||
+        hostname === "youtu.be";
+
+    if (!isYouTubeHost) {
+        this.watchPartyAddMessage =
+            "Only YouTube links can be added.";
+
+        this.watchPartyAddError = true;
+        this.renderWatchParty();
+        return;
+    }
+
+    const name =
+        this.nameInput?.value.trim() ||
+        "anonymous";
+
+    this.watchPartyAddBusy = true;
+    this.watchPartyAddMessage =
+        "Adding video...";
+    this.watchPartyAddError = false;
+
+    this.renderWatchParty();
+
+    try {
+        const response = await fetch(
+            `${this.API}/api/watchparty/add`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+                body: JSON.stringify({
+                    url,
+                    clientId:
+                        this.clientId,
+                    name
+                })
+            }
+        );
+
+        let result = null;
+
+        try {
+            result =
+                await response.json();
+        } catch {
+            // The error handling below covers
+            // a response that is not valid JSON.
+        }
+
+        if (!response.ok) {
+            let message =
+                result?.error ||
+                `Could not add video (${response.status})`;
+
+            if (
+                result?.code ===
+                "INVALID_YOUTUBE_URL"
+            ) {
+                message =
+                    "That YouTube URL is not valid.";
+            }
+
+            if (
+                result?.code ===
+                "VIDEO_ALREADY_QUEUED"
+            ) {
+                message =
+                    "That video is already in the queue.";
+            }
+
+            if (
+                result?.code ===
+                "USER_QUEUE_LIMIT"
+            ) {
+                message =
+                    "You already have 5 videos in the queue.";
+            }
+
+            if (
+                result?.code ===
+                "WATCH_PARTY_ENDED"
+            ) {
+                message =
+                    "The Watch Party has ended.";
+
+                await this.loadWatchParty();
+            }
+
+            throw new Error(message);
+        }
+
+        this.watchPartyAddUrl = "";
+        this.watchPartyAddMessage =
+            result?.message ||
+            "Video added to the queue.";
+        this.watchPartyAddError = false;
+        this.watchPartyAddBusy = false;
+
+        /*
+         * Do not manually add result.video to
+         * this.watchParty.queue.
+         *
+         * The Worker broadcasts the authoritative
+         * queue through watchparty-state.
+         */
+        this.renderWatchParty();
+
+        requestAnimationFrame(() => {
+            this.watchPartyPanel
+                ?.querySelector(
+                    "[data-watch-party-add-input]"
+                )
+                ?.focus();
+        });
+    } catch (error) {
+        console.error(
+            "could not add Watch Party video:",
+            error
+        );
+
+        this.watchPartyAddBusy = false;
+        this.watchPartyAddMessage =
+            error.message ||
+            "Could not add the video.";
+        this.watchPartyAddError = true;
+
+        this.renderWatchParty();
+
+        requestAnimationFrame(() => {
+            const input =
+                this.watchPartyPanel
+                    ?.querySelector(
+                        "[data-watch-party-add-input]"
+                    );
+
+            if (input) {
+                input.focus();
+                input.select();
+            }
+        });
+    }
 }
 
 async removeWatchPartyItem(
