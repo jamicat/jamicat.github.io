@@ -59,6 +59,9 @@ this.isAdmin = false;
 this.moderationMenu = null;
 this.banManager = null;
 this.banManagerButton = null;
+this.partyManager = null;
+this.partyManagerButton = null;
+this.partyManagerBusy = false;
 this.isMinimized = false;
 this.membersPanel = null;
 this.membersVisible = true;
@@ -635,6 +638,17 @@ document.addEventListener(
         ) {
             this.closeBanManager();
         }
+
+        if (
+            this.partyManager &&
+            !this.partyManager.contains(
+                event.target
+            ) &&
+            event.target !==
+                this.partyManagerButton
+        ) {
+            this.closePartyManager();
+        }
     }
 );
 
@@ -750,6 +764,7 @@ setupAdminAuthentication() {
 
     this.loadHistory();
 		this.createBanManagerButton();
+		this.createPartyManagerButton();
 		this.renderWatchParty();
 }
 
@@ -766,6 +781,9 @@ setupAdminAuthentication() {
     this.closeModerationMenu();
 	this.closeBanManager();
 this.removeBanManagerButton();
+		this.closePartyManager();
+    this.removePartyManagerButton();
+    this.partyManagerBusy = false;
     this.loadHistory();
 	this.renderWatchParty();
 }
@@ -833,6 +851,634 @@ createBanManagerButton() {
     this.banManagerButton.remove();
     this.banManagerButton = null;
 }
+
+	createPartyManagerButton() {
+    if (
+        this.partyManagerButton ||
+        !this.membersToggle
+    ) {
+        return;
+    }
+
+    const button =
+        document.createElement("button");
+
+    button.type = "button";
+    button.textContent = "party";
+
+    button.className = [
+        "theme-body",
+        "text-[9px]",
+        "text-white/50",
+        "transition",
+        "hover:text-white"
+    ].join(" ");
+
+    button.title =
+        "manage Watch Party";
+
+    button.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+    button.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (this.partyManager) {
+                this.closePartyManager();
+            } else {
+                this.openPartyManager();
+            }
+        }
+    );
+
+    this.membersToggle.insertAdjacentElement(
+        "beforebegin",
+        button
+    );
+
+    this.partyManagerButton = button;
+}
+
+	removePartyManagerButton() {
+    if (!this.partyManagerButton) {
+        return;
+    }
+
+    this.partyManagerButton.remove();
+    this.partyManagerButton = null;
+}
+
+	openPartyManager() {
+    if (
+        !this.isAdmin ||
+        !this.adminKey
+    ) {
+        window.alert(
+            "admin authentication is required"
+        );
+
+        return;
+    }
+
+    /*
+     * Keep only one admin manager open.
+     */
+    this.closeBanManager();
+    this.closePartyManager();
+
+    const panel =
+        document.createElement("div");
+
+    panel.className = [
+        "fixed",
+        "z-[100001]",
+        "w-72",
+        "max-w-[calc(100vw-2rem)]",
+        "overflow-hidden",
+        "rounded-2xl",
+        "border",
+        "border-white/15",
+        "bg-black/95",
+        "text-white",
+        "shadow-xl",
+        "backdrop-blur-xl"
+    ].join(" ");
+
+    const chatRect =
+        this.window.getBoundingClientRect();
+
+    panel.style.right =
+        `${Math.max(
+            16,
+            window.innerWidth -
+            chatRect.right
+        )}px`;
+
+    panel.style.bottom =
+        `${Math.max(
+            16,
+            window.innerHeight -
+            chatRect.top +
+            8
+        )}px`;
+
+    document.body.appendChild(panel);
+
+    this.partyManager = panel;
+
+    if (this.partyManagerButton) {
+        this.partyManagerButton.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+    }
+
+    this.renderPartyManager();
+}
+
+	renderPartyManager() {
+    if (!this.partyManager) {
+        return;
+    }
+
+    const enabled =
+        this.watchParty?.enabled === true;
+
+    const busy =
+        this.partyManagerBusy === true;
+
+    this.partyManager.innerHTML = `
+        <div
+            class="
+                flex items-center justify-between
+                border-b border-white/10
+                px-4 py-3
+            "
+        >
+            <div>
+                <div
+                    class="
+                        theme-heading
+                        text-[10px]
+                        font-bold uppercase
+                        tracking-widest
+                    "
+                >
+                    watch party
+                </div>
+
+                <div
+                    class="
+                        mt-1
+                        theme-body
+                        text-[9px]
+                        ${
+                            enabled
+                                ? "text-emerald-300"
+                                : "text-white/40"
+                        }
+                    "
+                    data-party-status
+                >
+                    ${
+                        enabled
+                            ? "currently enabled"
+                            : "currently disabled"
+                    }
+                </div>
+            </div>
+
+            <button
+                type="button"
+                data-close-party-manager
+                class="
+                    rounded px-2 py-1
+                    text-white/50
+                    transition
+                    hover:bg-white/10
+                    hover:text-white
+                "
+                aria-label="close Watch Party manager"
+            >
+                ×
+            </button>
+        </div>
+
+        <div
+            class="
+                space-y-2
+                p-3
+                theme-body
+                text-[11px]
+            "
+        >
+            <button
+                type="button"
+                data-party-action="enable"
+                class="
+                    w-full
+                    rounded-xl
+                    border
+                    px-3 py-2.5
+                    text-left
+                    transition
+                    ${
+                        enabled
+                            ? `
+                                cursor-default
+                                border-emerald-300/20
+                                bg-emerald-500/10
+                                text-emerald-200/60
+                            `
+                            : `
+                                border-white/10
+                                bg-white/5
+                                text-white/85
+                                hover:border-emerald-300/30
+                                hover:bg-emerald-500/10
+                                hover:text-emerald-200
+                            `
+                    }
+                    disabled:cursor-not-allowed
+                    disabled:opacity-50
+                "
+                ${
+                    enabled || busy
+                        ? "disabled"
+                        : ""
+                }
+            >
+                <span class="font-bold">
+                    Enable Watch Party
+                </span>
+
+                <span
+                    class="
+                        mt-1 block
+                        text-[9px]
+                        text-white/40
+                    "
+                >
+                    Start accepting temporary party videos.
+                </span>
+            </button>
+
+            <button
+                type="button"
+                data-party-action="disable"
+                class="
+                    w-full
+                    rounded-xl
+                    border
+                    px-3 py-2.5
+                    text-left
+                    transition
+                    ${
+                        !enabled
+                            ? `
+                                cursor-default
+                                border-white/10
+                                bg-white/5
+                                text-white/30
+                            `
+                            : `
+                                border-red-300/20
+                                bg-red-500/10
+                                text-red-200
+                                hover:border-red-300/40
+                                hover:bg-red-500/20
+                            `
+                    }
+                    disabled:cursor-not-allowed
+                    disabled:opacity-50
+                "
+                ${
+                    !enabled || busy
+                        ? "disabled"
+                        : ""
+                }
+            >
+                <span class="font-bold">
+                    Disable Watch Party
+                </span>
+
+                <span
+                    class="
+                        mt-1 block
+                        text-[9px]
+                        text-white/40
+                    "
+                >
+                    End the party and clear its temporary queue.
+                </span>
+            </button>
+
+            <div
+                class="
+                    my-3
+                    border-t border-white/10
+                "
+            ></div>
+
+            <button
+                type="button"
+                data-party-action="clear"
+                class="
+                    w-full
+                    cursor-not-allowed
+                    rounded-xl
+                    border border-white/10
+                    bg-white/5
+                    px-3 py-2.5
+                    text-left
+                    text-white/30
+                    opacity-60
+                "
+                disabled
+                title="The Clear Queue endpoint will be added next"
+            >
+                <span class="font-bold">
+                    Clear Queue
+                </span>
+
+                <span
+                    class="
+                        mt-1 block
+                        text-[9px]
+                        text-white/35
+                    "
+                >
+                    Coming in the next backend step.
+                </span>
+            </button>
+
+            <div
+                data-party-message
+                class="
+                    hidden
+                    rounded-xl
+                    border border-white/10
+                    bg-white/5
+                    px-3 py-2
+                    text-[9px]
+                    text-white/60
+                "
+                aria-live="polite"
+            ></div>
+        </div>
+    `;
+
+    const closeButton =
+        this.partyManager.querySelector(
+            "[data-close-party-manager]"
+        );
+
+    if (closeButton) {
+        closeButton.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                this.closePartyManager();
+            }
+        );
+    }
+
+    const enableButton =
+        this.partyManager.querySelector(
+            '[data-party-action="enable"]'
+        );
+
+    if (enableButton) {
+        enableButton.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                this.setWatchPartyEnabled(
+                    true
+                );
+            }
+        );
+    }
+
+    const disableButton =
+        this.partyManager.querySelector(
+            '[data-party-action="disable"]'
+        );
+
+    if (disableButton) {
+        disableButton.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                this.setWatchPartyEnabled(
+                    false
+                );
+            }
+        );
+    }
+}
+
+	setPartyManagerMessage(
+    message,
+    isError = false
+) {
+    if (!this.partyManager) {
+        return;
+    }
+
+    const messageElement =
+        this.partyManager.querySelector(
+            "[data-party-message]"
+        );
+
+    if (!messageElement) {
+        return;
+    }
+
+    const cleanedMessage =
+        typeof message === "string"
+            ? message.trim()
+            : "";
+
+    messageElement.textContent =
+        cleanedMessage;
+
+    messageElement.classList.toggle(
+        "hidden",
+        !cleanedMessage
+    );
+
+    messageElement.classList.toggle(
+        "text-red-300",
+        Boolean(
+            cleanedMessage &&
+            isError
+        )
+    );
+
+    messageElement.classList.toggle(
+        "text-emerald-300",
+        Boolean(
+            cleanedMessage &&
+            !isError
+        )
+    );
+}
+
+	async setWatchPartyEnabled(enabled) {
+    if (
+        !this.isAdmin ||
+        !this.adminKey
+    ) {
+        window.alert(
+            "admin authentication is required"
+        );
+
+        return;
+    }
+
+    if (this.partyManagerBusy) {
+        return;
+    }
+
+    const shouldEnable =
+        enabled === true;
+
+    if (
+        !shouldEnable &&
+        this.watchParty?.enabled === true
+    ) {
+        const confirmed =
+            window.confirm(
+                "Disable Watch Party?\n\n" +
+                "This will end the party and clear " +
+                "the temporary Watch Party queue."
+            );
+
+        if (!confirmed) {
+            return;
+        }
+    }
+
+    this.partyManagerBusy = true;
+    this.renderPartyManager();
+
+    this.setPartyManagerMessage(
+        shouldEnable
+            ? "enabling Watch Party..."
+            : "disabling Watch Party..."
+    );
+
+    try {
+        const endpoint =
+            shouldEnable
+                ? "enable"
+                : "disable";
+
+        const response = await fetch(
+            `${this.API}/api/admin/watchparty/${endpoint}`,
+            {
+                method: "POST",
+                headers: {
+                    "Authorization":
+                        `Bearer ${this.adminKey}`
+                }
+            }
+        );
+
+        let result = null;
+
+        try {
+            result =
+                await response.json();
+        } catch {
+            // The error handling below covers
+            // non-JSON responses.
+        }
+
+        if (response.status === 401) {
+            this.disableAdminMode();
+
+            window.alert(
+                "your admin session is no longer valid"
+            );
+
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `could not ${
+                    shouldEnable
+                        ? "enable"
+                        : "disable"
+                } Watch Party (${response.status})`
+            );
+        }
+
+        /*
+         * Update immediately for this browser.
+         *
+         * The authoritative WebSocket broadcast will
+         * follow and replace the full state.
+         */
+        this.watchParty.enabled =
+            shouldEnable;
+
+        if (!shouldEnable) {
+            this.watchParty.currentVideoId =
+                null;
+
+            this.watchParty.currentIndex = 0;
+            this.watchParty.startedAt = null;
+            this.watchParty.paused = false;
+            this.watchParty.pausedAt = null;
+            this.watchParty.queue = [];
+            this.watchPartyOpen = false;
+        }
+
+        this.renderWatchParty();
+
+        this.partyManagerBusy = false;
+        this.renderPartyManager();
+
+        this.setPartyManagerMessage(
+            shouldEnable
+                ? "Watch Party enabled."
+                : "Watch Party disabled."
+        );
+    } catch (error) {
+        console.error(
+            "could not update Watch Party:",
+            error
+        );
+
+        this.partyManagerBusy = false;
+        this.renderPartyManager();
+
+        this.setPartyManagerMessage(
+            error.message,
+            true
+        );
+    }
+}
+
+	closePartyManager() {
+    if (!this.partyManager) {
+        if (this.partyManagerButton) {
+            this.partyManagerButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+
+        return;
+    }
+
+    this.partyManager.remove();
+    this.partyManager = null;
+
+    if (this.partyManagerButton) {
+        this.partyManagerButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
+}
+
+	
 
 	async openBanManager() {
     if (
@@ -3171,6 +3817,11 @@ if (data.type === "watchparty-state") {
     };
 
     this.renderWatchParty();
+
+	if (this.partyManager) {
+    this.partyManagerBusy = false;
+    this.renderPartyManager();
+}
 
     return;
 }
