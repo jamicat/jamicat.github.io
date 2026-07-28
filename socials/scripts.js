@@ -165,8 +165,7 @@ if (terminalMinimizedLabel) {
       .getElementById("terminal")
       ?.classList.contains(
         "terminal-minimized"
-      ) ||
-      themeName === "Stars"
+      )
   );
 }
 
@@ -574,16 +573,11 @@ function setTerminalMinimized(minimized) {
       ? "restore terminal"
       : "minimize terminal"
   );
-
-  const currentTheme =
-    localStorage.getItem("theme") ||
-    "Default";
-
-  terminalMinimizedLabel?.classList.toggle(
-    "hidden",
-    !terminalMinimized ||
-      currentTheme === "Stars"
-  );
+  
+terminalMinimizedLabel?.classList.toggle(
+  "hidden",
+  !terminalMinimized
+);
 }
 
 window.setTerminalMinimized =
