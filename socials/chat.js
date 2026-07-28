@@ -23,6 +23,9 @@ this.watchParty = {
     pausedAt: null,
     queue: []
 };
+this.watchPartyButton = null;
+this.watchPartyPanel = null;
+this.watchPartyOpen = false;
 this.window = null;
 this.nameInput = null;
 this.messageInput = null;
@@ -469,9 +472,12 @@ transition-[height] duration-200
     this.window.querySelector(
         "#chatWatchPartyButton"
     );
-	this.watchPartyButton.classList.add(
-    "hidden"
-);
+
+if (this.watchPartyButton) {
+    this.watchPartyButton.classList.add(
+        "hidden"
+    );
+}
 	this.emojiButton =
     this.window.querySelector("#chatEmojiButton");
 
@@ -1362,10 +1368,6 @@ async loadWatchParty() {
                 "Watch Party request failed"
             );
         }
-
-this.watchPartyButton = null;
-this.watchPartyPanel = null;
-this.watchPartyOpen = false;
 		
         this.watchParty = {
             enabled:
@@ -1418,27 +1420,37 @@ this.watchPartyOpen = false;
 }
 
 renderWatchParty() {
-
     if (!this.watchPartyButton) {
-        return;
-    }
-
-    if (!this.watchParty.enabled) {
-
-        this.watchPartyButton.classList.add(
-            "hidden"
+        console.error(
+            "Watch Party button was not found"
         );
 
         return;
     }
 
-    this.watchPartyButton.classList.remove(
-        "hidden"
+    this.watchPartyButton.classList.toggle(
+        "hidden",
+        !this.watchParty.enabled
     );
 
+    if (
+        !this.watchParty.enabled &&
+        this.watchPartyOpen
+    ) {
+        this.watchPartyOpen = false;
+    }
+
     console.log(
-        "Watch Party:",
-        this.watchParty
+        "Watch Party rendered:",
+        {
+            enabled:
+                this.watchParty.enabled,
+
+            buttonHidden:
+                this.watchPartyButton
+                    .classList
+                    .contains("hidden")
+        }
     );
 }
 
