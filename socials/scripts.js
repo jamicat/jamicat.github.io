@@ -1242,18 +1242,34 @@ window.watchPartyPlayer = {
 
  getState() {
     let currentTime = null;
+    let duration = null;
 
     if (
         player &&
-        playerReady &&
-        typeof player.getCurrentTime ===
-            "function"
+        playerReady
     ) {
-        const value =
-            player.getCurrentTime();
+        if (
+            typeof player.getCurrentTime ===
+                "function"
+        ) {
+            const value =
+                player.getCurrentTime();
 
-        if (Number.isFinite(value)) {
-            currentTime = value;
+            if (Number.isFinite(value)) {
+                currentTime = value;
+            }
+        }
+
+        if (
+            typeof player.getDuration ===
+                "function"
+        ) {
+            const value =
+                player.getDuration();
+
+            if (Number.isFinite(value)) {
+                duration = value;
+            }
         }
     }
 
@@ -1262,7 +1278,8 @@ window.watchPartyPlayer = {
         playing: isPlaying,
         mode: playbackMode,
         videoId: loadedVideoId,
-        currentTime
+        currentTime,
+        duration
     };
 },
 
