@@ -14,6 +14,15 @@ this.typingElement = null;
 this.notificationSoundEnabled = true;
 this.lastNotificationTime = 0;
 this.messages = null;
+this.watchParty = {
+    enabled: false,
+    currentVideoId: null,
+    currentIndex: 0,
+    startedAt: null,
+    paused: false,
+    pausedAt: null,
+    queue: []
+};
 this.window = null;
 this.nameInput = null;
 this.messageInput = null;
@@ -74,6 +83,7 @@ this.setupNameSaving();
 this.setupDragging();
 this.loadHistory();
 this.loadMotd();
+this.loadWatchParty();
 this.connect();
 }
 
@@ -1297,6 +1307,85 @@ if (wasAtBottom) {
     }
 }
 
+async loadWatchParty() {
+    try {
+        const response = await fetch(
+            `${this.API}/api/watchparty`
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                `could not load Watch Party (${response.status})`
+            );
+        }
+
+        const result =
+            await response.json();
+
+        if (!result.success) {
+            throw new Error(
+                result.error ||
+                "Watch Party request failed"
+            );
+        }
+
+        this.watchParty = {
+            enabled:
+                result.state?.enabled === true,
+
+            currentVideoId:
+                result.state?.currentVideoId || null,
+
+            currentIndex:
+                Number.isInteger(
+                    result.state?.currentIndex
+                )
+                    ? result.state.currentIndex
+                    : 0,
+
+            startedAt:
+                result.state?.startedAt || null,
+
+            paused:
+                result.state?.paused === true,
+
+            pausedAt:
+                result.state?.pausedAt || null,
+
+            queue:
+                Array.isArray(result.queue)
+                    ? result.queue
+                    : []
+        };
+
+        this.renderWatchParty();
+    } catch (error) {
+        console.error(
+            "could not load Watch Party:",
+            error
+        );
+
+        this.watchParty = {
+            enabled: false,
+            currentVideoId: null,
+            currentIndex: 0,
+            startedAt: null,
+            paused: false,
+            pausedAt: null,
+            queue: []
+        };
+
+        this.renderWatchParty();
+    }
+}
+
+	renderWatchParty() {
+    console.log(
+        "Watch Party state updated:",
+        this.watchParty
+    );
+}
+
 	async editMotd() {
     if (
         !this.isAdmin ||
@@ -2449,6 +2538,41 @@ if (data.type === "motd") {
     this.setMotd(
         data.message || ""
     );
+
+    return;
+}
+
+if (data.type === "watchparty-state") {
+    this.watchParty = {
+        enabled:
+            data.state?.enabled === true,
+
+        currentVideoId:
+            data.state?.currentVideoId || null,
+
+        currentIndex:
+            Number.isInteger(
+                data.state?.currentIndex
+            )
+                ? data.state.currentIndex
+                : 0,
+
+        startedAt:
+            data.state?.startedAt || null,
+
+        paused:
+            data.state?.paused === true,
+
+        pausedAt:
+            data.state?.pausedAt || null,
+
+        queue:
+            Array.isArray(data.queue)
+                ? data.queue
+                : []
+    };
+
+    this.renderWatchParty();
 
     return;
 }
