@@ -572,7 +572,7 @@ font-size: 0.65rem;
 #terminal.terminal-minimized {
   width: min(90vw, 320px) !important;
   padding: 0.7rem 1rem !important;
-  border-radius: 1rem !important;
+  border-radius: 1.5rem !important;
 }
 
 #terminal.terminal-minimized .drag-area {
