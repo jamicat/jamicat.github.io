@@ -806,16 +806,18 @@ function applyWatchPartyState(state) {
     setPoster(videoId);
 
     player.loadVideoById({
-      videoId,
-      startSeconds: targetTime
-    });
+  videoId,
+  startSeconds: targetTime
+});
 
-    if (watchPartyState.paused) {
-      player.pauseVideo();
-      updatePlaybackIcons(false);
-    }
+if (watchPartyState.paused) {
+  player.pauseVideo();
+  updatePlaybackIcons(false);
+} else {
+  updatePlaybackIcons(true);
+}
 
-    return;
+return;
   }
 
   const actualTime =
