@@ -1,6 +1,6 @@
 class ChatWidget {
 
-constructor() {f
+constructor() {
 this.API = "https://jamicat.ahrly.workers.dev";
 this.titleBar = null;
 this.socket = null;
