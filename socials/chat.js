@@ -371,6 +371,26 @@ transition-[height] duration-200
             "
         >
 
+<button
+    id="chatWatchPartyButton"
+    type="button"
+    class="
+        flex h-9 w-9 shrink-0
+        items-center justify-center
+        rounded-xl
+        border border-white/10
+        bg-black/20
+        text-base leading-none
+        transition
+        hover:bg-white/5
+        active:scale-95
+    "
+    aria-label="Watch Party"
+    title="Watch Party"
+>
+    📺
+</button>
+
         <button
             id="chatEmojiButton"
             type="button"
@@ -392,6 +412,8 @@ transition-[height] duration-200
         >
             🐱
         </button>
+
+		
     </div>
 
     <div
@@ -443,6 +465,10 @@ transition-[height] duration-200
     this.nameInput = this.window.querySelector("#chatName");
     this.messageInput = this.window.querySelector("#chatMessage");
     this.sendButton = this.window.querySelector("#chatSend");
+	this.watchPartyButton =
+    this.window.querySelector(
+        "#chatWatchPartyButton"
+    );
 	this.emojiButton =
     this.window.querySelector("#chatEmojiButton");
 
@@ -506,7 +532,12 @@ this.minimizeButton =
         this.toggleMinimized();
     }
 );
-
+	   
+	   this.watchPartyButton.addEventListener(
+    "click",
+    () => this.toggleWatchParty()
+);
+	   
 	   this.messages.addEventListener(
     "scroll",
     () => {
@@ -1329,6 +1360,10 @@ async loadWatchParty() {
             );
         }
 
+this.watchPartyButton = null;
+this.watchPartyPanel = null;
+this.watchPartyOpen = false;
+		
         this.watchParty = {
             enabled:
                 result.state?.enabled === true,
@@ -1379,11 +1414,36 @@ async loadWatchParty() {
     }
 }
 
-	renderWatchParty() {
+renderWatchParty() {
+
+    if (!this.watchPartyButton)
+        return;
+
+    if (this.watchParty.enabled) {
+
+        this.watchPartyButton.classList.add(
+            "text-emerald-300"
+        );
+
+    } else {
+
+        this.watchPartyButton.classList.remove(
+            "text-emerald-300"
+        );
+
+    }
+
     console.log(
-        "Watch Party state updated:",
         this.watchParty
     );
+
+}
+
+	toggleWatchParty() {
+    this.watchPartyOpen =
+        !this.watchPartyOpen;
+
+    this.renderWatchParty();
 }
 
 	async editMotd() {
