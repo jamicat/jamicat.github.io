@@ -928,8 +928,7 @@ createBanManagerButton() {
     /*
      * Keep only one admin manager open.
      */
-    this.closeBanManager();
-    this.closePartyManager();
+    this.closeAdminManagers();
 
     const panel =
         document.createElement("div");
@@ -1478,7 +1477,10 @@ createBanManagerButton() {
     }
 }
 
-	
+	closeAdminManagers() {
+    this.closeBanManager();
+    this.closePartyManager();
+}
 
 	async openBanManager() {
     if (
@@ -1492,7 +1494,7 @@ createBanManagerButton() {
         return;
     }
 
-    this.closeBanManager();
+    this.closeAdminManagers();
 
     const panel =
         document.createElement("div");
