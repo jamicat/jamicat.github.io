@@ -25,6 +25,8 @@ this.watchParty = {
 };
 this.watchPartyButton = null;
 this.watchPartyPanel = null;
+this.musicPlayButton = null;
+this.musicNextButton = null;
 this.watchPartyOpen = false;
 this.watchPartyAddUrl = "";
 this.watchPartyAddMessage = "";
@@ -498,6 +500,14 @@ transition-[height] duration-200
 	this.watchPartyButton =
     this.window.querySelector(
         "#chatWatchPartyButton"
+    );
+this.musicPlayButton =
+    document.getElementById(
+        "videoToggle"
+    );
+this.musicNextButton =
+    document.getElementById(
+        "nextTrack"
     );
 
 if (this.watchPartyButton) {
@@ -2266,6 +2276,20 @@ const addInputSelectionStart =
     const isEnabled =
         this.watchParty.enabled === true;
 
+	if (this.musicPlayButton) {
+    this.musicPlayButton.classList.toggle(
+        "hidden",
+        isEnabled
+    );
+}
+
+if (this.musicNextButton) {
+    this.musicNextButton.classList.toggle(
+        "hidden",
+        isEnabled
+    );
+}
+
     this.watchPartyButton.classList.toggle(
         "hidden",
         !isEnabled
@@ -2670,6 +2694,58 @@ const addInputSelectionStart =
                         `
                         : ""
                 }
+
+				<div
+    class="
+        mt-4
+        flex
+        items-center
+        justify-center
+        gap-3
+    "
+>
+    <button
+        type="button"
+        data-watch-party-play
+        class="
+            rounded-xl
+            border
+            border-white/10
+            bg-white/5
+            px-4
+            py-2
+            text-white/80
+            transition
+            hover:bg-white/10
+        "
+        aria-label="Play or pause"
+    >
+        ${
+            this.watchParty.paused
+                ? "▶"
+                : "❚❚"
+        }
+    </button>
+
+    <button
+        type="button"
+        data-watch-party-next
+        class="
+            rounded-xl
+            border
+            border-white/10
+            bg-white/5
+            px-4
+            py-2
+            text-white/80
+            transition
+            hover:bg-white/10
+        "
+        aria-label="Next video"
+    >
+        ⏭
+    </button>
+</div>
             </div>
         </div>
 
@@ -2764,6 +2840,46 @@ if (addForm) {
             event.stopPropagation();
 
             this.addWatchPartyVideo();
+        }
+    );
+}
+
+const playButton =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-play]"
+    );
+
+if (playButton) {
+    playButton.addEventListener(
+        "click",
+        event => {
+            event.stopPropagation();
+
+            document
+                .getElementById(
+                    "videoToggle"
+                )
+                ?.click();
+        }
+    );
+}
+
+const nextButton =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-next]"
+    );
+
+if (nextButton) {
+    nextButton.addEventListener(
+        "click",
+        event => {
+            event.stopPropagation();
+
+            document
+                .getElementById(
+                    "nextTrack"
+                )
+                ?.click();
         }
     );
 }
