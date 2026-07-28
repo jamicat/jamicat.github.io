@@ -1110,17 +1110,7 @@ createBanManagerButton() {
                 }
             >
                 <span class="font-bold">
-                    Enable Watch Party
-                </span>
-
-                <span
-                    class="
-                        mt-1 block
-                        text-[9px]
-                        text-white/40
-                    "
-                >
-                    Start accepting temporary party videos.
+                    enable watch party
                 </span>
             </button>
 
@@ -1160,17 +1150,7 @@ createBanManagerButton() {
                 }
             >
                 <span class="font-bold">
-                    Disable Watch Party
-                </span>
-
-                <span
-                    class="
-                        mt-1 block
-                        text-[9px]
-                        text-white/40
-                    "
-                >
-                    End the party and clear its temporary queue.
+                    disable watch party
                 </span>
             </button>
 
@@ -1201,18 +1181,7 @@ createBanManagerButton() {
     ${busy ? "disabled" : ""}
 >
     <span class="font-bold">
-        Clear Queue
-    </span>
-
-    <span
-        class="
-            mt-1 block
-            text-[9px]
-            text-white/40
-        "
-    >
-        Remove every temporary Watch Party video
-        without disabling the party.
+        clear queue
     </span>
 </button>
 
@@ -1475,12 +1444,12 @@ if (clearButton) {
 
         this.setPartyManagerMessage(
             shouldEnable
-                ? "Watch Party enabled."
-                : "Watch Party disabled."
+                ? "watch party enabled."
+                : "watch party disabled."
         );
     } catch (error) {
         console.error(
-            "could not update Watch Party:",
+            "could not update watch party:",
             error
         );
 
@@ -2615,7 +2584,7 @@ const hasWatchPartyVideo =
                 value="${this.escapeHtml(
                     this.watchPartyAddUrl
                 )}"
-                placeholder="Paste a YouTube URL"
+                placeholder="paste a youtube url"
                 class="
                     min-w-0
                     flex-1
@@ -3242,7 +3211,7 @@ toggleWatchParty() {
 
     if (!isYouTubeHost) {
         this.watchPartyAddMessage =
-            "Only YouTube links can be added.";
+            "only youtube links can be added.";
 
         this.watchPartyAddError = true;
         this.renderWatchParty();
@@ -3333,7 +3302,7 @@ toggleWatchParty() {
         this.watchPartyAddUrl = "";
         this.watchPartyAddMessage =
             result?.message ||
-            "Video added to the queue.";
+            "video added to the queue.";
         this.watchPartyAddError = false;
         this.watchPartyAddBusy = false;
 
