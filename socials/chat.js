@@ -1346,9 +1346,9 @@ if (clearButton) {
     ) {
         const confirmed =
             window.confirm(
-                "Disable Watch Party?\n\n" +
-                "This will end the party and clear " +
-                "the temporary Watch Party queue."
+                "disable watch party?\n\n" +
+                "this will end the party and clear " +
+                "the watch party queue."
             );
 
         if (!confirmed) {
@@ -1486,7 +1486,7 @@ if (clearButton) {
 
     if (queue.length === 0) {
         this.setPartyManagerMessage(
-            "The Watch Party queue is already empty."
+            "the watch party queue is already empty."
         );
 
         return;
@@ -1494,10 +1494,10 @@ if (clearButton) {
 
     const confirmed =
         window.confirm(
-            "Clear the entire Watch Party queue?\n\n" +
-            "Every queued video will be removed. " +
-            "The Watch Party will remain enabled.\n\n" +
-            "This cannot be undone."
+            "clear the entire watch party queue?\n\n" +
+            "every queued video will be removed. " +
+            "the watch party will remain enabled.\n\n" +
+            "this cannot be undone."
         );
 
     if (!confirmed) {
@@ -1546,7 +1546,7 @@ if (clearButton) {
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `could not clear Watch Party queue (${response.status})`
+                `could not clear Watch party queue (${response.status})`
             );
         }
 
@@ -1560,11 +1560,11 @@ if (clearButton) {
         this.renderPartyManager();
 
         this.setPartyManagerMessage(
-            "Watch Party queue cleared."
+            "watch party queue cleared."
         );
     } catch (error) {
         console.error(
-            "could not clear Watch Party queue:",
+            "could not clear watch party queue:",
             error
         );
 
