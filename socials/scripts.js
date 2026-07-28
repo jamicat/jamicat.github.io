@@ -691,13 +691,21 @@ function applyWatchPartyState(state) {
         : 0,
 
     startedAt:
-      state?.startedAt || null,
+      Number.isFinite(
+        Number(state?.startedAt)
+      )
+        ? Number(state.startedAt)
+        : null,
 
     paused:
       state?.paused === true,
 
     pausedAt:
-      state?.pausedAt || null,
+      Number.isFinite(
+        Number(state?.pausedAt)
+      )
+        ? Number(state.pausedAt)
+        : null,
 
     queue:
       Array.isArray(state?.queue)
@@ -714,7 +722,7 @@ function applyWatchPartyState(state) {
     !watchPartyState.enabled
   );
 
-  if (!playerReady) {
+  if (!player || !playerReady) {
     return;
   }
 
@@ -731,14 +739,10 @@ function applyWatchPartyState(state) {
     return;
   }
 
-  const videoChanged =
-    previousVideoId !==
+  const videoId =
     watchPartyState.currentVideoId;
 
-  const hasVideo =
-    Boolean(getActiveVideoId());
-
-  if (!hasVideo) {
+  if (!videoId) {
     loadActiveVideo({
       force: true
     });
@@ -746,24 +750,81 @@ function applyWatchPartyState(state) {
     return;
   }
 
-  loadActiveVideo({
-    autoplay:
-      !watchPartyState.paused,
-    force:
-      videoChanged ||
-      previousEnabled !== true
-  });
+  const videoChanged =
+    previousVideoId !== videoId ||
+    previousEnabled !== true ||
+    loadedVideoId !== videoId;
 
-  if (
-    !videoChanged &&
+  const pausedTime =
+    Number.isFinite(
+      watchPartyState.pausedAt
+    )
+      ? Math.max(
+          0,
+          watchPartyState.pausedAt
+        )
+      : 0;
+
+  const playingTime =
+    Number.isFinite(
+      watchPartyState.startedAt
+    )
+      ? Math.max(
+          0,
+          (
+            Date.now() -
+            watchPartyState.startedAt
+          ) / 1000
+        )
+      : 0;
+
+  const targetTime =
     watchPartyState.paused
-  ) {
-    player.pauseVideo();
+      ? pausedTime
+      : playingTime;
+
+  if (videoChanged) {
+    loadedVideoId = videoId;
+    setPoster(videoId);
+
+    player.loadVideoById({
+      videoId,
+      startSeconds: targetTime
+    });
+
+    if (watchPartyState.paused) {
+      player.pauseVideo();
+      updatePlaybackIcons(false);
+    }
+
+    return;
   }
 
-  updatePlaybackIcons(
-    !watchPartyState.paused
-  );
+  const actualTime =
+    typeof player.getCurrentTime ===
+      "function"
+      ? player.getCurrentTime()
+      : 0;
+
+  if (
+    Number.isFinite(actualTime) &&
+    Math.abs(
+      actualTime - targetTime
+    ) > 1.5
+  ) {
+    player.seekTo(
+      targetTime,
+      true
+    );
+  }
+
+  if (watchPartyState.paused) {
+    player.pauseVideo();
+    updatePlaybackIcons(false);
+  } else {
+    player.playVideo();
+    updatePlaybackIcons(true);
+  }
 }
 
 function maybeInitPlayer() {
@@ -889,26 +950,53 @@ function maybeInitPlayer() {
               updatePlaybackIcons(false);
               return;
             }
+if (
+  event.data ===
+  YT.PlayerState.ENDED
+) {
+  updatePlaybackIcons(false);
 
-            if (
-              event.data ===
-              YT.PlayerState.ENDED
-            ) {
-              updatePlaybackIcons(false);
+  if (
+    playbackMode ===
+    "normal"
+  ) {
+    playNextNormalVideo();
+    return;
+  }
 
-              if (
-                playbackMode ===
-                "normal"
-              ) {
-                playNextNormalVideo();
-              }
-
-              /*
-               * Watch Party advancement must be
-               * requested from the Worker rather
-               * than changed locally.
-               */
-            }
+  if (
+    playbackMode ===
+    "watch-party" &&
+    watchPartyState.currentVideoId
+  ) {
+    fetch(
+      `${API}/api/watchparty/next`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: JSON.stringify({
+          clientId:
+            window.chat?.clientId ||
+            null
+        })
+      }
+    ).then(response => {
+      if (!response.ok) {
+        throw new Error(
+          `automatic next failed (${response.status})`
+        );
+      }
+    }).catch(error => {
+      console.error(
+        "Watch Party automatic next failed:",
+        error
+      );
+    });
+  }
+}
           }
         }
       }
@@ -938,97 +1026,9 @@ function playNextNormalVideo() {
 }
 
 window.watchPartyPlayer = {
-  applyState(state) {
-    currentWatchPartyState = state;
-
-    if (
-        !state ||
-        !state.enabled
-    ) {
-        playbackMode = "terminal";
-        return;
-    }
-
-    playbackMode = "watch-party";
-
-    if (
-        state.currentVideoId &&
-        state.currentVideoId !==
-            loadedVideoId
-    ) {
-        loadedVideoId =
-            state.currentVideoId;
-
-        if (!playerReady || !player) {
-    return;
-}
-
-player.loadVideoById({
-            videoId:
-                state.currentVideoId,
-            startSeconds:
-                state.paused
-                    ? (
-                        state.pausedAt ??
-                        0
-                    )
-                    : Math.max(
-                        0,
-                        (
-                            Date.now() -
-                            state.startedAt
-                        ) / 1000
-                    )
-        });
-
-        return;
-    }
-
-    if (state.paused) {
-        player.pauseVideo();
-
-        if (
-            Number.isFinite(
-                state.pausedAt
-            )
-        ) {
-            player.seekTo(
-                state.pausedAt,
-                true
-            );
-        }
-
-        return;
-    }
-
-    const targetTime =
-        Math.max(
-            0,
-            (
-                Date.now() -
-                state.startedAt
-            ) / 1000
-        );
-
-    const actualTime =
-    typeof player.getCurrentTime ===
-        "function"
-        ? player.getCurrentTime()
-        : 0;
-
-    if (
-        Math.abs(
-            actualTime -
-            targetTime
-        ) > 1.5
-    ) {
-        player.seekTo(
-            targetTime,
-            true
-        );
-    }
-
-    player.playVideo();
+ applyState(state) {
+  currentWatchPartyState = state;
+  applyWatchPartyState(state);
 },
 
  getState() {
