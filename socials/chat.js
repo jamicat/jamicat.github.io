@@ -433,8 +433,8 @@ transition-[height] duration-200
     class="
         terminal2
         invisible pointer-events-none opacity-0
-        absolute bottom-full right-0 z-30
-        mb-2 w-72
+        fixed z-[100002]
+        w-72
         rounded-2xl
         border border-white/15
         bg-black/95
@@ -508,6 +508,11 @@ if (this.watchPartyButton) {
     this.window.querySelector(
         "#chatWatchPartyPanel"
     );
+	   if (this.watchPartyPanel) {
+    document.body.appendChild(
+        this.watchPartyPanel
+    );
+}
 	this.emojiButton =
     this.window.querySelector("#chatEmojiButton");
 
@@ -596,6 +601,15 @@ this.minimizeButton =
     }
 );
 
+	   window.addEventListener(
+    "resize",
+    () => {
+        if (this.watchPartyOpen) {
+            this.positionWatchPartyPanel();
+        }
+    }
+);
+	   
 	   this.messageInput.addEventListener(
     "input",
     () => {
@@ -2243,6 +2257,48 @@ async loadWatchParty() {
     }
 }
 
+	positionWatchPartyPanel() {
+    if (
+        !this.watchPartyButton ||
+        !this.watchPartyPanel
+    ) {
+        return;
+    }
+
+    const buttonRect =
+        this.watchPartyButton
+            .getBoundingClientRect();
+
+    const gap = 8;
+    const viewportPadding = 12;
+
+    this.watchPartyPanel.style.right =
+        `${Math.max(
+            viewportPadding,
+            window.innerWidth -
+                buttonRect.right
+        )}px`;
+
+    this.watchPartyPanel.style.bottom =
+        `${Math.max(
+            viewportPadding,
+            window.innerHeight -
+                buttonRect.top +
+                gap
+        )}px`;
+
+    this.watchPartyPanel.style.maxHeight =
+        `${Math.max(
+            160,
+            buttonRect.top -
+                viewportPadding -
+                gap
+        )}px`;
+
+    this.watchPartyPanel.style.overflowY =
+        "auto";
+}
+
 renderWatchParty() {
 
 	const hadAddInputFocus =
@@ -2308,6 +2364,8 @@ window.setTerminalPlaybackControlsVisible?.(
         "opacity-0",
         !this.watchPartyOpen
     );
+
+	this.positionWatchPartyPanel();
 
     if (!this.watchPartyOpen) {
         return;
