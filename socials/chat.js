@@ -194,7 +194,7 @@ transition-[height] duration-200
         text-white/65
         select-none
     "
-    title="Message of the day"
+    title="message of the day"
 >
     <span class="font-semibold text-white/85">
         message of the day:
@@ -398,8 +398,8 @@ transition-[height] duration-200
     "
 	aria-expanded="false"
     aria-controls="chatWatchPartyPanel"
-    aria-label="Watch Party"
-    title="Watch Party"
+    aria-label="watch party"
+    title="watch party"
 >
     📺
 </button>
@@ -418,10 +418,10 @@ transition-[height] duration-200
                 hover:bg-white/5
                 active:scale-95
             "
-            aria-label="Choose emoji"
+            aria-label="choose emoji"
             aria-expanded="false"
             aria-controls="chatEmojiPicker"
-            title="Choose emoji"
+            title="choose emoji"
         >
             🐱
         </button>
@@ -893,7 +893,7 @@ createBanManagerButton() {
     ].join(" ");
 
     button.title =
-        "manage Watch Party";
+        "manage watch party";
 
     button.setAttribute(
         "aria-expanded",
@@ -1060,7 +1060,7 @@ createBanManagerButton() {
                     hover:bg-white/10
                     hover:text-white
                 "
-                aria-label="close Watch Party manager"
+                aria-label="close watch party manager"
             >
                 ×
             </button>
@@ -1362,8 +1362,8 @@ if (clearButton) {
 
     this.setPartyManagerMessage(
         shouldEnable
-            ? "enabling Watch Party..."
-            : "disabling Watch Party..."
+            ? "enabling watch party..."
+            : "disabling watch party..."
     );
 
     try {
@@ -1410,7 +1410,7 @@ if (clearButton) {
                     shouldEnable
                         ? "enable"
                         : "disable"
-                } Watch Party (${response.status})`
+                } watch party (${response.status})`
             );
         }
 
@@ -1547,7 +1547,7 @@ if (clearButton) {
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `could not clear Watch party queue (${response.status})`
+                `could not clear watch party queue (${response.status})`
             );
         }
 
@@ -2161,7 +2161,7 @@ async loadWatchParty() {
 
         if (!response.ok) {
             throw new Error(
-                `could not load Watch Party (${response.status})`
+                `could not load watch party (${response.status})`
             );
         }
 
@@ -2171,7 +2171,7 @@ async loadWatchParty() {
         if (!result.success) {
             throw new Error(
                 result.error ||
-                "Watch Party request failed"
+                "watch party request failed"
             );
         }
 		
@@ -2212,7 +2212,7 @@ async loadWatchParty() {
 		
     } catch (error) {
         console.error(
-            "could not load Watch Party:",
+            "could not load watch party:",
             error
         );
 
@@ -2587,7 +2587,7 @@ const hasWatchPartyVideo =
                     hover:bg-white/10
                     hover:text-white
                 "
-                aria-label="close Watch Party"
+                aria-label="close watch party"
             >
                 ×
             </button>
@@ -3012,12 +3012,12 @@ if (playButton) {
                 }
             } catch (error) {
                 console.error(
-                    "Watch Party playback failed:",
+                    "watch party playback failed:",
                     error
                 );
 
                 window.alert(
-                    `Watch Party playback failed: ${error.message}`
+                    `watch party playback failed: ${error.message}`
                 );
             }
         }
@@ -3071,12 +3071,12 @@ if (nextButton) {
                 }
             } catch (error) {
                 console.error(
-                    "Watch Party next failed:",
+                    "watch party next failed:",
                     error
                 );
 
                 window.alert(
-                    `Watch Party next failed: ${error.message}`
+                    `watch party next failed: ${error.message}`
                 );
             }
         }
@@ -3139,7 +3139,7 @@ if (
 
             } catch (error) {
                 console.error(
-                    "could not switch Watch Party video:",
+                    "could not switch watch party video:",
                     error
                 );
             }
@@ -3215,7 +3215,7 @@ toggleWatchParty() {
 	async addWatchPartyVideo() {
     if (!this.watchParty.enabled) {
         this.watchPartyAddMessage =
-            "The Watch Party is no longer active.";
+            "the watch party is no longer active.";
 
         this.watchPartyAddError = true;
         this.renderWatchParty();
@@ -3388,7 +3388,7 @@ toggleWatchParty() {
         });
     } catch (error) {
         console.error(
-            "could not add Watch Party video:",
+            "could not add watch party video:",
             error
         );
 
@@ -3544,7 +3544,7 @@ async removeWatchPartyItem(
          */
     } catch (error) {
         console.error(
-            "could not remove Watch Party video:",
+            "could not remove watch party video:",
             error
         );
 
