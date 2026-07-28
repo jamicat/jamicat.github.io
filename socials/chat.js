@@ -1,6 +1,6 @@
 class ChatWidget {
 
-constructor() {
+constructor() {f
 this.API = "https://jamicat.ahrly.workers.dev";
 this.titleBar = null;
 this.socket = null;
@@ -2388,16 +2388,20 @@ window.setTerminalPlaybackControlsVisible?.(
                         `
                         : "";
 
-                return `
-                    <div
-                        class="
-                            flex items-start gap-2
-                            rounded-xl
-                            border border-white/10
-                            bg-white/5
-                            px-3 py-2
-                        "
-                    >
+              return `
+    <div
+        data-watch-party-play="${queueId}"
+        class="
+            flex items-start gap-2
+            rounded-xl
+            border border-white/10
+            bg-white/5
+            px-3 py-2
+            transition
+            hover:bg-white/10
+        cursor-pointer
+        "
+    >
                         <div
                             class="
                                 shrink-0
@@ -2984,6 +2988,72 @@ if (nextButton) {
         }
     );
 }
+
+	const playItems =
+    this.watchPartyPanel.querySelectorAll(
+        "[data-watch-party-play]"
+    );
+
+playItems.forEach(item => {
+    item.addEventListener(
+        "click",
+        async event => {
+
+            if (
+                event.target.closest(
+                    "[data-watch-party-remove]"
+                )
+            ) {
+                return;
+            }
+
+            const queueId =
+                Number(
+                    item.dataset.watchPartyPlay
+                );
+
+            if (
+                !Number.isInteger(queueId)
+            ) {
+                return;
+            }
+
+            try {
+if (
+    queueId ===
+    this.watchParty.queue[
+        this.watchParty.currentIndex
+    ]?.id
+) {
+    return;
+}
+                await fetch(
+                    `${this.API}/api/watchparty/play`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+                        body: JSON.stringify({
+                            clientId:
+                                this.clientId,
+                            queueId
+                        })
+                    }
+                );
+
+            } catch (error) {
+                console.error(
+                    "could not switch Watch Party video:",
+                    error
+                );
+            }
+
+        }
+    );
+});
+
 	
     const removeButtons =
         this.watchPartyPanel.querySelectorAll(
