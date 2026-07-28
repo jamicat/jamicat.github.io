@@ -202,10 +202,29 @@ if (aboutBtn) {
     .forEach(cls => aboutBtn.classList.add(cls));
 }
 
-  const icons = document.querySelectorAll('#videoToggle, #nextTrack, #changeTheme');
-  icons.forEach(icon => {
-    icon.className = `${theme.iconColor} transition-colors duration-200 text-lg leading-none`;
-  });
+const icons = document.querySelectorAll(
+    "#videoToggle, #nextTrack, #changeTheme"
+);
+
+icons.forEach(icon => {
+
+    Object.values(themes).forEach(t => {
+        t.iconColor
+            .split(" ")
+            .forEach(cls => icon.classList.remove(cls));
+    });
+
+    theme.iconColor
+        .split(" ")
+        .forEach(cls => icon.classList.add(cls));
+
+    icon.classList.add(
+        "transition-colors",
+        "duration-200",
+        "text-lg",
+        "leading-none"
+    );
+});
 
 const terminal = document.getElementById('terminal');
 
@@ -243,6 +262,23 @@ if (rewind10) {
 }
 
 const toggleBtn = document.getElementById('videoToggle');
+
+  window.setTerminalPlaybackControlsVisible = function (visible) {
+
+    toggleBtn?.classList.toggle(
+        "hidden",
+        !visible
+    );
+
+    document
+        .getElementById("nextTrack")
+        ?.classList.toggle(
+            "hidden",
+            !visible
+        );
+
+};
+  
 if (toggleBtn) {
   Object.values(themes).forEach(t => {
     toggleBtn.classList.remove(t.playActive, t.playInactive);
@@ -303,6 +339,14 @@ if (typedEl) {
   if (theme.typedOverride) {
     typedEl.classList.add(theme.typedOverride);
   }
+}
+
+  if (window.chatWindow?.watchParty) {
+
+    window.setTerminalPlaybackControlsVisible(
+        !window.chatWindow.watchParty.enabled
+    );
+
 }
 }
 
