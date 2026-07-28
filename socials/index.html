@@ -68,10 +68,49 @@ addComponents({
 <div id="terminal" class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[480px] rounded-3xl shadow-lg backdrop-blur-xl" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
 <div class="drag-area text-pink-600 text-xs mb-2 select-none flex justify-between items-center">
 <span class="flex items-center space-x-3">
-<img id="mainAvatar" src="acl.png" alt="Avatar" class="avatar-icon" />
-<span id="typed3" class="theme-heading font-medium text-3xl mt-9 text-white text-2xl mt-4 mb-1 text-blue-glow">Jamie</span>
+<img
+  id="mainAvatar"
+  src="acl.png"
+  alt="Avatar"
+  class="avatar-icon terminal-expanded-only"
+/>
+<span id="typed3" class="terminal-expanded theme-heading font-medium text-3xl mt-9 text-white text-2xl mt-4 mb-1 text-blue-glow">Jamie</span>
+ <span
+  id="terminalMinimizedLabel"
+  class="theme-heading hidden text-xs font-bold tracking-widest text-white text-blue-glow"
+>
+  jamie
+</span>
   </span>
 <div class="flex items-center space-x-2 mr-3 -mt-12">
+<button
+  id="terminalMinimize"
+  type="button"
+  class="text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none"
+  aria-label="minimize terminal"
+  aria-expanded="true"
+  title="minimize terminal"
+>
+  <svg
+    id="terminalMinimizeIcon"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    class="h-4 w-4 fill-current"
+    aria-hidden="true"
+  >
+    <path d="M5 11h14v2H5z" />
+  </svg>
+
+  <svg
+    id="terminalRestoreIcon"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    class="hidden h-4 w-4 fill-current"
+    aria-hidden="true"
+  >
+    <path d="M7 7h10v10H7V7zm2 2v6h6V9H9z" />
+  </svg>
+</button>
 <button id="videoToggle" class="text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none">
 <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-current hidden" viewBox="0 0 24 24">
 <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
@@ -118,7 +157,7 @@ class="w-4 h-4 fill-current"
 </button>
 </div>
 </div>
-<div id="terminalContent">
+<div id="terminalContent" class="terminal-expanded-only">
 <div class="font-medium text-pink-600 mt-5 mb-4 text-center" id="typed"></div>
 <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
 <button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">about!</button>
