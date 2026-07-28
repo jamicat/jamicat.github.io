@@ -2217,7 +2217,12 @@ async loadWatchParty() {
                     : []
         };
 
+		window.watchPartyPlayer?.applyState(
+    this.watchParty
+);
+		
         this.renderWatchParty();
+		
     } catch (error) {
         console.error(
             "could not load Watch Party:",
@@ -2460,11 +2465,17 @@ window.setTerminalPlaybackControlsVisible?.(
                 </div>
             `;
 
-	const normalPlayIcon =
-    document.getElementById("playIcon");
+	const playerState =
+    window.watchPartyPlayer?.getState?.();
 
 const playerIsCurrentlyPlaying =
-    normalPlayIcon?.classList.contains("hidden") === true;
+    playerState?.mode === "watch-party" &&
+    playerState?.playing === true;
+
+const hasWatchPartyVideo =
+    Boolean(
+        this.watchParty.currentVideoId
+    );
 	
     this.watchPartyPanel.innerHTML = `
         <div
@@ -2702,9 +2713,15 @@ const playerIsCurrentlyPlaying =
             text-white/80
             transition
             hover:bg-white/10
+			disabled:cursor-not-allowed
+            disabled:opacity-35
         "
+		${hasWatchPartyVideo ? "" : "disabled"}
         aria-label="Play or pause"
     >
+
+	
+	
         ${
     playerIsCurrentlyPlaying
         ? "❚❚"
@@ -2725,7 +2742,10 @@ const playerIsCurrentlyPlaying =
             text-white/80
             transition
             hover:bg-white/10
+			disabled:cursor-not-allowed
+disabled:opacity-35
         "
+		${hasWatchPartyVideo ? "" : "disabled"}
         aria-label="Next video"
     >
         ⏭
@@ -2840,21 +2860,18 @@ if (playButton) {
         event => {
             event.stopPropagation();
 
-            const terminalPlayButton =
-                document.getElementById("videoToggle");
+            if (!this.watchParty.currentVideoId) {
+    return;
+}
 
-            terminalPlayButton?.click();
+const playerState =
+    window.watchPartyPlayer?.getState?.();
 
-            const playIcon =
-                document.getElementById("playIcon");
-
-            const isNowPlaying =
-                playIcon?.classList.contains("hidden") === true;
-
-            playButton.textContent =
-                isNowPlaying
-                    ? "❚❚"
-                    : "▶";
+if (playerState?.playing) {
+    window.watchPartyPlayer?.pause();
+} else {
+    window.watchPartyPlayer?.play();
+}
         }
     );
 }
@@ -2869,12 +2886,9 @@ if (nextButton) {
         "click",
         event => {
             event.stopPropagation();
-
-            document
-                .getElementById(
-                    "nextTrack"
-                )
-                ?.click();
+console.warn(
+    "Next will be connected to the Worker shortly."
+);
         }
     );
 }
@@ -4489,7 +4503,12 @@ if (data.type === "watchparty-state") {
                 : []
     };
 
-    this.renderWatchParty();
+    window.watchPartyPlayer?.applyState(
+    this.watchParty
+);
+	
+
+this.renderWatchParty();
 
 	if (this.partyManager) {
     this.partyManagerBusy = false;
