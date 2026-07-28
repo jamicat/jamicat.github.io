@@ -588,12 +588,6 @@ font-size: 0.65rem;
     display: inline-block;
 }
 
-html[data-theme="Stars"]
-#terminal.terminal-minimized
-#terminalMinimizedLabel {
-    display: none !important;
-}
-
 #terminal.terminal-minimized
 .drag-area
 > div {
