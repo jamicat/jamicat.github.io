@@ -388,6 +388,8 @@ transition-[height] duration-200
         hover:bg-white/5
         active:scale-95
     "
+	aria-expanded="false"
+    aria-controls="chatWatchPartyPanel"
     aria-label="Watch Party"
     title="Watch Party"
 >
@@ -418,6 +420,24 @@ transition-[height] duration-200
 
 		
     </div>
+
+<div
+    id="chatWatchPartyPanel"
+    class="
+        terminal2
+        invisible pointer-events-none opacity-0
+        absolute bottom-full right-0 z-30
+        mb-2 w-72
+        rounded-2xl
+        border border-white/15
+        bg-black/95
+        p-3
+        text-white
+        shadow-xl
+        backdrop-blur-xl
+        transition-opacity duration-150
+    "
+></div>
 
     <div
         id="chatEmojiPicker"
@@ -478,6 +498,10 @@ if (this.watchPartyButton) {
         "hidden"
     );
 }
+	this.watchPartyPanel =
+    this.window.querySelector(
+        "#chatWatchPartyPanel"
+    );
 	this.emojiButton =
     this.window.querySelector("#chatEmojiButton");
 
@@ -1420,45 +1444,302 @@ async loadWatchParty() {
 }
 
 renderWatchParty() {
-    if (!this.watchPartyButton) {
-        console.error(
-            "Watch Party button was not found"
-        );
-
+    if (
+        !this.watchPartyButton ||
+        !this.watchPartyPanel
+    ) {
         return;
     }
 
+    const isEnabled =
+        this.watchParty.enabled === true;
+
     this.watchPartyButton.classList.toggle(
         "hidden",
-        !this.watchParty.enabled
+        !isEnabled
     );
 
-    if (
-        !this.watchParty.enabled &&
-        this.watchPartyOpen
-    ) {
+    if (!isEnabled) {
         this.watchPartyOpen = false;
     }
 
-    console.log(
-        "Watch Party rendered:",
-        {
-            enabled:
-                this.watchParty.enabled,
-
-            buttonHidden:
-                this.watchPartyButton
-                    .classList
-                    .contains("hidden")
-        }
+    this.watchPartyButton.setAttribute(
+        "aria-expanded",
+        this.watchPartyOpen
+            ? "true"
+            : "false"
     );
+
+    this.watchPartyPanel.classList.toggle(
+        "invisible",
+        !this.watchPartyOpen
+    );
+
+    this.watchPartyPanel.classList.toggle(
+        "pointer-events-none",
+        !this.watchPartyOpen
+    );
+
+    this.watchPartyPanel.classList.toggle(
+        "opacity-0",
+        !this.watchPartyOpen
+    );
+
+    if (!this.watchPartyOpen) {
+        return;
+    }
+
+    const queue =
+        Array.isArray(this.watchParty.queue)
+            ? this.watchParty.queue
+            : [];
+
+    const currentVideo =
+        queue.find(item => {
+            return (
+                item.videoId ===
+                this.watchParty.currentVideoId
+            );
+        }) || null;
+
+    const queueItems =
+        queue.length > 0
+            ? queue.map((item, index) => {
+                const isCurrent =
+                    item.videoId ===
+                    this.watchParty.currentVideoId;
+
+                return `
+                    <div
+                        class="
+                            flex items-start gap-2
+                            rounded-xl
+                            border border-white/10
+                            bg-white/5
+                            px-3 py-2
+                        "
+                    >
+                        <div
+                            class="
+                                shrink-0
+                                text-[9px]
+                                text-white/35
+                            "
+                        >
+                            ${index + 1}
+                        </div>
+
+                        <div class="min-w-0 flex-1">
+                            <div
+                                class="
+                                    truncate
+                                    text-[10px]
+                                    ${
+                                        isCurrent
+                                            ? "font-bold text-emerald-300"
+                                            : "text-white/80"
+                                    }
+                                "
+                                title="${this.escapeHtml(
+                                    item.title || "Untitled video"
+                                )}"
+                            >
+                                ${this.escapeHtml(
+                                    item.title || "Untitled video"
+                                )}
+                            </div>
+
+                            <div
+                                class="
+                                    mt-1 truncate
+                                    text-[8px]
+                                    text-white/35
+                                "
+                            >
+                                added by
+                                ${this.escapeHtml(
+                                    item.requestedByName ||
+                                    "anonymous"
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join("")
+            : `
+                <div
+                    class="
+                        rounded-xl
+                        border border-white/10
+                        bg-white/5
+                        px-3 py-4
+                        text-center
+                        text-[10px]
+                        text-white/40
+                    "
+                >
+                    the queue is empty
+                </div>
+            `;
+
+    this.watchPartyPanel.innerHTML = `
+        <div
+            class="
+                flex items-center justify-between
+                border-b border-white/10
+                pb-3
+            "
+        >
+            <div
+                class="
+                    theme-heading
+                    text-[10px]
+                    font-bold uppercase tracking-widest
+                "
+            >
+                watch party
+            </div>
+
+            <button
+                type="button"
+                data-close-watch-party
+                class="
+                    rounded-md
+                    px-2 py-1
+                    text-sm
+                    text-white/50
+                    transition
+                    hover:bg-white/10
+                    hover:text-white
+                "
+                aria-label="close Watch Party"
+            >
+                ×
+            </button>
+        </div>
+
+        <div class="mt-3">
+            <div
+                class="
+                    theme-heading
+                    text-[9px]
+                    uppercase tracking-widest
+                    text-white/40
+                "
+            >
+                now playing
+            </div>
+
+            <div
+                class="
+                    mt-2
+                    rounded-xl
+                    border border-white/10
+                    bg-white/5
+                    px-3 py-3
+                "
+            >
+                <div
+                    class="
+                        text-[11px]
+                        font-bold
+                        text-white/85
+                    "
+                >
+                    ${
+                        currentVideo
+                            ? this.escapeHtml(
+                                currentVideo.title
+                            )
+                            : "nothing playing yet"
+                    }
+                </div>
+
+                ${
+                    currentVideo
+                        ? `
+                            <div
+                                class="
+                                    mt-1
+                                    text-[8px]
+                                    text-white/35
+                                "
+                            >
+                                requested by
+                                ${this.escapeHtml(
+                                    currentVideo
+                                        .requestedByName ||
+                                    "anonymous"
+                                )}
+                            </div>
+                        `
+                        : ""
+                }
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <div
+                class="
+                    theme-heading
+                    mb-2
+                    text-[9px]
+                    uppercase tracking-widest
+                    text-white/40
+                "
+            >
+                queue
+            </div>
+
+            <div
+                class="
+                    max-h-48
+                    space-y-2
+                    overflow-y-auto
+                    pr-1
+                "
+            >
+                ${queueItems}
+            </div>
+        </div>
+    `;
+
+    const closeButton =
+        this.watchPartyPanel.querySelector(
+            "[data-close-watch-party]"
+        );
+
+    if (closeButton) {
+        closeButton.addEventListener(
+            "click",
+            event => {
+                event.stopPropagation();
+
+                this.watchPartyOpen = false;
+                this.renderWatchParty();
+            }
+        );
+    }
 }
 
-	toggleWatchParty() {
+toggleWatchParty() {
+    if (!this.watchParty.enabled) {
+        return;
+    }
+
     this.watchPartyOpen =
         !this.watchPartyOpen;
 
     this.renderWatchParty();
+}
+
+escapeHtml(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
 	async editMotd() {
