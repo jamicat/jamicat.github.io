@@ -457,6 +457,7 @@ let watchPartyState = {
 };
 
 let loadedVideoId = null;
+let currentWatchPartyState = null;
 let isPlaying = false;
 let suppressPlayerEvents = false;
 
@@ -938,17 +939,123 @@ function playNextNormalVideo() {
 
 window.watchPartyPlayer = {
   applyState(state) {
-    applyWatchPartyState(state);
-  },
+    currentWatchPartyState = state;
 
-  getState() {
+    if (
+        !state ||
+        !state.enabled
+    ) {
+        playbackMode = "terminal";
+        return;
+    }
+
+    playbackMode = "watch-party";
+
+    if (
+        state.currentVideoId &&
+        state.currentVideoId !==
+            loadedVideoId
+    ) {
+        loadedVideoId =
+            state.currentVideoId;
+
+        if (!playerReady || !player) {
+    return;
+}
+
+player.loadVideoById({
+            videoId:
+                state.currentVideoId,
+            startSeconds:
+                state.paused
+                    ? (
+                        state.pausedAt ??
+                        0
+                    )
+                    : Math.max(
+                        0,
+                        (
+                            Date.now() -
+                            state.startedAt
+                        ) / 1000
+                    )
+        });
+
+        return;
+    }
+
+    if (state.paused) {
+        player.pauseVideo();
+
+        if (
+            Number.isFinite(
+                state.pausedAt
+            )
+        ) {
+            player.seekTo(
+                state.pausedAt,
+                true
+            );
+        }
+
+        return;
+    }
+
+    const targetTime =
+        Math.max(
+            0,
+            (
+                Date.now() -
+                state.startedAt
+            ) / 1000
+        );
+
+    const actualTime =
+    typeof player.getCurrentTime ===
+        "function"
+        ? player.getCurrentTime()
+        : 0;
+
+    if (
+        Math.abs(
+            actualTime -
+            targetTime
+        ) > 1.5
+    ) {
+        player.seekTo(
+            targetTime,
+            true
+        );
+    }
+
+    player.playVideo();
+},
+
+ getState() {
+    let currentTime = null;
+
+    if (
+        player &&
+        playerReady &&
+        typeof player.getCurrentTime ===
+            "function"
+    ) {
+        const value =
+            player.getCurrentTime();
+
+        if (Number.isFinite(value)) {
+            currentTime = value;
+        }
+    }
+
     return {
-      ready: playerReady,
-      playing: isPlaying,
-      mode: playbackMode,
-      videoId: loadedVideoId
+        ready: playerReady,
+        playing: isPlaying,
+        mode: playbackMode,
+        videoId: loadedVideoId,
+        currentTime
     };
-  },
+},
 
   play() {
     if (
@@ -970,7 +1077,12 @@ window.watchPartyPlayer = {
       return;
     }
 
+   if (
+    typeof player.pauseVideo ===
+    "function"
+) {
     player.pauseVideo();
+}
   }
 };
 
