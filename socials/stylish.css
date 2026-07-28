@@ -561,3 +561,49 @@ font-size: 0.65rem;
     font-size: 0.88rem;
   }
 }
+
+#terminal {
+    transition:
+        width 180ms ease,
+        padding 180ms ease,
+        border-radius 180ms ease;
+}
+
+#terminal.terminal-minimized {
+    width: min(90vw, 320px) !important;
+    padding: 0.7rem 1rem !important;
+    border-radius: 1rem !important;
+}
+
+#terminal.terminal-minimized .drag-area {
+    margin-bottom: 0 !important;
+    min-height: 1.5rem;
+}
+
+#terminal.terminal-minimized .terminal-expanded-only {
+    display: none !important;
+}
+
+#terminal.terminal-minimized #terminalMinimizedLabel {
+    display: inline-block;
+}
+
+html[data-theme="Stars"]
+#terminal.terminal-minimized
+#terminalMinimizedLabel {
+    display: none !important;
+}
+
+#terminal.terminal-minimized
+.drag-area
+> div {
+    margin-top: 0 !important;
+    margin-right: 0 !important;
+}
+
+#terminal.terminal-minimized
+#terminalMinimize {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
