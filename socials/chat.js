@@ -1456,8 +1456,6 @@ if (clearButton) {
 	window.setTerminalMinimized?.(
     shouldEnable
 );
-}
-
         if (!shouldEnable) {
             this.watchParty.currentVideoId =
                 null;
