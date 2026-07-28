@@ -469,6 +469,9 @@ transition-[height] duration-200
     this.window.querySelector(
         "#chatWatchPartyButton"
     );
+	this.watchPartyButton.classList.add(
+    "hidden"
+);
 	this.emojiButton =
     this.window.querySelector("#chatEmojiButton");
 
@@ -1416,27 +1419,27 @@ this.watchPartyOpen = false;
 
 renderWatchParty() {
 
-    if (!this.watchPartyButton)
+    if (!this.watchPartyButton) {
         return;
-
-    if (this.watchParty.enabled) {
-
-        this.watchPartyButton.classList.add(
-            "text-emerald-300"
-        );
-
-    } else {
-
-        this.watchPartyButton.classList.remove(
-            "text-emerald-300"
-        );
-
     }
 
-    console.log(
-        this.watchParty
+    if (!this.watchParty.enabled) {
+
+        this.watchPartyButton.classList.add(
+            "hidden"
+        );
+
+        return;
+    }
+
+    this.watchPartyButton.classList.remove(
+        "hidden"
     );
 
+    console.log(
+        "Watch Party:",
+        this.watchParty
+    );
 }
 
 	toggleWatchParty() {
