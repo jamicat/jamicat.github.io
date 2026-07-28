@@ -682,8 +682,8 @@ setupAdminAuthentication() {
         return;
     }
 
-    title.title =
-        "Double-click for admin login";
+    /*title.title =
+    "double-click for admin login";*/
 
     title.addEventListener(
         "dblclick",
