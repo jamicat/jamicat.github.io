@@ -843,9 +843,9 @@ function applyWatchPartyState(state) {
     !watchPartyState.enabled
   );
 
-  if (watchPartyState.enabled) {
-  window.setTerminalMinimized?.(true);
-}
+ window.setTerminalMinimized?.(
+  watchPartyState.enabled
+);
 
   if (!player || !playerReady) {
     return;
