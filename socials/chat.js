@@ -1164,37 +1164,40 @@ createBanManagerButton() {
                 "
             ></div>
 
-            <button
-                type="button"
-                data-party-action="clear"
-                class="
-                    w-full
-                    cursor-not-allowed
-                    rounded-xl
-                    border border-white/10
-                    bg-white/5
-                    px-3 py-2.5
-                    text-left
-                    text-white/30
-                    opacity-60
-                "
-                disabled
-                title="The Clear Queue endpoint will be added next"
-            >
-                <span class="font-bold">
-                    Clear Queue
-                </span>
+        <button
+    type="button"
+    data-party-action="clear"
+    class="
+        w-full
+        rounded-xl
+        border border-amber-300/20
+        bg-amber-500/10
+        px-3 py-2.5
+        text-left
+        text-amber-100
+        transition
+        hover:border-amber-300/40
+        hover:bg-amber-500/20
+        disabled:cursor-not-allowed
+        disabled:opacity-50
+    "
+    ${busy ? "disabled" : ""}
+>
+    <span class="font-bold">
+        Clear Queue
+    </span>
 
-                <span
-                    class="
-                        mt-1 block
-                        text-[9px]
-                        text-white/35
-                    "
-                >
-                    Coming in the next backend step.
-                </span>
-            </button>
+    <span
+        class="
+            mt-1 block
+            text-[9px]
+            text-white/40
+        "
+    >
+        Remove every temporary Watch Party video
+        without disabling the party.
+    </span>
+</button>
 
             <div
                 data-party-message
@@ -1266,6 +1269,23 @@ createBanManagerButton() {
             }
         );
     }
+
+		const clearButton =
+    this.partyManager.querySelector(
+        '[data-party-action="clear"]'
+    );
+
+if (clearButton) {
+    clearButton.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            this.clearWatchPartyQueue();
+        }
+    );
+}
 }
 
 	setPartyManagerMessage(
@@ -1441,6 +1461,121 @@ createBanManagerButton() {
     } catch (error) {
         console.error(
             "could not update Watch Party:",
+            error
+        );
+
+        this.partyManagerBusy = false;
+        this.renderPartyManager();
+
+        this.setPartyManagerMessage(
+            error.message,
+            true
+        );
+    }
+}
+
+	async clearWatchPartyQueue() {
+    if (
+        !this.isAdmin ||
+        !this.adminKey
+    ) {
+        window.alert(
+            "admin authentication is required"
+        );
+
+        return;
+    }
+
+    if (this.partyManagerBusy) {
+        return;
+    }
+
+    const queue =
+        Array.isArray(this.watchParty?.queue)
+            ? this.watchParty.queue
+            : [];
+
+    if (queue.length === 0) {
+        this.setPartyManagerMessage(
+            "The Watch Party queue is already empty."
+        );
+
+        return;
+    }
+
+    const confirmed =
+        window.confirm(
+            "Clear the entire Watch Party queue?\n\n" +
+            "Every queued video will be removed. " +
+            "The Watch Party will remain enabled.\n\n" +
+            "This cannot be undone."
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    this.partyManagerBusy = true;
+    this.renderPartyManager();
+
+    this.setPartyManagerMessage(
+        "clearing Watch Party queue..."
+    );
+
+    try {
+        const response = await fetch(
+            `${this.API}/api/admin/watchparty/clear`,
+            {
+                method: "POST",
+                headers: {
+                    "Authorization":
+                        `Bearer ${this.adminKey}`
+                }
+            }
+        );
+
+        let result = null;
+
+        try {
+            result =
+                await response.json();
+        } catch {
+            // The general error below handles
+            // a non-JSON response.
+        }
+
+        if (response.status === 401) {
+            this.disableAdminMode();
+
+            window.alert(
+                "your admin session is no longer valid"
+            );
+
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `could not clear Watch Party queue (${response.status})`
+            );
+        }
+
+        /*
+         * Do not manually clear this.watchParty.queue.
+         *
+         * The Worker broadcasts the authoritative
+         * Watch Party state to every connected client.
+         */
+        this.partyManagerBusy = false;
+        this.renderPartyManager();
+
+        this.setPartyManagerMessage(
+            "Watch Party queue cleared."
+        );
+    } catch (error) {
+        console.error(
+            "could not clear Watch Party queue:",
             error
         );
 
