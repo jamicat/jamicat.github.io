@@ -2730,6 +2730,7 @@ const hasWatchPartyVideo =
         <span
             id="watchPartyTime"
             class="
+			    watch-party-time
                 normal-case
                 tracking-normal
                 tabular-nums
