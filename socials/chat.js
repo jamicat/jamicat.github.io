@@ -2481,6 +2481,12 @@ if (this.musicNextButton) {
                 </div>
             `;
 
+	const normalPlayIcon =
+    document.getElementById("playIcon");
+
+const playerIsCurrentlyPlaying =
+    normalPlayIcon?.classList.contains("hidden") === true;
+	
     this.watchPartyPanel.innerHTML = `
         <div
             class="
@@ -2721,10 +2727,10 @@ if (this.musicNextButton) {
         aria-label="Play or pause"
     >
         ${
-            this.watchParty.paused
-                ? "▶"
-                : "❚❚"
-        }
+    playerIsCurrentlyPlaying
+        ? "❚❚"
+        : "▶"
+}
     </button>
 
     <button
@@ -2855,11 +2861,21 @@ if (playButton) {
         event => {
             event.stopPropagation();
 
-            document
-                .getElementById(
-                    "videoToggle"
-                )
-                ?.click();
+            const terminalPlayButton =
+                document.getElementById("videoToggle");
+
+            terminalPlayButton?.click();
+
+            const playIcon =
+                document.getElementById("playIcon");
+
+            const isNowPlaying =
+                playIcon?.classList.contains("hidden") === true;
+
+            playButton.textContent =
+                isNowPlaying
+                    ? "❚❚"
+                    : "▶";
         }
     );
 }
