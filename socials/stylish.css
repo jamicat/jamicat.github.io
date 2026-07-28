@@ -324,8 +324,8 @@ object-fit: contain;
 
   border-radius: 999px;
 
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.12);
+border: 1px solid rgba(255,255,255,.18);
 
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
