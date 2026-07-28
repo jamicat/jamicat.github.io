@@ -2733,7 +2733,7 @@ const hasWatchPartyVideo =
                 normal-case
                 tracking-normal
                 tabular-nums
-                text-white/30
+                text-white/80
             "
         >
             0:00 / 0:00
