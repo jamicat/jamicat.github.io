@@ -3233,7 +3233,7 @@ toggleWatchParty() {
 
     if (!url) {
         this.watchPartyAddMessage =
-            "Paste a YouTube URL first.";
+            "paste a youtube URL first.";
 
         this.watchPartyAddError = true;
         this.renderWatchParty();
@@ -3255,7 +3255,7 @@ toggleWatchParty() {
         parsedUrl = new URL(url);
     } catch {
         this.watchPartyAddMessage =
-            "Enter a valid YouTube URL.";
+            "enter a valid youtube URL.";
 
         this.watchPartyAddError = true;
         this.renderWatchParty();
@@ -3331,7 +3331,7 @@ toggleWatchParty() {
                 "INVALID_YOUTUBE_URL"
             ) {
                 message =
-                    "That YouTube URL is not valid.";
+                    "that youtube URL is not valid.";
             }
 
             if (
@@ -3339,7 +3339,7 @@ toggleWatchParty() {
                 "VIDEO_ALREADY_QUEUED"
             ) {
                 message =
-                    "That video is already in the queue.";
+                    "that video is already in the queue.";
             }
 
             if (
@@ -3347,7 +3347,7 @@ toggleWatchParty() {
                 "USER_QUEUE_LIMIT"
             ) {
                 message =
-                    "You already have 5 videos in the queue.";
+                    "you already have 5 videos in the queue.";
             }
 
             if (
@@ -3355,7 +3355,7 @@ toggleWatchParty() {
                 "WATCH_PARTY_ENDED"
             ) {
                 message =
-                    "The Watch Party has ended.";
+                    "the watch party has ended.";
 
                 await this.loadWatchParty();
             }
@@ -3424,7 +3424,7 @@ async removeWatchPartyItem(
         queueId <= 0
     ) {
         window.alert(
-            "invalid Watch Party queue item"
+            "invalid watch party queue item"
         );
 
         return;
