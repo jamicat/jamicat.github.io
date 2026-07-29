@@ -638,124 +638,6 @@ font-size: 0.65rem;
 }
 
 @media
-    (max-width: 640px)
-    and (orientation: portrait)
-    and (pointer: coarse) {
-
-    #terminal {
-        width: calc(100vw - 24px) !important;
-        max-width: 420px !important;
-        max-height: calc(100dvh - 24px);
-        padding: 1rem !important;
-
-        overflow-x: hidden;
-        overflow-y: auto;
-
-        overscroll-behavior: contain;
-        scrollbar-width: thin;
-    }
-
-    #terminal .avatar-icon {
-        width: 78px;
-        height: 94px;
-    }
-
-    #terminal #typed3,
-    #terminal #typed3 span {
-        font-size: 1.5rem !important;
-        margin-top: 0.5rem !important;
-    }
-
-    #terminal #typed {
-        margin-top: 0.5rem;
-        margin-bottom: 0.75rem;
-    }
-
-    #terminal .drag-area {
-        margin-bottom: 0.35rem;
-    }
-
-    .volume-wrap {
-        top: 10px;
-        left: 10px;
-        scale: 1;
-    }
-
-    .volume-wrap:active #volumeSlider,
-    .volume-wrap:focus-within #volumeSlider {
-        width: 70px;
-        opacity: 1;
-        margin-left: 8px;
-    }
-}
-
-@media
-    (max-width: 950px)
-    and (max-height: 500px)
-    and (orientation: landscape)
-    and (pointer: coarse) {
-
-    /* Main terminal */
-    #terminal {
-        width: min(390px, calc(100dvw - 20px)) !important;
-        padding: 0.65rem !important;
-    }
-
-    #terminal .avatar-icon {
-        width: 48px;
-        height: 58px;
-    }
-
-    /* Chat */
-    #chatWindow {
-        width: min(340px, calc(100dvw - 20px)) !important;
-        padding: 0.65rem !important;
-    }
-
-    /* Main guestbook form */
-    #guestBookWindow {
-        width: min(300px, 45dvw) !important;
-        max-width: none !important;
-        padding: 0.6rem !important;
-    }
-
-    #guestBookWindow .avatar-icon2 {
-        width: 46px;
-        height: 55px;
-        margin-right: 0.2rem;
-    }
-
-    #guestBookWindow #typed2,
-    #guestBookWindow #typed2 span {
-        min-height: 1.3em;
-        margin-top: 0.15rem !important;
-        margin-bottom: 0.2rem !important;
-        font-size: 1rem !important;
-    }
-
-    #guestBookWindow form > * + * {
-        margin-top: 0.4rem !important;
-    }
-
-    #guestBookWindow input,
-    #guestBookWindow textarea {
-        padding: 0.35rem !important;
-        font-size: 0.62rem !important;
-    }
-
-    #guestBookWindow textarea {
-        min-height: 40px;
-    }
-
-    #guestbookComments {
-        width: min(190px, 30dvw) !important;
-        max-width: none !important;
-        padding: 0.5rem !important;
-        font-size: 0.6rem !important;
-    }
-}
-
-@media
     (max-width: 950px)
     and (max-height: 500px)
     and (orientation: landscape)
@@ -931,4 +813,16 @@ font-size: 0.65rem;
 .gwterminal {
     background: transparent;
     border: 2px solid rgba(255,255,255,0.15);
+}
+
+@media
+    (max-width: 950px)
+    and (pointer: coarse) {
+
+    #guestbookComments {
+        box-sizing: border-box;
+        min-width: 0 !important;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 }
