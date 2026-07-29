@@ -643,6 +643,10 @@ font-size: 0.65rem;
     and (orientation: landscape)
     and (pointer: coarse) {
 
+      #guestBookWindow {
+        scale: 0.5;
+    }
+
       #chatWindow,
 #guestBookWindow {
     max-height: calc(100dvh - 16px);
@@ -825,5 +829,15 @@ font-size: 0.65rem;
         min-width: 0 !important;
         overflow-x: hidden;
         overflow-y: auto;
+    }
+}
+
+@media
+    (max-width: 640px)
+    and (orientation: portrait)
+    and (pointer: coarse) {
+
+    #guestBookWindow {
+        scale: 0.5;
     }
 }
