@@ -2611,7 +2611,7 @@ const hasWatchPartyVideo =
                 text-white/40
             "
         >
-            add YouTube video
+            add youtube video or playlist
         </label>
 
         <div
@@ -2630,7 +2630,7 @@ const hasWatchPartyVideo =
                 value="${this.escapeHtml(
                     this.watchPartyAddUrl
                 )}"
-                placeholder="paste a youtube url"
+                placeholder="paste a youtube url or playlist url"
                 class="
                     min-w-0
                     flex-1
@@ -2860,8 +2860,8 @@ disabled:opacity-35
                     text-white/40
                 "
             >
-                queue
-            </div>
+                queue (${queue.length})
+</div>
 
             <div
                 class="
@@ -3288,7 +3288,7 @@ toggleWatchParty() {
 
     this.watchPartyAddBusy = true;
     this.watchPartyAddMessage =
-        "Adding video...";
+        "adding video or playlist...";
     this.watchPartyAddError = false;
 
     this.renderWatchParty();
@@ -3349,6 +3349,46 @@ toggleWatchParty() {
                 message =
                     "you already have 5 videos in the queue.";
             }
+
+			if (
+    result?.code ===
+    "QUEUE_FULL"
+) {
+    message =
+        "the watch party queue is full.";
+}
+
+if (
+    result?.code ===
+    "PLAYLIST_API_NOT_CONFIGURED"
+) {
+    message =
+        "playlist imports are not available yet.";
+}
+
+if (
+    result?.code ===
+    "PLAYLIST_FETCH_FAILED"
+) {
+    message =
+        "could not read that playlist. it may be private or unavailable.";
+}
+
+if (
+    result?.code ===
+    "PLAYLIST_HAS_NO_VIDEOS"
+) {
+    message =
+        "that playlist has no available videos.";
+}
+
+if (
+    result?.code ===
+    "PLAYLIST_ALREADY_QUEUED"
+) {
+    message =
+        "all videos from that playlist are already queued.";
+}
 
             if (
                 result?.code ===
