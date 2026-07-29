@@ -1111,24 +1111,25 @@ function applyWatchPartyState(state) {
       ? pausedTime
       : playingTime;
 
-  if (videoChanged) {
+ if (videoChanged) {
     loadedVideoId = videoId;
     setPoster(videoId);
 
     player.loadVideoById({
-  videoId,
-  startSeconds: targetTime
-});
+        videoId,
+        startSeconds: targetTime
+    });
 
-if (watchPartyState.paused) {
-  player.pauseVideo();
-  updatePlaybackIcons(false);
-} else {
-  updatePlaybackIcons(true);
+    if (watchPartyState.paused) {
+        player.pauseVideo();
+        updatePlaybackIcons(false);
+    } else {
+        player.playVideo();
+        updatePlaybackIcons(true);
+    }
+
+    return;
 }
-
-return;
-  }
 
   const actualTime =
     typeof player.getCurrentTime ===
