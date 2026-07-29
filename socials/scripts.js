@@ -2108,7 +2108,7 @@ const phoneMode = getPhoneLayoutMode();
 
 if (phoneMode === 'portrait') {
     guestBookWindow.style.left = '50%';
-    guestBookWindow.style.top = '42%';
+    guestBookWindow.style.top = '38%';
 } else {
     guestBookWindow.style.left = '50%';
     guestBookWindow.style.top = '50%';
