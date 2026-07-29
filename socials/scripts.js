@@ -416,21 +416,172 @@ function initTyped(themeName = 'Default') {
   loop: false,
 });*/
 
-if (window.matchMedia("(max-width:640px)").matches) {
 
-    const terminal =
+function getPhoneLayoutMode() {
+    const portraitPhone =
+        window.matchMedia(
+            "(max-width: 640px) " +
+            "and (orientation: portrait) " +
+            "and (pointer: coarse)"
+        ).matches;
+
+    const landscapePhone =
+        window.matchMedia(
+            "(max-width: 950px) " +
+            "and (max-height: 500px) " +
+            "and (orientation: landscape) " +
+            "and (pointer: coarse)"
+        ).matches;
+
+    if (landscapePhone) {
+        return "landscape";
+    }
+
+    if (portraitPhone) {
+        return "portrait";
+    }
+
+    return null;
+}
+
+
+function clampPhoneTerminalToViewport() {
+    const phoneMode =
+        getPhoneLayoutMode();
+
+    if (!phoneMode) {
+        return;
+    }
+
+    const terminalElement =
         document.getElementById("terminal");
 
-    if (
-        terminal &&
-        !terminal.dataset.mobilePositioned
-    ) {
-
-        terminal.style.top = "42%";
-
-        terminal.dataset.mobilePositioned = "1";
+    if (!terminalElement) {
+        return;
     }
+
+    const transform =
+        terminalElement.style.transform || "";
+
+    const stillUsesCentredTransform =
+        transform.includes(
+            "translate(-50%, -50%)"
+        );
+
+    if (stillUsesCentredTransform) {
+        terminalElement.style.top =
+            phoneMode === "landscape"
+                ? "50%"
+                : "42%";
+
+        return;
+    }
+
+    window.requestAnimationFrame(() => {
+        const viewportWidth =
+            window.innerWidth;
+
+        const viewportHeight =
+            window.innerHeight;
+
+        const edgeGap = 8;
+
+        const rect =
+            terminalElement
+                .getBoundingClientRect();
+
+        let x =
+            parseFloat(
+                terminalElement.getAttribute(
+                    "data-x"
+                )
+            ) || 0;
+
+        let y =
+            parseFloat(
+                terminalElement.getAttribute(
+                    "data-y"
+                )
+            ) || 0;
+
+        if (rect.left < edgeGap) {
+            x += edgeGap - rect.left;
+        }
+
+        if (
+            rect.right >
+            viewportWidth - edgeGap
+        ) {
+            x -=
+                rect.right -
+                (
+                    viewportWidth -
+                    edgeGap
+                );
+        }
+
+        if (rect.top < edgeGap) {
+            y += edgeGap - rect.top;
+        }
+
+        if (
+            rect.bottom >
+            viewportHeight - edgeGap
+        ) {
+            y -=
+                rect.bottom -
+                (
+                    viewportHeight -
+                    edgeGap
+                );
+        }
+
+        terminalElement.setAttribute(
+            "data-x",
+            String(x)
+        );
+
+        terminalElement.setAttribute(
+            "data-y",
+            String(y)
+        );
+
+        terminalElement.style.transform =
+            `translate(${x}px, ${y}px)`;
+    });
 }
+
+
+let phoneTerminalResizeTimer = null;
+
+function schedulePhoneTerminalClamp() {
+    window.clearTimeout(
+        phoneTerminalResizeTimer
+    );
+
+    phoneTerminalResizeTimer =
+        window.setTimeout(
+            clampPhoneTerminalToViewport,
+            150
+        );
+}
+
+clampPhoneTerminalToViewport();
+
+window.addEventListener(
+    "resize",
+    schedulePhoneTerminalClamp
+);
+
+window.addEventListener(
+    "orientationchange",
+    schedulePhoneTerminalClamp
+);
+
+window.visualViewport?.addEventListener(
+    "resize",
+    schedulePhoneTerminalClamp
+);
 
 interact('#terminal').draggable({
   allowFrom: '.drag-area',
