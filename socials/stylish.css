@@ -669,6 +669,19 @@ font-size: 0.65rem;
     and (orientation: landscape)
     and (pointer: coarse) {
 
+      #chatWindow,
+#guestBookWindow {
+    max-height: calc(100dvh - 16px);
+    overflow: hidden;
+}
+
+#chatMessages,
+#guestbookComments {
+    max-height: calc(100dvh - 150px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+      
     #terminal {
         width: min(440px, calc(100vw - 24px)) !important;
         max-width: calc(100vw - 24px) !important;
