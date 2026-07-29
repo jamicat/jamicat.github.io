@@ -2202,19 +2202,21 @@ function updateCommentBoxPosition() {
         `${rect.height}px`;
 
     if (phoneMode === 'portrait') {
-        commentBox.style.left =
-            `${rect.left}px`;
+        const width = rect.width * 0.96;
 
-        const overlap = 20;
+commentBox.style.width =
+    `${width}px`;
 
-    commentBox.style.top =
+commentBox.style.maxWidth =
+    `${width}px`;
+
+commentBox.style.left =
+    `${rect.left + ((rect.width - width) / 2)}px`;
+
+const overlap = 20;
+
+commentBox.style.top =
     `${rect.bottom - overlap}px`;
-
-        commentBox.style.width =
-            `${rect.width}px`;
-
-        commentBox.style.maxWidth =
-            `${rect.width}px`;
 
         return;
     }
