@@ -119,29 +119,3 @@
 #chatWatchPartyPanel::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.30);
 }
-
-@media (max-width: 640px) {
-    #chatWindow {
-        transform: translate(0, 0) !important;
-        right: 8px !important;
-        left: 8px !important;
-        bottom: 8px !important;
-
-        width: auto !important;
-        max-width: none !important;
-
-        height: min(
-            500px,
-            calc(100dvh - 16px)
-        ) !important;
-
-        max-height: calc(100dvh - 16px);
-
-        touch-action: auto;
-    }
-
-    #chatTitleBar {
-        cursor: default !important;
-        touch-action: auto;
-    }
-}
