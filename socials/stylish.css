@@ -377,6 +377,15 @@ border: 1px solid rgba(255,255,255,.18);
   margin-left: 8px;
 }
 
+@media (max-width:640px) {
+    .volume-wrap:active #volumeSlider,
+    .volume-wrap:focus-within #volumeSlider {
+        width: 70px;
+        opacity: 1;
+        margin-left: 8px;
+    }
+}
+
 #volumeSlider::-webkit-slider-runnable-track {
   height: 3px;
   border-radius: 999px;
@@ -646,18 +655,16 @@ font-size: 0.65rem;
         margin-bottom:.75rem;
     }
 
-    #buttonRow{
-        gap:.6rem;
-    }
+  #buttonRow {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: .6rem;
+}
 
-    #buttonRow .terminal-button{
-
-        width:calc(50% - .35rem);
-
-        margin:0 !important;
-
-        text-align:center;
-    }
+#buttonRow .terminal-button {
+    width: 100% !important;
+    margin: 0 !important;
+}
 
     #videoToggle,
     #nextTrack,
