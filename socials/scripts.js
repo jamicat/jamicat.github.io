@@ -445,7 +445,7 @@ function getPhoneLayoutMode() {
 }
 
 
-function clampPhoneTerminalToViewport() {
+function clampPhoneWindowToViewport(element) {
     const phoneMode =
         getPhoneLayoutMode();
 
@@ -453,15 +453,11 @@ function clampPhoneTerminalToViewport() {
         return;
     }
 
-    const terminalElement =
-        document.getElementById("terminal");
-
-    if (!terminalElement) {
-        return;
-    }
-
+  if (!element) {
+    return;
+}
     const transform =
-        terminalElement.style.transform || "";
+        element.style.transform || "";
 
     const stillUsesCentredTransform =
         transform.includes(
@@ -469,7 +465,7 @@ function clampPhoneTerminalToViewport() {
         );
 
     if (stillUsesCentredTransform) {
-        terminalElement.style.top =
+        element.style.top =
             phoneMode === "landscape"
                 ? "50%"
                 : "42%";
@@ -487,19 +483,19 @@ function clampPhoneTerminalToViewport() {
         const edgeGap = 8;
 
         const rect =
-            terminalElement
+            element
                 .getBoundingClientRect();
 
         let x =
             parseFloat(
-                terminalElement.getAttribute(
+                element.getAttribute(
                     "data-x"
                 )
             ) || 0;
 
         let y =
             parseFloat(
-                terminalElement.getAttribute(
+                element.getAttribute(
                     "data-y"
                 )
             ) || 0;
@@ -536,17 +532,17 @@ function clampPhoneTerminalToViewport() {
                 );
         }
 
-        terminalElement.setAttribute(
+        element.setAttribute(
             "data-x",
             String(x)
         );
 
-        terminalElement.setAttribute(
+        element.setAttribute(
             "data-y",
             String(y)
         );
 
-        terminalElement.style.transform =
+        element.style.transform =
             `translate(${x}px, ${y}px)`;
     });
 }
@@ -560,13 +556,48 @@ function schedulePhoneTerminalClamp() {
     );
 
     phoneTerminalResizeTimer =
-        window.setTimeout(
-            clampPhoneTerminalToViewport,
-            150
-        );
+        window.setTimeout(() => {
+
+            clampPhoneWindowToViewport(
+                document.getElementById("terminal")
+            );
+
+            const chatWindow =
+                document.getElementById("chatWindow");
+
+            if (chatWindow) {
+                clampPhoneWindowToViewport(chatWindow);
+            }
+
+            const guestBookWindow =
+                document.getElementById("guestBookWindow");
+
+            if (guestBookWindow) {
+                clampPhoneWindowToViewport(
+                    guestBookWindow
+                );
+            }
+
+        }, 150);
 }
 
-clampPhoneTerminalToViewport();
+clampPhoneWindowToViewport(
+    document.getElementById("terminal")
+);
+
+const chatWindow =
+    document.getElementById("chatWindow");
+
+if (chatWindow) {
+    clampPhoneWindowToViewport(chatWindow);
+}
+
+const guestBookWindow =
+    document.getElementById("guestBookWindow");
+
+if (guestBookWindow) {
+    clampPhoneWindowToViewport(guestBookWindow);
+}
 
 window.addEventListener(
     "resize",
