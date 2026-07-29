@@ -474,13 +474,40 @@ function clampPhoneWindowToViewport(element) {
     }
 
     window.requestAnimationFrame(() => {
-        const viewportWidth =
-            window.innerWidth;
+      const viewport =
+    window.visualViewport;
 
-        const viewportHeight =
-            window.innerHeight;
+const viewportWidth =
+    viewport?.width ||
+    window.innerWidth;
+
+const viewportHeight =
+    viewport?.height ||
+    window.innerHeight;
+
+const viewportLeft =
+    viewport?.offsetLeft || 0;
+
+const viewportTop =
+    viewport?.offsetTop || 0;
 
         const edgeGap = 8;
+
+      const leftBoundary =
+    viewportLeft + edgeGap;
+
+const topBoundary =
+    viewportTop + edgeGap;
+
+const rightBoundary =
+    viewportLeft +
+    viewportWidth -
+    edgeGap;
+
+const bottomBoundary =
+    viewportTop +
+    viewportHeight -
+    edgeGap;
 
         const rect =
             element
@@ -500,37 +527,21 @@ function clampPhoneWindowToViewport(element) {
                 )
             ) || 0;
 
-        if (rect.left < edgeGap) {
-            x += edgeGap - rect.left;
-        }
+        if (rect.left < leftBoundary) {
+    x += leftBoundary - rect.left;
+}
 
-        if (
-            rect.right >
-            viewportWidth - edgeGap
-        ) {
-            x -=
-                rect.right -
-                (
-                    viewportWidth -
-                    edgeGap
-                );
-        }
+       if (rect.right > rightBoundary) {
+    x -= rect.right - rightBoundary;
+}
 
-        if (rect.top < edgeGap) {
-            y += edgeGap - rect.top;
-        }
+        if (rect.top < topBoundary) {
+    y += topBoundary - rect.top;
+}
 
-        if (
-            rect.bottom >
-            viewportHeight - edgeGap
-        ) {
-            y -=
-                rect.bottom -
-                (
-                    viewportHeight -
-                    edgeGap
-                );
-        }
+        if (rect.bottom > bottomBoundary) {
+    y -= rect.bottom - bottomBoundary;
+}
 
         element.setAttribute(
             "data-x",
