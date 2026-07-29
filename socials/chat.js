@@ -4998,21 +4998,37 @@ this.messageInput.focus();
 }
 
 restoreSettings() {
+    const savedName =
+        localStorage.getItem("chat_name");
 
-    const savedName = localStorage.getItem("chat_name");
-
-    if (savedName)
+    if (savedName) {
         this.nameInput.value = savedName;
+    }
 
-    const x = localStorage.getItem("chat_x") || 0;
-    const y = localStorage.getItem("chat_y") || 0;
+    const isMobile =
+        window.matchMedia(
+            "(max-width: 640px)"
+        ).matches;
+    if (isMobile) {
+        this.window.dataset.x = "0";
+        this.window.dataset.y = "0";
+        this.window.style.transform =
+            "translate(0px, 0px)";
+
+        return;
+    }
+
+    const x =
+        localStorage.getItem("chat_x") || "0";
+
+    const y =
+        localStorage.getItem("chat_y") || "0";
 
     this.window.dataset.x = x;
     this.window.dataset.y = y;
 
     this.window.style.transform =
         `translate(${x}px, ${y}px)`;
-
 }
 
 formatDuration(seconds) {
