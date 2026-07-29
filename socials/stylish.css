@@ -129,19 +129,31 @@ height: 250%;
 }
 }
 
+:root {
+    --terminal-scale: 0.9;
+    --terminal2-scale: 0.9;
+    --gwterminal-scale: 1;
+    --chat-scale: 1;
+}
+
 .terminal {
-  scale: 0.9;
-  background: transparent;
-  border: 2px solid;
+    scale: var(--terminal-scale);
+    background: transparent;
+    border: 2px solid;
 }
 
 .terminal2 {
-  scale: 0.9;
+    scale: var(--terminal2-scale);
 }
 
 .gwterminal {
-  background: transparent;
-  border: 2px solid rgba(255,255,255,0.15);
+    scale: var(--gwterminal-scale);
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.15);
+}
+
+#chatWindow {
+    scale: var(--chat-scale);
 }
 
 .terminal p, .terminal div { 
@@ -848,4 +860,21 @@ font-size: 0.65rem;
     #terminal {
         animation: none;
     }
+}
+
+@media
+    (max-width:950px)
+    and (pointer:coarse) {
+
+    :root {
+
+        --terminal-scale: .82;
+
+        --terminal2-scale: .82;
+
+        --gwterminal-scale: .82;
+
+        --chat-scale: .90;
+    }
+
 }
