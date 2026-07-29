@@ -335,6 +335,17 @@ border: 1px solid rgba(255,255,255,.18);
   z-index: 9999;
 }
 
+@media (max-width:640px){
+
+    .volume-wrap{
+
+        top:10px;
+        left:10px;
+        scale:1;
+    }
+
+}
+
 .volume-icon {
   width: 20px;
   height: 20px;
@@ -609,3 +620,62 @@ font-size: 0.65rem;
     letter-spacing: normal !important;
     text-transform: none !important;
 }
+
+@media (max-width:640px){
+
+    #terminal{
+        width:calc(100vw - 24px) !important;
+        max-width:420px !important;
+
+        padding:1rem !important;
+    }
+
+    .avatar-icon{
+        width:78px;
+        height:94px;
+    }
+  
+    #typed3,
+    #typed3 span{
+        font-size:1.5rem !important;
+        margin-top:0.5rem !important;
+    }
+
+    #typed{
+        margin-top:.5rem;
+        margin-bottom:.75rem;
+    }
+
+    #buttonRow{
+        gap:.6rem;
+    }
+
+    #buttonRow .terminal-button{
+
+        width:calc(50% - .35rem);
+
+        margin:0 !important;
+
+        text-align:center;
+    }
+
+    #videoToggle,
+    #nextTrack,
+    #changeTheme,
+    #terminalMinimize{
+
+        width:36px !important;
+        height:36px !important;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+
+    .drag-area{
+
+        margin-bottom:.35rem;
+    }
+
+}
+
