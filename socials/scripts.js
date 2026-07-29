@@ -2170,55 +2170,17 @@ guestbookCommentBox.style.zIndex = 10;
 document.body.appendChild(guestbookCommentBox);
 
 function updateCommentBoxPosition() {
-    const guestWindow =
-        document.getElementById("guestBookWindow");
+  const guestWindow = document.getElementById('guestBookWindow');
+  const commentBox = document.getElementById('guestbookComments');
 
-    const commentBox =
-        document.getElementById("guestbookComments");
+  if (!guestWindow || !commentBox) return;
 
-    if (!guestWindow || !commentBox) {
-        return;
-    }
+  const rect = guestWindow.getBoundingClientRect();
 
-    const phoneMode =
-        getPhoneLayoutMode();
-
-    if (phoneMode) {
-        if (commentBox.parentElement !== guestWindow) {
-            guestWindow.appendChild(commentBox);
-        }
-
-        commentBox.style.position = "static";
-        commentBox.style.top = "";
-        commentBox.style.left = "";
-        commentBox.style.right = "";
-        commentBox.style.width = "100%";
-        commentBox.style.height = "";
-        commentBox.style.maxHeight =
-            phoneMode === "landscape"
-                ? "180px"
-                : "260px";
-
-        commentBox.style.marginTop = "16px";
-
-        return;
-    }
-
-    if (commentBox.parentElement !== document.body) {
-        document.body.appendChild(commentBox);
-    }
-
-    const rect =
-        guestWindow.getBoundingClientRect();
-
-    commentBox.style.position = "absolute";
-    commentBox.style.top = `${rect.top}px`;
-    commentBox.style.left = `${rect.right + 10}px`;
-    commentBox.style.right = "";
-    commentBox.style.width = "300px";
-    commentBox.style.height = `${rect.height}px`;
-    commentBox.style.maxHeight = "";
-    commentBox.style.marginTop = "";
+  commentBox.style.position = 'absolute';
+  commentBox.style.top = `${rect.top}px`;
+  commentBox.style.left = `${rect.right + 10}px`;
+  commentBox.style.height = `${rect.height}px`; 
 }
 
 requestAnimationFrame(() => {
