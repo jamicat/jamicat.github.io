@@ -5996,98 +5996,13 @@ setupDragging() {
         );
     }, 240);
 }
-
-positionPortraitMinimizedChat() {
-    const portraitPhone =
-        getPhoneLayoutMode() === 'portrait';
-
-    if (!portraitPhone) {
-        return;
-    }
-
-    const guestbook =
-        document.getElementById('guestBookWindow');
-
-    if (!guestbook) {
-        return;
-    }
-
-    const guestRect =
-        guestbook.getBoundingClientRect();
-
-    const viewportWidth =
-        window.visualViewport?.width ||
-        window.innerWidth;
-
-    const left = Math.max(
-        48,
-        guestRect.left - 20
-    );
-
-    const rightGap = 12;
-
-    const width =
-        viewportWidth -
-        left -
-        rightGap;
-
-    const top = Math.max(
-        8,
-        guestRect.top - 18
-    );
-
-    this.window.style.left =
-        `${left}px`;
-
-    this.window.style.top =
-        `${top}px`;
-
-    this.window.style.width =
-        `${width}px`;
-
-    this.window.style.maxWidth =
-        `${width}px`;
-
-    this.window.style.transform =
-        'translate(0, 0)';
-
-    this.window.dataset.x = '0';
-    this.window.dataset.y = '0';
-}
 	
 toggleMinimized() {
     this.setMinimized(!this.isMinimized);
 }
 
 setMinimized(minimized) {
-    const portraitPhone =
-        getPhoneLayoutMode() === 'portrait';
-
-    if (minimized && portraitPhone) {
-        this.window.dataset.expandedLeft =
-            this.window.style.left || '';
-
-        this.window.dataset.expandedTop =
-            this.window.style.top || '';
-
-        this.window.dataset.expandedWidth =
-            this.window.style.width || '';
-
-        this.window.dataset.expandedMaxWidth =
-            this.window.style.maxWidth || '';
-
-        this.window.dataset.expandedTransform =
-            this.window.style.transform || '';
-
-        this.window.dataset.expandedX =
-            this.window.dataset.x || '0';
-
-        this.window.dataset.expandedY =
-            this.window.dataset.y || '0';
-    } else {
-        this.preserveTitleBarDuringResize();
-    }
-
+	this.preserveTitleBarDuringResize();
     this.isMinimized = minimized;
 
 	if (!minimized) {
@@ -6136,36 +6051,6 @@ if (minimized) {
         "h-10",
         minimized
     );
-
-	if (portraitPhone) {
-    requestAnimationFrame(() => {
-        if (minimized) {
-            this.positionPortraitMinimizedChat();
-            return;
-        }
-
-        this.window.style.left =
-            this.window.dataset.expandedLeft || '';
-
-        this.window.style.top =
-            this.window.dataset.expandedTop || '';
-
-        this.window.style.width =
-            this.window.dataset.expandedWidth || '';
-
-        this.window.style.maxWidth =
-            this.window.dataset.expandedMaxWidth || '';
-
-        this.window.style.transform =
-            this.window.dataset.expandedTransform || '';
-
-        this.window.dataset.x =
-            this.window.dataset.expandedX || '0';
-
-        this.window.dataset.y =
-            this.window.dataset.expandedY || '0';
-    });
-}
 
     this.minimizeButton.textContent =
         minimized ? "+" : "−";
