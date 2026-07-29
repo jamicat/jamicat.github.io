@@ -767,9 +767,13 @@ font-size: 0.65rem;
     overflow: hidden;
 }
 
-#chatMessages,
-#guestbookComments {
+#chatMessages {
     max-height: calc(100dvh - 150px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+#guestbookComments {
     overflow-y: auto;
     overscroll-behavior: contain;
 }
