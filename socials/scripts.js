@@ -2101,11 +2101,20 @@ function showGuestBook() {
   border
   border-pink-200/20
 `;
-  guestBookWindow.style.zIndex = 11;
-  guestBookWindow.style.top = '50%';
-  guestBookWindow.style.left = '50%';
-  guestBookWindow.style.transform = 'translate(-50%, -50%)';
-  guestBookWindow.id = 'guestBookWindow';
+  
+guestBookWindow.style.zIndex = 11;
+guestBookWindow.style.top = '50%';
+guestBookWindow.id = 'guestBookWindow';
+
+if (getPhoneLayoutMode()) {
+    guestBookWindow.style.left = '8px';
+    guestBookWindow.style.transform =
+        'translate(0, -50%)';
+} else {
+    guestBookWindow.style.left = '50%';
+    guestBookWindow.style.transform =
+        'translate(-50%, -50%)';
+}
 
  guestBookWindow.innerHTML = `<div class="drag-area flex justify-between items-center select-none mb-2 text-sm"> 
  <span class="flex items-center space-x-2"> 
@@ -2208,23 +2217,43 @@ interact(guestBookWindow)
       }),
     ],
     listeners: {
-      start(event) {
-        const target = event.target;
+  start(event) {
+    const target = event.target;
 
-        if (target.style.transform.includes('translate(-50%, -50%)')) {
-          const rect = target.getBoundingClientRect();
-          const scrollTop = window.scrollY || document.documentElement.scrollTop;
-          const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+    const transform =
+        target.style.transform || '';
 
-          target.style.top = rect.top + scrollTop + 'px';
-          target.style.left = rect.left + scrollLeft + 'px';
-          target.style.transform = 'translate(0, 0)';
-          target.setAttribute('data-x', 0);
-          target.setAttribute('data-y', 0);
+    const needsPositionNormalising =
+        transform.includes('translate(-50%, -50%)') ||
+        transform.includes('translate(0, -50%)');
 
-          updateCommentBoxPosition();
-        }
-      },
+    if (needsPositionNormalising) {
+        const rect =
+            target.getBoundingClientRect();
+
+        const scrollTop =
+            window.scrollY ||
+            document.documentElement.scrollTop;
+
+        const scrollLeft =
+            window.scrollX ||
+            document.documentElement.scrollLeft;
+
+        target.style.top =
+            rect.top + scrollTop + 'px';
+
+        target.style.left =
+            rect.left + scrollLeft + 'px';
+
+        target.style.transform =
+            'translate(0, 0)';
+
+        target.setAttribute('data-x', '0');
+        target.setAttribute('data-y', '0');
+
+        updateCommentBoxPosition();
+    }
+},
       move(event) {
         const target = event.target;
         const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
