@@ -37,6 +37,13 @@ statusContainer.innerHTML = `
 
 document.body.appendChild(statusContainer);
 
+window.setDiscordStatusVisible = function (visible) {
+  statusContainer.classList.toggle(
+    "hidden",
+    !visible
+  );
+};
+
 let lastOnline = Date.now();
 
 async function fetchDiscordStatus() {
