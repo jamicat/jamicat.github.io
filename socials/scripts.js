@@ -2103,8 +2103,17 @@ function showGuestBook() {
 `;
   
 guestBookWindow.style.zIndex = 11;
-guestBookWindow.style.top = '50%';
-guestBookWindow.style.left = '50%';
+  
+const phoneMode = getPhoneLayoutMode();
+
+if (phoneMode === 'portrait') {
+    guestBookWindow.style.left = '50%';
+    guestBookWindow.style.top = '42%';
+} else {
+    guestBookWindow.style.left = '50%';
+    guestBookWindow.style.top = '50%';
+}
+  
 guestBookWindow.style.transform =
     'translate(-50%, -50%)';
 guestBookWindow.id = 'guestBookWindow';
