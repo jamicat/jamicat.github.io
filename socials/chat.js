@@ -535,6 +535,22 @@ if (this.watchPartyButton) {
         this.watchPartyPanel
     );
 }
+	   if (this.watchPartyPanel) {
+    const savedX =
+        parseFloat(
+            localStorage.getItem("watch_party_x")
+        ) || 0;
+    const savedY =
+        parseFloat(
+            localStorage.getItem("watch_party_y")
+        ) || 0;
+    this.watchPartyPanel.dataset.x =
+        String(savedX);
+    this.watchPartyPanel.dataset.y =
+        String(savedY);
+    this.watchPartyPanel.style.transform =
+        `translate(${savedX}px, ${savedY}px)`;
+}
 	this.emojiButton =
     this.window.querySelector("#chatEmojiButton");
 
@@ -2584,12 +2600,14 @@ const hasWatchPartyVideo =
 	
     this.watchPartyPanel.innerHTML = `
         <div
-            class="
-                flex items-center justify-between
-                border-b border-white/10
-                pb-3
-            "
-        >
+    class="
+        watch-party-drag-area
+        flex min-h-10 items-center justify-between
+        border-b border-white/10
+        pb-3
+        select-none cursor-move
+    "
+>
             <div
                 class="
                     theme-heading
@@ -2604,6 +2622,7 @@ const hasWatchPartyVideo =
                 type="button"
                 data-close-watch-party
                 class="
+				    no-drag
                     rounded-md
                     px-2 py-1
                     text-sm
@@ -5948,6 +5967,52 @@ setupDragging() {
             }
         }
     });
+
+	interact(this.watchPartyPanel).draggable({
+    allowFrom: ".watch-party-drag-area",
+    ignoreFrom: "button, input, a",
+
+    inertia: true,
+
+    modifiers: [
+        interact.modifiers.restrictRect({
+            restriction: "parent",
+            endOnly: true
+        })
+    ],
+
+    listeners: {
+        move(event) {
+            const target = event.target;
+
+            const x =
+                (parseFloat(target.dataset.x) || 0) +
+                event.dx;
+
+            const y =
+                (parseFloat(target.dataset.y) || 0) +
+                event.dy;
+
+            target.style.transform =
+                `translate(${x}px, ${y}px)`;
+
+            target.dataset.x = String(x);
+            target.dataset.y = String(y);
+        },
+
+        end(event) {
+            localStorage.setItem(
+                "watch_party_x",
+                event.target.dataset.x || "0"
+            );
+
+            localStorage.setItem(
+                "watch_party_y",
+                event.target.dataset.y || "0"
+            );
+        }
+    }
+});
 }
 
 	preserveTitleBarDuringResize() {
