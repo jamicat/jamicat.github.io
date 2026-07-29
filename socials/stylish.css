@@ -614,20 +614,6 @@ font-size: 0.65rem;
     (max-width: 950px)
     and (pointer: coarse) {
 
-    #guestBookWindow {
-        display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-        overscroll-behavior: contain;
-    }
-
-    #guestBookWindow #guestbookComments {
-        box-sizing: border-box;
-        flex: 0 0 auto;
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-
     :root {
         --phone-window-gap: 8px;
     }
@@ -710,25 +696,17 @@ font-size: 0.65rem;
     and (orientation: landscape)
     and (pointer: coarse) {
 
-      #guestBookWindow {
-    max-height: calc(100dvh - 16px);
-    padding: 0.75rem !important;
-}
-
-#guestBookWindow #guestbookComments {
-    max-height: 180px !important;
-}
-
-      #chatMessages {
-    max-height: calc(100dvh - 150px);
-    overflow-y: auto;
-    overscroll-behavior: contain;
-}
-
       #chatWindow,
 #guestBookWindow {
     max-height: calc(100dvh - 16px);
     overflow: hidden;
+}
+
+#chatMessages,
+#guestbookComments {
+    max-height: calc(100dvh - 150px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
 }
       
     #terminal {
