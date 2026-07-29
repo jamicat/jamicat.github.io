@@ -2213,7 +2213,7 @@ commentBox.style.maxWidth =
 commentBox.style.left =
     `${rect.left + ((rect.width - width) / 2)}px`;
 
-const overlap = 20;
+const overlap = 10;
 
 commentBox.style.top =
     `${rect.bottom - overlap}px`;
