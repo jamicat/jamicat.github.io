@@ -643,7 +643,8 @@ font-size: 0.65rem;
     and (orientation: landscape)
     and (pointer: coarse) {
 
-      #guestBookWindow {
+      #guestBookWindow,
+      #guestbookComments {
         scale: 0.5;
     }
 
@@ -837,7 +838,8 @@ font-size: 0.65rem;
     and (orientation: portrait)
     and (pointer: coarse) {
 
-    #guestBookWindow {
+    #guestBookWindow,
+      #guestbookComments {
         scale: 0.5;
     }
 }
