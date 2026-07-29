@@ -86,6 +86,13 @@ this.clientId
 this.createWindow();
 this.applyCurrentTheme();
 this.restoreSettings();
+
+if (
+    window.matchMedia("(max-width:640px)").matches
+) {
+    this.toggleMinimized();
+}
+
 this.setupAdminAuthentication();
 this.setupAvatarPicker();
 this.setupEmojiPicker();
