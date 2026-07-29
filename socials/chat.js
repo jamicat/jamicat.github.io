@@ -99,6 +99,20 @@ this.setupEmojiPicker();
 this.setupMembersToggle();
 this.setupNameSaving();
 this.setupDragging();
+window.addEventListener(
+    "resize",
+    () => this.keepTitleBarInViewport()
+);
+
+window.addEventListener(
+    "orientationchange",
+    () => this.keepTitleBarInViewport()
+);
+
+window.visualViewport?.addEventListener(
+    "resize",
+    () => this.keepTitleBarInViewport()
+);
 this.loadHistory();
 this.loadMotd();
 this.loadWatchParty();
@@ -5884,6 +5898,9 @@ closeAvatarPicker() {
 }
 	
 setupDragging() {
+
+	const self = this;
+	
     interact(this.window).draggable({
         allowFrom: ".chat-drag-area",
         ignoreFrom: "button, input, a",
@@ -5926,6 +5943,8 @@ setupDragging() {
                     "chat_y",
                     event.target.dataset.y || "0"
                 );
+
+				self.keepTitleBarInViewport();
             }
         }
     });
