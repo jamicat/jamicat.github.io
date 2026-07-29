@@ -611,6 +611,33 @@ font-size: 0.65rem;
 }
 
 @media
+    (max-width: 950px)
+    and (pointer: coarse) {
+
+    :root {
+        --phone-window-gap: 8px;
+    }
+
+    #terminal,
+    #chatWindow,
+    #guestBookWindow {
+        box-sizing: border-box;
+
+        max-width:
+            calc(
+                100dvw -
+                (var(--phone-window-gap) * 2)
+            ) !important;
+
+        max-height:
+            calc(
+                100dvh -
+                (var(--phone-window-gap) * 2)
+            );
+    }
+}
+
+@media
     (max-width: 640px)
     and (orientation: portrait)
     and (pointer: coarse) {
