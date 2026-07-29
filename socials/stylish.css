@@ -656,6 +656,7 @@ font-size: 0.65rem;
 }
 
 #guestbookComments {
+    max-height: calc(100dvh - 16px);
     overflow-y: auto;
     overscroll-behavior: contain;
 }
