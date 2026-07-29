@@ -2353,6 +2353,10 @@ window.setTerminalPlaybackControlsVisible?.(
     !isEnabled
 );
 
+window.setDiscordStatusVisible?.(
+    !isEnabled
+);
+
    if (!isEnabled) {
     this.watchPartyOpen = false;
     this.watchPartyAddUrl = "";
