@@ -416,6 +416,22 @@ function initTyped(themeName = 'Default') {
   loop: false,
 });*/
 
+if (window.matchMedia("(max-width:640px)").matches) {
+
+    const terminal =
+        document.getElementById("terminal");
+
+    if (
+        terminal &&
+        !terminal.dataset.mobilePositioned
+    ) {
+
+        terminal.style.top = "42%";
+
+        terminal.dataset.mobilePositioned = "1";
+    }
+}
+
 interact('#terminal').draggable({
   allowFrom: '.drag-area',
   inertia: true,
