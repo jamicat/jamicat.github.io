@@ -723,22 +723,9 @@ font-size: 0.65rem;
 
 
 #terminalContent {
-    max-height: calc(100dvh - 115px);
+    max-height: calc(100dvh - 70px);
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding-bottom: 3.5rem;
-}
-
-      #terminalContent #buttonRow,
-#terminalContent #artGallery + div {
-    position: sticky;
-    bottom: 0;
-    z-index: 10;
-    padding-top: 0.75rem;
-    padding-bottom: 0.5rem;
-    background: rgba(0, 0, 0, 0.72);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
 }
 
     .volume-wrap {
