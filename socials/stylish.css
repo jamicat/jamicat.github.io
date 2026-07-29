@@ -750,9 +750,54 @@ font-size: 0.65rem;
 
 
 #terminalContent {
-    max-height: calc(100dvh - 70px);
+    max-height: calc(100dvh - 80px);
     overflow-y: auto;
     overscroll-behavior: contain;
+}
+
+/* FAQ: scroll only the text and keep Back visible */
+#terminalContent:has(#aboutScroll) {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#terminalContent:has(#aboutScroll) > div {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+}
+
+#terminalContent #aboutScroll {
+    flex: 1;
+    min-height: 0;
+    max-height: none !important;
+    overflow-y: auto;
+}
+
+#terminalContent #buttonRow {
+    flex: 0 0 auto;
+    padding-top: 0.75rem;
+}
+
+#terminalContent:has(#artGallery) {
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#terminalContent #artGallery {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+#terminalContent #artGallery + div {
+    flex: 0 0 auto;
+    margin-top: 0.75rem;
 }
 
     .volume-wrap {
