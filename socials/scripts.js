@@ -2201,7 +2201,7 @@ function updateCommentBoxPosition() {
     commentBox.style.height =
         `${rect.height}px`;
 
-    if (phoneMode) {
+    if (phoneMode === 'portrait') {
         commentBox.style.left =
             `${rect.left}px`;
 
@@ -2213,6 +2213,34 @@ function updateCommentBoxPosition() {
 
         commentBox.style.maxWidth =
             `${rect.width}px`;
+
+        return;
+    }
+
+    if (phoneMode === 'landscape') {
+        const viewportWidth =
+            window.visualViewport?.width ||
+            window.innerWidth;
+
+        const gap = 10;
+
+        const availableWidth =
+            viewportWidth -
+            rect.right -
+            gap -
+            8;
+
+        commentBox.style.top =
+            `${rect.top}px`;
+
+        commentBox.style.left =
+            `${rect.right + gap}px`;
+
+        commentBox.style.width =
+            `${Math.max(180, availableWidth)}px`;
+
+        commentBox.style.maxWidth =
+            `${Math.max(180, availableWidth)}px`;
 
         return;
     }
