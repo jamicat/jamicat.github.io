@@ -2602,7 +2602,7 @@ const hasWatchPartyVideo =
         <div
     class="
         watch-party-drag-area
-        flex min-h-10 items-center justify-between
+        flex items-center justify-between
         border-b border-white/10
         pb-3
         select-none cursor-move
