@@ -2104,17 +2104,10 @@ function showGuestBook() {
   
 guestBookWindow.style.zIndex = 11;
 guestBookWindow.style.top = '50%';
+guestBookWindow.style.left = '50%';
+guestBookWindow.style.transform =
+    'translate(-50%, -50%)';
 guestBookWindow.id = 'guestBookWindow';
-
-if (getPhoneLayoutMode()) {
-    guestBookWindow.style.left = '8px';
-    guestBookWindow.style.transform =
-        'translate(0, -50%)';
-} else {
-    guestBookWindow.style.left = '50%';
-    guestBookWindow.style.transform =
-        'translate(-50%, -50%)';
-}
 
  guestBookWindow.innerHTML = `<div class="drag-area flex justify-between items-center select-none mb-2 text-sm"> 
  <span class="flex items-center space-x-2"> 
@@ -2179,17 +2172,62 @@ guestbookCommentBox.style.zIndex = 10;
 document.body.appendChild(guestbookCommentBox);
 
 function updateCommentBoxPosition() {
-  const guestWindow = document.getElementById('guestBookWindow');
-  const commentBox = document.getElementById('guestbookComments');
+    const guestWindow =
+        document.getElementById(
+            'guestBookWindow'
+        );
 
-  if (!guestWindow || !commentBox) return;
+    const commentBox =
+        document.getElementById(
+            'guestbookComments'
+        );
 
-  const rect = guestWindow.getBoundingClientRect();
+    if (!guestWindow || !commentBox) {
+        return;
+    }
 
-  commentBox.style.position = 'absolute';
-  commentBox.style.top = `${rect.top}px`;
-  commentBox.style.left = `${rect.right + 10}px`;
-  commentBox.style.height = `${rect.height}px`; 
+    const rect =
+        guestWindow.getBoundingClientRect();
+
+    const phoneMode =
+        getPhoneLayoutMode();
+
+    commentBox.style.position =
+        'absolute';
+
+    commentBox.style.boxSizing =
+        'border-box';
+
+    commentBox.style.height =
+        `${rect.height}px`;
+
+    if (phoneMode) {
+        commentBox.style.left =
+            `${rect.left}px`;
+
+        commentBox.style.top =
+            `${rect.bottom + 10}px`;
+
+        commentBox.style.width =
+            `${rect.width}px`;
+
+        commentBox.style.maxWidth =
+            `${rect.width}px`;
+
+        return;
+    }
+
+    commentBox.style.top =
+        `${rect.top}px`;
+
+    commentBox.style.left =
+        `${rect.right + 10}px`;
+
+    commentBox.style.width =
+        '300px';
+
+    commentBox.style.maxWidth =
+        '300px';
 }
 
 requestAnimationFrame(() => {
