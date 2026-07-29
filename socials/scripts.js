@@ -2205,8 +2205,10 @@ function updateCommentBoxPosition() {
         commentBox.style.left =
             `${rect.left}px`;
 
-        commentBox.style.top =
-            `${rect.bottom + 10}px`;
+        const overlap = 20;
+
+    commentBox.style.top =
+    `${rect.bottom - overlap}px`;
 
         commentBox.style.width =
             `${rect.width}px`;
