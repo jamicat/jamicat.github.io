@@ -355,7 +355,7 @@ input {
 ):not(
     [data-theme="rainbow"]
 )
-[data-watch-party-time] {
+[watch-party-time] {
     color:
         rgba(
             var(--watch-party-accent-rgb),
