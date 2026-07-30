@@ -24,6 +24,8 @@ this.watchParty = {
     queue: []
 };
 this.watchPartyTimeTimer = null;
+this.watchPartySeeking = false;
+this.watchPartySeekBusy = false;
 this.watchPartyButton = null;
 this.watchPartyPanel = null;
 this.watchPartyOpen = false;
@@ -2315,6 +2317,21 @@ async loadWatchParty() {
             "#watchPartyTime"
         );
 
+    const progressInput =
+        this.watchPartyPanel?.querySelector(
+            "[data-watch-party-progress]"
+        );
+
+    const progressFill =
+        this.watchPartyPanel?.querySelector(
+            "[data-watch-party-progress-fill]"
+        );
+
+    const tooltip =
+        this.watchPartyPanel?.querySelector(
+            "[data-watch-party-progress-tooltip]"
+        );
+
     if (!timeLabel) {
         return;
     }
@@ -2330,6 +2347,7 @@ async loadWatchParty() {
         if (!player?.getState) {
             timeLabel.textContent =
                 "0:00 / 0:00";
+
             return;
         }
 
@@ -2340,18 +2358,81 @@ async loadWatchParty() {
             return;
         }
 
+        const currentTime =
+            Number.isFinite(state.currentTime)
+                ? Math.max(0, state.currentTime)
+                : 0;
+
+        const duration =
+            Number.isFinite(state.duration)
+                ? Math.max(0, state.duration)
+                : 0;
+
         timeLabel.textContent =
             `${this.formatDuration(
-                state.currentTime
+                currentTime
             )} / ${this.formatDuration(
-                state.duration
+                duration
             )}`;
+
+        if (
+            !progressInput ||
+            this.watchPartySeeking
+        ) {
+            return;
+        }
+
+        progressInput.max =
+            String(
+                duration > 0
+                    ? duration
+                    : 1
+            );
+
+        progressInput.value =
+            String(
+                Math.min(
+                    currentTime,
+                    duration > 0
+                        ? duration
+                        : 1
+                )
+            );
+
+        const percentage =
+            duration > 0
+                ? Math.min(
+                    100,
+                    Math.max(
+                        0,
+                        (
+                            currentTime /
+                            duration
+                        ) * 100
+                    )
+                )
+                : 0;
+
+        if (progressFill) {
+            progressFill.style.width =
+                `${percentage}%`;
+        }
+
+        if (tooltip) {
+            tooltip.textContent =
+                this.formatDuration(
+                    currentTime
+                );
+
+            tooltip.style.left =
+                `${percentage}%`;
+        }
     };
 
     updateTime();
 
     this.watchPartyTimeTimer =
-        setInterval(updateTime, 500);
+        setInterval(updateTime, 250);
 }
 	
 renderWatchParty() {
@@ -2831,65 +2912,170 @@ const hasWatchPartyVideo =
                         : ""
                 }
 
-				<div
-    class="
-        mt-4
-        flex
-        items-center
-        justify-center
-        gap-3
-    "
->
-    <button
-        type="button"
-        data-watch-party-play
+				<div class="mt-4">
+    <div
         class="
-            rounded-xl
-            border
-            border-white/10
-            bg-white/5
-            px-4
-            py-2
-            text-white/80
-            transition
-            hover:bg-white/10
-			disabled:cursor-not-allowed
-            disabled:opacity-35
+            relative
+            mb-4
+            flex
+            h-5
+            items-center
+            group
         "
-		${hasWatchPartyVideo ? "" : "disabled"}
-        aria-label="Play or pause"
+        data-watch-party-progress-container
     >
+        <div
+            class="
+                pointer-events-none
+                absolute
+                left-0 right-0
+                h-1.5
+                overflow-hidden
+                rounded-full
+                bg-white/10
+            "
+        >
+            <div
+                data-watch-party-progress-fill
+                class="
+                    h-full
+                    rounded-full
+                    bg-white/70
+                "
+                style="width: 0%"
+            ></div>
+        </div>
 
-	
-	
-        ${
-    playerIsCurrentlyPlaying
-        ? "❚❚"
-        : "▶"
-}
-    </button>
+        <input
+            type="range"
+            data-watch-party-progress
+            min="0"
+            max="1"
+            step="0.1"
+            value="0"
+            ${hasWatchPartyVideo ? "" : "disabled"}
+            class="
+                watch-party-progress
+                relative
+                z-10
+                h-5
+                w-full
+                cursor-pointer
+                appearance-none
+                bg-transparent
+                disabled:cursor-not-allowed
+                disabled:opacity-35
+            "
+            aria-label="Watch Party playback position"
+        >
 
-    <button
-        type="button"
-        data-watch-party-next
+        <div
+            data-watch-party-progress-tooltip
+            class="
+                pointer-events-none
+                absolute
+                bottom-full
+                z-20
+                mb-1
+                -translate-x-1/2
+                whitespace-nowrap
+                rounded-md
+                border border-white/10
+                bg-black/95
+                px-2 py-1
+                text-[9px]
+                tabular-nums
+                text-white/80
+                opacity-0
+                transition-opacity
+                group-hover:opacity-100
+            "
+            style="left: 0%"
+        >
+            0:00
+        </div>
+    </div>
+
+    <div
         class="
-            rounded-xl
-            border
-            border-white/10
-            bg-white/5
-            px-4
-            py-2
-            text-white/80
-            transition
-            hover:bg-white/10
-			disabled:cursor-not-allowed
-disabled:opacity-35
+            flex
+            items-center
+            justify-center
+            gap-3
         "
-		${hasWatchPartyVideo ? "" : "disabled"}
-        aria-label="Next video"
     >
-        ⏭
-    </button>
+        <button
+            type="button"
+            data-watch-party-previous
+            class="
+                rounded-xl
+                border
+                border-white/10
+                bg-white/5
+                px-4
+                py-2
+                text-white/80
+                transition
+                hover:bg-white/10
+                disabled:cursor-not-allowed
+                disabled:opacity-35
+            "
+            ${hasWatchPartyVideo ? "" : "disabled"}
+            aria-label="Previous video"
+            title="Previous video"
+        >
+            ⏮
+        </button>
+
+        <button
+            type="button"
+            data-watch-party-play
+            class="
+                rounded-xl
+                border
+                border-white/10
+                bg-white/5
+                px-4
+                py-2
+                text-white/80
+                transition
+                hover:bg-white/10
+                disabled:cursor-not-allowed
+                disabled:opacity-35
+            "
+            ${hasWatchPartyVideo ? "" : "disabled"}
+            aria-label="Play or pause"
+        >
+            ${
+                playerIsCurrentlyPlaying
+                    ? "❚❚"
+                    : "▶"
+            }
+        </button>
+
+        <button
+            type="button"
+            data-watch-party-next
+            class="
+                rounded-xl
+                border
+                border-white/10
+                bg-white/5
+                px-4
+                py-2
+                text-white/80
+                transition
+                hover:bg-white/10
+                disabled:cursor-not-allowed
+                disabled:opacity-35
+            "
+            ${hasWatchPartyVideo ? "" : "disabled"}
+            aria-label="Next video"
+            title="Next video"
+        >
+            ⏭
+        </button>
+    </div>
 </div>
             </div>
         </div>
@@ -3068,6 +3254,76 @@ if (playButton) {
     );
 }
 
+const previousButton =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-previous]"
+    );
+
+if (previousButton) {
+    previousButton.addEventListener(
+        "click",
+        async event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (
+                !this.watchParty.currentVideoId
+            ) {
+                return;
+            }
+
+            previousButton.disabled = true;
+
+            try {
+                const response =
+                    await fetch(
+                        `${this.API}/api/watchparty/previous`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                clientId:
+                                    this.clientId
+                            })
+                        }
+                    );
+
+                let result = null;
+
+                try {
+                    result =
+                        await response.json();
+                } catch {}
+
+                if (!response.ok) {
+                    throw new Error(
+                        result?.error ||
+                        `Previous request failed (${response.status})`
+                    );
+                }
+            } catch (error) {
+                previousButton.disabled = false;
+
+                console.error(
+                    "watch party previous failed:",
+                    error
+                );
+
+                window.alert(
+                    `watch party previous failed: ${error.message}`
+                );
+            }
+        }
+    );
+}
+
+
+
 const nextButton =
     this.watchPartyPanel.querySelector(
         "[data-watch-party-next]"
@@ -3122,6 +3378,226 @@ if (nextButton) {
                 window.alert(
                     `watch party next failed: ${error.message}`
                 );
+            }
+        }
+    );
+}
+
+const progressInput =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-progress]"
+    );
+
+const progressFill =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-progress-fill]"
+    );
+
+const progressTooltip =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-progress-tooltip]"
+    );
+
+if (progressInput) {
+    const updateSeekPreview = () => {
+        const value =
+            Number(progressInput.value);
+
+        const maximum =
+            Number(progressInput.max);
+
+        const safeValue =
+            Number.isFinite(value)
+                ? Math.max(0, value)
+                : 0;
+
+        const safeMaximum =
+            Number.isFinite(maximum) &&
+            maximum > 0
+                ? maximum
+                : 1;
+
+        const percentage =
+            Math.min(
+                100,
+                Math.max(
+                    0,
+                    (
+                        safeValue /
+                        safeMaximum
+                    ) * 100
+                )
+            );
+
+        if (progressFill) {
+            progressFill.style.width =
+                `${percentage}%`;
+        }
+
+        if (progressTooltip) {
+            progressTooltip.textContent =
+                this.formatDuration(
+                    safeValue
+                );
+
+            progressTooltip.style.left =
+                `${percentage}%`;
+
+            progressTooltip.classList.add(
+                "opacity-100"
+            );
+        }
+
+        const timeLabel =
+            this.watchPartyPanel.querySelector(
+                "#watchPartyTime"
+            );
+
+        if (timeLabel) {
+            timeLabel.textContent =
+                `${this.formatDuration(
+                    safeValue
+                )} / ${this.formatDuration(
+                    safeMaximum
+                )}`;
+        }
+    };
+
+    const beginSeeking = () => {
+        this.watchPartySeeking = true;
+
+        if (progressTooltip) {
+            progressTooltip.classList.add(
+                "opacity-100"
+            );
+        }
+    };
+
+    const finishSeeking = async () => {
+        if (!this.watchPartySeeking) {
+            return;
+        }
+
+        this.watchPartySeeking = false;
+
+        if (progressTooltip) {
+            progressTooltip.classList.remove(
+                "opacity-100"
+            );
+        }
+
+        if (
+            this.watchPartySeekBusy ||
+            !this.watchParty.currentVideoId
+        ) {
+            return;
+        }
+
+        const targetTime =
+            Number(progressInput.value);
+
+        if (
+            !Number.isFinite(targetTime) ||
+            targetTime < 0
+        ) {
+            return;
+        }
+
+        this.watchPartySeekBusy = true;
+        progressInput.disabled = true;
+
+        try {
+            const response =
+                await fetch(
+                    `${this.API}/api/watchparty/seek`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            clientId:
+                                this.clientId,
+
+                            currentTime:
+                                targetTime
+                        })
+                    }
+                );
+
+            let result = null;
+
+            try {
+                result =
+                    await response.json();
+            } catch {}
+
+            if (!response.ok) {
+                throw new Error(
+                    result?.error ||
+                    `Seek request failed (${response.status})`
+                );
+            }
+        } catch (error) {
+            console.error(
+                "watch party seek failed:",
+                error
+            );
+
+            window.alert(
+                `watch party seek failed: ${error.message}`
+            );
+
+            progressInput.disabled = false;
+        } finally {
+            this.watchPartySeekBusy = false;
+        }
+    };
+
+    progressInput.addEventListener(
+        "pointerdown",
+        beginSeeking
+    );
+
+    progressInput.addEventListener(
+        "mousedown",
+        beginSeeking
+    );
+
+    progressInput.addEventListener(
+        "touchstart",
+        beginSeeking,
+        {
+            passive: true
+        }
+    );
+
+    progressInput.addEventListener(
+        "input",
+        () => {
+            this.watchPartySeeking = true;
+            updateSeekPreview();
+        }
+    );
+
+    progressInput.addEventListener(
+        "change",
+        finishSeeking
+    );
+
+    progressInput.addEventListener(
+        "pointerup",
+        finishSeeking
+    );
+
+    progressInput.addEventListener(
+        "blur",
+        () => {
+            if (this.watchPartySeeking) {
+                finishSeeking();
             }
         }
     );
