@@ -112,21 +112,51 @@ pointer-events: none;
 }
 
 #bgndVideo iframe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 120vw;
-  height: 120vh;
-  transform: translate(-50%, -50%) scale(1.06);
-  transform-origin: center;
-  border: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 0;
+    transform-origin: center;
+    transition:
+        width 250ms ease,
+        height 250ms ease,
+        transform 250ms ease;
 }
 
-@media (max-width: 768px) {
-#bgndVideo iframe {
-width: 200vw;
-height: 250%;
+#bgndVideo.watch-party-cinematic iframe {
+    width: 120vw;
+    height: 120vh;
+    transform:
+        translate(-50%, -50%)
+        scale(1.06);
 }
+
+#bgndVideo.watch-party-fit iframe {
+    width: 100vw;
+    height: 56.25vw;
+
+    max-width: 100vw;
+    max-height: 100vh;
+
+    transform:
+        translate(-50%, -50%);
+}
+
+@media (max-width:768px) {
+
+    #bgndVideo.watch-party-cinematic iframe {
+        width: 200vw;
+        height: 250%;
+    }
+
+    #bgndVideo.watch-party-fit iframe {
+        width: 100vw;
+        height: 56.25vw;
+
+        max-width: 100vw;
+        max-height: 100vh;
+    }
+
 }
 
 .terminal {
