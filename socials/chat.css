@@ -168,44 +168,176 @@
     cursor: grabbing;
 }
 
-#chatWatchPartyPanel[data-theme="red"]{
-    border-color:#ef4444;
-    box-shadow:0 0 20px rgba(239,68,68,.35);
+#chatWatchPartyPanel[data-theme="red"] {
+    --watch-party-accent: #ef4444;
+    --watch-party-accent-rgb: 239, 68, 68;
 }
 
-#chatWatchPartyPanel[data-theme="orange"]{
-    border-color:#f97316;
-    box-shadow:0 0 20px rgba(249,115,22,.35);
+#chatWatchPartyPanel[data-theme="orange"] {
+    --watch-party-accent: #f97316;
+    --watch-party-accent-rgb: 249, 115, 22;
 }
 
-#chatWatchPartyPanel[data-theme="yellow"]{
-    border-color:#eab308;
-    box-shadow:0 0 20px rgba(234,179,8,.35);
+#chatWatchPartyPanel[data-theme="yellow"] {
+    --watch-party-accent: #eab308;
+    --watch-party-accent-rgb: 234, 179, 8;
 }
 
-#chatWatchPartyPanel[data-theme="green"]{
-    border-color:#22c55e;
-    box-shadow:0 0 20px rgba(34,197,94,.35);
+#chatWatchPartyPanel[data-theme="green"] {
+    --watch-party-accent: #22c55e;
+    --watch-party-accent-rgb: 34, 197, 94;
 }
 
-#chatWatchPartyPanel[data-theme="cyan"]{
-    border-color:#06b6d4;
-    box-shadow:0 0 20px rgba(6,182,212,.35);
+#chatWatchPartyPanel[data-theme="cyan"] {
+    --watch-party-accent: #06b6d4;
+    --watch-party-accent-rgb: 6, 182, 212;
 }
 
-#chatWatchPartyPanel[data-theme="blue"]{
-    border-color:#3b82f6;
-    box-shadow:0 0 20px rgba(59,130,246,.35);
+#chatWatchPartyPanel[data-theme="blue"] {
+    --watch-party-accent: #3b82f6;
+    --watch-party-accent-rgb: 59, 130, 246;
 }
 
-#chatWatchPartyPanel[data-theme="purple"]{
-    border-color:#a855f7;
-    box-shadow:0 0 20px rgba(168,85,247,.35);
+#chatWatchPartyPanel[data-theme="purple"] {
+    --watch-party-accent: #a855f7;
+    --watch-party-accent-rgb: 168, 85, 247;
 }
 
-#chatWatchPartyPanel[data-theme="pink"]{
-    border-color:#ec4899;
-    box-shadow:0 0 20px rgba(236,72,153,.35);
+#chatWatchPartyPanel[data-theme="pink"] {
+    --watch-party-accent: #ec4899;
+    --watch-party-accent-rgb: 236, 72, 153;
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="white"]
+):not(
+    [data-theme="rainbow"]
+) {
+    border-color:
+        var(--watch-party-accent);
+
+    box-shadow:
+        0 0 20px
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.35
+        );
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="white"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-heading] {
+    color:
+        var(--watch-party-accent);
+
+    text-shadow:
+        0 0 10px
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.45
+        );
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="white"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-progress-fill] {
+    background:
+        var(--watch-party-accent);
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="white"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-now-playing] {
+    border-color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.35
+        );
+
+    background:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.08
+        );
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="white"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-previous],
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="white"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-play],
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="white"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-next] {
+    border-color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.35
+        );
+
+    background:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.10
+        );
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="white"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-previous]:hover,
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="white"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-play]:hover,
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="white"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-next]:hover {
+    background:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.18
+        );
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="white"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-resize-grip] {
+    background:
+        var(--watch-party-accent);
 }
 
 @keyframes watch-party-rainbow-shift {
