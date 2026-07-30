@@ -26,6 +26,7 @@ this.watchParty = {
 this.watchPartyTimeTimer = null;
 this.watchPartySeeking = false;
 this.watchPartySeekBusy = false;
+this.watchPartyResizeMinimum = 420;
 this.watchPartyButton = null;
 this.watchPartyPanel = null;
 this.watchPartyOpen = false;
@@ -458,11 +459,15 @@ transition-[height] duration-200
         terminal2
         invisible pointer-events-none opacity-0
         fixed z-[100002]
+        relative
+        flex flex-col
         w-72
+        min-h-[420px]
+        overflow-hidden
         rounded-2xl
         border border-white/15
         bg-black/95
-        p-3
+        px-3 pt-3 pb-5
         text-white
         shadow-xl
         backdrop-blur-xl
@@ -540,18 +545,42 @@ if (this.watchPartyButton) {
 	   if (this.watchPartyPanel) {
     const savedX =
         parseFloat(
-            localStorage.getItem("watch_party_x")
+            localStorage.getItem(
+                "watch_party_x"
+            )
         ) || 0;
+
     const savedY =
         parseFloat(
-            localStorage.getItem("watch_party_y")
+            localStorage.getItem(
+                "watch_party_y"
+            )
         ) || 0;
+
+    const savedHeight =
+        parseFloat(
+            localStorage.getItem(
+                "watch_party_height"
+            )
+        );
+
     this.watchPartyPanel.dataset.x =
         String(savedX);
+
     this.watchPartyPanel.dataset.y =
         String(savedY);
+
     this.watchPartyPanel.style.transform =
         `translate(${savedX}px, ${savedY}px)`;
+
+    if (
+        Number.isFinite(savedHeight) &&
+        savedHeight >=
+            this.watchPartyResizeMinimum
+    ) {
+        this.watchPartyPanel.style.height =
+            `${savedHeight}px`;
+    }
 }
 	this.emojiButton =
     this.window.querySelector("#chatEmojiButton");
@@ -2284,6 +2313,13 @@ async loadWatchParty() {
     const gap = 8;
     const viewportPadding = 12;
 
+    const viewport =
+        window.visualViewport;
+
+    const viewportHeight =
+        viewport?.height ||
+        window.innerHeight;
+
     this.watchPartyPanel.style.right =
         `${Math.max(
             viewportPadding,
@@ -2299,16 +2335,36 @@ async loadWatchParty() {
                 gap
         )}px`;
 
-    this.watchPartyPanel.style.maxHeight =
-        `${Math.max(
-            160,
-            buttonRect.top -
-                viewportPadding -
-                gap
-        )}px`;
+    const availableHeight =
+        Math.max(
+            this.watchPartyResizeMinimum,
+            viewportHeight -
+                viewportPadding * 2
+        );
 
-    this.watchPartyPanel.style.overflowY =
-        "auto";
+    this.watchPartyPanel.style.maxHeight =
+        `${availableHeight}px`;
+
+    this.watchPartyPanel.style.overflow =
+        "hidden";
+
+    const currentHeight =
+        parseFloat(
+            this.watchPartyPanel.style.height
+        );
+
+    if (
+        Number.isFinite(currentHeight) &&
+        currentHeight > availableHeight
+    ) {
+        this.watchPartyPanel.style.height =
+            `${availableHeight}px`;
+
+        localStorage.setItem(
+            "watch_party_height",
+            String(availableHeight)
+        );
+    }
 }
 
 	startWatchPartyTime() {
@@ -3080,30 +3136,68 @@ const hasWatchPartyVideo =
             </div>
         </div>
 
-        <div class="mt-4">
-            <div
-                class="
-                    theme-heading
-                    mb-2
-                    text-[9px]
-                    uppercase tracking-widest
-                    text-white/40
-                "
-            >
-                queue (${queue.length})
+       <div
+    class="
+        mt-4
+        flex
+        min-h-0
+        flex-1
+        flex-col
+    "
+>
+    <div
+        class="
+            theme-heading
+            mb-2
+            shrink-0
+            text-[9px]
+            uppercase tracking-widest
+            text-white/40
+        "
+    >
+        queue (${queue.length})
+    </div>
+
+    <div
+        class="
+            min-h-0
+            flex-1
+            space-y-2
+            overflow-y-auto
+            overscroll-contain
+            pr-1
+        "
+    >
+        ${queueItems}
+    </div>
 </div>
 
-            <div
-                class="
-                    max-h-48
-                    space-y-2
-                    overflow-y-auto
-                    pr-1
-                "
-            >
-                ${queueItems}
-            </div>
-        </div>
+<div
+    data-watch-party-resize-handle
+    class="
+        absolute
+        bottom-0 left-0 right-0
+        z-30
+        flex h-4
+        cursor-ns-resize
+        touch-none
+        items-end
+        justify-center
+        select-none
+    "
+    aria-hidden="true"
+>
+    <div
+        class="
+            mb-1
+            h-0.5 w-10
+            rounded-full
+            bg-white/20
+            transition
+            hover:bg-white/40
+        "
+    ></div>
+</div>
     `;
 
 	this.startWatchPartyTime();
@@ -6446,7 +6540,9 @@ setupDragging() {
 
 	interact(this.watchPartyPanel).draggable({
     allowFrom: ".watch-party-drag-area",
-    ignoreFrom: "button, input, a",
+    ignoreFrom:
+    "button, input, a, " +
+    "[data-watch-party-resize-handle]",
 
     inertia: true,
 
@@ -6486,6 +6582,163 @@ setupDragging() {
                 "watch_party_y",
                 event.target.dataset.y || "0"
             );
+        }
+    }
+});
+	interact(this.watchPartyPanel).resizable({
+    edges: {
+        bottom:
+            "[data-watch-party-resize-handle]"
+    },
+
+    inertia: false,
+
+    modifiers: [
+        interact.modifiers.restrictSize({
+            min: {
+                width: 288,
+                height:
+                    this.watchPartyResizeMinimum
+            }
+        })
+    ],
+
+    listeners: {
+        start(event) {
+            const target =
+                event.target;
+
+            const rect =
+                target.getBoundingClientRect();
+
+            target.dataset.resizeLastHeight =
+                String(rect.height);
+
+            target.style.height =
+                `${rect.height}px`;
+        },
+
+        move(event) {
+            const target =
+                event.target;
+
+            const viewport =
+                window.visualViewport;
+
+            const viewportTop =
+                viewport?.offsetTop || 0;
+
+            const viewportHeight =
+                viewport?.height ||
+                window.innerHeight;
+
+            const viewportBottom =
+                viewportTop +
+                viewportHeight;
+
+            const viewportPadding = 12;
+
+            const currentRect =
+                target.getBoundingClientRect();
+
+            const fixedTop =
+                currentRect.top;
+
+            const maximumHeight =
+                Math.max(
+                    self.watchPartyResizeMinimum,
+                    viewportBottom -
+                        fixedTop -
+                        viewportPadding
+                );
+
+            const previousHeight =
+                parseFloat(
+                    target.dataset
+                        .resizeLastHeight
+                ) ||
+                currentRect.height;
+
+            const requestedHeight =
+                event.rect.height;
+
+            const nextHeight =
+                Math.min(
+                    maximumHeight,
+                    Math.max(
+                        self
+                            .watchPartyResizeMinimum,
+                        requestedHeight
+                    )
+                );
+
+            /*
+             * The panel is positioned using bottom.
+             *
+             * Increasing its height would normally
+             * move the top upward. Moving its
+             * translation down by the same amount
+             * keeps the top edge in place and lets
+             * the bottom edge follow the pointer.
+             */
+            const heightDifference =
+                nextHeight -
+                previousHeight;
+
+            const x =
+                parseFloat(
+                    target.dataset.x
+                ) || 0;
+
+            const y =
+                (
+                    parseFloat(
+                        target.dataset.y
+                    ) || 0
+                ) +
+                heightDifference;
+
+            target.style.height =
+                `${nextHeight}px`;
+
+            target.style.transform =
+                `translate(${x}px, ${y}px)`;
+
+            target.dataset.x =
+                String(x);
+
+            target.dataset.y =
+                String(y);
+
+            target.dataset.resizeLastHeight =
+                String(nextHeight);
+        },
+
+        end(event) {
+            const target =
+                event.target;
+
+            const height =
+                target.getBoundingClientRect()
+                    .height;
+
+            localStorage.setItem(
+                "watch_party_height",
+                String(height)
+            );
+
+            localStorage.setItem(
+                "watch_party_x",
+                target.dataset.x || "0"
+            );
+
+            localStorage.setItem(
+                "watch_party_y",
+                target.dataset.y || "0"
+            );
+
+            delete target.dataset
+                .resizeLastHeight;
         }
     }
 });
