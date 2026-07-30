@@ -3170,7 +3170,6 @@ const hasWatchPartyVideo =
 </div>
 
     <div
-	    data-watch-party-queue-box
         class="
             min-h-0
             flex-1
@@ -4870,7 +4869,7 @@ syncWatchPartyRainbowAnimations() {
     "[data-watch-party-now-playing-title]",
     "[data-watch-party-time]",
     "[data-watch-party-queue-heading]",
-    "[data-watch-party-queue-box]",
+    "[data-watch-party-now-playing-heading]",
     "[data-watch-party-empty]",
     "[data-watch-party-resize-grip]"
 ].join(",")
