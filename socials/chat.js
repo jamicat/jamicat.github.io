@@ -471,7 +471,6 @@ transition-[height] duration-200
         terminal2
         invisible pointer-events-none opacity-0
         fixed z-[100002]
-        relative
         flex flex-col
         w-72
         min-h-[420px]
