@@ -4865,6 +4865,7 @@ syncWatchPartyRainbowAnimations() {
     "[data-watch-party-heading]",
     "[data-watch-party-add-heading]",
     "[data-watch-party-url]",
+	"[data-watch-party-add-input]",
     "[data-watch-party-progress-fill]",
     "[data-watch-party-previous]",
     "[data-watch-party-play]",
