@@ -698,3 +698,22 @@ box-shadow: none;
     background:
         rgba(255, 255, 255, 0.80);
 }
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="default"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-empty] {
+    border-color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.35
+        );
+
+    background:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.08
+        );
+}
