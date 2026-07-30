@@ -209,19 +209,12 @@
 }
 
 #chatWatchPartyPanel[data-theme]:not(
-    [data-theme="white"]
+    [data-theme="default"]
 ):not(
     [data-theme="rainbow"]
 ) {
     border-color:
         var(--watch-party-accent);
-
-    box-shadow:
-        0 0 20px
-        rgba(
-            var(--watch-party-accent-rgb),
-            0.35
-        );
 }
 
 #chatWatchPartyPanel[data-theme]:not(
@@ -239,6 +232,101 @@
             var(--watch-party-accent-rgb),
             0.45
         );
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="default"]
+):not(
+    [data-theme="rainbow"]
+)
+input::placeholder {
+    color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            .55
+        );
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="default"]
+):not(
+    [data-theme="rainbow"]
+)
+input {
+    border-color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            .28
+        );
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="default"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-add] {
+    border-color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            .45
+        );
+
+    color:
+        var(--watch-party-accent);
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="default"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-queue-heading] {
+    color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            .8
+        );
+}
+
+#chatWatchPartyPanel[data-theme="default"]
+[data-watch-party-now-playing] {
+    border-color:
+        rgba(255,255,255,.10);
+
+    background:
+        rgba(255,255,255,.05);
+}
+
+#chatWatchPartyPanel[data-theme="default"]
+[data-watch-party-previous],
+
+#chatWatchPartyPanel[data-theme="default"]
+[data-watch-party-play],
+
+#chatWatchPartyPanel[data-theme="default"]
+[data-watch-party-next] {
+    border-color:
+        rgba(255,255,255,.10);
+
+    background:
+        rgba(255,255,255,.05);
+}
+
+#chatWatchPartyPanel[data-theme="default"]
+[data-watch-party-progress-fill] {
+    background:
+        white;
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="default"]
+):not(
+    [data-theme="rainbow"]
+)
+.theme-heading {
+    color:
+        var(--watch-party-accent);
 }
 
 #chatWatchPartyPanel[data-theme]:not(
