@@ -2650,7 +2650,9 @@ window.setDiscordStatusVisible?.(
                                     text-white/35
                                 "
                             >
-                                added by
+                                <span data-watch-party-added-label>
+    added by
+</span>
                                 ${this.escapeHtml(
                                     item.requestedByName ||
                                     "anonymous"
@@ -2971,7 +2973,9 @@ const hasWatchPartyVideo =
                                     text-white/35
                                 "
                             >
-                                requested by
+                                <span data-watch-party-requested-label>
+    requested by
+</span>
                                 ${this.escapeHtml(
                                     currentVideo
                                         .requestedByName ||
@@ -4877,6 +4881,8 @@ syncWatchPartyRainbowAnimations() {
     "[data-watch-party-now-playing-heading]",
     "[data-watch-party-empty]",
 	"[data-watch-party-empty-text]",
+	"[data-watch-party-requested-label]",
+     "[data-watch-party-added-label]",
     "[data-watch-party-resize-grip]"
 ].join(",")
         );
