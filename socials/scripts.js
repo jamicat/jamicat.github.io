@@ -1551,9 +1551,17 @@ seek(seconds) {
     const background =
         document.getElementById("bgndVideo");
 
+    const poster =
+        document.getElementById("videoPoster");
+
     if (!background) {
         return;
     }
+
+    const activeMode =
+        mode === "fit"
+            ? "fit"
+            : "cinematic";
 
     background.classList.remove(
         "watch-party-cinematic",
@@ -1561,10 +1569,23 @@ seek(seconds) {
     );
 
     background.classList.add(
-        mode === "fit"
+        activeMode === "fit"
             ? "watch-party-fit"
             : "watch-party-cinematic"
     );
+
+    if (poster) {
+        poster.style.backgroundSize =
+            activeMode === "fit"
+                ? "contain"
+                : "cover";
+
+        poster.style.backgroundPosition =
+            "center";
+
+        poster.style.backgroundRepeat =
+            "no-repeat";
+    }
 },
 };
 
