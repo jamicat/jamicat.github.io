@@ -70,6 +70,17 @@ this.banManagerButton = null;
 this.partyManager = null;
 this.partyManagerButton = null;
 this.partyManagerBusy = false;
+const WATCH_PARTY_COLOURS = [
+    "red",
+    "orange",
+    "yellow",
+    "green",
+    "cyan",
+    "blue",
+    "purple",
+    "pink",
+    "white"
+];
 this.isMinimized = false;
 this.membersPanel = null;
 this.membersVisible = true;
@@ -1275,6 +1286,67 @@ createBanManagerButton() {
             "[data-close-party-manager]"
         );
 
+		const colourButton =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-colour]"
+    );
+
+const picker =
+    this.watchPartyPanel.querySelector(
+        "#watchPartyColourPicker"
+    );
+
+this.renderWatchPartyColours();
+
+	picker
+.querySelectorAll(
+    "[data-watch-party-theme]"
+)
+.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            this.setWatchPartyTheme(
+
+                button.dataset
+                    .watchPartyTheme
+
+            );
+
+            picker.classList.add(
+                "hidden"
+            );
+
+        }
+    );
+
+});
+
+setWatchPartyTheme(colour) {
+
+    this.watchPartyPanel.dataset.theme =
+        colour;
+
+    localStorage.setItem(
+        "watch_party_theme",
+        colour
+    );
+
+}
+
+colourButton?.addEventListener(
+    "click",
+    () => {
+
+        picker.classList.toggle(
+            "hidden"
+        );
+
+    }
+);
+		
     if (closeButton) {
         closeButton.addEventListener(
             "click",
@@ -2364,6 +2436,18 @@ async loadWatchParty() {
             "watch_party_height",
             String(availableHeight)
         );
+
+		const savedTheme =
+    localStorage.getItem(
+        "watch_party_theme"
+    );
+
+if (savedTheme) {
+
+    this.watchPartyPanel.dataset.theme =
+        savedTheme;
+
+}
     }
 }
 
@@ -2755,6 +2839,40 @@ const hasWatchPartyVideo =
                 watch party
             </div>
 
+<div
+    id="watchPartyColourPicker"
+    class="
+        hidden
+        absolute
+        top-10
+        right-8
+        z-50
+
+        rounded-xl
+        border border-white/10
+        bg-black/95
+        p-2
+
+        shadow-xl
+        backdrop-blur-xl
+    "
+>
+
+</div>
+
+<button
+        type="button"
+        data-watch-party-colour
+        class="
+            text-white/50
+            hover:text-white
+            transition
+        "
+        aria-label="Change Watch Party colour"
+    >
+        🎨
+    </button>
+	
             <button
                 type="button"
                 data-close-watch-party
@@ -4686,6 +4804,72 @@ findMessageElement(messageId) {
         .find(element => {
             return element.dataset.messageId === id;
         }) || null;
+}
+
+renderWatchPartyColours() {
+
+    const picker =
+        this.watchPartyPanel.querySelector(
+            "#watchPartyColourPicker"
+        );
+
+    picker.innerHTML =
+        WATCH_PARTY_COLOURS
+            .map(colour => {
+
+                return `
+<button
+    class="
+        inline-block
+        m-1
+        text-xl
+        hover:scale-110
+        transition
+    "
+    data-watch-party-theme="${colour}"
+>
+${this.getColourEmoji(colour)}
+</button>
+`;
+
+            })
+            .join("");
+
+}
+
+getColourEmoji(colour) {
+
+    switch (colour) {
+
+        case "red":
+            return "🔴";
+
+        case "orange":
+            return "🟠";
+
+        case "yellow":
+            return "🟡";
+
+        case "green":
+            return "🟢";
+
+        case "cyan":
+            return "🔵";
+
+        case "blue":
+            return "🔷";
+
+        case "purple":
+            return "🟣";
+
+        case "pink":
+            return "🩷";
+
+        default:
+            return "⚪";
+
+    }
+
 }
 
 closeModerationMenu() {
