@@ -3338,11 +3338,34 @@ if (
                     );
 
                     colourButton.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
+    "aria-expanded",
+    "false"
+);
 
-                    this.renderWatchPartyColours();
+colourPicker
+    .querySelectorAll(
+        "[data-watch-party-theme]"
+    )
+    .forEach(themeButton => {
+        const isSelected =
+            themeButton.dataset
+                .watchPartyTheme === colour;
+
+        themeButton.classList.toggle(
+            "bg-white/15",
+            isSelected
+        );
+
+        themeButton.classList.toggle(
+            "ring-1",
+            isSelected
+        );
+
+        themeButton.classList.toggle(
+            "ring-white/40",
+            isSelected
+        );
+    });
                 }
             );
         });
