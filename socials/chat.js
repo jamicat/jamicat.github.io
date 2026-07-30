@@ -26,6 +26,8 @@ this.watchParty = {
 this.watchPartyTimeTimer = null;
 this.watchPartySeeking = false;
 this.watchPartySeekBusy = false;
+this.watchPartyRainbowStartedAt =
+    performance.now();
 this.watchPartyResizeMinimum = 420;
 this.watchPartyButton = null;
 this.watchPartyPanel = null;
@@ -3207,6 +3209,7 @@ const hasWatchPartyVideo =
     `;
 
 	this.startWatchPartyTime();
+	this.syncWatchPartyRainbowAnimations();
 
 	const colourButton =
     this.watchPartyPanel.querySelector(
@@ -4829,6 +4832,42 @@ findMessageElement(messageId) {
         colourButton.title =
             `Watch Party colour: ${selectedColour}`;
     }
+
+		if (selectedColour === "rainbow") {
+    this.syncWatchPartyRainbowAnimations();
+}
+}
+
+syncWatchPartyRainbowAnimations() {
+    if (
+        !this.watchPartyPanel ||
+        this.watchPartyPanel.dataset.theme !==
+            "rainbow"
+    ) {
+        return;
+    }
+
+    const elapsed =
+        performance.now() -
+        this.watchPartyRainbowStartedAt;
+
+    const animatedElements =
+        this.watchPartyPanel.querySelectorAll(
+            [
+                "[data-watch-party-heading]",
+                "[data-watch-party-progress-fill]",
+                "[data-watch-party-previous]",
+                "[data-watch-party-play]",
+                "[data-watch-party-next]",
+                "[data-watch-party-now-playing]",
+                "[data-watch-party-resize-grip]"
+            ].join(",")
+        );
+
+    animatedElements.forEach(element => {
+        element.style.animationDelay =
+            `${-elapsed}ms`;
+    });
 }
 
 renderWatchPartyColours() {
