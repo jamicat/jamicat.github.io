@@ -2913,7 +2913,9 @@ const hasWatchPartyVideo =
             text-white/40
         "
     >
-        <span>now playing</span>
+        <span
+		data-watch-party-now-playing-heading
+		>now playing</span>
 
         <span
             id="watchPartyTime"
