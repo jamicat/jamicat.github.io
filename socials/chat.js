@@ -70,7 +70,7 @@ this.banManagerButton = null;
 this.partyManager = null;
 this.partyManagerButton = null;
 this.partyManagerBusy = false;
-const WATCH_PARTY_COLOURS = [
+this.WATCH_PARTY_COLOURS = [
     "red",
     "orange",
     "yellow",
@@ -592,6 +592,18 @@ if (this.watchPartyButton) {
         this.watchPartyPanel.style.height =
             `${savedHeight}px`;
     }
+
+		   const savedTheme =
+    localStorage.getItem(
+        "watch_party_theme"
+    ) || "white";
+
+this.watchPartyPanel.dataset.theme =
+    this.WATCH_PARTY_COLOURS.includes(
+        savedTheme
+    )
+        ? savedTheme
+        : "white";
 }
 	this.emojiButton =
     this.window.querySelector("#chatEmojiButton");
@@ -1286,66 +1298,6 @@ createBanManagerButton() {
             "[data-close-party-manager]"
         );
 
-		const colourButton =
-    this.watchPartyPanel.querySelector(
-        "[data-watch-party-colour]"
-    );
-
-const picker =
-    this.watchPartyPanel.querySelector(
-        "#watchPartyColourPicker"
-    );
-
-this.renderWatchPartyColours();
-
-	picker
-.querySelectorAll(
-    "[data-watch-party-theme]"
-)
-.forEach(button => {
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            this.setWatchPartyTheme(
-
-                button.dataset
-                    .watchPartyTheme
-
-            );
-
-            picker.classList.add(
-                "hidden"
-            );
-
-        }
-    );
-
-});
-
-setWatchPartyTheme(colour) {
-
-    this.watchPartyPanel.dataset.theme =
-        colour;
-
-    localStorage.setItem(
-        "watch_party_theme",
-        colour
-    );
-
-}
-
-colourButton?.addEventListener(
-    "click",
-    () => {
-
-        picker.classList.toggle(
-            "hidden"
-        );
-
-    }
-);
 		
     if (closeButton) {
         closeButton.addEventListener(
@@ -2437,17 +2389,6 @@ async loadWatchParty() {
             String(availableHeight)
         );
 
-		const savedTheme =
-    localStorage.getItem(
-        "watch_party_theme"
-    );
-
-if (savedTheme) {
-
-    this.watchPartyPanel.dataset.theme =
-        savedTheme;
-
-}
     }
 }
 
@@ -2839,58 +2780,68 @@ const hasWatchPartyVideo =
                 watch party
             </div>
 
-<div
-    id="watchPartyColourPicker"
-    class="
-        hidden
-        absolute
-        top-10
-        right-8
-        z-50
+<div class="relative flex items-center gap-2">
+    <div
+        id="watchPartyColourPicker"
+        class="
+            hidden
+            absolute
+            right-0 top-full
+            z-50
+            mt-2
+            w-32
+            rounded-xl
+            border border-white/10
+            bg-black/95
+            p-2
+            shadow-xl
+            backdrop-blur-xl
+        "
+    ></div>
 
-        rounded-xl
-        border border-white/10
-        bg-black/95
-        p-2
-
-        shadow-xl
-        backdrop-blur-xl
-    "
->
-
-</div>
-
-<button
+    <button
         type="button"
         data-watch-party-colour
         class="
-            text-white/50
-            hover:text-white
+            no-drag
+            flex h-7 w-7
+            items-center justify-center
+            rounded-md
+            text-base leading-none
+            text-white/70
             transition
+            hover:bg-white/10
+            hover:text-white
         "
         aria-label="Change Watch Party colour"
+        aria-expanded="false"
+        title="Change Watch Party colour"
     >
-        🎨
+        ${this.getColourEmoji(
+            localStorage.getItem(
+                "watch_party_theme"
+            ) || "white"
+        )}
     </button>
-	
-            <button
-                type="button"
-                data-close-watch-party
-                class="
-				    no-drag
-                    rounded-md
-                    px-2 py-1
-                    text-sm
-                    text-white/50
-                    transition
-                    hover:bg-white/10
-                    hover:text-white
-                "
-                aria-label="close watch party"
-            >
-                ×
-            </button>
-           </div>
+
+    <button
+        type="button"
+        data-close-watch-party
+        class="
+            no-drag
+            rounded-md
+            px-2 py-1
+            text-sm
+            text-white/50
+            transition
+            hover:bg-white/10
+            hover:text-white
+        "
+        aria-label="close watch party"
+    >
+        ×
+    </button>
+</div>
 
     <form
         data-watch-party-add-form
@@ -3319,6 +3270,78 @@ const hasWatchPartyVideo =
     `;
 
 	this.startWatchPartyTime();
+
+	const colourButton =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-colour]"
+    );
+
+const colourPicker =
+    this.watchPartyPanel.querySelector(
+        "#watchPartyColourPicker"
+    );
+
+this.renderWatchPartyColours();
+
+if (
+    colourButton &&
+    colourPicker
+) {
+    colourButton.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const willOpen =
+                colourPicker.classList.contains(
+                    "hidden"
+                );
+
+            colourPicker.classList.toggle(
+                "hidden"
+            );
+
+            colourButton.setAttribute(
+                "aria-expanded",
+                String(willOpen)
+            );
+        }
+    );
+
+    colourPicker
+        .querySelectorAll(
+            "[data-watch-party-theme]"
+        )
+        .forEach(button => {
+            button.addEventListener(
+                "click",
+                event => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    const colour =
+                        button.dataset
+                            .watchPartyTheme;
+
+                    this.setWatchPartyTheme(
+                        colour
+                    );
+
+                    colourPicker.classList.add(
+                        "hidden"
+                    );
+
+                    colourButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                    this.renderWatchPartyColours();
+                }
+            );
+        });
+}
 	
     const closeButton =
         this.watchPartyPanel.querySelector(
@@ -4806,35 +4829,98 @@ findMessageElement(messageId) {
         }) || null;
 }
 
-renderWatchPartyColours() {
+	setWatchPartyTheme(colour) {
+    const allowedColours =
+        Array.isArray(
+            this.WATCH_PARTY_COLOURS
+        )
+            ? this.WATCH_PARTY_COLOURS
+            : [];
 
-    const picker =
+    const selectedColour =
+        allowedColours.includes(colour)
+            ? colour
+            : "white";
+
+    this.watchPartyPanel.dataset.theme =
+        selectedColour;
+
+    localStorage.setItem(
+        "watch_party_theme",
+        selectedColour
+    );
+
+    const colourButton =
         this.watchPartyPanel.querySelector(
+            "[data-watch-party-colour]"
+        );
+
+    if (colourButton) {
+        colourButton.textContent =
+            this.getColourEmoji(
+                selectedColour
+            );
+
+        colourButton.setAttribute(
+            "aria-label",
+            `Watch Party colour: ${selectedColour}`
+        );
+
+        colourButton.title =
+            `Watch Party colour: ${selectedColour}`;
+    }
+}
+
+renderWatchPartyColours() {
+    const picker =
+        this.watchPartyPanel?.querySelector(
             "#watchPartyColourPicker"
         );
 
+    if (!picker) {
+        return;
+    }
+
+    const selectedColour =
+        localStorage.getItem(
+            "watch_party_theme"
+        ) || "white";
+
     picker.innerHTML =
-        WATCH_PARTY_COLOURS
+        this.WATCH_PARTY_COLOURS
             .map(colour => {
+                const isSelected =
+                    colour === selectedColour;
 
                 return `
-<button
-    class="
-        inline-block
-        m-1
-        text-xl
-        hover:scale-110
-        transition
-    "
-    data-watch-party-theme="${colour}"
->
-${this.getColourEmoji(colour)}
-</button>
-`;
-
+                    <button
+                        type="button"
+                        class="
+                            inline-flex
+                            h-9 w-9
+                            items-center justify-center
+                            rounded-full
+                            text-xl
+                            transition
+                            hover:scale-110
+                            hover:bg-white/10
+                            ${
+                                isSelected
+                                    ? "bg-white/15 ring-1 ring-white/40"
+                                    : ""
+                            }
+                        "
+                        data-watch-party-theme="${colour}"
+                        aria-label="Use ${colour} Watch Party colour"
+                        title="${colour}"
+                    >
+                        ${this.getColourEmoji(
+                            colour
+                        )}
+                    </button>
+                `;
             })
             .join("");
-
 }
 
 getColourEmoji(colour) {
