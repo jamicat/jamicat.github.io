@@ -1546,6 +1546,25 @@ seek(seconds) {
         true
     );
 }
+  setVideoMode(mode) {
+    const background =
+        document.getElementById("bgndVideo");
+
+    if (!background) {
+        return;
+    }
+
+    background.classList.remove(
+        "watch-party-cinematic",
+        "watch-party-fit"
+    );
+
+    background.classList.add(
+        mode === "fit"
+            ? "watch-party-fit"
+            : "watch-party-cinematic"
+    );
+},
 };
 
 window.setTerminalPlaybackControlsVisible =
