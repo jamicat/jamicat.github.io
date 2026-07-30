@@ -4885,6 +4885,18 @@ syncWatchPartyRainbowAnimations() {
         element.style.animationDelay =
             `${-elapsed}ms`;
     });
+
+	const urlInput =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-url]"
+    );
+
+if (urlInput) {
+    urlInput.style.setProperty(
+        "--watch-party-rainbow-delay",
+        `${-elapsed}ms`
+    );
+}
 }
 
 renderWatchPartyColours() {
