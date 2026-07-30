@@ -2938,6 +2938,7 @@ const hasWatchPartyVideo =
     "
 >
                 <div
+				    data-watch-party-now-playing-title
                     class="
                         text-[11px]
                         font-bold
