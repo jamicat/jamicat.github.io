@@ -2652,11 +2652,12 @@ window.setDiscordStatusVisible?.(
                             >
                                 <span data-watch-party-added-label>
     added by
-</span>
-                                ${this.escapeHtml(
+	 ${this.escapeHtml(
                                     item.requestedByName ||
                                     "anonymous"
                                 )}
+</span>
+                               
                             </div>
                         </div>
 
@@ -2973,14 +2974,13 @@ const hasWatchPartyVideo =
                                     text-white/35
                                 "
                             >
-                                <span data-watch-party-requested-label>
-    requested by
-</span>
-                                ${this.escapeHtml(
-                                    currentVideo
-                                        .requestedByName ||
-                                    "anonymous"
-                                )}
+                               <span data-watch-party-requested-label>
+        requested by
+        ${this.escapeHtml(
+            currentVideo.requestedByName ||
+            "anonymous"
+        )}
+    </span>
                             </div>
                         `
                         : ""
@@ -4882,7 +4882,7 @@ syncWatchPartyRainbowAnimations() {
     "[data-watch-party-empty]",
 	"[data-watch-party-empty-text]",
 	"[data-watch-party-requested-label]",
-     "[data-watch-party-added-label]",
+    "[data-watch-party-added-label]",
     "[data-watch-party-resize-grip]"
 ].join(",")
         );
