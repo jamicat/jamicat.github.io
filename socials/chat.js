@@ -79,6 +79,7 @@ this.WATCH_PARTY_COLOURS = [
     "blue",
     "purple",
     "pink",
+    "rainbow",
     "white"
 ];
 this.isMinimized = false;
@@ -2771,14 +2772,15 @@ const hasWatchPartyVideo =
     "
 >
             <div
-                class="
-                    theme-heading
-                    text-[10px]
-                    font-bold uppercase tracking-widest
-                "
-            >
-                watch party
-            </div>
+    data-watch-party-heading
+    class="
+        theme-heading
+        text-[10px]
+        font-bold uppercase tracking-widest
+    "
+>
+    watch party
+</div>
 
 <div class="relative flex items-center gap-2">
     <div
@@ -2992,14 +2994,15 @@ const hasWatchPartyVideo =
     </div>
 
             <div
-                class="
-                    mt-2
-                    rounded-xl
-                    border border-white/10
-                    bg-white/5
-                    px-3 py-3
-                "
-            >
+    data-watch-party-now-playing
+    class="
+        mt-2
+        rounded-xl
+        border border-white/10
+        bg-white/5
+        px-3 py-3
+    "
+>
                 <div
                     class="
                         text-[11px]
@@ -3214,18 +3217,19 @@ const hasWatchPartyVideo =
         flex-col
     "
 >
-    <div
-        class="
-            theme-heading
-            mb-2
-            shrink-0
-            text-[9px]
-            uppercase tracking-widest
-            text-white/40
-        "
-    >
-        queue (${queue.length})
-    </div>
+   <div
+    data-watch-party-queue-heading
+    class="
+        theme-heading
+        mb-2
+        shrink-0
+        text-[9px]
+        uppercase tracking-widest
+        text-white/40
+    "
+>
+    queue (${queue.length})
+</div>
 
     <div
         class="
@@ -3257,15 +3261,16 @@ const hasWatchPartyVideo =
     aria-hidden="true"
 >
     <div
-        class="
-            mb-1
-            h-0.5 w-10
-            rounded-full
-            bg-white/20
-            transition
-            hover:bg-white/40
-        "
-    ></div>
+    data-watch-party-resize-grip
+    class="
+        mb-1
+        h-0.5 w-10
+        rounded-full
+        bg-white/20
+        transition
+        hover:bg-white/40
+    "
+></div>
 </div>
     `;
 
@@ -4951,6 +4956,9 @@ getColourEmoji(colour) {
         case "pink":
             return "🩷";
 
+			case "rainbow":
+    return "🌈";
+			
         default:
             return "⚪";
 
