@@ -218,7 +218,7 @@
 }
 
 #chatWatchPartyPanel[data-theme]:not(
-    [data-theme="white"]
+    [data-theme="default"]
 ):not(
     [data-theme="rainbow"]
 )
@@ -289,36 +289,6 @@ input {
         );
 }
 
-#chatWatchPartyPanel[data-theme="default"]
-[data-watch-party-now-playing] {
-    border-color:
-        rgba(255,255,255,.10);
-
-    background:
-        rgba(255,255,255,.05);
-}
-
-#chatWatchPartyPanel[data-theme="default"]
-[data-watch-party-previous],
-
-#chatWatchPartyPanel[data-theme="default"]
-[data-watch-party-play],
-
-#chatWatchPartyPanel[data-theme="default"]
-[data-watch-party-next] {
-    border-color:
-        rgba(255,255,255,.10);
-
-    background:
-        rgba(255,255,255,.05);
-}
-
-#chatWatchPartyPanel[data-theme="default"]
-[data-watch-party-progress-fill] {
-    background:
-        white;
-}
-
 #chatWatchPartyPanel[data-theme]:not(
     [data-theme="default"]
 ):not(
@@ -330,7 +300,7 @@ input {
 }
 
 #chatWatchPartyPanel[data-theme]:not(
-    [data-theme="white"]
+    [data-theme="default"]
 ):not(
     [data-theme="rainbow"]
 )
@@ -340,7 +310,7 @@ input {
 }
 
 #chatWatchPartyPanel[data-theme]:not(
-    [data-theme="white"]
+    [data-theme="default"]
 ):not(
     [data-theme="rainbow"]
 )
@@ -359,21 +329,21 @@ input {
 }
 
 #chatWatchPartyPanel[data-theme]:not(
-    [data-theme="white"]
+    [data-theme="default"]
 ):not(
     [data-theme="rainbow"]
 )
 [data-watch-party-previous],
 
 #chatWatchPartyPanel[data-theme]:not(
-    [data-theme="white"]
+    [data-theme="default"]
 ):not(
     [data-theme="rainbow"]
 )
 [data-watch-party-play],
 
 #chatWatchPartyPanel[data-theme]:not(
-    [data-theme="white"]
+    [data-theme="default"]
 ):not(
     [data-theme="rainbow"]
 )
@@ -392,21 +362,21 @@ input {
 }
 
 #chatWatchPartyPanel[data-theme]:not(
-    [data-theme="white"]
+    [data-theme="default"]
 ):not(
     [data-theme="rainbow"]
 )
 [data-watch-party-previous]:hover,
 
 #chatWatchPartyPanel[data-theme]:not(
-    [data-theme="white"]
+    [data-theme="default"]
 ):not(
     [data-theme="rainbow"]
 )
 [data-watch-party-play]:hover,
 
 #chatWatchPartyPanel[data-theme]:not(
-    [data-theme="white"]
+    [data-theme="default"]
 ):not(
     [data-theme="rainbow"]
 )
@@ -419,7 +389,7 @@ input {
 }
 
 #chatWatchPartyPanel[data-theme]:not(
-    [data-theme="white"]
+    [data-theme="default"]
 ):not(
     [data-theme="rainbow"]
 )
@@ -664,4 +634,67 @@ input {
     [data-watch-party-resize-grip] {
         animation: none;
     }
+}
+
+/*
+ * Default Watch Party theme.
+ *
+ * This intentionally restores the original panel
+ * appearance and overrides leftover colour rules.
+ */
+#chatWatchPartyPanel[data-theme="default"] {
+    border-color:
+        rgba(255, 255, 255, 0.15);
+
+    background:
+        rgba(0, 0, 0, 0.95);
+box-shadow: none;
+    
+}
+
+#chatWatchPartyPanel[data-theme="default"]
+[data-watch-party-heading] {
+    color: inherit;
+    background: none;
+    text-shadow: none;
+}
+
+#chatWatchPartyPanel[data-theme="default"]
+[data-watch-party-now-playing] {
+    border-color:
+        rgba(255, 255, 255, 0.10);
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    box-shadow: none;
+}
+
+#chatWatchPartyPanel[data-theme="default"]
+[data-watch-party-previous],
+
+#chatWatchPartyPanel[data-theme="default"]
+[data-watch-party-play],
+
+#chatWatchPartyPanel[data-theme="default"]
+[data-watch-party-next] {
+    border-color:
+        rgba(255, 255, 255, 0.10);
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    box-shadow: none;
+}
+
+#chatWatchPartyPanel[data-theme="default"]
+[data-watch-party-progress-fill] {
+    background:
+        rgba(255, 255, 255, 0.70);
+}
+
+#chatWatchPartyPanel[data-theme="default"]
+[data-watch-party-resize-grip] {
+    background:
+        rgba(255, 255, 255, 0.80);
 }
