@@ -80,7 +80,7 @@ this.WATCH_PARTY_COLOURS = [
     "purple",
     "pink",
     "rainbow",
-    "white"
+    "default"
 ];
 this.isMinimized = false;
 this.membersPanel = null;
@@ -596,14 +596,14 @@ if (this.watchPartyButton) {
 		   const savedTheme =
     localStorage.getItem(
         "watch_party_theme"
-    ) || "white";
+    ) || "default";
 
 this.watchPartyPanel.dataset.theme =
     this.WATCH_PARTY_COLOURS.includes(
         savedTheme
     )
         ? savedTheme
-        : "white";
+        : "default";
 }
 	this.emojiButton =
     this.window.querySelector("#chatEmojiButton");
@@ -2821,7 +2821,7 @@ const hasWatchPartyVideo =
         ${this.getColourEmoji(
             localStorage.getItem(
                 "watch_party_theme"
-            ) || "white"
+            ) || "default"
         )}
     </button>
 
@@ -4868,7 +4868,7 @@ findMessageElement(messageId) {
     const selectedColour =
         allowedColours.includes(colour)
             ? colour
-            : "white";
+            : "default";
 
     this.watchPartyPanel.dataset.theme =
         selectedColour;
@@ -4912,7 +4912,7 @@ renderWatchPartyColours() {
     const selectedColour =
         localStorage.getItem(
             "watch_party_theme"
-        ) || "white";
+        ) || "default";
 
     picker.innerHTML =
         this.WATCH_PARTY_COLOURS
@@ -4983,7 +4983,7 @@ getColourEmoji(colour) {
     return "🌈";
 			
         default:
-            return "⚪";
+            return "⚫";
 
     }
 
