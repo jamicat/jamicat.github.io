@@ -2662,6 +2662,7 @@ window.setDiscordStatusVisible?.(
             }).join("")
             : `
                 <div
+				    data-watch-party-empty
                     class="
                         rounded-xl
                         border border-white/10
