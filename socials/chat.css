@@ -340,6 +340,7 @@ input {
         );
 }
 
+
 #chatWatchPartyPanel[data-theme]:not(
     [data-theme="default"]
 ):not(
@@ -710,6 +711,20 @@ input {
     #chatWatchPartyPanel[data-theme="rainbow"]
     [data-watch-party-now-playing],
     #chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-add-heading],
+#chatWatchPartyPanel[data-theme="rainbow"]
+input[data-watch-party-url],
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-now-playing-title],
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-time],
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-queue-heading],
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-queue-box],
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-empty],
+    #chatWatchPartyPanel[data-theme="rainbow"]
     [data-watch-party-resize-grip] {
         animation: none;
     }
@@ -796,3 +811,226 @@ box-shadow: none;
             0.08
         );
 }
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-add-heading]{
+    background:linear-gradient(
+        90deg,
+        #ff3b30,
+        #ff9500,
+        #ffcc00,
+        #34c759,
+        #00c7be,
+        #0a84ff,
+        #5e5ce6,
+        #af52de,
+        #ff2d55
+    );
+
+    background-size:300% 300%;
+
+    animation:
+        watch-party-rainbow-shift
+        8s linear infinite;
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+input[data-watch-party-url]{
+
+    border-color:transparent;
+
+    background:
+        linear-gradient(
+            rgba(15,15,20,.92),
+            rgba(15,15,20,.92)
+        ) padding-box,
+
+        linear-gradient(
+            90deg,
+            #ff3b30,
+            #ff9500,
+            #ffcc00,
+            #34c759,
+            #00c7be,
+            #0a84ff,
+            #5e5ce6,
+            #af52de,
+            #ff2d55,
+            #ff3b30
+        ) border-box;
+
+    background-size:
+        100% 100%,
+        300% 300%;
+
+    animation:
+        watch-party-rainbow-shift
+        8s linear infinite;
+
+    border:1px solid transparent;
+}
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-now-playing-title]{
+
+    background:linear-gradient(
+        90deg,
+        #ff3b30,
+        #ff9500,
+        #ffcc00,
+        #34c759,
+        #00c7be,
+        #0a84ff,
+        #5e5ce6,
+        #af52de,
+        #ff2d55
+    );
+
+    background-size:300% 300%;
+
+    animation:
+        watch-party-rainbow-shift
+        8s linear infinite;
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-time]{
+
+    background:linear-gradient(
+        90deg,
+        #ff3b30,
+        #ff9500,
+        #ffcc00,
+        #34c759,
+        #00c7be,
+        #0a84ff,
+        #5e5ce6,
+        #af52de,
+        #ff2d55
+    );
+
+    background-size:300% 300%;
+
+    animation:
+        watch-party-rainbow-shift
+        8s linear infinite;
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-queue-heading]{
+    
+    background:linear-gradient(
+        90deg,
+        #ff3b30,
+        #ff9500,
+        #ffcc00,
+        #34c759,
+        #00c7be,
+        #0a84ff,
+        #5e5ce6,
+        #af52de,
+        #ff2d55
+    );
+
+    background-size:300% 300%;
+
+    animation:
+        watch-party-rainbow-shift
+        8s linear infinite;
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-queue-box]{
+
+    border:1px solid transparent;
+
+    background:
+        linear-gradient(
+            rgba(22,22,30,.55),
+            rgba(22,22,30,.55)
+        ) padding-box,
+
+        linear-gradient(
+            90deg,
+            #ff3b30,
+            #ff9500,
+            #ffcc00,
+            #34c759,
+            #00c7be,
+            #0a84ff,
+            #5e5ce6,
+            #af52de,
+            #ff2d55,
+            #ff3b30
+        ) border-box;
+
+    background-size:
+        100% 100%,
+        300% 300%;
+
+    animation:
+        watch-party-rainbow-shift
+        8s linear infinite;
+}
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-empty]{
+
+    background:linear-gradient(
+        90deg,
+        #ff3b30,
+        #ff9500,
+        #ffcc00,
+        #34c759,
+        #00c7be,
+        #0a84ff,
+        #5e5ce6,
+        #af52de,
+        #ff2d55
+    );
+
+    background-size:300% 300%;
+
+    animation:
+        watch-party-rainbow-shift
+        8s linear infinite;
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="default"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-empty]{
+    color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.8
+        );
+}
+
