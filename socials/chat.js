@@ -2760,9 +2760,9 @@ const hasWatchPartyVideo =
             hover:bg-white/10
             hover:text-white
         "
-        aria-label="Change Watch Party colour"
+        aria-label="change watch party colour"
         aria-expanded="false"
-        title="Change Watch Party colour"
+        title="change watch party colour"
     >
         ${this.getColourEmoji(
             localStorage.getItem(
@@ -2785,8 +2785,11 @@ const hasWatchPartyVideo =
         hover:bg-white/10
         hover:text-white
     "
-    aria-label="Toggle Fit Video"
-    title="Toggle Fit Video"
+    aria-label="toggle fit video"
+    title="${
+        this.watchPartyVideoMode === "fit"
+            ? "toggle cinematic cover"
+            : "toggle fit cover"
 >
     ${this.getWatchPartyVideoModeEmoji(
         this.watchPartyVideoMode
