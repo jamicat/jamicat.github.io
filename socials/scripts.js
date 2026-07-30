@@ -1545,7 +1545,8 @@ seek(seconds) {
         targetTime,
         true
     );
-}
+},
+  
   setVideoMode(mode) {
     const background =
         document.getElementById("bgndVideo");
