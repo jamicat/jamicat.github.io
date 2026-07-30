@@ -167,3 +167,43 @@
 .watch-party-progress:active::-moz-range-thumb {
     cursor: grabbing;
 }
+
+#chatWatchPartyPanel[data-theme="red"]{
+    border-color:#ef4444;
+    box-shadow:0 0 20px rgba(239,68,68,.35);
+}
+
+#chatWatchPartyPanel[data-theme="orange"]{
+    border-color:#f97316;
+    box-shadow:0 0 20px rgba(249,115,22,.35);
+}
+
+#chatWatchPartyPanel[data-theme="yellow"]{
+    border-color:#eab308;
+    box-shadow:0 0 20px rgba(234,179,8,.35);
+}
+
+#chatWatchPartyPanel[data-theme="green"]{
+    border-color:#22c55e;
+    box-shadow:0 0 20px rgba(34,197,94,.35);
+}
+
+#chatWatchPartyPanel[data-theme="cyan"]{
+    border-color:#06b6d4;
+    box-shadow:0 0 20px rgba(6,182,212,.35);
+}
+
+#chatWatchPartyPanel[data-theme="blue"]{
+    border-color:#3b82f6;
+    box-shadow:0 0 20px rgba(59,130,246,.35);
+}
+
+#chatWatchPartyPanel[data-theme="purple"]{
+    border-color:#a855f7;
+    box-shadow:0 0 20px rgba(168,85,247,.35);
+}
+
+#chatWatchPartyPanel[data-theme="pink"]{
+    border-color:#ec4899;
+    box-shadow:0 0 20px rgba(236,72,153,.35);
+}
