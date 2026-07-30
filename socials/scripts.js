@@ -938,6 +938,15 @@ function loadActiveVideo({
     return;
   }
 
+  const savedVideoMode =
+    localStorage.getItem(
+        "watch_party_video_mode"
+    ) || "cinematic";
+
+window.watchPartyPlayer?.setVideoMode?.(
+    savedVideoMode
+);
+
   const videoId =
     getActiveVideoId();
 
@@ -1054,18 +1063,30 @@ function applyWatchPartyState(state) {
     return;
   }
 
+  if (watchPartyState.enabled) {
+    window.watchPartyPlayer?.setVideoMode?.(
+        localStorage.getItem(
+            "watch_party_video_mode"
+        ) || "cinematic"
+    );
+}
+
   if (!watchPartyState.enabled) {
     const leavingWatchParty =
-      previousEnabled === true;
+        previousEnabled === true;
+
+    window.watchPartyPlayer?.setVideoMode?.(
+        "cinematic"
+    );
 
     loadActiveVideo({
-      autoplay: false,
-      force: leavingWatchParty
+        autoplay: false,
+        force: leavingWatchParty
     });
 
     updatePlaybackIcons(false);
     return;
-  }
+}
 
   const videoId =
     watchPartyState.currentVideoId;
