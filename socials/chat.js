@@ -554,35 +554,21 @@ if (this.watchPartyButton) {
     );
 }
 	   if (this.watchPartyPanel) {
-    const savedX =
-        parseFloat(
-            localStorage.getItem(
-                "watch_party_x"
-            )
-        ) || 0;
-
-    const savedY =
-        parseFloat(
-            localStorage.getItem(
-                "watch_party_y"
-            )
-        ) || 0;
-
     const savedHeight =
-        parseFloat(
-            localStorage.getItem(
-                "watch_party_height"
-            )
-        );
+    parseFloat(
+        localStorage.getItem(
+            "watch_party_height"
+        )
+    );
 
-    this.watchPartyPanel.dataset.x =
-        String(savedX);
+this.watchPartyPanel.dataset.x =
+    "0";
 
-    this.watchPartyPanel.dataset.y =
-        String(savedY);
+this.watchPartyPanel.dataset.y =
+    "0";
 
-    this.watchPartyPanel.style.transform =
-        `translate(${savedX}px, ${savedY}px)`;
+this.watchPartyPanel.style.transform =
+    "translate(0px, 0px)";
 
     if (
         Number.isFinite(savedHeight) &&
@@ -593,17 +579,28 @@ if (this.watchPartyButton) {
             `${savedHeight}px`;
     }
 
-		   const savedTheme =
+		   const storedTheme =
     localStorage.getItem(
         "watch_party_theme"
-    ) || "default";
+    );
+
+const savedTheme =
+    storedTheme === "white" ||
+    storedTheme === "default"
+        ? "black"
+        : storedTheme || "black";
 
 this.watchPartyPanel.dataset.theme =
     this.WATCH_PARTY_COLOURS.includes(
         savedTheme
     )
         ? savedTheme
-        : "default";
+        : "black";
+
+localStorage.setItem(
+    "watch_party_theme",
+    this.watchPartyPanel.dataset.theme
+);
 }
 	this.emojiButton =
     this.window.querySelector("#chatEmojiButton");
@@ -2322,75 +2319,6 @@ async loadWatchParty() {
     }
 }
 
-	positionWatchPartyPanel() {
-    if (
-        !this.watchPartyButton ||
-        !this.watchPartyPanel
-    ) {
-        return;
-    }
-
-    const buttonRect =
-        this.watchPartyButton
-            .getBoundingClientRect();
-
-    const gap = 8;
-    const viewportPadding = 12;
-
-    const viewport =
-        window.visualViewport;
-
-    const viewportHeight =
-        viewport?.height ||
-        window.innerHeight;
-
-    this.watchPartyPanel.style.right =
-        `${Math.max(
-            viewportPadding,
-            window.innerWidth -
-                buttonRect.right
-        )}px`;
-
-    this.watchPartyPanel.style.bottom =
-        `${Math.max(
-            viewportPadding,
-            window.innerHeight -
-                buttonRect.top +
-                gap
-        )}px`;
-
-    const availableHeight =
-        Math.max(
-            this.watchPartyResizeMinimum,
-            viewportHeight -
-                viewportPadding * 2
-        );
-
-    this.watchPartyPanel.style.maxHeight =
-        `${availableHeight}px`;
-
-    this.watchPartyPanel.style.overflow =
-        "hidden";
-
-    const currentHeight =
-        parseFloat(
-            this.watchPartyPanel.style.height
-        );
-
-    if (
-        Number.isFinite(currentHeight) &&
-        currentHeight > availableHeight
-    ) {
-        this.watchPartyPanel.style.height =
-            `${availableHeight}px`;
-
-        localStorage.setItem(
-            "watch_party_height",
-            String(availableHeight)
-        );
-
-    }
-}
 
 	startWatchPartyTime() {
     const timeLabel =
@@ -6785,6 +6713,208 @@ closeAvatarPicker() {
             String(this.membersVisible)
         );
     });
+}
+
+	positionWatchPartyPanel() {
+    if (
+        !this.watchPartyButton ||
+        !this.watchPartyPanel
+    ) {
+        return;
+    }
+
+    const panel =
+        this.watchPartyPanel;
+
+    const buttonRect =
+        this.watchPartyButton
+            .getBoundingClientRect();
+
+    const viewport =
+        window.visualViewport;
+
+    const viewportWidth =
+        viewport?.width ||
+        window.innerWidth;
+
+    const viewportHeight =
+        viewport?.height ||
+        window.innerHeight;
+
+    const viewportLeft =
+        viewport?.offsetLeft || 0;
+
+    const viewportTop =
+        viewport?.offsetTop || 0;
+
+    const viewportPadding = 12;
+    const gap = 8;
+
+    /*
+     * Establish the normal position beside the
+     * Watch Party TV button.
+     */
+    panel.style.left = "auto";
+    panel.style.top = "auto";
+
+    panel.style.right =
+        `${Math.max(
+            viewportPadding,
+            window.innerWidth -
+                buttonRect.right
+        )}px`;
+
+    panel.style.bottom =
+        `${Math.max(
+            viewportPadding,
+            window.innerHeight -
+                buttonRect.top +
+                gap
+        )}px`;
+
+    const availableHeight =
+        Math.max(
+            this.watchPartyResizeMinimum,
+            viewportHeight -
+                viewportPadding * 2
+        );
+
+    panel.style.maxHeight =
+        `${availableHeight}px`;
+
+    panel.style.overflow =
+        "hidden";
+
+    const currentHeight =
+        parseFloat(
+            panel.style.height
+        );
+
+    if (
+        Number.isFinite(currentHeight) &&
+        currentHeight > availableHeight
+    ) {
+        panel.style.height =
+            `${availableHeight}px`;
+
+        localStorage.setItem(
+            "watch_party_height",
+            String(availableHeight)
+        );
+    }
+
+    /*
+     * Begin with no translation so we can measure
+     * the panel's correct base position.
+     */
+    panel.dataset.x = "0";
+    panel.dataset.y = "0";
+
+    panel.style.transform =
+        "translate(0px, 0px)";
+
+    const savedX =
+        parseFloat(
+            localStorage.getItem(
+                "watch_party_x"
+            )
+        ) || 0;
+
+    const savedY =
+        parseFloat(
+            localStorage.getItem(
+                "watch_party_y"
+            )
+        ) || 0;
+
+    const baseRect =
+        panel.getBoundingClientRect();
+
+    let nextX = savedX;
+    let nextY = savedY;
+
+    const minimumLeft =
+        viewportLeft +
+        viewportPadding;
+
+    const maximumRight =
+        viewportLeft +
+        viewportWidth -
+        viewportPadding;
+
+    const minimumTop =
+        viewportTop +
+        viewportPadding;
+
+    const maximumBottom =
+        viewportTop +
+        viewportHeight -
+        viewportPadding;
+
+    /*
+     * Clamp the saved horizontal position.
+     */
+    if (
+        baseRect.left + nextX <
+        minimumLeft
+    ) {
+        nextX =
+            minimumLeft -
+            baseRect.left;
+    }
+
+    if (
+        baseRect.right + nextX >
+        maximumRight
+    ) {
+        nextX =
+            maximumRight -
+            baseRect.right;
+    }
+
+    /*
+     * Clamp the saved vertical position.
+     */
+    if (
+        baseRect.top + nextY <
+        minimumTop
+    ) {
+        nextY =
+            minimumTop -
+            baseRect.top;
+    }
+
+    if (
+        baseRect.bottom + nextY >
+        maximumBottom
+    ) {
+        nextY =
+            maximumBottom -
+            baseRect.bottom;
+    }
+
+    panel.dataset.x =
+        String(nextX);
+
+    panel.dataset.y =
+        String(nextY);
+
+    panel.style.transform =
+        `translate(${nextX}px, ${nextY}px)`;
+
+    /*
+     * Replace any invalid saved position with the
+     * corrected, visible position.
+     */
+    localStorage.setItem(
+        "watch_party_x",
+        String(nextX)
+    );
+
+    localStorage.setItem(
+        "watch_party_y",
+        String(nextY)
+    );
 }
 	
 setupDragging() {
