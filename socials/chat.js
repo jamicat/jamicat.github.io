@@ -586,16 +586,16 @@ this.watchPartyPanel.style.transform =
 
 const savedTheme =
     storedTheme === "white" ||
-    storedTheme === "default"
-        ? "black"
-        : storedTheme || "black";
+    storedTheme === "black"
+        ? "default"
+        : storedTheme || "default";
 
 this.watchPartyPanel.dataset.theme =
     this.WATCH_PARTY_COLOURS.includes(
         savedTheme
     )
         ? savedTheme
-        : "black";
+        : "default";
 
 localStorage.setItem(
     "watch_party_theme",
@@ -2711,22 +2711,25 @@ const hasWatchPartyVideo =
 
 <div class="relative flex items-center gap-2">
     <div
-        id="watchPartyColourPicker"
-        class="
-            hidden
-            absolute
-            right-0 top-full
-            z-50
-            mt-2
-            w-32
-            rounded-xl
-            border border-white/10
-            bg-black/95
-            p-2
-            shadow-xl
-            backdrop-blur-xl
-        "
-    ></div>
+    id="watchPartyColourPicker"
+    class="
+        hidden
+        absolute
+        right-0 top-full
+        z-50
+        mt-2
+        grid
+        grid-cols-2
+        gap-1
+        w-max
+        rounded-xl
+        border border-white/10
+        bg-black/95
+        p-2
+        shadow-xl
+        backdrop-blur-xl
+    "
+></div>
 
     <button
         type="button"
@@ -4837,10 +4840,17 @@ renderWatchPartyColours() {
         return;
     }
 
-    const selectedColour =
-        localStorage.getItem(
-            "watch_party_theme"
-        ) || "default";
+    const storedColour =
+    localStorage.getItem(
+        "watch_party_theme"
+    );
+
+const selectedColour =
+    this.WATCH_PARTY_COLOURS.includes(
+        storedColour
+    )
+        ? storedColour
+        : "default";
 
     picker.innerHTML =
         this.WATCH_PARTY_COLOURS
@@ -4910,8 +4920,11 @@ getColourEmoji(colour) {
 			case "rainbow":
     return "🌈";
 			
-        default:
-            return "⚫";
+        case "default":
+    return "⚫";
+
+default:
+    return "⚫";
 
     }
 
