@@ -938,14 +938,16 @@ function loadActiveVideo({
     return;
   }
 
-  const savedVideoMode =
-    localStorage.getItem(
-        "watch_party_video_mode"
-    ) || "cinematic";
+  if (playbackMode === "watch-party") {
+    const savedVideoMode =
+        localStorage.getItem(
+            "watch_party_video_mode"
+        ) || "cinematic";
 
-window.watchPartyPlayer?.setVideoMode?.(
-    savedVideoMode
-);
+    window.watchPartyPlayer?.setVideoMode?.(
+        savedVideoMode
+    );
+}
 
   const videoId =
     getActiveVideoId();
