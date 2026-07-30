@@ -2844,6 +2844,7 @@ const hasWatchPartyVideo =
         ×
     </button>
 </div>
+</div>
 
     <form
         data-watch-party-add-form
