@@ -345,6 +345,29 @@ input {
 ):not(
     [data-theme="rainbow"]
 )
+[data-watch-party-now-playing-title] {
+    color:
+        var(--watch-party-accent);
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="default"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-time] {
+    color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.8
+        );
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="default"]
+):not(
+    [data-theme="rainbow"]
+)
 [data-watch-party-previous],
 
 #chatWatchPartyPanel[data-theme]:not(
