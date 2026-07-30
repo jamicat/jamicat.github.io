@@ -72,6 +72,7 @@ this.banManagerButton = null;
 this.partyManager = null;
 this.partyManagerButton = null;
 this.partyManagerBusy = false;
+this.watchPartyVideoMode = "cinematic";
 this.WATCH_PARTY_COLOURS = [
     "red",
     "orange",
@@ -2472,6 +2473,11 @@ const addInputSelectionStart =
 
     const isEnabled =
         this.watchParty.enabled === true;
+
+	this.watchPartyVideoMode =
+    localStorage.getItem(
+        "watch_party_video_mode"
+    ) || "cinematic";
 	
 this.watchPartyButton.classList.toggle(
     "hidden",
@@ -2739,6 +2745,28 @@ const hasWatchPartyVideo =
     "
 ></div>
 
+<button
+    type="button"
+    data-watch-party-video-mode
+    class="
+        no-drag
+        flex h-7 w-7
+        items-center justify-center
+        rounded-md
+        text-base leading-none
+        text-white/70
+        transition
+        hover:bg-white/10
+        hover:text-white
+    "
+    aria-label="Toggle Fit Video"
+    title="Toggle Fit Video"
+>
+    ${this.getWatchPartyVideoModeEmoji(
+        this.watchPartyVideoMode
+    )}
+</button>
+
     <button
         type="button"
         data-watch-party-colour
@@ -2763,6 +2791,8 @@ const hasWatchPartyVideo =
             ) || "default"
         )}
     </button>
+
+	
 
     <button
         type="button"
@@ -3228,6 +3258,11 @@ const hasWatchPartyVideo =
         "[data-watch-party-colour]"
     );
 
+const videoModeButton =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-video-mode]"
+    );
+
 const colourPicker =
     this.watchPartyPanel.querySelector(
         "#watchPartyColourPicker"
@@ -3316,6 +3351,22 @@ colourPicker
                 }
             );
         });
+}
+
+if (videoModeButton) {
+    videoModeButton.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            this.setWatchPartyVideoMode(
+                this.watchPartyVideoMode === "fit"
+                    ? "cinematic"
+                    : "fit"
+            );
+        }
+    );
 }
 	
     const closeButton =
@@ -4804,6 +4855,33 @@ findMessageElement(messageId) {
         }) || null;
 }
 
+
+getWatchPartyVideoModeEmoji(mode) {
+    return mode === "fit"
+        ? "📺"
+        : "🎬";
+}
+
+setWatchPartyVideoMode(mode) {
+    this.watchPartyVideoMode =
+        mode === "fit"
+            ? "fit"
+            : "cinematic";
+
+    localStorage.setItem(
+        "watch_party_video_mode",
+        this.watchPartyVideoMode
+    );
+
+    window.watchPartyPlayer?.setVideoMode?.(
+        this.watchPartyVideoMode
+    );
+
+    this.renderWatchParty();
+}
+
+
+	
 	setWatchPartyTheme(colour) {
     const allowedColours =
         Array.isArray(
