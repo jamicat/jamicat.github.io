@@ -1507,19 +1507,45 @@ window.watchPartyPlayer = {
 
   pause() {
     if (
-      !player ||
-      !playerReady
+        !player ||
+        !playerReady
     ) {
-      return;
+        return;
     }
 
-   if (
-    typeof player.pauseVideo ===
-    "function"
-) {
-    player.pauseVideo();
+    if (
+        typeof player.pauseVideo ===
+            "function"
+    ) {
+        player.pauseVideo();
+    }
+},
+
+seek(seconds) {
+    if (
+        !player ||
+        !playerReady ||
+        typeof player.seekTo !==
+            "function"
+    ) {
+        return;
+    }
+
+    const targetTime =
+        Number(seconds);
+
+    if (
+        !Number.isFinite(targetTime) ||
+        targetTime < 0
+    ) {
+        return;
+    }
+
+    player.seekTo(
+        targetTime,
+        true
+    );
 }
-  }
 };
 
 window.setTerminalPlaybackControlsVisible =
