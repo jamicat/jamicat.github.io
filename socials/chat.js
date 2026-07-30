@@ -2789,6 +2789,7 @@ const hasWatchPartyVideo =
     >
         <label
             for="chatWatchPartyUrl"
+			data-watch-party-add-heading
             class="
                 theme-heading
                 block
@@ -2817,6 +2818,7 @@ const hasWatchPartyVideo =
                     this.watchPartyAddUrl
                 )}"
                 placeholder="paste a youtube url or playlist url"
+				data-watch-party-url
                 class="
                     min-w-0
                     flex-1
@@ -2915,6 +2917,7 @@ const hasWatchPartyVideo =
 
         <span
             id="watchPartyTime"
+			data-watch-party-time
             class="
 			    watch-party-time
                 normal-case
@@ -3167,6 +3170,7 @@ const hasWatchPartyVideo =
 </div>
 
     <div
+	    data-watch-party-queue-box
         class="
             min-h-0
             flex-1
@@ -4855,14 +4859,21 @@ syncWatchPartyRainbowAnimations() {
     const animatedElements =
         this.watchPartyPanel.querySelectorAll(
             [
-                "[data-watch-party-heading]",
-                "[data-watch-party-progress-fill]",
-                "[data-watch-party-previous]",
-                "[data-watch-party-play]",
-                "[data-watch-party-next]",
-                "[data-watch-party-now-playing]",
-                "[data-watch-party-resize-grip]"
-            ].join(",")
+    "[data-watch-party-heading]",
+    "[data-watch-party-add-heading]",
+    "[data-watch-party-url]",
+    "[data-watch-party-progress-fill]",
+    "[data-watch-party-previous]",
+    "[data-watch-party-play]",
+    "[data-watch-party-next]",
+    "[data-watch-party-now-playing]",
+    "[data-watch-party-now-playing-title]",
+    "[data-watch-party-time]",
+    "[data-watch-party-queue-heading]",
+    "[data-watch-party-queue-box]",
+    "[data-watch-party-empty]",
+    "[data-watch-party-resize-grip]"
+].join(",")
         );
 
     animatedElements.forEach(element => {
