@@ -2745,27 +2745,6 @@ const hasWatchPartyVideo =
     "
 ></div>
 
-<button
-    type="button"
-    data-watch-party-video-mode
-    class="
-        no-drag
-        flex h-7 w-7
-        items-center justify-center
-        rounded-md
-        text-base leading-none
-        text-white/70
-        transition
-        hover:bg-white/10
-        hover:text-white
-    "
-    aria-label="Toggle Fit Video"
-    title="Toggle Fit Video"
->
-    ${this.getWatchPartyVideoModeEmoji(
-        this.watchPartyVideoMode
-    )}
-</button>
 
     <button
         type="button"
@@ -2792,7 +2771,27 @@ const hasWatchPartyVideo =
         )}
     </button>
 
-	
+	<button
+    type="button"
+    data-watch-party-video-mode
+    class="
+        no-drag
+        flex h-7 w-7
+        items-center justify-center
+        rounded-md
+        text-base leading-none
+        text-white/70
+        transition
+        hover:bg-white/10
+        hover:text-white
+    "
+    aria-label="Toggle Fit Video"
+    title="Toggle Fit Video"
+>
+    ${this.getWatchPartyVideoModeEmoji(
+        this.watchPartyVideoMode
+    )}
+</button>
 
     <button
         type="button"
