@@ -2790,6 +2790,7 @@ const hasWatchPartyVideo =
         this.watchPartyVideoMode === "fit"
             ? "toggle cinematic cover"
             : "toggle fit cover"
+}"
 >
     ${this.getWatchPartyVideoModeEmoji(
         this.watchPartyVideoMode
