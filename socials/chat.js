@@ -2675,7 +2675,9 @@ window.setDiscordStatusVisible?.(
                         text-white/40
                     "
                 >
-                    the queue is empty
+                    <span data-watch-party-empty-text>
+    the queue is empty
+</span>
                 </div>
             `;
 
@@ -4873,6 +4875,7 @@ syncWatchPartyRainbowAnimations() {
     "[data-watch-party-queue-heading]",
     "[data-watch-party-now-playing-heading]",
     "[data-watch-party-empty]",
+	"[data-watch-party-empty-text]",
     "[data-watch-party-resize-grip]"
 ].join(",")
         );
