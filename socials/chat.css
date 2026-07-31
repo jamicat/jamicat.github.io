@@ -97,6 +97,8 @@
 }
 
 #chatWatchPartyPanel {
+    --watch-party-accent: #06b6d4;
+    --watch-party-accent-rgb: 6, 182, 212;
     scrollbar-width: thin;
     scrollbar-color:
         rgba(255, 255, 255, 0.22)
@@ -118,6 +120,131 @@
 
 #chatWatchPartyPanel::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.30);
+}
+
+/*
+ * Watch Party playlist checkbox.
+ */
+#chatWatchPartyPanel
+.watch-party-playlist-label {
+    color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.72
+        );
+
+    transition:
+        color 160ms ease,
+        opacity 160ms ease;
+}
+
+#chatWatchPartyPanel
+.watch-party-playlist-label:hover {
+    color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.95
+        );
+}
+
+#chatWatchPartyPanel
+.watch-party-playlist-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+
+    flex: 0 0 auto;
+
+    width: 13px;
+    height: 13px;
+    margin: 0;
+
+    border:
+        1px solid
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.65
+        );
+
+    border-radius: 3px;
+
+    background:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.08
+        );
+
+    box-shadow:
+        inset 0 0 0 1px
+        rgba(0, 0, 0, 0.25);
+
+    cursor: pointer;
+
+    transition:
+        border-color 160ms ease,
+        background 160ms ease,
+        box-shadow 160ms ease,
+        transform 100ms ease;
+}
+
+#chatWatchPartyPanel
+.watch-party-playlist-checkbox:hover {
+    border-color:
+        var(--watch-party-accent);
+
+    background:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.16
+        );
+
+    box-shadow:
+        0 0 7px
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.25
+        );
+}
+
+#chatWatchPartyPanel
+.watch-party-playlist-checkbox:active {
+    transform: scale(0.92);
+}
+
+#chatWatchPartyPanel
+.watch-party-playlist-checkbox:focus-visible {
+    outline:
+        1px solid
+        var(--watch-party-accent);
+
+    outline-offset: 2px;
+}
+
+#chatWatchPartyPanel
+.watch-party-playlist-checkbox:checked {
+    border-color:
+        var(--watch-party-accent);
+
+    background-color:
+        var(--watch-party-accent);
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.3 6.2 4.8 8.6 9.8 3.5' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 11px 11px;
+
+    box-shadow:
+        0 0 8px
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.35
+        );
+}
+
+#chatWatchPartyPanel
+.watch-party-playlist-checkbox:disabled {
+    cursor: wait;
 }
 
 .watch-party-progress::-webkit-slider-runnable-track {
@@ -702,6 +829,82 @@ input {
         5s linear infinite;
 }
 
+#chatWatchPartyPanel[data-theme="rainbow"]
+.watch-party-playlist-label {
+    color: rgba(255, 255, 255, 0.62);
+}
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+.watch-party-playlist-label:hover {
+    color: rgba(255, 255, 255, 0.90);
+}
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+.watch-party-playlist-checkbox {
+    border: 1px solid transparent;
+
+    background:
+        linear-gradient(
+            rgba(15, 15, 20, 0.94),
+            rgba(15, 15, 20, 0.94)
+        ) padding-box,
+
+        linear-gradient(
+            120deg,
+            #ff453a,
+            #ff9f0a,
+            #ffd60a,
+            #30d158,
+            #64d2ff,
+            #0a84ff,
+            #bf5af2,
+            #ff375f
+        ) border-box;
+
+    background-size:
+        100% 100%,
+        250% 250%;
+
+    animation:
+        watch-party-rainbow-shift
+        7s linear infinite;
+}
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+.watch-party-playlist-checkbox:checked {
+    border: 1px solid transparent;
+
+    background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.3 6.2 4.8 8.6 9.8 3.5' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+        center / 11px 11px
+        no-repeat
+        padding-box,
+
+        linear-gradient(
+            120deg,
+            #ff453a,
+            #ff9f0a,
+            #ffd60a,
+            #30d158,
+            #64d2ff,
+            #0a84ff,
+            #bf5af2,
+            #ff375f
+        ) padding-box;
+
+    background-size:
+        11px 11px,
+        250% 250%;
+
+    box-shadow:
+        0 0 8px
+        rgba(100, 210, 255, 0.26);
+
+    animation:
+        watch-party-rainbow-shift
+        7s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
     #chatWatchPartyPanel[data-theme="rainbow"],
     #chatWatchPartyPanel[data-theme="rainbow"]
@@ -731,9 +934,12 @@ input[data-watch-party-url],
 #chatWatchPartyPanel[data-theme="rainbow"]
 [data-watch-party-empty],
     #chatWatchPartyPanel[data-theme="rainbow"]
-    [data-watch-party-resize-grip] {
-        animation: none;
-    }
+[data-watch-party-resize-grip],
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+.watch-party-playlist-checkbox {
+    animation: none;
+}
 }
 
 /*
@@ -797,6 +1003,51 @@ box-shadow: none;
 [data-watch-party-resize-grip] {
     background:
         rgba(255, 255, 255, 0.80);
+}
+
+#chatWatchPartyPanel[data-theme="default"]
+.watch-party-playlist-label {
+    color: rgba(255, 255, 255, 0.50);
+}
+
+#chatWatchPartyPanel[data-theme="default"]
+.watch-party-playlist-label:hover {
+    color: rgba(255, 255, 255, 0.78);
+}
+
+#chatWatchPartyPanel[data-theme="default"]
+.watch-party-playlist-checkbox {
+    border-color:
+        rgba(255, 255, 255, 0.38);
+
+    background-color:
+        rgba(255, 255, 255, 0.06);
+}
+
+#chatWatchPartyPanel[data-theme="default"]
+.watch-party-playlist-checkbox:hover {
+    border-color:
+        rgba(255, 255, 255, 0.70);
+
+    background-color:
+        rgba(255, 255, 255, 0.12);
+
+    box-shadow:
+        0 0 7px
+        rgba(255, 255, 255, 0.15);
+}
+
+#chatWatchPartyPanel[data-theme="default"]
+.watch-party-playlist-checkbox:checked {
+    border-color:
+        rgba(255, 255, 255, 0.78);
+
+    background-color:
+        rgba(255, 255, 255, 0.78);
+
+    box-shadow:
+        0 0 7px
+        rgba(255, 255, 255, 0.22);
 }
 
 #chatWatchPartyPanel[data-theme]:not(
