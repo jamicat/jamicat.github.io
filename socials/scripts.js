@@ -944,12 +944,9 @@ function shouldUseWatchPartyEnglishSubtitles() {
     );
 }
 
-function rebuildYouTubePlayer() {
-    /*
-     * If the player has not been created yet,
-     * maybeInitPlayer() will use the current
-     * subtitle preference when it eventually runs.
-     */
+function rebuildYouTubePlayer({
+    resumePlayback = false
+} = {}) {
     if (!player) {
         maybeInitPlayer();
         return;
@@ -1010,6 +1007,14 @@ isPlaying = false;
 
 updatePlaybackIcons(false);
 
+  const shouldResumePlayback =
+    resumePlayback &&
+    playbackMode === "watch-party" &&
+    watchPartyState.enabled;
+
+isPlaying = false;
+updatePlaybackIcons(false);
+  
     const replacement =
         document.createElement("div");
 
@@ -1022,7 +1027,11 @@ updatePlaybackIcons(false);
     );
 
     marker.remove();
-    maybeInitPlayer();
+
+window.__resumeAfterRebuild =
+    shouldResumePlayback;
+
+maybeInitPlayer();
 }
 
 function loadActiveVideo({
@@ -1171,7 +1180,10 @@ if (
     playerEnglishSubtitlesActive !==
         requiredEnglishSubtitles
 ) {
-    rebuildYouTubePlayer();
+    rebuildYouTubePlayer({
+    resumePlayback:
+        watchPartyState.enabled
+});
     return;
 }
 
@@ -1426,6 +1438,14 @@ player =
         events: {
           onReady: () => {
             playerReady = true;
+            if (window.__resumeAfterRebuild) {
+    window.__resumeAfterRebuild = false;
+
+    requestAnimationFrame(() => {
+        player.playVideo();
+        updatePlaybackIcons(true);
+    });
+}
             startWatchPartySyncLoop();
 
             const savedVolume =
