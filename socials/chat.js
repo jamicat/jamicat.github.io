@@ -7523,9 +7523,7 @@ insertIntoMessageInput(value) {
 		"blue.gif",
 		"pink.gif",
 		"black.gif",
-		"shark.gif",
-		"duck.gif",
-		"clefable.gif"
+		"shark.gif"
     ];
 
     this.avatarPreview.src =
