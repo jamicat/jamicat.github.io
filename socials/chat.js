@@ -4385,7 +4385,6 @@ if (shouldJumpToBottom) {
     this.watchPartyNavigationFromVideoId =
         null;
 }
-}
 } else if (previousQueueWasNearBottom) {
     queueList.scrollTop =
         queueList.scrollHeight;
