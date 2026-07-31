@@ -3114,8 +3114,8 @@ const hasWatchPartyVideo =
             }"
             title="${
                 englishSubtitlesEnabled
-                    ? "Use automatic subtitle behaviour"
-                    : "Prefer English subtitles"
+                    ? "use automatic subtitle behaviour"
+                    : "prefer english subtitles"
             }"
             class="
                 watch-party-subtitles
@@ -3157,7 +3157,7 @@ const hasWatchPartyVideo =
                 data-watch-party-subtitles-text
                 class="leading-none"
             >
-                English
+                subtitles
             </span>
 
             <span
