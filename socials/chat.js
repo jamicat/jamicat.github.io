@@ -3543,6 +3543,37 @@ if (addForm) {
     );
 }
 
+const subtitlesButton =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-subtitles]"
+    );
+
+if (subtitlesButton) {
+    subtitlesButton.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const currentState =
+                window.watchPartyPlayer
+                    ?.getState?.();
+
+            const currentlyEnabled =
+                currentState
+                    ?.englishSubtitlesEnabled ===
+                        true;
+
+            window.watchPartyPlayer
+                ?.setEnglishSubtitles?.(
+                    !currentlyEnabled
+                );
+
+            this.renderWatchParty();
+        }
+    );
+}
+	
 const playButton =
     this.watchPartyPanel.querySelector(
         "[data-watch-party-play]"
@@ -5077,6 +5108,10 @@ syncWatchPartyRainbowAnimations() {
     "[data-watch-party-empty]",
 	"[data-watch-party-empty-text]",
 	"[data-watch-party-requested-label]",
+	"[data-watch-party-subtitles]",
+    "[data-watch-party-subtitles-text]",
+    "[data-watch-party-subtitles-status]",
+    "[data-watch-party-subtitles-badge]",
     "[data-watch-party-added-label]",
     "[data-watch-party-resize-grip]",
 	"[data-watch-party-add-playlist]",
