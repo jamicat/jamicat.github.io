@@ -1404,7 +1404,7 @@ input[data-watch-party-url]::placeholder{
 ):not(
     [data-theme="rainbow"]
 )
-[data-watch-party-added-label]{
+[data-watch-party-playlist-text]{
     color:
         rgba(
             var(--watch-party-accent-rgb),
@@ -1413,7 +1413,7 @@ input[data-watch-party-url]::placeholder{
 }
 
 #chatWatchPartyPanel[data-theme="rainbow"]
-[data-watch-party-added-label]{
+[data-watch-party-playlist-text]{
 
     background:linear-gradient(
         90deg,
