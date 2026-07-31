@@ -37,6 +37,8 @@ this.watchPartyAddPlaylist = true;
 this.watchPartyAddMessage = "";
 this.watchPartyAddError = false;
 this.watchPartyAddBusy = false;
+this.watchPartyScrollQueueAfterLength =
+    null;
 this.window = null;
 this.nameInput = null;
 this.messageInput = null;
@@ -3402,18 +3404,19 @@ const hasWatchPartyVideo =
     queue (${queue.length})
 </div>
 
-    <div
-        class="
-            min-h-0
-            flex-1
-            space-y-2
-            overflow-y-auto
-            overscroll-contain
-            pr-1
-        "
-    >
-        ${queueItems}
-    </div>
+   <div
+    data-watch-party-queue-list
+    class="
+        min-h-0
+        flex-1
+        space-y-2
+        overflow-y-auto
+        overscroll-contain
+        pr-1
+    "
+>
+    ${queueItems}
+</div>
 </div>
 
 <div
@@ -4255,6 +4258,50 @@ toggleWatchParty() {
     this.renderWatchParty();
 }
 
+	scrollWatchPartyQueueToPendingItem() {
+    const requiredLength =
+        this.watchPartyScrollQueueAfterLength;
+
+    if (
+        !Number.isInteger(requiredLength) ||
+        requiredLength < 1
+    ) {
+        return;
+    }
+
+    const queue =
+        Array.isArray(this.watchParty?.queue)
+            ? this.watchParty.queue
+            : [];
+
+    /*
+     * Wait until the authoritative WebSocket state
+     * actually contains the newly added item.
+     */
+    if (queue.length < requiredLength) {
+        return;
+    }
+
+    requestAnimationFrame(() => {
+        const queueList =
+            this.watchPartyPanel?.querySelector(
+                "[data-watch-party-queue-list]"
+            );
+
+        if (!queueList) {
+            return;
+        }
+
+        queueList.scrollTop =
+            queueList.scrollHeight;
+
+        this.watchPartyScrollQueueAfterLength =
+            null;
+    });
+}
+
+	
+
 	async addWatchPartyVideo() {
     if (!this.watchParty.enabled) {
         this.watchPartyAddMessage =
@@ -4329,13 +4376,20 @@ toggleWatchParty() {
         this.nameInput?.value.trim() ||
         "anonymous";
 
+		const queueLengthBeforeAdd =
+    Array.isArray(this.watchParty?.queue)
+        ? this.watchParty.queue.length
+        : 0;
+
     this.watchPartyAddBusy = true;
     this.watchPartyAddMessage =
     this.watchPartyAddPlaylist
         ? "adding video or playlist..."
         : "adding video...";
     this.watchPartyAddError = false;
-
+    this.watchPartyScrollQueueAfterLength =
+    queueLengthBeforeAdd + 1;
+	this.scrollWatchPartyQueueToPendingItem();
     this.renderWatchParty();
 
     try {
@@ -6096,8 +6150,9 @@ if (data.type === "watchparty-state") {
 	
 
 this.renderWatchParty();
+this.scrollWatchPartyQueueToPendingItem();
 
-	if (this.partyManager) {
+if (this.partyManager) {
     this.partyManagerBusy = false;
     this.renderPartyManager();
 }
