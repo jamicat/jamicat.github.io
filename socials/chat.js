@@ -3044,54 +3044,116 @@ const hasWatchPartyVideo =
                ${
     currentVideo
         ? `
-            <div
-                class="
-                    mt-1
-                    flex
-					w-full
-                    flex-col
-                    items-start
-                    gap-1
-                    text-[8px]
-                    text-white/35
-                "
-            >
-                <a
-                    data-watch-party-video-link
-                    href="https://www.youtube.com/watch?v=${encodeURIComponent(
-                        currentVideo.videoId
-                    )}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Open this video on YouTube"
-                    class="
-                        inline-flex
-                        items-center
-                        gap-1
-                        underline
-                        underline-offset-2
-                        transition
-                    "
-                >
-                    <span>watch on youtube</span>
-                    <span aria-hidden="true">↗</span>
-                </a>
-
-                <div
+           <div
     class="
+        mt-1
         flex
         w-full
-        items-center
-        justify-between
-        gap-2
+        flex-col
+        gap-0.5
+        text-[8px]
+        text-white/35
     "
 >
+    <div
+        class="
+            flex
+            w-full
+            items-center
+            justify-between
+            gap-2
+        "
+    >
+        <a
+            data-watch-party-video-link
+            href="https://www.youtube.com/watch?v=${encodeURIComponent(
+                currentVideo.videoId
+            )}"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Open this video on YouTube"
+            class="
+                inline-flex
+                items-center
+                gap-1
+                underline
+                underline-offset-2
+                transition
+            "
+        >
+            <span>watch on youtube</span>
+            <span aria-hidden="true">↗</span>
+        </a>
+
+        <button
+            type="button"
+            data-watch-party-subtitles
+            aria-pressed="${
+                englishSubtitlesEnabled
+                    ? "true"
+                    : "false"
+            }"
+            title="${
+                englishSubtitlesEnabled
+                    ? "Use automatic subtitle behaviour"
+                    : "Prefer English subtitles"
+            }"
+            class="
+                watch-party-subtitles
+                inline-flex
+                h-5
+                shrink-0
+                items-center
+                gap-1
+                rounded-md
+                border
+                px-1.5
+                py-0
+                text-[7px]
+                leading-none
+                transition
+            "
+        >
+            <span
+                data-watch-party-subtitles-badge
+                class="
+                    inline-flex
+                    h-3
+                    min-w-[18px]
+                    items-center
+                    justify-center
+                    rounded
+                    border
+                    px-1
+                    text-[7px]
+                    font-bold
+                    leading-none
+                "
+            >
+                CC
+            </span>
+
+            <span
+                data-watch-party-subtitles-text
+            >
+                English
+            </span>
+
+            <span
+                data-watch-party-subtitles-status
+                class="opacity-60"
+            >
+                ${
+                    englishSubtitlesEnabled
+                        ? "preferred"
+                        : "auto"
+                }
+            </span>
+        </button>
+    </div>
+
     <span
         data-watch-party-requested-label
-        class="
-            min-w-0
-            truncate
-        "
     >
         requested by
         ${this.escapeHtml(
@@ -3099,71 +3161,6 @@ const hasWatchPartyVideo =
             "anonymous"
         )}
     </span>
-
-    <button
-        type="button"
-        data-watch-party-subtitles
-        aria-pressed="${
-            englishSubtitlesEnabled
-                ? "true"
-                : "false"
-        }"
-        title="${
-            englishSubtitlesEnabled
-                ? "Stop preferring English subtitles"
-                : "Prefer English subtitles"
-        }"
-        class="
-            watch-party-subtitles
-            shrink-0
-            inline-flex
-            items-center
-            gap-1.5
-            rounded-md
-            border
-            px-1.5
-            py-1
-            text-[7px]
-            transition
-        "
-    >
-        <span
-            data-watch-party-subtitles-badge
-            class="
-                watch-party-subtitles-badge
-                inline-flex
-                h-3.5
-                min-w-[19px]
-                items-center
-                justify-center
-                rounded
-                border
-                px-1
-                text-[7px]
-                font-bold
-                leading-none
-            "
-        >
-            CC
-        </span>
-
-        <span
-            data-watch-party-subtitles-text
-        >
-            English
-        </span>
-
-        <span
-            data-watch-party-subtitles-status
-            class="opacity-60"
-        >
-            ${
-                englishSubtitlesEnabled
-                    ? "preferred"
-                    : "auto"
-            }
-        </span>
-    </button>
 </div>
             </div>
         `
