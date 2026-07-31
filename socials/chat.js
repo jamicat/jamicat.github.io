@@ -4304,33 +4304,88 @@ requestAnimationFrame(() => {
                 ? this.watchParty.queue
                 : [];
 
-        const shouldJumpToBottom =
-            Number.isInteger(requiredLength) &&
-            requiredLength >= 1 &&
-            queue.length >= requiredLength;
+       const shouldJumpToBottom =
+    Number.isInteger(requiredLength) &&
+    requiredLength >= 1 &&
+    queue.length >= requiredLength;
 
-        if (
-            shouldJumpToBottom ||
-            previousQueueWasNearBottom
-        ) {
-            queueList.scrollTop =
-                queueList.scrollHeight;
-        } else {
-            queueList.scrollTop =
+const shouldJumpToCurrent =
+    this
+        .watchPartyScrollToCurrentAfterNavigation ===
+    true;
+
+if (shouldJumpToBottom) {
+    queueList.scrollTop =
+        queueList.scrollHeight;
+
+    this.watchPartyScrollQueueAfterLength =
+        null;
+} else if (shouldJumpToCurrent) {
+    const currentItem =
+        queue.find(item => {
+            return (
+                item.videoId ===
+                this.watchParty.currentVideoId
+            );
+        });
+
+    const currentQueueId =
+        Number(currentItem?.id);
+
+    const currentElement =
+        Number.isInteger(currentQueueId)
+            ? queueList.querySelector(
+                `[data-watch-party-play="${currentQueueId}"]`
+            )
+            : null;
+
+    if (currentElement) {
+        const queueRect =
+            queueList.getBoundingClientRect();
+
+        const itemRect =
+            currentElement.getBoundingClientRect();
+
+        const itemTopInsideQueue =
+            itemRect.top -
+            queueRect.top +
+            queueList.scrollTop;
+
+        const centeredScrollTop =
+            itemTopInsideQueue -
+            (
+                queueList.clientHeight -
+                currentElement.offsetHeight
+            ) / 2;
+
+        queueList.scrollTop =
+            Math.max(
+                0,
                 Math.min(
-                    previousQueueScrollTop,
-                    Math.max(
-                        0,
-                        queueList.scrollHeight -
-                            queueList.clientHeight
-                    )
-                );
-        }
+                    centeredScrollTop,
+                    queueList.scrollHeight -
+                        queueList.clientHeight
+                )
+            );
 
-        if (shouldJumpToBottom) {
-            this.watchPartyScrollQueueAfterLength =
-                null;
-        }
+        this
+            .watchPartyScrollToCurrentAfterNavigation =
+            false;
+    }
+} else if (previousQueueWasNearBottom) {
+    queueList.scrollTop =
+        queueList.scrollHeight;
+} else {
+    queueList.scrollTop =
+        Math.min(
+            previousQueueScrollTop,
+            Math.max(
+                0,
+                queueList.scrollHeight -
+                    queueList.clientHeight
+            )
+        );
+}
     });
 });
 }
@@ -4346,75 +4401,6 @@ toggleWatchParty() {
     this.renderWatchParty();
 }
 
-	scrollWatchPartyQueueToCurrentItem() {
-    if (
-        !this
-            .watchPartyScrollToCurrentAfterNavigation
-    ) {
-        return;
-    }
-
-    const queue =
-        Array.isArray(this.watchParty?.queue)
-            ? this.watchParty.queue
-            : [];
-
-    const currentItem =
-        queue.find(item => {
-            return (
-                item.videoId ===
-                this.watchParty.currentVideoId
-            );
-        });
-
-    const queueId =
-        Number(currentItem?.id);
-
-    if (
-        !Number.isInteger(queueId) ||
-        queueId <= 0
-    ) {
-        return;
-    }
-
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            const queueList =
-                this.watchPartyPanel?.querySelector(
-                    "[data-watch-party-queue-list]"
-                );
-
-            const queueItem =
-                queueList?.querySelector(
-                    `[data-watch-party-play="${queueId}"]`
-                );
-
-            if (!queueList || !queueItem) {
-                return;
-            }
-
-            const targetScrollTop =
-                queueItem.offsetTop -
-                queueList.offsetTop -
-                (
-                    queueList.clientHeight -
-                    queueItem.offsetHeight
-                ) / 2;
-
-            queueList.scrollTo({
-                top: Math.max(
-                    0,
-                    targetScrollTop
-                ),
-                behavior: "smooth"
-            });
-
-            this
-                .watchPartyScrollToCurrentAfterNavigation =
-                false;
-        });
-    });
-}
 	
 
 	scrollWatchPartyQueueToPendingItem() {
@@ -4688,7 +4674,6 @@ this.watchPartyAddBusy = false;
 
 this.renderWatchParty();
 this.scrollWatchPartyQueueToPendingItem();
-this.scrollWatchPartyQueueToCurrentItem();
 
 requestAnimationFrame(() => {
             this.watchPartyPanel
