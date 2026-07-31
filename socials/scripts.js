@@ -1407,12 +1407,14 @@ player =
     fs: 0,
     showinfo: 0,
     iv_load_policy: 3,
-    cc_load_policy:
-        useEnglishSubtitles
-            ? 1
-            : 0,
-
-    cc_lang_pref: "en"
+    ...(
+    useEnglishSubtitles
+        ? {
+            cc_load_policy: 1,
+            cc_lang_pref: "en"
+        }
+        : {}
+)
 },
 
         events: {
