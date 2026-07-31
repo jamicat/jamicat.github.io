@@ -41,6 +41,7 @@ this.watchPartyScrollQueueAfterLength =
     null;
 	this.watchPartyNavigationFromVideoId =
     null;
+this.watchPartyRenderVersion = 0;
 this.window = null;
 this.nameInput = null;
 this.messageInput = null;
@@ -2483,6 +2484,8 @@ async loadWatchParty() {
 }
 	
 renderWatchParty() {
+    const renderVersion =
+        ++this.watchPartyRenderVersion;
 
     const previousQueueList =
         this.watchPartyPanel?.querySelector(
@@ -4256,9 +4259,17 @@ if (
 
 	if (hadAddInputFocus) {
     requestAnimationFrame(() => {
-        const input =
-            this.watchPartyPanel.querySelector(
-                "[data-watch-party-add-input]"
+    requestAnimationFrame(() => {
+        if (
+            renderVersion !==
+            this.watchPartyRenderVersion
+        ) {
+            return;
+        }
+
+        const queueList =
+            this.watchPartyPanel?.querySelector(
+                "[data-watch-party-queue-list]"
             );
 
         if (!input) {
