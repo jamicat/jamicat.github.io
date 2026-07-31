@@ -1003,10 +1003,13 @@ function rebuildYouTubePlayer() {
         suppressPlayerEvents = false;
     }
 
-    player = null;
-    playerReady = false;
-    loadedVideoId = null;
-    isPlaying = false;
+    const wasPlaying =
+    isPlaying === true;
+
+player = null;
+playerReady = false;
+loadedVideoId = null;
+isPlaying = wasPlaying;
 
     const replacement =
         document.createElement("div");
