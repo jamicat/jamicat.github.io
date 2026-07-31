@@ -3038,27 +3038,52 @@ const hasWatchPartyVideo =
                     }
                 </div>
 
-                ${
-                    currentVideo
-                        ? `
-                            <div
-                                class="
-                                    mt-1
-                                    text-[8px]
-                                    text-white/35
-                                "
-                            >
-                               <span data-watch-party-requested-label>
-        requested by
-        ${this.escapeHtml(
-            currentVideo.requestedByName ||
-            "anonymous"
-        )}
-    </span>
-                            </div>
-                        `
-                        : ""
-                }
+               ${
+    currentVideo
+        ? `
+            <div
+                class="
+                    mt-1
+                    flex
+                    flex-col
+                    items-start
+                    gap-1
+                    text-[8px]
+                    text-white/35
+                "
+            >
+                <a
+                    data-watch-party-video-link
+                    href="https://www.youtube.com/watch?v=${encodeURIComponent(
+                        currentVideo.videoId
+                    )}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Open this video on YouTube"
+                    class="
+                        inline-flex
+                        items-center
+                        gap-1
+                        underline
+                        underline-offset-2
+                        transition
+                    "
+                >
+                    <span>watch on youtube</span>
+                    <span aria-hidden="true">↗</span>
+                </a>
+
+                <span data-watch-party-requested-label>
+                    requested by
+                    ${this.escapeHtml(
+                        currentVideo.requestedByName ||
+                        "anonymous"
+                    )}
+                </span>
+            </div>
+        `
+        : ""
+}
 
 				<div class="mt-4">
     <div
@@ -5056,7 +5081,8 @@ syncWatchPartyRainbowAnimations() {
     "[data-watch-party-resize-grip]",
 	"[data-watch-party-add-playlist]",
 	"[data-watch-party-playlist-text]",
-	"[data-watch-party-playlist-label]"
+	"[data-watch-party-playlist-label]",
+	"[data-watch-party-video-link]"
 ].join(",")
         );
 
