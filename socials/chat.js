@@ -3050,40 +3050,59 @@ const hasWatchPartyVideo =
         flex
         w-full
         flex-col
-        gap-0.5
+        gap-0
         text-[8px]
         text-white/35
     "
 >
+    <a
+        data-watch-party-video-link
+        href="https://www.youtube.com/watch?v=${encodeURIComponent(
+            currentVideo.videoId
+        )}"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Open this video on YouTube"
+        class="
+            inline-flex
+            w-fit
+            items-center
+            gap-1
+            leading-none
+            underline
+            underline-offset-2
+            transition
+        "
+    >
+        <span>watch on youtube</span>
+        <span aria-hidden="true">↗</span>
+    </a>
+
     <div
         class="
             flex
             w-full
+            min-w-0
             items-center
             justify-between
             gap-2
+            leading-none
         "
     >
-        <a
-            data-watch-party-video-link
-            href="https://www.youtube.com/watch?v=${encodeURIComponent(
-                currentVideo.videoId
-            )}"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Open this video on YouTube"
+        <span
+            data-watch-party-requested-label
             class="
-                inline-flex
-                items-center
-                gap-1
-                underline
-                underline-offset-2
-                transition
+                min-w-0
+                truncate
+                leading-none
             "
         >
-            <span>watch on youtube</span>
-            <span aria-hidden="true">↗</span>
-        </a>
+            requested by
+            ${this.escapeHtml(
+                currentVideo.requestedByName ||
+                "anonymous"
+            )}
+        </span>
 
         <button
             type="button"
@@ -3101,13 +3120,14 @@ const hasWatchPartyVideo =
             class="
                 watch-party-subtitles
                 inline-flex
-                h-5
+                h-4
                 shrink-0
                 items-center
+                justify-center
                 gap-1
-                rounded-md
+                rounded
                 border
-                px-1.5
+                px-1
                 py-0
                 text-[7px]
                 leading-none
@@ -3118,14 +3138,14 @@ const hasWatchPartyVideo =
                 data-watch-party-subtitles-badge
                 class="
                     inline-flex
-                    h-3
-                    min-w-[18px]
+                    h-2.5
+                    min-w-[15px]
                     items-center
                     justify-center
-                    rounded
+                    rounded-sm
                     border
-                    px-1
-                    text-[7px]
+                    px-0.5
+                    text-[6px]
                     font-bold
                     leading-none
                 "
@@ -3135,13 +3155,17 @@ const hasWatchPartyVideo =
 
             <span
                 data-watch-party-subtitles-text
+                class="leading-none"
             >
                 English
             </span>
 
             <span
                 data-watch-party-subtitles-status
-                class="opacity-60"
+                class="
+                    leading-none
+                    opacity-60
+                "
             >
                 ${
                     englishSubtitlesEnabled
@@ -3151,18 +3175,8 @@ const hasWatchPartyVideo =
             </span>
         </button>
     </div>
-
-    <span
-        data-watch-party-requested-label
-    >
-        requested by
-        ${this.escapeHtml(
-            currentVideo.requestedByName ||
-            "anonymous"
-        )}
-    </span>
 </div>
-            </div>
+</div>
         `
         : ""
 }
