@@ -33,6 +33,7 @@ this.watchPartyButton = null;
 this.watchPartyPanel = null;
 this.watchPartyOpen = false;
 this.watchPartyAddUrl = "";
+this.watchPartyAddPlaylist = true;
 this.watchPartyAddMessage = "";
 this.watchPartyAddError = false;
 this.watchPartyAddBusy = false;
@@ -2912,8 +2913,44 @@ const hasWatchPartyVideo =
                         ? "adding..."
                         : "add"
                 }
-            </button>
+              </button>
         </div>
+
+        <label
+            class="
+                theme-body
+                mt-2
+                flex items-center gap-2
+                text-[9px]
+                text-white/55
+                select-none
+                cursor-pointer
+            "
+        >
+            <input
+                type="checkbox"
+                data-watch-party-add-playlist
+                class="
+                    h-3 w-3
+                    accent-current
+                    disabled:cursor-wait
+                    disabled:opacity-50
+                "
+                ${
+                    this.watchPartyAddPlaylist
+                        ? "checked"
+                        : ""
+                }
+                ${
+                    this.watchPartyAddBusy
+                        ? "disabled"
+                        : ""
+                }
+            >
+            <span>
+                add the full playlist when the link contains one
+            </span>
+        </label>
 
         <div
             data-watch-party-add-message
@@ -3428,6 +3465,42 @@ if (addInput) {
         }
     );
 }
+
+	const addPlaylistCheckbox =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-add-playlist]"
+    );
+
+if (addPlaylistCheckbox) {
+    addPlaylistCheckbox.addEventListener(
+        "change",
+        event => {
+            this.watchPartyAddPlaylist =
+                event.target.checked === true;
+
+            if (this.watchPartyAddMessage) {
+                this.watchPartyAddMessage = "";
+                this.watchPartyAddError = false;
+
+                const messageElement =
+                    this.watchPartyPanel.querySelector(
+                        "[data-watch-party-add-message]"
+                    );
+
+                if (messageElement) {
+                    messageElement.textContent = "";
+                    messageElement.classList.remove(
+                        "text-red-300"
+                    );
+                    messageElement.classList.add(
+                        "text-emerald-300"
+                    );
+                }
+            }
+        }
+    );
+}
+	
 
 if (addForm) {
     addForm.addEventListener(
@@ -4072,7 +4145,9 @@ toggleWatchParty() {
 
     this.watchPartyAddBusy = true;
     this.watchPartyAddMessage =
-        "adding video or playlist...";
+    this.watchPartyAddPlaylist
+        ? "adding video or playlist..."
+        : "adding video...";
     this.watchPartyAddError = false;
 
     this.renderWatchParty();
@@ -4087,11 +4162,13 @@ toggleWatchParty() {
                         "application/json"
                 },
                 body: JSON.stringify({
-                    url,
-                    clientId:
-                        this.clientId,
-                    name
-                })
+    url,
+    clientId:
+        this.clientId,
+    name,
+    addPlaylist:
+        this.watchPartyAddPlaylist
+})
             }
         );
 
@@ -4142,6 +4219,14 @@ toggleWatchParty() {
         "the watch party queue is full.";
 }
 
+			if (
+    result?.code ===
+    "VIDEO_LINK_REQUIRED"
+) {
+    message =
+        "that link does not contain an individual video. check the playlist option to import it.";
+}
+			
 if (
     result?.code ===
     "PLAYLIST_API_NOT_CONFIGURED"
@@ -4964,7 +5049,8 @@ syncWatchPartyRainbowAnimations() {
 	"[data-watch-party-empty-text]",
 	"[data-watch-party-requested-label]",
     "[data-watch-party-added-label]",
-    "[data-watch-party-resize-grip]"
+    "[data-watch-party-resize-grip]",
+	"[data-watch-party-add-playlist]"
 ].join(",")
         );
 
