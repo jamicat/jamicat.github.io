@@ -2690,13 +2690,16 @@ window.setDiscordStatusVisible?.(
 </span>
                 </div>
             `;
-
-	const playerState =
+const playerState =
     window.watchPartyPlayer?.getState?.();
 
 const playerIsCurrentlyPlaying =
     playerState?.mode === "watch-party" &&
     playerState?.playing === true;
+
+const englishSubtitlesEnabled =
+    playerState?.englishSubtitlesEnabled ===
+        true;
 
 const hasWatchPartyVideo =
     Boolean(
@@ -3085,7 +3088,79 @@ const hasWatchPartyVideo =
         : ""
 }
 
-				<div class="mt-4">
+${
+    currentVideo
+        ? `
+            <button
+                type="button"
+                data-watch-party-subtitles
+                aria-pressed="${
+                    englishSubtitlesEnabled
+                        ? "true"
+                        : "false"
+                }"
+                title="${
+                    englishSubtitlesEnabled
+                        ? "Disable English subtitles"
+                        : "Enable English subtitles"
+                }"
+                class="
+                    watch-party-subtitles
+                    mt-3
+                    inline-flex
+                    items-center
+                    gap-2
+                    rounded-lg
+                    border
+                    px-2
+                    py-1.5
+                    text-[8px]
+                    transition
+                "
+            >
+                <span
+                    data-watch-party-subtitles-badge
+                    class="
+                        watch-party-subtitles-badge
+                        inline-flex
+                        h-4
+                        min-w-[22px]
+                        items-center
+                        justify-center
+                        rounded
+                        border
+                        px-1
+                        text-[8px]
+                        font-bold
+                        leading-none
+                    "
+                >
+                    CC
+                </span>
+
+                <span
+                    data-watch-party-subtitles-text
+                >
+                    English subtitles
+                </span>
+
+                <span
+                    data-watch-party-subtitles-status
+                    class="opacity-60"
+                >
+                    ${
+                        englishSubtitlesEnabled
+                            ? "on"
+                            : "off"
+                    }
+                </span>
+            </button>
+        `
+        : ""
+}
+
+
+<div class="mt-4">
     <div
         class="
             relative
