@@ -385,21 +385,21 @@ transition-[height] duration-200
             >
         </button>
 
-        <div
-            id="chatAvatarPicker"
-            class="
-                terminal2
-                invisible pointer-events-none opacity-0
-                absolute bottom-full left-0 z-20
-                mb-2 w-56
-                rounded-2xl
-                border border-white/15
-                p-3
-                shadow-lg
-                backdrop-blur-xl
-                transition-opacity
-            "
-        >
+       <div
+    id="chatAvatarPicker"
+    class="
+        invisible pointer-events-none opacity-0
+        absolute bottom-full left-0 z-20
+        mb-2 w-56
+        overflow-hidden
+        rounded-2xl
+        border border-white/10
+        bg-[#1f1f1f]
+        p-3
+        shadow-xl
+        transition-opacity
+    "
+>
             <div
                 class="
                     theme-heading
@@ -7366,11 +7366,15 @@ renderAvatarPicker() {
 
         button.type = "button";
         button.className = `
-            flex aspect-square items-center justify-center
-            rounded-lg bg-black/10 p-1
-            transition
-            hover:bg-white/10
-        `;
+    flex aspect-square items-center justify-center
+    rounded-lg
+    border border-white/5
+    bg-white/5 p-1
+    transition
+    hover:border-white/15
+    hover:bg-white/10
+    active:scale-95
+`;
 
         button.dataset.avatar = filename;
         button.setAttribute(
