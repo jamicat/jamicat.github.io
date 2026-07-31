@@ -3427,8 +3427,9 @@ const hasWatchPartyVideo =
 
    <div
     data-watch-party-queue-list
-    class="
-        min-h-0
+style="overflow-anchor: none;"
+class="
+    min-h-0
         flex-1
         space-y-2
         overflow-y-auto
@@ -4345,30 +4346,45 @@ if (shouldJumpToBottom) {
             )
             : null;
 
-    if (currentElement) {
-       const queueRect =
-    queueList.getBoundingClientRect();
+   if (currentElement) {
+    /*
+     * Prevent browser scroll anchoring from restoring
+     * the old position after the queue is rebuilt.
+     */
+    queueList.style.overflowAnchor =
+        "none";
 
-const itemRect =
-    currentElement.getBoundingClientRect();
+    /*
+     * Let the browser calculate the item's real
+     * position inside the nested scrolling container.
+     */
+    currentElement.scrollIntoView({
+        behavior: "instant",
+        block: "start",
+        inline: "nearest"
+    });
 
-const itemTopInsideQueue =
-    itemRect.top -
-    queueRect.top +
-    queueList.scrollTop;
-queueList.scrollTop =
-    Math.max(
-        0,
-        Math.min(
-            itemTopInsideQueue,
-            queueList.scrollHeight -
-                queueList.clientHeight
-        )
-    );
+    /*
+     * scrollIntoView can also consider outer ancestors.
+     * Reassert the queue item's exact top position
+     * without relying on panel-relative rectangles.
+     */
+    const currentTop =
+        currentElement.offsetTop;
 
-        this.watchPartyNavigationFromVideoId =
-    null;
-    }
+    queueList.scrollTop =
+        Math.max(
+            0,
+            Math.min(
+                currentTop,
+                queueList.scrollHeight -
+                    queueList.clientHeight
+            )
+        );
+
+    this.watchPartyNavigationFromVideoId =
+        null;
+}
 } else if (previousQueueWasNearBottom) {
     queueList.scrollTop =
         queueList.scrollHeight;
