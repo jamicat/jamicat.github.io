@@ -33,7 +33,7 @@ this.watchPartyButton = null;
 this.watchPartyPanel = null;
 this.watchPartyOpen = false;
 this.watchPartyAddUrl = "";
-this.watchPartyAddPlaylist = true;
+this.watchPartyAddPlaylist = false;
 this.watchPartyAddMessage = "";
 this.watchPartyAddError = false;
 this.watchPartyAddBusy = false;
@@ -2482,6 +2482,25 @@ async loadWatchParty() {
 	
 renderWatchParty() {
 
+    const previousQueueList =
+        this.watchPartyPanel?.querySelector(
+            "[data-watch-party-queue-list]"
+        );
+
+    const previousQueueScrollTop =
+        previousQueueList
+            ? previousQueueList.scrollTop
+            : 0;
+
+    const previousQueueWasNearBottom =
+        previousQueueList
+            ? (
+                previousQueueList.scrollHeight -
+                previousQueueList.scrollTop -
+                previousQueueList.clientHeight
+            ) <= 12
+            : false;
+
 	const hadAddInputFocus =
     document.activeElement?.matches?.(
         "[data-watch-party-add-input]"
@@ -4245,6 +4264,61 @@ if (
         }
     });
 }
+
+/*
+ * Replacing innerHTML creates a brand-new queue
+ * element, so explicitly restore its scroll position.
+ */
+requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+        const queueList =
+            this.watchPartyPanel?.querySelector(
+                "[data-watch-party-queue-list]"
+            );
+
+        if (!queueList) {
+            return;
+        }
+
+        const requiredLength =
+            this.watchPartyScrollQueueAfterLength;
+
+        const queue =
+            Array.isArray(
+                this.watchParty?.queue
+            )
+                ? this.watchParty.queue
+                : [];
+
+        const shouldJumpToBottom =
+            Number.isInteger(requiredLength) &&
+            requiredLength >= 1 &&
+            queue.length >= requiredLength;
+
+        if (
+            shouldJumpToBottom ||
+            previousQueueWasNearBottom
+        ) {
+            queueList.scrollTop =
+                queueList.scrollHeight;
+        } else {
+            queueList.scrollTop =
+                Math.min(
+                    previousQueueScrollTop,
+                    Math.max(
+                        0,
+                        queueList.scrollHeight -
+                            queueList.clientHeight
+                    )
+                );
+        }
+
+        if (shouldJumpToBottom) {
+            this.watchPartyScrollQueueAfterLength =
+                null;
+        }
+    });
+});
 }
 
 toggleWatchParty() {
@@ -4259,45 +4333,7 @@ toggleWatchParty() {
 }
 
 	scrollWatchPartyQueueToPendingItem() {
-    const requiredLength =
-        this.watchPartyScrollQueueAfterLength;
-
-    if (
-        !Number.isInteger(requiredLength) ||
-        requiredLength < 1
-    ) {
-        return;
-    }
-
-    const queue =
-        Array.isArray(this.watchParty?.queue)
-            ? this.watchParty.queue
-            : [];
-
-    /*
-     * Wait until the authoritative WebSocket state
-     * actually contains the newly added item.
-     */
-    if (queue.length < requiredLength) {
-        return;
-    }
-
-    requestAnimationFrame(() => {
-        const queueList =
-            this.watchPartyPanel?.querySelector(
-                "[data-watch-party-queue-list]"
-            );
-
-        if (!queueList) {
-            return;
-        }
-
-        queueList.scrollTop =
-            queueList.scrollHeight;
-
-        this.watchPartyScrollQueueAfterLength =
-            null;
-    });
+    this.renderWatchParty();
 }
 
 	
@@ -4389,8 +4425,7 @@ toggleWatchParty() {
     this.watchPartyAddError = false;
     this.watchPartyScrollQueueAfterLength =
     queueLengthBeforeAdd + 1;
-	this.scrollWatchPartyQueueToPendingItem();
-    this.renderWatchParty();
+this.renderWatchParty();
 
     try {
         const response = await fetch(
