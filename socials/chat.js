@@ -103,6 +103,36 @@ this.clientId
 );
 	
 this.createWindow();
+
+	window.addEventListener(
+    "site-player-state",
+    event => {
+        const state =
+            event.detail;
+
+        if (
+            state?.mode !== "watch-party" ||
+            !this.watchParty?.enabled
+        ) {
+            return;
+        }
+
+        const playButton =
+            this.watchPartyPanel?.querySelector(
+                "button[data-watch-party-play]"
+            );
+
+        if (!playButton) {
+            return;
+        }
+
+        playButton.textContent =
+            state.playing === true
+                ? "❚❚"
+                : "▶";
+    }
+);
+	
 this.applyCurrentTheme();
 this.restoreSettings();
 
