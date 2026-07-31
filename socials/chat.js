@@ -39,6 +39,8 @@ this.watchPartyAddError = false;
 this.watchPartyAddBusy = false;
 this.watchPartyScrollQueueAfterLength =
     null;
+	this.watchPartyScrollToCurrentAfterNavigation =
+    false;
 this.window = null;
 this.nameInput = null;
 this.messageInput = null;
@@ -3817,9 +3819,12 @@ if (previousButton) {
                 return;
             }
 
-            previousButton.disabled = true;
+          previousButton.disabled = true;
 
-            try {
+this.watchPartyScrollToCurrentAfterNavigation =
+    true;
+
+try {
                 const response =
                     await fetch(
                         `${this.API}/api/watchparty/previous`,
@@ -3852,9 +3857,12 @@ if (previousButton) {
                     );
                 }
             } catch (error) {
-                previousButton.disabled = false;
+    previousButton.disabled = false;
 
-                console.error(
+    this.watchPartyScrollToCurrentAfterNavigation =
+        false;
+
+    console.error(
                     "watch party previous failed:",
                     error
                 );
@@ -3880,12 +3888,15 @@ if (nextButton) {
         async event => {
             event.stopPropagation();
 
-            if (!this.watchParty.currentVideoId) {
-                return;
-            }
+           if (!this.watchParty.currentVideoId) {
+    return;
+}
 
-            try {
-                const response =
+this.watchPartyScrollToCurrentAfterNavigation =
+    true;
+
+try {
+    const response =
                     await fetch(
                         `${this.API}/api/watchparty/next`,
                         {
@@ -3914,9 +3925,12 @@ if (nextButton) {
                         `Next request failed (${response.status})`
                     );
                 }
-            } catch (error) {
-                console.error(
-                    "watch party next failed:",
+           } catch (error) {
+    this.watchPartyScrollToCurrentAfterNavigation =
+        false;
+
+    console.error(
+        "watch party next failed:",
                     error
                 );
 
@@ -4332,6 +4346,77 @@ toggleWatchParty() {
     this.renderWatchParty();
 }
 
+	scrollWatchPartyQueueToCurrentItem() {
+    if (
+        !this
+            .watchPartyScrollToCurrentAfterNavigation
+    ) {
+        return;
+    }
+
+    const queue =
+        Array.isArray(this.watchParty?.queue)
+            ? this.watchParty.queue
+            : [];
+
+    const currentItem =
+        queue.find(item => {
+            return (
+                item.videoId ===
+                this.watchParty.currentVideoId
+            );
+        });
+
+    const queueId =
+        Number(currentItem?.id);
+
+    if (
+        !Number.isInteger(queueId) ||
+        queueId <= 0
+    ) {
+        return;
+    }
+
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            const queueList =
+                this.watchPartyPanel?.querySelector(
+                    "[data-watch-party-queue-list]"
+                );
+
+            const queueItem =
+                queueList?.querySelector(
+                    `[data-watch-party-play="${queueId}"]`
+                );
+
+            if (!queueList || !queueItem) {
+                return;
+            }
+
+            const targetScrollTop =
+                queueItem.offsetTop -
+                queueList.offsetTop -
+                (
+                    queueList.clientHeight -
+                    queueItem.offsetHeight
+                ) / 2;
+
+            queueList.scrollTo({
+                top: Math.max(
+                    0,
+                    targetScrollTop
+                ),
+                behavior: "smooth"
+            });
+
+            this
+                .watchPartyScrollToCurrentAfterNavigation =
+                false;
+        });
+    });
+}
+	
+
 	scrollWatchPartyQueueToPendingItem() {
     const requiredLength =
         this.watchPartyScrollQueueAfterLength;
@@ -4601,15 +4686,9 @@ if (
         this.watchPartyAddError = false;
 this.watchPartyAddBusy = false;
 
-/*
- * Do not manually add result.video to
- * this.watchParty.queue.
- *
- * The Worker broadcasts the authoritative
- * queue through watchparty-state.
- */
 this.renderWatchParty();
 this.scrollWatchPartyQueueToPendingItem();
+this.scrollWatchPartyQueueToCurrentItem();
 
 requestAnimationFrame(() => {
             this.watchPartyPanel
