@@ -4259,17 +4259,9 @@ if (
 
 	if (hadAddInputFocus) {
     requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-        if (
-            renderVersion !==
-            this.watchPartyRenderVersion
-        ) {
-            return;
-        }
-
-        const queueList =
+        const input =
             this.watchPartyPanel?.querySelector(
-                "[data-watch-party-queue-list]"
+                "[data-watch-party-add-input]"
             );
 
         if (!input) {
@@ -4297,6 +4289,13 @@ if (
  */
 requestAnimationFrame(() => {
     requestAnimationFrame(() => {
+        if (
+            renderVersion !==
+            this.watchPartyRenderVersion
+        ) {
+            return;
+        }
+
         const queueList =
             this.watchPartyPanel?.querySelector(
                 "[data-watch-party-queue-list]"
