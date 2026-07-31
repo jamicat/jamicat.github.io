@@ -2920,6 +2920,7 @@ const hasWatchPartyVideo =
             class="
                 theme-body
                 mt-2
+				watch-party-playlist-label
                 flex items-center gap-2
                 text-[9px]
                 text-white/55
@@ -2931,6 +2932,7 @@ const hasWatchPartyVideo =
                 type="checkbox"
                 data-watch-party-add-playlist
                 class="
+				    watch-party-playlist-checkbox
                     h-3 w-3
                     accent-current
                     disabled:cursor-wait
