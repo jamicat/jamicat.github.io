@@ -4333,7 +4333,53 @@ toggleWatchParty() {
 }
 
 	scrollWatchPartyQueueToPendingItem() {
-    this.renderWatchParty();
+    const requiredLength =
+        this.watchPartyScrollQueueAfterLength;
+
+    if (
+        !Number.isInteger(requiredLength) ||
+        requiredLength < 1
+    ) {
+        return;
+    }
+
+    const queue =
+        Array.isArray(this.watchParty?.queue)
+            ? this.watchParty.queue
+            : [];
+
+    /*
+     * Wait for the authoritative WebSocket queue
+     * to contain the newly added item.
+     */
+    if (queue.length < requiredLength) {
+        return;
+    }
+
+    const scrollToBottom = () => {
+        const queueList =
+            this.watchPartyPanel?.querySelector(
+                "[data-watch-party-queue-list]"
+            );
+
+        if (!queueList) {
+            return;
+        }
+
+        queueList.scrollTop =
+            queueList.scrollHeight;
+
+        if (!this.watchPartyAddBusy) {
+            this.watchPartyScrollQueueAfterLength =
+                null;
+        }
+    };
+
+    requestAnimationFrame(() => {
+        requestAnimationFrame(
+            scrollToBottom
+        );
+    });
 }
 
 	
@@ -4423,8 +4469,9 @@ toggleWatchParty() {
         ? "adding video or playlist..."
         : "adding video...";
     this.watchPartyAddError = false;
-    this.watchPartyScrollQueueAfterLength =
+   this.watchPartyScrollQueueAfterLength =
     queueLengthBeforeAdd + 1;
+
 this.renderWatchParty();
 
     try {
@@ -4552,18 +4599,19 @@ if (
             result?.message ||
             "video added to the queue.";
         this.watchPartyAddError = false;
-        this.watchPartyAddBusy = false;
+this.watchPartyAddBusy = false;
 
-        /*
-         * Do not manually add result.video to
-         * this.watchParty.queue.
-         *
-         * The Worker broadcasts the authoritative
-         * queue through watchparty-state.
-         */
-        this.renderWatchParty();
+/*
+ * Do not manually add result.video to
+ * this.watchParty.queue.
+ *
+ * The Worker broadcasts the authoritative
+ * queue through watchparty-state.
+ */
+this.renderWatchParty();
+this.scrollWatchPartyQueueToPendingItem();
 
-        requestAnimationFrame(() => {
+requestAnimationFrame(() => {
             this.watchPartyPanel
                 ?.querySelector(
                     "[data-watch-party-add-input]"
@@ -4577,7 +4625,10 @@ if (
         );
 
         this.watchPartyAddBusy = false;
-        this.watchPartyAddMessage =
+this.watchPartyScrollQueueAfterLength =
+    null;
+
+this.watchPartyAddMessage =
             error.message ||
             "Could not add the video.";
         this.watchPartyAddError = true;
