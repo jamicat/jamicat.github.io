@@ -2949,7 +2949,9 @@ const hasWatchPartyVideo =
                         : ""
                 }
             >
-            <span>
+            <span
+			data-watch-party-playlist-text
+			>
                 add the full playlist when the link contains one
             </span>
         </label>
@@ -5053,6 +5055,7 @@ syncWatchPartyRainbowAnimations() {
     "[data-watch-party-added-label]",
     "[data-watch-party-resize-grip]",
 	"[data-watch-party-add-playlist]",
+	"[data-watch-party-playlist-text]",
 	"[data-watch-party-playlist-label]"
 ].join(",")
         );
