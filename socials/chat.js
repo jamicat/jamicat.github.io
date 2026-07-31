@@ -4346,37 +4346,26 @@ if (shouldJumpToBottom) {
             )
             : null;
 
-   if (currentElement) {
-    /*
-     * Prevent browser scroll anchoring from restoring
-     * the old position after the queue is rebuilt.
-     */
+ if (currentElement) {
     queueList.style.overflowAnchor =
         "none";
 
-    /*
-     * Let the browser calculate the item's real
-     * position inside the nested scrolling container.
-     */
-    currentElement.scrollIntoView({
-        behavior: "instant",
-        block: "start",
-        inline: "nearest"
-    });
+    const queueRect =
+        queueList.getBoundingClientRect();
 
-    /*
-     * scrollIntoView can also consider outer ancestors.
-     * Reassert the queue item's exact top position
-     * without relying on panel-relative rectangles.
-     */
-    const currentTop =
-        currentElement.offsetTop;
+    const itemRect =
+        currentElement.getBoundingClientRect();
+
+    const targetScrollTop =
+        queueList.scrollTop +
+        itemRect.top -
+        queueRect.top;
 
     queueList.scrollTop =
         Math.max(
             0,
             Math.min(
-                currentTop,
+                targetScrollTop,
                 queueList.scrollHeight -
                     queueList.clientHeight
             )
@@ -4384,6 +4373,7 @@ if (shouldJumpToBottom) {
 
     this.watchPartyNavigationFromVideoId =
         null;
+}
 }
 } else if (previousQueueWasNearBottom) {
     queueList.scrollTop =
