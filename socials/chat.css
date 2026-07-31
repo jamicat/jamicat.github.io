@@ -933,6 +933,8 @@ input[data-watch-party-url],
 [data-watch-party-queue-box],
 #chatWatchPartyPanel[data-theme="rainbow"]
 [data-watch-party-empty],
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-video-link],
     #chatWatchPartyPanel[data-theme="rainbow"]
 [data-watch-party-resize-grip],
 
@@ -1479,6 +1481,115 @@ input[data-watch-party-url]::placeholder{
     background-clip:text;
 
     color:transparent;
+}
+
+/*
+ * Current video YouTube link.
+ */
+#chatWatchPartyPanel
+[data-watch-party-video-link] {
+    color: rgba(255, 255, 255, 0.58);
+    text-decoration-color:
+        rgba(255, 255, 255, 0.28);
+
+    cursor: pointer;
+
+    transition:
+        color 160ms ease,
+        text-decoration-color 160ms ease,
+        text-shadow 160ms ease;
+}
+
+#chatWatchPartyPanel
+[data-watch-party-video-link]:hover {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration-color:
+        rgba(255, 255, 255, 0.7);
+}
+
+#chatWatchPartyPanel
+[data-watch-party-video-link]:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="default"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-video-link] {
+    color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.78
+        );
+
+    text-decoration-color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.38
+        );
+}
+
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="default"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-video-link]:hover {
+    color:
+        var(--watch-party-accent);
+
+    text-decoration-color:
+        var(--watch-party-accent);
+
+    text-shadow:
+        0 0 7px
+        rgba(
+            var(--watch-party-accent-rgb),
+            0.35
+        );
+}
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-video-link] {
+    color: transparent;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ff3b30,
+            #ff9500,
+            #ffcc00,
+            #34c759,
+            #00c7be,
+            #0a84ff,
+            #5e5ce6,
+            #af52de,
+            #ff2d55
+        );
+
+    background-size: 300% 300%;
+
+    animation:
+        watch-party-rainbow-shift
+        8s linear infinite;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    text-decoration-color:
+        rgba(100, 210, 255, 0.55);
+}
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-video-link]:hover {
+    filter: brightness(1.25);
+
+    text-decoration-color:
+        rgba(255, 255, 255, 0.8);
 }
 
 
