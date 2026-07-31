@@ -1189,5 +1189,49 @@ input[data-watch-party-url]::placeholder{
     color:transparent;
 }
 
+#chatWatchPartyPanel[data-theme]:not(
+    [data-theme="default"]
+):not(
+    [data-theme="rainbow"]
+)
+[data-watch-party-add-playlist]{
+    color:
+        rgba(
+            var(--watch-party-accent-rgb),
+            .8
+        );
+}
+
+#chatWatchPartyPanel[data-theme="rainbow"]
+[data-watch-party-add-playlist]{
+
+    background:linear-gradient(
+        90deg,
+        #ff3b30,
+        #ff9500,
+        #ffcc00,
+        #34c759,
+        #00c7be,
+        #0a84ff,
+        #5e5ce6,
+        #af52de,
+        #ff2d55
+    );
+
+    background-size:300% 300%;
+
+    animation:
+        watch-party-rainbow-shift
+        8s linear infinite;
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+
+
+
 
 
