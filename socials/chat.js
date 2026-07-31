@@ -7069,16 +7069,17 @@ requestAnimationFrame(
 
     const grid =
         document.createElement("div");
-
-    Object.assign(
-        grid.style,
-        {
-            display: "grid",
-            gridTemplateColumns:
-                "repeat(8, minmax(0, 1fr))",
-            gap: "2px"
-        }
-    );
+Object.assign(
+    grid.style,
+    {
+        display: "grid",
+        gridTemplateColumns:
+            "repeat(8, 30px)",
+        justifyContent:
+            "space-between",
+        gap: "0px"
+    }
+);
 
     for (
         const category of
