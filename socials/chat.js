@@ -3048,6 +3048,7 @@ const hasWatchPartyVideo =
                 class="
                     mt-1
                     flex
+					w-full
                     flex-col
                     items-start
                     gap-1
@@ -3076,89 +3077,98 @@ const hasWatchPartyVideo =
                     <span aria-hidden="true">↗</span>
                 </a>
 
-                <span data-watch-party-requested-label>
-                    requested by
-                    ${this.escapeHtml(
-                        currentVideo.requestedByName ||
-                        "anonymous"
-                    )}
-                </span>
+                <div
+    class="
+        flex
+        w-full
+        items-center
+        justify-between
+        gap-2
+    "
+>
+    <span
+        data-watch-party-requested-label
+        class="
+            min-w-0
+            truncate
+        "
+    >
+        requested by
+        ${this.escapeHtml(
+            currentVideo.requestedByName ||
+            "anonymous"
+        )}
+    </span>
+
+    <button
+        type="button"
+        data-watch-party-subtitles
+        aria-pressed="${
+            englishSubtitlesEnabled
+                ? "true"
+                : "false"
+        }"
+        title="${
+            englishSubtitlesEnabled
+                ? "Stop preferring English subtitles"
+                : "Prefer English subtitles"
+        }"
+        class="
+            watch-party-subtitles
+            shrink-0
+            inline-flex
+            items-center
+            gap-1.5
+            rounded-md
+            border
+            px-1.5
+            py-1
+            text-[7px]
+            transition
+        "
+    >
+        <span
+            data-watch-party-subtitles-badge
+            class="
+                watch-party-subtitles-badge
+                inline-flex
+                h-3.5
+                min-w-[19px]
+                items-center
+                justify-center
+                rounded
+                border
+                px-1
+                text-[7px]
+                font-bold
+                leading-none
+            "
+        >
+            CC
+        </span>
+
+        <span
+            data-watch-party-subtitles-text
+        >
+            English
+        </span>
+
+        <span
+            data-watch-party-subtitles-status
+            class="opacity-60"
+        >
+            ${
+                englishSubtitlesEnabled
+                    ? "preferred"
+                    : "auto"
+            }
+        </span>
+    </button>
+</div>
             </div>
         `
         : ""
 }
-
-${
-    currentVideo
-        ? `
-            <button
-                type="button"
-                data-watch-party-subtitles
-                aria-pressed="${
-                    englishSubtitlesEnabled
-                        ? "true"
-                        : "false"
-                }"
-                title="${
-                    englishSubtitlesEnabled
-                        ? "Disable English subtitles"
-                        : "Enable English subtitles"
-                }"
-                class="
-                    watch-party-subtitles
-                    mt-3
-                    inline-flex
-                    items-center
-                    gap-2
-                    rounded-lg
-                    border
-                    px-2
-                    py-1.5
-                    text-[8px]
-                    transition
-                "
-            >
-                <span
-                    data-watch-party-subtitles-badge
-                    class="
-                        watch-party-subtitles-badge
-                        inline-flex
-                        h-4
-                        min-w-[22px]
-                        items-center
-                        justify-center
-                        rounded
-                        border
-                        px-1
-                        text-[8px]
-                        font-bold
-                        leading-none
-                    "
-                >
-                    CC
-                </span>
-
-                <span
-                    data-watch-party-subtitles-text
-                >
-                    English subtitles
-                </span>
-
-                <span
-                    data-watch-party-subtitles-status
-                    class="opacity-60"
-                >
-                    ${
-                        englishSubtitlesEnabled
-                            ? "on"
-                            : "off"
-                    }
-                </span>
-            </button>
-        `
-        : ""
-}
-
 
 <div class="mt-4">
     <div
