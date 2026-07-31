@@ -7075,11 +7075,8 @@ Object.assign(
     {
         display: "grid",
         gridTemplateColumns:
-            "repeat(8, 30px)",
-        width: "fit-content",
-        justifyContent: "start",
-        columnGap: "0px",
-        rowGap: "2px"
+            "repeat(8, minmax(0, 1fr))",
+        gap: "2px"
     }
 );
 
