@@ -7075,9 +7075,9 @@ Object.assign(
     {
         display: "grid",
         gridTemplateColumns:
-            "repeat(auto-fill, 30px)",
-        justifyContent:
-            "start",
+            "repeat(8, 30px)",
+        width: "fit-content",
+        justifyContent: "start",
         columnGap: "0px",
         rowGap: "2px"
     }
