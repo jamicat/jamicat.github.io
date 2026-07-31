@@ -1003,13 +1003,12 @@ function rebuildYouTubePlayer() {
         suppressPlayerEvents = false;
     }
 
-    const wasPlaying =
-    isPlaying === true;
-
-player = null;
+    player = null;
 playerReady = false;
 loadedVideoId = null;
-isPlaying = wasPlaying;
+isPlaying = false;
+
+updatePlaybackIcons(false);
 
     const replacement =
         document.createElement("div");
@@ -1042,6 +1041,10 @@ function loadActiveVideo({
 
     window.watchPartyPlayer?.setVideoMode?.(
         savedVideoMode
+    );
+} else {
+    window.watchPartyPlayer?.setVideoMode?.(
+        "cinematic"
     );
 }
 
