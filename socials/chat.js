@@ -6923,7 +6923,7 @@ onEmojiSelect: emoji => {
     });
 
 this.emojiPickerContainer.style.width =
-    "260px";
+    "320px";
 
 this.emojiPickerContainer.style.maxWidth =
     "calc(100vw - 3rem)";
@@ -6935,7 +6935,7 @@ this.emojiPickerContainer.style.flexDirection =
     "column";
 
 this.emojiPickerContainer.style.maxHeight =
-    "390px";
+    "460px";
 
 this.emojiPickerContainer.style.overflow =
     "hidden";
@@ -6947,7 +6947,7 @@ this.emojiPicker.style.maxWidth =
     "100%";
 
 this.emojiPicker.style.height =
-    "280px";
+    "380px";
 
 this.emojiPickerContainer.append(
     this.emojiPicker
