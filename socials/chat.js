@@ -6851,6 +6851,203 @@ setupEmojiPicker() {
             src: "/emojis/sharkgirl.png"
         }
     ]
+},
+			{
+    id: "pikagiggle",
+    name: "pika giggle",
+    keywords: [
+        "pikachu",
+        "giggle",
+        "pokemon"
+    ],
+    skins: [
+        {
+            src: "/emojis/pikagiggle.png"
+        }
+    ]
+},
+{
+    id: "duckdance",
+    name: "duck dance",
+    keywords: [
+        "duck",
+        "dance",
+        "bird"
+    ],
+    skins: [
+        {
+            src: "/emojis/duckdance.gif"
+        }
+    ]
+},
+{
+    id: "duckbop",
+    name: "duck bop",
+    keywords: [
+        "duck",
+        "bop",
+        "bird"
+    ],
+    skins: [
+        {
+            src: "/emojis/duckbop.gif"
+        }
+    ]
+},
+{
+    id: "clefable",
+    name: "clefable",
+    keywords: [
+        "clefable",
+        "pokemon",
+        "fairy"
+    ],
+    skins: [
+        {
+            src: "/emojis/clefable.gif"
+        }
+    ]
+},
+{
+    id: "duckjump",
+    name: "duck jump",
+    keywords: [
+        "duck",
+        "jump",
+        "bird"
+    ],
+    skins: [
+        {
+            src: "/emojis/duckjump.gif"
+        }
+    ]
+},
+{
+    id: "sprigdance",
+    name: "sprig dance",
+    keywords: [
+        "sprigatito",
+        "pokemon",
+        "dance"
+    ],
+    skins: [
+        {
+            src: "/emojis/sprigdance.gif"
+        }
+    ]
+},
+{
+    id: "meowhappy",
+    name: "meow happy",
+    keywords: [
+        "cat",
+        "happy",
+        "smile"
+    ],
+    skins: [
+        {
+            src: "/emojis/meowhappy.gif"
+        }
+    ]
+},
+{
+    id: "widevapo",
+    name: "wide vaporeon",
+    keywords: [
+        "vaporeon",
+        "pokemon",
+        "wide"
+    ],
+    skins: [
+        {
+            src: "/emojis/widevapo.png"
+        }
+    ]
+},
+{
+    id: "shubadance",
+    name: "shuba dance",
+    keywords: [
+        "duck",
+        "shuba",
+        "dance"
+    ],
+    skins: [
+        {
+            src: "/emojis/shubadance.gif"
+        }
+    ]
+},
+{
+    id: "pikasway",
+    name: "pika sway",
+    keywords: [
+        "pikachu",
+        "pokemon",
+        "dance"
+    ],
+    skins: [
+        {
+            src: "/emojis/pikasway.gif"
+        }
+    ]
+},
+{
+    id: "floatpuff",
+    name: "float puff",
+    keywords: [
+        "jigglypuff",
+        "pokemon",
+        "float"
+    ],
+    skins: [
+        {
+            src: "/emojis/floatpuff.gif"
+        }
+    ]
+},
+{
+    id: "pikapuff",
+    name: "pika puff",
+    keywords: [
+        "pikachu",
+        "jigglypuff",
+        "pokemon"
+    ],
+    skins: [
+        {
+            src: "/emojis/pikapuff.gif"
+        }
+    ]
+},
+{
+    id: "catpeace",
+    name: "cat peace",
+    keywords: [
+        "cat",
+        "peace",
+        "cute"
+    ],
+    skins: [
+        {
+            src: "/emojis/catpeace.gif"
+        }
+    ]
+},
+{
+    id: "catboba",
+    name: "cat boba",
+    keywords: [
+        "cat",
+        "boba",
+        "tea",
+        "cute"
+    ],
+    skins: [
+        {
+            src: "/emojis/catboba.gif"
+        }
+    ]
 }
         ]
     }
