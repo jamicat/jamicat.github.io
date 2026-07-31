@@ -2952,7 +2952,7 @@ const hasWatchPartyVideo =
             <span
 			data-watch-party-playlist-text
 			>
-                add the full playlist when the link contains one
+                add playlist
             </span>
         </label>
 
