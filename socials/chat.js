@@ -39,8 +39,8 @@ this.watchPartyAddError = false;
 this.watchPartyAddBusy = false;
 this.watchPartyScrollQueueAfterLength =
     null;
-	this.watchPartyScrollToCurrentAfterNavigation =
-    false;
+	this.watchPartyNavigationFromVideoId =
+    null;
 this.window = null;
 this.nameInput = null;
 this.messageInput = null;
@@ -3821,8 +3821,8 @@ if (previousButton) {
 
           previousButton.disabled = true;
 
-this.watchPartyScrollToCurrentAfterNavigation =
-    true;
+this.watchPartyNavigationFromVideoId =
+    this.watchParty.currentVideoId;
 
 try {
                 const response =
@@ -3859,8 +3859,8 @@ try {
             } catch (error) {
     previousButton.disabled = false;
 
-    this.watchPartyScrollToCurrentAfterNavigation =
-        false;
+    this.watchPartyNavigationFromVideoId =
+    null;
 
     console.error(
                     "watch party previous failed:",
@@ -3892,8 +3892,8 @@ if (nextButton) {
     return;
 }
 
-this.watchPartyScrollToCurrentAfterNavigation =
-    true;
+this.watchPartyNavigationFromVideoId =
+    this.watchParty.currentVideoId;
 
 try {
     const response =
@@ -3926,8 +3926,8 @@ try {
                     );
                 }
            } catch (error) {
-    this.watchPartyScrollToCurrentAfterNavigation =
-        false;
+    this.watchPartyNavigationFromVideoId =
+    null;
 
     console.error(
         "watch party next failed:",
@@ -4309,10 +4309,16 @@ requestAnimationFrame(() => {
     requiredLength >= 1 &&
     queue.length >= requiredLength;
 
+const navigationFromVideoId =
+    this.watchPartyNavigationFromVideoId;
+
 const shouldJumpToCurrent =
-    this
-        .watchPartyScrollToCurrentAfterNavigation ===
-    true;
+    typeof navigationFromVideoId === "string" &&
+    navigationFromVideoId.length > 0 &&
+    typeof this.watchParty.currentVideoId ===
+        "string" &&
+    this.watchParty.currentVideoId !==
+        navigationFromVideoId;
 
 if (shouldJumpToBottom) {
     queueList.scrollTop =
@@ -4360,9 +4366,8 @@ queueList.scrollTop =
         )
     );
 
-        this
-            .watchPartyScrollToCurrentAfterNavigation =
-            false;
+        this.watchPartyNavigationFromVideoId =
+    null;
     }
 } else if (previousQueueWasNearBottom) {
     queueList.scrollTop =
