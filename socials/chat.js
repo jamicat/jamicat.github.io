@@ -6893,109 +6893,7 @@ setupEmojiPicker() {
         return;
     }
 
-const customSection =
-    document.createElement("div");
-
-customSection.className = [
-	"overflow-hidden",
-    "rounded-t-xl",
-    "border",
-    "border-b-0",
-    "border-white/10",
-    "bg-[#1f1f1f]",
-    "p-2"
-].join(" ");
-
-const customTitle =
-    document.createElement("div");
-
-customTitle.textContent =
-    "custom";
-
-customTitle.className = [
-    "mb-1",
-    "text-xs",
-    "text-white/70"
-].join(" ");
-
-const customTray =
-    document.createElement("div");
-
-customTray.className = [
-    "grid",
-    "grid-cols-10",
-    "gap-0.5"
-].join(" ");
-
-customTray.setAttribute(
-    "aria-label",
-    "Custom emojis"
-);
-
-for (const category of this.customEmojiCategories) {
-    for (const emoji of category.emojis) {
-        const source = emoji.skins?.[0]?.src;
-
-        if (!emoji.id || !source) {
-            continue;
-        }
-
-        const button = document.createElement("button");
-
-        button.type = "button";
-
-        button.className = [
-    "flex",
-    "h-[26px]",
-    "w-full",
-    "items-center",
-    "justify-center",
-    "rounded-md",
-    "transition",
-    "hover:bg-white/10",
-    "active:scale-95"
-].join(" ");
-
-        button.title =
-            emoji.name || emoji.id;
-
-        button.setAttribute(
-            "aria-label",
-            emoji.name || emoji.id
-        );
-
-        const image = document.createElement("img");
-
-        image.src = source;
-        image.alt = `:${emoji.id}:`;
-
-        image.className = [
-    "h-5",
-    "w-5",
-    "object-contain"
-].join(" ");
-
-        button.appendChild(image);
-
-        button.addEventListener(
-            "click",
-            event => {
-                event.stopPropagation();
-
-                this.insertIntoMessageInput(
-                    `:${emoji.id.toLowerCase()}:`
-                );
-            }
-        );
-
-        customTray.appendChild(button);
-    }
-}
-
-	customSection.append(
-    customTitle,
-    customTray
-);
+	
 
 this.emojiPicker =
     new window.EmojiMart.Picker({
@@ -7052,10 +6950,25 @@ this.emojiPicker.style.height =
     "280px";
 
 this.emojiPickerContainer.append(
-    customSection,
     this.emojiPicker
 );
 
+	const injectCustomSection = () => {
+    if (
+        this.injectCustomEmojisIntoPicker()
+    ) {
+        return;
+    }
+
+    requestAnimationFrame(
+        injectCustomSection
+    );
+};
+
+requestAnimationFrame(
+    injectCustomSection
+);
+	
     this.emojiButton.addEventListener(
         "click",
         event => {
@@ -7077,7 +6990,12 @@ this.emojiPickerContainer.append(
                     : [];
 
             const clickedPicker =
-                path.includes(this.emojiPicker);
+    path.includes(
+        this.emojiPickerContainer
+    ) ||
+    path.includes(
+        this.emojiPicker
+    );
 
             const clickedButton =
                 path.includes(this.emojiButton);
@@ -7088,6 +7006,189 @@ this.emojiPickerContainer.append(
         }
     );
 }
+
+	injectCustomEmojisIntoPicker() {
+    const picker =
+        this.emojiPicker;
+
+    const shadowRoot =
+        picker?.shadowRoot;
+
+    if (!shadowRoot) {
+        return false;
+    }
+
+    if (
+        shadowRoot.querySelector(
+            "[data-jami-custom-emojis]"
+        )
+    ) {
+        return true;
+    }
+
+    const scrollArea =
+        shadowRoot.querySelector(
+            ".scroll.flex-grow.padding-lr"
+        );
+
+    if (!scrollArea) {
+        return false;
+    }
+
+    const customSection =
+        document.createElement("section");
+
+    customSection.dataset.jamiCustomEmojis =
+        "true";
+
+    Object.assign(
+        customSection.style,
+        {
+            padding: "8px 0 10px",
+            borderBottom:
+                "1px solid rgba(255,255,255,0.08)"
+        }
+    );
+
+    const heading =
+        document.createElement("div");
+
+    heading.textContent =
+        "Custom";
+
+    Object.assign(
+        heading.style,
+        {
+            marginBottom: "6px",
+            fontSize: "13px",
+            fontWeight: "600",
+            color:
+                "rgba(255,255,255,0.75)"
+        }
+    );
+
+    const grid =
+        document.createElement("div");
+
+    Object.assign(
+        grid.style,
+        {
+            display: "grid",
+            gridTemplateColumns:
+                "repeat(8, minmax(0, 1fr))",
+            gap: "2px"
+        }
+    );
+
+    for (
+        const category of
+        this.customEmojiCategories
+    ) {
+        for (const emoji of category.emojis) {
+            const source =
+                emoji.skins?.[0]?.src;
+
+            if (!emoji.id || !source) {
+                continue;
+            }
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.type =
+                "button";
+
+            button.title =
+                emoji.name || emoji.id;
+
+            button.setAttribute(
+                "aria-label",
+                emoji.name || emoji.id
+            );
+
+            Object.assign(
+                button.style,
+                {
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "30px",
+                    height: "30px",
+                    padding: "3px",
+                    border: "0",
+                    borderRadius: "6px",
+                    background: "transparent",
+                    cursor: "pointer"
+                }
+            );
+
+            const image =
+                document.createElement(
+                    "img"
+                );
+
+            image.src =
+                source;
+
+            image.alt =
+                `:${emoji.id}:`;
+
+            Object.assign(
+                image.style,
+                {
+                    width: "22px",
+                    height: "22px",
+                    objectFit: "contain"
+                }
+            );
+
+            button.addEventListener(
+                "mouseenter",
+                () => {
+                    button.style.background =
+                        "rgba(255,255,255,0.1)";
+                }
+            );
+
+            button.addEventListener(
+                "mouseleave",
+                () => {
+                    button.style.background =
+                        "transparent";
+                }
+            );
+
+            button.addEventListener(
+                "click",
+                event => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    this.insertIntoMessageInput(
+                        `:${emoji.id.toLowerCase()}:`
+                    );
+                }
+            );
+
+            button.appendChild(image);
+            grid.appendChild(button);
+        }
+    }
+
+    customSection.append(
+        heading,
+        grid
+    );
+
+    scrollArea.prepend(
+        customSection
+    );
+
+    return true;
+}
+	
 toggleEmojiPicker() {
     if (this.emojiPickerOpen) {
         this.closeEmojiPicker();
