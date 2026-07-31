@@ -695,6 +695,7 @@ let watchPartyEnglishSubtitles =
     ) === "true";
 
 let playerEnglishSubtitlesActive = null;
+let pendingPlayerRebuildState = null;
 
 const toggleBtn =
   document.getElementById("videoToggle");
@@ -945,7 +946,7 @@ function shouldUseWatchPartyEnglishSubtitles() {
 }
 
 function rebuildYouTubePlayer({
-    resumePlayback = false
+    preservePlayback = false
 } = {}) {
     if (!player) {
         maybeInitPlayer();
@@ -974,9 +975,63 @@ function rebuildYouTubePlayer({
         return;
     }
 
+    let currentTime = 0;
+    let wasPlaying = false;
+    let videoId = loadedVideoId;
+
+    if (
+        preservePlayback &&
+        playbackMode === "watch-party" &&
+        watchPartyState.enabled === true
+    ) {
+        try {
+            const capturedTime =
+                typeof player.getCurrentTime ===
+                    "function"
+                    ? player.getCurrentTime()
+                    : 0;
+
+            if (Number.isFinite(capturedTime)) {
+                currentTime =
+                    Math.max(0, capturedTime);
+            }
+        } catch {
+            currentTime = 0;
+        }
+
+        try {
+            const playerState =
+                typeof player.getPlayerState ===
+                    "function"
+                    ? player.getPlayerState()
+                    : null;
+
+            wasPlaying =
+                playerState ===
+                    YT.PlayerState.PLAYING;
+        } catch {
+            wasPlaying =
+                isPlaying === true;
+        }
+
+        if (!videoId) {
+            videoId =
+                watchPartyState.currentVideoId ||
+                null;
+        }
+
+        pendingPlayerRebuildState = {
+            videoId,
+            currentTime,
+            wasPlaying
+        };
+    } else {
+        pendingPlayerRebuildState = null;
+    }
+
     const parent =
         iframe.parentNode;
-  
+
     const marker =
         document.createComment(
             "youtube-player-position"
@@ -1001,20 +1056,12 @@ function rebuildYouTubePlayer({
     }
 
     player = null;
-playerReady = false;
-loadedVideoId = null;
-isPlaying = false;
+    playerReady = false;
+    loadedVideoId = null;
+    isPlaying = false;
 
-updatePlaybackIcons(false);
+    updatePlaybackIcons(false);
 
-  const shouldResumePlayback =
-    resumePlayback &&
-    playbackMode === "watch-party" &&
-    watchPartyState.enabled;
-
-isPlaying = false;
-updatePlaybackIcons(false);
-  
     const replacement =
         document.createElement("div");
 
@@ -1027,11 +1074,7 @@ updatePlaybackIcons(false);
     );
 
     marker.remove();
-
-window.__resumeAfterRebuild =
-    shouldResumePlayback;
-
-maybeInitPlayer();
+    maybeInitPlayer();
 }
 
 function loadActiveVideo({
@@ -1181,8 +1224,7 @@ if (
         requiredEnglishSubtitles
 ) {
     rebuildYouTubePlayer({
-    resumePlayback:
-        watchPartyState.enabled
+    preservePlayback: false
 });
     return;
 }
@@ -1436,44 +1478,106 @@ player =
 },
 
         events: {
-          onReady: () => {
-            playerReady = true;
-            if (window.__resumeAfterRebuild) {
-    window.__resumeAfterRebuild = false;
+         onReady: () => {
+    playerReady = true;
+    startWatchPartySyncLoop();
 
-    requestAnimationFrame(() => {
-        player.playVideo();
-        updatePlaybackIcons(true);
-    });
-}
-            startWatchPartySyncLoop();
+    const savedVolume =
+        parseInt(
+            localStorage.getItem(
+                "volume"
+            ) || "50",
+            10
+        );
 
-            const savedVolume =
-              parseInt(
-                localStorage.getItem(
-                  "volume"
-                ) || "50",
-                10
-              );
+    player.setVolume(savedVolume);
 
-            player.setVolume(savedVolume);
+    if (volumeSlider) {
+        volumeSlider.value =
+            savedVolume;
+    }
 
-            if (volumeSlider) {
-              volumeSlider.value =
-                savedVolume;
+    const rebuildState =
+        pendingPlayerRebuildState;
+
+    pendingPlayerRebuildState = null;
+
+    if (
+        rebuildState &&
+        playbackMode === "watch-party" &&
+        watchPartyState.enabled === true &&
+        rebuildState.videoId
+    ) {
+        loadedVideoId =
+            rebuildState.videoId;
+
+        setPoster(
+            rebuildState.videoId
+        );
+
+        window.watchPartyPlayer?.setVideoMode?.(
+            localStorage.getItem(
+                "watch_party_video_mode"
+            ) || "cinematic"
+        );
+
+        if (rebuildState.wasPlaying) {
+            player.loadVideoById({
+                videoId:
+                    rebuildState.videoId,
+
+                startSeconds:
+                    rebuildState.currentTime
+            });
+
+            player.playVideo();
+            updatePlaybackIcons(true);
+        } else {
+            player.cueVideoById({
+                videoId:
+                    rebuildState.videoId,
+
+                startSeconds:
+                    rebuildState.currentTime
+            });
+
+            updatePlaybackIcons(false);
+
+            const posterEl =
+                document.getElementById(
+                    "videoPoster"
+                );
+
+            const iframeEl =
+                document.getElementById(
+                    "background-video-iframe"
+                );
+
+            if (posterEl) {
+                posterEl.style.opacity =
+                    "1";
             }
 
-            if (watchPartyState.enabled) {
-              applyWatchPartyState(
-                watchPartyState
-              );
-            } else {
-              loadActiveVideo({
-                autoplay: false,
-                force: true
-              });
+            if (iframeEl) {
+                iframeEl.style.opacity =
+                    "0";
             }
-          },
+        }
+
+        return;
+    }
+
+    if (watchPartyState.enabled) {
+        applyWatchPartyState(
+            watchPartyState
+        );
+    } else {
+        loadActiveVideo({
+            autoplay: false,
+            force: true
+        });
+    }
+},
 
           onStateChange: event => {
             if (suppressPlayerEvents) {
@@ -1693,7 +1797,9 @@ window.watchPartyPlayer = {
         playerEnglishSubtitlesActive !==
             requiredEnglishSubtitles
     ) {
-        rebuildYouTubePlayer();
+        rebuildYouTubePlayer({
+    preservePlayback: true
+});
     }
 
     return {
