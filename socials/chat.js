@@ -4338,52 +4338,44 @@ if (shouldJumpToBottom) {
     this.watchPartyScrollQueueAfterLength =
         null;
 } else if (shouldJumpToCurrent) {
-    const currentItem =
-        queue.find(item => {
-            return (
-                item.videoId ===
-                this.watchParty.currentVideoId
-            );
-        });
-
-    const currentQueueId =
-        Number(currentItem?.id);
+    const currentIndex =
+        this.watchParty.currentIndex;
 
     const currentElement =
-        Number.isInteger(currentQueueId)
-            ? queueList.querySelector(
-                `[data-watch-party-play="${currentQueueId}"]`
-            )
+        Number.isInteger(currentIndex) &&
+        currentIndex >= 0
+            ? queueList.children[
+                currentIndex
+            ] || null
             : null;
 
- if (currentElement) {
-    queueList.style.overflowAnchor =
-        "none";
+    const firstElement =
+        queueList.firstElementChild;
 
-    const queueRect =
-        queueList.getBoundingClientRect();
+    if (
+        currentElement &&
+        firstElement
+    ) {
+        queueList.style.overflowAnchor =
+            "none";
 
-    const itemRect =
-        currentElement.getBoundingClientRect();
+        const targetScrollTop =
+            currentElement.offsetTop -
+            firstElement.offsetTop;
 
-    const targetScrollTop =
-        queueList.scrollTop +
-        itemRect.top -
-        queueRect.top;
+        queueList.scrollTop =
+            Math.max(
+                0,
+                Math.min(
+                    targetScrollTop,
+                    queueList.scrollHeight -
+                        queueList.clientHeight
+                )
+            );
 
-    queueList.scrollTop =
-        Math.max(
-            0,
-            Math.min(
-                targetScrollTop,
-                queueList.scrollHeight -
-                    queueList.clientHeight
-            )
-        );
-
-    this.watchPartyNavigationFromVideoId =
-        null;
-}
+        this.watchPartyNavigationFromVideoId =
+            null;
+    }
 } else if (previousQueueWasNearBottom) {
     queueList.scrollTop =
         queueList.scrollHeight;
