@@ -3225,8 +3225,8 @@ const hasWatchPartyVideo =
             >
                 ${
                     englishSubtitlesEnabled
-                        ? "preferred"
-                        : "auto"
+                        ? "on"
+                        : "off"
                 }
             </span>
         </button>
