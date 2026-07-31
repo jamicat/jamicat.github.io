@@ -4340,33 +4340,25 @@ if (shouldJumpToBottom) {
             : null;
 
     if (currentElement) {
-        const queueRect =
-            queueList.getBoundingClientRect();
+       const queueRect =
+    queueList.getBoundingClientRect();
 
-        const itemRect =
-            currentElement.getBoundingClientRect();
+const itemRect =
+    currentElement.getBoundingClientRect();
 
-        const itemTopInsideQueue =
-            itemRect.top -
-            queueRect.top +
-            queueList.scrollTop;
-
-        const centeredScrollTop =
-            itemTopInsideQueue -
-            (
-                queueList.clientHeight -
-                currentElement.offsetHeight
-            ) / 2;
-
-        queueList.scrollTop =
-            Math.max(
-                0,
-                Math.min(
-                    centeredScrollTop,
-                    queueList.scrollHeight -
-                        queueList.clientHeight
-                )
-            );
+const itemTopInsideQueue =
+    itemRect.top -
+    queueRect.top +
+    queueList.scrollTop;
+queueList.scrollTop =
+    Math.max(
+        0,
+        Math.min(
+            itemTopInsideQueue,
+            queueList.scrollHeight -
+                queueList.clientHeight
+        )
+    );
 
         this
             .watchPartyScrollToCurrentAfterNavigation =
