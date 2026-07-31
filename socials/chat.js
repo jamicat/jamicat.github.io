@@ -7069,15 +7069,17 @@ requestAnimationFrame(
 
     const grid =
         document.createElement("div");
+		
 Object.assign(
     grid.style,
     {
         display: "grid",
         gridTemplateColumns:
-            "repeat(8, 30px)",
+            "repeat(auto-fill, 30px)",
         justifyContent:
-            "space-between",
-        gap: "0px"
+            "start",
+        columnGap: "0px",
+        rowGap: "2px"
     }
 );
 
