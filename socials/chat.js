@@ -5052,7 +5052,8 @@ syncWatchPartyRainbowAnimations() {
 	"[data-watch-party-requested-label]",
     "[data-watch-party-added-label]",
     "[data-watch-party-resize-grip]",
-	"[data-watch-party-add-playlist]"
+	"[data-watch-party-add-playlist]",
+	"[data-watch-party-playlist-label]"
 ].join(",")
         );
 
