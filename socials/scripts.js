@@ -689,6 +689,12 @@ let currentWatchPartyState = null;
 let isPlaying = false;
 let suppressPlayerEvents = false;
 let watchPartySyncTimer = null;
+let watchPartyEnglishSubtitles =
+    localStorage.getItem(
+        "watch_party_english_subtitles"
+    ) === "true";
+
+let playerEnglishSubtitlesActive = null;
 
 const toggleBtn =
   document.getElementById("videoToggle");
@@ -930,6 +936,93 @@ function updatePlaybackIcons(playing) {
   );
 }
 
+function shouldUseWatchPartyEnglishSubtitles() {
+    return (
+        playbackMode === "watch-party" &&
+        watchPartyState.enabled === true &&
+        watchPartyEnglishSubtitles === true
+    );
+}
+
+function rebuildYouTubePlayer() {
+    /*
+     * If the player has not been created yet,
+     * maybeInitPlayer() will use the current
+     * subtitle preference when it eventually runs.
+     */
+    if (!player) {
+        maybeInitPlayer();
+        return;
+    }
+
+    let iframe = null;
+
+    try {
+        iframe =
+            typeof player.getIframe === "function"
+                ? player.getIframe()
+                : null;
+    } catch {
+        iframe = null;
+    }
+
+    if (
+        !iframe ||
+        !iframe.parentNode
+    ) {
+        console.warn(
+            "could not rebuild youtube player: iframe unavailable"
+        );
+
+        return;
+    }
+
+    const parent =
+        iframe.parentNode;
+  
+    const marker =
+        document.createComment(
+            "youtube-player-position"
+        );
+
+    parent.insertBefore(
+        marker,
+        iframe
+    );
+
+    suppressPlayerEvents = true;
+
+    try {
+        player.destroy();
+    } catch (error) {
+        console.warn(
+            "could not destroy youtube player:",
+            error
+        );
+    } finally {
+        suppressPlayerEvents = false;
+    }
+
+    player = null;
+    playerReady = false;
+    loadedVideoId = null;
+    isPlaying = false;
+
+    const replacement =
+        document.createElement("div");
+
+    replacement.id =
+        "background-video-iframe";
+
+    parent.insertBefore(
+        replacement,
+        marker
+    );
+
+    marker.remove();
+    maybeInitPlayer();
+}
+
 function loadActiveVideo({
   autoplay = false,
   force = false
@@ -1050,12 +1143,15 @@ function applyWatchPartyState(state) {
 
   playbackMode =
     watchPartyState.enabled
-      ? "watch-party"
-      : "normal";
+        ? "watch-party"
+        : "normal";
 
-  window.setTerminalPlaybackControlsVisible?.(
+const requiredEnglishSubtitles =
+    shouldUseWatchPartyEnglishSubtitles();
+
+window.setTerminalPlaybackControlsVisible?.(
     !watchPartyState.enabled
-  );
+);
 
  window.setTerminalMinimized?.(
   watchPartyState.enabled
@@ -1063,7 +1159,15 @@ function applyWatchPartyState(state) {
 
   if (!player || !playerReady) {
     return;
-  }
+}
+
+if (
+    playerEnglishSubtitlesActive !==
+        requiredEnglishSubtitles
+) {
+    rebuildYouTubePlayer();
+    return;
+}
 
   if (watchPartyState.enabled) {
     window.watchPartyPlayer?.setVideoMode?.(
@@ -1280,7 +1384,13 @@ function maybeInitPlayer() {
   const initialVideoId =
     getActiveVideoId();
 
-  player =
+const useEnglishSubtitles =
+    shouldUseWatchPartyEnglishSubtitles();
+
+playerEnglishSubtitlesActive =
+    useEnglishSubtitles;
+
+player =
     new YT.Player(
       "background-video-iframe",
       {
@@ -1288,16 +1398,22 @@ function maybeInitPlayer() {
           initialVideoId || "",
 
         playerVars: {
-          autoplay: 0,
-          mute: 0,
-          controls: 0,
-          playsinline: 1,
-          modestbranding: 1,
-          rel: 0,
-          fs: 0,
-          showinfo: 0,
-          iv_load_policy: 3
-        },
+    autoplay: 0,
+    mute: 0,
+    controls: 0,
+    playsinline: 1,
+    modestbranding: 1,
+    rel: 0,
+    fs: 0,
+    showinfo: 0,
+    iv_load_policy: 3,
+    cc_load_policy:
+        useEnglishSubtitles
+            ? 1
+            : 0,
+
+    cc_lang_pref: "en"
+},
 
         events: {
           onReady: () => {
@@ -1507,12 +1623,56 @@ window.watchPartyPlayer = {
     }
 
     return {
-        ready: playerReady,
-        playing: isPlaying,
-        mode: playbackMode,
-        videoId: loadedVideoId,
-        currentTime,
-        duration
+    ready: playerReady,
+    playing: isPlaying,
+    mode: playbackMode,
+    videoId: loadedVideoId,
+    currentTime,
+    duration,
+    englishSubtitlesEnabled:
+        watchPartyEnglishSubtitles,
+    englishSubtitlesActive:
+        playerEnglishSubtitlesActive === true
+};
+},
+
+  setEnglishSubtitles(enabled) {
+    watchPartyEnglishSubtitles =
+        enabled === true;
+
+    localStorage.setItem(
+        "watch_party_english_subtitles",
+        String(
+            watchPartyEnglishSubtitles
+        )
+    );
+
+    if (
+        playbackMode !== "watch-party" ||
+        watchPartyState.enabled !== true
+    ) {
+        return {
+            enabled:
+                watchPartyEnglishSubtitles,
+            active: false
+        };
+    }
+
+    const requiredEnglishSubtitles =
+        shouldUseWatchPartyEnglishSubtitles();
+
+    if (
+        playerEnglishSubtitlesActive !==
+            requiredEnglishSubtitles
+    ) {
+        rebuildYouTubePlayer();
+    }
+
+    return {
+        enabled:
+            watchPartyEnglishSubtitles,
+        active:
+            requiredEnglishSubtitles
     };
 },
 
