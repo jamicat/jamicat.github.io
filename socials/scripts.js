@@ -681,6 +681,8 @@ let currentWatchPartyState = null;
 let isPlaying = false;
 let suppressPlayerEvents = false;
 let watchPartySyncTimer = null;
+let watchPartyAutomaticNextPending =
+    false;
 let watchPartyEnglishSubtitles =
     localStorage.getItem(
         "watch_party_english_subtitles"
@@ -2054,38 +2056,93 @@ if (
     return;
   }
 
-  if (
+ if (
     playbackMode ===
-    "watch-party" &&
+        "watch-party" &&
     watchPartyState.currentVideoId
-  ) {
+) {
+    if (
+        watchPartyAutomaticNextPending
+    ) {
+        return;
+    }
+
+    watchPartyAutomaticNextPending =
+        true;
+
+    /*
+     * Capture the video and index now.
+     * Do not read them later after an
+     * asynchronous state update.
+     */
+    const endedVideoId =
+        watchPartyState
+            .currentVideoId;
+
+    const endedIndex =
+        watchPartyState
+            .currentIndex;
+
     fetch(
-      `${API}/api/watchparty/next`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
-        body: JSON.stringify({
-          clientId:
-            window.chat?.clientId ||
-            null
+        `${API}/api/watchparty/next`,
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body: JSON.stringify({
+                clientId:
+                    window.chat
+                        ?.clientId ||
+                    null,
+
+                expectedVideoId:
+                    endedVideoId,
+
+                expectedIndex:
+                    endedIndex
+            })
+        }
+    )
+        .then(
+            async response => {
+                let result = null;
+
+                try {
+                    result =
+                        await response.json();
+                } catch {}
+
+                if (!response.ok) {
+                    throw new Error(
+                        result?.error ||
+                        `automatic next failed (${response.status})`
+                    );
+                }
+
+                /*
+                 * result.stale means another
+                 * browser advanced first.
+                 * That is expected, not an error.
+                 */
+            }
+        )
+        .catch(error => {
+            console.error(
+                "Watch Party automatic next failed:",
+                error
+            );
         })
-      }
-    ).then(response => {
-      if (!response.ok) {
-        throw new Error(
-          `automatic next failed (${response.status})`
-        );
-      }
-    }).catch(error => {
-      console.error(
-        "Watch Party automatic next failed:",
-        error
-      );
-    });
-  }
+        .finally(() => {
+            watchPartyAutomaticNextPending =
+                false;
+        });
+}
+      
+  
 }
           }
         }
