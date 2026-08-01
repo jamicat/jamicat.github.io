@@ -4213,6 +4213,10 @@ progressHoverTooltip
             return;
         }
 
+		window.watchPartyPlayer?.seekTo?.(
+    targetTime
+);
+		
         this.watchPartySeekBusy = true;
         progressInput.disabled = true;
 
