@@ -4196,14 +4196,34 @@ progressHoverTooltip
             return;
         }
 
-        const targetTime =
-    Math.max(
-        0,
-        Number(
+        const displayedTargetTime =
+    this.parseDurationText(
+        progressHoverTooltip
+            ?.textContent || ""
+    );
+
+const targetTime =
+    Number.isFinite(
+        displayedTargetTime
+    )
+        ? displayedTargetTime
+        : Math.max(
+            0,
             Number(
-                progressInput.value
-            ).toFixed(3)
-        )
+                Number(
+                    progressInput.value
+                ).toFixed(3)
+            )
+        );
+
+		progressInput.value =
+    String(targetTime);
+
+updateSeekPreview();
+
+window.watchPartyPlayer
+    ?.seekTo?.(
+        targetTime
     );
 
         if (
@@ -6743,6 +6763,45 @@ restoreSettings() {
         usableWidth
     );
 }
+
+	parseDurationText(value) {
+    if (typeof value !== "string") {
+        return null;
+    }
+
+    const parts =
+        value
+            .trim()
+            .split(":")
+            .map(part =>
+                Number(part)
+            );
+
+    if (
+        parts.length < 2 ||
+        parts.length > 3 ||
+        parts.some(part =>
+            !Number.isFinite(part) ||
+            part < 0
+        )
+    ) {
+        return null;
+    }
+
+    if (parts.length === 2) {
+        return (
+            parts[0] * 60 +
+            parts[1]
+        );
+    }
+
+    return (
+        parts[0] * 3600 +
+        parts[1] * 60 +
+        parts[2]
+    );
+}
+
 	
 formatDuration(seconds) {
     const safeSeconds =
