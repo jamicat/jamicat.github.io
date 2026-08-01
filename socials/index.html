@@ -216,6 +216,7 @@ addComponents({
 </div>
 </div>
 </div>
+<div class="homepage-media-controls">
 <div class="volume-wrap">
  <svg
   id="volumeIcon"
@@ -271,25 +272,34 @@ addComponents({
     min="0"
     max="100"
     value="50"
->
+ >
+</div>
 
 <div
-    id="homepageProgressWrap"
-    class="homepage-progress-wrap"
-    hidden
+    id="normalProgressWrap"
+    class="normal-progress-wrap hidden"
+    aria-hidden="true"
 >
+    <div
+        id="normalProgressTooltip"
+        class="normal-progress-tooltip"
+        role="tooltip"
+    >
+        0:00
+    </div>
+
     <input
-        id="homepageProgressSlider"
-        class="homepage-progress-slider"
+        id="normalProgressSlider"
         type="range"
         min="0"
         max="1000"
-        value="0"
         step="1"
+        value="0"
         aria-label="song progress"
     >
 </div>
 </div>
+
 <script src="scripts.js?v=1.0"></script>
 <script src="discscripts.js?v=1.0"></script>
 <script
