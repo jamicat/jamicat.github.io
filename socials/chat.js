@@ -7990,10 +7990,6 @@ closeAvatarPicker() {
     const panel =
         this.watchPartyPanel;
 
-    const buttonRect =
-        this.watchPartyButton
-            .getBoundingClientRect();
-
     const viewport =
         window.visualViewport;
 
@@ -8014,27 +8010,23 @@ closeAvatarPicker() {
     const viewportPadding = 12;
     const gap = 8;
 
-    /*
-     * Establish the normal position beside the
-     * Watch Party TV button.
-     */
-    panel.style.left = "auto";
-    panel.style.top = "auto";
+    const minimumLeft =
+        viewportLeft +
+        viewportPadding;
 
-    panel.style.right =
-        `${Math.max(
-            viewportPadding,
-            window.innerWidth -
-                buttonRect.right
-        )}px`;
+    const minimumTop =
+        viewportTop +
+        viewportPadding;
 
-    panel.style.bottom =
-        `${Math.max(
-            viewportPadding,
-            window.innerHeight -
-                buttonRect.top +
-                gap
-        )}px`;
+    const maximumRight =
+        viewportLeft +
+        viewportWidth -
+        viewportPadding;
+
+    const maximumBottom =
+        viewportTop +
+        viewportHeight -
+        viewportPadding;
 
     const availableHeight =
         Math.max(
@@ -8067,117 +8059,130 @@ closeAvatarPicker() {
         );
     }
 
-    /*
-     * Begin with no translation so we can measure
-     * the panel's correct base position.
-     */
-    panel.dataset.x = "0";
-    panel.dataset.y = "0";
+
+    const currentRect =
+        panel.getBoundingClientRect();
+
+    const storedLeft =
+        parseFloat(
+            localStorage.getItem(
+                "watch_party_left"
+            )
+        );
+
+    const storedTop =
+        parseFloat(
+            localStorage.getItem(
+                "watch_party_top"
+            )
+        );
+
+    let nextLeft;
+    let nextTop;
+
+    if (
+        panel.dataset.positioned ===
+            "true" &&
+        Number.isFinite(
+            currentRect.left
+        ) &&
+        Number.isFinite(
+            currentRect.top
+        )
+    ) {
+        nextLeft =
+            currentRect.left;
+
+        nextTop =
+            currentRect.top;
+    } else if (
+        Number.isFinite(storedLeft) &&
+        Number.isFinite(storedTop)
+    ) {
+        nextLeft =
+            storedLeft;
+
+        nextTop =
+            storedTop;
+    } else {
+  
+        const buttonRect =
+            this.watchPartyButton
+                .getBoundingClientRect();
+
+        const panelWidth =
+            panel.offsetWidth || 288;
+
+        const panelHeight =
+            panel.offsetHeight ||
+            this.watchPartyResizeMinimum;
+
+        nextLeft =
+            buttonRect.right -
+            panelWidth;
+
+        nextTop =
+            buttonRect.top -
+            panelHeight -
+            gap;
+    }
+
+    const panelWidth =
+        panel.offsetWidth || 288;
+
+    const panelHeight =
+        panel.offsetHeight ||
+        this.watchPartyResizeMinimum;
+
+    nextLeft =
+        Math.max(
+            minimumLeft,
+            Math.min(
+                nextLeft,
+                maximumRight -
+                    panelWidth
+            )
+        );
+
+    nextTop =
+        Math.max(
+            minimumTop,
+            Math.min(
+                nextTop,
+                maximumBottom -
+                    panelHeight
+            )
+        );
+
+    panel.style.right =
+        "auto";
+
+    panel.style.bottom =
+        "auto";
+
+    panel.style.left =
+        `${nextLeft}px`;
+
+    panel.style.top =
+        `${nextTop}px`;
 
     panel.style.transform =
         "translate(0px, 0px)";
 
-    const savedX =
-        parseFloat(
-            localStorage.getItem(
-                "watch_party_x"
-            )
-        ) || 0;
+    panel.dataset.x = "0";
+    panel.dataset.y = "0";
 
-    const savedY =
-        parseFloat(
-            localStorage.getItem(
-                "watch_party_y"
-            )
-        ) || 0;
+    panel.dataset.positioned =
+        "true";
 
-    const baseRect =
-        panel.getBoundingClientRect();
-
-    let nextX = savedX;
-    let nextY = savedY;
-
-    const minimumLeft =
-        viewportLeft +
-        viewportPadding;
-
-    const maximumRight =
-        viewportLeft +
-        viewportWidth -
-        viewportPadding;
-
-    const minimumTop =
-        viewportTop +
-        viewportPadding;
-
-    const maximumBottom =
-        viewportTop +
-        viewportHeight -
-        viewportPadding;
-
-    /*
-     * Clamp the saved horizontal position.
-     */
-    if (
-        baseRect.left + nextX <
-        minimumLeft
-    ) {
-        nextX =
-            minimumLeft -
-            baseRect.left;
-    }
-
-    if (
-        baseRect.right + nextX >
-        maximumRight
-    ) {
-        nextX =
-            maximumRight -
-            baseRect.right;
-    }
-
-    /*
-     * Clamp the saved vertical position.
-     */
-    if (
-        baseRect.top + nextY <
-        minimumTop
-    ) {
-        nextY =
-            minimumTop -
-            baseRect.top;
-    }
-
-    if (
-        baseRect.bottom + nextY >
-        maximumBottom
-    ) {
-        nextY =
-            maximumBottom -
-            baseRect.bottom;
-    }
-
-    panel.dataset.x =
-        String(nextX);
-
-    panel.dataset.y =
-        String(nextY);
-
-    panel.style.transform =
-        `translate(${nextX}px, ${nextY}px)`;
-
-    /*
-     * Replace any invalid saved position with the
-     * corrected, visible position.
-     */
     localStorage.setItem(
-        "watch_party_x",
-        String(nextX)
+        "watch_party_left",
+        String(nextLeft)
     );
 
     localStorage.setItem(
-        "watch_party_y",
-        String(nextY)
+        "watch_party_top",
+        String(nextTop)
     );
 }
 	
@@ -8233,11 +8238,15 @@ setupDragging() {
         }
     });
 
-	interact(this.watchPartyPanel).draggable({
-    allowFrom: ".watch-party-drag-area",
+interact(
+    this.watchPartyPanel
+).draggable({
+    allowFrom:
+        ".watch-party-drag-area",
+
     ignoreFrom:
-    "button, input, a, " +
-    "[data-watch-party-resize-handle]",
+        "button, input, a, " +
+        "[data-watch-party-resize-handle]",
 
     inertia: true,
 
@@ -8250,32 +8259,76 @@ setupDragging() {
 
     listeners: {
         move(event) {
-            const target = event.target;
+            const target =
+                event.target;
 
             const x =
-                (parseFloat(target.dataset.x) || 0) +
+                (
+                    parseFloat(
+                        target.dataset.x
+                    ) || 0
+                ) +
                 event.dx;
 
             const y =
-                (parseFloat(target.dataset.y) || 0) +
+                (
+                    parseFloat(
+                        target.dataset.y
+                    ) || 0
+                ) +
                 event.dy;
 
             target.style.transform =
                 `translate(${x}px, ${y}px)`;
 
-            target.dataset.x = String(x);
-            target.dataset.y = String(y);
+            target.dataset.x =
+                String(x);
+
+            target.dataset.y =
+                String(y);
         },
 
         end(event) {
+            const target =
+                event.target;
+
+            const rect =
+                target
+                    .getBoundingClientRect();
+
+            /*
+             * Consolidate the temporary drag
+             * translation into permanent left/top.
+             */
+            target.style.left =
+                `${rect.left}px`;
+
+            target.style.top =
+                `${rect.top}px`;
+
+            target.style.right =
+                "auto";
+
+            target.style.bottom =
+                "auto";
+
+            target.style.transform =
+                "translate(0px, 0px)";
+
+            target.dataset.x = "0";
+            target.dataset.y = "0";
+
+            target.dataset.positioned =
+                "true";
+
             localStorage.setItem(
-                "watch_party_x",
-                event.target.dataset.x || "0"
+                "watch_party_left",
+                String(rect.left)
             );
 
             localStorage.setItem(
-                "watch_party_y",
-                event.target.dataset.y || "0"
+                "watch_party_top",
+                String(rect.top)
             );
         }
     }
@@ -8347,13 +8400,6 @@ setupDragging() {
                         viewportPadding
                 );
 
-            const previousHeight =
-                parseFloat(
-                    target.dataset
-                        .resizeLastHeight
-                ) ||
-                currentRect.height;
-
             const requestedHeight =
                 event.rect.height;
 
@@ -8367,74 +8413,42 @@ setupDragging() {
                     )
                 );
 
-            /*
-             * The panel is positioned using bottom.
-             *
-             * Increasing its height would normally
-             * move the top upward. Moving its
-             * translation down by the same amount
-             * keeps the top edge in place and lets
-             * the bottom edge follow the pointer.
-             */
-            const heightDifference =
-                nextHeight -
-                previousHeight;
+           target.style.height =
+    `${nextHeight}px`;
 
-            const x =
-                parseFloat(
-                    target.dataset.x
-                ) || 0;
-
-            const y =
-                (
-                    parseFloat(
-                        target.dataset.y
-                    ) || 0
-                ) +
-                heightDifference;
-
-            target.style.height =
-                `${nextHeight}px`;
-
-            target.style.transform =
-                `translate(${x}px, ${y}px)`;
-
-            target.dataset.x =
-                String(x);
-
-            target.dataset.y =
-                String(y);
-
-            target.dataset.resizeLastHeight =
-                String(nextHeight);
+target.dataset.resizeLastHeight =
+    String(nextHeight);
         },
 
         end(event) {
-            const target =
-                event.target;
+    const target =
+        event.target;
 
-            const height =
-                target.getBoundingClientRect()
-                    .height;
+    const rect =
+        target
+            .getBoundingClientRect();
 
-            localStorage.setItem(
-                "watch_party_height",
-                String(height)
-            );
+    localStorage.setItem(
+        "watch_party_height",
+        String(rect.height)
+    );
 
-            localStorage.setItem(
-                "watch_party_x",
-                target.dataset.x || "0"
-            );
+    localStorage.setItem(
+        "watch_party_left",
+        String(rect.left)
+    );
 
-            localStorage.setItem(
-                "watch_party_y",
-                target.dataset.y || "0"
-            );
+    localStorage.setItem(
+        "watch_party_top",
+        String(rect.top)
+    );
 
-            delete target.dataset
-                .resizeLastHeight;
-        }
+    target.dataset.positioned =
+        "true";
+
+    delete target.dataset
+        .resizeLastHeight;
+}
     }
 });
 }
