@@ -457,26 +457,9 @@ transition-[height] duration-200
 </div>
 
             <div class="relative">
+			
     <div class="flex items-stretch gap-2">
-        <input
-            id="chatMessage"
-            type="text"
-            maxlength="250"
-            autocomplete="off"
-            placeholder="type a message..."
-            class="
-                theme-body
-                min-w-0 flex-1 rounded-xl
-                border border-white/10
-                bg-black/30 px-3 py-2
-                text-xs text-white
-                placeholder:text-white/35
-                outline-none
-                focus:border-white/25
-            "
-        >
-
-<button
+	<button
     id="chatImageUploadButton"
     type="button"
     class="
@@ -503,6 +486,23 @@ transition-[height] duration-200
     class="hidden"
 >
 
+        <input
+            id="chatMessage"
+            type="text"
+            maxlength="250"
+            autocomplete="off"
+            placeholder="type a message..."
+            class="
+                theme-body
+                min-w-0 flex-1 rounded-xl
+                border border-white/10
+                bg-black/30 px-3 py-2
+                text-xs text-white
+                placeholder:text-white/35
+                outline-none
+                focus:border-white/25
+            "
+        >
 <button
     id="chatWatchPartyButton"
     type="button"
