@@ -1855,6 +1855,7 @@ function startWatchPartySyncLoop() {
     correctWatchPartyDrift,
     1000
   );
+}
 
 function maybeInitPlayer() {
   if (
