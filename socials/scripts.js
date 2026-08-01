@@ -2721,6 +2721,15 @@ if (normalProgressSlider) {
 }
 
 if (volumeSlider) {
+  volumeSlider.addEventListener(
+    "input",
+    event => {
+      if (
+        !player ||
+        !playerReady
+      ) {
+        return;
+      }
 
       const volume =
         parseInt(
