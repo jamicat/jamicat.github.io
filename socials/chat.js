@@ -3278,6 +3278,7 @@ const hasWatchPartyVideo =
             max="1"
             step="0.1"
             value="0"
+			step="0.1"
             ${hasWatchPartyVideo ? "" : "disabled"}
             class="
                 watch-party-progress
@@ -4080,19 +4081,12 @@ if (progressInput) {
             ? maximum
             : 1;
 
-    const relativeX =
-        Math.max(
-            0,
-            Math.min(
-                rect.width,
-                event.clientX -
-                    rect.left
-            )
-        );
-
     const ratio =
-        relativeX /
-        rect.width;
+    this.getRangePointerRatio(
+        progressInput,
+        event.clientX,
+        12
+    );
 
     const hoveredTime =
         ratio *
@@ -4135,7 +4129,7 @@ const hideProgressTooltips = () => {
         );
 };
 
-    const beginSeeking = event => {
+   const beginSeeking = event => {
     this.watchPartySeeking = true;
 
     showProgressTooltips();
@@ -4146,6 +4140,34 @@ const hideProgressTooltips = () => {
             event.clientX
         )
     ) {
+        const maximum =
+            Number(
+                progressInput.max
+            );
+
+        const safeMaximum =
+            Number.isFinite(maximum) &&
+            maximum > 0
+                ? maximum
+                : 0;
+
+        const ratio =
+            this.getRangePointerRatio(
+                progressInput,
+                event.clientX,
+                12
+            );
+
+        if (safeMaximum > 0) {
+            progressInput.value =
+                String(
+                    ratio *
+                    safeMaximum
+                );
+
+            updateSeekPreview();
+        }
+
         updateHoverPreview(event);
     }
 };
@@ -4175,7 +4197,14 @@ progressHoverTooltip
         }
 
         const targetTime =
-            Number(progressInput.value);
+    Math.max(
+        0,
+        Number(
+            Number(
+                progressInput.value
+            ).toFixed(3)
+        )
+    );
 
         if (
             !Number.isFinite(targetTime) ||
@@ -6667,6 +6696,50 @@ restoreSettings() {
         `translate(${x}px, ${y}px)`;
 }
 
+	getRangePointerRatio(
+    rangeInput,
+    clientX,
+    thumbWidth = 12
+) {
+    if (!rangeInput) {
+        return 0;
+    }
+
+    const rect =
+        rangeInput
+            .getBoundingClientRect();
+
+    if (rect.width <= 0) {
+        return 0;
+    }
+
+    const halfThumb =
+        thumbWidth / 2;
+
+    const usableWidth =
+        Math.max(
+            1,
+            rect.width - thumbWidth
+        );
+
+    const usableLeft =
+        rect.left + halfThumb;
+
+    const pointerPosition =
+        Math.max(
+            0,
+            Math.min(
+                usableWidth,
+                clientX - usableLeft
+            )
+        );
+
+    return (
+        pointerPosition /
+        usableWidth
+    );
+}
+	
 formatDuration(seconds) {
     const safeSeconds =
         Math.max(
