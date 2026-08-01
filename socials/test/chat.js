@@ -2,6 +2,18 @@ class ChatWidget {
 
 constructor() {
 this.API = "https://jamicat.ahrly.workers.dev";
+this.imageUploadConfig = {
+    enabled: true,
+    apiBase:
+        `${this.API}/api/test/images`,
+    maximumBytes:
+        8 * 1024 * 1024
+};
+this.imageUploadRows =
+    new Map();
+
+this.activeImageUploads =
+    new Map();
 this.titleBar = null;
 this.socket = null;
 this.reconnectTimer = null;
@@ -167,12 +179,19 @@ window.visualViewport?.addEventListener(
     "resize",
     () => this.keepTitleBarInViewport()
 );
-this.loadHistory();
 this.loadMotd();
 this.loadWatchParty();
-this.connect();
+this.loadHistory()
+    .catch(error => {
+        console.error(
+            "Could not load chat history:",
+            error
+        );
+    })
+    .finally(() => {
+        this.connect();
+    });
 }
-
    createWindow() {
     const windowElement = document.createElement("div");
 
@@ -768,9 +787,18 @@ this.minimizeButton =
                     return;
                 }
 
-                this.uploadTestImage(
-                    file
-                );
+               this.uploadTestImage(
+    file
+).catch(error => {
+    console.error(
+        "Unexpected image upload error:",
+        error
+    );
+
+    window.alert(
+        `Image upload failed: ${error.message}`
+    );
+});
             }
         );
 }
@@ -5231,19 +5259,119 @@ escapeHtml(value) {
 	
 	
 async loadHistory() {
+    const [
+        chatResponse,
+        imageResponse
+    ] =
+        await Promise.all([
+            fetch(
+                `${this.API}/api/chat`
+            ),
 
-    const res = await fetch(`${this.API}/api/chat`);
+            fetch(
+                `${this.imageUploadConfig.apiBase}/history`
+            )
+        ]);
 
-    const messages = await res.json();
+    if (!chatResponse.ok) {
+        throw new Error(
+            `Could not load chat history (${chatResponse.status})`
+        );
+    }
+
+    if (!imageResponse.ok) {
+        throw new Error(
+            `Could not load image history (${imageResponse.status})`
+        );
+    }
+
+    const messages =
+        await chatResponse.json();
+
+    const uploads =
+        await imageResponse.json();
+
+    const timeline = [];
+
+    if (Array.isArray(messages)) {
+        for (const message of messages) {
+            timeline.push({
+                type: "message",
+
+                createdAt:
+                    message.created_at,
+
+                value:
+                    message
+            });
+        }
+    }
+
+    if (Array.isArray(uploads)) {
+        for (const upload of uploads) {
+            timeline.push({
+                type: "image-upload",
+
+                createdAt:
+                    upload.createdAt,
+
+                value:
+                    upload
+            });
+        }
+    }
+
+    timeline.sort(
+        (first, second) => {
+            const firstTime =
+                new Date(
+                    first.createdAt
+                ).getTime();
+
+            const secondTime =
+                new Date(
+                    second.createdAt
+                ).getTime();
+
+            const safeFirst =
+                Number.isFinite(firstTime)
+                    ? firstTime
+                    : 0;
+
+            const safeSecond =
+                Number.isFinite(secondTime)
+                    ? secondTime
+                    : 0;
+
+            return (
+                safeFirst -
+                safeSecond
+            );
+        }
+    );
 
     this.messages.innerHTML = "";
 
-    for (const message of messages) {
-    this.addMessage(message);
-}
+    this.imageUploadRows.clear();
 
-this.scrollMessagesToBottom();
+    for (const item of timeline) {
+        if (
+            item.type ===
+                "image-upload"
+        ) {
+            this.addImageUpload(
+                item.value
+            );
 
+            continue;
+        }
+
+        this.addMessage(
+            item.value
+        );
+    }
+
+    this.scrollMessagesToBottom();
 }
 
 addMessage(message) {
@@ -6571,6 +6699,127 @@ if (this.partyManager) {
 
     return;
 }
+
+		if (
+    data.type ===
+        "image-upload-created"
+) {
+    this.addImageUpload(
+        data.upload
+    );
+
+    return;
+}
+
+if (
+    data.type ===
+        "image-upload-progress"
+) {
+    this.applyImageUploadState({
+        uploadId:
+            data.uploadId,
+
+        status:
+            "uploading",
+
+        progress:
+            data.progress,
+
+        statusText:
+            data.statusText,
+
+        version:
+            data.version
+    });
+
+    return;
+}
+
+if (
+    data.type ===
+        "image-upload-complete"
+) {
+    this.activeImageUploads.delete(
+        data.uploadId
+    );
+
+    this.applyImageUploadState({
+        uploadId:
+            data.uploadId,
+
+        status:
+            "complete",
+
+        progress: 100,
+
+        statusText:
+            data.statusText ||
+            "Complete",
+
+        imageUrl:
+            data.imageUrl,
+
+        completedAt:
+            data.completedAt,
+
+        version:
+            data.version
+    });
+
+    return;
+}
+
+if (
+    data.type ===
+        "image-upload-cancelled"
+) {
+    const active =
+        this.activeImageUploads.get(
+            data.uploadId
+        );
+
+    active?.xhr?.abort();
+
+    this.activeImageUploads.delete(
+        data.uploadId
+    );
+
+    const row =
+        this.imageUploadRows.get(
+            data.uploadId
+        );
+
+    row?.remove();
+
+    this.imageUploadRows.delete(
+        data.uploadId
+    );
+
+    return;
+}
+
+if (
+    data.type ===
+        "image-upload-failed"
+) {
+    this.activeImageUploads.delete(
+        data.uploadId
+    );
+
+    this.applyImageUploadState({
+        uploadId:
+            data.uploadId,
+
+        status:
+            "failed",
+
+        statusText:
+            data.statusText ||
+            "Transfer failed"
+    });
+
+    return;
+}
 		
 if (data.type === "delete") {
     const messageElement =
@@ -6659,7 +6908,9 @@ if (!this.isBanned) {
     });
 }
 
-	createTestTransferElement(file) {
+	createImageTransferElement(
+    upload
+) {
     const wrapper =
         document.createElement(
             "div"
@@ -6668,56 +6919,64 @@ if (!this.isBanned) {
     wrapper.className =
         "jami-transfer-message";
 
+    wrapper.dataset.uploadId =
+        upload.uploadId || "";
+
+    wrapper.dataset.uploadVersion =
+        String(
+            Number(upload.version) || 0
+        );
+
     wrapper.innerHTML = `
         <div
             class="jami-transfer-window"
             data-jami-transfer-window
         >
             <div
-    class="jami-transfer-titlebar"
->
-    <button
-        type="button"
-        class="
-            jami-transfer-caption-button
-            jami-transfer-minimize
-        "
-        tabindex="-1"
-        aria-hidden="true"
-    >
-        <span></span>
-    </button>
+                class="jami-transfer-titlebar"
+            >
+                <button
+                    type="button"
+                    class="
+                        jami-transfer-caption-button
+                        jami-transfer-minimize
+                    "
+                    tabindex="-1"
+                    aria-hidden="true"
+                >
+                    <span></span>
+                </button>
 
-    <div
-        class="jami-transfer-title"
-    >
-        UPLOAD
-    </div>
+                <div
+                    class="jami-transfer-title"
+                >
+                    UPLOAD
+                </div>
 
-    <button
-        type="button"
-        class="
-            jami-transfer-caption-button
-            jami-transfer-arrow-down
-        "
-        tabindex="-1"
-        aria-hidden="true"
-    >
-        <span></span>
-    </button>
+                <button
+                    type="button"
+                    class="
+                        jami-transfer-caption-button
+                        jami-transfer-arrow-down
+                    "
+                    tabindex="-1"
+                    aria-hidden="true"
+                >
+                    <span></span>
+                </button>
 
-    <button
-        type="button"
-        class="
-            jami-transfer-caption-button
-            jami-transfer-arrow-up
-        "
-        tabindex="-1"
-        aria-hidden="true"
-    >
-        <span></span>
-    </button>
-</div>
+                <button
+                    type="button"
+                    class="
+                        jami-transfer-caption-button
+                        jami-transfer-arrow-up
+                    "
+                    tabindex="-1"
+                    aria-hidden="true"
+                >
+                    <span></span>
+                </button>
+            </div>
 
             <div
                 class="jami-transfer-body"
@@ -6766,6 +7025,7 @@ if (!this.isBanned) {
                         type="button"
                         class="jami-transfer-cancel"
                         data-jami-transfer-cancel
+                        disabled
                     >
                         Cancel
                     </button>
@@ -6781,13 +7041,623 @@ if (!this.isBanned) {
 
     if (fileLabel) {
         fileLabel.textContent =
-            file.name;
+            upload.originalName ||
+            "image";
     }
+
+    const cancelButton =
+        wrapper.querySelector(
+            "[data-jami-transfer-cancel]"
+        );
+
+    cancelButton?.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            this.cancelImageUpload(
+                upload.uploadId
+            );
+        }
+    );
 
     return wrapper;
 }
 
-uploadTestImage(file) {
+createCompletedImageElement(
+    upload
+) {
+    const image =
+        document.createElement(
+            "img"
+        );
+
+    image.src =
+        upload.imageUrl;
+
+    image.alt =
+        upload.originalName ||
+        "uploaded image";
+
+    image.className =
+        "jami-transfer-image";
+
+    image.loading = "lazy";
+
+    return image;
+}
+
+	addImageUpload(upload) {
+    if (
+        !upload?.uploadId
+    ) {
+        return null;
+    }
+
+    const existing =
+        this.imageUploadRows.get(
+            upload.uploadId
+        );
+
+    if (existing?.isConnected) {
+        this.applyImageUploadState(
+            upload
+        );
+
+        return existing;
+    }
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+    row.className = [
+        "chatMessage",
+        "group",
+        "relative",
+        "flex",
+        "items-start",
+        "mt-2",
+        "gap-3"
+    ].join(" ");
+
+    row.dataset.imageUploadId =
+        upload.uploadId;
+
+    row.dataset.clientId =
+        upload.clientId || "";
+
+    const createdTime =
+        new Date(
+            upload.createdAt
+        ).getTime();
+
+    row.dataset.timestamp =
+        String(
+            Number.isFinite(createdTime)
+                ? createdTime
+                : Date.now()
+        );
+
+    const avatar =
+        document.createElement(
+            "img"
+        );
+
+    avatar.src =
+        `/avatars/${
+            upload.avatar ||
+            "original.gif"
+        }`;
+
+    avatar.alt = "";
+
+    avatar.className =
+        "pixel-avatar h-9 w-9 shrink-0 object-contain -mt-[11px]";
+
+    avatar.addEventListener(
+        "error",
+        () => {
+            avatar.src =
+                "/avatars/original.gif";
+        },
+        {
+            once: true
+        }
+    );
+
+    const content =
+        document.createElement(
+            "div"
+        );
+
+    content.className =
+        "min-w-0 flex-1";
+
+    const header =
+        document.createElement(
+            "div"
+        );
+
+    header.className =
+        "flex min-w-0 items-baseline gap-2";
+
+    const name =
+        document.createElement(
+            "span"
+        );
+
+    name.className =
+        "chatMessageName font-bold";
+
+    name.textContent =
+        upload.name ||
+        "anonymous";
+
+    const time =
+        document.createElement(
+            "span"
+        );
+
+    time.className =
+        "chatTime shrink-0 whitespace-nowrap text-[9px] text-white/35";
+
+    const createdDate =
+        new Date(
+            upload.createdAt
+        );
+
+    time.textContent =
+        Number.isNaN(
+            createdDate.getTime()
+        )
+            ? "--:--"
+            : createdDate
+                .toLocaleTimeString(
+                    undefined,
+                    {
+                        hour:
+                            "2-digit",
+                        minute:
+                            "2-digit",
+                        hour12:
+                            false
+                    }
+                );
+
+    const body =
+        document.createElement(
+            "div"
+        );
+
+    body.className =
+        "messageBody";
+
+    body.dataset.imageUploadBody =
+        "true";
+
+    header.append(
+        name,
+        time
+    );
+
+    content.append(
+        header,
+        body
+    );
+
+    row.append(
+        avatar,
+        content
+    );
+
+    this.messages.appendChild(
+        row
+    );
+
+    this.imageUploadRows.set(
+        upload.uploadId,
+        row
+    );
+
+    this.applyImageUploadState(
+        upload
+    );
+
+    if (
+        !this.userHasScrolledUp &&
+        !this.isMinimized
+    ) {
+        this.scrollMessagesToBottom();
+    }
+
+    return row;
+}
+
+applyImageUploadState(upload) {
+    if (
+        !upload?.uploadId
+    ) {
+        return;
+    }
+
+    let row =
+        this.imageUploadRows.get(
+            upload.uploadId
+        );
+
+    if (!row?.isConnected) {
+        row =
+            this.addImageUpload(
+                upload
+            );
+
+        if (!row) {
+            return;
+        }
+    }
+
+    const body =
+        row.querySelector(
+            "[data-image-upload-body]"
+        );
+
+    if (!body) {
+        return;
+    }
+
+    const currentVersion =
+        Number(
+            row.dataset
+                .imageUploadVersion ||
+            0
+        );
+
+    const incomingVersion =
+        Number(
+            upload.version
+        ) || 0;
+
+    if (
+        incomingVersion > 0 &&
+        currentVersion > 0 &&
+        incomingVersion <
+            currentVersion
+    ) {
+        return;
+    }
+
+    if (incomingVersion > 0) {
+        row.dataset.imageUploadVersion =
+            String(incomingVersion);
+    }
+
+    row.dataset.imageUploadStatus =
+        upload.status ||
+        "uploading";
+
+    if (
+        upload.status ===
+            "complete" &&
+        upload.imageUrl
+    ) {
+        const existingImage =
+            body.querySelector(
+                ".jami-transfer-image"
+            );
+
+        if (
+            existingImage &&
+            existingImage.src ===
+                new URL(
+                    upload.imageUrl,
+                    window.location.href
+                ).href
+        ) {
+            return;
+        }
+
+        const image =
+            this.createCompletedImageElement(
+                upload
+            );
+
+        image.addEventListener(
+            "load",
+            () => {
+                body.replaceChildren(
+                    image
+                );
+
+                if (
+                    !this.userHasScrolledUp &&
+                    !this.isMinimized
+                ) {
+                    this.scrollMessagesToBottom();
+                }
+            },
+            {
+                once: true
+            }
+        );
+
+        image.addEventListener(
+            "error",
+            () => {
+                const transfer =
+                    body.querySelector(
+                        ".jami-transfer-message"
+                    );
+
+                const status =
+                    transfer?.querySelector(
+                        "[data-jami-transfer-status]"
+                    );
+
+                if (status) {
+                    status.textContent =
+                        "Image retrieval failed";
+                }
+            },
+            {
+                once: true
+            }
+        );
+
+        return;
+    }
+
+    let transfer =
+        body.querySelector(
+            ".jami-transfer-message"
+        );
+
+    if (!transfer) {
+        transfer =
+            this.createImageTransferElement(
+                upload
+            );
+
+        body.replaceChildren(
+            transfer
+        );
+    }
+
+    transfer.dataset.uploadId =
+        upload.uploadId;
+
+    transfer.dataset.uploadVersion =
+        String(incomingVersion);
+
+    const progress =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                Math.floor(
+                    Number(
+                        upload.progress
+                    ) || 0
+                )
+            )
+        );
+
+    const fill =
+        transfer.querySelector(
+            "[data-jami-transfer-fill]"
+        );
+
+    const status =
+        transfer.querySelector(
+            "[data-jami-transfer-status]"
+        );
+
+    const cancelButton =
+        transfer.querySelector(
+            "[data-jami-transfer-cancel]"
+        );
+
+    if (fill) {
+        fill.style.width =
+            `${progress}%`;
+    }
+
+    if (status) {
+        status.textContent =
+            upload.statusText ||
+            "Transmitting image...";
+    }
+
+    if (cancelButton) {
+        cancelButton.disabled =
+            !this.activeImageUploads.has(
+                upload.uploadId
+            ) ||
+            upload.status !==
+                "uploading";
+    }
+}
+
+	getImageUploadStatusText(
+    progress
+) 
+
+	{
+    if (progress < 8) {
+        return "Opening socket...";
+    }
+
+    if (progress < 22) {
+        return "Contacting remote node...";
+    }
+
+    if (progress < 38) {
+        return "Negotiating protocol...";
+    }
+
+    if (progress < 55) {
+        return "Allocating transfer buffer...";
+    }
+
+    if (progress < 88) {
+        return "Transmitting image...";
+    }
+
+    return "Checking checksum...";
+}
+
+queueImageProgressReport(
+    activeUpload,
+    progress,
+    statusText
+) {
+    if (
+        !activeUpload ||
+        activeUpload.cancelled
+    ) {
+        return;
+    }
+
+    const now =
+        performance.now();
+
+    const progressDifference =
+        progress -
+        activeUpload
+            .lastReportedProgress;
+
+    const timeDifference =
+        now -
+        activeUpload
+            .lastReportedAt;
+
+    const shouldSendNow =
+        activeUpload
+            .lastReportedProgress < 0 ||
+        progressDifference >= 3 ||
+        timeDifference >= 350 ||
+        progress >= 99;
+
+    activeUpload.queuedReport = {
+        progress,
+        statusText
+    };
+
+    if (
+        activeUpload.reporting ||
+        !shouldSendNow
+    ) {
+        return;
+    }
+
+    this.flushImageProgressReport(
+        activeUpload
+    );
+}
+
+async flushImageProgressReport(
+    activeUpload
+) {
+    if (
+        !activeUpload ||
+        activeUpload.reporting ||
+        activeUpload.cancelled ||
+        !activeUpload.queuedReport
+    ) {
+        return;
+    }
+
+    const report =
+        activeUpload.queuedReport;
+
+    activeUpload.queuedReport =
+        null;
+
+    activeUpload.reporting =
+        true;
+
+    try {
+        const response =
+            await fetch(
+                `${this.imageUploadConfig.apiBase}/progress`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            uploadId:
+                                activeUpload
+                                    .uploadId,
+
+                            clientId:
+                                this.clientId,
+
+                            uploadToken:
+                                activeUpload
+                                    .uploadToken,
+
+                            progress:
+                                report.progress,
+
+                            statusText:
+                                report.statusText
+                        })
+                }
+            );
+
+        let result = null;
+
+        try {
+            result =
+                await response.json();
+        } catch {}
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `Progress update failed (${response.status})`
+            );
+        }
+
+        if (
+            result?.updated === true
+        ) {
+            activeUpload
+                .lastReportedProgress =
+                report.progress;
+
+            activeUpload
+                .lastReportedAt =
+                performance.now();
+        }
+    } catch (error) {
+        console.error(
+            "Could not report image progress:",
+            error
+        );
+    } finally {
+        activeUpload.reporting =
+            false;
+
+        if (
+            activeUpload.queuedReport &&
+            !activeUpload.cancelled
+        ) {
+            this.flushImageProgressReport(
+                activeUpload
+            );
+        }
+    }
+}	
+	
+async uploadTestImage(file) {
     const allowedTypes =
         new Set([
             "image/png",
@@ -6797,7 +7667,9 @@ uploadTestImage(file) {
         ]);
 
     if (
-        !allowedTypes.has(file.type)
+        !allowedTypes.has(
+            file.type
+        )
     ) {
         window.alert(
             "Choose a PNG, JPEG, GIF or WebP image."
@@ -6809,7 +7681,8 @@ uploadTestImage(file) {
     if (
         file.size <= 0 ||
         file.size >
-            8 * 1024 * 1024
+            this.imageUploadConfig
+                .maximumBytes
     ) {
         window.alert(
             "Images must be between 1 byte and 8 MB."
@@ -6818,97 +7691,131 @@ uploadTestImage(file) {
         return;
     }
 
-    const transferElement =
-        this.createTestTransferElement(
-            file
+    let session;
+
+    try {
+        const startResponse =
+            await fetch(
+                `${this.imageUploadConfig.apiBase}/start`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            clientId:
+                                this.clientId,
+
+                            name:
+                                this.nameInput
+                                    ?.value
+                                    ?.trim() ||
+                                "anonymous",
+
+                            avatar:
+                                this.avatar ||
+                                "original.gif",
+
+                            originalName:
+                                file.name,
+
+                            contentType:
+                                file.type,
+
+                            size:
+                                file.size
+                        })
+                }
+            );
+
+        try {
+            session =
+                await startResponse.json();
+        } catch {
+            session = null;
+        }
+
+        if (
+            !startResponse.ok ||
+            session?.success !== true ||
+            !session?.upload?.uploadId ||
+            !session?.uploadToken ||
+            !session?.uploadUrl
+        ) {
+            throw new Error(
+                session?.error ||
+                `Could not start upload (${startResponse.status})`
+            );
+        }
+    } catch (error) {
+        console.error(
+            "Could not start image upload:",
+            error
         );
 
-    this.messages.appendChild(
-        transferElement
+        window.alert(
+            `Could not start image upload: ${error.message}`
+        );
+
+        return;
+    }
+
+    const upload =
+        session.upload;
+
+    /*
+     * The broadcast may already have
+     * created this row. This call safely
+     * reuses it if so.
+     */
+    this.addImageUpload(
+        upload
     );
-
-    this.messages.scrollTop =
-        this.messages.scrollHeight;
-
-    const fill =
-        transferElement.querySelector(
-            "[data-jami-transfer-fill]"
-        );
-
-    const status =
-        transferElement.querySelector(
-            "[data-jami-transfer-status]"
-        );
-
-    const cancelButton =
-        transferElement.querySelector(
-            "[data-jami-transfer-cancel]"
-        );
 
     const xhr =
         new XMLHttpRequest();
 
-    const statusMessages = [
-        "Opening socket...",
-        "Contacting remote node...",
-        "Negotiating protocol...",
-        "Allocating transfer buffer...",
-        "Transmitting image...",
-        "Checking checksum..."
-    ];
+    const activeUpload = {
+        uploadId:
+            upload.uploadId,
 
-    let lastStatusIndex =
-        -1;
+        uploadToken:
+            session.uploadToken,
 
-    const setProgress =
-        percentage => {
-            const safePercentage =
-                Math.max(
-                    0,
-                    Math.min(
-                        100,
-                        Math.round(
-                            percentage
-                        )
-                    )
-                );
+        xhr,
 
-            if (fill) {
-                fill.style.width =
-                    `${safePercentage}%`;
-            }
+        lastReportedProgress:
+            -1,
 
-            const nextStatusIndex =
-                Math.min(
-                    statusMessages.length -
-                        1,
-                    Math.floor(
-                        (
-                            safePercentage /
-                            100
-                        ) *
-                        statusMessages.length
-                    )
-                );
+        lastReportedAt:
+            0,
 
-            if (
-                status &&
-                nextStatusIndex !==
-                    lastStatusIndex
-            ) {
-                lastStatusIndex =
-                    nextStatusIndex;
+        reporting:
+            false,
 
-                status.textContent =
-                    statusMessages[
-                        nextStatusIndex
-                    ];
-            }
-        };
+        queuedReport:
+            null,
+
+        cancelled:
+            false
+    };
+
+    this.activeImageUploads.set(
+        upload.uploadId,
+        activeUpload
+    );
+
+    this.applyImageUploadState(
+        upload
+    );
 
     xhr.open(
         "POST",
-        `${this.API}/api/test/images/upload`,
+        session.uploadUrl,
         true
     );
 
@@ -6918,31 +7825,74 @@ uploadTestImage(file) {
     );
 
     xhr.setRequestHeader(
-        "X-File-Name",
-        encodeURIComponent(
-            file.name
-        )
+        "X-Chat-Client-Id",
+        this.clientId
     );
 
     xhr.setRequestHeader(
-        "X-Chat-Client-Id",
-        this.clientId
+        "X-Image-Upload-Token",
+        session.uploadToken
     );
 
     xhr.upload.addEventListener(
         "progress",
         event => {
             if (
-                !event.lengthComputable
+                !event.lengthComputable ||
+                activeUpload.cancelled
             ) {
                 return;
             }
 
-            setProgress(
-                (
-                    event.loaded /
-                    event.total
-                ) * 100
+            /*
+             * Browser transfer can reach
+             * 100 before R2 has committed.
+             * Keep it at 99 until Worker
+             * completion is confirmed.
+             */
+            const progress =
+                Math.max(
+                    0,
+                    Math.min(
+                        99,
+                        Math.floor(
+                            (
+                                event.loaded /
+                                event.total
+                            ) * 100
+                        )
+                    )
+                );
+
+            const statusText =
+                this.getImageUploadStatusText(
+                    progress
+                );
+
+            /*
+             * Update the uploader instantly.
+             */
+            this.applyImageUploadState({
+                uploadId:
+                    upload.uploadId,
+
+                status:
+                    "uploading",
+
+                progress,
+
+                statusText,
+
+                version:
+                    Number(
+                        upload.version
+                    ) || 1
+            });
+
+            this.queueImageProgressReport(
+                activeUpload,
+                progress,
+                statusText
             );
         }
     );
@@ -6960,118 +7910,219 @@ uploadTestImage(file) {
             } catch {}
 
             if (
-                xhr.status < 200 ||
-                xhr.status >= 300 ||
-                result?.success !== true
+                xhr.status >= 200 &&
+                xhr.status < 300 &&
+                result?.success === true
             ) {
-                if (status) {
-                    status.textContent =
-                        result?.error ||
-                        "Transfer failed";
-                }
+                this.activeImageUploads
+                    .delete(
+                        upload.uploadId
+                    );
 
-                transferElement
-                    .dataset.failed =
-                    "true";
+                /*
+                 * WebSocket completion should
+                 * normally arrive first or soon
+                 * afterward. This is a fallback.
+                 */
+                this.applyImageUploadState({
+                    uploadId:
+                        upload.uploadId,
+
+                    status:
+                        "complete",
+
+                    progress: 100,
+
+                    statusText:
+                        result.statusText ||
+                        "Complete",
+
+                    imageUrl:
+                        result.imageUrl,
+
+                    completedAt:
+                        result.completedAt,
+
+                    version:
+                        result.version
+                });
 
                 return;
             }
 
-            setProgress(100);
-
-            if (status) {
-                status.textContent =
-                    "Complete";
+            if (
+                result?.code ===
+                    "UPLOAD_CANCELLED"
+            ) {
+                return;
             }
 
-            if (cancelButton) {
-                cancelButton.disabled =
-                    true;
-            }
+            this.activeImageUploads
+                .delete(
+                    upload.uploadId
+                );
 
-            window.setTimeout(
-                () => {
-                    const image =
-                        document.createElement(
-                            "img"
-                        );
+            this.applyImageUploadState({
+                uploadId:
+                    upload.uploadId,
 
-                    image.src =
-                        result.imageUrl;
+                status:
+                    "failed",
 
-                    image.alt =
-                        result.originalName ||
-                        file.name;
-
-                    image.className =
-                        "jami-transfer-image";
-
-                    image.addEventListener(
-                        "load",
-                        () => {
-                            transferElement
-                                .replaceChildren(
-                                    image
-                                );
-
-                            this.messages
-                                .scrollTop =
-                                this.messages
-                                    .scrollHeight;
-                        },
-                        {
-                            once: true
-                        }
-                    );
-
-                    image.addEventListener(
-                        "error",
-                        () => {
-                            if (status) {
-                                status.textContent =
-                                    "Transfer complete; image retrieval failed";
-                            }
-                        },
-                        {
-                            once: true
-                        }
-                    );
-                },
-                450
-            );
+                statusText:
+                    result?.error ||
+                    "Transfer failed"
+            });
         }
     );
 
     xhr.addEventListener(
         "error",
         () => {
-            if (status) {
-                status.textContent =
-                    "Network transfer failed";
+            if (
+                activeUpload.cancelled
+            ) {
+                return;
             }
+
+            this.activeImageUploads
+                .delete(
+                    upload.uploadId
+                );
+
+            this.applyImageUploadState({
+                uploadId:
+                    upload.uploadId,
+
+                status:
+                    "failed",
+
+                statusText:
+                    "Network transfer failed"
+            });
         }
     );
 
     xhr.addEventListener(
         "abort",
         () => {
-            transferElement.remove();
         }
     );
-
-    cancelButton?.addEventListener(
-        "click",
-        event => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            xhr.abort();
-        }
-    );
-
-    setProgress(0);
 
     xhr.send(file);
+}
+
+	async cancelImageUpload(
+    uploadId
+) {
+    const activeUpload =
+        this.activeImageUploads.get(
+            uploadId
+        );
+
+    if (
+        !activeUpload ||
+        activeUpload.cancelled
+    ) {
+        return;
+    }
+
+    activeUpload.cancelled =
+        true;
+
+    /*
+     * Abort local transmission first.
+     */
+    try {
+        activeUpload.xhr?.abort();
+    } catch {}
+
+    try {
+        const response =
+            await fetch(
+                `${this.imageUploadConfig.apiBase}/cancel`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            uploadId,
+
+                            clientId:
+                                this.clientId,
+
+                            uploadToken:
+                                activeUpload
+                                    .uploadToken
+                        })
+                }
+            );
+
+        let result = null;
+
+        try {
+            result =
+                await response.json();
+        } catch {}
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `Cancellation failed (${response.status})`
+            );
+        }
+
+        this.activeImageUploads.delete(
+            uploadId
+        );
+
+        /*
+         * The WebSocket broadcast normally
+         * removes it for every browser.
+         * This is the local fallback.
+         */
+        if (
+            result?.cancelled === true
+        ) {
+            const row =
+                this.imageUploadRows.get(
+                    uploadId
+                );
+
+            row?.remove();
+
+            this.imageUploadRows.delete(
+                uploadId
+            );
+        }
+    } catch (error) {
+        activeUpload.cancelled =
+            false;
+
+        console.error(
+            "Could not cancel image upload:",
+            error
+        );
+
+        window.alert(
+            `Could not cancel image upload: ${error.message}`
+        );
+
+        this.applyImageUploadState({
+            uploadId,
+
+            status:
+                "uploading",
+
+            statusText:
+                "Transmitting image..."
+        });
+    }
 }
 	
 async sendMessage() {
