@@ -370,3 +370,18 @@
 
     object-fit: contain;
 }
+
+.chatMessage[
+    data-image-upload-status="failed"
+]
+.jami-transfer-progress-fill {
+    width: 100% !important;
+    background: #6f2428;
+}
+
+.chatMessage[
+    data-image-upload-status="failed"
+]
+.jami-transfer-cancel {
+    display: none;
+}
