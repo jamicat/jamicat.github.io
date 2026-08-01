@@ -6809,6 +6809,42 @@ if (
     return;
 }
 
+		if (
+    data.type ===
+        "image-upload-deleted"
+) {
+    const active =
+        this.activeImageUploads.get(
+            data.uploadId
+        );
+
+    if (active) {
+        active.cancelled =
+            true;
+
+        try {
+            active.xhr?.abort();
+        } catch {}
+    }
+
+    this.activeImageUploads.delete(
+        data.uploadId
+    );
+
+    const row =
+        this.imageUploadRows.get(
+            data.uploadId
+        );
+
+    row?.remove();
+
+    this.imageUploadRows.delete(
+        data.uploadId
+    );
+
+    return;
+}
+		
 if (
     data.type ===
         "image-upload-cancelled"
@@ -7178,6 +7214,33 @@ createCompletedImageElement(
                 ? createdTime
                 : Date.now()
         );
+
+	row.addEventListener(
+    "contextmenu",
+    event => {
+        if (!this.isAdmin) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.closeModerationMenu();
+
+        const confirmed =
+            window.confirm(
+                "delete this uploaded image?"
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        this.deleteImageUpload(
+            upload.uploadId
+        );
+    }
+);
 
     const avatar =
         document.createElement(
@@ -8145,6 +8208,99 @@ async uploadTestImage(file) {
     xhr.send(file);
 }
 
+	async deleteImageUpload(
+    uploadId
+) {
+    if (
+        !this.isAdmin ||
+        !uploadId
+    ) {
+        return;
+    }
+
+    try {
+        const response =
+            await fetch(
+                `${this.imageUploadConfig.apiBase}/delete`,
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        "Authorization":
+                            `Bearer ${this.adminKey}`
+                    },
+
+                    body:
+                        JSON.stringify({
+                            uploadId
+                        })
+                }
+            );
+
+        let result = null;
+
+        try {
+            result =
+                await response.json();
+        } catch {}
+
+        if (
+            response.status === 401
+        ) {
+            throw new Error(
+                "Admin authentication is no longer valid"
+            );
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `Could not delete image (${response.status})`
+            );
+        }
+
+        /*
+         * The WebSocket event normally
+         * removes this on every client.
+         *
+         * This is a local fallback.
+         */
+        if (
+            result?.deleted === true ||
+            result?.stale === true
+        ) {
+            const row =
+                this.imageUploadRows.get(
+                    uploadId
+                );
+
+            row?.remove();
+
+            this.imageUploadRows.delete(
+                uploadId
+            );
+
+            this.activeImageUploads.delete(
+                uploadId
+            );
+        }
+    } catch (error) {
+        console.error(
+            "Could not delete uploaded image:",
+            error
+        );
+
+        window.alert(
+            `Could not delete image: ${error.message}`
+        );
+    }
+}
+
+	
 	async cancelImageUpload(
     uploadId
 ) {
