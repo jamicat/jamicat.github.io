@@ -1293,81 +1293,13 @@ function seekYouTubePrecisely(
     return;
   }
 
-  const safeTarget =
+  player.seekTo(
     Math.max(
       0,
       Number(targetTime) || 0
-    );
-
-  window.clearTimeout(
-    preciseSeekCorrectionTimer
-  );
-
-  player.seekTo(
-    safeTarget,
+    ),
     true
   );
-
-  const seekStartedAt =
-    performance.now();
-
-  const wasPlaying =
-    isPlaying === true;
-
-  preciseSeekCorrectionTimer =
-    window.setTimeout(
-      () => {
-        preciseSeekCorrectionTimer =
-          null;
-
-        if (
-          !player ||
-          !playerReady ||
-          typeof player.getCurrentTime !==
-            "function" ||
-          typeof player.seekTo !==
-            "function"
-        ) {
-          return;
-        }
-
-        const actualTime =
-          Number(
-            player.getCurrentTime()
-          );
-
-        if (
-          !Number.isFinite(actualTime)
-        ) {
-          return;
-        }
-
-        const elapsedSeconds =
-          wasPlaying
-            ? (
-                performance.now() -
-                seekStartedAt
-              ) / 1000
-            : 0;
-
-        const expectedTime =
-          safeTarget +
-          elapsedSeconds;
-
-        if (
-          Math.abs(
-            actualTime -
-            expectedTime
-          ) > 0.75
-        ) {
-          player.seekTo(
-            expectedTime,
-            true
-          );
-        }
-      },
-      450
-    );
 }
 
 function updatePlaybackIcons(playing) {
@@ -2185,92 +2117,22 @@ window.watchPartyPlayer = {
 },
 
   seekTo(targetTime) {
-  if (
-    !player ||
-    !playerReady ||
-    typeof player.seekTo !==
-      "function"
-  ) {
-    return;
-  }
-
-  const safeTarget =
-    Math.max(
-      0,
-      Number(targetTime) || 0
-    );
-
-  let attempts = 0;
-
-  const maximumAttempts = 8;
-
-  const seekStartedAt =
-    performance.now();
-
-  const wasPlaying =
-    isPlaying === true;
-
-  const correctPosition = () => {
     if (
-      !player ||
-      !playerReady ||
-      typeof player.getCurrentTime !==
-        "function" ||
-      typeof player.seekTo !==
-        "function"
+        !player ||
+        !playerReady ||
+        typeof player.seekTo !==
+            "function"
     ) {
-      return;
+        return;
     }
 
-    const elapsedSeconds =
-      wasPlaying
-        ? (
-            performance.now() -
-            seekStartedAt
-          ) / 1000
-        : 0;
-
-    const expectedTime =
-      safeTarget +
-      elapsedSeconds;
-
-    const actualTime =
-      Number(
-        player.getCurrentTime()
-      );
-
-    if (
-      Number.isFinite(actualTime) &&
-      Math.abs(
-        actualTime -
-        expectedTime
-      ) > 0.75
-    ) {
-      player.seekTo(
-        expectedTime,
+    player.seekTo(
+        Math.max(
+            0,
+            Number(targetTime) || 0
+        ),
         true
-      );
-    }
-
-    attempts += 1;
-
-    if (attempts < maximumAttempts) {
-      window.setTimeout(
-        correctPosition,
-        500
-      );
-    }
-  };
-
-  player.seekTo(
-    safeTarget,
-    true
-  );
-
-  window.setTimeout(
-    correctPosition,
-    500
-  );
+    );
 },
 
  getState() {
