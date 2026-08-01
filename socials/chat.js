@@ -8297,32 +8297,6 @@ interact(
     ],
 
     listeners: {
-        start(event) {
-            const target =
-                event.target;
-
-            const rect =
-                target
-                    .getBoundingClientRect();
-
-            target.style.left =
-                `${rect.left}px`;
-
-            target.style.top =
-                `${rect.top}px`;
-
-            target.style.right =
-                "auto";
-
-            target.style.bottom =
-                "auto";
-
-            target.style.transform =
-                "none";
-
-            target.dataset.x = "0";
-            target.dataset.y = "0";
-        },
 
         move(event) {
             const target =
