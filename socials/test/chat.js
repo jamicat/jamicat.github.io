@@ -6674,29 +6674,50 @@ if (!this.isBanned) {
             data-jami-transfer-window
         >
             <div
-                class="jami-transfer-titlebar"
-            >
-                <div
-                    class="jami-transfer-system-button"
-                    aria-hidden="true"
-                ></div>
+    class="jami-transfer-titlebar"
+>
+    <button
+        type="button"
+        class="
+            jami-transfer-caption-button
+            jami-transfer-minimize
+        "
+        tabindex="-1"
+        aria-hidden="true"
+    >
+        <span></span>
+    </button>
 
-                <div
-                    class="jami-transfer-title"
-                >
-                    UPLOAD
-                </div>
+    <div
+        class="jami-transfer-title"
+    >
+        UPLOAD
+    </div>
 
-                <div
-    class="jami-transfer-title-control"
-    aria-hidden="true"
-></div>
+    <button
+        type="button"
+        class="
+            jami-transfer-caption-button
+            jami-transfer-arrow-down
+        "
+        tabindex="-1"
+        aria-hidden="true"
+    >
+        <span></span>
+    </button>
 
-<div
-    class="jami-transfer-title-control"
-    aria-hidden="true"
-></div>
-            </div>
+    <button
+        type="button"
+        class="
+            jami-transfer-caption-button
+            jami-transfer-arrow-up
+        "
+        tabindex="-1"
+        aria-hidden="true"
+    >
+        <span></span>
+    </button>
+</div>
 
             <div
                 class="jami-transfer-body"
