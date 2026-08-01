@@ -3326,7 +3326,7 @@ const hasWatchPartyVideo =
         absolute
         bottom-full
         z-20
-        mb-7
+        mb-1
         -translate-x-1/2
         whitespace-nowrap
         rounded-md
