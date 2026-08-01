@@ -5682,6 +5682,34 @@ content.append(
     }
 }
 
+	scrollMessagesToBottomAfterLayout({
+    force = false
+} = {}) {
+    if (
+        !this.messages ||
+        this.isMinimized
+    ) {
+        return;
+    }
+
+    if (
+        !force &&
+        this.userHasScrolledUp
+    ) {
+        return;
+    }
+
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            this.messages.scrollTop =
+                this.messages.scrollHeight;
+
+            this.userHasScrolledUp =
+                false;
+        });
+    });
+}
+
 	scrollMessagesToBottom() {
     if (!this.messages) {
         return;
