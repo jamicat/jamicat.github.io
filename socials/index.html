@@ -281,12 +281,26 @@ addComponents({
     aria-hidden="true"
 >
     <div
-        id="normalProgressTooltip"
-        class="normal-progress-tooltip"
-        role="tooltip"
-    >
-        0:00
-    </div>
+    id="normalProgressCurrentTooltip"
+    class="
+        normal-progress-tooltip
+        normal-progress-current-tooltip
+    "
+    role="tooltip"
+>
+    0:00
+</div>
+
+<div
+    id="normalProgressTooltip"
+    class="
+        normal-progress-tooltip
+        normal-progress-hover-tooltip
+    "
+    role="tooltip"
+>
+    0:00
+</div>
 
     <input
         id="normalProgressSlider"
