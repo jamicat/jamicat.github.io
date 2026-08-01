@@ -1,0 +1,410 @@
+.jami-transfer-message {
+    box-sizing: border-box;
+
+    width: 100%;
+    max-width: 330px;
+
+    margin-top: 3px;
+
+    color: #111;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 12px;
+    line-height: 1;
+
+    image-rendering: pixelated;
+}
+
+.jami-transfer-window {
+    position: relative;
+
+    box-sizing: border-box;
+    overflow: hidden;
+
+    width: 100%;
+
+    border-top: 1px solid #f8fafb;
+    border-left: 1px solid #f8fafb;
+    border-right: 2px solid #383b3f;
+    border-bottom: 2px solid #383b3f;
+
+    border-radius: 0;
+
+    background: #e8ebed;
+
+    box-shadow: none;
+}
+
+.jami-transfer-titlebar {
+    display: grid;
+
+    grid-template-columns:
+        22px
+        minmax(0, 1fr)
+        22px
+        22px;
+
+    align-items: stretch;
+
+    box-sizing: border-box;
+
+    height: 22px;
+
+    margin: 1px 1px 0;
+
+    border: 1px solid #34363a;
+
+    background: #303239;
+
+    color: #f4f4f4;
+}
+
+.jami-transfer-title {
+    display: flex;
+
+    min-width: 0;
+
+    align-items: center;
+    justify-content: center;
+
+    padding-top: 1px;
+
+    overflow: hidden;
+
+    background: #303239;
+
+    color: #f4f4f4;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    line-height: 1;
+
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    text-shadow: none;
+}
+
+.jami-transfer-caption-button {
+    position: relative;
+
+    display: block;
+
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    border: 0;
+    border-radius: 0;
+
+    background: #dce3e8;
+
+    box-shadow: none;
+
+    pointer-events: none;
+}
+
+.jami-transfer-minimize {
+    border-right: 1px solid #55595d;
+}
+
+.jami-transfer-arrow-down,
+.jami-transfer-arrow-up {
+    border-left: 1px solid #55595d;
+}
+
+.jami-transfer-minimize span {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 9px;
+    height: 2px;
+
+    background: #34373a;
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        );
+}
+
+.jami-transfer-arrow-down span {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 0;
+    height: 0;
+
+    border-left:
+        4px solid transparent;
+
+    border-right:
+        4px solid transparent;
+
+    border-top:
+        6px solid #34373a;
+
+    transform:
+        translate(
+            -50%,
+            -42%
+        );
+}
+
+.jami-transfer-arrow-up span {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 0;
+    height: 0;
+
+    border-left:
+        4px solid transparent;
+
+    border-right:
+        4px solid transparent;
+
+    border-bottom:
+        6px solid #34373a;
+
+    transform:
+        translate(
+            -50%,
+            -58%
+        );
+}
+
+.jami-transfer-body {
+    box-sizing: border-box;
+
+    padding:
+        11px
+        9px
+        8px;
+
+    background: #e8ebed;
+}
+
+.jami-transfer-progress-frame {
+    box-sizing: border-box;
+
+    height: 29px;
+
+    padding: 2px;
+
+    border: 1px solid #36393c;
+    border-radius: 0;
+
+    background: #d7e0e7;
+
+    box-shadow: none;
+}
+
+
+.jami-transfer-progress {
+    position: relative;
+
+    box-sizing: border-box;
+
+    height: 100%;
+
+    overflow: hidden;
+
+    border: 0;
+    border-radius: 0;
+
+    background: #cbd6df;
+
+    box-shadow: none;
+}
+
+.jami-transfer-progress-fill {
+    width: 0%;
+    height: 100%;
+
+    background: #a02f35;
+
+    box-shadow: none;
+
+    transition:
+        width 90ms linear;
+}
+
+.jami-transfer-bottom {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        77px;
+
+    align-items: center;
+
+    column-gap: 10px;
+
+    margin-top: 10px;
+}
+
+.jami-transfer-copy {
+    min-width: 0;
+
+    padding-left: 7px;
+}
+
+.jami-transfer-file {
+    display: none;
+}
+
+.jami-transfer-status {
+    display: flex;
+
+    min-width: 0;
+
+    align-items: baseline;
+
+    gap: 5px;
+
+    overflow: hidden;
+
+    color: #151515;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 12px;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.jami-transfer-status-label {
+    flex: none;
+
+    font-weight: 700;
+}
+
+.jami-transfer-status
+[data-jami-transfer-status] {
+    min-width: 0;
+
+    overflow: hidden;
+
+    text-overflow: clip;
+    white-space: nowrap;
+}
+
+.jami-transfer-cancel {
+    box-sizing: border-box;
+
+    width: 77px;
+    min-width: 77px;
+    height: 27px;
+
+    margin: 0;
+    padding: 0 8px;
+
+    border-top: 1px solid #f8fbfd;
+    border-left: 1px solid #f8fbfd;
+    border-right: 1px solid #555b61;
+    border-bottom: 1px solid #555b61;
+
+    border-radius: 2px;
+
+    background: #d4dfe8;
+
+    color: #111;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 24px;
+    text-align: center;
+
+    box-shadow:
+        1px 1px 0 #646a70;
+
+    cursor: pointer;
+}
+
+.jami-transfer-cancel:hover {
+    background: #dce5ec;
+}
+
+.jami-transfer-cancel:active {
+    transform:
+        translate(
+            1px,
+            1px
+        );
+
+    box-shadow: none;
+}
+
+.jami-transfer-cancel:disabled {
+    color: #757575;
+
+    cursor: default;
+    opacity: 1;
+}
+
+.jami-transfer-image {
+    display: block;
+
+    width: auto;
+
+    max-width:
+        min(
+            100%,
+            330px
+        );
+
+    max-height: 360px;
+
+    margin-top: 4px;
+
+    border: 0;
+
+    object-fit: contain;
+}
+
+.chatMessage[
+    data-image-upload-status="failed"
+]
+.jami-transfer-progress-fill {
+    width: 100% !important;
+
+    background: #70252a;
+}
+
+.chatMessage[
+    data-image-upload-status="failed"
+]
+.jami-transfer-cancel {
+    display: none;
+}
