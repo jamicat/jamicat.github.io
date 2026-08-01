@@ -8308,7 +8308,10 @@ interact(
         }
     }
 });
-	interact(this.watchPartyPanel).resizable({
+
+	interact(
+    this.watchPartyPanel
+).resizable({
     edges: {
         bottom:
             "[data-watch-party-resize-handle]"
@@ -8327,20 +8330,6 @@ interact(
     ],
 
     listeners: {
-        start(event) {
-            const target =
-                event.target;
-
-            const rect =
-                target.getBoundingClientRect();
-
-            target.dataset.resizeLastHeight =
-                String(rect.height);
-
-            target.style.height =
-                `${rect.height}px`;
-        },
-
         move(event) {
             const target =
                 event.target;
@@ -8361,22 +8350,40 @@ interact(
 
             const viewportPadding = 12;
 
-            const currentRect =
-                target.getBoundingClientRect();
+            /*
+             * The top of the panel stays completely
+             * fixed while only the bottom edge moves.
+             */
+            const panelTop =
+                parseFloat(
+                    target.style.top
+                );
 
-            const fixedTop =
-                currentRect.top;
+            const safePanelTop =
+                Number.isFinite(panelTop)
+                    ? panelTop
+                    : target
+                        .getBoundingClientRect()
+                        .top;
 
             const maximumHeight =
                 Math.max(
                     self.watchPartyResizeMinimum,
                     viewportBottom -
-                        fixedTop -
+                        safePanelTop -
                         viewportPadding
                 );
 
             const requestedHeight =
-                event.rect.height;
+                Number(event.rect.height);
+
+            if (
+                !Number.isFinite(
+                    requestedHeight
+                )
+            ) {
+                return;
+            }
 
             const nextHeight =
                 Math.min(
@@ -8388,42 +8395,63 @@ interact(
                     )
                 );
 
-           target.style.height =
-    `${nextHeight}px`;
-
-target.dataset.resizeLastHeight =
-    String(nextHeight);
+            /*
+             * Do not alter top, left, transform,
+             * data-x or data-y here.
+             */
+            target.style.height =
+                `${nextHeight}px`;
         },
 
         end(event) {
-    const target =
-        event.target;
+            const target =
+                event.target;
 
-    const rect =
-        target
-            .getBoundingClientRect();
+            const finalHeight =
+                parseFloat(
+                    target.style.height
+                );
 
-    localStorage.setItem(
-        "watch_party_height",
-        String(rect.height)
-    );
+            if (
+                Number.isFinite(finalHeight)
+            ) {
+                localStorage.setItem(
+                    "watch_party_height",
+                    String(finalHeight)
+                );
+            }
 
-    localStorage.setItem(
-        "watch_party_left",
-        String(rect.left)
-    );
+            const finalLeft =
+                parseFloat(
+                    target.style.left
+                );
 
-    localStorage.setItem(
-        "watch_party_top",
-        String(rect.top)
-    );
+            const finalTop =
+                parseFloat(
+                    target.style.top
+                );
 
-    target.dataset.positioned =
-        "true";
+            if (
+                Number.isFinite(finalLeft)
+            ) {
+                localStorage.setItem(
+                    "watch_party_left",
+                    String(finalLeft)
+                );
+            }
 
-    delete target.dataset
-        .resizeLastHeight;
-}
+            if (
+                Number.isFinite(finalTop)
+            ) {
+                localStorage.setItem(
+                    "watch_party_top",
+                    String(finalTop)
+                );
+            }
+
+            target.dataset.positioned =
+                "true";
+        }
     }
 });
 }
