@@ -2527,10 +2527,9 @@ if (normalProgressSlider) {
       const targetTime =
         ratio * duration;
 
-      player.seekTo(
-        targetTime,
-        true
-      );
+      seekYouTubePrecisely(
+  targetTime
+);
 
       normalProgressSlider.style
         .setProperty(
