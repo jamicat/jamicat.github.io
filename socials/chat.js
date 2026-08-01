@@ -8289,11 +8289,13 @@ const stopWatchPartyResize =
         }
 
         const {
-            panel,
-            handle,
-            pointerId
-        } =
-            watchPartyResizeState;
+    panel,
+    pointerId,
+    startClientY,
+    startHeight,
+    scaleY
+} =
+    watchPartyResizeState;
 
         if (
             event?.pointerId !== undefined &&
@@ -8353,13 +8355,17 @@ const moveWatchPartyResize =
 
         event.preventDefault();
 
-        const deltaY =
-            event.clientY -
-            startClientY;
+       const visualDeltaY =
+    event.clientY -
+    startClientY;
 
-        const requestedHeight =
-            startHeight +
-            deltaY;
+const layoutDeltaY =
+    visualDeltaY /
+    scaleY;
+
+const requestedHeight =
+    startHeight +
+    layoutDeltaY;
 
         const nextHeight =
             Math.max(
@@ -8395,9 +8401,17 @@ this.watchPartyPanel.addEventListener(
             this.watchPartyPanel;
 
         const rect =
-            panel.getBoundingClientRect();
+    panel.getBoundingClientRect();
 
-        watchPartyResizeState = {
+const layoutHeight =
+    panel.offsetHeight;
+
+const scaleY =
+    layoutHeight > 0
+        ? rect.height / layoutHeight
+        : 1;
+
+watchPartyResizeState = {
     panel,
     handle,
 
@@ -8408,7 +8422,13 @@ this.watchPartyPanel.addEventListener(
         event.clientY,
 
     startHeight:
-        rect.height
+        layoutHeight,
+
+    scaleY:
+        Number.isFinite(scaleY) &&
+        scaleY > 0
+            ? scaleY
+            : 1
 };
 
         handle.setPointerCapture?.(
