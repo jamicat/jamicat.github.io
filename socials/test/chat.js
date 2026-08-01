@@ -458,6 +458,33 @@ transition-[height] duration-200
         >
 
 <button
+    id="chatImageUploadButton"
+    type="button"
+    class="
+        flex h-9 w-9 shrink-0
+        items-center justify-center
+        rounded-xl
+        border border-white/10
+        bg-black/20
+        text-base leading-none
+        transition
+        hover:bg-white/5
+        active:scale-95
+    "
+    aria-label="upload image"
+    title="upload image"
+>
+    🖼️
+</button>
+
+<input
+    id="chatImageUploadInput"
+    type="file"
+    accept="image/png,image/jpeg,image/gif,image/webp"
+    class="hidden"
+>
+
+<button
     id="chatWatchPartyButton"
     type="button"
     class="
@@ -574,6 +601,14 @@ transition-[height] duration-200
     this.nameInput = this.window.querySelector("#chatName");
     this.messageInput = this.window.querySelector("#chatMessage");
     this.sendButton = this.window.querySelector("#chatSend");
+	this.imageUploadButton =
+    this.window.querySelector(
+        "#chatImageUploadButton"
+    );
+this.imageUploadInput =
+    this.window.querySelector(
+        "#chatImageUploadInput"
+    );
 	this.watchPartyButton =
     this.window.querySelector(
         "#chatWatchPartyButton"
@@ -702,6 +737,44 @@ this.minimizeButton =
     }
 );
 
+	   if (
+    this.imageUploadButton &&
+    this.imageUploadInput
+) {
+    this.imageUploadButton
+        .addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                this.imageUploadInput
+                    .click();
+            }
+        );
+
+    this.imageUploadInput
+        .addEventListener(
+            "change",
+            () => {
+                const file =
+                    this.imageUploadInput
+                        .files?.[0];
+
+                this.imageUploadInput
+                    .value = "";
+
+                if (!file) {
+                    return;
+                }
+
+                this.uploadTestImage(
+                    file
+                );
+            }
+        );
+}
+	   
   this.sendButton.addEventListener(
     "click",
     () => this.sendMessage()
@@ -6586,6 +6659,403 @@ if (!this.isBanned) {
     });
 }
 
+	createTestTransferElement(file) {
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+    wrapper.className =
+        "jami-transfer-message";
+
+    wrapper.innerHTML = `
+        <div
+            class="jami-transfer-window"
+            data-jami-transfer-window
+        >
+            <div
+                class="jami-transfer-titlebar"
+            >
+                <div
+                    class="jami-transfer-system-button"
+                    aria-hidden="true"
+                ></div>
+
+                <div
+                    class="jami-transfer-title"
+                >
+                    UPLOAD
+                </div>
+
+                <div
+                    class="jami-transfer-title-controls"
+                    aria-hidden="true"
+                >
+                    <div
+                        class="jami-transfer-title-control"
+                    ></div>
+
+                    <div
+                        class="jami-transfer-title-control"
+                    ></div>
+                </div>
+            </div>
+
+            <div
+                class="jami-transfer-body"
+            >
+                <div
+                    class="jami-transfer-progress-frame"
+                >
+                    <div
+                        class="jami-transfer-progress"
+                    >
+                        <div
+                            class="jami-transfer-progress-fill"
+                            data-jami-transfer-fill
+                        ></div>
+                    </div>
+                </div>
+
+                <div
+                    class="jami-transfer-bottom"
+                >
+                    <div
+                        class="jami-transfer-copy"
+                    >
+                        <div
+                            class="jami-transfer-file"
+                        ></div>
+
+                        <div
+                            class="jami-transfer-status"
+                        >
+                            <span
+                                class="jami-transfer-status-label"
+                            >
+                                Transfer Status:
+                            </span>
+
+                            <span
+                                data-jami-transfer-status
+                            >
+                                Opening socket...
+                            </span>
+                        </div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="jami-transfer-cancel"
+                        data-jami-transfer-cancel
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const fileLabel =
+        wrapper.querySelector(
+            ".jami-transfer-file"
+        );
+
+    if (fileLabel) {
+        fileLabel.textContent =
+            file.name;
+    }
+
+    return wrapper;
+}
+
+uploadTestImage(file) {
+    const allowedTypes =
+        new Set([
+            "image/png",
+            "image/jpeg",
+            "image/gif",
+            "image/webp"
+        ]);
+
+    if (
+        !allowedTypes.has(file.type)
+    ) {
+        window.alert(
+            "Choose a PNG, JPEG, GIF or WebP image."
+        );
+
+        return;
+    }
+
+    if (
+        file.size <= 0 ||
+        file.size >
+            8 * 1024 * 1024
+    ) {
+        window.alert(
+            "Images must be between 1 byte and 8 MB."
+        );
+
+        return;
+    }
+
+    const transferElement =
+        this.createTestTransferElement(
+            file
+        );
+
+    this.messages.appendChild(
+        transferElement
+    );
+
+    this.messages.scrollTop =
+        this.messages.scrollHeight;
+
+    const fill =
+        transferElement.querySelector(
+            "[data-jami-transfer-fill]"
+        );
+
+    const status =
+        transferElement.querySelector(
+            "[data-jami-transfer-status]"
+        );
+
+    const cancelButton =
+        transferElement.querySelector(
+            "[data-jami-transfer-cancel]"
+        );
+
+    const xhr =
+        new XMLHttpRequest();
+
+    const statusMessages = [
+        "Opening socket...",
+        "Contacting remote node...",
+        "Negotiating protocol...",
+        "Allocating transfer buffer...",
+        "Transmitting image...",
+        "Checking checksum..."
+    ];
+
+    let lastStatusIndex =
+        -1;
+
+    const setProgress =
+        percentage => {
+            const safePercentage =
+                Math.max(
+                    0,
+                    Math.min(
+                        100,
+                        Math.round(
+                            percentage
+                        )
+                    )
+                );
+
+            if (fill) {
+                fill.style.width =
+                    `${safePercentage}%`;
+            }
+
+            const nextStatusIndex =
+                Math.min(
+                    statusMessages.length -
+                        1,
+                    Math.floor(
+                        (
+                            safePercentage /
+                            100
+                        ) *
+                        statusMessages.length
+                    )
+                );
+
+            if (
+                status &&
+                nextStatusIndex !==
+                    lastStatusIndex
+            ) {
+                lastStatusIndex =
+                    nextStatusIndex;
+
+                status.textContent =
+                    statusMessages[
+                        nextStatusIndex
+                    ];
+            }
+        };
+
+    xhr.open(
+        "POST",
+        `${this.API}/api/test/images/upload`,
+        true
+    );
+
+    xhr.setRequestHeader(
+        "Content-Type",
+        file.type
+    );
+
+    xhr.setRequestHeader(
+        "X-File-Name",
+        encodeURIComponent(
+            file.name
+        )
+    );
+
+    xhr.setRequestHeader(
+        "X-Chat-Client-Id",
+        this.clientId
+    );
+
+    xhr.upload.addEventListener(
+        "progress",
+        event => {
+            if (
+                !event.lengthComputable
+            ) {
+                return;
+            }
+
+            setProgress(
+                (
+                    event.loaded /
+                    event.total
+                ) * 100
+            );
+        }
+    );
+
+    xhr.addEventListener(
+        "load",
+        () => {
+            let result = null;
+
+            try {
+                result =
+                    JSON.parse(
+                        xhr.responseText
+                    );
+            } catch {}
+
+            if (
+                xhr.status < 200 ||
+                xhr.status >= 300 ||
+                result?.success !== true
+            ) {
+                if (status) {
+                    status.textContent =
+                        result?.error ||
+                        "Transfer failed";
+                }
+
+                transferElement
+                    .dataset.failed =
+                    "true";
+
+                return;
+            }
+
+            setProgress(100);
+
+            if (status) {
+                status.textContent =
+                    "Complete";
+            }
+
+            if (cancelButton) {
+                cancelButton.disabled =
+                    true;
+            }
+
+            window.setTimeout(
+                () => {
+                    const image =
+                        document.createElement(
+                            "img"
+                        );
+
+                    image.src =
+                        result.imageUrl;
+
+                    image.alt =
+                        result.originalName ||
+                        file.name;
+
+                    image.className =
+                        "jami-transfer-image";
+
+                    image.addEventListener(
+                        "load",
+                        () => {
+                            transferElement
+                                .replaceChildren(
+                                    image
+                                );
+
+                            this.messages
+                                .scrollTop =
+                                this.messages
+                                    .scrollHeight;
+                        },
+                        {
+                            once: true
+                        }
+                    );
+
+                    image.addEventListener(
+                        "error",
+                        () => {
+                            if (status) {
+                                status.textContent =
+                                    "Transfer complete; image retrieval failed";
+                            }
+                        },
+                        {
+                            once: true
+                        }
+                    );
+                },
+                450
+            );
+        }
+    );
+
+    xhr.addEventListener(
+        "error",
+        () => {
+            if (status) {
+                status.textContent =
+                    "Network transfer failed";
+            }
+        }
+    );
+
+    xhr.addEventListener(
+        "abort",
+        () => {
+            transferElement.remove();
+        }
+    );
+
+    cancelButton?.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            xhr.abort();
+        }
+    );
+
+    setProgress(0);
+
+    xhr.send(file);
+}
+	
 async sendMessage() {
     const name = this.nameInput.value.trim();
     const message = this.messageInput.value.trim();
