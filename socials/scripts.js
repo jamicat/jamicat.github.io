@@ -612,6 +612,67 @@ window.visualViewport?.addEventListener(
     schedulePhoneTerminalClamp
 );
 
+function normaliseCentredDraggable(
+  element
+) {
+  if (!element) {
+    return;
+  }
+
+  const transform =
+    element.style.transform || "";
+
+  const usesCentredTransform =
+    transform.includes(
+      "translate(-50%, -50%)"
+    ) ||
+    transform.includes(
+      "translate(0, -50%)"
+    );
+
+  if (!usesCentredTransform) {
+    return;
+  }
+
+  const rect =
+    element.getBoundingClientRect();
+
+  const scrollLeft =
+    window.scrollX ||
+    document.documentElement.scrollLeft ||
+    0;
+
+  const scrollTop =
+    window.scrollY ||
+    document.documentElement.scrollTop ||
+    0;
+
+  element.style.left =
+    `${rect.left + scrollLeft}px`;
+
+  element.style.top =
+    `${rect.top + scrollTop}px`;
+
+  element.style.transform =
+    "translate(0px, 0px)";
+
+  element.setAttribute(
+    "data-x",
+    "0"
+  );
+
+  element.setAttribute(
+    "data-y",
+    "0"
+  );
+}
+
+normaliseCentredDraggable(
+  document.getElementById(
+    "terminal"
+  )
+);
+
 interact('#terminal').draggable({
   allowFrom: '.drag-area',
   inertia: true,
@@ -622,21 +683,6 @@ interact('#terminal').draggable({
     }),
   ],
   listeners: {
-    start(event) {
-      const target = event.target;
-
-      if (target.style.transform.includes('translate(-50%, -50%)')) {
-        const rect = target.getBoundingClientRect();
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
-
-        target.style.top = rect.top + scrollTop + 'px';
-        target.style.left = rect.left + scrollLeft + 'px';
-        target.style.transform = 'translate(0, 0)';
-        target.setAttribute('data-x', 0);
-        target.setAttribute('data-y', 0);
-      }
-    },
     move(event) {
       const target = event.target;
       const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
@@ -3294,6 +3340,12 @@ function updateCommentBoxPosition() {
             'guestbookComments'
         );
 
+  normaliseCentredDraggable(
+  guestWindow
+);
+
+  updateCommentBoxPosition();
+
     if (!guestWindow || !commentBox) {
         return;
     }
@@ -3399,43 +3451,6 @@ interact(guestBookWindow)
       }),
     ],
     listeners: {
-  start(event) {
-    const target = event.target;
-
-    const transform =
-        target.style.transform || '';
-
-    const needsPositionNormalising =
-        transform.includes('translate(-50%, -50%)') ||
-        transform.includes('translate(0, -50%)');
-
-    if (needsPositionNormalising) {
-        const rect =
-            target.getBoundingClientRect();
-
-        const scrollTop =
-            window.scrollY ||
-            document.documentElement.scrollTop;
-
-        const scrollLeft =
-            window.scrollX ||
-            document.documentElement.scrollLeft;
-
-        target.style.top =
-            rect.top + scrollTop + 'px';
-
-        target.style.left =
-            rect.left + scrollLeft + 'px';
-
-        target.style.transform =
-            'translate(0, 0)';
-
-        target.setAttribute('data-x', '0');
-        target.setAttribute('data-y', '0');
-
-        updateCommentBoxPosition();
-    }
-},
       move(event) {
         const target = event.target;
         const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
