@@ -962,6 +962,44 @@ function formatNormalProgressTime(seconds) {
   );
 }
 
+function parseProgressTimeText(value) {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const parts =
+    value
+      .trim()
+      .split(":")
+      .map(part =>
+        Number(part)
+      );
+
+  if (
+    parts.length < 2 ||
+    parts.length > 3 ||
+    parts.some(part =>
+      !Number.isFinite(part) ||
+      part < 0
+    )
+  ) {
+    return null;
+  }
+
+  if (parts.length === 2) {
+    return (
+      parts[0] * 60 +
+      parts[1]
+    );
+  }
+
+  return (
+    parts[0] * 3600 +
+    parts[1] * 60 +
+    parts[2]
+  );
+}
+
 function getNormalProgressDuration() {
   if (
     !player ||
@@ -2619,16 +2657,38 @@ if (normalProgressSlider) {
         return;
       }
 
-      if (
-        event &&
-        Number.isFinite(
-          event.clientX
-        )
-      ) {
-        updateNormalDragPosition(
-          event
-        );
-      }
+     const displayedTargetTime =
+  parseProgressTimeText(
+    normalProgressTooltip
+      ?.textContent || ""
+  );
+
+const finalTargetTime =
+  Number.isFinite(
+    displayedTargetTime
+  )
+    ? displayedTargetTime
+    : normalProgressPendingTime;
+
+if (
+  Number.isFinite(
+    finalTargetTime
+  )
+) {
+  normalProgressSlider.value =
+    String(
+      Math.round(
+        (
+          finalTargetTime /
+          getNormalProgressDuration()
+        ) * 100000
+      )
+    );
+
+  seekYouTubePrecisely(
+    finalTargetTime
+  );
+}
 
       normalProgressSeeking = false;
 
