@@ -2051,6 +2051,61 @@ window.watchPartyPlayer = {
   applyWatchPartyState(state);
 },
 
+  seekTo(targetTime) {
+  if (
+    !player ||
+    !playerReady ||
+    typeof player.seekTo !==
+      "function"
+  ) {
+    return;
+  }
+
+  const safeTarget =
+    Math.max(
+      0,
+      Number(targetTime) || 0
+    );
+
+  player.seekTo(
+    safeTarget,
+    true
+  );
+
+  window.setTimeout(
+    () => {
+      if (
+        !player ||
+        !playerReady ||
+        typeof player.getCurrentTime !==
+          "function" ||
+        typeof player.seekTo !==
+          "function"
+      ) {
+        return;
+      }
+
+      const actualTime =
+        Number(
+          player.getCurrentTime()
+        );
+
+      if (
+        Number.isFinite(actualTime) &&
+        Math.abs(
+          actualTime - safeTarget
+        ) > 0.75
+      ) {
+        player.seekTo(
+          safeTarget,
+          true
+        );
+      }
+    },
+    300
+  );
+},
+
  getState() {
     let currentTime = null;
     let duration = null;
