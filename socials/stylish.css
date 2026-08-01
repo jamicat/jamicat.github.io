@@ -479,7 +479,6 @@ object-fit: contain;
 .normal-progress-tooltip {
   position: absolute;
   left: 0;
-  top: calc(100% + 7px);
   z-index: 2;
 
   min-width: 38px;
@@ -505,6 +504,14 @@ object-fit: contain;
   transition:
     opacity 120ms ease,
     transform 120ms ease;
+}
+
+.normal-progress-current-tooltip {
+  top: calc(100% + 7px);
+}
+
+.normal-progress-hover-tooltip {
+  top: calc(100% + 28px);
 }
 
 .normal-progress-tooltip.visible {
