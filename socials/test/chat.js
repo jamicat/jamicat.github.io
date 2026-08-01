@@ -5460,26 +5460,6 @@ addMessage(message) {
                 : Date.now()
         );
 
-	row.addEventListener(
-    "contextmenu",
-    event => {
-        if (!this.isAdmin) {
-            return;
-        }
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        this.closeModerationMenu();
-
-        this.openImageUploadModerationMenu(
-            event.clientX,
-            event.clientY,
-            upload
-        );
-    }
-);
-
 
 	row.addEventListener("contextmenu", event => {
     if (!this.isAdmin) {
@@ -7374,103 +7354,6 @@ createCompletedImageElement(
 }
     return row;
 	}
-
-
-	openImageUploadModerationMenu(
-    clientX,
-    clientY,
-    upload
-) {
-    if (
-        !this.isAdmin ||
-        !upload?.uploadId
-    ) {
-        return;
-    }
-
-    const confirmed =
-        window.confirm(
-            "delete this uploaded image message?\n\n" +
-            "this will remove the image from chat and storage."
-        );
-
-    if (!confirmed) {
-        return;
-    }
-
-    this.deleteImageUpload(
-        upload.uploadId
-    );
-}
-
-	async deleteImageUpload(
-    uploadId
-) {
-    try {
-        const response =
-            await fetch(
-                `${this.imageUploadConfig.apiBase}/delete`,
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json",
-
-                        "Authorization":
-                            `Bearer ${this.adminKey}`
-                    },
-
-                    body:
-                        JSON.stringify({
-                            uploadId
-                        })
-                }
-            );
-
-        let result = null;
-
-        try {
-            result =
-                await response.json();
-        } catch {}
-
-        if (response.status === 401) {
-            this.disableAdminMode();
-
-            throw new Error(
-                "Admin authentication is no longer valid"
-            );
-        }
-
-        if (!response.ok) {
-            throw new Error(
-                result?.error ||
-                `Could not delete image (${response.status})`
-            );
-        }
-
-        const row =
-            this.imageUploadRows.get(
-                uploadId
-            );
-
-        row?.remove();
-
-        this.imageUploadRows.delete(
-            uploadId
-        );
-    } catch (error) {
-        console.error(
-            "Could not delete image upload:",
-            error
-        );
-
-        window.alert(
-            `Could not delete image: ${error.message}`
-        );
-    }
-}
 	
 applyImageUploadState(upload) {
     if (
@@ -8263,12 +8146,6 @@ async uploadTestImage(file) {
             );
         }
 
-        /*
-         * The WebSocket event normally
-         * removes this on every client.
-         *
-         * This is a local fallback.
-         */
         if (
             result?.deleted === true ||
             result?.stale === true
