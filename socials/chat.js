@@ -8343,7 +8343,8 @@ const moveWatchPartyResize =
             panel,
             pointerId,
             startClientY,
-            startHeight
+            startHeight,
+			scaleY
         } =
             watchPartyResizeState;
 
@@ -8363,18 +8364,15 @@ const layoutDeltaY =
     visualDeltaY /
     scaleY;
 
-const requestedHeight =
-    startHeight +
-    layoutDeltaY;
+const nextHeight =
+    Math.max(
+        this.watchPartyResizeMinimum,
+        startHeight +
+            layoutDeltaY
+    );
 
-        const nextHeight =
-            Math.max(
-                this.watchPartyResizeMinimum,
-                requestedHeight
-            );
-
-        panel.style.height =
-            `${nextHeight}px`;
+panel.style.height =
+    `${nextHeight}px`;
     };
 
 this.watchPartyPanel.addEventListener(
