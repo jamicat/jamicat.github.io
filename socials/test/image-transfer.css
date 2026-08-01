@@ -39,9 +39,6 @@
     box-shadow: none;
 }
 
-/*
- * Flat dark caption strip.
- */
 .jami-transfer-titlebar {
     display: grid;
 
@@ -99,10 +96,6 @@
     text-shadow: none;
 }
 
-/*
- * All three caption buttons share the
- * same cool, almost-white colour.
- */
 .jami-transfer-caption-button {
     position: relative;
 
@@ -135,9 +128,6 @@
     border-left: 1px solid #55595d;
 }
 
-/*
- * Centred short horizontal mark.
- */
 .jami-transfer-minimize span {
     position: absolute;
 
@@ -156,9 +146,6 @@
         );
 }
 
-/*
- * Centred down arrow.
- */
 .jami-transfer-arrow-down span {
     position: absolute;
 
@@ -184,9 +171,6 @@
         );
 }
 
-/*
- * Centred up arrow.
- */
 .jami-transfer-arrow-up span {
     position: absolute;
 
@@ -223,10 +207,6 @@
     background: #e8ebed;
 }
 
-/*
- * Thin outer line around the progress area.
- * No deep recessed bevel.
- */
 .jami-transfer-progress-frame {
     box-sizing: border-box;
 
@@ -242,10 +222,7 @@
     box-shadow: none;
 }
 
-/*
- * The unfilled portion uses the same
- * cool blue-grey family as the button.
- */
+
 .jami-transfer-progress {
     position: relative;
 
@@ -275,10 +252,6 @@
         width 90ms linear;
 }
 
-/*
- * Status and Cancel button share the row,
- * but only the status copy is indented.
- */
 .jami-transfer-bottom {
     display: grid;
 
@@ -332,9 +305,8 @@
     font-weight: 700;
 }
 
-.jami-transfer-status [
-    data-jami-transfer-status
-] {
+.jami-transfer-status
+[data-jami-transfer-status] {
     min-width: 0;
 
     overflow: hidden;
@@ -343,11 +315,6 @@
     white-space: nowrap;
 }
 
-/*
- * Smaller, flatter and slightly rounded.
- * The only depth is the subtle dark
- * lower/right edge seen in the reference.
- */
 .jami-transfer-cancel {
     box-sizing: border-box;
 
