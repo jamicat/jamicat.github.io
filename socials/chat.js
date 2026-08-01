@@ -609,14 +609,24 @@ this.watchPartyPanel.dataset.y =
 this.watchPartyPanel.style.transform =
     "translate(0px, 0px)";
 
-    if (
-        Number.isFinite(savedHeight) &&
-        savedHeight >=
-            this.watchPartyResizeMinimum
-    ) {
-        this.watchPartyPanel.style.height =
-            `${savedHeight}px`;
-    }
+   const defaultWatchPartyHeight =
+    Math.max(
+        this.watchPartyResizeMinimum,
+        Math.min(
+            560,
+            window.innerHeight - 24
+        )
+    );
+
+const initialWatchPartyHeight =
+    Number.isFinite(savedHeight) &&
+    savedHeight >=
+        this.watchPartyResizeMinimum
+        ? savedHeight
+        : defaultWatchPartyHeight;
+
+this.watchPartyPanel.style.height =
+    `${initialWatchPartyHeight}px`;
 
 		   const storedTheme =
     localStorage.getItem(
@@ -7980,11 +7990,6 @@ closeAvatarPicker() {
         viewportWidth -
         viewportPadding;
 
-    const maximumBottom =
-        viewportTop +
-        viewportHeight -
-        viewportPadding;
-
    panel.style.maxHeight =
     "none";
 
@@ -8061,10 +8066,6 @@ closeAvatarPicker() {
     const panelWidth =
         panel.offsetWidth || 288;
 
-    const panelHeight =
-        panel.offsetHeight ||
-        this.watchPartyResizeMinimum;
-
     nextLeft =
         Math.max(
             minimumLeft,
@@ -8075,15 +8076,11 @@ closeAvatarPicker() {
             )
         );
 
-    nextTop =
-        Math.max(
-            minimumTop,
-            Math.min(
-                nextTop,
-                maximumBottom -
-                    panelHeight
-            )
-        );
+   nextTop =
+    Math.max(
+        minimumTop,
+        nextTop
+    );
 
     panel.style.right =
         "auto";
