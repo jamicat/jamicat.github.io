@@ -280,23 +280,10 @@ if (rewind10) {
   }
 }
 
-const toggleBtn = document.getElementById('videoToggle');
-
-  window.setTerminalPlaybackControlsVisible = function (visible) {
-
-    toggleBtn?.classList.toggle(
-        "hidden",
-        !visible
-    );
-
-    document
-        .getElementById("nextTrack")
-        ?.classList.toggle(
-            "hidden",
-            !visible
-        );
-
-};
+const toggleBtn =
+  document.getElementById(
+    "videoToggle"
+  );
   
 if (toggleBtn) {
   Object.values(themes).forEach(t => {
