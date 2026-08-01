@@ -728,12 +728,13 @@ this.minimizeButton =
         }
     }
 );
-
-	   window.addEventListener(
+window.addEventListener(
     "resize",
     () => {
         if (this.watchPartyOpen) {
-            this.positionWatchPartyPanel();
+            this.positionWatchPartyPanel({
+                forceClamp: true
+            });
         }
     }
 );
@@ -7979,7 +7980,9 @@ closeAvatarPicker() {
     });
 }
 
-	positionWatchPartyPanel() {
+	positionWatchPartyPanel({
+    forceClamp = false
+} = {}) {
     if (
         !this.watchPartyButton ||
         !this.watchPartyPanel
@@ -7989,6 +7992,14 @@ closeAvatarPicker() {
 
     const panel =
         this.watchPartyPanel;
+
+    if (
+        panel.dataset.positioned ===
+            "true" &&
+        forceClamp !== true
+    ) {
+        return;
+    }
 
     const viewport =
         window.visualViewport;
@@ -8160,6 +8171,33 @@ closeAvatarPicker() {
     panel.style.bottom =
         "auto";
 
+		const existingLeft =
+    parseFloat(
+        panel.style.left
+    );
+
+const existingTop =
+    parseFloat(
+        panel.style.top
+    );
+
+const positionChanged =
+    !Number.isFinite(existingLeft) ||
+    !Number.isFinite(existingTop) ||
+    Math.abs(
+        existingLeft - nextLeft
+    ) > 0.5 ||
+    Math.abs(
+        existingTop - nextTop
+    ) > 0.5;
+
+if (
+    forceClamp === true &&
+    !positionChanged
+) {
+    return;
+}
+		
     panel.style.left =
         `${nextLeft}px`;
 
