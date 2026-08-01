@@ -6063,11 +6063,19 @@ menu.style.left =
 menu.style.top =
     `${Math.max(viewportPadding, top)}px`;
 
- const deleteButton =
+const deleteButton =
     this.createModerationMenuButton(
         "delete message",
         () => {
             this.closeModerationMenu();
+
+            if (message.imageUploadId) {
+                this.deleteImageUpload(
+                    message.imageUploadId
+                );
+
+                return;
+            }
 
             this.deleteMessage(
                 message.id
@@ -6098,28 +6106,35 @@ menu.style.top =
     );
 
     const copyButton =
-        this.createModerationMenuButton(
-            "copy message ID",
-            async () => {
-                try {
-                    await navigator.clipboard.writeText(
-                        String(message.id)
+    this.createModerationMenuButton(
+        "copy message ID",
+        async () => {
+            const messageIdentifier =
+                message.imageUploadId ||
+                message.id;
+
+            try {
+                await navigator.clipboard
+                    .writeText(
+                        String(
+                            messageIdentifier
+                        )
                     );
 
-                    console.log(
-                        "Copied message ID",
-                        message.id
-                    );
-                } catch (error) {
-                    console.error(
-                        "could not copy message ID:",
-                        error
-                    );
-                }
-
-                this.closeModerationMenu();
+                console.log(
+                    "Copied message ID",
+                    messageIdentifier
+                );
+            } catch (error) {
+                console.error(
+                    "could not copy message ID:",
+                    error
+                );
             }
-        );
+
+            this.closeModerationMenu();
+        }
+    );
 
 const divider = document.createElement("div");
 divider.className =
@@ -7235,17 +7250,24 @@ createCompletedImageElement(
 
         this.closeModerationMenu();
 
-        const confirmed =
-            window.confirm(
-                "delete this uploaded image?"
-            );
+        this.openModerationMenu(
+            event.clientX,
+            event.clientY,
+            {
+                id:
+                    upload.uploadId,
 
-        if (!confirmed) {
-            return;
-        }
+                imageUploadId:
+                    upload.uploadId,
 
-        this.deleteImageUpload(
-            upload.uploadId
+                name:
+                    upload.name ||
+                    "anonymous",
+
+                client_id:
+                    upload.clientId ||
+                    ""
+            }
         );
     }
 );
