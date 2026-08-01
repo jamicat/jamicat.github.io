@@ -8330,9 +8330,54 @@ interact(
     ],
 
     listeners: {
+        start(event) {
+            const target =
+                event.target;
+
+            const rect =
+                target
+                    .getBoundingClientRect();
+
+            /*
+             * Store the exact fixed top edge and
+             * where inside the resize handle the
+             * pointer was pressed.
+             *
+             * Do not change the height here.
+             */
+            target.dataset.resizeTop =
+                String(rect.top);
+
+            target.dataset.resizeGrabOffset =
+                String(
+                    event.clientY -
+                    rect.bottom
+                );
+        },
+
         move(event) {
             const target =
                 event.target;
+
+            const fixedTop =
+                parseFloat(
+                    target.dataset.resizeTop
+                );
+
+            const grabOffset =
+                parseFloat(
+                    target.dataset
+                        .resizeGrabOffset
+                ) || 0;
+
+            if (
+                !Number.isFinite(fixedTop) ||
+                !Number.isFinite(
+                    event.clientY
+                )
+            ) {
+                return;
+            }
 
             const viewport =
                 window.visualViewport;
@@ -8351,39 +8396,24 @@ interact(
             const viewportPadding = 12;
 
             /*
-             * The top of the panel stays completely
-             * fixed while only the bottom edge moves.
+             * Keep the resize edge under the exact
+             * point where the pointer grabbed it.
              */
-            const panelTop =
-                parseFloat(
-                    target.style.top
-                );
+            const requestedBottom =
+                event.clientY -
+                grabOffset;
 
-            const safePanelTop =
-                Number.isFinite(panelTop)
-                    ? panelTop
-                    : target
-                        .getBoundingClientRect()
-                        .top;
+            const requestedHeight =
+                requestedBottom -
+                fixedTop;
 
             const maximumHeight =
                 Math.max(
                     self.watchPartyResizeMinimum,
                     viewportBottom -
-                        safePanelTop -
+                        fixedTop -
                         viewportPadding
                 );
-
-            const requestedHeight =
-                Number(event.rect.height);
-
-            if (
-                !Number.isFinite(
-                    requestedHeight
-                )
-            ) {
-                return;
-            }
 
             const nextHeight =
                 Math.min(
@@ -8395,10 +8425,6 @@ interact(
                     )
                 );
 
-            /*
-             * Do not alter top, left, transform,
-             * data-x or data-y here.
-             */
             target.style.height =
                 `${nextHeight}px`;
         },
@@ -8421,33 +8447,9 @@ interact(
                 );
             }
 
-            const finalLeft =
-                parseFloat(
-                    target.style.left
-                );
-
-            const finalTop =
-                parseFloat(
-                    target.style.top
-                );
-
-            if (
-                Number.isFinite(finalLeft)
-            ) {
-                localStorage.setItem(
-                    "watch_party_left",
-                    String(finalLeft)
-                );
-            }
-
-            if (
-                Number.isFinite(finalTop)
-            ) {
-                localStorage.setItem(
-                    "watch_party_top",
-                    String(finalTop)
-                );
-            }
+            delete target.dataset.resizeTop;
+            delete target.dataset
+                .resizeGrabOffset;
 
             target.dataset.positioned =
                 "true";
