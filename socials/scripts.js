@@ -1090,9 +1090,12 @@ if (
       .getBoundingClientRect();
 
   const currentLeft =
-    sliderRect.left -
-    wrapRect.left +
-    sliderRect.width * ratio;
+  sliderRect.left -
+  wrapRect.left +
+  5 +
+  (
+    sliderRect.width - 10
+  ) * ratio;
 
   normalProgressCurrentTooltip.textContent =
     formatNormalProgressTime(
@@ -1258,11 +1261,6 @@ function seekYouTubePrecisely(
       Number(targetTime) || 0
     );
 
-  /*
-   * Cancel the correction belonging to an older
-   * slider position. Only the newest target may
-   * perform a delayed correction.
-   */
   window.clearTimeout(
     preciseSeekCorrectionTimer
   );
@@ -1318,20 +1316,19 @@ function seekYouTubePrecisely(
           safeTarget +
           elapsedSeconds;
 
-        const difference =
+        if (
           Math.abs(
             actualTime -
             expectedTime
-          );
-
-        if (difference > 0.75) {
+          ) > 0.75
+        ) {
           player.seekTo(
             expectedTime,
             true
           );
         }
       },
-      400
+      450
     );
 }
 
@@ -2470,6 +2467,95 @@ nextTrackBtn?.addEventListener(
   }
 );
 
+function setNormalProgressFromPointer(
+  event
+) {
+  if (
+    !normalProgressSlider ||
+    !Number.isFinite(
+      event?.clientX
+    )
+  ) {
+    return null;
+  }
+
+  const duration =
+    getNormalProgressDuration();
+
+  if (duration <= 0) {
+    return null;
+  }
+
+  const ratio =
+    getRangePointerRatio(
+      normalProgressSlider,
+      event.clientX,
+      10
+    );
+
+  const sliderMaximum =
+    Number(
+      normalProgressSlider.max
+    ) || 100000;
+
+  const sliderValue =
+    Math.round(
+      ratio *
+      sliderMaximum
+    );
+
+  const targetTime =
+    ratio *
+    duration;
+
+  normalProgressSlider.value =
+    String(sliderValue);
+
+  normalProgressSlider.style
+    .setProperty(
+      "--normal-progress",
+      `${ratio * 100}%`
+    );
+
+  normalProgressTooltip.textContent =
+    formatNormalProgressTime(
+      targetTime
+    );
+
+  if (
+    normalProgressCurrentTooltip &&
+    normalProgressWrap
+  ) {
+    const sliderRect =
+      normalProgressSlider
+        .getBoundingClientRect();
+
+    const wrapRect =
+      normalProgressWrap
+        .getBoundingClientRect();
+
+    const thumbCentreLeft =
+      sliderRect.left -
+      wrapRect.left +
+      5 +
+      (
+        sliderRect.width - 10
+      ) * ratio;
+
+    normalProgressCurrentTooltip
+      .textContent =
+        formatNormalProgressTime(
+          targetTime
+        );
+
+    normalProgressCurrentTooltip
+      .style.left =
+        `${thumbCentreLeft}px`;
+  }
+
+  return targetTime;
+}
+
 if (normalProgressSlider) {
   normalProgressSlider.addEventListener(
   "pointerenter",
@@ -2483,15 +2569,6 @@ if (normalProgressSlider) {
   }
 );
 
-  normalProgressSlider.addEventListener(
-    "pointermove",
-    event => {
-      updateNormalProgressTooltip(
-        event
-      );
-    }
-  );
-
  normalProgressSlider.addEventListener(
   "pointerleave",
   () => {
@@ -2499,35 +2576,111 @@ if (normalProgressSlider) {
   }
 );
 
-  normalProgressSlider.addEventListener(
-    "pointerdown",
-    event => {
-      normalProgressSeeking = true;
-      showNormalProgressTooltips();
+  let normalProgressPendingTime =
+  null;
 
-      updateNormalProgressTooltip(
+const updateNormalDragPosition =
+  event => {
+    const targetTime =
+      setNormalProgressFromPointer(
         event
       );
 
+    if (
+      Number.isFinite(targetTime)
+    ) {
+      normalProgressPendingTime =
+        targetTime;
+    }
+
+    updateNormalProgressTooltip(
+      event
+    );
+  };
+
+const finishNormalProgressSeeking =
+  event => {
+    if (!normalProgressSeeking) {
+      return;
+    }
+
+    if (
+      event &&
+      Number.isFinite(
+        event.clientX
+      )
+    ) {
+      updateNormalDragPosition(
+        event
+      );
+    }
+
+    normalProgressSeeking = false;
+
+    if (
+      event?.pointerId !==
+        undefined
+    ) {
       normalProgressSlider
-        .setPointerCapture?.(
+        .releasePointerCapture?.(
           event.pointerId
         );
     }
-  );
 
-  normalProgressSlider.addEventListener(
-    "input",
-    event => {
-      if (
-        playbackMode !== "normal" ||
-        !player ||
-        !playerReady ||
-        typeof player.seekTo !==
-          "function"
-      ) {
-        return;
-      }
+    if (
+      Number.isFinite(
+        normalProgressPendingTime
+      )
+    ) {
+      seekYouTubePrecisely(
+        normalProgressPendingTime
+      );
+    }
+
+    normalProgressPendingTime =
+      null;
+
+    normalProgressCurrentTooltip
+      ?.classList.remove(
+        "visible"
+      );
+
+    normalProgressTooltip
+      ?.classList.remove(
+        "visible"
+      );
+
+    updateNormalProgress();
+  };
+
+
+    /*
+     * Stop the browser's native range mapping.
+     * We calculate the exact position ourselves.
+     */
+    event.preventDefault();
+
+    normalProgressSeeking = true;
+
+    showNormalProgressTooltips();
+
+    normalProgressSlider
+      .setPointerCapture?.(
+        event.pointerId
+      );
+
+    updateNormalDragPosition(
+      event
+    );
+  }
+);
+
+
+    updateNormalProgressTooltip(
+      event
+    );
+  }
+);
 
       normalProgressSeeking = true;
 
@@ -2630,37 +2783,9 @@ normalProgressTooltip
       updateNormalProgress();
     };
 
-  normalProgressSlider.addEventListener(
-    "pointerup",
-    finishNormalProgressSeeking
-  );
-
-  normalProgressSlider.addEventListener(
-    "pointercancel",
-    finishNormalProgressSeeking
-  );
-
-  normalProgressSlider.addEventListener(
-    "change",
-    finishNormalProgressSeeking
-  );
-
-  normalProgressSlider.addEventListener(
-    "blur",
-    finishNormalProgressSeeking
-  );
 }
 
 if (volumeSlider) {
-  volumeSlider.addEventListener(
-    "input",
-    event => {
-      if (
-        !player ||
-        !playerReady
-      ) {
-        return;
-      }
 
       const volume =
         parseInt(
