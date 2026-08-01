@@ -4107,6 +4107,34 @@ if (progressInput) {
         `${ratio * 100}%`;
 };
 
+	const showProgressTooltips = () => {
+    progressCurrentTooltip
+        ?.classList.add(
+            "opacity-100"
+        );
+
+    progressHoverTooltip
+        ?.classList.add(
+            "opacity-100"
+        );
+};
+
+const hideProgressTooltips = () => {
+    if (this.watchPartySeeking) {
+        return;
+    }
+
+    progressCurrentTooltip
+        ?.classList.remove(
+            "opacity-100"
+        );
+
+    progressHoverTooltip
+        ?.classList.remove(
+            "opacity-100"
+        );
+};
+
     const beginSeeking = event => {
     this.watchPartySeeking = true;
 
