@@ -5440,6 +5440,26 @@ addMessage(message) {
                 : Date.now()
         );
 
+	row.addEventListener(
+    "contextmenu",
+    event => {
+        if (!this.isAdmin) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.closeModerationMenu();
+
+        this.openImageUploadModerationMenu(
+            event.clientX,
+            event.clientY,
+            upload
+        );
+    }
+);
+
 
 	row.addEventListener("contextmenu", event => {
     if (!this.isAdmin) {
@@ -7083,8 +7103,6 @@ createCompletedImageElement(
     image.className =
         "jami-transfer-image";
 
-    image.loading = "lazy";
-
     return image;
 }
 
@@ -7276,6 +7294,102 @@ createCompletedImageElement(
     return row;
 }
 
+	openImageUploadModerationMenu(
+    clientX,
+    clientY,
+    upload
+) {
+    if (
+        !this.isAdmin ||
+        !upload?.uploadId
+    ) {
+        return;
+    }
+
+    const confirmed =
+        window.confirm(
+            "delete this uploaded image message?\n\n" +
+            "this will remove the image from chat and storage."
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    this.deleteImageUpload(
+        upload.uploadId
+    );
+}
+
+	async deleteImageUpload(
+    uploadId
+) {
+    try {
+        const response =
+            await fetch(
+                `${this.imageUploadConfig.apiBase}/delete`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        "Authorization":
+                            `Bearer ${this.adminKey}`
+                    },
+
+                    body:
+                        JSON.stringify({
+                            uploadId
+                        })
+                }
+            );
+
+        let result = null;
+
+        try {
+            result =
+                await response.json();
+        } catch {}
+
+        if (response.status === 401) {
+            this.disableAdminMode();
+
+            throw new Error(
+                "Admin authentication is no longer valid"
+            );
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `Could not delete image (${response.status})`
+            );
+        }
+
+        const row =
+            this.imageUploadRows.get(
+                uploadId
+            );
+
+        row?.remove();
+
+        this.imageUploadRows.delete(
+            uploadId
+        );
+    } catch (error) {
+        console.error(
+            "Could not delete image upload:",
+            error
+        );
+
+        window.alert(
+            `Could not delete image: ${error.message}`
+        );
+    }
+}
+	
 applyImageUploadState(upload) {
     if (
         !upload?.uploadId
@@ -7338,76 +7452,79 @@ applyImageUploadState(upload) {
         upload.status ||
         "uploading";
 
+   if (
+    upload.status ===
+        "complete" &&
+    upload.imageUrl
+) {
+    const existingImage =
+        body.querySelector(
+            ".jami-transfer-image"
+        );
+
+    const resolvedImageUrl =
+        new URL(
+            upload.imageUrl,
+            window.location.href
+        ).href;
+
     if (
-        upload.status ===
-            "complete" &&
-        upload.imageUrl
+        existingImage &&
+        existingImage.src ===
+            resolvedImageUrl
     ) {
-        const existingImage =
-            body.querySelector(
-                ".jami-transfer-image"
-            );
-
-        if (
-            existingImage &&
-            existingImage.src ===
-                new URL(
-                    upload.imageUrl,
-                    window.location.href
-                ).href
-        ) {
-            return;
-        }
-
-        const image =
-            this.createCompletedImageElement(
-                upload
-            );
-
-        image.addEventListener(
-            "load",
-            () => {
-                body.replaceChildren(
-                    image
-                );
-
-                if (
-                    !this.userHasScrolledUp &&
-                    !this.isMinimized
-                ) {
-                    this.scrollMessagesToBottom();
-                }
-            },
-            {
-                once: true
-            }
-        );
-
-        image.addEventListener(
-            "error",
-            () => {
-                const transfer =
-                    body.querySelector(
-                        ".jami-transfer-message"
-                    );
-
-                const status =
-                    transfer?.querySelector(
-                        "[data-jami-transfer-status]"
-                    );
-
-                if (status) {
-                    status.textContent =
-                        "Image retrieval failed";
-                }
-            },
-            {
-                once: true
-            }
-        );
-
         return;
     }
+
+    const image =
+        this.createCompletedImageElement(
+            upload
+        );
+
+    body.replaceChildren(
+        image
+    );
+
+    image.addEventListener(
+        "load",
+        () => {
+            if (
+                !this.userHasScrolledUp &&
+                !this.isMinimized
+            ) {
+                this.scrollMessagesToBottom();
+            }
+        },
+        {
+            once: true
+        }
+    );
+
+    image.addEventListener(
+        "error",
+        () => {
+            const failure =
+                document.createElement(
+                    "div"
+                );
+
+            failure.className =
+                "jami-transfer-message";
+
+            failure.textContent =
+                "Image retrieval failed";
+
+            body.replaceChildren(
+                failure
+            );
+        },
+        {
+            once: true
+        }
+    );
+
+    return;
+}
 
     let transfer =
         body.querySelector(
