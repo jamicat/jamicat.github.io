@@ -5371,7 +5371,27 @@ async loadHistory() {
         );
     }
 
-    this.scrollMessagesToBottom();
+    this.scrollMessagesToBottomAfterLayout({
+    force: true
+});
+
+window.setTimeout(
+    () => {
+        this.scrollMessagesToBottomAfterLayout({
+            force: true
+        });
+    },
+    250
+);
+
+window.setTimeout(
+    () => {
+        this.scrollMessagesToBottomAfterLayout({
+            force: true
+        });
+    },
+    750
+);
 }
 
 addMessage(message) {
@@ -7284,15 +7304,14 @@ createCompletedImageElement(
         upload
     );
 
-    if (
-        !this.userHasScrolledUp &&
-        !this.isMinimized
-    ) {
-        this.scrollMessagesToBottom();
-    }
-
-    return row;
+	if (!this.isMinimized) {
+    this.scrollMessagesToBottomAfterLayout({
+        force: true
+    });
 }
+    return row;
+	}
+
 
 	openImageUploadModerationMenu(
     clientX,
@@ -7486,19 +7505,16 @@ applyImageUploadState(upload) {
     );
 
     image.addEventListener(
-        "load",
-        () => {
-            if (
-                !this.userHasScrolledUp &&
-                !this.isMinimized
-            ) {
-                this.scrollMessagesToBottom();
-            }
-        },
-        {
-            once: true
-        }
-    );
+    "load",
+    () => {
+        this.scrollMessagesToBottomAfterLayout({
+            force: true
+        });
+    },
+    {
+        once: true
+    }
+);
 
     image.addEventListener(
         "error",
