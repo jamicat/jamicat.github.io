@@ -4819,7 +4819,6 @@ if (
 this.watchPartyAddBusy = false;
 
 this.renderWatchParty();
-this.scrollWatchPartyQueueToPendingItem();
 
 requestAnimationFrame(() => {
             this.watchPartyPanel
@@ -6446,7 +6445,6 @@ if (data.type === "watchparty-state") {
 	
 
 this.renderWatchParty();
-this.scrollWatchPartyQueueToPendingItem();
 
 if (this.partyManager) {
     this.partyManagerBusy = false;
