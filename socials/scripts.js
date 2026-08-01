@@ -1851,11 +1851,10 @@ function startWatchPartySyncLoop() {
   }
 
   watchPartySyncTimer =
-    window.setInterval(
-      correctWatchPartyDrift,
-      4000
-    );
-}
+  window.setInterval(
+    correctWatchPartyDrift,
+    1000
+  );
 
 function maybeInitPlayer() {
   if (
@@ -2162,42 +2161,76 @@ window.watchPartyPlayer = {
       Number(targetTime) || 0
     );
 
+  let attempts = 0;
+
+  const maximumAttempts = 8;
+
+  const seekStartedAt =
+    performance.now();
+
+  const wasPlaying =
+    isPlaying === true;
+
+  const correctPosition = () => {
+    if (
+      !player ||
+      !playerReady ||
+      typeof player.getCurrentTime !==
+        "function" ||
+      typeof player.seekTo !==
+        "function"
+    ) {
+      return;
+    }
+
+    const elapsedSeconds =
+      wasPlaying
+        ? (
+            performance.now() -
+            seekStartedAt
+          ) / 1000
+        : 0;
+
+    const expectedTime =
+      safeTarget +
+      elapsedSeconds;
+
+    const actualTime =
+      Number(
+        player.getCurrentTime()
+      );
+
+    if (
+      Number.isFinite(actualTime) &&
+      Math.abs(
+        actualTime -
+        expectedTime
+      ) > 0.75
+    ) {
+      player.seekTo(
+        expectedTime,
+        true
+      );
+    }
+
+    attempts += 1;
+
+    if (attempts < maximumAttempts) {
+      window.setTimeout(
+        correctPosition,
+        500
+      );
+    }
+  };
+
   player.seekTo(
     safeTarget,
     true
   );
 
   window.setTimeout(
-    () => {
-      if (
-        !player ||
-        !playerReady ||
-        typeof player.getCurrentTime !==
-          "function" ||
-        typeof player.seekTo !==
-          "function"
-      ) {
-        return;
-      }
-
-      const actualTime =
-        Number(
-          player.getCurrentTime()
-        );
-
-      if (
-        Number.isFinite(actualTime) &&
-        Math.abs(
-          actualTime - safeTarget
-        ) > 0.75
-      ) {
-        player.seekTo(
-          safeTarget,
-          true
-        );
-      }
-    },
-    300
+    correctPosition,
+    500
   );
 },
 
