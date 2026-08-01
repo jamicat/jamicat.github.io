@@ -7985,37 +7985,11 @@ closeAvatarPicker() {
         viewportHeight -
         viewportPadding;
 
-    const availableHeight =
-        Math.max(
-            this.watchPartyResizeMinimum,
-            viewportHeight -
-                viewportPadding * 2
-        );
-
-    panel.style.maxHeight =
-        `${availableHeight}px`;
+   panel.style.maxHeight =
+    "none";
 
     panel.style.overflow =
         "hidden";
-
-    const currentHeight =
-        parseFloat(
-            panel.style.height
-        );
-
-    if (
-        Number.isFinite(currentHeight) &&
-        currentHeight > availableHeight
-    ) {
-        panel.style.height =
-            `${availableHeight}px`;
-
-        localStorage.setItem(
-            "watch_party_height",
-            String(availableHeight)
-        );
-    }
-
 
     const currentRect =
         panel.getBoundingClientRect();
@@ -8370,8 +8344,7 @@ const moveWatchPartyResize =
             panel,
             pointerId,
             startClientY,
-            startHeight,
-            fixedTop
+            startHeight
         } =
             watchPartyResizeState;
 
@@ -8383,30 +8356,6 @@ const moveWatchPartyResize =
 
         event.preventDefault();
 
-        const viewport =
-            window.visualViewport;
-
-        const viewportTop =
-            viewport?.offsetTop || 0;
-
-        const viewportHeight =
-            viewport?.height ||
-            window.innerHeight;
-
-        const viewportBottom =
-            viewportTop +
-            viewportHeight;
-
-        const viewportPadding = 12;
-
-        const maximumHeight =
-            Math.max(
-                this.watchPartyResizeMinimum,
-                viewportBottom -
-                    fixedTop -
-                    viewportPadding
-            );
-
         const deltaY =
             event.clientY -
             startClientY;
@@ -8416,12 +8365,9 @@ const moveWatchPartyResize =
             deltaY;
 
         const nextHeight =
-            Math.min(
-                maximumHeight,
-                Math.max(
-                    this.watchPartyResizeMinimum,
-                    requestedHeight
-                )
+            Math.max(
+                this.watchPartyResizeMinimum,
+                requestedHeight
             );
 
         panel.style.height =
@@ -8455,17 +8401,18 @@ this.watchPartyPanel.addEventListener(
             panel.getBoundingClientRect();
 
         watchPartyResizeState = {
-            panel,
-            handle,
-            pointerId:
-                event.pointerId,
-            startClientY:
-                event.clientY,
-            startHeight:
-                rect.height,
-            fixedTop:
-                rect.top
-        };
+    panel,
+    handle,
+
+    pointerId:
+        event.pointerId,
+
+    startClientY:
+        event.clientY,
+
+    startHeight:
+        rect.height
+};
 
         handle.setPointerCapture?.(
             event.pointerId
