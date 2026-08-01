@@ -740,6 +740,11 @@ const normalProgressSlider =
     "normalProgressSlider"
   );
 
+const normalProgressCurrentTooltip =
+  document.getElementById(
+    "normalProgressCurrentTooltip"
+  );
+
 const normalProgressTooltip =
   document.getElementById(
     "normalProgressTooltip"
@@ -987,10 +992,16 @@ function updateNormalProgressVisibility() {
   );
 
   if (!shouldShow) {
-    normalProgressTooltip?.classList.remove(
+  normalProgressCurrentTooltip
+    ?.classList.remove(
       "visible"
     );
-  }
+
+  normalProgressTooltip
+    ?.classList.remove(
+      "visible"
+    );
+}
 }
 
 function updateNormalProgress() {
@@ -1041,10 +1052,36 @@ function updateNormalProgress() {
     );
 
   normalProgressSlider.style
-    .setProperty(
-      "--normal-progress",
-      `${ratio * 100}%`
+  .setProperty(
+    "--normal-progress",
+    `${ratio * 100}%`
+  );
+
+if (
+  normalProgressCurrentTooltip &&
+  normalProgressWrap
+) {
+  const sliderRect =
+    normalProgressSlider
+      .getBoundingClientRect();
+
+  const wrapRect =
+    normalProgressWrap
+      .getBoundingClientRect();
+
+  const currentLeft =
+    sliderRect.left -
+    wrapRect.left +
+    sliderRect.width * ratio;
+
+  normalProgressCurrentTooltip.textContent =
+    formatNormalProgressTime(
+      currentTime
     );
+
+  normalProgressCurrentTooltip.style.left =
+    `${currentLeft}px`;
+}
 }
 
 function updateNormalProgressTooltip(
@@ -1116,16 +1153,32 @@ function updateNormalProgressTooltip(
   );
 }
 
-function hideNormalProgressTooltip() {
-  if (
-    normalProgressSeeking
-  ) {
+function showNormalProgressTooltips() {
+  normalProgressCurrentTooltip
+    ?.classList.add(
+      "visible"
+    );
+
+  normalProgressTooltip
+    ?.classList.add(
+      "visible"
+    );
+}
+
+function hideNormalProgressTooltips() {
+  if (normalProgressSeeking) {
     return;
   }
 
-  normalProgressTooltip?.classList.remove(
-    "visible"
-  );
+  normalProgressCurrentTooltip
+    ?.classList.remove(
+      "visible"
+    );
+
+  normalProgressTooltip
+    ?.classList.remove(
+      "visible"
+    );
 }
 
 function updatePlaybackIcons(playing) {
@@ -2203,13 +2256,16 @@ nextTrackBtn?.addEventListener(
 
 if (normalProgressSlider) {
   normalProgressSlider.addEventListener(
-    "pointerenter",
-    event => {
-      updateNormalProgressTooltip(
-        event
-      );
-    }
-  );
+  "pointerenter",
+  event => {
+    showNormalProgressTooltips();
+
+    updateNormalProgress();
+    updateNormalProgressTooltip(
+      event
+    );
+  }
+);
 
   normalProgressSlider.addEventListener(
     "pointermove",
@@ -2220,17 +2276,18 @@ if (normalProgressSlider) {
     }
   );
 
-  normalProgressSlider.addEventListener(
-    "pointerleave",
-    () => {
-      hideNormalProgressTooltip();
-    }
-  );
+ normalProgressSlider.addEventListener(
+  "pointerleave",
+  () => {
+    hideNormalProgressTooltips();
+  }
+);
 
   normalProgressSlider.addEventListener(
     "pointerdown",
     event => {
       normalProgressSeeking = true;
+      showNormalProgressTooltips();
 
       updateNormalProgressTooltip(
         event
@@ -2299,9 +2356,35 @@ if (normalProgressSlider) {
         );
 
       normalProgressTooltip.textContent =
-        formatNormalProgressTime(
-          targetTime
-        );
+  formatNormalProgressTime(
+    targetTime
+  );
+
+if (
+  normalProgressCurrentTooltip &&
+  normalProgressWrap
+) {
+  const sliderRect =
+    normalProgressSlider
+      .getBoundingClientRect();
+
+  const wrapRect =
+    normalProgressWrap
+      .getBoundingClientRect();
+
+  const currentLeft =
+    sliderRect.left -
+    wrapRect.left +
+    sliderRect.width * ratio;
+
+  normalProgressCurrentTooltip.textContent =
+    formatNormalProgressTime(
+      targetTime
+    );
+
+  normalProgressCurrentTooltip.style.left =
+    `${currentLeft}px`;
+}
     }
   );
 
@@ -2319,10 +2402,15 @@ if (normalProgressSlider) {
 
       normalProgressSeeking = false;
 
-      normalProgressTooltip
-        ?.classList.remove(
-          "visible"
-        );
+      normalProgressCurrentTooltip
+  ?.classList.remove(
+    "visible"
+  );
+
+normalProgressTooltip
+  ?.classList.remove(
+    "visible"
+  );
 
       updateNormalProgress();
     };
