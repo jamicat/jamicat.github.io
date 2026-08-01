@@ -479,7 +479,7 @@ object-fit: contain;
 .normal-progress-tooltip {
   position: absolute;
   left: 0;
-  bottom: calc(100% + 7px);
+  top: calc(100% + 7px);
   z-index: 2;
 
   min-width: 38px;
@@ -500,7 +500,7 @@ object-fit: contain;
   opacity: 0;
   pointer-events: none;
 
-  transform: translateX(-50%) translateY(3px);
+  transform: translateX(-50%) translateY(-3px);
 
   transition:
     opacity 120ms ease,
