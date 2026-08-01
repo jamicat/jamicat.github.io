@@ -2202,9 +2202,16 @@ window.setTerminalPlaybackControlsVisible =
         "true"
       );
 
-      normalProgressTooltip?.classList.remove(
+      normalProgressCurrentTooltip
+    ?.classList.remove(
         "visible"
-      );
+    );
+
+normalProgressTooltip
+    ?.classList.remove(
+        "visible"
+    );
+      
     } else {
       updateNormalProgressVisibility();
     }
