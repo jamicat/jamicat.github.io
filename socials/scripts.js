@@ -1237,6 +1237,71 @@ function hideNormalProgressTooltips() {
     );
 }
 
+function seekYouTubePrecisely(
+  targetTime
+) {
+  if (
+    !player ||
+    !playerReady ||
+    typeof player.seekTo !==
+      "function"
+  ) {
+    return;
+  }
+
+  const safeTarget =
+    Math.max(
+      0,
+      Number(targetTime) || 0
+    );
+
+
+  player.seekTo(
+    safeTarget,
+    true
+  );
+
+
+  window.setTimeout(
+    () => {
+      if (
+        !player ||
+        !playerReady ||
+        typeof player.getCurrentTime !==
+          "function" ||
+        typeof player.seekTo !==
+          "function"
+      ) {
+        return;
+      }
+
+      const actualTime =
+        Number(
+          player.getCurrentTime()
+        );
+
+      if (
+        !Number.isFinite(actualTime)
+      ) {
+        return;
+      }
+
+      const difference =
+        Math.abs(
+          actualTime - safeTarget
+        );
+
+      if (difference > 0.75) {
+        player.seekTo(
+          safeTarget,
+          true
+        );
+      }
+    },
+    350
+  );
+}
+
 function updatePlaybackIcons(playing) {
   isPlaying = playing === true;
 
