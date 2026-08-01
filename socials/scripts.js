@@ -612,65 +612,20 @@ window.visualViewport?.addEventListener(
     schedulePhoneTerminalClamp
 );
 
-function normaliseCentredDraggable(
-  element
-) {
-  if (!element) {
-    return;
-  }
 
-  const transform =
-    element.style.transform || "";
-
-  const usesCentredTransform =
-    transform.includes(
-      "translate(-50%, -50%)"
-    ) ||
-    transform.includes(
-      "translate(0, -50%)"
-    );
-
-  if (!usesCentredTransform) {
-    return;
-  }
-
-  const rect =
-    element.getBoundingClientRect();
-
-  const scrollLeft =
-    window.scrollX ||
-    document.documentElement.scrollLeft ||
-    0;
-
-  const scrollTop =
-    window.scrollY ||
-    document.documentElement.scrollTop ||
-    0;
-
-  element.style.left =
-    `${rect.left + scrollLeft}px`;
-
-  element.style.top =
-    `${rect.top + scrollTop}px`;
-
-  element.style.transform =
-    "translate(0px, 0px)";
-
-  element.setAttribute(
-    "data-x",
-    "0"
-  );
-
-  element.setAttribute(
-    "data-y",
-    "0"
-  );
-}
-
-normaliseCentredDraggable(
+const mainTerminal =
   document.getElementById(
     "terminal"
-  )
+  );
+
+mainTerminal?.setAttribute(
+  "data-x",
+  "0"
+);
+
+mainTerminal?.setAttribute(
+  "data-y",
+  "0"
 );
 
 interact('#terminal').draggable({
@@ -688,7 +643,11 @@ interact('#terminal').draggable({
       const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
       const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
            
-      target.style.transform = `translate(${x}px, ${y}px)`;
+      target.style.transform =
+  `translate(
+    calc(-50% + ${x}px),
+    calc(-50% + ${y}px)
+  )`;
       target.setAttribute('data-x', x);
       target.setAttribute('data-y', y);
     },
@@ -3296,6 +3255,16 @@ guestBookWindow.id = 'guestBookWindow';
  </div>`;
 document.body.appendChild(guestBookWindow);
 
+  guestBookWindow.setAttribute(
+  "data-x",
+  "0"
+);
+
+guestBookWindow.setAttribute(
+  "data-y",
+  "0"
+);
+
 /*var typed2 = new Typed('#typed2', {
   strings: ['guestbook'],  
   typeSpeed: 0,            
@@ -3339,12 +3308,6 @@ function updateCommentBoxPosition() {
         document.getElementById(
             'guestbookComments'
         );
-
-  normaliseCentredDraggable(
-  guestWindow
-);
-
-  updateCommentBoxPosition();
 
     if (!guestWindow || !commentBox) {
         return;
@@ -3426,12 +3389,20 @@ commentBox.style.top =
         '300px';
 }
 
+const guestWindow =
+  document.getElementById(
+    "guestBookWindow"
+  );
+
+const commentBox =
+  document.getElementById(
+    "guestbookComments"
+  );
+
+
 requestAnimationFrame(() => {
   updateCommentBoxPosition();
 });
-
-const guestWindow = document.getElementById('guestBookWindow');
-const commentBox = document.getElementById('guestbookComments');
 
 if (guestWindow && commentBox) {
   const resizeObserver = new ResizeObserver(() => {
@@ -3456,7 +3427,11 @@ interact(guestBookWindow)
         const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
         const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
-        target.style.transform = `translate(${x}px, ${y}px)`;
+        target.style.transform =
+  `translate(
+    calc(-50% + ${x}px),
+    calc(-50% + ${y}px)
+  )`;
         target.setAttribute('data-x', x);
         target.setAttribute('data-y', y);
 
