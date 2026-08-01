@@ -8308,154 +8308,191 @@ interact(
         }
     }
 });
+let watchPartyResizeState =
+    null;
 
-	interact(
-    this.watchPartyPanel
-).resizable({
-    edges: {
-        bottom:
-            "[data-watch-party-resize-handle]"
-    },
-
-    inertia: false,
-
-    modifiers: [
-        interact.modifiers.restrictSize({
-            min: {
-                width: 288,
-                height:
-                    this.watchPartyResizeMinimum
-            }
-        })
-    ],
-
-    listeners: {
-        start(event) {
-            const target =
-                event.target;
-
-            const rect =
-                target
-                    .getBoundingClientRect();
-
-            /*
-             * Store the exact fixed top edge and
-             * where inside the resize handle the
-             * pointer was pressed.
-             *
-             * Do not change the height here.
-             */
-            target.dataset.resizeTop =
-                String(rect.top);
-
-            target.dataset.resizeGrabOffset =
-                String(
-                    event.clientY -
-                    rect.bottom
-                );
-        },
-
-        move(event) {
-            const target =
-                event.target;
-
-            const fixedTop =
-                parseFloat(
-                    target.dataset.resizeTop
-                );
-
-            const grabOffset =
-                parseFloat(
-                    target.dataset
-                        .resizeGrabOffset
-                ) || 0;
-
-            if (
-                !Number.isFinite(fixedTop) ||
-                !Number.isFinite(
-                    event.clientY
-                )
-            ) {
-                return;
-            }
-
-            const viewport =
-                window.visualViewport;
-
-            const viewportTop =
-                viewport?.offsetTop || 0;
-
-            const viewportHeight =
-                viewport?.height ||
-                window.innerHeight;
-
-            const viewportBottom =
-                viewportTop +
-                viewportHeight;
-
-            const viewportPadding = 12;
-
-            /*
-             * Keep the resize edge under the exact
-             * point where the pointer grabbed it.
-             */
-            const requestedBottom =
-                event.clientY -
-                grabOffset;
-
-            const requestedHeight =
-                requestedBottom -
-                fixedTop;
-
-            const maximumHeight =
-                Math.max(
-                    self.watchPartyResizeMinimum,
-                    viewportBottom -
-                        fixedTop -
-                        viewportPadding
-                );
-
-            const nextHeight =
-                Math.min(
-                    maximumHeight,
-                    Math.max(
-                        self
-                            .watchPartyResizeMinimum,
-                        requestedHeight
-                    )
-                );
-
-            target.style.height =
-                `${nextHeight}px`;
-        },
-
-        end(event) {
-            const target =
-                event.target;
-
-            const finalHeight =
-                parseFloat(
-                    target.style.height
-                );
-
-            if (
-                Number.isFinite(finalHeight)
-            ) {
-                localStorage.setItem(
-                    "watch_party_height",
-                    String(finalHeight)
-                );
-            }
-
-            delete target.dataset.resizeTop;
-            delete target.dataset
-                .resizeGrabOffset;
-
-            target.dataset.positioned =
-                "true";
+const stopWatchPartyResize =
+    event => {
+        if (!watchPartyResizeState) {
+            return;
         }
+
+        const {
+            panel,
+            handle,
+            pointerId
+        } =
+            watchPartyResizeState;
+
+        if (
+            event?.pointerId !== undefined &&
+            event.pointerId !== pointerId
+        ) {
+            return;
+        }
+
+        const finalHeight =
+            parseFloat(
+                panel.style.height
+            );
+
+        if (
+            Number.isFinite(finalHeight)
+        ) {
+            localStorage.setItem(
+                "watch_party_height",
+                String(finalHeight)
+            );
+        }
+
+        handle
+            ?.releasePointerCapture?.(
+                pointerId
+            );
+
+        panel.dataset.positioned =
+            "true";
+
+        watchPartyResizeState =
+            null;
+
+        document.body.style.userSelect =
+            "";
+    };
+
+const moveWatchPartyResize =
+    event => {
+        if (!watchPartyResizeState) {
+            return;
+        }
+
+        const {
+            panel,
+            pointerId,
+            startClientY,
+            startHeight,
+            fixedTop
+        } =
+            watchPartyResizeState;
+
+        if (
+            event.pointerId !== pointerId
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const viewport =
+            window.visualViewport;
+
+        const viewportTop =
+            viewport?.offsetTop || 0;
+
+        const viewportHeight =
+            viewport?.height ||
+            window.innerHeight;
+
+        const viewportBottom =
+            viewportTop +
+            viewportHeight;
+
+        const viewportPadding = 12;
+
+        const maximumHeight =
+            Math.max(
+                this.watchPartyResizeMinimum,
+                viewportBottom -
+                    fixedTop -
+                    viewportPadding
+            );
+
+        const deltaY =
+            event.clientY -
+            startClientY;
+
+        const requestedHeight =
+            startHeight +
+            deltaY;
+
+        const nextHeight =
+            Math.min(
+                maximumHeight,
+                Math.max(
+                    this.watchPartyResizeMinimum,
+                    requestedHeight
+                )
+            );
+
+        panel.style.height =
+            `${nextHeight}px`;
+    };
+
+this.watchPartyPanel.addEventListener(
+    "pointerdown",
+    event => {
+        const handle =
+            event.target.closest(
+                "[data-watch-party-resize-handle]"
+            );
+
+        if (
+            !handle ||
+            !this.watchPartyPanel.contains(
+                handle
+            )
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const panel =
+            this.watchPartyPanel;
+
+        const rect =
+            panel.getBoundingClientRect();
+
+        watchPartyResizeState = {
+            panel,
+            handle,
+            pointerId:
+                event.pointerId,
+            startClientY:
+                event.clientY,
+            startHeight:
+                rect.height,
+            fixedTop:
+                rect.top
+        };
+
+        handle.setPointerCapture?.(
+            event.pointerId
+        );
+
+        document.body.style.userSelect =
+            "none";
     }
-});
+);
+
+window.addEventListener(
+    "pointermove",
+    moveWatchPartyResize,
+    {
+        passive: false
+    }
+);
+
+window.addEventListener(
+    "pointerup",
+    stopWatchPartyResize
+);
+
+window.addEventListener(
+    "pointercancel",
+    stopWatchPartyResize
+);
 }
 
 	preserveTitleBarDuringResize() {
