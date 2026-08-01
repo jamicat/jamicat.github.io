@@ -3926,29 +3926,54 @@ if (nextButton) {
     nextButton.addEventListener(
         "click",
         async event => {
+            event.preventDefault();
             event.stopPropagation();
 
-           if (!this.watchParty.currentVideoId) {
-    return;
-}
+            if (
+                !this.watchParty
+                    .currentVideoId
+            ) {
+                return;
+            }
 
-this.watchPartyNavigationFromVideoId =
-    this.watchParty.currentVideoId;
+            if (nextButton.disabled) {
+                return;
+            }
 
-try {
-    const response =
+            nextButton.disabled = true;
+
+            const expectedVideoId =
+                this.watchParty
+                    .currentVideoId;
+
+            const expectedIndex =
+                this.watchParty
+                    .currentIndex;
+
+            this.watchPartyNavigationFromVideoId =
+                expectedVideoId;
+
+            try {
+                const response =
                     await fetch(
                         `${this.API}/api/watchparty/next`,
                         {
                             method: "POST",
+
                             headers: {
                                 "Content-Type":
                                     "application/json"
                             },
-                            body: JSON.stringify({
-                                clientId:
-                                    this.clientId
-                            })
+
+                            body:
+                                JSON.stringify({
+                                    clientId:
+                                        this.clientId,
+
+                                    expectedVideoId,
+
+                                    expectedIndex
+                                })
                         }
                     );
 
@@ -3965,18 +3990,28 @@ try {
                         `Next request failed (${response.status})`
                     );
                 }
-           } catch (error) {
-    this.watchPartyNavigationFromVideoId =
-    null;
 
-    console.error(
-        "watch party next failed:",
+                if (
+                    result?.stale === true
+                ) {
+                    this.watchPartyNavigationFromVideoId =
+                        null;
+                }
+            } catch (error) {
+                this.watchPartyNavigationFromVideoId =
+                    null;
+
+                console.error(
+                    "watch party next failed:",
                     error
                 );
 
                 window.alert(
                     `watch party next failed: ${error.message}`
                 );
+            } finally {
+                nextButton.disabled =
+                    false;
             }
         }
     );
