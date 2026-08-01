@@ -6827,6 +6827,10 @@ if (
 
         version:
             data.version
+
+		showCompletionDialog:
+        true
+	
     });
 
     return;
@@ -7185,6 +7189,195 @@ createCompletedImageElement(
     return image;
 }
 
+	createImageUploadCompleteDialog(
+    onDismiss
+) {
+    const dialog =
+        document.createElement(
+            "div"
+        );
+
+    dialog.className =
+        "jami-program-message";
+
+    dialog.setAttribute(
+        "role",
+        "status"
+    );
+
+    dialog.setAttribute(
+        "aria-label",
+        "Upload complete"
+    );
+
+    dialog.innerHTML = `
+        <div
+            class="jami-program-message-titlebar"
+        >
+            <div
+                class="
+                    jami-program-message-caption-button
+                    jami-program-message-minimize
+                "
+                aria-hidden="true"
+            >
+                <span></span>
+            </div>
+
+            <div
+                class="jami-program-message-title"
+            >
+                Program Message
+            </div>
+        </div>
+
+        <div
+            class="jami-program-message-body"
+        >
+            <div
+                class="jami-program-message-main"
+            >
+                <div
+                    class="jami-program-message-icon"
+                    aria-hidden="true"
+                >
+                    <span
+                        class="jami-program-message-exclamation"
+                    >
+                        !
+                    </span>
+
+                    <span
+                        class="jami-program-message-symbol"
+                    >
+                        ✦
+                    </span>
+                </div>
+
+                <div
+                    class="jami-program-message-text"
+                >
+                    Upload Complete
+                </div>
+            </div>
+
+            <div
+                class="jami-program-message-actions"
+            >
+                <button
+                    type="button"
+                    class="jami-program-message-ok"
+                    data-jami-program-message-ok
+                >
+                    OK
+                </button>
+            </div>
+        </div>
+    `;
+
+    const dismiss = () => {
+        if (
+            dialog.dataset.dismissed ===
+                "true"
+        ) {
+            return;
+        }
+
+        dialog.dataset.dismissed =
+            "true";
+
+        dialog.classList.add(
+            "jami-program-message-closing"
+        );
+
+        window.setTimeout(
+            () => {
+                onDismiss?.();
+            },
+            90
+        );
+    };
+
+    dialog
+        .querySelector(
+            "[data-jami-program-message-ok]"
+        )
+        ?.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                dismiss();
+            }
+        );
+
+    return {
+        dialog,
+        dismiss
+    };
+}
+
+showCompletedImage(
+    upload,
+    body
+) {
+    if (
+        !upload?.imageUrl ||
+        !body
+    ) {
+        return;
+    }
+
+    const image =
+        this.createCompletedImageElement(
+            upload
+        );
+
+    body.classList.remove(
+        "jami-transfer-completion-host"
+    );
+
+    body.replaceChildren(
+        image
+    );
+
+    image.addEventListener(
+        "load",
+        () => {
+            this.scrollMessagesToBottomAfterLayout({
+                force: true
+            });
+        },
+        {
+            once: true
+        }
+    );
+
+    image.addEventListener(
+        "error",
+        () => {
+            const failure =
+                document.createElement(
+                    "div"
+                );
+
+            failure.className =
+                "jami-transfer-message";
+
+            failure.textContent =
+                "Image retrieval failed";
+
+            body.replaceChildren(
+                failure
+            );
+        },
+        {
+            once: true
+        }
+    );
+}
+
 	addImageUpload(upload) {
     if (
         !upload?.uploadId
@@ -7491,48 +7684,118 @@ applyImageUploadState(upload) {
         return;
     }
 
-    const image =
-        this.createCompletedImageElement(
-            upload
+    /*
+     * History records should display
+     * their image immediately rather
+     * than replaying the completion
+     * dialog on every refresh.
+     */
+    if (
+        upload.showCompletionDialog !==
+            true
+    ) {
+        this.showCompletedImage(
+            upload,
+            body
         );
 
-    body.replaceChildren(
-        image
+        return;
+    }
+
+    /*
+     * The uploader may receive completion
+     * through both WebSocket and XHR.
+     * Show the dialog only once.
+     */
+    if (
+        row.dataset
+            .completionDialogShown ===
+            "true"
+    ) {
+        return;
+    }
+
+    row.dataset
+        .completionDialogShown =
+        "true";
+
+    let transfer =
+        body.querySelector(
+            ".jami-transfer-message"
+        );
+
+    if (!transfer) {
+        transfer =
+            this.createImageTransferElement(
+                upload
+            );
+
+        body.replaceChildren(
+            transfer
+        );
+    }
+
+    const fill =
+        transfer.querySelector(
+            "[data-jami-transfer-fill]"
+        );
+
+    const status =
+        transfer.querySelector(
+            "[data-jami-transfer-status]"
+        );
+
+    const cancelButton =
+        transfer.querySelector(
+            "[data-jami-transfer-cancel]"
+        );
+
+    if (fill) {
+        fill.style.width =
+            "100%";
+    }
+
+    if (status) {
+        status.textContent =
+            "Complete";
+    }
+
+    if (cancelButton) {
+        cancelButton.disabled =
+            true;
+    }
+
+    body.classList.add(
+        "jami-transfer-completion-host"
     );
 
-    image.addEventListener(
-    "load",
-    () => {
-        this.scrollMessagesToBottomAfterLayout({
-            force: true
-        });
-    },
-    {
-        once: true
-    }
-);
-
-    image.addEventListener(
-        "error",
+    const finishCompletion =
         () => {
-            const failure =
-                document.createElement(
-                    "div"
-                );
-
-            failure.className =
-                "jami-transfer-message";
-
-            failure.textContent =
-                "Image retrieval failed";
-
-            body.replaceChildren(
-                failure
+            this.showCompletedImage(
+                upload,
+                body
             );
-        },
-        {
-            once: true
-        }
+        };
+
+    const {
+        dialog,
+        dismiss
+    } =
+        this.createImageUploadCompleteDialog(
+            finishCompletion
+        );
+
+    body.appendChild(
+        dialog
+    );
+
+    this.scrollMessagesToBottomAfterLayout({
+        force: true
+    });
+
+    window.setTimeout(
+        dismiss,
+        1150
     );
 
     return;
@@ -8060,6 +8323,10 @@ async uploadTestImage(file) {
 
                     version:
                         result.version
+
+					showCompletionDialog:
+                     true
+				
                 });
 
                 return;
