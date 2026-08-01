@@ -1237,6 +1237,9 @@ function hideNormalProgressTooltips() {
     );
 }
 
+let preciseSeekCorrectionTimer =
+  null;
+
 function seekYouTubePrecisely(
   targetTime
 ) {
@@ -1255,51 +1258,81 @@ function seekYouTubePrecisely(
       Number(targetTime) || 0
     );
 
+  /*
+   * Cancel the correction belonging to an older
+   * slider position. Only the newest target may
+   * perform a delayed correction.
+   */
+  window.clearTimeout(
+    preciseSeekCorrectionTimer
+  );
 
   player.seekTo(
     safeTarget,
     true
   );
 
+  const seekStartedAt =
+    performance.now();
 
-  window.setTimeout(
-    () => {
-      if (
-        !player ||
-        !playerReady ||
-        typeof player.getCurrentTime !==
-          "function" ||
-        typeof player.seekTo !==
-          "function"
-      ) {
-        return;
-      }
+  const wasPlaying =
+    isPlaying === true;
 
-      const actualTime =
-        Number(
-          player.getCurrentTime()
-        );
+  preciseSeekCorrectionTimer =
+    window.setTimeout(
+      () => {
+        preciseSeekCorrectionTimer =
+          null;
 
-      if (
-        !Number.isFinite(actualTime)
-      ) {
-        return;
-      }
+        if (
+          !player ||
+          !playerReady ||
+          typeof player.getCurrentTime !==
+            "function" ||
+          typeof player.seekTo !==
+            "function"
+        ) {
+          return;
+        }
 
-      const difference =
-        Math.abs(
-          actualTime - safeTarget
-        );
+        const actualTime =
+          Number(
+            player.getCurrentTime()
+          );
 
-      if (difference > 0.75) {
-        player.seekTo(
-          safeTarget,
-          true
-        );
-      }
-    },
-    350
-  );
+        if (
+          !Number.isFinite(actualTime)
+        ) {
+          return;
+        }
+
+        const elapsedSeconds =
+          wasPlaying
+            ? (
+                performance.now() -
+                seekStartedAt
+              ) / 1000
+            : 0;
+
+        const expectedTime =
+          safeTarget +
+          elapsedSeconds;
+
+        const difference =
+          Math.abs(
+            actualTime -
+            expectedTime
+          );
+
+        if (difference > 0.75) {
+          player.seekTo(
+            expectedTime,
+            true
+          );
+        }
+      },
+      400
+    );
 }
 
 function updatePlaybackIcons(playing) {
