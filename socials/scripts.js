@@ -743,6 +743,23 @@ const volumeSlider =
 const volumeIcon =
   document.getElementById("volumeIcon");
 
+const normalProgressWrap =
+  document.getElementById(
+    "normalProgressWrap"
+  );
+
+const normalProgressSlider =
+  document.getElementById(
+    "normalProgressSlider"
+  );
+
+const normalProgressTooltip =
+  document.getElementById(
+    "normalProgressTooltip"
+  );
+
+let normalProgressSeeking = false;
+
 let previousVolume = 50;
 let muted = false;
 
@@ -908,6 +925,222 @@ function showBlackPlayerBackground() {
   }
 }
 
+function formatNormalProgressTime(seconds) {
+  const safeSeconds =
+    Math.max(
+      0,
+      Math.floor(
+        Number(seconds) || 0
+      )
+    );
+
+  const minutes =
+    Math.floor(
+      safeSeconds / 60
+    );
+
+  const remainingSeconds =
+    safeSeconds % 60;
+
+  return (
+    `${minutes}:` +
+    remainingSeconds
+      .toString()
+      .padStart(2, "0")
+  );
+}
+
+function getNormalProgressDuration() {
+  if (
+    !player ||
+    !playerReady ||
+    typeof player.getDuration !==
+      "function"
+  ) {
+    return 0;
+  }
+
+  const duration =
+    Number(
+      player.getDuration()
+    );
+
+  return (
+    Number.isFinite(duration) &&
+    duration > 0
+  )
+    ? duration
+    : 0;
+}
+
+function updateNormalProgressVisibility() {
+  if (!normalProgressWrap) {
+    return;
+  }
+
+  const duration =
+    getNormalProgressDuration();
+
+  const shouldShow =
+    playbackMode === "normal" &&
+    isPlaying === true &&
+    Boolean(loadedVideoId) &&
+    duration > 0;
+
+  normalProgressWrap.classList.toggle(
+    "hidden",
+    !shouldShow
+  );
+
+  normalProgressWrap.setAttribute(
+    "aria-hidden",
+    shouldShow
+      ? "false"
+      : "true"
+  );
+
+  if (!shouldShow) {
+    normalProgressTooltip?.classList.remove(
+      "visible"
+    );
+  }
+}
+
+function updateNormalProgress() {
+  updateNormalProgressVisibility();
+
+  if (
+    !normalProgressSlider ||
+    normalProgressSeeking ||
+    playbackMode !== "normal" ||
+    !player ||
+    !playerReady
+  ) {
+    return;
+  }
+
+  const duration =
+    getNormalProgressDuration();
+
+  const currentTime =
+    typeof player.getCurrentTime ===
+      "function"
+      ? Number(
+          player.getCurrentTime()
+        )
+      : 0;
+
+  if (
+    duration <= 0 ||
+    !Number.isFinite(currentTime)
+  ) {
+    return;
+  }
+
+  const ratio =
+    Math.max(
+      0,
+      Math.min(
+        1,
+        currentTime / duration
+      )
+    );
+
+  normalProgressSlider.value =
+    String(
+      Math.round(
+        ratio * 1000
+      )
+    );
+
+  normalProgressSlider.style
+    .setProperty(
+      "--normal-progress",
+      `${ratio * 100}%`
+    );
+}
+
+function updateNormalProgressTooltip(
+  event
+) {
+  if (
+    !normalProgressSlider ||
+    !normalProgressTooltip
+  ) {
+    return;
+  }
+
+  const duration =
+    getNormalProgressDuration();
+
+  if (duration <= 0) {
+    return;
+  }
+
+  const sliderRect =
+    normalProgressSlider
+      .getBoundingClientRect();
+
+  if (sliderRect.width <= 0) {
+    return;
+  }
+
+  const pointerX =
+    Number.isFinite(event.clientX)
+      ? event.clientX
+      : sliderRect.left;
+
+  const relativeX =
+    Math.max(
+      0,
+      Math.min(
+        sliderRect.width,
+        pointerX -
+          sliderRect.left
+      )
+    );
+
+  const ratio =
+    relativeX /
+    sliderRect.width;
+
+  const hoveredTime =
+    ratio * duration;
+
+  normalProgressTooltip.textContent =
+    formatNormalProgressTime(
+      hoveredTime
+    );
+
+  const wrapRect =
+    normalProgressWrap
+      .getBoundingClientRect();
+
+  const tooltipLeft =
+    sliderRect.left -
+    wrapRect.left +
+    relativeX;
+
+  normalProgressTooltip.style.left =
+    `${tooltipLeft}px`;
+
+  normalProgressTooltip.classList.add(
+    "visible"
+  );
+}
+
+function hideNormalProgressTooltip() {
+  if (
+    normalProgressSeeking
+  ) {
+    return;
+  }
+
+  normalProgressTooltip?.classList.remove(
+    "visible"
+  );
+}
+
 function updatePlaybackIcons(playing) {
   isPlaying = playing === true;
 
@@ -922,8 +1155,9 @@ function updatePlaybackIcons(playing) {
   );
 
   updatePlayButtonTheme();
+updateNormalProgressVisibility();
 
-  window.dispatchEvent(
+window.dispatchEvent(
     new CustomEvent(
       "site-player-state",
       {
@@ -1917,6 +2151,23 @@ window.setTerminalPlaybackControlsVisible =
       "hidden",
       !visible
     );
+
+    if (!visible) {
+      normalProgressWrap?.classList.add(
+        "hidden"
+      );
+
+      normalProgressWrap?.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      normalProgressTooltip?.classList.remove(
+        "visible"
+      );
+    } else {
+      updateNormalProgressVisibility();
+    }
   };
 
 terminalMinimizeBtn?.addEventListener(
@@ -1962,6 +2213,153 @@ nextTrackBtn?.addEventListener(
     playNextNormalVideo();
   }
 );
+
+if (normalProgressSlider) {
+  normalProgressSlider.addEventListener(
+    "pointerenter",
+    event => {
+      updateNormalProgressTooltip(
+        event
+      );
+    }
+  );
+
+  normalProgressSlider.addEventListener(
+    "pointermove",
+    event => {
+      updateNormalProgressTooltip(
+        event
+      );
+    }
+  );
+
+  normalProgressSlider.addEventListener(
+    "pointerleave",
+    () => {
+      hideNormalProgressTooltip();
+    }
+  );
+
+  normalProgressSlider.addEventListener(
+    "pointerdown",
+    event => {
+      normalProgressSeeking = true;
+
+      updateNormalProgressTooltip(
+        event
+      );
+
+      normalProgressSlider
+        .setPointerCapture?.(
+          event.pointerId
+        );
+    }
+  );
+
+  normalProgressSlider.addEventListener(
+    "input",
+    event => {
+      if (
+        playbackMode !== "normal" ||
+        !player ||
+        !playerReady ||
+        typeof player.seekTo !==
+          "function"
+      ) {
+        return;
+      }
+
+      normalProgressSeeking = true;
+
+      const duration =
+        getNormalProgressDuration();
+
+      const sliderValue =
+        Number(
+          event.target.value
+        );
+
+      if (
+        duration <= 0 ||
+        !Number.isFinite(
+          sliderValue
+        )
+      ) {
+        return;
+      }
+
+      const ratio =
+        Math.max(
+          0,
+          Math.min(
+            1,
+            sliderValue / 1000
+          )
+        );
+
+      const targetTime =
+        ratio * duration;
+
+      player.seekTo(
+        targetTime,
+        true
+      );
+
+      normalProgressSlider.style
+        .setProperty(
+          "--normal-progress",
+          `${ratio * 100}%`
+        );
+
+      normalProgressTooltip.textContent =
+        formatNormalProgressTime(
+          targetTime
+        );
+    }
+  );
+
+  const finishNormalProgressSeeking =
+    event => {
+      if (
+        event?.pointerId !==
+          undefined
+      ) {
+        normalProgressSlider
+          .releasePointerCapture?.(
+            event.pointerId
+          );
+      }
+
+      normalProgressSeeking = false;
+
+      normalProgressTooltip
+        ?.classList.remove(
+          "visible"
+        );
+
+      updateNormalProgress();
+    };
+
+  normalProgressSlider.addEventListener(
+    "pointerup",
+    finishNormalProgressSeeking
+  );
+
+  normalProgressSlider.addEventListener(
+    "pointercancel",
+    finishNormalProgressSeeking
+  );
+
+  normalProgressSlider.addEventListener(
+    "change",
+    finishNormalProgressSeeking
+  );
+
+  normalProgressSlider.addEventListener(
+    "blur",
+    finishNormalProgressSeeking
+  );
+}
 
 if (volumeSlider) {
   volumeSlider.addEventListener(
@@ -2065,6 +2463,11 @@ volumeIcon?.addEventListener(
       new Event("input")
     );
   }
+);
+
+window.setInterval(
+  updateNormalProgress,
+  250
 );
 
 loadPlaylist();
