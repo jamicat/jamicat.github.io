@@ -30,7 +30,7 @@
     border: 1px solid #f7f9fa;
     border-radius: 0;
 
-    background: #eef2f4;
+    background: #e9eef1;
 
     box-shadow:
         1px 1px 0 #4a4d50;
@@ -201,7 +201,7 @@
         8px
         8px;
 
-    background: #eef2f4;
+    background: #e9eef1;
 }
 
 .jami-transfer-progress-frame {
@@ -259,14 +259,14 @@
 
     column-gap: 8px;
 
-    margin-top: 10px;
+    margin-top: 11px;
 }
 
 .jami-transfer-copy {
     min-width: 0;
 
     padding-left: 7px;
-    padding-top: 2px;
+    padding-top: 3px;
 }
 
 .jami-transfer-file {
@@ -316,8 +316,8 @@
 .jami-transfer-cancel {
     box-sizing: border-box;
 
-    width: 68px;
-    min-width: 68px;
+    width: 70px;
+    min-width: 70px;
     height: 21px;
 
     margin: 0;
