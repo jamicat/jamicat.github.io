@@ -7115,7 +7115,7 @@ if (!this.isBanned) {
                             <span
                                 data-jami-transfer-status
                             >
-                                Opening socket...
+                                Working
                             </span>
                         </div>
                     </div>
@@ -7593,11 +7593,19 @@ applyImageUploadState(upload) {
             `${progress}%`;
     }
 
-    if (status) {
+   if (status) {
+    if (
+        upload.status ===
+            "uploading"
+    ) {
+        status.textContent =
+            "Working";
+    } else {
         status.textContent =
             upload.statusText ||
-            "Transmitting image...";
+            "Failed";
     }
+}
 
     if (cancelButton) {
         cancelButton.disabled =
@@ -7611,30 +7619,8 @@ applyImageUploadState(upload) {
 
 	getImageUploadStatusText(
     progress
-) 
-
-	{
-    if (progress < 8) {
-        return "Opening socket...";
-    }
-
-    if (progress < 22) {
-        return "Contacting remote node...";
-    }
-
-    if (progress < 38) {
-        return "Negotiating protocol...";
-    }
-
-    if (progress < 55) {
-        return "Allocating transfer buffer...";
-    }
-
-    if (progress < 88) {
-        return "Transmitting image...";
-    }
-
-    return "Checking checksum...";
+) {
+    return "Working";
 }
 
 queueImageProgressReport(
