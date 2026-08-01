@@ -8289,13 +8289,11 @@ const stopWatchPartyResize =
         }
 
         const {
-    panel,
-    pointerId,
-    startClientY,
-    startHeight,
-    scaleY
-} =
-    watchPartyResizeState;
+            panel,
+            handle,
+            pointerId
+        } =
+            watchPartyResizeState;
 
         if (
             event?.pointerId !== undefined &&
@@ -8318,21 +8316,34 @@ const stopWatchPartyResize =
             );
         }
 
-        handle
-            ?.releasePointerCapture?.(
-                pointerId
-            );
+    
+        watchPartyResizeState =
+            null;
+
+        try {
+            if (
+                handle?.hasPointerCapture?.(
+                    pointerId
+                )
+            ) {
+                handle.releasePointerCapture(
+                    pointerId
+                );
+            }
+        } catch {
+            
+        }
 
         panel.dataset.positioned =
             "true";
 
-        watchPartyResizeState =
-            null;
-
         document.body.style.userSelect =
             "";
-    };
 
+        document.body.style.cursor =
+            "";
+    };
+	
 const moveWatchPartyResize =
     event => {
         if (!watchPartyResizeState) {
@@ -8430,11 +8441,14 @@ watchPartyResizeState = {
 };
 
         handle.setPointerCapture?.(
-            event.pointerId
-        );
+    event.pointerId
+);
 
-        document.body.style.userSelect =
-            "none";
+document.body.style.userSelect =
+    "none";
+
+document.body.style.cursor =
+    "ns-resize";
     }
 );
 
@@ -8448,12 +8462,20 @@ window.addEventListener(
 
 window.addEventListener(
     "pointerup",
-    stopWatchPartyResize
+    stopWatchPartyResize,
+    true
 );
 
 window.addEventListener(
     "pointercancel",
-    stopWatchPartyResize
+    stopWatchPartyResize,
+    true
+);
+
+this.watchPartyPanel.addEventListener(
+    "lostpointercapture",
+    stopWatchPartyResize,
+    true
 );
 }
 
