@@ -6688,17 +6688,14 @@ if (!this.isBanned) {
                 </div>
 
                 <div
-                    class="jami-transfer-title-controls"
-                    aria-hidden="true"
-                >
-                    <div
-                        class="jami-transfer-title-control"
-                    ></div>
+    class="jami-transfer-title-control"
+    aria-hidden="true"
+></div>
 
-                    <div
-                        class="jami-transfer-title-control"
-                    ></div>
-                </div>
+<div
+    class="jami-transfer-title-control"
+    aria-hidden="true"
+></div>
             </div>
 
             <div
