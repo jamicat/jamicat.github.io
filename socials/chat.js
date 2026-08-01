@@ -2375,10 +2375,10 @@ async loadWatchParty() {
             "[data-watch-party-progress-fill]"
         );
 
-    const tooltip =
-        this.watchPartyPanel?.querySelector(
-            "[data-watch-party-progress-tooltip]"
-        );
+    const currentTooltip =
+    this.watchPartyPanel?.querySelector(
+        "[data-watch-party-progress-current-tooltip]"
+    );
 
     if (!timeLabel) {
         return;
@@ -2466,15 +2466,15 @@ async loadWatchParty() {
                 `${percentage}%`;
         }
 
-        if (tooltip) {
-            tooltip.textContent =
-                this.formatDuration(
-                    currentTime
-                );
+        if (currentTooltip) {
+    currentTooltip.textContent =
+        this.formatDuration(
+            currentTime
+        );
 
-            tooltip.style.left =
-                `${percentage}%`;
-        }
+    currentTooltip.style.left =
+        `${percentage}%`;
+}
     };
 
     updateTime();
@@ -3294,31 +3294,55 @@ const hasWatchPartyVideo =
             aria-label="Watch Party playback position"
         >
 
-        <div
-            data-watch-party-progress-tooltip
-            class="
-                pointer-events-none
-                absolute
-                bottom-full
-                z-20
-                mb-1
-                -translate-x-1/2
-                whitespace-nowrap
-                rounded-md
-                border border-white/10
-                bg-black/95
-                px-2 py-1
-                text-[9px]
-                tabular-nums
-                text-white/80
-                opacity-0
-                transition-opacity
-                group-hover:opacity-100
-            "
-            style="left: 0%"
-        >
-            0:00
-        </div>
+       <div
+    data-watch-party-progress-current-tooltip
+    class="
+        pointer-events-none
+        absolute
+        bottom-full
+        z-20
+        mb-1
+        -translate-x-1/2
+        whitespace-nowrap
+        rounded-md
+        border border-white/10
+        bg-black/95
+        px-2 py-1
+        text-[9px]
+        tabular-nums
+        text-white/80
+        opacity-0
+        transition-opacity
+    "
+    style="left: 0%"
+>
+    0:00
+</div>
+
+<div
+    data-watch-party-progress-hover-tooltip
+    class="
+        pointer-events-none
+        absolute
+        bottom-full
+        z-20
+        mb-7
+        -translate-x-1/2
+        whitespace-nowrap
+        rounded-md
+        border border-white/10
+        bg-black/95
+        px-2 py-1
+        text-[9px]
+        tabular-nums
+        text-white/80
+        opacity-0
+        transition-opacity
+    "
+    style="left: 0%"
+>
+    0:00
+</div>
     </div>
 
     <div
@@ -3956,9 +3980,14 @@ const progressFill =
         "[data-watch-party-progress-fill]"
     );
 
-const progressTooltip =
+const progressCurrentTooltip =
     this.watchPartyPanel.querySelector(
-        "[data-watch-party-progress-tooltip]"
+        "[data-watch-party-progress-current-tooltip]"
+    );
+
+const progressHoverTooltip =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-progress-hover-tooltip]"
     );
 
 if (progressInput) {
@@ -3997,16 +4026,16 @@ if (progressInput) {
                 `${percentage}%`;
         }
 
-        if (progressTooltip) {
-            progressTooltip.textContent =
+        if (progressCurrentTooltip) {
+            progressCurrentTooltip.textContent =
                 this.formatDuration(
                     safeValue
                 );
 
-            progressTooltip.style.left =
+            progressCurrentTooltip.style.left =
                 `${percentage}%`;
 
-            progressTooltip.classList.add(
+            progressCurrentTooltip.classList.add(
                 "opacity-100"
             );
         }
@@ -4026,15 +4055,72 @@ if (progressInput) {
         }
     };
 
-    const beginSeeking = () => {
-        this.watchPartySeeking = true;
+	const updateHoverPreview = event => {
+    if (
+        !progressHoverTooltip ||
+        !progressInput
+    ) {
+        return;
+    }
 
-        if (progressTooltip) {
-            progressTooltip.classList.add(
-                "opacity-100"
-            );
-        }
-    };
+    const rect =
+        progressInput
+            .getBoundingClientRect();
+
+    if (rect.width <= 0) {
+        return;
+    }
+
+    const maximum =
+        Number(progressInput.max);
+
+    const safeMaximum =
+        Number.isFinite(maximum) &&
+        maximum > 0
+            ? maximum
+            : 1;
+
+    const relativeX =
+        Math.max(
+            0,
+            Math.min(
+                rect.width,
+                event.clientX -
+                    rect.left
+            )
+        );
+
+    const ratio =
+        relativeX /
+        rect.width;
+
+    const hoveredTime =
+        ratio *
+        safeMaximum;
+
+    progressHoverTooltip.textContent =
+        this.formatDuration(
+            hoveredTime
+        );
+
+    progressHoverTooltip.style.left =
+        `${ratio * 100}%`;
+};
+
+    const beginSeeking = event => {
+    this.watchPartySeeking = true;
+
+    showProgressTooltips();
+
+    if (
+        event &&
+        Number.isFinite(
+            event.clientX
+        )
+    ) {
+        updateHoverPreview(event);
+    }
+};
 
     const finishSeeking = async () => {
         if (!this.watchPartySeeking) {
@@ -4043,11 +4129,15 @@ if (progressInput) {
 
         this.watchPartySeeking = false;
 
-        if (progressTooltip) {
-            progressTooltip.classList.remove(
-                "opacity-100"
-            );
-        }
+      progressCurrentTooltip
+    ?.classList.remove(
+        "opacity-100"
+    );
+
+progressHoverTooltip
+    ?.classList.remove(
+        "opacity-100"
+    );
 
         if (
             this.watchPartySeekBusy ||
@@ -4120,6 +4210,28 @@ if (progressInput) {
         }
     };
 
+	progressInput.addEventListener(
+    "pointerenter",
+    event => {
+        showProgressTooltips();
+        updateHoverPreview(event);
+    }
+);
+
+progressInput.addEventListener(
+    "pointermove",
+    event => {
+        updateHoverPreview(event);
+    }
+);
+
+progressInput.addEventListener(
+    "pointerleave",
+    () => {
+        hideProgressTooltips();
+    }
+);
+	
     progressInput.addEventListener(
         "pointerdown",
         beginSeeking
