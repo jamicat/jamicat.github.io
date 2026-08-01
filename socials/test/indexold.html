@@ -1,0 +1,80 @@
+<!-- if you're reading this you're-->
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jamie></title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles2.css">
+<script type="module" src="galaxy.js"></script>
+<script src="script.js" defer></script>
+</head>
+	
+<body>
+<canvas id="canvas"></canvas>
+<div id="draggable-container">	
+<div class="image-container" style="position: relative;">
+<img src="jami.png" alt="Fursona" class="fursona-image" style="display: block;">
+<div class="infText" id="mood-text" 
+style="background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); color: white; text-shadow: 0 0 5px #ff7eb6, 0 0 10px #ff4da6; display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">
+</div>
+</div>
+<div class="terminal" id="terminal">
+<div id="typing-area"></div>
+<div class="buttons" id="button-area" style="display: none;">
+<!-- 
+  <button class="button" onclick="showAbout()">About</button>
+	    -->
+<button class="button2" onclick="showArt()">Art</button>
+<button class="button" onclick="window.open('/book/', '_blank')">Guestbook</button>
+<button class="button" style="background-color: #FE307C; font-weight: bold;" onclick="window.open('https://www.bludfest.com/')">BLUDFEST YEAR 2</button>
+<button class="button2" onclick="exitTerminal()">Exit</button>
+</div>
+</div>
+</div>
+
+<div class="play-volume-container">
+    <button id="music-toggle-button" class="music-button">
+        <span class="play-icon">▶</span>
+        <span class="pause-icon" style="display: none;">❚❚</span>
+    </button>
+    <button id="next-song-button" class="music-button" style="font-size: 70px;">
+        ⏭
+    </button>
+</div>
+
+<div class="messageContainer">
+<button class="button3" onclick="toggleMessageBox()">Leave a message ฅᨐฅ</button>
+<div id="messageBox" class="message-box" style="display: none;">
+<label for="name">Name: </label>
+<input type="text" id="name" class="input-box" placeholder="meower">
+<br><br><label for="message">Message: </label>
+<textarea id="message" class="input-box" placeholder="meow"></textarea>
+<label for="info" style="font-size: 0.8em;">Messages are private!</label><br>
+<button class="button4" onclick="submitMessage()">Submit ฅ</button>
+</div>
+</div>
+
+<!--div class="dog-volume-container">
+<button id="toggle-dog-button" class="button" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">Dog Audio: OFF</button>
+</div-->
+
+<audio id="music-audio" src="fromadream.mp3" loop></audio>
+<!--img src="dog.png" class="dog" id="dog" alt="Dog" draggable="false"-->
+<audio id="dog-audio" src="dog-bark.mp3" loop></audio>
+<audio id="knock-audio" src="knock.mp3"></audio>
+
+<div id="weather-container" class="infText" style="border: none;">
+🌈British weather: <span id="weather-output"></span>
+</div>
+	
+<div class="video-container" id="video-box">
+    <iframe id="youtube-video" src="https://www.youtube.com/embed/wSumaFZoZpg?enablejsapi=1&autoplay=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+</body>
+</html>
+
+
+
+
