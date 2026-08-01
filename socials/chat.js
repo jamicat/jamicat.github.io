@@ -8286,47 +8286,18 @@ interact(
         "button, input, a, " +
         "[data-watch-party-resize-handle]",
 
-    inertia: true,
+    inertia: false,
 
     modifiers: [
         interact.modifiers.restrictRect({
             restriction: "parent",
-            endOnly: true
+
+            endOnly: false
         })
     ],
 
     listeners: {
-        move(event) {
-            const target =
-                event.target;
-
-            const x =
-                (
-                    parseFloat(
-                        target.dataset.x
-                    ) || 0
-                ) +
-                event.dx;
-
-            const y =
-                (
-                    parseFloat(
-                        target.dataset.y
-                    ) || 0
-                ) +
-                event.dy;
-
-            target.style.transform =
-                `translate(${x}px, ${y}px)`;
-
-            target.dataset.x =
-                String(x);
-
-            target.dataset.y =
-                String(y);
-        },
-
-        end(event) {
+        start(event) {
             const target =
                 event.target;
 
@@ -8334,10 +8305,6 @@ interact(
                 target
                     .getBoundingClientRect();
 
-            /*
-             * Consolidate the temporary drag
-             * translation into permanent left/top.
-             */
             target.style.left =
                 `${rect.left}px`;
 
@@ -8351,7 +8318,49 @@ interact(
                 "auto";
 
             target.style.transform =
-                "translate(0px, 0px)";
+                "none";
+
+            target.dataset.x = "0";
+            target.dataset.y = "0";
+        },
+
+        move(event) {
+            const target =
+                event.target;
+
+            const currentLeft =
+                parseFloat(
+                    target.style.left
+                ) || 0;
+
+            const currentTop =
+                parseFloat(
+                    target.style.top
+                ) || 0;
+
+            target.style.left =
+                `${currentLeft + event.dx}px`;
+
+            target.style.top =
+                `${currentTop + event.dy}px`;
+        },
+
+        end(event) {
+            const target =
+                event.target;
+
+            const finalLeft =
+                parseFloat(
+                    target.style.left
+                );
+
+            const finalTop =
+                parseFloat(
+                    target.style.top
+                );
+
+            target.style.transform =
+                "none";
 
             target.dataset.x = "0";
             target.dataset.y = "0";
@@ -8359,15 +8368,23 @@ interact(
             target.dataset.positioned =
                 "true";
 
-            localStorage.setItem(
-                "watch_party_left",
-                String(rect.left)
-            );
+            if (
+                Number.isFinite(finalLeft)
+            ) {
+                localStorage.setItem(
+                    "watch_party_left",
+                    String(finalLeft)
+                );
+            }
 
-            localStorage.setItem(
-                "watch_party_top",
-                String(rect.top)
-            );
+            if (
+                Number.isFinite(finalTop)
+            ) {
+                localStorage.setItem(
+                    "watch_party_top",
+                    String(finalTop)
+                );
+            }
         }
     }
 });
