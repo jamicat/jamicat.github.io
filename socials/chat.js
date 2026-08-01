@@ -7793,11 +7793,6 @@ applyImageUploadState(upload) {
         force: true
     });
 
-    window.setTimeout(
-        dismiss,
-        1150
-    );
-
     return;
 }
 
