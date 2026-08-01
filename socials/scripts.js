@@ -1064,12 +1064,12 @@ function updateNormalProgress() {
       )
     );
 
-  normalProgressSlider.value =
-    String(
-      Math.round(
-        ratio * 1000
-      )
-    );
+ normalProgressSlider.value =
+  String(
+    Math.round(
+      ratio * 100000
+    )
+  );
 
   normalProgressSlider.style
   .setProperty(
@@ -1104,6 +1104,45 @@ if (
 }
 }
 
+function getRangePointerRatio(
+  rangeInput,
+  clientX,
+  thumbWidth = 10
+) {
+  const rect =
+    rangeInput.getBoundingClientRect();
+
+  if (rect.width <= 0) {
+    return 0;
+  }
+
+  const halfThumb =
+    thumbWidth / 2;
+
+  const usableWidth =
+    Math.max(
+      1,
+      rect.width - thumbWidth
+    );
+
+  const usableLeft =
+    rect.left + halfThumb;
+
+  const pointerPosition =
+    Math.max(
+      0,
+      Math.min(
+        usableWidth,
+        clientX - usableLeft
+      )
+    );
+
+  return (
+    pointerPosition /
+    usableWidth
+  );
+}
+
 function updateNormalProgressTooltip(
   event
 ) {
@@ -1134,19 +1173,16 @@ function updateNormalProgressTooltip(
       ? event.clientX
       : sliderRect.left;
 
-  const relativeX =
-    Math.max(
-      0,
-      Math.min(
-        sliderRect.width,
-        pointerX -
-          sliderRect.left
-      )
-    );
+ const ratio =
+  getRangePointerRatio(
+    normalProgressSlider,
+    pointerX,
+    10
+  );
 
-  const ratio =
-    relativeX /
-    sliderRect.width;
+const relativeX =
+  ratio *
+  sliderRect.width;
 
   const hoveredTime =
     ratio * duration;
@@ -2360,13 +2396,13 @@ if (normalProgressSlider) {
       }
 
       const ratio =
-        Math.max(
-          0,
-          Math.min(
-            1,
-            sliderValue / 1000
-          )
-        );
+  Math.max(
+    0,
+    Math.min(
+      1,
+      sliderValue / 100000
+    )
+  );
 
       const targetTime =
         ratio * duration;
