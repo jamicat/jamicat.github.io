@@ -419,19 +419,13 @@
     display: none;
 }
 
-/*
- * Completion popup host.
- */
+
 .jami-transfer-completion-host {
     position: relative;
 
     min-height: 128px;
 }
 
-/*
- * Thick blue-black outer frame,
- * then a thin pale line inside it.
- */
 .jami-program-message {
     position: absolute;
 
@@ -500,9 +494,6 @@
         );
 }
 
-/*
- * Title bar.
- */
 .jami-program-message-titlebar {
     display: grid;
 
@@ -591,9 +582,7 @@
     text-shadow: none;
 }
 
-/*
- * Pale inner body.
- */
+
 .jami-program-message-body {
     box-sizing: border-box;
 
@@ -618,36 +607,29 @@
     gap: 18px;
 }
 
-/*
- * Warmer mustard-yellow warning icon.
- */
 .jami-program-message-icon {
     position: relative;
 
     box-sizing: border-box;
 
-    width: 44px;
-    height: 44px;
+    width: 37px;
+    height: 37px;
 
     flex: none;
 
-    margin-left: -1px;
+    margin-left: 1px;
 
     border:
         1px solid
-        #6d5f26;
+        #756729;
 
     border-radius: 50%;
 
-    background: #c8b83f;
+    background: #cdb64a;
 
     box-shadow: none;
 }
 
-/*
- * Hide the literal glyph and draw
- * a thicker mark with a larger gap.
- */
 .jami-program-message-exclamation {
     position: static;
 
@@ -668,8 +650,8 @@
     left: 50%;
     top: 6px;
 
-    width: 6px;
-    height: 22px;
+    width: 7px;
+    height: 19px;
 
     background: #352126;
 
@@ -685,10 +667,10 @@
     position: absolute;
 
     left: 50%;
-    bottom: 5px;
+    bottom: 4px;
 
-    width: 7px;
-    height: 7px;
+    width: 5px;
+    height: 5px;
 
     border-radius: 50%;
 
@@ -726,30 +708,24 @@
     white-space: nowrap;
 }
 
-/*
- * Push the button farther down and right.
- */
 .jami-program-message-actions {
     display: flex;
 
     justify-content: flex-end;
 
     margin-top: 11px;
-    padding-right: 1px;
+    padding-right: 4px;
 }
 
-/*
- * Smaller film-style OK button.
- */
 .jami-program-message-ok {
     box-sizing: border-box;
 
-    width: 62px;
-    min-width: 62px;
-    height: 23px;
+    width: 54px;
+    min-width: 54px;
+    height: 21px;
 
     margin: 0;
-    padding: 0 7px;
+    padding: 0 6px;
 
     border-top:
         1px solid
@@ -778,9 +754,9 @@
         Helvetica,
         sans-serif;
 
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
-    line-height: 20px;
+    line-height: 18px;
     text-align: center;
 
     box-shadow:
