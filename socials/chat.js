@@ -7189,6 +7189,276 @@ createCompletedImageElement(
     return image;
 }
 
+	playImageUploadCompleteSound() {
+    const AudioContextClass =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+    if (!AudioContextClass) {
+        return;
+    }
+
+    if (!this.imageUploadAudioContext) {
+        this.imageUploadAudioContext =
+            new AudioContextClass();
+    }
+
+    const context =
+        this.imageUploadAudioContext;
+
+    const play = () => {
+        const now =
+            context.currentTime;
+
+        const master =
+            context.createGain();
+
+        master.gain.setValueAtTime(
+            0.0001,
+            now
+        );
+
+        master.gain.exponentialRampToValueAtTime(
+            0.9,
+            now + 0.012
+        );
+
+        master.gain.exponentialRampToValueAtTime(
+            0.0001,
+            now + 0.46
+        );
+
+        master.connect(
+            context.destination
+        );
+
+        const primary =
+            context.createOscillator();
+
+        const primaryGain =
+            context.createGain();
+
+        primary.type =
+            "square";
+
+        primary.frequency.setValueAtTime(
+            780,
+            now
+        );
+
+        primary.frequency.linearRampToValueAtTime(
+            720,
+            now + 0.13
+        );
+
+        primary.frequency.setValueAtTime(
+            810,
+            now + 0.16
+        );
+
+        primary.frequency.linearRampToValueAtTime(
+            750,
+            now + 0.37
+        );
+
+        primary.detune.setValueAtTime(
+            -7,
+            now
+        );
+
+        primaryGain.gain.setValueAtTime(
+            0.0001,
+            now
+        );
+
+        primaryGain.gain.exponentialRampToValueAtTime(
+            0.46,
+            now + 0.008
+        );
+
+        primaryGain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            now + 0.4
+        );
+
+        primary.connect(
+            primaryGain
+        );
+
+        primaryGain.connect(
+            master
+        );
+
+        const secondary =
+            context.createOscillator();
+
+        const secondaryGain =
+            context.createGain();
+
+        secondary.type =
+            "triangle";
+
+        secondary.frequency.setValueAtTime(
+            390,
+            now
+        );
+
+        secondary.frequency.linearRampToValueAtTime(
+            365,
+            now + 0.38
+        );
+
+        secondaryGain.gain.setValueAtTime(
+            0.0001,
+            now
+        );
+
+        secondaryGain.gain.exponentialRampToValueAtTime(
+            0.18,
+            now + 0.012
+        );
+
+        secondaryGain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            now + 0.42
+        );
+
+        secondary.connect(
+            secondaryGain
+        );
+
+        secondaryGain.connect(
+            master
+        );
+
+        const noiseLength =
+            Math.floor(
+                context.sampleRate *
+                0.48
+            );
+
+        const noiseBuffer =
+            context.createBuffer(
+                1,
+                noiseLength,
+                context.sampleRate
+            );
+
+        const noiseData =
+            noiseBuffer.getChannelData(
+                0
+            );
+
+        for (
+            let index = 0;
+            index < noiseLength;
+            index += 1
+        ) {
+            noiseData[index] =
+                (
+                    Math.random() *
+                    2 -
+                    1
+                ) *
+                (
+                    1 -
+                    index /
+                    noiseLength
+                );
+        }
+
+        const noise =
+            context.createBufferSource();
+
+        const noiseFilter =
+            context.createBiquadFilter();
+
+        const noiseGain =
+            context.createGain();
+
+        noise.buffer =
+            noiseBuffer;
+
+        noiseFilter.type =
+            "bandpass";
+
+        noiseFilter.frequency.setValueAtTime(
+            1450,
+            now
+        );
+
+        noiseFilter.Q.setValueAtTime(
+            0.8,
+            now
+        );
+
+        noiseGain.gain.setValueAtTime(
+            0.035,
+            now
+        );
+
+        noiseGain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            now + 0.45
+        );
+
+        noise.connect(
+            noiseFilter
+        );
+
+        noiseFilter.connect(
+            noiseGain
+        );
+
+        noiseGain.connect(
+            master
+        );
+
+        primary.start(
+            now
+        );
+
+        secondary.start(
+            now
+        );
+
+        noise.start(
+            now
+        );
+
+        primary.stop(
+            now + 0.44
+        );
+
+        secondary.stop(
+            now + 0.45
+        );
+
+        noise.stop(
+            now + 0.48
+        );
+    };
+
+    if (
+        context.state ===
+            "suspended"
+    ) {
+        context
+            .resume()
+            .then(play)
+            .catch(error => {
+                console.warn(
+                    "Could not play upload-complete sound:",
+                    error
+                );
+            });
+
+        return;
+    }
+
+    play();
+}
+	
 	createImageUploadCompleteDialog(
     onDismiss
 ) {
@@ -7201,6 +7471,8 @@ createCompletedImageElement(
     "jami-program-message",
     "jami-program-message-opening"
 ].join(" ");
+
+	this.playImageUploadCompleteSound();
 
     dialog.setAttribute(
         "role",
