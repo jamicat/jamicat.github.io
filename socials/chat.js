@@ -7197,8 +7197,10 @@ createCompletedImageElement(
             "div"
         );
 
-    dialog.className =
-        "jami-program-message";
+    dialog.className = [
+    "jami-program-message",
+    "jami-program-message-opening"
+].join(" ");
 
     dialog.setAttribute(
         "role",
@@ -7312,6 +7314,14 @@ createCompletedImageElement(
             }
         );
 
+		requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+        dialog.classList.remove(
+            "jami-program-message-opening"
+        );
+    });
+});
+		
     return {
         dialog,
         dismiss
