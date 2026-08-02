@@ -423,9 +423,8 @@
 .jami-transfer-completion-host {
     position: relative;
 
-    min-height: 112px;
+    min-height: 128px;
 }
-
 
 .jami-program-message {
     position: absolute;
@@ -439,19 +438,20 @@
 
     width:
         min(
-            282px,
-            calc(100% - 10px)
+            292px,
+            calc(100% - 8px)
         );
 
     overflow: hidden;
 
-    border: 1px solid #f7f9fa;
+    border: 2px solid #25242a;
     border-radius: 0;
 
-    background: #e9eef1;
+    background: #e9edef;
 
     box-shadow:
-        2px 2px 0 #3e4145;
+        0 0 0 1px #f5f7f7,
+        2px 2px 0 #3b3a40;
 
     color: #111;
 
@@ -483,22 +483,25 @@
         );
 }
 
+
 .jami-program-message-titlebar {
     display: grid;
 
     grid-template-columns:
-        22px
+        24px
         minmax(0, 1fr);
 
     align-items: stretch;
 
     box-sizing: border-box;
 
-    height: 23px;
+    height: 25px;
 
-    margin: 1px 1px 0;
+    margin: 0;
 
-    background: #252c36;
+    border: 0;
+
+    background: #262c37;
 
     color: #f5f5f3;
 }
@@ -511,10 +514,10 @@
     width: 100%;
     height: 100%;
 
-    background: #dce6ed;
-
     border-right:
-        1px solid #6b7075;
+        1px solid #5f6469;
+
+    background: #dce6ed;
 }
 
 .jami-program-message-minimize span {
@@ -543,89 +546,104 @@
     align-items: center;
     justify-content: center;
 
-    padding-right: 22px;
+    padding-right: 24px;
 
     overflow: hidden;
 
+    background: #262c37;
+
     color: #f5f5f3;
 
-    font-size: 13px;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 14px;
     font-weight: 700;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.45px;
     line-height: 1;
 
     text-align: center;
     white-space: nowrap;
+
+    text-shadow: none;
 }
 
 
 .jami-program-message-body {
     box-sizing: border-box;
 
-    min-height: 84px;
+    min-height: 101px;
 
     padding:
-        14px
-        14px
-        10px;
+        18px
+        17px
+        11px;
 
-    background: #e9eef1;
+    background: #e9edef;
 }
 
 .jami-program-message-main {
     display: flex;
 
-    min-height: 39px;
+    min-height: 48px;
 
     align-items: center;
 
-    gap: 15px;
+    gap: 18px;
 }
+
 
 .jami-program-message-icon {
     position: relative;
 
     box-sizing: border-box;
 
-    width: 39px;
-    height: 39px;
+    width: 44px;
+    height: 44px;
 
     flex: none;
 
-    border: 1px solid #454224;
+    margin-left: -2px;
+
+    border:
+        1px solid #6f6830;
+
     border-radius: 50%;
 
-    background: #b6ad42;
+    background: #b9b14c;
 
-    box-shadow:
-        inset
-        1px
-        1px
-        0
-        rgba(
-            255,
-            255,
-            255,
-            0.35
-        );
+    box-shadow: none;
 }
+
 
 .jami-program-message-exclamation {
+    position: static;
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    color: transparent;
+
+    font-size: 0;
+    line-height: 0;
+}
+
+.jami-program-message-exclamation::before {
     position: absolute;
 
     left: 50%;
-    top: 4px;
+    top: 7px;
 
-    color: #211622;
+    width: 5px;
+    height: 23px;
 
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    background: #342124;
 
-    font-size: 27px;
-    font-weight: 900;
-    line-height: 1;
+    content: "";
 
     transform:
         translateX(
@@ -633,34 +651,45 @@
         );
 }
 
-.jami-program-message-symbol {
+.jami-program-message-exclamation::after {
     position: absolute;
 
     left: 50%;
-    bottom: 0;
+    bottom: 6px;
 
-    color: #211622;
+    width: 6px;
+    height: 6px;
 
-    font-size: 11px;
-    line-height: 1;
+    background: #342124;
+
+    border-radius: 50%;
+
+    content: "";
 
     transform:
         translateX(
             -50%
         );
+}
+
+
+.jami-program-message-symbol {
+    display: none;
 }
 
 .jami-program-message-text {
     min-width: 0;
 
-    color: #181818;
+    padding-top: 2px;
+
+    color: #181518;
 
     font-family:
         Arial,
         Helvetica,
         sans-serif;
 
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     letter-spacing: 0.2px;
     line-height: 1.1;
@@ -673,15 +702,15 @@
 
     justify-content: flex-end;
 
-    margin-top: 7px;
+    margin-top: 10px;
 }
 
 .jami-program-message-ok {
     box-sizing: border-box;
 
-    width: 68px;
-    min-width: 68px;
-    height: 24px;
+    width: 82px;
+    min-width: 82px;
+    height: 27px;
 
     margin: 0;
     padding: 0 8px;
@@ -702,23 +731,20 @@
 
     background: #dce6ed;
 
-    color: #111;
+    color: #171417;
 
     font-family:
         Arial,
         Helvetica,
         sans-serif;
 
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
-    line-height: 21px;
+    line-height: 24px;
     text-align: center;
 
     box-shadow:
-        1px
-        1px
-        0
-        #6a7076;
+        1px 1px 0 #676d73;
 
     cursor: pointer;
 }
