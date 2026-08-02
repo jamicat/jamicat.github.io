@@ -6826,7 +6826,7 @@ if (
             data.completedAt,
 
         version:
-            data.version
+            data.version,
 
 		showCompletionDialog:
         true
