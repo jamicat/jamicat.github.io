@@ -6156,18 +6156,8 @@ const destructiveDivider =
 
 destructiveDivider.className =
     "my-1 border-t border-white/10";
-	
-   menu.append(
-    deleteButton,
-    banButton,
-    divider,
-    motdButton,
-    copyButton,
-    destructiveDivider,
-    clearChatButton
-);
 
-	const clearChatButton =
+const clearChatButton =
     this.createModerationMenuButton(
         "clear chat",
         () => {
@@ -6180,6 +6170,17 @@ destructiveDivider.className =
 clearChatButton.classList.add(
     "text-red-300"
 );
+	
+   menu.append(
+    deleteButton,
+    banButton,
+    divider,
+    motdButton,
+    copyButton,
+    destructiveDivider,
+    clearChatButton
+);
+
 	
     document.body.appendChild(menu);
 
