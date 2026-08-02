@@ -6049,7 +6049,7 @@ openModerationMenu(x, y, message) {
     ].join(" ");
 
 const menuWidth = 176;
-const menuHeight = 165;
+const menuHeight = 210;
 const viewportPadding = 8;
 
 const left = Math.min(
@@ -6148,15 +6148,39 @@ const deleteButton =
 const divider = document.createElement("div");
 divider.className =
     "my-1 border-t border-white/10";
-	
-    menu.append(
-        deleteButton,
-        banButton,
-		divider,
-		motdButton,
-        copyButton
+
+const destructiveDivider =
+    document.createElement(
+        "div"
     );
 
+destructiveDivider.className =
+    "my-1 border-t border-white/10";
+	
+   menu.append(
+    deleteButton,
+    banButton,
+    divider,
+    motdButton,
+    copyButton,
+    destructiveDivider,
+    clearChatButton
+);
+
+	const clearChatButton =
+    this.createModerationMenuButton(
+        "clear chat",
+        () => {
+            this.closeModerationMenu();
+
+            this.clearEntireChat();
+        }
+    );
+
+clearChatButton.classList.add(
+    "text-red-300"
+);
+	
     document.body.appendChild(menu);
 
     this.moderationMenu = menu;
@@ -6929,6 +6953,15 @@ if (
             data.statusText ||
             "Transfer failed"
     });
+
+    return;
+}
+
+	if (
+    data.type ===
+        "chat-cleared"
+) {
+    this.clearChatInterface();
 
     return;
 }
@@ -8451,6 +8484,137 @@ async uploadTestImage(file) {
     xhr.send(file);
 }
 
+	async clearEntireChat() {
+    if (
+        !this.isAdmin ||
+        !this.adminKey
+    ) {
+        return;
+    }
+
+    const confirmed =
+        window.confirm(
+            "clear the entire chat?" 
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    const finalConfirmation =
+        window.confirm(
+            "Final confirmation:\n\n" +
+            "Delete the entire chat and empty R2?"
+        );
+
+    if (!finalConfirmation) {
+        return;
+    }
+
+    try {
+        const request =
+            await fetch(
+                `${this.API}/api/admin/chat/clear`,
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Authorization":
+                            `Bearer ${this.adminKey}`
+                    }
+                }
+            );
+
+        let result = null;
+
+        try {
+            result =
+                await request.json();
+        } catch {}
+
+        if (
+            request.status === 401
+        ) {
+            this.disableAdminMode();
+
+            throw new Error(
+                "admin authentication is no longer valid"
+            );
+        }
+
+        if (!request.ok) {
+          
+            if (
+                result?.chatCleared ===
+                    true
+            ) {
+                this.clearChatInterface();
+            }
+
+            throw new Error(
+                result?.error ||
+                `could not clear chat (${request.status})`
+            );
+        }
+
+       
+        this.clearChatInterface();
+
+        console.log(
+            "Chat cleared:",
+            {
+                messages:
+                    result?.deletedMessages ||
+                    0,
+
+                imageRows:
+                    result?.deletedImageRows ||
+                    0,
+
+                r2Objects:
+                    result?.deletedR2Objects ||
+                    0
+            }
+        );
+    } catch (error) {
+        console.error(
+            "could not clear entire chat:",
+            error
+        );
+
+        window.alert(
+            `could not completely clear chat: ${error.message}`
+        );
+    }
+}
+
+clearChatInterface() {
+    for (
+        const activeUpload
+        of this.activeImageUploads
+            .values()
+    ) {
+        activeUpload.cancelled =
+            true;
+
+        try {
+            activeUpload.xhr?.abort();
+        } catch {}
+    }
+
+    this.activeImageUploads.clear();
+    this.imageUploadRows.clear();
+
+    this.messages.replaceChildren();
+
+    this.userHasScrolledUp =
+        false;
+
+    this.clearUnreadCount();
+}
+
+	
 	async deleteImageUpload(
     uploadId
 ) {
