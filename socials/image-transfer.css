@@ -617,7 +617,10 @@
 
     flex: none;
 
-    margin-left: 1px;
+    margin-left: -1px
+    0
+    0
+    1px;
 
     border:
         1px solid
@@ -667,10 +670,10 @@
     position: absolute;
 
     left: 50%;
-    bottom: 4px;
+    bottom: 3px;
 
-    width: 5px;
-    height: 5px;
+    width: 7px;
+    height: 7px;
 
     border-radius: 50%;
 
@@ -679,9 +682,7 @@
     content: "";
 
     transform:
-        translateX(
-            -50%
-        );
+        translateX(-50%);
 }
 
 .jami-program-message-symbol {
@@ -714,14 +715,15 @@
     justify-content: flex-end;
 
     margin-top: 11px;
-    padding-right: 4px;
+
+    padding-right: 10px;
 }
 
 .jami-program-message-ok {
     box-sizing: border-box;
 
-    width: 54px;
-    min-width: 54px;
+    width: 52px;
+    min-width: 52px;
     height: 21px;
 
     margin: 0;
