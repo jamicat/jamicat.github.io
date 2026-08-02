@@ -423,13 +423,15 @@
 .jami-transfer-completion-host {
     position: relative;
 
-    min-height: 128px;
+    min-height: 132px;
+
+    overflow: visible;
 }
 
 .jami-program-message {
     position: absolute;
 
-    z-index: 4;
+    z-index: 3;
 
     left: 50%;
     top: 50%;
@@ -471,17 +473,39 @@
         Helvetica,
         sans-serif;
 
-    opacity: 1;
+   opacity: 1;
+
+transform:
+    translate(
+        -50%,
+        -50%
+    );
+
+transition:
+    opacity 180ms ease-out,
+    transform 180ms
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        );
+}
+
+.jami-program-message:not(
+    .jami-program-message-opening
+) {
+    z-index: 5;
+}
+
+.jami-program-message-opening {
+    opacity: 0;
 
     transform:
         translate(
             -50%,
-            -50%
+            calc(-50% + 18px)
         );
-
-    transition:
-        opacity 90ms linear,
-        transform 90ms linear;
 }
 
 .jami-program-message-closing {
@@ -490,8 +514,12 @@
     transform:
         translate(
             -50%,
-            calc(-50% + 2px)
+            calc(-50% - 3px)
         );
+
+    transition:
+        opacity 90ms linear,
+        transform 90ms ease-in;
 }
 
 .jami-program-message-titlebar {
