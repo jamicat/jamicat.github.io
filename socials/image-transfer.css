@@ -679,10 +679,10 @@ transition:
     position: absolute;
 
     left: 50%;
-    top: 6px;
+    top: 4px;
 
     width: 7px;
-    height: 19px;
+    height: 18px;
 
     background: #352126;
 
@@ -698,10 +698,10 @@ transition:
     position: absolute;
 
     left: 50%;
-    bottom: 1px;
+    bottom: 3px;
 
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
 
     border-radius: 50%;
 
@@ -744,18 +744,18 @@ transition:
 
     margin-top: 11px;
 
-    padding-right: 2px;
+    padding-right: 0;
 }
 
 .jami-program-message-ok {
     box-sizing: border-box;
 
-    width: 52px;
+    width: 50px;
     min-width: 52px;
     height: 21px;
 
     margin: 0;
-    padding: 0 6px;
+    padding: 0 4px;
 
     border-top:
         1px solid
