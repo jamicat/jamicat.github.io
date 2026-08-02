@@ -353,7 +353,7 @@
 
     font-size: 10px;
     font-weight: 400;
-    line-height: 19px;
+    line-height: 18px;
     text-align: center;
 
     box-shadow:
@@ -698,7 +698,7 @@ transition:
     position: absolute;
 
     left: 50%;
-    bottom: 3px;
+    bottom: 1px;
 
     width: 7px;
     height: 7px;
@@ -744,7 +744,7 @@ transition:
 
     margin-top: 11px;
 
-    padding-right: 10px;
+    padding-right: 2px;
 }
 
 .jami-program-message-ok {
