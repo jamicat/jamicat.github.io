@@ -8137,7 +8137,7 @@ async uploadTestImage(file) {
         )
     ) {
         window.alert(
-            "Choose a PNG, JPEG, GIF or WebP image."
+            "choose a PNG, JPEG, GIF or WebP."
         );
 
         return;
