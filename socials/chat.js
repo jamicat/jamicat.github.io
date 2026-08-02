@@ -8317,7 +8317,7 @@ async uploadTestImage(file) {
                         result.completedAt,
 
                     version:
-                        result.version
+                        result.version,
 
 					showCompletionDialog:
                      true
