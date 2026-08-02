@@ -6166,10 +6166,6 @@ const clearChatButton =
             this.clearEntireChat();
         }
     );
-
-clearChatButton.classList.add(
-    "text-red-300"
-);
 	
    menu.append(
     deleteButton,
