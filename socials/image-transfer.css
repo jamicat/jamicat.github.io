@@ -744,7 +744,7 @@ transition:
 
     margin-top: 11px;
 
-    padding-right: 0;
+    margin-right: -4px;
 }
 
 .jami-program-message-ok {
