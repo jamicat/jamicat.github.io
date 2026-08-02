@@ -8150,7 +8150,7 @@ async uploadTestImage(file) {
                 .maximumBytes
     ) {
         window.alert(
-            "Images must be between 1 byte and 8 MB."
+            "images must be less than 8 MB."
         );
 
         return;
