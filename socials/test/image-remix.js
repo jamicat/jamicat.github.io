@@ -15,63 +15,60 @@ this.sourceContext = null;
         Math.random() *
         2147483647
     );
-
         this.effects = [
-            {
-                id:
-                    "crt-bloom",
-                label:
-                    "CRT Bloom"
-            },
-            {
-                id:
-                    "cctv",
-                label:
-                    "CCTV"
-            },
-            {
-                id:
-                    "scanner-lid-open",
-                label:
-                    "Scanner Lid Open"
-            },
-            {
-                id:
-                    "broken-webcam",
-                label:
-                    "Broken Webcam"
-            },
-            {
-                id:
-                    "jpeg-deep-fry",
-                label:
-                    "JPEG Deep Fry"
-            },
-            {
-                id:
-                    "jpeg-100x",
-                label:
-                    "JPEG 100x"
-            },
-            {
-                id:
-                    "gifify-32",
-                label:
-                    "GIFify — 32 Colours"
-            },
-            {
-                id:
-                    "custom-emojis",
-                label:
-                    "Custom Emojis"
-            },
-            {
-                id:
-                    "ghost-orbs",
-                label:
-                    "Ghost Orbs"
-            }
+            { id: "crt-bloom", label: "CRT Bloom" },
+            { id: "cctv", label: "CCTV" },
+            { id: "scanner-lid-open", label: "Scanner Lid Open" },
+            { id: "broken-webcam", label: "Broken Webcam" },
+            { id: "jpeg-deep-fry", label: "JPEG Deep Fry" },
+            { id: "jpeg-100x", label: "JPEG 100x" },
+            { id: "gifify-32", label: "GIFify — 32 Colours" }
         ];
+
+        this.emojiFiles = [
+            "blueblob.gif",
+            "bulbasip.png",
+            "cantlook.png",
+            "catboba.gif",
+            "catcooking.gif",
+            "catdance.gif",
+            "catflip.gif",
+            "catpeace.gif",
+            "clefable.gif",
+            "drooling.gif",
+            "duckbop.gif",
+            "duckdance.gif",
+            "duckjump.gif",
+            "espeonconfetti.gif",
+            "floatpuff.gif",
+            "huh.gif",
+            "meowhappy.gif",
+            "pikagiggle.png",
+            "pikagrin.png",
+            "pikapuff.gif",
+            "pikasideeye.png",
+            "pikasway.gif",
+            "pikatea.png",
+            "pikathink.png",
+            "pinkblob.gif",
+            "pointandlaugh.png",
+            "pokecharge.gif",
+            "sharkgirl.png",
+            "shubadance.gif",
+            "sprigdance.gif",
+            "tongue.gif",
+            "widevapo.png",
+            "wooperyay.gif",
+            "yellowblob.gif"
+        ];
+
+        this.stage = null;
+        this.overlayLayer = null;
+        this.emojiPicker = null;
+        this.overlayItems = [];
+        this.selectedOverlayId = null;
+        this.overlaySequence = 0;
+        this.lastExportBlob = null;
 
         this.createEditor();
     }
@@ -123,11 +120,16 @@ this.sourceContext = null;
                             class="jami-remix-stage"
                             data-jami-remix-stage
                         >
-                           <canvas
-    class="jami-remix-canvas"
-    data-jami-remix-canvas
-    aria-label="image being remixed"
-></canvas>
+                            <canvas
+                                class="jami-remix-canvas"
+                                data-jami-remix-canvas
+                                aria-label="image being remixed"
+                            ></canvas>
+
+                            <div
+                                class="jami-remix-overlay-layer"
+                                data-jami-remix-overlay-layer
+                            ></div>
                         </div>
                     </div>
 
@@ -144,6 +146,27 @@ this.sourceContext = null;
                             class="jami-remix-filter-list"
                             data-jami-remix-effects
                         ></div>
+
+                        <div
+                            class="jami-remix-section-title jami-remix-overlay-title"
+                        >
+                            Overlays
+                        </div>
+
+                        <div
+                            class="jami-remix-filter-list"
+                            data-jami-remix-overlay-tools
+                        ></div>
+
+                        <div
+                            class="jami-remix-emoji-picker"
+                            data-jami-remix-emoji-picker
+                            hidden
+                        ></div>
+
+                        <div class="jami-remix-overlay-hint">
+                            drag to move · corner to resize · × to remove
+                        </div>
                     </aside>
                 </div>
 
@@ -173,6 +196,21 @@ this.sourceContext = null;
         );
 
         this.overlay = overlay;
+
+        this.stage =
+            overlay.querySelector(
+                "[data-jami-remix-stage]"
+            );
+
+        this.overlayLayer =
+            overlay.querySelector(
+                "[data-jami-remix-overlay-layer]"
+            );
+
+        this.emojiPicker =
+            overlay.querySelector(
+                "[data-jami-remix-emoji-picker]"
+            );
 
         this.canvas =
     overlay.querySelector(
@@ -251,6 +289,30 @@ button.dataset.effectLabel =
             );
         }
 
+        const overlayToolsContainer =
+            overlay.querySelector(
+                "[data-jami-remix-overlay-tools]"
+            );
+
+        const emojiButton =
+            this.createToolButton(
+                "Custom Emojis",
+                () => this.toggleEmojiPicker()
+            );
+
+        const orbButton =
+            this.createToolButton(
+                "Add Ghost Orb",
+                () => this.addGhostOrb()
+            );
+
+        overlayToolsContainer.append(
+            emojiButton,
+            orbButton
+        );
+
+        this.renderEmojiPicker();
+
         overlay
             .querySelector(
                 "[data-jami-remix-close]"
@@ -275,24 +337,8 @@ button.dataset.effectLabel =
             )
             .addEventListener(
                 "click",
-                () => {
-                    console.log(
-                        "Remix save requested:",
-                        {
-                            image:
-                                this.currentImage,
-
-                            effects:
-                                [
-                                    ...this
-                                        .activeEffects
-                                ]
-                        }
-                    );
-
-                    window.alert(
-                        "The editor shell works. Saving comes next."
-                    );
+                async () => {
+                    await this.saveRemix();
                 }
             );
 
@@ -308,15 +354,55 @@ button.dataset.effectLabel =
             }
         );
 
+        this.stage.addEventListener(
+            "pointerdown",
+            event => {
+                if (
+                    event.target === this.stage ||
+                    event.target === this.canvas ||
+                    event.target === this.overlayLayer
+                ) {
+                    this.selectOverlay(null);
+                }
+            }
+        );
+
         document.addEventListener(
             "keydown",
             event => {
-                if (
-                    event.key ===
-                        "Escape" &&
-                    !this.overlay.hidden
-                ) {
+                if (this.overlay.hidden) {
+                    return;
+                }
+
+                if (event.key === "Escape") {
+                    if (this.emojiPicker && !this.emojiPicker.hidden) {
+                        this.emojiPicker.hidden = true;
+                        return;
+                    }
+
                     this.close();
+                    return;
+                }
+
+                if (
+                    event.key === "Delete" ||
+                    event.key === "Backspace"
+                ) {
+                    const target = event.target;
+
+                    if (
+                        target instanceof HTMLInputElement ||
+                        target instanceof HTMLTextAreaElement
+                    ) {
+                        return;
+                    }
+
+                    if (this.selectedOverlayId) {
+                        event.preventDefault();
+                        this.removeOverlay(
+                            this.selectedOverlayId
+                        );
+                    }
                 }
             }
         );
@@ -2567,6 +2653,713 @@ applyGifify32(
         true;
 }
 
+    createToolButton(
+        label,
+        onClick
+    ) {
+        const button =
+            document.createElement(
+                "button"
+            );
+
+        button.type = "button";
+        button.className =
+            "jami-remix-filter jami-remix-tool";
+        button.textContent = label;
+
+        button.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                onClick();
+            }
+        );
+
+        return button;
+    }
+
+    renderEmojiPicker() {
+        if (!this.emojiPicker) {
+            return;
+        }
+
+        this.emojiPicker.replaceChildren();
+
+        for (const filename of this.emojiFiles) {
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.type = "button";
+            button.className =
+                "jami-remix-emoji-choice";
+            button.title =
+                filename.replace(/\.[^.]+$/, "");
+
+            const image =
+                document.createElement(
+                    "img"
+                );
+
+            image.src =
+                `/emojis/${filename}`;
+            image.alt = button.title;
+            image.loading = "lazy";
+
+            button.appendChild(image);
+
+            button.addEventListener(
+                "click",
+                () => {
+                    this.addEmoji(filename);
+                    this.emojiPicker.hidden = true;
+                }
+            );
+
+            this.emojiPicker.appendChild(
+                button
+            );
+        }
+    }
+
+    toggleEmojiPicker() {
+        if (!this.emojiPicker) {
+            return;
+        }
+
+        this.emojiPicker.hidden =
+            !this.emojiPicker.hidden;
+    }
+
+    addEmoji(filename) {
+        this.addOverlay({
+            type: "emoji",
+            source: `/emojis/${filename}`,
+            label:
+                filename.replace(/\.[^.]+$/, ""),
+            x: 50,
+            y: 50,
+            width: 22,
+            rotation: 0
+        });
+    }
+
+    addGhostOrb() {
+        const random =
+            this.createSeededRandom(
+                this.effectSeed +
+                8000 +
+                this.overlaySequence * 97
+            );
+
+        const hues = [
+            185,
+            210,
+            270,
+            52,
+            125
+        ];
+
+        const hue =
+            hues[
+                Math.floor(
+                    random() * hues.length
+                )
+            ];
+
+        this.addOverlay({
+            type: "orb",
+            x: 25 + random() * 50,
+            y: 22 + random() * 56,
+            width: 15 + random() * 18,
+            rotation: 0,
+            hue,
+            opacity: 0.35 + random() * 0.28,
+            core: 0.16 + random() * 0.16,
+            ring: 0.54 + random() * 0.18
+        });
+    }
+
+    addOverlay(options) {
+        if (!this.overlayLayer) {
+            return null;
+        }
+
+        const item = {
+            id:
+                `overlay-${++this.overlaySequence}`,
+            type: options.type,
+            source: options.source || null,
+            label: options.label || options.type,
+            x: Number(options.x) || 50,
+            y: Number(options.y) || 50,
+            width:
+                Math.max(
+                    5,
+                    Number(options.width) || 20
+                ),
+            rotation:
+                Number(options.rotation) || 0,
+            hue: Number(options.hue) || 200,
+            opacity:
+                Number(options.opacity) || 0.5,
+            core:
+                Number(options.core) || 0.22,
+            ring:
+                Number(options.ring) || 0.62,
+            element: null
+        };
+
+        const element =
+            document.createElement(
+                "div"
+            );
+
+        element.className =
+            `jami-remix-object jami-remix-object-${item.type}`;
+        element.dataset.overlayId = item.id;
+        element.tabIndex = 0;
+
+        const content =
+            document.createElement(
+                "div"
+            );
+
+        content.className =
+            "jami-remix-object-content";
+
+        if (item.type === "emoji") {
+            const image =
+                document.createElement(
+                    "img"
+                );
+
+            image.src = item.source;
+            image.alt = item.label;
+            image.draggable = false;
+            content.appendChild(image);
+        } else {
+            content.classList.add(
+                "jami-remix-ghost-orb"
+            );
+        }
+
+        const removeButton =
+            document.createElement(
+                "button"
+            );
+
+        removeButton.type = "button";
+        removeButton.className =
+            "jami-remix-object-remove";
+        removeButton.textContent = "×";
+        removeButton.title = "remove";
+
+        const resizeHandle =
+            document.createElement(
+                "span"
+            );
+
+        resizeHandle.className =
+            "jami-remix-object-resize";
+        resizeHandle.title = "resize";
+
+        element.append(
+            content,
+            removeButton,
+            resizeHandle
+        );
+
+        item.element = element;
+        this.overlayItems.push(item);
+        this.overlayLayer.appendChild(element);
+
+        element.addEventListener(
+            "pointerdown",
+            event => {
+                if (
+                    event.target === removeButton ||
+                    event.target === resizeHandle
+                ) {
+                    return;
+                }
+
+                this.beginOverlayDrag(
+                    event,
+                    item
+                );
+            }
+        );
+
+        resizeHandle.addEventListener(
+            "pointerdown",
+            event => {
+                this.beginOverlayResize(
+                    event,
+                    item
+                );
+            }
+        );
+
+        removeButton.addEventListener(
+            "click",
+            event => {
+                event.stopPropagation();
+                this.removeOverlay(item.id);
+            }
+        );
+
+        element.addEventListener(
+            "focus",
+            () => this.selectOverlay(item.id)
+        );
+
+        this.updateOverlayElement(item);
+        this.selectOverlay(item.id);
+
+        return item;
+    }
+
+    selectOverlay(id) {
+        this.selectedOverlayId = id || null;
+
+        for (const item of this.overlayItems) {
+            item.element?.classList.toggle(
+                "is-selected",
+                item.id === this.selectedOverlayId
+            );
+        }
+    }
+
+    removeOverlay(id) {
+        const index =
+            this.overlayItems.findIndex(
+                item => item.id === id
+            );
+
+        if (index < 0) {
+            return;
+        }
+
+        this.overlayItems[index]
+            .element?.remove();
+
+        this.overlayItems.splice(index, 1);
+
+        if (this.selectedOverlayId === id) {
+            this.selectedOverlayId = null;
+        }
+    }
+
+    updateOverlayElement(item) {
+        if (!item?.element) {
+            return;
+        }
+
+        item.element.style.left =
+            `${item.x}%`;
+        item.element.style.top =
+            `${item.y}%`;
+        item.element.style.width =
+            `${item.width}%`;
+        item.element.style.transform =
+            `translate(-50%, -50%) rotate(${item.rotation}deg)`;
+
+        if (item.type === "orb") {
+            const orb =
+                item.element.querySelector(
+                    ".jami-remix-ghost-orb"
+                );
+
+            orb?.style.setProperty(
+                "--orb-hue",
+                String(item.hue)
+            );
+            orb?.style.setProperty(
+                "--orb-opacity",
+                String(item.opacity)
+            );
+            orb?.style.setProperty(
+                "--orb-core",
+                `${item.core * 100}%`
+            );
+            orb?.style.setProperty(
+                "--orb-ring",
+                `${item.ring * 100}%`
+            );
+        }
+    }
+
+    beginOverlayDrag(
+        event,
+        item
+    ) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.selectOverlay(item.id);
+
+        const rect =
+            this.overlayLayer
+                .getBoundingClientRect();
+
+        const startX = event.clientX;
+        const startY = event.clientY;
+        const initialX = item.x;
+        const initialY = item.y;
+
+        const move = moveEvent => {
+            item.x = Math.max(
+                0,
+                Math.min(
+                    100,
+                    initialX +
+                    (
+                        moveEvent.clientX -
+                        startX
+                    ) /
+                    rect.width * 100
+                )
+            );
+
+            item.y = Math.max(
+                0,
+                Math.min(
+                    100,
+                    initialY +
+                    (
+                        moveEvent.clientY -
+                        startY
+                    ) /
+                    rect.height * 100
+                )
+            );
+
+            this.updateOverlayElement(item);
+        };
+
+        const end = () => {
+            window.removeEventListener(
+                "pointermove",
+                move
+            );
+            window.removeEventListener(
+                "pointerup",
+                end
+            );
+            window.removeEventListener(
+                "pointercancel",
+                end
+            );
+        };
+
+        window.addEventListener(
+            "pointermove",
+            move
+        );
+        window.addEventListener(
+            "pointerup",
+            end
+        );
+        window.addEventListener(
+            "pointercancel",
+            end
+        );
+    }
+
+    beginOverlayResize(
+        event,
+        item
+    ) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.selectOverlay(item.id);
+
+        const rect =
+            this.overlayLayer
+                .getBoundingClientRect();
+
+        const centerX =
+            rect.left +
+            rect.width * item.x / 100;
+        const centerY =
+            rect.top +
+            rect.height * item.y / 100;
+
+        const resize = moveEvent => {
+            const distance = Math.hypot(
+                moveEvent.clientX - centerX,
+                moveEvent.clientY - centerY
+            );
+
+            item.width = Math.max(
+                5,
+                Math.min(
+                    80,
+                    distance * 2 /
+                    rect.width * 100
+                )
+            );
+
+            this.updateOverlayElement(item);
+        };
+
+        const end = () => {
+            window.removeEventListener(
+                "pointermove",
+                resize
+            );
+            window.removeEventListener(
+                "pointerup",
+                end
+            );
+            window.removeEventListener(
+                "pointercancel",
+                end
+            );
+        };
+
+        window.addEventListener(
+            "pointermove",
+            resize
+        );
+        window.addEventListener(
+            "pointerup",
+            end
+        );
+        window.addEventListener(
+            "pointercancel",
+            end
+        );
+    }
+
+    async loadOverlayImage(source) {
+        const image = new Image();
+        image.crossOrigin = "anonymous";
+
+        await new Promise((resolve, reject) => {
+            image.onload = resolve;
+            image.onerror = () => reject(
+                new Error(
+                    `Could not load overlay ${source}`
+                )
+            );
+            image.src = source;
+        });
+
+        return image;
+    }
+
+    async createExportCanvas() {
+        const exportCanvas =
+            document.createElement(
+                "canvas"
+            );
+
+        exportCanvas.width =
+            this.canvas.width;
+        exportCanvas.height =
+            this.canvas.height;
+
+        const exportContext =
+            exportCanvas.getContext("2d");
+
+        exportContext.drawImage(
+            this.canvas,
+            0,
+            0
+        );
+
+        for (const item of this.overlayItems) {
+            const centerX =
+                exportCanvas.width * item.x / 100;
+            const centerY =
+                exportCanvas.height * item.y / 100;
+            const drawWidth =
+                exportCanvas.width * item.width / 100;
+
+            exportContext.save();
+            exportContext.translate(
+                centerX,
+                centerY
+            );
+            exportContext.rotate(
+                item.rotation * Math.PI / 180
+            );
+
+            if (item.type === "emoji") {
+                try {
+                    const image =
+                        await this.loadOverlayImage(
+                            item.source
+                        );
+
+                    const ratio =
+                        image.naturalHeight /
+                        Math.max(
+                            1,
+                            image.naturalWidth
+                        );
+
+                    exportContext.drawImage(
+                        image,
+                        -drawWidth / 2,
+                        -drawWidth * ratio / 2,
+                        drawWidth,
+                        drawWidth * ratio
+                    );
+                } catch (error) {
+                    console.warn(error);
+                }
+            } else {
+                const radius = drawWidth / 2;
+                const gradient =
+                    exportContext.createRadialGradient(
+                        -radius * 0.2,
+                        -radius * 0.25,
+                        radius * item.core,
+                        0,
+                        0,
+                        radius
+                    );
+
+                gradient.addColorStop(
+                    0,
+                    `hsla(${item.hue}, 100%, 96%, ${item.opacity})`
+                );
+                gradient.addColorStop(
+                    item.ring,
+                    `hsla(${item.hue}, 80%, 82%, ${item.opacity * 0.32})`
+                );
+                gradient.addColorStop(
+                    0.82,
+                    `hsla(${item.hue}, 90%, 74%, ${item.opacity * 0.16})`
+                );
+                gradient.addColorStop(
+                    1,
+                    `hsla(${item.hue}, 100%, 86%, 0)`
+                );
+
+                exportContext.globalCompositeOperation =
+                    "screen";
+                exportContext.filter =
+                    `blur(${Math.max(1, radius * 0.035)}px)`;
+                exportContext.fillStyle = gradient;
+                exportContext.beginPath();
+                exportContext.arc(
+                    0,
+                    0,
+                    radius,
+                    0,
+                    Math.PI * 2
+                );
+                exportContext.fill();
+            }
+
+            exportContext.restore();
+        }
+
+        return exportCanvas;
+    }
+
+    async saveRemix() {
+        if (
+            !this.canvas.width ||
+            !this.canvas.height
+        ) {
+            return;
+        }
+
+        const saveButton =
+            this.overlay.querySelector(
+                "[data-jami-remix-save]"
+            );
+
+        saveButton.disabled = true;
+        saveButton.textContent =
+            "Rendering...";
+
+        try {
+            const exportCanvas =
+                await this.createExportCanvas();
+
+            const blob =
+                await new Promise(
+                    (resolve, reject) => {
+                        exportCanvas.toBlob(
+                            result => {
+                                if (result) {
+                                    resolve(result);
+                                } else {
+                                    reject(
+                                        new Error(
+                                            "Could not render remix"
+                                        )
+                                    );
+                                }
+                            },
+                            "image/png"
+                        );
+                    }
+                );
+
+            this.lastExportBlob = blob;
+
+            const detail = {
+                blob,
+                filename:
+                    `jamicat-remix-${Date.now()}.png`,
+                source: this.currentImage,
+                effects: [
+                    ...this.activeEffects
+                ],
+                overlays:
+                    this.overlayItems.map(
+                        item => ({
+                            type: item.type,
+                            source: item.source,
+                            x: item.x,
+                            y: item.y,
+                            width: item.width,
+                            rotation:
+                                item.rotation
+                        })
+                    )
+            };
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    "jami-remix-ready",
+                    { detail }
+                )
+            );
+
+            console.log(
+                "Remix rendered and ready for upload:",
+                detail
+            );
+
+            window.alert(
+                "Remix rendered successfully. Upload integration comes next."
+            );
+        } catch (error) {
+            console.error(
+                "Could not render remix:",
+                error
+            );
+
+            window.alert(
+                `Could not render remix: ${error.message}`
+            );
+        } finally {
+            saveButton.disabled = false;
+            saveButton.textContent =
+                "Save Remix";
+        }
+    }
+
     toggleEffect(
     effectId,
     button
@@ -2634,6 +3427,11 @@ applyGifify32(
     );
         
     this.activeEffects.clear();
+    this.clearOverlays();
+
+    if (this.emojiPicker) {
+        this.emojiPicker.hidden = true;
+    }
 
     this.overlay
     .querySelectorAll(
@@ -2675,6 +3473,15 @@ applyGifify32(
     }
 }
 
+    clearOverlays() {
+        for (const item of this.overlayItems) {
+            item.element?.remove();
+        }
+
+        this.overlayItems = [];
+        this.selectedOverlayId = null;
+    }
+
     close() {
     this.overlay.hidden =
         true;
@@ -2713,6 +3520,12 @@ applyGifify32(
 
     this.currentImage =
         null;
+
+    this.clearOverlays();
+
+    if (this.emojiPicker) {
+        this.emojiPicker.hidden = true;
+    }
 
     this.activeEffects.clear();
 }
