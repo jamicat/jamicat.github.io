@@ -3641,6 +3641,632 @@ applyGifify32(
         return exportCanvas;
     }
 
+
+    hasAnimatedEmojiOverlays() {
+        return this.overlayItems.some(
+            item =>
+                item.type === "emoji" &&
+                /\.gif(?:$|[?#])/i.test(
+                    item.source || ""
+                )
+        );
+    }
+
+    getExportDimensions(
+        maximumDimension = 900
+    ) {
+        const sourceWidth =
+            Math.max(1, this.canvas.width);
+        const sourceHeight =
+            Math.max(1, this.canvas.height);
+
+        const scale = Math.min(
+            1,
+            maximumDimension /
+                Math.max(
+                    sourceWidth,
+                    sourceHeight
+                )
+        );
+
+        return {
+            width: Math.max(
+                1,
+                Math.round(
+                    sourceWidth * scale
+                )
+            ),
+            height: Math.max(
+                1,
+                Math.round(
+                    sourceHeight * scale
+                )
+            )
+        };
+    }
+
+    getOverlayPreviewImage(item) {
+        if (!item?.element) {
+            return null;
+        }
+
+        return item.element.querySelector(
+            ".jami-remix-object-content img"
+        );
+    }
+
+    drawGhostOrbForExport(
+        context,
+        item,
+        drawWidth
+    ) {
+        const radius = drawWidth / 2;
+        const gradient =
+            context.createRadialGradient(
+                -radius * 0.2,
+                -radius * 0.25,
+                radius * item.core,
+                0,
+                0,
+                radius
+            );
+
+        gradient.addColorStop(
+            0,
+            `hsla(${item.hue}, 100%, 96%, ${item.opacity})`
+        );
+        gradient.addColorStop(
+            item.ring,
+            `hsla(${item.hue}, 80%, 82%, ${item.opacity * 0.32})`
+        );
+        gradient.addColorStop(
+            0.82,
+            `hsla(${item.hue}, 90%, 74%, ${item.opacity * 0.16})`
+        );
+        gradient.addColorStop(
+            1,
+            `hsla(${item.hue}, 100%, 86%, 0)`
+        );
+
+        context.globalCompositeOperation =
+            "screen";
+        context.filter =
+            `blur(${Math.max(1, radius * 0.035)}px)`;
+        context.fillStyle = gradient;
+        context.beginPath();
+        context.arc(
+            0,
+            0,
+            radius,
+            0,
+            Math.PI * 2
+        );
+        context.fill();
+    }
+
+    async drawOverlayItemsForExport(
+        context,
+        width,
+        height,
+        {
+            usePreviewImages = false
+        } = {}
+    ) {
+        for (const item of this.overlayItems) {
+            const centerX =
+                width * item.x / 100;
+            const centerY =
+                height * item.y / 100;
+            const drawWidth =
+                width * item.width / 100;
+
+            context.save();
+            context.translate(
+                centerX,
+                centerY
+            );
+            context.rotate(
+                item.rotation *
+                Math.PI / 180
+            );
+            context.scale(
+                item.flipX ? -1 : 1,
+                item.flipY ? -1 : 1
+            );
+
+            if (item.type === "emoji") {
+                try {
+                    const image =
+                        usePreviewImages
+                            ? this.getOverlayPreviewImage(
+                                item
+                            )
+                            : await this.loadOverlayImage(
+                                item.source
+                            );
+
+                    if (
+                        image &&
+                        (
+                            image.complete === undefined ||
+                            image.complete
+                        )
+                    ) {
+                        const naturalWidth =
+                            image.naturalWidth ||
+                            image.videoWidth ||
+                            image.width ||
+                            1;
+                        const naturalHeight =
+                            image.naturalHeight ||
+                            image.videoHeight ||
+                            image.height ||
+                            1;
+                        const ratio =
+                            naturalHeight /
+                            Math.max(
+                                1,
+                                naturalWidth
+                            );
+
+                        context.drawImage(
+                            image,
+                            -drawWidth / 2,
+                            -drawWidth * ratio / 2,
+                            drawWidth,
+                            drawWidth * ratio
+                        );
+                    }
+                } catch (error) {
+                    console.warn(error);
+                }
+            } else {
+                this.drawGhostOrbForExport(
+                    context,
+                    item,
+                    drawWidth
+                );
+            }
+
+            context.restore();
+        }
+    }
+
+    async createAnimatedExportFrame(
+        width,
+        height
+    ) {
+        const frameCanvas =
+            document.createElement(
+                "canvas"
+            );
+
+        frameCanvas.width = width;
+        frameCanvas.height = height;
+
+        const frameContext =
+            frameCanvas.getContext(
+                "2d",
+                {
+                    willReadFrequently: true
+                }
+            );
+
+        frameContext.drawImage(
+            this.canvas,
+            0,
+            0,
+            this.canvas.width,
+            this.canvas.height,
+            0,
+            0,
+            width,
+            height
+        );
+
+        await this.drawOverlayItemsForExport(
+            frameContext,
+            width,
+            height,
+            {
+                usePreviewImages: true
+            }
+        );
+
+        return frameContext.getImageData(
+            0,
+            0,
+            width,
+            height
+        ).data;
+    }
+
+    createGifPalette332() {
+        const palette =
+            new Uint8Array(256 * 3);
+
+        for (
+            let index = 0;
+            index < 256;
+            index += 1
+        ) {
+            const red =
+                (index >> 5) & 7;
+            const green =
+                (index >> 2) & 7;
+            const blue =
+                index & 3;
+
+            palette[index * 3] =
+                Math.round(red * 255 / 7);
+            palette[index * 3 + 1] =
+                Math.round(green * 255 / 7);
+            palette[index * 3 + 2] =
+                Math.round(blue * 255 / 3);
+        }
+
+        return palette;
+    }
+
+    quantizeRgbaTo332(rgba) {
+        const pixelCount =
+            Math.floor(rgba.length / 4);
+        const indexed =
+            new Uint8Array(pixelCount);
+
+        for (
+            let pixel = 0;
+            pixel < pixelCount;
+            pixel += 1
+        ) {
+            const offset = pixel * 4;
+            const alpha =
+                rgba[offset + 3] / 255;
+
+            const red = Math.round(
+                rgba[offset] * alpha +
+                255 * (1 - alpha)
+            );
+            const green = Math.round(
+                rgba[offset + 1] * alpha +
+                255 * (1 - alpha)
+            );
+            const blue = Math.round(
+                rgba[offset + 2] * alpha +
+                255 * (1 - alpha)
+            );
+
+            indexed[pixel] =
+                (red >> 5) << 5 |
+                (green >> 5) << 2 |
+                (blue >> 6);
+        }
+
+        return indexed;
+    }
+
+    encodeGifLzw(indexedPixels) {
+        const clearCode = 256;
+        const endCode = 257;
+        const maximumCode = 4095;
+
+        let codeSize = 9;
+        let nextCode = 258;
+        let dictionary = new Map();
+        let bitBuffer = 0;
+        let bitCount = 0;
+        const bytes = [];
+
+        const writeCode = code => {
+            bitBuffer |=
+                code << bitCount;
+            bitCount += codeSize;
+
+            while (bitCount >= 8) {
+                bytes.push(
+                    bitBuffer & 255
+                );
+                bitBuffer >>>= 8;
+                bitCount -= 8;
+            }
+        };
+
+        const resetDictionary = () => {
+            dictionary = new Map();
+            codeSize = 9;
+            nextCode = 258;
+        };
+
+        writeCode(clearCode);
+
+        if (indexedPixels.length > 0) {
+            let prefix =
+                indexedPixels[0];
+
+            for (
+                let index = 1;
+                index < indexedPixels.length;
+                index += 1
+            ) {
+                const suffix =
+                    indexedPixels[index];
+                const key =
+                    prefix * 256 + suffix;
+                const found =
+                    dictionary.get(key);
+
+                if (found !== undefined) {
+                    prefix = found;
+                    continue;
+                }
+
+                writeCode(prefix);
+
+                if (nextCode <= maximumCode) {
+                    dictionary.set(
+                        key,
+                        nextCode
+                    );
+                    nextCode += 1;
+
+                    if (
+                        nextCode ===
+                            1 << codeSize &&
+                        codeSize < 12
+                    ) {
+                        codeSize += 1;
+                    }
+                } else {
+                    writeCode(clearCode);
+                    resetDictionary();
+                }
+
+                prefix = suffix;
+            }
+
+            writeCode(prefix);
+        }
+
+        writeCode(endCode);
+
+        if (bitCount > 0) {
+            bytes.push(
+                bitBuffer & 255
+            );
+        }
+
+        return new Uint8Array(bytes);
+    }
+
+    appendGifSubBlocks(
+        output,
+        data
+    ) {
+        for (
+            let offset = 0;
+            offset < data.length;
+            offset += 255
+        ) {
+            const length = Math.min(
+                255,
+                data.length - offset
+            );
+
+            output.push(length);
+
+            for (
+                let index = 0;
+                index < length;
+                index += 1
+            ) {
+                output.push(
+                    data[offset + index]
+                );
+            }
+        }
+
+        output.push(0);
+    }
+
+    appendGifWord(
+        output,
+        value
+    ) {
+        output.push(
+            value & 255,
+            value >> 8 & 255
+        );
+    }
+
+    encodeAnimatedGif(
+        frames,
+        width,
+        height,
+        delayCentiseconds
+    ) {
+        const output = [];
+        const appendText = text => {
+            for (const character of text) {
+                output.push(
+                    character.charCodeAt(0)
+                );
+            }
+        };
+
+        appendText("GIF89a");
+        this.appendGifWord(
+            output,
+            width
+        );
+        this.appendGifWord(
+            output,
+            height
+        );
+
+        output.push(
+            0xF7,
+            0,
+            0
+        );
+
+        const palette =
+            this.createGifPalette332();
+        for (const byte of palette) {
+            output.push(byte);
+        }
+
+        output.push(
+            0x21,
+            0xFF,
+            0x0B
+        );
+        appendText("NETSCAPE2.0");
+        output.push(
+            0x03,
+            0x01,
+            0x00,
+            0x00,
+            0x00
+        );
+
+        for (const rgba of frames) {
+            output.push(
+                0x21,
+                0xF9,
+                0x04,
+                0x00,
+                delayCentiseconds & 255,
+                delayCentiseconds >> 8 & 255,
+                0x00,
+                0x00
+            );
+
+            output.push(0x2C);
+            this.appendGifWord(
+                output,
+                0
+            );
+            this.appendGifWord(
+                output,
+                0
+            );
+            this.appendGifWord(
+                output,
+                width
+            );
+            this.appendGifWord(
+                output,
+                height
+            );
+            output.push(0x00);
+
+            output.push(8);
+
+            const indexed =
+                this.quantizeRgbaTo332(
+                    rgba
+                );
+            const compressed =
+                this.encodeGifLzw(
+                    indexed
+                );
+
+            this.appendGifSubBlocks(
+                output,
+                compressed
+            );
+        }
+
+        output.push(0x3B);
+
+        return new Blob(
+            [new Uint8Array(output)],
+            {
+                type: "image/gif"
+            }
+        );
+    }
+
+    wait(milliseconds) {
+        return new Promise(resolve => {
+            window.setTimeout(
+                resolve,
+                milliseconds
+            );
+        });
+    }
+
+    async createAnimatedGifBlob(
+        onProgress = () => {}
+    ) {
+        const dimensions =
+            this.getExportDimensions(600);
+        const framesPerSecond = 8;
+        const durationMilliseconds = 2500;
+        const frameDelay =
+            Math.round(
+                1000 / framesPerSecond
+            );
+        const frameCount =
+            Math.round(
+                durationMilliseconds /
+                frameDelay
+            );
+        const frames = [];
+
+        this.selectOverlay(null);
+
+        /*
+         * Capture the actual browser-rendered GIF frames.
+         * This intentionally takes about three seconds so
+         * each animated emoji can progress naturally.
+         */
+        for (
+            let index = 0;
+            index < frameCount;
+            index += 1
+        ) {
+            const startedAt =
+                performance.now();
+
+            frames.push(
+                await this.createAnimatedExportFrame(
+                    dimensions.width,
+                    dimensions.height
+                )
+            );
+
+            onProgress(
+                (index + 1) / frameCount
+            );
+
+            const elapsed =
+                performance.now() -
+                startedAt;
+            const remaining =
+                frameDelay - elapsed;
+
+            if (
+                remaining > 0 &&
+                index < frameCount - 1
+            ) {
+                await this.wait(remaining);
+            }
+        }
+
+        return this.encodeAnimatedGif(
+            frames,
+            dimensions.width,
+            dimensions.height,
+            Math.max(
+                2,
+                Math.round(
+                    frameDelay / 10
+                )
+            )
+        );
+    }
+
     async saveRemix() {
         if (
             !this.canvas.width ||
@@ -3655,15 +4281,35 @@ applyGifify32(
             );
 
         saveButton.disabled = true;
-        saveButton.textContent =
-            "Rendering...";
 
         try {
-            const exportCanvas =
-                await this.createExportCanvas();
+            const isAnimated =
+                this.hasAnimatedEmojiOverlays();
 
-            const blob =
-                await new Promise(
+            let blob;
+            let filename;
+
+            if (isAnimated) {
+                saveButton.textContent =
+                    "Capturing animation...";
+
+                blob = await this.createAnimatedGifBlob(
+                    progress => {
+                        saveButton.textContent =
+                            `Capturing ${Math.round(progress * 100)}%`;
+                    }
+                );
+
+                filename =
+                    `jamicat-remix-${Date.now()}.gif`;
+            } else {
+                saveButton.textContent =
+                    "Rendering...";
+
+                const exportCanvas =
+                    await this.createExportCanvas();
+
+                blob = await new Promise(
                     (resolve, reject) => {
                         exportCanvas.toBlob(
                             result => {
@@ -3682,12 +4328,17 @@ applyGifify32(
                     }
                 );
 
+                filename =
+                    `jamicat-remix-${Date.now()}.png`;
+            }
+
             this.lastExportBlob = blob;
 
             const detail = {
                 blob,
-                filename:
-                    `jamicat-remix-${Date.now()}.png`,
+                filename,
+                contentType: blob.type,
+                animated: isAnimated,
                 source: this.currentImage,
                 effects: [
                     ...this.activeEffects
@@ -3724,7 +4375,9 @@ applyGifify32(
             );
 
             window.alert(
-                "Remix rendered successfully. Upload integration comes next."
+                isAnimated
+                    ? "Animated remix rendered successfully. Upload integration comes next."
+                    : "Remix rendered successfully. Upload integration comes next."
             );
         } catch (error) {
             console.error(
