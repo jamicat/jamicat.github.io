@@ -3959,7 +3959,9 @@ applyGifify32(
         width,
         height,
         {
-            usePreviewImages = false
+            usePreviewImages = false,
+            animatedFramesBySource = null,
+            animationTimeMs = 0
         } = {}
     ) {
         for (const item of this.overlayItems) {
@@ -3986,14 +3988,32 @@ applyGifify32(
 
             if (item.type === "emoji") {
                 try {
-                    const image =
-                        usePreviewImages
-                            ? this.getOverlayPreviewImage(
-                                item
-                            )
-                            : await this.loadOverlayImage(
-                                item.source
+                    let image = null;
+
+                    const decodedAnimation =
+                        animatedFramesBySource?.get(
+                            item.source
+                        );
+
+                    if (
+                        decodedAnimation &&
+                        decodedAnimation.frames.length > 0
+                    ) {
+                        image =
+                            this.getDecodedGifFrameAtTime(
+                                decodedAnimation,
+                                animationTimeMs
                             );
+                    } else {
+                        image =
+                            usePreviewImages
+                                ? this.getOverlayPreviewImage(
+                                    item
+                                )
+                                : await this.loadOverlayImage(
+                                    item.source
+                                );
+                    }
 
                     if (
                         image &&
@@ -4044,7 +4064,9 @@ applyGifify32(
 
     async createAnimatedExportFrame(
         width,
-        height
+        height,
+        animatedFramesBySource,
+        animationTimeMs
     ) {
         const frameCanvas =
             document.createElement(
@@ -4079,7 +4101,9 @@ applyGifify32(
             width,
             height,
             {
-                usePreviewImages: true
+                usePreviewImages: false,
+                animatedFramesBySource,
+                animationTimeMs
             }
         );
 
@@ -4089,6 +4113,202 @@ applyGifify32(
             width,
             height
         ).data;
+    }
+
+    async decodeGifEmojiSource(
+        source
+    ) {
+        if (
+            typeof window.ImageDecoder !==
+            "function"
+        ) {
+            throw new Error(
+                "animated emoji export is not supported by this browser. update Chrome or Edge and try again."
+            );
+        }
+
+        const request = await fetch(
+            source,
+            {
+                cache: "force-cache"
+            }
+        );
+
+        if (!request.ok) {
+            throw new Error(
+                `could not load animated emoji “${source.split("/").pop()}”.`
+            );
+        }
+
+        const bytes =
+            await request.arrayBuffer();
+
+        const decoder =
+            new ImageDecoder({
+                data: bytes,
+                type: "image/gif",
+                preferAnimation: true
+            });
+
+        await decoder.tracks.ready;
+
+        const track =
+            decoder.tracks.selectedTrack;
+
+        const frameCount =
+            Number(track?.frameCount) || 0;
+
+        if (frameCount < 2) {
+            decoder.close();
+
+            throw new Error(
+                `the animated emoji “${source.split("/").pop()}” did not contain multiple readable frames.`
+            );
+        }
+
+        const frames = [];
+        let totalDurationMs = 0;
+
+        try {
+            for (
+                let frameIndex = 0;
+                frameIndex < frameCount;
+                frameIndex += 1
+            ) {
+                const result =
+                    await decoder.decode({
+                        frameIndex,
+                        completeFramesOnly: true
+                    });
+
+                const videoFrame =
+                    result.image;
+
+                const bitmap =
+                    await createImageBitmap(
+                        videoFrame
+                    );
+
+                const durationMs =
+                    Math.max(
+                        20,
+                        Number(
+                            videoFrame.duration
+                        ) / 1000 ||
+                        100
+                    );
+
+                videoFrame.close();
+
+                frames.push({
+                    bitmap,
+                    durationMs,
+                    startsAtMs:
+                        totalDurationMs
+                });
+
+                totalDurationMs +=
+                    durationMs;
+            }
+        } finally {
+            decoder.close();
+        }
+
+        return {
+            frames,
+            totalDurationMs:
+                Math.max(
+                    1,
+                    totalDurationMs
+                )
+        };
+    }
+
+    async prepareAnimatedEmojiFrames() {
+        const sources = [
+            ...new Set(
+                this.overlayItems
+                    .filter(item =>
+                        item.type === "emoji" &&
+                        this.isAnimatedEmojiSource(
+                            item.source
+                        )
+                    )
+                    .map(item =>
+                        item.source
+                    )
+            )
+        ];
+
+        const decoded = new Map();
+
+        try {
+            for (const source of sources) {
+                decoded.set(
+                    source,
+                    await this.decodeGifEmojiSource(
+                        source
+                    )
+                );
+            }
+
+            return decoded;
+        } catch (error) {
+            this.releaseDecodedGifFrames(
+                decoded
+            );
+
+            throw error;
+        }
+    }
+
+    getDecodedGifFrameAtTime(
+        decodedAnimation,
+        animationTimeMs
+    ) {
+        const frames =
+            decodedAnimation.frames;
+
+        if (frames.length === 0) {
+            return null;
+        }
+
+        const loopTime =
+            animationTimeMs %
+            decodedAnimation.totalDurationMs;
+
+        for (
+            let index = frames.length - 1;
+            index >= 0;
+            index -= 1
+        ) {
+            if (
+                loopTime >=
+                frames[index].startsAtMs
+            ) {
+                return frames[index].bitmap;
+            }
+        }
+
+        return frames[0].bitmap;
+    }
+
+    releaseDecodedGifFrames(
+        decodedAnimations
+    ) {
+        for (
+            const animation
+            of decodedAnimations.values()
+        ) {
+            for (
+                const frame
+                of animation.frames
+            ) {
+                frame.bitmap.close?.();
+            }
+        }
+
+        decodedAnimations.clear();
     }
 
     createGifPalette332() {
@@ -4403,42 +4623,45 @@ applyGifify32(
 
         this.selectOverlay(null);
 
-        /*
-         * Capture the actual browser-rendered GIF frames.
-         * This intentionally takes about three seconds so
-         * each animated emoji can progress naturally.
-         */
-        for (
-            let index = 0;
-            index < frameCount;
-            index += 1
-        ) {
-            const startedAt =
-                performance.now();
+        const animatedFramesBySource =
+            await this.prepareAnimatedEmojiFrames();
 
-            frames.push(
-                await this.createAnimatedExportFrame(
-                    dimensions.width,
-                    dimensions.height
-                )
-            );
-
-            onProgress(
-                (index + 1) / frameCount
-            );
-
-            const elapsed =
-                performance.now() -
-                startedAt;
-            const remaining =
-                frameDelay - elapsed;
-
-            if (
-                remaining > 0 &&
-                index < frameCount - 1
+        try {
+            /*
+             * Draw explicitly decoded GIF frames at each
+             * output timestamp. Relying on an HTMLImageElement
+             * during a timed capture can repeatedly expose the
+             * same composited frame in Chromium.
+             */
+            for (
+                let index = 0;
+                index < frameCount;
+                index += 1
             ) {
-                await this.wait(remaining);
+                frames.push(
+                    await this.createAnimatedExportFrame(
+                        dimensions.width,
+                        dimensions.height,
+                        animatedFramesBySource,
+                        index * frameDelay
+                    )
+                );
+
+                onProgress(
+                    (index + 1) / frameCount
+                );
+
+                /*
+                 * Yield so the UI remains responsive. The
+                 * animation timing itself is deterministic and
+                 * no longer depends on this delay.
+                 */
+                await this.wait(0);
             }
+        } finally {
+            this.releaseDecodedGifFrames(
+                animatedFramesBySource
+            );
         }
 
         return this.encodeAnimatedGif(
@@ -4509,6 +4732,29 @@ applyGifify32(
         };
     }
 
+    async countGifImageFrames(
+        blob
+    ) {
+        const bytes =
+            new Uint8Array(
+                await blob.arrayBuffer()
+            );
+
+        let count = 0;
+
+        for (
+            let index = 0;
+            index < bytes.length - 9;
+            index += 1
+        ) {
+            if (bytes[index] === 0x2C) {
+                count += 1;
+            }
+        }
+
+        return count;
+    }
+
     async validateGeneratedImageBlob(
         blob,
         { animated = false } = {}
@@ -4527,6 +4773,19 @@ applyGifify32(
             throw new Error(
                 `the animated remix is ${(blob.size / 1024 / 1024).toFixed(1)} MB, which is too large to upload safely. remove some animated emojis, make them smaller, or use fewer overlays.`
             );
+        }
+
+        if (animated) {
+            const gifFrameCount =
+                await this.countGifImageFrames(
+                    blob
+                );
+
+            if (gifFrameCount < 2) {
+                throw new Error(
+                    "the animated remix contained only one frame. nothing was uploaded."
+                );
+            }
         }
 
         const objectUrl =
