@@ -98,7 +98,7 @@ this.sourceContext = null;
                 class="jami-remix-editor theme-body"
                 role="dialog"
                 aria-modal="true"
-                aria-label="Remix image"
+                aria-label="remix image"
             >
                 <div
                     class="jami-remix-header"
@@ -106,7 +106,7 @@ this.sourceContext = null;
                     <div
                         class="jami-remix-title theme-heading"
                     >
-                        Remix Image
+                        remix image
                     </div>
 
                     <button
@@ -148,7 +148,7 @@ this.sourceContext = null;
                         <div
                             class="jami-remix-section-title"
                         >
-                            Effects
+                            effects
                         </div>
 
                         <div
@@ -159,7 +159,7 @@ this.sourceContext = null;
                         <div
                             class="jami-remix-section-title jami-remix-overlay-title"
                         >
-                            Overlays
+                            overlays
                         </div>
 
                         <div
@@ -186,7 +186,7 @@ this.sourceContext = null;
                         type="button"
                         data-jami-remix-cancel
                     >
-                        Cancel
+                        cancel
                     </button>
 
                     <button
@@ -194,7 +194,7 @@ this.sourceContext = null;
                         class="jami-remix-save"
                         data-jami-remix-save
                     >
-                        Save Remix
+                        save remix
                     </button>
                 </div>
             </div>
@@ -484,7 +484,7 @@ button.dataset.effectLabel =
                 () => {
                     reject(
                         new Error(
-                            "Could not load image for remixing"
+                            "could not load image for remixing"
                         )
                     );
                 },
@@ -2794,9 +2794,156 @@ applyGifify32(
         ).length;
     }
 
+    showProgramMessage(message) {
+        const existing =
+            document.querySelector(
+                "[data-jami-remix-program-message]"
+            );
+
+        existing?.remove();
+
+        const backdrop =
+            document.createElement(
+                "div"
+            );
+
+        backdrop.className =
+            "jami-remix-program-message-backdrop";
+
+        backdrop.dataset.jamiRemixProgramMessage =
+            "true";
+
+        const dialog =
+            document.createElement(
+                "div"
+            );
+
+        dialog.className =
+            "jami-remix-program-message theme-body";
+
+        dialog.setAttribute(
+            "role",
+            "alertdialog"
+        );
+
+        dialog.setAttribute(
+            "aria-modal",
+            "true"
+        );
+
+        const title =
+            document.createElement(
+                "div"
+            );
+
+        title.className =
+            "jami-remix-program-message-title theme-heading";
+
+        title.textContent =
+            "program message";
+
+        const body =
+            document.createElement(
+                "div"
+            );
+
+        body.className =
+            "jami-remix-program-message-body";
+
+        body.textContent =
+            String(message || "something went wrong");
+
+        const actions =
+            document.createElement(
+                "div"
+            );
+
+        actions.className =
+            "jami-remix-program-message-actions";
+
+        const okButton =
+            document.createElement(
+                "button"
+            );
+
+        okButton.type =
+            "button";
+
+        okButton.className =
+            "jami-remix-program-message-ok";
+
+        okButton.textContent =
+            "ok";
+
+        const close = () => {
+            backdrop.remove();
+        };
+
+        okButton.addEventListener(
+            "click",
+            close,
+            { once: true }
+        );
+
+        backdrop.addEventListener(
+            "click",
+            event => {
+                if (event.target === backdrop) {
+                    close();
+                }
+            }
+        );
+
+        const onKeyDown = event => {
+            if (
+                event.key === "Escape" ||
+                event.key === "Enter"
+            ) {
+                event.preventDefault();
+                document.removeEventListener(
+                    "keydown",
+                    onKeyDown
+                );
+                close();
+            }
+        };
+
+        document.addEventListener(
+            "keydown",
+            onKeyDown
+        );
+
+        actions.appendChild(
+            okButton
+        );
+
+        dialog.append(
+            title,
+            body,
+            actions
+        );
+
+        backdrop.appendChild(
+            dialog
+        );
+
+        document.body.appendChild(
+            backdrop
+        );
+
+        requestAnimationFrame(
+            () => {
+                backdrop.classList.add(
+                    "is-visible"
+                );
+                okButton.focus();
+            }
+        );
+    }
+
     showRemixLimitAlert(message) {
-        window.alert(
-            `Could not add that to the remix.\n\n${message}`
+        this.showProgramMessage(
+            `could not add that to the remix.\n\n${message}`
         );
     }
 
@@ -2806,7 +2953,7 @@ applyGifify32(
             this.maximumOverlayCount
         ) {
             this.showRemixLimitAlert(
-                `A remix can contain up to ${this.maximumOverlayCount} emojis and ghost orbs in total. Remove one before adding another.`
+                `a remix can contain up to ${this.maximumOverlayCount} emojis and ghost orbs in total. remove one before adding another.`
             );
 
             return false;
@@ -2824,7 +2971,7 @@ applyGifify32(
                 this.maximumAnimatedEmojiCount
         ) {
             this.showRemixLimitAlert(
-                `A remix can contain up to ${this.maximumAnimatedEmojiCount} animated GIF emojis. Remove one before adding another. Static PNG emojis and ghost orbs can still be added, up to ${this.maximumOverlayCount} total overlays.`
+                `a remix can contain up to ${this.maximumAnimatedEmojiCount} animated GIF emojis. remove one before adding another. static PNG emojis and ghost orbs can still be added, up to ${this.maximumOverlayCount} total overlays.`
             );
 
             return false;
@@ -3585,7 +3732,7 @@ applyGifify32(
             image.onload = resolve;
             image.onerror = () => reject(
                 new Error(
-                    `Could not load overlay ${source}`
+                    `could not load overlay ${source}`
                 )
             );
             image.src = source;
@@ -4318,7 +4465,7 @@ applyGifify32(
             this.maximumOverlayCount
         ) {
             throw new Error(
-                `This remix has ${overlayCount} overlays. The maximum is ${this.maximumOverlayCount}. Remove some emojis or ghost orbs before saving.`
+                `this remix has ${overlayCount} overlays. the maximum is ${this.maximumOverlayCount}. remove some emojis or ghost orbs before saving.`
             );
         }
 
@@ -4327,7 +4474,7 @@ applyGifify32(
             this.maximumAnimatedEmojiCount
         ) {
             throw new Error(
-                `This remix has ${animatedEmojiCount} animated GIF emojis. The maximum is ${this.maximumAnimatedEmojiCount}. Remove some animated emojis before saving.`
+                `this remix has ${animatedEmojiCount} animated GIF emojis. the maximum is ${this.maximumAnimatedEmojiCount}. remove some animated emojis before saving.`
             );
         }
 
@@ -4352,7 +4499,7 @@ applyGifify32(
 
         if (missingEmoji) {
             throw new Error(
-                `The emoji “${missingEmoji.label || "unknown"}” has not finished loading. Wait a moment and try again.`
+                `the emoji “${missingEmoji.label || "unknown"}” has not finished loading. wait a moment and try again.`
             );
         }
 
@@ -4368,7 +4515,7 @@ applyGifify32(
     ) {
         if (!(blob instanceof Blob) || blob.size <= 0) {
             throw new Error(
-                "The rendered image was empty. Nothing was uploaded."
+                "the rendered image was empty. nothing was uploaded."
             );
         }
 
@@ -4378,7 +4525,7 @@ applyGifify32(
                 this.maximumAnimatedOutputBytes
         ) {
             throw new Error(
-                `The animated remix is ${(blob.size / 1024 / 1024).toFixed(1)} MB, which is too large to upload safely. Remove some animated emojis, make them smaller, or use fewer overlays.`
+                `the animated remix is ${(blob.size / 1024 / 1024).toFixed(1)} MB, which is too large to upload safely. remove some animated emojis, make them smaller, or use fewer overlays.`
             );
         }
 
@@ -4394,7 +4541,7 @@ applyGifify32(
                         window.setTimeout(
                             () => reject(
                                 new Error(
-                                    "The rendered image could not be verified in time. Nothing was uploaded."
+                                    "the rendered image could not be verified in time. nothing was uploaded."
                                 )
                             ),
                             8000
@@ -4413,7 +4560,7 @@ applyGifify32(
                         );
                         reject(
                             new Error(
-                                "The rendered image was invalid. Nothing was uploaded."
+                                "the rendered image was invalid. nothing was uploaded."
                             )
                         );
                     };
@@ -4427,7 +4574,7 @@ applyGifify32(
                 image.naturalHeight <= 0
             ) {
                 throw new Error(
-                    "The rendered image had invalid dimensions. Nothing was uploaded."
+                    "the rendered image had invalid dimensions. nothing was uploaded."
                 );
             }
         } finally {
@@ -4464,12 +4611,12 @@ applyGifify32(
 
             if (isAnimated) {
                 saveButton.textContent =
-                    "Capturing animation...";
+                    "capturing animation...";
 
                 blob = await this.createAnimatedGifBlob(
                     progress => {
                         saveButton.textContent =
-                            `Capturing ${Math.round(progress * 100)}%`;
+                            `capturing ${Math.round(progress * 100)}%`;
                     }
                 );
 
@@ -4477,7 +4624,7 @@ applyGifify32(
                     `jamicat-remix-${Date.now()}.gif`;
             } else {
                 saveButton.textContent =
-                    "Rendering...";
+                    "rendering...";
 
                 const exportCanvas =
                     await this.createExportCanvas();
@@ -4491,7 +4638,7 @@ applyGifify32(
                                 } else {
                                     reject(
                                         new Error(
-                                            "Could not render remix"
+                                            "could not render remix"
                                         )
                                     );
                                 }
@@ -4506,7 +4653,7 @@ applyGifify32(
             }
 
             saveButton.textContent =
-                "Checking remix...";
+                "checking remix...";
 
             await this.validateGeneratedImageBlob(
                 blob,
@@ -4551,22 +4698,22 @@ applyGifify32(
             );
 
             console.log(
-                "Remix rendered and ready for upload:",
+                "remix rendered and ready for upload:",
                 detail
             );
         } catch (error) {
             console.error(
-                "Could not render remix:",
+                "could not render remix:",
                 error
             );
 
-            window.alert(
-                `Could not save remix.\n\n${error.message}\n\nNothing was uploaded.`
+            this.showProgramMessage(
+                `could not save remix.\n\n${error.message}\n\nnothing was uploaded.`
             );
         } finally {
             saveButton.disabled = false;
             saveButton.textContent =
-                "Save Remix";
+                "save remix";
         }
     }
 
@@ -4621,7 +4768,7 @@ applyGifify32(
 
     if (!imageUrl) {
         console.error(
-            "Cannot open remix editor without an image URL"
+            "cannot open remix editor without an image URL"
         );
 
         return;
@@ -4671,11 +4818,11 @@ applyGifify32(
         );
     } catch (error) {
         console.error(
-            "Could not open remix editor:",
+            "could not open remix editor:",
             error
         );
 
-        window.alert(
+        this.showProgramMessage(
             error.message
         );
 
