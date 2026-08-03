@@ -296,13 +296,13 @@ button.dataset.effectLabel =
 
         const emojiButton =
             this.createToolButton(
-                "Custom Emojis",
+                "custom emojis",
                 () => this.toggleEmojiPicker()
             );
 
         const orbButton =
             this.createToolButton(
-                "Add Ghost Orb",
+                "add ghost orb",
                 () => this.addGhostOrb()
             );
 
