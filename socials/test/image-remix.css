@@ -520,7 +520,9 @@
 .jami-remix-object-remove,
 .jami-remix-object-resize,
 .jami-remix-object-rotate,
-.jami-remix-object-flip {
+.jami-remix-object-flip,
+.jami-remix-object-layer,
+.jami-remix-object-duplicate {
     position: absolute;
     z-index: 4;
 
@@ -544,7 +546,11 @@
 .jami-remix-object.is-selected
 .jami-remix-object-rotate,
 .jami-remix-object.is-selected
-.jami-remix-object-flip {
+.jami-remix-object-flip,
+.jami-remix-object.is-selected
+.jami-remix-object-layer,
+.jami-remix-object.is-selected
+.jami-remix-object-duplicate {
     display: block;
 }
 
@@ -635,6 +641,37 @@
 
 .jami-remix-object-flip-vertical {
     left: 9px;
+}
+
+
+.jami-remix-object-layer,
+.jami-remix-object-duplicate {
+    bottom: -10px;
+
+    padding: 0;
+
+    font: 700 10px/12px Arial, sans-serif;
+    cursor: pointer;
+}
+
+.jami-remix-object-layer-back {
+    left: -10px;
+}
+
+.jami-remix-object-layer-front {
+    left: 9px;
+}
+
+.jami-remix-object-duplicate {
+    left: 28px;
+}
+
+.jami-remix-object-layer:hover,
+.jami-remix-object-duplicate:hover,
+.jami-remix-object-flip:hover,
+.jami-remix-object-remove:hover {
+    border-color: rgba(150,215,255,.98);
+    background: #28506a;
 }
 
 .jami-remix-object.is-flipped-horizontal
