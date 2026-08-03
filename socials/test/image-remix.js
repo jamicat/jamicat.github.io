@@ -522,15 +522,36 @@ applyEffect(
             break;
 
         case "cctv":
-    this.applyCctv(
-        canvas,
-        context
-    );
-    break;
+            this.applyCctv(
+                canvas,
+                context
+            );
+            break;
+
+        case "scanner-lid-open":
+            this.applyScannerLidOpen(
+                canvas,
+                context
+            );
+            break;
+
+        case "broken-webcam":
+            this.applyBrokenWebcam(
+                canvas,
+                context
+            );
+            break;
+
+        case "jpeg-deep-fry":
+            this.applyJpegDeepFry(
+                canvas,
+                context
+            );
+            break;
 
         /*
-         * The remaining effects are added
-         * one at a time in later steps.
+         * JPEG 100x, GIFify, emojis and
+         * ghost orbs are added in later passes.
          */
         default:
             break;
@@ -1108,6 +1129,720 @@ applyCctv(
 }
 
     
+
+applyScannerLidOpen(
+    canvas,
+    context
+) {
+    const width = canvas.width;
+    const height = canvas.height;
+
+    const random =
+        this.createSeededRandom(
+            this.effectSeed + 4003
+        );
+
+    const original =
+        document.createElement(
+            "canvas"
+        );
+
+    original.width = width;
+    original.height = height;
+
+    const originalContext =
+        original.getContext("2d");
+
+    originalContext.drawImage(
+        canvas,
+        0,
+        0
+    );
+
+    context.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    const angle =
+        (random() - 0.5) *
+        0.014;
+
+    context.save();
+    context.translate(
+        width / 2,
+        height / 2
+    );
+    context.rotate(angle);
+    context.scale(1.018, 1.018);
+    context.filter = [
+        "brightness(1.13)",
+        "contrast(0.86)",
+        "saturate(0.74)",
+        "sepia(0.05)"
+    ].join(" ");
+    context.drawImage(
+        original,
+        -width / 2,
+        -height / 2
+    );
+    context.restore();
+
+    context.save();
+    context.globalCompositeOperation =
+        "screen";
+    context.globalAlpha = 0.12;
+    context.fillStyle = "#e7edf0";
+    context.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+    context.restore();
+
+    const leakFromLeft =
+        random() > 0.5;
+
+    const leakWidth =
+        Math.round(
+            width *
+            (0.24 + random() * 0.16)
+        );
+
+    const leakGradient =
+        context.createLinearGradient(
+            leakFromLeft ? 0 : width,
+            0,
+            leakFromLeft
+                ? leakWidth
+                : width - leakWidth,
+            0
+        );
+
+    leakGradient.addColorStop(
+        0,
+        "rgba(255,255,255,0.82)"
+    );
+    leakGradient.addColorStop(
+        0.2,
+        "rgba(245,250,252,0.58)"
+    );
+    leakGradient.addColorStop(
+        0.58,
+        "rgba(225,235,240,0.18)"
+    );
+    leakGradient.addColorStop(
+        1,
+        "rgba(255,255,255,0)"
+    );
+
+    context.save();
+    context.globalCompositeOperation =
+        "screen";
+    context.fillStyle =
+        leakGradient;
+    context.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+    context.restore();
+
+    context.save();
+
+    for (
+        let index = 0;
+        index < 22;
+        index += 1
+    ) {
+        const x =
+            Math.floor(
+                random() * width
+            );
+
+        const alpha =
+            0.015 +
+            random() * 0.05;
+
+        context.fillStyle =
+            `rgba(255,255,255,${alpha})`;
+
+        context.fillRect(
+            x,
+            0,
+            random() > 0.84 ? 2 : 1,
+            height
+        );
+    }
+
+    for (
+        let index = 0;
+        index < 9;
+        index += 1
+    ) {
+        const x =
+            Math.floor(
+                random() * width
+            );
+
+        context.fillStyle =
+            `rgba(15,25,30,${0.012 + random() * 0.03})`;
+
+        context.fillRect(
+            x,
+            0,
+            1,
+            height
+        );
+    }
+
+    context.restore();
+
+    const sweepY =
+        Math.round(
+            height *
+            (0.22 + random() * 0.56)
+        );
+
+    const sweepHeight =
+        Math.max(
+            8,
+            Math.round(
+                height * 0.035
+            )
+        );
+
+    const sweepGradient =
+        context.createLinearGradient(
+            0,
+            sweepY - sweepHeight,
+            0,
+            sweepY + sweepHeight
+        );
+
+    sweepGradient.addColorStop(
+        0,
+        "rgba(255,255,255,0)"
+    );
+    sweepGradient.addColorStop(
+        0.5,
+        "rgba(255,255,255,0.12)"
+    );
+    sweepGradient.addColorStop(
+        1,
+        "rgba(255,255,255,0)"
+    );
+
+    context.fillStyle =
+        sweepGradient;
+    context.fillRect(
+        0,
+        sweepY - sweepHeight,
+        width,
+        sweepHeight * 2
+    );
+
+    const dustCount =
+        Math.max(
+            18,
+            Math.round(
+                width * height /
+                22000
+            )
+        );
+
+    context.save();
+
+    for (
+        let index = 0;
+        index < dustCount;
+        index += 1
+    ) {
+        const x = random() * width;
+        const y = random() * height;
+        const radius =
+            0.4 + random() * 1.4;
+
+        context.beginPath();
+        context.fillStyle =
+            random() > 0.5
+                ? "rgba(255,255,255,0.20)"
+                : "rgba(20,25,28,0.14)";
+        context.arc(
+            x,
+            y,
+            radius,
+            0,
+            Math.PI * 2
+        );
+        context.fill();
+    }
+
+    context.restore();
+
+    const shadowGradient =
+        context.createLinearGradient(
+            leakFromLeft ? width : 0,
+            0,
+            leakFromLeft
+                ? width * 0.78
+                : width * 0.22,
+            0
+        );
+
+    shadowGradient.addColorStop(
+        0,
+        "rgba(20,25,30,0.20)"
+    );
+    shadowGradient.addColorStop(
+        1,
+        "rgba(20,25,30,0)"
+    );
+
+    context.fillStyle =
+        shadowGradient;
+    context.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+}
+
+applyBrokenWebcam(
+    canvas,
+    context
+) {
+    const width = canvas.width;
+    const height = canvas.height;
+
+    const random =
+        this.createSeededRandom(
+            this.effectSeed + 6007
+        );
+
+    const original =
+        document.createElement(
+            "canvas"
+        );
+
+    original.width = width;
+    original.height = height;
+
+    const originalContext =
+        original.getContext("2d");
+
+    originalContext.drawImage(
+        canvas,
+        0,
+        0
+    );
+
+    context.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    context.save();
+    context.filter = [
+        "contrast(1.08)",
+        "brightness(0.92)",
+        "saturate(0.78)",
+        "blur(0.45px)"
+    ].join(" ");
+    context.drawImage(
+        original,
+        0,
+        0
+    );
+    context.restore();
+
+    const channelShift =
+        Math.max(
+            2,
+            Math.round(
+                width * 0.006
+            )
+        );
+
+    context.save();
+    context.globalCompositeOperation =
+        "screen";
+    context.globalAlpha = 0.30;
+    context.filter =
+        "sepia(1) saturate(8) hue-rotate(-45deg)";
+    context.drawImage(
+        original,
+        -channelShift,
+        0
+    );
+    context.restore();
+
+    context.save();
+    context.globalCompositeOperation =
+        "screen";
+    context.globalAlpha = 0.22;
+    context.filter =
+        "sepia(1) saturate(8) hue-rotate(155deg)";
+    context.drawImage(
+        original,
+        channelShift,
+        0
+    );
+    context.restore();
+
+    const stripCount =
+        2 +
+        Math.floor(
+            random() * 4
+        );
+
+    for (
+        let index = 0;
+        index < stripCount;
+        index += 1
+    ) {
+        const stripHeight =
+            Math.max(
+                3,
+                Math.round(
+                    height *
+                    (0.018 + random() * 0.06)
+                )
+            );
+
+        const sourceY =
+            Math.floor(
+                random() *
+                Math.max(
+                    1,
+                    height - stripHeight
+                )
+            );
+
+        const offset =
+            Math.round(
+                (random() - 0.5) *
+                width * 0.10
+            );
+
+        context.drawImage(
+            original,
+            0,
+            sourceY,
+            width,
+            stripHeight,
+            offset,
+            sourceY,
+            width,
+            stripHeight
+        );
+
+        context.fillStyle =
+            `rgba(255,255,255,${0.025 + random() * 0.06})`;
+        context.fillRect(
+            0,
+            sourceY,
+            width,
+            1
+        );
+    }
+
+    const rollingY =
+        Math.floor(
+            height *
+            (0.25 + random() * 0.5)
+        );
+
+    const rollingGradient =
+        context.createLinearGradient(
+            0,
+            rollingY - 35,
+            0,
+            rollingY + 35
+        );
+
+    rollingGradient.addColorStop(
+        0,
+        "rgba(0,0,0,0)"
+    );
+    rollingGradient.addColorStop(
+        0.5,
+        "rgba(180,210,220,0.13)"
+    );
+    rollingGradient.addColorStop(
+        1,
+        "rgba(0,0,0,0)"
+    );
+
+    context.fillStyle =
+        rollingGradient;
+    context.fillRect(
+        0,
+        rollingY - 35,
+        width,
+        70
+    );
+
+    const deadPixelCount =
+        Math.max(
+            20,
+            Math.round(
+                width * height /
+                18000
+            )
+        );
+
+    for (
+        let index = 0;
+        index < deadPixelCount;
+        index += 1
+    ) {
+        const x =
+            Math.floor(
+                random() * width
+            );
+        const y =
+            Math.floor(
+                random() * height
+            );
+
+        const colours = [
+            "rgba(255,40,65,0.65)",
+            "rgba(50,255,105,0.55)",
+            "rgba(60,120,255,0.60)",
+            "rgba(255,255,255,0.55)",
+            "rgba(0,0,0,0.75)"
+        ];
+
+        context.fillStyle =
+            colours[
+                Math.floor(
+                    random() *
+                    colours.length
+                )
+            ];
+
+        const size =
+            random() > 0.88
+                ? 2
+                : 1;
+
+        context.fillRect(
+            x,
+            y,
+            size,
+            size
+        );
+    }
+
+    context.save();
+    context.globalAlpha = 0.075;
+    context.fillStyle = "#001820";
+
+    for (
+        let y = 0;
+        y < height;
+        y += 3
+    ) {
+        context.fillRect(
+            0,
+            y,
+            width,
+            1
+        );
+    }
+
+    context.restore();
+}
+
+applyJpegDeepFry(
+    canvas,
+    context
+) {
+    const width = canvas.width;
+    const height = canvas.height;
+
+    const original =
+        document.createElement(
+            "canvas"
+        );
+
+    original.width = width;
+    original.height = height;
+
+    const originalContext =
+        original.getContext("2d");
+
+    originalContext.drawImage(
+        canvas,
+        0,
+        0
+    );
+
+    context.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    context.save();
+    context.filter = [
+        "contrast(1.65)",
+        "saturate(2.75)",
+        "brightness(1.08)",
+        "sepia(0.12)"
+    ].join(" ");
+    context.drawImage(
+        original,
+        0,
+        0
+    );
+    context.restore();
+
+    const imageData =
+        context.getImageData(
+            0,
+            0,
+            width,
+            height
+        );
+
+    const pixels = imageData.data;
+
+    for (
+        let index = 0;
+        index < pixels.length;
+        index += 4
+    ) {
+        let red = pixels[index];
+        let green = pixels[index + 1];
+        let blue = pixels[index + 2];
+
+        const luminance =
+            red * 0.299 +
+            green * 0.587 +
+            blue * 0.114;
+
+        if (luminance < 72) {
+            red *= 0.58;
+            green *= 0.48;
+            blue *= 0.50;
+        }
+
+        if (luminance > 184) {
+            red =
+                Math.min(
+                    255,
+                    red * 1.22 + 18
+                );
+            green =
+                Math.min(
+                    255,
+                    green * 1.12 + 10
+                );
+            blue =
+                Math.min(
+                    255,
+                    blue * 0.94
+                );
+        }
+
+        red =
+            Math.round(red / 14) * 14;
+        green =
+            Math.round(green / 16) * 16;
+        blue =
+            Math.round(blue / 18) * 18;
+
+        pixels[index] =
+            Math.max(
+                0,
+                Math.min(
+                    255,
+                    red
+                )
+            );
+        pixels[index + 1] =
+            Math.max(
+                0,
+                Math.min(
+                    255,
+                    green
+                )
+            );
+        pixels[index + 2] =
+            Math.max(
+                0,
+                Math.min(
+                    255,
+                    blue
+                )
+            );
+    }
+
+    context.putImageData(
+        imageData,
+        0,
+        0
+    );
+
+    const sharpened =
+        document.createElement(
+            "canvas"
+        );
+
+    sharpened.width = width;
+    sharpened.height = height;
+
+    const sharpenedContext =
+        sharpened.getContext("2d");
+
+    sharpenedContext.filter =
+        "contrast(1.25)";
+    sharpenedContext.drawImage(
+        canvas,
+        0,
+        0
+    );
+
+    context.save();
+    context.globalCompositeOperation =
+        "overlay";
+    context.globalAlpha = 0.34;
+    context.drawImage(
+        sharpened,
+        -1,
+        0
+    );
+    context.drawImage(
+        sharpened,
+        1,
+        0
+    );
+    context.restore();
+
+    context.save();
+    context.globalCompositeOperation =
+        "screen";
+    context.globalAlpha = 0.10;
+    context.fillStyle = "#ff541f";
+    context.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+    context.restore();
+}
+
     toggleEffect(
     effectId,
     button
