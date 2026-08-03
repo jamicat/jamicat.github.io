@@ -10,6 +10,12 @@ this.sourceContext = null;
         this.activeEffects =
             new Set();
 
+        this.effectSeed =
+    Math.floor(
+        Math.random() *
+        2147483647
+    );
+
         this.effects = [
             {
                 id:
@@ -217,10 +223,13 @@ this.sourceContext =
                 "jami-remix-filter";
 
             button.textContent =
-                effect.label;
+    effect.label;
 
-            button.dataset.effectId =
-                effect.id;
+button.dataset.effectId =
+    effect.id;
+
+button.dataset.effectLabel =
+    effect.label;
 
             button.setAttribute(
                 "aria-pressed",
@@ -512,6 +521,13 @@ applyEffect(
             );
             break;
 
+        case "cctv":
+    this.applyCctv(
+        canvas,
+        context
+    );
+    break;
+
         /*
          * The remaining effects are added
          * one at a time in later steps.
@@ -694,34 +710,443 @@ applyEffect(
     context.restore();
 }
 
+    createSeededRandom(
+    seed
+) {
+    let state =
+        Number(seed) ||
+        1;
+
+    return () => {
+        state =
+            (
+                state *
+                1664525 +
+                1013904223
+            ) >>> 0;
+
+        return (
+            state /
+            4294967296
+        );
+    };
+}
     
+applyCctv(
+    canvas,
+    context
+) {
+    const width =
+        canvas.width;
 
-    toggleEffect(
-        effectId,
-        button
-    ) {
-        const active =
-            this.activeEffects.has(
-                effectId
-            );
+    const height =
+        canvas.height;
 
-        if (active) {
-            this.activeEffects.delete(
-                effectId
-            );
-        } else {
-            this.activeEffects.add(
-                effectId
-            );
-        }
+    const random =
+    this.createSeededRandom(
+        this.effectSeed +
+        2001
+    );
 
-        button.setAttribute(
-            "aria-pressed",
-            String(!active)
+    const original =
+        document.createElement(
+            "canvas"
         );
 
-        this.render();
+    original.width =
+        width;
+
+    original.height =
+        height;
+
+    const originalContext =
+        original.getContext(
+            "2d"
+        );
+
+    originalContext.drawImage(
+        canvas,
+        0,
+        0
+    );
+
+    /*
+     * Base monochrome security-camera look.
+     */
+    context.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    context.save();
+
+    context.filter = [
+        "grayscale(0.92)",
+        "contrast(1.22)",
+        "brightness(0.88)",
+        "saturate(0.35)"
+    ].join(" ");
+
+    context.drawImage(
+        original,
+        0,
+        0
+    );
+
+    context.restore();
+
+    /*
+     * Slight green-grey monitor tint.
+     */
+    context.save();
+
+    context.globalCompositeOperation =
+        "screen";
+
+    context.globalAlpha =
+        0.11;
+
+    context.fillStyle =
+        "#6f9278";
+
+    context.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    context.restore();
+
+    /*
+     * Fine sensor noise.
+     */
+    const imageData =
+        context.getImageData(
+            0,
+            0,
+            width,
+            height
+        );
+
+    const pixels =
+        imageData.data;
+
+    for (
+        let index = 0;
+        index < pixels.length;
+        index += 4
+    ) {
+        const noise =
+            (
+                random() -
+                0.5
+            ) * 22;
+
+        pixels[index] =
+            Math.max(
+                0,
+                Math.min(
+                    255,
+                    pixels[index] +
+                    noise
+                )
+            );
+
+        pixels[index + 1] =
+            Math.max(
+                0,
+                Math.min(
+                    255,
+                    pixels[index + 1] +
+                    noise
+                )
+            );
+
+        pixels[index + 2] =
+            Math.max(
+                0,
+                Math.min(
+                    255,
+                    pixels[index + 2] +
+                    noise
+                )
+            );
     }
+
+    context.putImageData(
+        imageData,
+        0,
+        0
+    );
+
+    /*
+     * Security monitor scanlines.
+     */
+    context.save();
+
+    context.globalAlpha =
+        0.13;
+
+    context.fillStyle =
+        "#07100a";
+
+    for (
+        let y = 0;
+        y < height;
+        y += 4
+    ) {
+        context.fillRect(
+            0,
+            y,
+            width,
+            1
+        );
+    }
+
+    context.restore();
+
+    /*
+     * Faint horizontal rolling band.
+     */
+    const bandY =
+        Math.floor(
+            height * 0.62
+        );
+
+    const bandGradient =
+        context.createLinearGradient(
+            0,
+            bandY - 24,
+            0,
+            bandY + 24
+        );
+
+    bandGradient.addColorStop(
+        0,
+        "rgba(255,255,255,0)"
+    );
+
+    bandGradient.addColorStop(
+        0.5,
+        "rgba(210,235,215,0.10)"
+    );
+
+    bandGradient.addColorStop(
+        1,
+        "rgba(255,255,255,0)"
+    );
+
+    context.fillStyle =
+        bandGradient;
+
+    context.fillRect(
+        0,
+        bandY - 24,
+        width,
+        48
+    );
+
+    /*
+     * Dark camera housing vignette.
+     */
+    const vignette =
+        context.createRadialGradient(
+            width / 2,
+            height / 2,
+            Math.min(
+                width,
+                height
+            ) * 0.18,
+
+            width / 2,
+            height / 2,
+            Math.max(
+                width,
+                height
+            ) * 0.72
+        );
+
+    vignette.addColorStop(
+        0,
+        "rgba(0,0,0,0)"
+    );
+
+    vignette.addColorStop(
+        0.68,
+        "rgba(0,0,0,0.05)"
+    );
+
+    vignette.addColorStop(
+        1,
+        "rgba(0,0,0,0.48)"
+    );
+
+    context.fillStyle =
+        vignette;
+
+    context.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    /*
+     * Tiny CCTV-style corner marks.
+     */
+    const cornerSize =
+        Math.max(
+            12,
+            Math.round(
+                Math.min(
+                    width,
+                    height
+                ) * 0.035
+            )
+        );
+
+    const inset =
+        Math.max(
+            8,
+            Math.round(
+                cornerSize * 0.6
+            )
+        );
+
+    context.save();
+
+    context.strokeStyle =
+        "rgba(220,240,225,0.55)";
+
+    context.lineWidth =
+        Math.max(
+            1,
+            Math.round(
+                width / 700
+            )
+        );
+
+    context.beginPath();
+
+    /*
+     * Top-left.
+     */
+    context.moveTo(
+        inset,
+        inset + cornerSize
+    );
+
+    context.lineTo(
+        inset,
+        inset
+    );
+
+    context.lineTo(
+        inset + cornerSize,
+        inset
+    );
+
+    /*
+     * Top-right.
+     */
+    context.moveTo(
+        width - inset - cornerSize,
+        inset
+    );
+
+    context.lineTo(
+        width - inset,
+        inset
+    );
+
+    context.lineTo(
+        width - inset,
+        inset + cornerSize
+    );
+
+    /*
+     * Bottom-left.
+     */
+    context.moveTo(
+        inset,
+        height - inset - cornerSize
+    );
+
+    context.lineTo(
+        inset,
+        height - inset
+    );
+
+    context.lineTo(
+        inset + cornerSize,
+        height - inset
+    );
+
+    /*
+     * Bottom-right.
+     */
+    context.moveTo(
+        width - inset - cornerSize,
+        height - inset
+    );
+
+    context.lineTo(
+        width - inset,
+        height - inset
+    );
+
+    context.lineTo(
+        width - inset,
+        height - inset - cornerSize
+    );
+
+    context.stroke();
+    context.restore();
+}
+
+    
+    toggleEffect(
+    effectId,
+    button
+) {
+    const active =
+        this.activeEffects.has(
+            effectId
+        );
+
+    if (active) {
+        this.activeEffects.delete(
+            effectId
+        );
+    } else {
+        this.activeEffects.add(
+            effectId
+        );
+    }
+
+    const isNowActive =
+        !active;
+
+    button.setAttribute(
+        "aria-pressed",
+        String(isNowActive)
+    );
+
+    const label =
+        button.dataset.effectLabel ||
+        button.textContent
+            .replace(/^✓\s*/, "");
+
+    button.textContent =
+        isNowActive
+            ? `✓ ${label}`
+            : label;
+
+    this.render();
+}
 
     async open(image) {
     const imageUrl =
@@ -743,18 +1168,29 @@ applyEffect(
     this.currentImage =
         image;
 
+        this.effectSeed =
+    Math.floor(
+        Math.random() *
+        2147483647
+    );
+        
     this.activeEffects.clear();
 
     this.overlay
-        .querySelectorAll(
-            "[data-effect-id]"
-        )
-        .forEach(button => {
-            button.setAttribute(
-                "aria-pressed",
-                "false"
-            );
-        });
+    .querySelectorAll(
+        "[data-effect-id]"
+    )
+    .forEach(button => {
+        button.setAttribute(
+            "aria-pressed",
+            "false"
+        );
+
+        button.textContent =
+            button.dataset.effectLabel ||
+            button.textContent
+                .replace(/^✓\s*/, "");
+    });
 
     this.overlay.hidden =
         false;
