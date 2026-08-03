@@ -1,425 +1,813 @@
-.jami-remix-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 100010;
+.jami-transfer-message {
+    box-sizing: border-box;
 
+    width: 100%;
+    max-width: 318px;
+
+    margin-top: 3px;
+
+    color: #111;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 12px;
+    line-height: 1;
+
+    image-rendering: pixelated;
+}
+
+.jami-transfer-window {
+    position: relative;
+
+    box-sizing: border-box;
+    overflow: hidden;
+
+    width: 100%;
+
+    border: 1px solid #f7f9fa;
+    border-radius: 0;
+
+    background: #e9eef1;
+
+    box-shadow:
+        1px 1px 0 #4a4d50;
+
+    color: #111;
+}
+
+.jami-transfer-titlebar {
+    display: grid;
+
+    grid-template-columns:
+        22px
+        minmax(0, 1fr)
+        22px
+        22px;
+
+    align-items: stretch;
+
+    box-sizing: border-box;
+
+    height: 21px;
+
+    margin: 1px 1px 0;
+
+    border: 0;
+
+    background: #252c36;
+
+    color: #f5f5f3;
+}
+
+.jami-transfer-title {
     display: flex;
+
+    min-width: 0;
+
     align-items: center;
     justify-content: center;
 
-    padding: 16px;
-
-    background:
-        rgba(
-            0,
-            0,
-            0,
-            0.72
-        );
-
-    backdrop-filter:
-        blur(5px);
-}
-
-.jami-remix-overlay[hidden] {
-    display: none;
-}
-
-.jami-remix-editor {
-    display: flex;
-    flex-direction: column;
-
-    width: min(
-        760px,
-        calc(100vw - 32px)
-    );
-
-    max-height:
-        calc(100vh - 32px);
-
     overflow: hidden;
 
-    border:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.18
-        );
+    background: #252c36;
 
-    border-radius: 18px;
+    color: #f5f5f3;
 
-    background:
-        rgba(
-            12,
-            12,
-            14,
-            0.97
-        );
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-    color: white;
-
-    box-shadow:
-        0
-        22px
-        70px
-        rgba(
-            0,
-            0,
-            0,
-            0.65
-        );
-}
-
-.jami-remix-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    min-height: 46px;
-
-    padding:
-        0
-        14px;
-
-    border-bottom:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.1
-        );
-}
-
-.jami-remix-title {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    line-height: 1;
+
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    text-shadow: none;
 }
 
-.jami-remix-close {
-    width: 30px;
-    height: 30px;
+.jami-transfer-caption-button {
+    position: relative;
+
+    display: block;
+
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 100%;
 
     margin: 0;
     padding: 0;
 
     border: 0;
-    border-radius: 8px;
+    border-radius: 0;
 
-    background: transparent;
-    color:
+    background: #dce6ed;
+
+    box-shadow: none;
+
+    pointer-events: none;
+}
+
+.jami-transfer-minimize {
+    border-right: 1px solid #6b7075;
+}
+
+.jami-transfer-arrow-down,
+.jami-transfer-arrow-up {
+    border-left: 1px solid #6b7075;
+}
+
+.jami-transfer-minimize span {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 11px;
+    height: 1px;
+
+    background: #34373a;
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        );
+}
+
+.jami-transfer-arrow-down span {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 0;
+    height: 0;
+
+    border-left:
+        4px solid transparent;
+
+    border-right:
+        4px solid transparent;
+
+    border-top:
+        6px solid #34373a;
+
+    transform:
+        translate(
+            -50%,
+            -42%
+        );
+}
+
+.jami-transfer-arrow-up span {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 0;
+    height: 0;
+
+    border-left:
+        4px solid transparent;
+
+    border-right:
+        4px solid transparent;
+
+    border-bottom:
+        6px solid #34373a;
+
+    transform:
+        translate(
+            -50%,
+            -58%
+        );
+}
+
+.jami-transfer-body {
+    box-sizing: border-box;
+
+    padding:
+        9px
+        8px
+        8px;
+
+    background: #e9eef1;
+}
+
+.jami-transfer-progress-frame {
+    box-sizing: border-box;
+
+    height: 20px;
+
+    padding:
+        2px
+        3px;
+
+    border: 1px solid #484b4f;
+    border-radius: 0;
+
+    background: #dbe5ec;
+
+    box-shadow:
+        inset
+        0
+        1px
+        0
         rgba(
             255,
             255,
             255,
-            0.6
+            0.28
         );
-
-    font-size: 20px;
-    line-height: 1;
-
-    cursor: pointer;
 }
 
-.jami-remix-close:hover {
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            0.08
-        );
+.jami-transfer-progress {
+    position: relative;
 
-    color: white;
+    box-sizing: border-box;
+
+    height: 100%;
+
+    overflow: hidden;
+
+    border: 0;
+    border-radius: 0;
+
+    background: #d8e3eb;
+
+    box-shadow: none;
 }
 
-.jami-remix-content {
+.jami-transfer-progress-fill {
+    width: 0%;
+    height: 100%;
+
+    background: #a83238;
+
+    box-shadow: none;
+
+    transition:
+        width 90ms linear;
+}
+
+.jami-transfer-bottom {
     display: grid;
 
     grid-template-columns:
         minmax(0, 1fr)
-        190px;
+        68px;
 
-    min-height: 0;
-    flex: 1;
+    align-items: center;
+
+    column-gap: 8px;
+
+    margin-top: 11px;
 }
 
-.jami-remix-stage-wrapper {
+.jami-transfer-copy {
+    min-width: 0;
+
+    padding-left: 7px;
+    padding-top: 4px;
+}
+
+.jami-transfer-file {
+    display: none;
+}
+
+.jami-transfer-status {
     display: flex;
-    align-items: center;
-    justify-content: center;
 
     min-width: 0;
-    min-height: 360px;
+    min-height: 15px;
 
-    padding: 18px;
+    align-items: center;
 
-    overflow: auto;
+    gap: 5px;
 
-    background:
-        repeating-conic-gradient(
-            #252525 0 25%,
-            #303030 0 50%
-        )
-        50% / 18px 18px;
+    overflow: hidden;
+
+    color: #151515;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 10px;
+    line-height: 15px;
+    white-space: nowrap;
 }
 
-.jami-remix-stage {
-    position: relative;
+.jami-transfer-status-label {
+    flex: none;
 
-    display: inline-block;
-
-    max-width: 100%;
+    font-weight: 700;
 }
 
-.jami-remix-canvas {
+.jami-transfer-status
+[data-jami-transfer-status] {
+    min-width: 0;
+
+    overflow: hidden;
+
+    text-overflow: clip;
+    white-space: nowrap;
+}
+
+.jami-transfer-cancel {
+    box-sizing: border-box;
+
+    width: 70px;
+    min-width: 70px;
+    height: 22px;
+
+    margin: 0;
+    padding: 0 6px;
+
+    border-top: 1px solid #f8fafc;
+    border-left: 1px solid #f8fafc;
+    border-right: 1px solid #666c72;
+    border-bottom: 1px solid #666c72;
+
+    border-radius: 2px;
+
+    background: #dce6ed;
+
+    color: #111;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: center;
+
+    box-shadow:
+        1px 1px 0 #6a7076;
+
+    cursor: pointer;
+}
+
+.jami-transfer-cancel:hover {
+    background: #e2eaf0;
+}
+
+.jami-transfer-cancel:active {
+    transform:
+        translate(
+            1px,
+            1px
+        );
+
+    box-shadow: none;
+}
+
+.jami-transfer-cancel:disabled {
+    color: #757575;
+
+    cursor: default;
+    opacity: 1;
+}
+
+.jami-transfer-image {
     display: block;
 
     width: auto;
-    height: auto;
 
-    max-width: 100%;
-    max-height:
-        calc(100vh - 180px);
+    max-width:
+        min(
+            100%,
+            318px
+        );
 
-    background: transparent;
+    max-height: 360px;
 
-    image-rendering: auto;
+    margin-top: 4px;
 
-    user-select: none;
-    touch-action: none;
+    border: 0;
+
+    object-fit: contain;
 }
 
-.jami-remix-sidebar {
+.chatMessage[
+    data-image-upload-status="failed"
+]
+.jami-transfer-progress-fill {
+    width: 100% !important;
+
+    background: #70252a;
+}
+
+.chatMessage[
+    data-image-upload-status="failed"
+]
+.jami-transfer-cancel {
+    display: none;
+}
+
+
+.jami-transfer-completion-host {
+    position: relative;
+
+    min-height: 132px;
+
+    overflow: visible;
+}
+
+.jami-program-message {
+    position: absolute;
+
+    z-index: 3;
+
+    left: 50%;
+    top: 50%;
+
+    box-sizing: border-box;
+
+    width:
+        min(
+            292px,
+            calc(100% - 8px)
+        );
+
+    overflow: hidden;
+
+    border:
+        3px solid
+        #252934;
+
+    border-radius: 0;
+
+    background: #e8edef;
+
+    box-shadow:
+        inset
+        0
+        0
+        0
+        1px
+        #f4f6f7,
+        2px
+        2px
+        0
+        #34343a;
+
+    color: #111;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+   opacity: 1;
+
+transform:
+    translate(
+        -50%,
+        -50%
+    );
+
+transition:
+    opacity 180ms ease-out,
+    transform 180ms
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        );
+}
+
+.jami-program-message:not(
+    .jami-program-message-opening
+) {
+    z-index: 5;
+}
+
+.jami-program-message-opening {
+    opacity: 0;
+
+    transform:
+        translate(
+            -50%,
+            calc(-50% + 18px)
+        );
+}
+
+.jami-program-message-closing {
+    opacity: 0;
+
+    transform:
+        translate(
+            -50%,
+            calc(-50% - 3px)
+        );
+
+    transition:
+        opacity 90ms linear,
+        transform 90ms ease-in;
+}
+
+.jami-program-message-titlebar {
+    display: grid;
+
+    grid-template-columns:
+        24px
+        minmax(0, 1fr);
+
+    align-items: stretch;
+
+    box-sizing: border-box;
+
+    height: 25px;
+
+    margin:
+        1px
+        1px
+        0;
+
+    background: #252b36;
+
+    color: #f5f5f3;
+}
+
+.jami-program-message-caption-button {
+    position: relative;
+
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 100%;
+
+    border-right:
+        1px solid
+        #60656a;
+
+    background: #dce6ed;
+}
+
+.jami-program-message-minimize span {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 11px;
+    height: 1px;
+
+    background: #34373a;
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        );
+}
+
+.jami-program-message-title {
+    display: flex;
+
     min-width: 0;
 
-    padding: 12px;
+    align-items: center;
+    justify-content: center;
 
-    overflow-y: auto;
+    padding-right: 24px;
 
-    border-left:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.1
-        );
+    overflow: hidden;
 
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            0.025
-        );
-}
+    background: #252b36;
 
-.jami-remix-section-title {
-    margin:
-        4px
-        0
-        8px;
+    color: #f5f5f3;
 
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            0.48
-        );
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-    font-size: 9px;
+    font-size: 14px;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: 0.45px;
+    line-height: 1;
+
+    text-align: center;
+    white-space: nowrap;
+
+    text-shadow: none;
 }
 
-.jami-remix-filter-list {
-    display: grid;
-    gap: 6px;
-}
 
-.jami-remix-filter {
-    width: 100%;
+.jami-program-message-body {
+    box-sizing: border-box;
+
+    min-height: 101px;
 
     padding:
-        8px
-        9px;
+        17px
+        13px
+        9px
+        15px;
+
+    background: #e8edef;
+}
+
+.jami-program-message-main {
+    display: flex;
+
+    min-height: 49px;
+
+    align-items: center;
+
+    gap: 18px;
+}
+
+.jami-program-message-icon {
+    position: relative;
+
+    box-sizing: border-box;
+
+    width: 37px;
+    height: 37px;
+
+    flex: none;
+
+    margin-left: -1px
+    0
+    0
+    1px;
 
     border:
         1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.1
-        );
+        #756729;
 
-    border-radius: 9px;
+    border-radius: 50%;
 
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            0.04
-        );
+    background: #cdb64a;
 
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            0.82
-        );
-
-    font: inherit;
-    font-size: 10px;
-    text-align: left;
-
-    cursor: pointer;
+    box-shadow: none;
 }
 
-.jami-remix-filter:hover {
-    border-color:
-        rgba(
-            255,
-            255,
-            255,
-            0.22
-        );
+.jami-program-message-exclamation {
+    position: static;
 
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            0.08
-        );
+    display: block;
 
-    color: white;
+    width: 100%;
+    height: 100%;
+
+    color: transparent;
+
+    font-size: 0;
+    line-height: 0;
 }
 
-.jami-remix-filter[aria-pressed="true"] {
-    border-color:
-        rgba(
-            130,
-            200,
-            255,
-            0.5
-        );
+.jami-program-message-exclamation::before {
+    position: absolute;
 
-    background:
-        rgba(
-            80,
-            150,
-            220,
-            0.18
-        );
+    left: 50%;
+    top: 4px;
 
-    color: white;
+    width: 7px;
+    height: 18px;
+
+    background: #352126;
+
+    content: "";
+
+    transform:
+        translateX(
+            -50%
+        );
 }
 
-.jami-remix-footer {
+.jami-program-message-exclamation::after {
+    position: absolute;
+
+    left: 50%;
+    bottom: 3px;
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #352126;
+
+    content: "";
+
+    transform:
+        translateX(-50%);
+}
+
+.jami-program-message-symbol {
+    display: none;
+}
+
+.jami-program-message-text {
+    min-width: 0;
+
+    padding-top: 2px;
+
+    color: #181518;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    line-height: 1.1;
+
+    white-space: nowrap;
+}
+
+.jami-program-message-actions {
     display: flex;
-    justify-content: flex-end;
-    gap: 8px;
 
-    padding: 11px 13px;
+    justify-content: flex-end;
+
+    margin-top: 11px;
+
+    margin-right: -4px;
+}
+
+.jami-program-message-ok {
+    box-sizing: border-box;
+
+    width: 50px;
+    min-width: 52px;
+    height: 21px;
+
+    margin: 0;
+    padding: 0 4px;
 
     border-top:
         1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.1
-        );
-}
+        #f8fafc;
 
-.jami-remix-footer button {
-    min-width: 86px;
-
-    padding:
-        8px
-        12px;
-
-    border:
+    border-left:
         1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.12
-        );
+        #f8fafc;
 
-    border-radius: 9px;
+    border-right:
+        1px solid
+        #666c72;
 
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            0.05
-        );
+    border-bottom:
+        1px solid
+        #666c72;
 
-    color: white;
+    border-radius: 2px;
 
-    font: inherit;
+    background: #dce6ed;
+
+    color: #171417;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
     font-size: 10px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+
+    box-shadow:
+        1px
+        1px
+        0
+        #676d73;
 
     cursor: pointer;
 }
 
-.jami-remix-footer button:hover {
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            0.1
+.jami-program-message-ok:hover {
+    background: #e2eaf0;
+}
+
+.jami-program-message-ok:active {
+    transform:
+        translate(
+            1px,
+            1px
         );
-}
 
-.jami-remix-save {
-    background:
-        rgba(
-            80,
-            150,
-            220,
-            0.22
-        ) !important;
-}
-
-@media (
-    max-width: 640px
-) {
-    .jami-remix-content {
-        grid-template-columns:
-            minmax(0, 1fr);
-    }
-
-    .jami-remix-sidebar {
-        max-height: 180px;
-
-        border-top:
-            1px solid
-            rgba(
-                255,
-                255,
-                255,
-                0.1
-            );
-
-        border-left: 0;
-    }
-
-    .jami-remix-stage-wrapper {
-        min-height: 260px;
-    }
+    box-shadow: none;
 }
