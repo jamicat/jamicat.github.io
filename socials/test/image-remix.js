@@ -16,13 +16,13 @@ this.sourceContext = null;
         2147483647
     );
         this.effects = [
-            { id: "crt-bloom", label: "CRT Bloom" },
+            { id: "crt-bloom", label: "CRT bloom" },
             { id: "cctv", label: "CCTV" },
-            { id: "scanner-lid-open", label: "Scanner Lid Open" },
-            { id: "broken-webcam", label: "Broken Webcam" },
-            { id: "jpeg-deep-fry", label: "JPEG Deep Fry" },
+            { id: "scanner-lid-open", label: "scanner lid open" },
+            { id: "broken-webcam", label: "broken webcam" },
+            { id: "jpeg-deep-fry", label: "JPEG deep fry" },
             { id: "jpeg-100x", label: "JPEG 100x" },
-            { id: "gifify-32", label: "GIFify — 32 Colours" }
+            { id: "gifify-32", label: "GIFify 32 colours" }
         ];
 
         this.emojiFiles = [
