@@ -518,7 +518,9 @@
 }
 
 .jami-remix-object-remove,
-.jami-remix-object-resize {
+.jami-remix-object-resize,
+.jami-remix-object-rotate,
+.jami-remix-object-flip {
     position: absolute;
     z-index: 4;
 
@@ -538,7 +540,11 @@
 .jami-remix-object.is-selected
 .jami-remix-object-remove,
 .jami-remix-object.is-selected
-.jami-remix-object-resize {
+.jami-remix-object-resize,
+.jami-remix-object.is-selected
+.jami-remix-object-rotate,
+.jami-remix-object.is-selected
+.jami-remix-object-flip {
     display: block;
 }
 
@@ -571,6 +577,76 @@
     border-bottom: 1px solid white;
 
     content: "";
+}
+
+.jami-remix-object-rotate {
+    left: 50%;
+    top: -29px;
+
+    transform: translateX(-50%);
+
+    cursor: grab;
+}
+
+.jami-remix-object-rotate:active {
+    cursor: grabbing;
+}
+
+.jami-remix-object-rotate::before {
+    position: absolute;
+    left: 50%;
+    top: 14px;
+
+    width: 1px;
+    height: 12px;
+
+    background: rgba(150,215,255,.95);
+
+    content: "";
+    transform: translateX(-50%);
+}
+
+.jami-remix-object-rotate::after {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+
+    width: 5px;
+    height: 5px;
+
+    border: 1px solid white;
+    border-radius: 50%;
+
+    content: "";
+}
+
+.jami-remix-object-flip {
+    top: -10px;
+
+    padding: 0;
+
+    font: 700 10px/12px Arial, sans-serif;
+    cursor: pointer;
+}
+
+.jami-remix-object-flip-horizontal {
+    left: -10px;
+}
+
+.jami-remix-object-flip-vertical {
+    left: 9px;
+}
+
+.jami-remix-object.is-flipped-horizontal
+.jami-remix-object-flip-horizontal,
+.jami-remix-object.is-flipped-vertical
+.jami-remix-object-flip-vertical {
+    border-color: rgba(150,215,255,.98);
+    background: #28506a;
+}
+
+.jami-remix-object-content {
+    transform-origin: center;
 }
 
 .jami-remix-ghost-orb {
@@ -628,5 +704,13 @@
 
     .jami-remix-stage-wrapper {
         min-height: 260px;
+    }
+
+    .jami-remix-object-remove,
+    .jami-remix-object-resize,
+    .jami-remix-object-rotate,
+    .jami-remix-object-flip {
+        width: 18px;
+        height: 18px;
     }
 }
