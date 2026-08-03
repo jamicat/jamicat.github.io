@@ -8764,8 +8764,8 @@ async uploadTestImage(file) {
 
     const finalConfirmation =
         window.confirm(
-            "Final confirmation:\n\n" +
-            "Delete the entire chat and empty R2?"
+            "final confirmation:\n\n" +
+            "delete the entire chat?"
         );
 
     if (!finalConfirmation) {
