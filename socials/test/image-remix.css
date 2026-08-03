@@ -176,17 +176,22 @@
     max-width: 100%;
 }
 
-.jami-remix-image {
+.jami-remix-canvas {
     display: block;
+
+    width: auto;
+    height: auto;
 
     max-width: 100%;
     max-height:
         calc(100vh - 180px);
 
-    object-fit: contain;
+    background: transparent;
+
+    image-rendering: auto;
 
     user-select: none;
-    -webkit-user-drag: none;
+    touch-action: none;
 }
 
 .jami-remix-sidebar {
