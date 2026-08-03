@@ -396,6 +396,213 @@
         ) !important;
 }
 
+
+.jami-remix-overlay-layer {
+    position: absolute;
+    inset: 0;
+
+    overflow: visible;
+
+    pointer-events: none;
+}
+
+.jami-remix-overlay-title {
+    margin-top: 18px;
+}
+
+.jami-remix-tool {
+    position: relative;
+}
+
+.jami-remix-emoji-picker {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 5px;
+
+    max-height: 210px;
+    margin-top: 8px;
+    padding: 6px;
+
+    overflow-y: auto;
+
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    background: rgba(0,0,0,.3);
+}
+
+.jami-remix-emoji-picker[hidden] {
+    display: none;
+}
+
+.jami-remix-emoji-choice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1;
+    min-width: 0;
+    padding: 4px;
+
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 7px;
+    background: rgba(255,255,255,.035);
+
+    cursor: pointer;
+}
+
+.jami-remix-emoji-choice:hover {
+    border-color: rgba(130,200,255,.4);
+    background: rgba(80,150,220,.14);
+}
+
+.jami-remix-emoji-choice img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    image-rendering: auto;
+    pointer-events: none;
+}
+
+.jami-remix-overlay-hint {
+    margin-top: 8px;
+    color: rgba(255,255,255,.32);
+    font-size: 8px;
+    line-height: 1.4;
+}
+
+.jami-remix-object {
+    position: absolute;
+    z-index: 2;
+
+    aspect-ratio: 1;
+
+    cursor: grab;
+    pointer-events: auto;
+    touch-action: none;
+    user-select: none;
+}
+
+.jami-remix-object:active {
+    cursor: grabbing;
+}
+
+.jami-remix-object-content {
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+}
+
+.jami-remix-object-content img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+    pointer-events: none;
+    -webkit-user-drag: none;
+}
+
+.jami-remix-object.is-selected::after {
+    position: absolute;
+    inset: -3px;
+
+    border: 1px dashed rgba(150,215,255,.95);
+    border-radius: 4px;
+
+    content: "";
+    pointer-events: none;
+}
+
+.jami-remix-object-remove,
+.jami-remix-object-resize {
+    position: absolute;
+    z-index: 4;
+
+    display: none;
+
+    width: 15px;
+    height: 15px;
+
+    border: 1px solid rgba(255,255,255,.9);
+    border-radius: 50%;
+    background: #1d2730;
+    color: white;
+
+    box-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+
+.jami-remix-object.is-selected
+.jami-remix-object-remove,
+.jami-remix-object.is-selected
+.jami-remix-object-resize {
+    display: block;
+}
+
+.jami-remix-object-remove {
+    right: -10px;
+    top: -10px;
+
+    padding: 0;
+
+    font: 700 12px/12px Arial, sans-serif;
+    cursor: pointer;
+}
+
+.jami-remix-object-resize {
+    right: -10px;
+    bottom: -10px;
+
+    cursor: nwse-resize;
+}
+
+.jami-remix-object-resize::before {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+
+    width: 5px;
+    height: 5px;
+
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
+
+    content: "";
+}
+
+.jami-remix-ghost-orb {
+    border-radius: 50%;
+
+    opacity: var(--orb-opacity, .5);
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            hsla(var(--orb-hue), 100%, 98%, .92) 0,
+            hsla(var(--orb-hue), 95%, 93%, .75) var(--orb-core),
+            hsla(var(--orb-hue), 90%, 82%, .22) var(--orb-ring),
+            hsla(var(--orb-hue), 90%, 80%, .08) 78%,
+            transparent 100%
+        );
+
+    filter:
+        blur(.8px)
+        drop-shadow(
+            0 0 7px
+            hsla(var(--orb-hue), 90%, 88%, .3)
+        );
+
+    mix-blend-mode: screen;
+}
+
+.jami-remix-save:disabled {
+    cursor: wait;
+    opacity: .6;
+}
+
 @media (
     max-width: 640px
 ) {
