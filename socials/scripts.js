@@ -3028,8 +3028,8 @@ function siteFAQ() {
   id="aboutScroll"
   class="
     themed-scrollbar
-    max-h-[52vh]
-    sm:max-h-[58vh]
+    max-h-[44vh]
+    sm:max-h-[44vh]
     overflow-y-auto
     overscroll-contain
     pr-3
