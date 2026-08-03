@@ -385,6 +385,42 @@ button.dataset.effectLabel =
                 }
 
                 if (
+                    (event.ctrlKey || event.metaKey) &&
+                    event.key.toLowerCase() === "d" &&
+                    this.selectedOverlayId
+                ) {
+                    event.preventDefault();
+                    this.duplicateOverlay(
+                        this.selectedOverlayId
+                    );
+                    return;
+                }
+
+                if (
+                    event.key === "[" &&
+                    this.selectedOverlayId
+                ) {
+                    event.preventDefault();
+                    this.moveOverlayLayer(
+                        this.selectedOverlayId,
+                        -1
+                    );
+                    return;
+                }
+
+                if (
+                    event.key === "]" &&
+                    this.selectedOverlayId
+                ) {
+                    event.preventDefault();
+                    this.moveOverlayLayer(
+                        this.selectedOverlayId,
+                        1
+                    );
+                    return;
+                }
+
+                if (
                     event.key === "Delete" ||
                     event.key === "Backspace"
                 ) {
@@ -2902,13 +2938,52 @@ applyGifify32(
         flipVerticalButton.title =
             "flip vertically";
 
+        const sendBackwardButton =
+            document.createElement(
+                "button"
+            );
+
+        sendBackwardButton.type = "button";
+        sendBackwardButton.className =
+            "jami-remix-object-layer jami-remix-object-layer-back";
+        sendBackwardButton.textContent = "−";
+        sendBackwardButton.title =
+            "send backward";
+
+        const bringForwardButton =
+            document.createElement(
+                "button"
+            );
+
+        bringForwardButton.type = "button";
+        bringForwardButton.className =
+            "jami-remix-object-layer jami-remix-object-layer-front";
+        bringForwardButton.textContent = "+";
+        bringForwardButton.title =
+            "bring forward";
+
+        const duplicateButton =
+            document.createElement(
+                "button"
+            );
+
+        duplicateButton.type = "button";
+        duplicateButton.className =
+            "jami-remix-object-duplicate";
+        duplicateButton.textContent = "⧉";
+        duplicateButton.title =
+            "duplicate";
+
         element.append(
             content,
             removeButton,
             resizeHandle,
             rotateHandle,
             flipHorizontalButton,
-            flipVerticalButton
+            flipVerticalButton,
+            sendBackwardButton,
+            bringForwardButton,
+            duplicateButton
         );
 
         item.element = element;
@@ -2923,7 +2998,10 @@ applyGifify32(
                     event.target === resizeHandle ||
                     event.target === rotateHandle ||
                     event.target === flipHorizontalButton ||
-                    event.target === flipVerticalButton
+                    event.target === flipVerticalButton ||
+                    event.target === sendBackwardButton ||
+                    event.target === bringForwardButton ||
+                    event.target === duplicateButton
                 ) {
                     return;
                 }
@@ -2977,6 +3055,33 @@ applyGifify32(
             }
         );
 
+        sendBackwardButton.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+                this.moveOverlayLayer(item.id, -1);
+            }
+        );
+
+        bringForwardButton.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+                this.moveOverlayLayer(item.id, 1);
+            }
+        );
+
+        duplicateButton.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+                this.duplicateOverlay(item.id);
+            }
+        );
+
         removeButton.addEventListener(
             "click",
             event => {
@@ -2991,9 +3096,98 @@ applyGifify32(
         );
 
         this.updateOverlayElement(item);
+        this.syncOverlayLayerOrder();
         this.selectOverlay(item.id);
 
         return item;
+    }
+
+
+    moveOverlayLayer(
+        id,
+        direction
+    ) {
+        const index =
+            this.overlayItems.findIndex(
+                item => item.id === id
+            );
+
+        if (index < 0) {
+            return;
+        }
+
+        const nextIndex =
+            Math.max(
+                0,
+                Math.min(
+                    this.overlayItems.length - 1,
+                    index + Math.sign(direction)
+                )
+            );
+
+        if (nextIndex === index) {
+            return;
+        }
+
+        const [item] =
+            this.overlayItems.splice(index, 1);
+
+        this.overlayItems.splice(
+            nextIndex,
+            0,
+            item
+        );
+
+        this.syncOverlayLayerOrder();
+        this.selectOverlay(id);
+    }
+
+    syncOverlayLayerOrder() {
+        if (!this.overlayLayer) {
+            return;
+        }
+
+        this.overlayItems.forEach(
+            (item, index) => {
+                if (!item.element) {
+                    return;
+                }
+
+                item.element.style.zIndex =
+                    String(index + 2);
+
+                this.overlayLayer.appendChild(
+                    item.element
+                );
+            }
+        );
+    }
+
+    duplicateOverlay(id) {
+        const sourceItem =
+            this.overlayItems.find(
+                item => item.id === id
+            );
+
+        if (!sourceItem) {
+            return null;
+        }
+
+        return this.addOverlay({
+            type: sourceItem.type,
+            source: sourceItem.source,
+            label: sourceItem.label,
+            x: Math.min(94, sourceItem.x + 4),
+            y: Math.min(94, sourceItem.y + 4),
+            width: sourceItem.width,
+            rotation: sourceItem.rotation,
+            flipX: sourceItem.flipX,
+            flipY: sourceItem.flipY,
+            hue: sourceItem.hue,
+            opacity: sourceItem.opacity,
+            core: sourceItem.core,
+            ring: sourceItem.ring
+        });
     }
 
     selectOverlay(id) {
@@ -3500,8 +3694,9 @@ applyGifify32(
                 ],
                 overlays:
                     this.overlayItems.map(
-                        item => ({
+                        (item, layerIndex) => ({
                             type: item.type,
+                            layerIndex,
                             source: item.source,
                             x: item.x,
                             y: item.y,
