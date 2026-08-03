@@ -549,9 +549,23 @@ applyEffect(
             );
             break;
 
+        case "jpeg-100x":
+            this.applyJpeg100x(
+                canvas,
+                context
+            );
+            break;
+
+        case "gifify-32":
+            this.applyGifify32(
+                canvas,
+                context
+            );
+            break;
+
         /*
-         * JPEG 100x, GIFify, emojis and
-         * ghost orbs are added in later passes.
+         * Emojis and ghost orbs are added
+         * in the interactive-overlay pass.
          */
         default:
             break;
@@ -1841,6 +1855,716 @@ applyJpegDeepFry(
         height
     );
     context.restore();
+}
+
+
+applyJpeg100x(
+    canvas,
+    context
+) {
+    const width = canvas.width;
+    const height = canvas.height;
+
+    if (
+        width <= 0 ||
+        height <= 0
+    ) {
+        return;
+    }
+
+    const random =
+        this.createSeededRandom(
+            this.effectSeed +
+            8107
+        );
+
+    const source =
+        document.createElement(
+            "canvas"
+        );
+
+    source.width = width;
+    source.height = height;
+
+    const sourceContext =
+        source.getContext(
+            "2d",
+            {
+                willReadFrequently:
+                    true
+            }
+        );
+
+    sourceContext.drawImage(
+        canvas,
+        0,
+        0
+    );
+
+    /*
+     * Repeated shrinking and enlargement
+     * approximates many generations of
+     * low-quality JPEG recompression without
+     * making the render pipeline asynchronous.
+     */
+    let current = source;
+
+    const passes = 7;
+
+    for (
+        let pass = 0;
+        pass < passes;
+        pass += 1
+    ) {
+        const degradation =
+            pass /
+            Math.max(
+                1,
+                passes - 1
+            );
+
+        const scale =
+            Math.max(
+                0.20,
+                0.58 -
+                degradation * 0.23 -
+                random() * 0.035
+            );
+
+        const reducedWidth =
+            Math.max(
+                8,
+                Math.round(
+                    width * scale
+                )
+            );
+
+        const reducedHeight =
+            Math.max(
+                8,
+                Math.round(
+                    height * scale
+                )
+            );
+
+        const reduced =
+            document.createElement(
+                "canvas"
+            );
+
+        reduced.width =
+            reducedWidth;
+
+        reduced.height =
+            reducedHeight;
+
+        const reducedContext =
+            reduced.getContext(
+                "2d",
+                {
+                    willReadFrequently:
+                        true
+                }
+            );
+
+        reducedContext.imageSmoothingEnabled =
+            true;
+
+        reducedContext.imageSmoothingQuality =
+            "low";
+
+        reducedContext.filter = [
+            `contrast(${1.02 + pass * 0.015})`,
+            `saturate(${0.97 - pass * 0.012})`
+        ].join(" ");
+
+        reducedContext.drawImage(
+            current,
+            0,
+            0,
+            current.width,
+            current.height,
+            0,
+            0,
+            reducedWidth,
+            reducedHeight
+        );
+
+        const expanded =
+            document.createElement(
+                "canvas"
+            );
+
+        expanded.width = width;
+        expanded.height = height;
+
+        const expandedContext =
+            expanded.getContext(
+                "2d",
+                {
+                    willReadFrequently:
+                        true
+                }
+            );
+
+        expandedContext.imageSmoothingEnabled =
+            true;
+
+        expandedContext.imageSmoothingQuality =
+            "low";
+
+        expandedContext.drawImage(
+            reduced,
+            0,
+            0,
+            reducedWidth,
+            reducedHeight,
+            0,
+            0,
+            width,
+            height
+        );
+
+        const imageData =
+            expandedContext.getImageData(
+                0,
+                0,
+                width,
+                height
+            );
+
+        const pixels =
+            imageData.data;
+
+        const blockSize =
+            pass < 3
+                ? 4
+                : 8;
+
+        const quantization =
+            5 +
+            pass * 2;
+
+        /*
+         * Quantise colour and partially share
+         * chroma inside JPEG-like blocks.
+         */
+        for (
+            let blockY = 0;
+            blockY < height;
+            blockY += blockSize
+        ) {
+            for (
+                let blockX = 0;
+                blockX < width;
+                blockX += blockSize
+            ) {
+                let redTotal = 0;
+                let greenTotal = 0;
+                let blueTotal = 0;
+                let samples = 0;
+
+                for (
+                    let y = blockY;
+                    y < Math.min(
+                        height,
+                        blockY + blockSize
+                    );
+                    y += 2
+                ) {
+                    for (
+                        let x = blockX;
+                        x < Math.min(
+                            width,
+                            blockX + blockSize
+                        );
+                        x += 2
+                    ) {
+                        const offset =
+                            (
+                                y * width +
+                                x
+                            ) * 4;
+
+                        redTotal +=
+                            pixels[offset];
+
+                        greenTotal +=
+                            pixels[offset + 1];
+
+                        blueTotal +=
+                            pixels[offset + 2];
+
+                        samples += 1;
+                    }
+                }
+
+                const averageRed =
+                    redTotal /
+                    Math.max(
+                        1,
+                        samples
+                    );
+
+                const averageGreen =
+                    greenTotal /
+                    Math.max(
+                        1,
+                        samples
+                    );
+
+                const averageBlue =
+                    blueTotal /
+                    Math.max(
+                        1,
+                        samples
+                    );
+
+                for (
+                    let y = blockY;
+                    y < Math.min(
+                        height,
+                        blockY + blockSize
+                    );
+                    y += 1
+                ) {
+                    for (
+                        let x = blockX;
+                        x < Math.min(
+                            width,
+                            blockX + blockSize
+                        );
+                        x += 1
+                    ) {
+                        const offset =
+                            (
+                                y * width +
+                                x
+                            ) * 4;
+
+                        const luminance =
+                            pixels[offset] * 0.299 +
+                            pixels[offset + 1] * 0.587 +
+                            pixels[offset + 2] * 0.114;
+
+                        const chromaMix =
+                            0.12 +
+                            pass * 0.025;
+
+                        const red =
+                            pixels[offset] *
+                                (1 - chromaMix) +
+                            averageRed *
+                                chromaMix;
+
+                        const green =
+                            pixels[offset + 1] *
+                                (1 - chromaMix) +
+                            averageGreen *
+                                chromaMix;
+
+                        const blue =
+                            pixels[offset + 2] *
+                                (1 - chromaMix) +
+                            averageBlue *
+                                chromaMix;
+
+                        const mosquito =
+                            (
+                                random() -
+                                0.5
+                            ) *
+                            (
+                                1.2 +
+                                pass * 0.8
+                            );
+
+                        pixels[offset] =
+                            Math.max(
+                                0,
+                                Math.min(
+                                    255,
+                                    Math.round(
+                                        (
+                                            red +
+                                            mosquito +
+                                            luminance * 0.006
+                                        ) /
+                                        quantization
+                                    ) *
+                                    quantization
+                                )
+                            );
+
+                        pixels[offset + 1] =
+                            Math.max(
+                                0,
+                                Math.min(
+                                    255,
+                                    Math.round(
+                                        (
+                                            green +
+                                            mosquito
+                                        ) /
+                                        quantization
+                                    ) *
+                                    quantization
+                                )
+                            );
+
+                        pixels[offset + 2] =
+                            Math.max(
+                                0,
+                                Math.min(
+                                    255,
+                                    Math.round(
+                                        (
+                                            blue -
+                                            mosquito
+                                        ) /
+                                        quantization
+                                    ) *
+                                    quantization
+                                )
+                            );
+                    }
+                }
+            }
+        }
+
+        expandedContext.putImageData(
+            imageData,
+            0,
+            0
+        );
+
+        current = expanded;
+    }
+
+    context.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    context.save();
+    context.filter =
+        "contrast(1.08) saturate(0.92)";
+    context.drawImage(
+        current,
+        0,
+        0
+    );
+    context.restore();
+
+    /*
+     * Faint block-grid seams complete the
+     * repeatedly-recompressed appearance.
+     */
+    context.save();
+    context.globalAlpha = 0.045;
+    context.strokeStyle = "#111";
+    context.lineWidth = 1;
+
+    for (
+        let x = 8;
+        x < width;
+        x += 8
+    ) {
+        context.beginPath();
+        context.moveTo(
+            x + 0.5,
+            0
+        );
+        context.lineTo(
+            x + 0.5,
+            height
+        );
+        context.stroke();
+    }
+
+    for (
+        let y = 8;
+        y < height;
+        y += 8
+    ) {
+        context.beginPath();
+        context.moveTo(
+            0,
+            y + 0.5
+        );
+        context.lineTo(
+            width,
+            y + 0.5
+        );
+        context.stroke();
+    }
+
+    context.restore();
+}
+
+applyGifify32(
+    canvas,
+    context
+) {
+    const width = canvas.width;
+    const height = canvas.height;
+
+    if (
+        width <= 0 ||
+        height <= 0
+    ) {
+        return;
+    }
+
+    const imageData =
+        context.getImageData(
+            0,
+            0,
+            width,
+            height
+        );
+
+    const pixels =
+        imageData.data;
+
+    /*
+     * A fixed 32-colour RGB palette:
+     * 4 red levels × 4 green levels ×
+     * 2 blue levels. Ordered dithering
+     * prevents broad flat bands.
+     */
+    const bayer4 = [
+        0, 8, 2, 10,
+        12, 4, 14, 6,
+        3, 11, 1, 9,
+        15, 7, 13, 5
+    ];
+
+    const redLevels = [
+        0,
+        85,
+        170,
+        255
+    ];
+
+    const greenLevels = [
+        0,
+        85,
+        170,
+        255
+    ];
+
+    const blueLevels = [
+        36,
+        218
+    ];
+
+    const nearestLevel = (
+        value,
+        levels
+    ) => {
+        let nearest = levels[0];
+        let distance =
+            Math.abs(
+                value -
+                nearest
+            );
+
+        for (
+            let index = 1;
+            index < levels.length;
+            index += 1
+        ) {
+            const candidate =
+                levels[index];
+
+            const candidateDistance =
+                Math.abs(
+                    value -
+                    candidate
+                );
+
+            if (
+                candidateDistance <
+                distance
+            ) {
+                nearest = candidate;
+                distance =
+                    candidateDistance;
+            }
+        }
+
+        return nearest;
+    };
+
+    for (
+        let y = 0;
+        y < height;
+        y += 1
+    ) {
+        for (
+            let x = 0;
+            x < width;
+            x += 1
+        ) {
+            const offset =
+                (
+                    y * width +
+                    x
+                ) * 4;
+
+            const threshold =
+                (
+                    bayer4[
+                        (
+                            y % 4
+                        ) * 4 +
+                        (
+                            x % 4
+                        )
+                    ] -
+                    7.5
+                ) /
+                7.5;
+
+            const red =
+                Math.max(
+                    0,
+                    Math.min(
+                        255,
+                        pixels[offset] +
+                        threshold * 25
+                    )
+                );
+
+            const green =
+                Math.max(
+                    0,
+                    Math.min(
+                        255,
+                        pixels[offset + 1] +
+                        threshold * 23
+                    )
+                );
+
+            const blue =
+                Math.max(
+                    0,
+                    Math.min(
+                        255,
+                        pixels[offset + 2] +
+                        threshold * 34
+                    )
+                );
+
+            pixels[offset] =
+                nearestLevel(
+                    red,
+                    redLevels
+                );
+
+            pixels[offset + 1] =
+                nearestLevel(
+                    green,
+                    greenLevels
+                );
+
+            pixels[offset + 2] =
+                nearestLevel(
+                    blue,
+                    blueLevels
+                );
+        }
+    }
+
+    context.putImageData(
+        imageData,
+        0,
+        0
+    );
+
+    /*
+     * Give it the slightly crunchy display
+     * quality of a small web GIF enlarged in
+     * the browser.
+     */
+    const reduced =
+        document.createElement(
+            "canvas"
+        );
+
+    const reductionScale =
+        Math.min(
+            1,
+            720 /
+            Math.max(
+                width,
+                height
+            )
+        );
+
+    reduced.width =
+        Math.max(
+            1,
+            Math.round(
+                width *
+                reductionScale
+            )
+        );
+
+    reduced.height =
+        Math.max(
+            1,
+            Math.round(
+                height *
+                reductionScale
+            )
+        );
+
+    const reducedContext =
+        reduced.getContext("2d");
+
+    reducedContext.imageSmoothingEnabled =
+        false;
+
+    reducedContext.drawImage(
+        canvas,
+        0,
+        0,
+        width,
+        height,
+        0,
+        0,
+        reduced.width,
+        reduced.height
+    );
+
+    context.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    context.imageSmoothingEnabled =
+        false;
+
+    context.drawImage(
+        reduced,
+        0,
+        0,
+        reduced.width,
+        reduced.height,
+        0,
+        0,
+        width,
+        height
+    );
+
+    context.imageSmoothingEnabled =
+        true;
 }
 
     toggleEffect(
