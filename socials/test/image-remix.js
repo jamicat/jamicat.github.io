@@ -313,6 +313,389 @@ this.sourceContext =
         );
     }
 
+    async loadSourceImage(
+    imageUrl
+) {
+    const image =
+        new Image();
+
+    /*
+     * Required when loading an image
+     * from the Worker or another origin.
+     */
+    image.crossOrigin =
+        "anonymous";
+
+    await new Promise(
+        (
+            resolve,
+            reject
+        ) => {
+            image.addEventListener(
+                "load",
+                resolve,
+                {
+                    once: true
+                }
+            );
+
+            image.addEventListener(
+                "error",
+                () => {
+                    reject(
+                        new Error(
+                            "Could not load image for remixing"
+                        )
+                    );
+                },
+                {
+                    once: true
+                }
+            );
+
+            image.src =
+                imageUrl;
+        }
+    );
+
+    this.sourceImage =
+        image;
+
+    const maximumDimension =
+        1400;
+
+    const scale =
+        Math.min(
+            1,
+            maximumDimension /
+                Math.max(
+                    image.naturalWidth,
+                    image.naturalHeight
+                )
+        );
+
+    const width =
+        Math.max(
+            1,
+            Math.round(
+                image.naturalWidth *
+                scale
+            )
+        );
+
+    const height =
+        Math.max(
+            1,
+            Math.round(
+                image.naturalHeight *
+                scale
+            )
+        );
+
+    this.sourceCanvas.width =
+        width;
+
+    this.sourceCanvas.height =
+        height;
+
+    this.canvas.width =
+        width;
+
+    this.canvas.height =
+        height;
+
+    this.sourceContext.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    this.sourceContext.drawImage(
+        image,
+        0,
+        0,
+        width,
+        height
+    );
+
+    this.render();
+}
+
+    render() {
+    if (
+        !this.sourceCanvas ||
+        !this.context
+    ) {
+        return;
+    }
+
+    const width =
+        this.sourceCanvas.width;
+
+    const height =
+        this.sourceCanvas.height;
+
+    if (
+        width <= 0 ||
+        height <= 0
+    ) {
+        return;
+    }
+
+    /*
+     * Always rebuild from the untouched
+     * source so effects do not repeatedly
+     * damage the previous preview.
+     */
+    const workingCanvas =
+        document.createElement(
+            "canvas"
+        );
+
+    workingCanvas.width =
+        width;
+
+    workingCanvas.height =
+        height;
+
+    const workingContext =
+        workingCanvas.getContext(
+            "2d",
+            {
+                willReadFrequently:
+                    true
+            }
+        );
+
+    workingContext.drawImage(
+        this.sourceCanvas,
+        0,
+        0
+    );
+
+    for (
+        const effectId
+        of this.activeEffects
+    ) {
+        this.applyEffect(
+            effectId,
+            workingCanvas,
+            workingContext
+        );
+    }
+
+    this.context.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    this.context.drawImage(
+        workingCanvas,
+        0,
+        0
+    );
+}
+
+applyEffect(
+    effectId,
+    canvas,
+    context
+) {
+    switch (effectId) {
+        case "crt-bloom":
+            this.applyCrtBloom(
+                canvas,
+                context
+            );
+            break;
+
+        /*
+         * The remaining effects are added
+         * one at a time in later steps.
+         */
+        default:
+            break;
+    }
+}
+
+    applyCrtBloom(
+    canvas,
+    context
+) {
+    const width =
+        canvas.width;
+
+    const height =
+        canvas.height;
+
+    const original =
+        document.createElement(
+            "canvas"
+        );
+
+    original.width =
+        width;
+
+    original.height =
+        height;
+
+    const originalContext =
+        original.getContext(
+            "2d"
+        );
+
+    originalContext.drawImage(
+        canvas,
+        0,
+        0
+    );
+
+    context.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    /*
+     * Slightly increased contrast and
+     * saturation for the monitor image.
+     */
+    context.save();
+
+    context.filter =
+        "contrast(1.12) saturate(1.14) brightness(1.03)";
+
+    context.drawImage(
+        original,
+        0,
+        0
+    );
+
+    context.restore();
+
+    /*
+     * Soft phosphor glow.
+     */
+    context.save();
+
+    context.globalCompositeOperation =
+        "screen";
+
+    context.globalAlpha =
+        0.34;
+
+    context.filter =
+        "blur(5px) saturate(1.2)";
+
+    context.drawImage(
+        original,
+        0,
+        0
+    );
+
+    context.restore();
+
+    /*
+     * Horizontal CRT scanlines.
+     */
+    context.save();
+
+    context.globalAlpha =
+        0.16;
+
+    context.fillStyle =
+        "#000";
+
+    for (
+        let y = 1;
+        y < height;
+        y += 3
+    ) {
+        context.fillRect(
+            0,
+            y,
+            width,
+            1
+        );
+    }
+
+    context.restore();
+
+    /*
+     * Gentle vignette around the edges.
+     */
+    const vignette =
+        context.createRadialGradient(
+            width / 2,
+            height / 2,
+            Math.min(
+                width,
+                height
+            ) * 0.22,
+
+            width / 2,
+            height / 2,
+            Math.max(
+                width,
+                height
+            ) * 0.72
+        );
+
+    vignette.addColorStop(
+        0,
+        "rgba(0,0,0,0)"
+    );
+
+    vignette.addColorStop(
+        0.72,
+        "rgba(0,0,0,0.04)"
+    );
+
+    vignette.addColorStop(
+        1,
+        "rgba(0,0,0,0.36)"
+    );
+
+    context.fillStyle =
+        vignette;
+
+    context.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    /*
+     * Very faint cool monitor tint.
+     */
+    context.save();
+
+    context.globalCompositeOperation =
+        "screen";
+
+    context.globalAlpha =
+        0.055;
+
+    context.fillStyle =
+        "#7799bb";
+
+    context.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    context.restore();
+}
+
+    
+
     toggleEffect(
         effectId,
         button
@@ -336,66 +719,108 @@ this.sourceContext =
             "aria-pressed",
             String(!active)
         );
+
+        this.render();
     }
 
-    open(image) {
-        const imageUrl =
-            typeof image === "string"
-                ? image
-                : image?.imageUrl ||
-                  image?.src ||
-                  "";
+    async open(image) {
+    const imageUrl =
+        typeof image ===
+            "string"
+            ? image
+            : image?.imageUrl ||
+              image?.src ||
+              "";
 
-        if (!imageUrl) {
-            console.error(
-                "Cannot open remix editor without an image URL"
-            );
-
-            return;
-        }
-
-        this.currentImage =
-            image;
-
-        this.activeEffects.clear();
-
-        this.overlay
-            .querySelectorAll(
-                "[data-effect-id]"
-            )
-            .forEach(button => {
-                button.setAttribute(
-                    "aria-pressed",
-                    "false"
-                );
-            });
-
-        this.image.src =
-            imageUrl;
-
-        this.overlay.hidden =
-            false;
-
-        document.body.style.overflow =
-            "hidden";
-    }
-
-    close() {
-        this.overlay.hidden =
-            true;
-
-        document.body.style.overflow =
-            "";
-
-        this.image.removeAttribute(
-            "src"
+    if (!imageUrl) {
+        console.error(
+            "Cannot open remix editor without an image URL"
         );
 
-        this.currentImage =
-            null;
-
-        this.activeEffects.clear();
+        return;
     }
+
+    this.currentImage =
+        image;
+
+    this.activeEffects.clear();
+
+    this.overlay
+        .querySelectorAll(
+            "[data-effect-id]"
+        )
+        .forEach(button => {
+            button.setAttribute(
+                "aria-pressed",
+                "false"
+            );
+        });
+
+    this.overlay.hidden =
+        false;
+
+    document.body.style.overflow =
+        "hidden";
+
+    try {
+        await this.loadSourceImage(
+            imageUrl
+        );
+    } catch (error) {
+        console.error(
+            "Could not open remix editor:",
+            error
+        );
+
+        window.alert(
+            error.message
+        );
+
+        this.close();
+    }
+}
+
+    close() {
+    this.overlay.hidden =
+        true;
+
+    document.body.style.overflow =
+        "";
+
+    this.context?.clearRect(
+        0,
+        0,
+        this.canvas.width,
+        this.canvas.height
+    );
+
+    this.sourceContext?.clearRect(
+        0,
+        0,
+        this.sourceCanvas.width,
+        this.sourceCanvas.height
+    );
+
+    this.canvas.width =
+        0;
+
+    this.canvas.height =
+        0;
+
+    this.sourceCanvas.width =
+        0;
+
+    this.sourceCanvas.height =
+        0;
+
+    this.sourceImage =
+        null;
+
+    this.currentImage =
+        null;
+
+    this.activeEffects.clear();
+}
 }
 
 window.jamiImageRemixEditor =
