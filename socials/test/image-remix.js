@@ -165,7 +165,7 @@ this.sourceContext = null;
                         ></div>
 
                         <div class="jami-remix-overlay-hint">
-                            drag to move · corner to resize · × to remove
+                            drag to move · corner to resize · top handle to rotate · flip buttons
                         </div>
                     </aside>
                 </div>
@@ -2801,6 +2801,10 @@ applyGifify32(
                 ),
             rotation:
                 Number(options.rotation) || 0,
+            flipX:
+                options.flipX === true,
+            flipY:
+                options.flipY === true,
             hue: Number(options.hue) || 200,
             opacity:
                 Number(options.opacity) || 0.5,
@@ -2865,10 +2869,46 @@ applyGifify32(
             "jami-remix-object-resize";
         resizeHandle.title = "resize";
 
+        const rotateHandle =
+            document.createElement(
+                "span"
+            );
+
+        rotateHandle.className =
+            "jami-remix-object-rotate";
+        rotateHandle.title = "rotate";
+
+        const flipHorizontalButton =
+            document.createElement(
+                "button"
+            );
+
+        flipHorizontalButton.type = "button";
+        flipHorizontalButton.className =
+            "jami-remix-object-flip jami-remix-object-flip-horizontal";
+        flipHorizontalButton.textContent = "↔";
+        flipHorizontalButton.title =
+            "flip horizontally";
+
+        const flipVerticalButton =
+            document.createElement(
+                "button"
+            );
+
+        flipVerticalButton.type = "button";
+        flipVerticalButton.className =
+            "jami-remix-object-flip jami-remix-object-flip-vertical";
+        flipVerticalButton.textContent = "↕";
+        flipVerticalButton.title =
+            "flip vertically";
+
         element.append(
             content,
             removeButton,
-            resizeHandle
+            resizeHandle,
+            rotateHandle,
+            flipHorizontalButton,
+            flipVerticalButton
         );
 
         item.element = element;
@@ -2880,7 +2920,10 @@ applyGifify32(
             event => {
                 if (
                     event.target === removeButton ||
-                    event.target === resizeHandle
+                    event.target === resizeHandle ||
+                    event.target === rotateHandle ||
+                    event.target === flipHorizontalButton ||
+                    event.target === flipVerticalButton
                 ) {
                     return;
                 }
@@ -2899,6 +2942,38 @@ applyGifify32(
                     event,
                     item
                 );
+            }
+        );
+
+        rotateHandle.addEventListener(
+            "pointerdown",
+            event => {
+                this.beginOverlayRotate(
+                    event,
+                    item
+                );
+            }
+        );
+
+        flipHorizontalButton.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+                item.flipX = !item.flipX;
+                this.selectOverlay(item.id);
+                this.updateOverlayElement(item);
+            }
+        );
+
+        flipVerticalButton.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+                item.flipY = !item.flipY;
+                this.selectOverlay(item.id);
+                this.updateOverlayElement(item);
             }
         );
 
@@ -2965,6 +3040,26 @@ applyGifify32(
             `${item.width}%`;
         item.element.style.transform =
             `translate(-50%, -50%) rotate(${item.rotation}deg)`;
+
+        const content =
+            item.element.querySelector(
+                ".jami-remix-object-content"
+            );
+
+        if (content) {
+            content.style.transform =
+                `scale(${item.flipX ? -1 : 1}, ${item.flipY ? -1 : 1})`;
+        }
+
+        item.element.classList.toggle(
+            "is-flipped-horizontal",
+            item.flipX
+        );
+
+        item.element.classList.toggle(
+            "is-flipped-vertical",
+            item.flipY
+        );
 
         if (item.type === "orb") {
             const orb =
@@ -3135,6 +3230,90 @@ applyGifify32(
         );
     }
 
+    beginOverlayRotate(
+        event,
+        item
+    ) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.selectOverlay(item.id);
+
+        const rect =
+            this.overlayLayer
+                .getBoundingClientRect();
+
+        const centerX =
+            rect.left +
+            rect.width * item.x / 100;
+
+        const centerY =
+            rect.top +
+            rect.height * item.y / 100;
+
+        const startPointerAngle =
+            Math.atan2(
+                event.clientY - centerY,
+                event.clientX - centerX
+            );
+
+        const initialRotation =
+            Number(item.rotation) || 0;
+
+        const rotate = moveEvent => {
+            const currentPointerAngle =
+                Math.atan2(
+                    moveEvent.clientY - centerY,
+                    moveEvent.clientX - centerX
+                );
+
+            let rotation =
+                initialRotation +
+                (
+                    currentPointerAngle -
+                    startPointerAngle
+                ) * 180 / Math.PI;
+
+            if (moveEvent.shiftKey) {
+                rotation =
+                    Math.round(rotation / 15) * 15;
+            }
+
+            item.rotation =
+                (rotation + 360) % 360;
+
+            this.updateOverlayElement(item);
+        };
+
+        const end = () => {
+            window.removeEventListener(
+                "pointermove",
+                rotate
+            );
+            window.removeEventListener(
+                "pointerup",
+                end
+            );
+            window.removeEventListener(
+                "pointercancel",
+                end
+            );
+        };
+
+        window.addEventListener(
+            "pointermove",
+            rotate
+        );
+        window.addEventListener(
+            "pointerup",
+            end
+        );
+        window.addEventListener(
+            "pointercancel",
+            end
+        );
+    }
+
     async loadOverlayImage(source) {
         const image = new Image();
         image.crossOrigin = "anonymous";
@@ -3187,6 +3366,10 @@ applyGifify32(
             );
             exportContext.rotate(
                 item.rotation * Math.PI / 180
+            );
+            exportContext.scale(
+                item.flipX ? -1 : 1,
+                item.flipY ? -1 : 1
             );
 
             if (item.type === "emoji") {
@@ -3324,7 +3507,11 @@ applyGifify32(
                             y: item.y,
                             width: item.width,
                             rotation:
-                                item.rotation
+                                item.rotation,
+                            flipX:
+                                item.flipX === true,
+                            flipY:
+                                item.flipY === true
                         })
                     )
             };
