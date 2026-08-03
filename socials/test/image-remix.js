@@ -1,7 +1,11 @@
 class JamiImageRemixEditor {
     constructor() {
         this.overlay = null;
-        this.image = null;
+        this.canvas = null;
+this.context = null;
+this.sourceImage = null;
+this.sourceCanvas = null;
+this.sourceContext = null;
         this.currentImage = null;
         this.activeEffects =
             new Set();
@@ -113,11 +117,11 @@ class JamiImageRemixEditor {
                             class="jami-remix-stage"
                             data-jami-remix-stage
                         >
-                            <img
-                                class="jami-remix-image"
-                                data-jami-remix-image
-                                alt="image being remixed"
-                            >
+                           <canvas
+    class="jami-remix-canvas"
+    data-jami-remix-canvas
+    aria-label="image being remixed"
+></canvas>
                         </div>
                     </div>
 
@@ -164,10 +168,33 @@ class JamiImageRemixEditor {
 
         this.overlay = overlay;
 
-        this.image =
-            overlay.querySelector(
-                "[data-jami-remix-image]"
-            );
+        this.canvas =
+    overlay.querySelector(
+        "[data-jami-remix-canvas]"
+    );
+
+this.context =
+    this.canvas.getContext(
+        "2d",
+        {
+            willReadFrequently:
+                true
+        }
+    );
+
+this.sourceCanvas =
+    document.createElement(
+        "canvas"
+    );
+
+this.sourceContext =
+    this.sourceCanvas.getContext(
+        "2d",
+        {
+            willReadFrequently:
+                true
+        }
+    );
 
         const effectsContainer =
             overlay.querySelector(
