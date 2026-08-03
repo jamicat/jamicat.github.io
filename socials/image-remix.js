@@ -69,11 +69,6 @@ this.sourceContext = null;
         this.selectedOverlayId = null;
         this.overlaySequence = 0;
         this.lastExportBlob = null;
-
-        /*
-         * Safety limits for browser-side animated remix rendering.
-         * These deliberately stay below the Worker's 8 MiB image limit.
-         */
         this.maximumOverlayCount = 24;
         this.maximumAnimatedEmojiCount = 8;
         this.maximumAnimatedOutputBytes =
@@ -459,10 +454,6 @@ button.dataset.effectLabel =
     const image =
         new Image();
 
-    /*
-     * Required when loading an image
-     * from the Worker or another origin.
-     */
     image.crossOrigin =
         "anonymous";
 
@@ -583,11 +574,6 @@ button.dataset.effectLabel =
         return;
     }
 
-    /*
-     * Always rebuild from the untouched
-     * source so effects do not repeatedly
-     * damage the previous preview.
-     */
     const workingCanvas =
         document.createElement(
             "canvas"
@@ -693,11 +679,6 @@ applyEffect(
                 context
             );
             break;
-
-        /*
-         * Emojis and ghost orbs are added
-         * in the interactive-overlay pass.
-         */
         default:
             break;
     }
@@ -742,10 +723,6 @@ applyEffect(
         height
     );
 
-    /*
-     * Slightly increased contrast and
-     * saturation for the monitor image.
-     */
     context.save();
 
     context.filter =
@@ -758,10 +735,6 @@ applyEffect(
     );
 
     context.restore();
-
-    /*
-     * Soft phosphor glow.
-     */
     context.save();
 
     context.globalCompositeOperation =
@@ -781,9 +754,6 @@ applyEffect(
 
     context.restore();
 
-    /*
-     * Horizontal CRT scanlines.
-     */
     context.save();
 
     context.globalAlpha =
@@ -807,9 +777,6 @@ applyEffect(
 
     context.restore();
 
-    /*
-     * Gentle vignette around the edges.
-     */
     const vignette =
         context.createRadialGradient(
             width / 2,
@@ -852,9 +819,6 @@ applyEffect(
         height
     );
 
-    /*
-     * Very faint cool monitor tint.
-     */
     context.save();
 
     context.globalCompositeOperation =
@@ -936,9 +900,6 @@ applyCctv(
         0
     );
 
-    /*
-     * Base monochrome security-camera look.
-     */
     context.clearRect(
         0,
         0,
@@ -963,9 +924,6 @@ applyCctv(
 
     context.restore();
 
-    /*
-     * Slight green-grey monitor tint.
-     */
     context.save();
 
     context.globalCompositeOperation =
@@ -986,9 +944,6 @@ applyCctv(
 
     context.restore();
 
-    /*
-     * Fine sensor noise.
-     */
     const imageData =
         context.getImageData(
             0,
@@ -1048,9 +1003,6 @@ applyCctv(
         0
     );
 
-    /*
-     * Security monitor scanlines.
-     */
     context.save();
 
     context.globalAlpha =
@@ -1074,9 +1026,6 @@ applyCctv(
 
     context.restore();
 
-    /*
-     * Faint horizontal rolling band.
-     */
     const bandY =
         Math.floor(
             height * 0.62
@@ -1115,9 +1064,6 @@ applyCctv(
         48
     );
 
-    /*
-     * Dark camera housing vignette.
-     */
     const vignette =
         context.createRadialGradient(
             width / 2,
@@ -1160,9 +1106,6 @@ applyCctv(
         height
     );
 
-    /*
-     * Tiny CCTV-style corner marks.
-     */
     const cornerSize =
         Math.max(
             12,
@@ -1197,9 +1140,6 @@ applyCctv(
 
     context.beginPath();
 
-    /*
-     * Top-left.
-     */
     context.moveTo(
         inset,
         inset + cornerSize
@@ -1215,9 +1155,6 @@ applyCctv(
         inset
     );
 
-    /*
-     * Top-right.
-     */
     context.moveTo(
         width - inset - cornerSize,
         inset
@@ -1233,9 +1170,6 @@ applyCctv(
         inset + cornerSize
     );
 
-    /*
-     * Bottom-left.
-     */
     context.moveTo(
         inset,
         height - inset - cornerSize
@@ -1251,9 +1185,6 @@ applyCctv(
         height - inset
     );
 
-    /*
-     * Bottom-right.
-     */
     context.moveTo(
         width - inset - cornerSize,
         height - inset
@@ -2032,12 +1963,6 @@ applyJpeg100x(
         0
     );
 
-    /*
-     * Repeated shrinking and enlargement
-     * approximates many generations of
-     * low-quality JPEG recompression without
-     * making the render pipeline asynchronous.
-     */
     let current = source;
 
     const passes = 7;
@@ -2176,10 +2101,6 @@ applyJpeg100x(
             5 +
             pass * 2;
 
-        /*
-         * Quantise colour and partially share
-         * chroma inside JPEG-like blocks.
-         */
         for (
             let blockY = 0;
             blockY < height;
@@ -2388,11 +2309,6 @@ applyJpeg100x(
         0
     );
     context.restore();
-
-    /*
-     * Faint block-grid seams complete the
-     * repeatedly-recompressed appearance.
-     */
     context.save();
     context.globalAlpha = 0.045;
     context.strokeStyle = "#111";
@@ -2460,12 +2376,6 @@ applyGifify32(
     const pixels =
         imageData.data;
 
-    /*
-     * A fixed 32-colour RGB palette:
-     * 4 red levels × 4 green levels ×
-     * 2 blue levels. Ordered dithering
-     * prevents broad flat bands.
-     */
     const bayer4 = [
         0, 8, 2, 10,
         12, 4, 14, 6,
@@ -4115,18 +4025,231 @@ applyGifify32(
         ).data;
     }
 
-    async decodeGifEmojiSource(
-        source
-    ) {
-        if (
-            typeof window.ImageDecoder !==
-            "function"
+    readGifColourTable(bytes, offset, colourCount) {
+        const colours = [];
+
+        for (
+            let index = 0;
+            index < colourCount;
+            index += 1
         ) {
+            colours.push([
+                bytes[offset],
+                bytes[offset + 1],
+                bytes[offset + 2]
+            ]);
+
+            offset += 3;
+        }
+
+        return {
+            colours,
+            offset
+        };
+    }
+
+    readGifSubBlocks(bytes, offset) {
+        const chunks = [];
+        let totalLength = 0;
+
+        while (offset < bytes.length) {
+            const length = bytes[offset];
+            offset += 1;
+
+            if (length === 0) {
+                break;
+            }
+
+            const chunk = bytes.slice(
+                offset,
+                offset + length
+            );
+
+            chunks.push(chunk);
+            totalLength += chunk.length;
+            offset += length;
+        }
+
+        const data = new Uint8Array(totalLength);
+        let writeOffset = 0;
+
+        for (const chunk of chunks) {
+            data.set(chunk, writeOffset);
+            writeOffset += chunk.length;
+        }
+
+        return {
+            data,
+            offset
+        };
+    }
+
+    decodeGifLzw(
+        minimumCodeSize,
+        data,
+        expectedPixelCount
+    ) {
+        const clearCode = 1 << minimumCodeSize;
+        const endCode = clearCode + 1;
+
+        let codeSize = minimumCodeSize + 1;
+        let nextCode = endCode + 1;
+        let bitPosition = 0;
+        let previous = null;
+
+        const dictionary = [];
+
+        const resetDictionary = () => {
+            dictionary.length = 0;
+
+            for (
+                let index = 0;
+                index < clearCode;
+                index += 1
+            ) {
+                dictionary[index] = [index];
+            }
+
+            dictionary[clearCode] = null;
+            dictionary[endCode] = null;
+            codeSize = minimumCodeSize + 1;
+            nextCode = endCode + 1;
+            previous = null;
+        };
+
+        const readCode = () => {
+            let value = 0;
+
+            for (
+                let bit = 0;
+                bit < codeSize;
+                bit += 1
+            ) {
+                const absoluteBit = bitPosition + bit;
+                const byteIndex = absoluteBit >> 3;
+                const bitIndex = absoluteBit & 7;
+
+                if (byteIndex >= data.length) {
+                    return null;
+                }
+
+                value |=
+                    ((data[byteIndex] >> bitIndex) & 1) << bit;
+            }
+
+            bitPosition += codeSize;
+            return value;
+        };
+
+        resetDictionary();
+
+        const output = [];
+
+        while (output.length < expectedPixelCount) {
+            const code = readCode();
+
+            if (code === null || code === endCode) {
+                break;
+            }
+
+            if (code === clearCode) {
+                resetDictionary();
+                continue;
+            }
+
+            let entry;
+
+            if (dictionary[code]) {
+                entry = dictionary[code].slice();
+            } else if (
+                code === nextCode &&
+                previous
+            ) {
+                entry = previous.concat(
+                    previous[0]
+                );
+            } else {
+                throw new Error(
+                    "could not decode animated GIF emoji"
+                );
+            }
+
+            output.push(...entry);
+
+            if (previous && nextCode < 4096) {
+                dictionary[nextCode] =
+                    previous.concat(entry[0]);
+
+                nextCode += 1;
+
+                if (
+                    nextCode === (1 << codeSize) &&
+                    codeSize < 12
+                ) {
+                    codeSize += 1;
+                }
+            }
+
+            previous = entry;
+        }
+
+        if (output.length < expectedPixelCount) {
             throw new Error(
-                "animated emoji export is not supported by this browser. update Chrome or Edge and try again."
+                "an animated emoji frame ended unexpectedly"
             );
         }
 
+        return new Uint8Array(
+            output.slice(0, expectedPixelCount)
+        );
+    }
+
+    deinterlaceGifPixels(
+        pixels,
+        width,
+        height
+    ) {
+        const result =
+            new Uint8Array(
+                width * height
+            );
+
+        const passes = [
+            [0, 8],
+            [4, 8],
+            [2, 4],
+            [1, 2]
+        ];
+
+        let sourceRow = 0;
+
+        for (const [start, step] of passes) {
+            for (
+                let row = start;
+                row < height;
+                row += step
+            ) {
+                const sourceOffset =
+                    sourceRow * width;
+                const destinationOffset =
+                    row * width;
+
+                result.set(
+                    pixels.slice(
+                        sourceOffset,
+                        sourceOffset + width
+                    ),
+                    destinationOffset
+                );
+
+                sourceRow += 1;
+            }
+        }
+
+        return result;
+    }
+
+    async decodeGifEmojiSource(source) {
         const request = await fetch(
             source,
             {
@@ -4141,77 +4264,355 @@ applyGifify32(
         }
 
         const bytes =
-            await request.arrayBuffer();
-
-        const decoder =
-            new ImageDecoder({
-                data: bytes,
-                type: "image/gif",
-                preferAnimation: true
-            });
-
-        await decoder.tracks.ready;
-
-        const track =
-            decoder.tracks.selectedTrack;
-
-        const frameCount =
-            Number(track?.frameCount) || 0;
-
-        if (frameCount < 2) {
-            decoder.close();
-
-            throw new Error(
-                `the animated emoji “${source.split("/").pop()}” did not contain multiple readable frames.`
+            new Uint8Array(
+                await request.arrayBuffer()
             );
+
+        const signature =
+            String.fromCharCode(
+                ...bytes.slice(0, 6)
+            );
+
+        if (
+            signature !== "GIF87a" &&
+            signature !== "GIF89a"
+        ) {
+            throw new Error(
+                "an animated emoji was not a valid GIF."
+            );
+        }
+
+        let offset = 6;
+
+        const readWord = () => {
+            const value =
+                bytes[offset] |
+                bytes[offset + 1] << 8;
+
+            offset += 2;
+            return value;
+        };
+
+        const width = readWord();
+        const height = readWord();
+        const packed = bytes[offset];
+        offset += 1;
+
+        const backgroundIndex = bytes[offset];
+        offset += 1;
+        offset += 1;
+
+        const hasGlobalTable =
+            (packed & 0x80) !== 0;
+        const globalTableSize =
+            1 << ((packed & 0x07) + 1);
+
+        let globalColours = null;
+
+        if (hasGlobalTable) {
+            const table =
+                this.readGifColourTable(
+                    bytes,
+                    offset,
+                    globalTableSize
+                );
+
+            globalColours = table.colours;
+            offset = table.offset;
+        }
+
+        const composited =
+            new Uint8ClampedArray(
+                width * height * 4
+            );
+
+        if (
+            globalColours &&
+            globalColours[backgroundIndex]
+        ) {
+            const colour =
+                globalColours[backgroundIndex];
+
+            for (
+                let pixel = 0;
+                pixel < width * height;
+                pixel += 1
+            ) {
+                const destination = pixel * 4;
+                composited[destination] = colour[0];
+                composited[destination + 1] = colour[1];
+                composited[destination + 2] = colour[2];
+                composited[destination + 3] = 0;
+            }
         }
 
         const frames = [];
         let totalDurationMs = 0;
+        let graphicControl = {
+            delayMs: 100,
+            transparentIndex: null,
+            disposal: 0
+        };
 
-        try {
-            for (
-                let frameIndex = 0;
-                frameIndex < frameCount;
-                frameIndex += 1
-            ) {
-                const result =
-                    await decoder.decode({
-                        frameIndex,
-                        completeFramesOnly: true
-                    });
+        while (offset < bytes.length) {
+            const marker = bytes[offset];
+            offset += 1;
 
-                const videoFrame =
-                    result.image;
-
-                const bitmap =
-                    await createImageBitmap(
-                        videoFrame
-                    );
-
-                const durationMs =
-                    Math.max(
-                        20,
-                        Number(
-                            videoFrame.duration
-                        ) / 1000 ||
-                        100
-                    );
-
-                videoFrame.close();
-
-                frames.push({
-                    bitmap,
-                    durationMs,
-                    startsAtMs:
-                        totalDurationMs
-                });
-
-                totalDurationMs +=
-                    durationMs;
+            if (marker === 0x3B) {
+                break;
             }
-        } finally {
-            decoder.close();
+
+            if (marker === 0x21) {
+                const extensionLabel = bytes[offset];
+                offset += 1;
+
+                if (extensionLabel === 0xF9) {
+                    const blockSize = bytes[offset];
+                    offset += 1;
+
+                    const controlPacked = bytes[offset];
+                    const delay =
+                        bytes[offset + 1] |
+                        bytes[offset + 2] << 8;
+                    const transparentIndex =
+                        bytes[offset + 3];
+
+                    offset += blockSize;
+
+                    if (bytes[offset] === 0) {
+                        offset += 1;
+                    }
+
+                    graphicControl = {
+                        delayMs:
+                            Math.max(
+                                20,
+                                delay * 10 || 100
+                            ),
+                        transparentIndex:
+                            controlPacked & 1
+                                ? transparentIndex
+                                : null,
+                        disposal:
+                            (controlPacked >> 2) & 7
+                    };
+                } else {
+                    const skipped =
+                        this.readGifSubBlocks(
+                            bytes,
+                            offset
+                        );
+
+                    offset = skipped.offset;
+                }
+
+                continue;
+            }
+
+            if (marker !== 0x2C) {
+                throw new Error(
+                    "the animated emoji contained unsupported GIF data."
+                );
+            }
+
+            const left = readWord();
+            const top = readWord();
+            const frameWidth = readWord();
+            const frameHeight = readWord();
+            const imagePacked = bytes[offset];
+            offset += 1;
+
+            const hasLocalTable =
+                (imagePacked & 0x80) !== 0;
+            const isInterlaced =
+                (imagePacked & 0x40) !== 0;
+            const localTableSize =
+                1 << ((imagePacked & 0x07) + 1);
+
+            let colours = globalColours;
+
+            if (hasLocalTable) {
+                const table =
+                    this.readGifColourTable(
+                        bytes,
+                        offset,
+                        localTableSize
+                    );
+
+                colours = table.colours;
+                offset = table.offset;
+            }
+
+            if (!colours) {
+                throw new Error(
+                    "the animated emoji had no colour table."
+                );
+            }
+
+            const minimumCodeSize = bytes[offset];
+            offset += 1;
+
+            const blocks =
+                this.readGifSubBlocks(
+                    bytes,
+                    offset
+                );
+
+            offset = blocks.offset;
+
+            let indexes =
+                this.decodeGifLzw(
+                    minimumCodeSize,
+                    blocks.data,
+                    frameWidth * frameHeight
+                );
+
+            if (isInterlaced) {
+                indexes =
+                    this.deinterlaceGifPixels(
+                        indexes,
+                        frameWidth,
+                        frameHeight
+                    );
+            }
+
+            const beforeFrame =
+                composited.slice();
+
+            for (
+                let y = 0;
+                y < frameHeight;
+                y += 1
+            ) {
+                const destinationY = top + y;
+
+                if (
+                    destinationY < 0 ||
+                    destinationY >= height
+                ) {
+                    continue;
+                }
+
+                for (
+                    let x = 0;
+                    x < frameWidth;
+                    x += 1
+                ) {
+                    const destinationX = left + x;
+
+                    if (
+                        destinationX < 0 ||
+                        destinationX >= width
+                    ) {
+                        continue;
+                    }
+
+                    const paletteIndex =
+                        indexes[y * frameWidth + x];
+
+                    if (
+                        paletteIndex ===
+                        graphicControl.transparentIndex
+                    ) {
+                        continue;
+                    }
+
+                    const colour = colours[paletteIndex];
+
+                    if (!colour) {
+                        continue;
+                    }
+
+                    const destination =
+                        (destinationY * width + destinationX) * 4;
+
+                    composited[destination] = colour[0];
+                    composited[destination + 1] = colour[1];
+                    composited[destination + 2] = colour[2];
+                    composited[destination + 3] = 255;
+                }
+            }
+
+            const frameCanvas =
+                document.createElement(
+                    "canvas"
+                );
+
+            frameCanvas.width = width;
+            frameCanvas.height = height;
+
+            frameCanvas
+                .getContext("2d")
+                .putImageData(
+                    new ImageData(
+                        composited.slice(),
+                        width,
+                        height
+                    ),
+                    0,
+                    0
+                );
+
+            frames.push({
+                canvas: frameCanvas,
+                durationMs:
+                    graphicControl.delayMs,
+                startsAtMs:
+                    totalDurationMs
+            });
+
+            totalDurationMs +=
+                graphicControl.delayMs;
+
+            if (graphicControl.disposal === 2) {
+                for (
+                    let y = 0;
+                    y < frameHeight;
+                    y += 1
+                ) {
+                    for (
+                        let x = 0;
+                        x < frameWidth;
+                        x += 1
+                    ) {
+                        const destinationX = left + x;
+                        const destinationY = top + y;
+
+                        if (
+                            destinationX < 0 ||
+                            destinationX >= width ||
+                            destinationY < 0 ||
+                            destinationY >= height
+                        ) {
+                            continue;
+                        }
+
+                        const destination =
+                            (destinationY * width + destinationX) * 4;
+
+                        composited[destination] = 0;
+                        composited[destination + 1] = 0;
+                        composited[destination + 2] = 0;
+                        composited[destination + 3] = 0;
+                    }
+                }
+            } else if (
+                graphicControl.disposal === 3
+            ) {
+                composited.set(beforeFrame);
+            }
+
+            graphicControl = {
+                delayMs: 100,
+                transparentIndex: null,
+                disposal: 0
+            };
+        }
+
+        if (frames.length < 2) {
+            throw new Error(
+                `the animated emoji “${source.split("/").pop()}” did not contain multiple readable frames.`
+            );
         }
 
         return {
@@ -4242,24 +4643,16 @@ applyGifify32(
 
         const decoded = new Map();
 
-        try {
-            for (const source of sources) {
-                decoded.set(
-                    source,
-                    await this.decodeGifEmojiSource(
-                        source
-                    )
-                );
-            }
-
-            return decoded;
-        } catch (error) {
-            this.releaseDecodedGifFrames(
-                decoded
+        for (const source of sources) {
+            decoded.set(
+                source,
+                await this.decodeGifEmojiSource(
+                    source
+                )
             );
-
-            throw error;
         }
+
+        return decoded;
     }
 
     getDecodedGifFrameAtTime(
@@ -4286,28 +4679,16 @@ applyGifify32(
                 loopTime >=
                 frames[index].startsAtMs
             ) {
-                return frames[index].bitmap;
+                return frames[index].canvas;
             }
         }
 
-        return frames[0].bitmap;
+        return frames[0].canvas;
     }
 
     releaseDecodedGifFrames(
         decodedAnimations
     ) {
-        for (
-            const animation
-            of decodedAnimations.values()
-        ) {
-            for (
-                const frame
-                of animation.frames
-            ) {
-                frame.bitmap.close?.();
-            }
-        }
-
         decodedAnimations.clear();
     }
 
@@ -4376,17 +4757,7 @@ applyGifify32(
     }
 
     encodeGifLzw(indexedPixels) {
-        /*
-         * Valid low-complexity GIF LZW stream.
-         *
-         * The previous dictionary encoder could change
-         * code width at a point that disagreed with some
-         * browser decoders on large frames. This version
-         * deliberately clears the dictionary before the
-         * 9-bit code space can grow, then writes literal
-         * palette indexes. Compression is weaker, but the
-         * output is deterministic and robust for remix GIFs.
-         */
+
         const clearCode = 256;
         const endCode = 257;
         const codeSize = 9;
@@ -4627,12 +4998,6 @@ applyGifify32(
             await this.prepareAnimatedEmojiFrames();
 
         try {
-            /*
-             * Draw explicitly decoded GIF frames at each
-             * output timestamp. Relying on an HTMLImageElement
-             * during a timed capture can repeatedly expose the
-             * same composited frame in Chromium.
-             */
             for (
                 let index = 0;
                 index < frameCount;
@@ -4651,11 +5016,6 @@ applyGifify32(
                     (index + 1) / frameCount
                 );
 
-                /*
-                 * Yield so the UI remains responsive. The
-                 * animation timing itself is deterministic and
-                 * no longer depends on this delay.
-                 */
                 await this.wait(0);
             }
         } finally {
