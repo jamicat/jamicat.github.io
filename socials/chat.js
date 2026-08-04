@@ -12760,16 +12760,17 @@ toggleMinimized() {
 }
 
 setMinimized(minimized) {
-    this.preserveTitleBarDuringResize();
+	this.preserveTitleBarDuringResize();
     this.isMinimized = minimized;
 
-    if (!minimized) {
-        this.clearUnreadCount();
+	if (!minimized) {
+    this.clearUnreadCount();
 
-        requestAnimationFrame(() => {
-            this.scrollMessagesToBottom();
-        });
-    }
+    requestAnimationFrame(() => {
+        this.scrollMessagesToBottom();
+    });
+}
+	
 
     this.mainElement.classList.toggle(
         "hidden",
@@ -12788,19 +12789,16 @@ setMinimized(minimized) {
         );
     }
 
-    if (this.banManagerButton) {
-        this.banManagerButton.classList.toggle(
-            "hidden",
-            minimized
-        );
-    }
+	if (this.banManagerButton) {
+    this.banManagerButton.classList.toggle(
+        "hidden",
+        minimized
+    );
+}
 
-    if (this.partyManagerButton) {
-        this.partyManagerButton.classList.toggle(
-            "hidden",
-            minimized
-        );
-    }
+if (minimized) {
+    this.closeBanManager();
+}
 
     this.window.classList.toggle(
         "h-[500px]",
@@ -12811,9 +12809,6 @@ setMinimized(minimized) {
         "h-10",
         minimized
     );
-
-    this.window.style.height = "";
-    this.window.style.width = "";
 
     this.minimizeButton.textContent =
         minimized ? "+" : "−";
@@ -12837,9 +12832,8 @@ setMinimized(minimized) {
 
     if (minimized) {
         this.closeAvatarPicker();
-        this.closeEmojiPicker();
-        this.closeBanManager();
-        this.closePartyManager();
+		this.closeEmojiPicker();
+		this.closeBanManager();
     }
 }
 
