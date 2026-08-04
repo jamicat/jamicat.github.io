@@ -5575,7 +5575,7 @@ this.appendEditedMarker(messageBody, message);
     "absolute",
     "left-0",
     message?.reply_target_id
-        ? "top-[29px]"
+        ? "top-[23px]"
         : "top-[10px]",
     "w-8",
     "text-right",
