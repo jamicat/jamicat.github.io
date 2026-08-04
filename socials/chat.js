@@ -11512,30 +11512,30 @@ requestAnimationFrame(
             }
 
             const pickerPanel =
-                this.reactionEmojiPicker
-                    ?.shadowRoot
-                    ?.querySelector(
-                        ".picker"
-                    );
+    this.reactionEmojiPicker
+        ?.shadowRoot
+        ?.querySelector(".picker");
 
-            const pickerRect =
-                pickerPanel
-                    ?.getBoundingClientRect?.();
+const path =
+    typeof event.composedPath === "function"
+        ? event.composedPath()
+        : [];
 
-            const insideVisiblePicker =
-                pickerRect &&
-                event.clientX >=
-                    pickerRect.left &&
-                event.clientX <=
-                    pickerRect.right &&
-                event.clientY >=
-                    pickerRect.top &&
-                event.clientY <=
-                    pickerRect.bottom;
+const insideVisiblePicker =
+    Boolean(
+        pickerPanel &&
+        path.some(node =>
+            node === pickerPanel ||
+            (
+                node instanceof Element &&
+                pickerPanel.contains(node)
+            )
+        )
+    );
 
-            if (insideVisiblePicker) {
-                return;
-            }
+if (insideVisiblePicker) {
+    return;
+}
 
             if (
                 this.emojiPickerAnchor &&
