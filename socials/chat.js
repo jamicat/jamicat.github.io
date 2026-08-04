@@ -11193,7 +11193,7 @@ setupEmojiPicker() {
 },
 {
     id: "meowhappy",
-    name: "meow happy",
+    name: "meowth happy",
     keywords: [
         "cat",
         "happy",
