@@ -11082,76 +11082,34 @@ requestAnimationFrame(
     document.addEventListener(
         "pointerdown",
         event => {
-            if (!this.emojiPickerOpen) {
+            if (!this.emojiPickerOpen || this.emojiPickerMode !== "reaction") {
                 return;
             }
 
-            const path =
-                typeof event.composedPath ===
-                    "function"
-                    ? event.composedPath()
-                    : [];
+            const picker = this.reactionEmojiPicker;
+            const rect = picker?.getBoundingClientRect?.();
 
-            const pointInside =
-                element => {
-                    if (
-                        !element ||
-                        typeof element
-                            .getBoundingClientRect !==
-                            "function"
-                    ) {
-                        return false;
-                    }
+            const insideVisiblePicker =
+                rect &&
+                event.clientX >= rect.left &&
+                event.clientX <= rect.right &&
+                event.clientY >= rect.top &&
+                event.clientY <= rect.bottom;
 
-                    const rect =
-                        element
-                            .getBoundingClientRect();
-
-                    return (
-                        event.clientX >= rect.left &&
-                        event.clientX <= rect.right &&
-                        event.clientY >= rect.top &&
-                        event.clientY <= rect.bottom
-                    );
-                };
-
-            const insideComposerPicker =
-                path.includes(
-                    this.emojiPicker
-                ) &&
-                pointInside(
-                    this.emojiPicker
-                );
-
-            const insideReactionPicker =
-                path.includes(
-                    this.reactionEmojiPicker
-                ) &&
-                pointInside(
-                    this.reactionEmojiPicker
-                );
+            if (insideVisiblePicker) {
+                return;
+            }
 
             if (
-                insideComposerPicker ||
-                insideReactionPicker
+                this.emojiPickerAnchor &&
+                this.emojiPickerAnchor.contains(event.target)
             ) {
                 return;
             }
 
-            const onComposerButton =
-                path.includes(
-                    this.emojiButton
-                );
-
-            const onReactionAnchor =
-                this.emojiPickerAnchor &&
-                path.includes(
-                    this.emojiPickerAnchor
-                );
-
             if (
-                onComposerButton ||
-                onReactionAnchor
+                this.emojiButton &&
+                this.emojiButton.contains(event.target)
             ) {
                 return;
             }
