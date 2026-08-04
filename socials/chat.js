@@ -6032,10 +6032,8 @@ renderReactionRow(
             "aria-pressed",
             String(reacted)
         );
-        button.title =
-            reacted
-                ? "remove your reaction"
-                : "add your reaction";
+		
+        button.removeAttribute("title");
 
         if (reaction.kind === "custom") {
             const image =
