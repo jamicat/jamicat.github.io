@@ -1667,7 +1667,10 @@ if (clearButton) {
             // non-JSON responses.
         }
 
-        if (response.status === 401) {
+        if (
+            response.status === 401 &&
+            this.isAdmin
+        ) {
             this.disableAdminMode();
 
             window.alert(
@@ -7176,7 +7179,7 @@ openModerationMenu(x, y, message) {
         message.client_id && message.client_id === this.clientId
     );
     const canEdit = !isImage && Boolean(message.id) && (ownsMessage || this.isAdmin);
-    const canRemix = isImage && message.imageUpload?.status === "complete" && Boolean(message.imageUpload?.imageUrl);
+    const canDelete = ownsMessage || this.isAdmin;
 
     const buttons = [];
 
@@ -7192,14 +7195,7 @@ openModerationMenu(x, y, message) {
         this.setReplyTarget(message);
     }));
 
-    if (canRemix) {
-        buttons.push(this.createModerationMenuButton("remix image", () => {
-            this.closeModerationMenu();
-            this.startImageRemix(message.imageUpload);
-        }));
-    }
-
-    if (this.isAdmin) {
+    if (canDelete) {
         const divider = document.createElement("div");
         divider.className = "my-1 border-t border-white/10";
         buttons.push(divider);
@@ -7212,7 +7208,9 @@ openModerationMenu(x, y, message) {
                 this.deleteMessage(message.id);
             }
         }));
+    }
 
+    if (this.isAdmin) {
         buttons.push(this.createModerationMenuButton(`ban ${message.name || "user"}`, async () => {
             this.closeModerationMenu();
             await this.banClient(message.client_id, message.name);
@@ -7350,30 +7348,28 @@ menu.style.top =
         return;
     }
 
-    if (
-        !this.isAdmin ||
-        !this.adminKey
-    ) {
-        window.alert(
-            "admin authentication is required"
-        );
-
-        this.disableAdminMode();
-        return;
-    }
-
     try {
+        const headers = {
+            "Content-Type":
+                "application/json",
+
+            "X-Chat-Client-Id":
+                this.clientId
+        };
+
+        if (
+            this.isAdmin &&
+            this.adminKey
+        ) {
+            headers.Authorization =
+                `Bearer ${this.adminKey}`;
+        }
+
         const response = await fetch(
             `${this.API}/api/admin/chat/delete`,
             {
                 method: "POST",
-                headers: {
-                    "Content-Type":
-                        "application/json",
-
-                    "Authorization":
-                        `Bearer ${this.adminKey}`
-                },
+                headers,
                 body: JSON.stringify({
                     id
                 })
@@ -8040,7 +8036,13 @@ if (
     data.type ===
         "chat-cleared"
 ) {
-    this.clearChatInterface();
+    if (data.cutoff) {
+        this.clearChatThrough(
+            data.cutoff
+        );
+    } else {
+        this.clearChatInterface();
+    }
 
     return;
 }
@@ -8825,15 +8827,15 @@ showCompletedImage(
                 row.jamiImageUpload ||
                 upload;
 
-            const canRemix =
-                currentUpload.status ===
-                    "complete" &&
+            const ownsUpload =
                 Boolean(
-                    currentUpload.imageUrl
-                );
+                    currentUpload.clientId
+                ) &&
+                currentUpload.clientId ===
+                    this.clientId;
 
             if (
-                !canRemix &&
+                !ownsUpload &&
                 !this.isAdmin
             ) {
                 return;
@@ -9782,9 +9784,91 @@ async uploadTestImage(file) {
         return;
     }
 
+    const cutoffInput =
+        window.prompt(
+            "enter a date and time to clear chat up to and including that point.\n\n" +
+            "format: yyyy-mm-dd hh:mm\n" +
+            "example: 2026-08-04 18:30\n\n" +
+            "leave this empty to clear the full chat.",
+            ""
+        );
+
+    if (cutoffInput === null) {
+        return;
+    }
+
+    const cleanedCutoff =
+        cutoffInput.trim();
+
+    let cutoff = null;
+    let cutoffLabel =
+        "the entire chat";
+
+    if (cleanedCutoff) {
+        const match =
+            cleanedCutoff.match(
+                /^(\d{4})-(\d{2})-(\d{2})[ t](\d{2}):(\d{2})$/
+            );
+
+        if (!match) {
+            window.alert(
+                "invalid date and time.\n\n" +
+                "use: yyyy-mm-dd hh:mm"
+            );
+            return;
+        }
+
+        const [
+            ,
+            yearText,
+            monthText,
+            dayText,
+            hourText,
+            minuteText
+        ] = match;
+
+        const year = Number(yearText);
+        const month = Number(monthText);
+        const day = Number(dayText);
+        const hour = Number(hourText);
+        const minute = Number(minuteText);
+
+        const localDate =
+            new Date(
+                year,
+                month - 1,
+                day,
+                hour,
+                minute,
+                0,
+                0
+            );
+
+        const valid =
+            localDate.getFullYear() === year &&
+            localDate.getMonth() === month - 1 &&
+            localDate.getDate() === day &&
+            localDate.getHours() === hour &&
+            localDate.getMinutes() === minute;
+
+        if (!valid) {
+            window.alert(
+                "invalid date and time.\n\n" +
+                "use: yyyy-mm-dd hh:mm"
+            );
+            return;
+        }
+
+        cutoff =
+            localDate.toISOString();
+
+        cutoffLabel =
+            `chat up to ${cleanedCutoff}`;
+    }
+
     const confirmed =
         window.confirm(
-            "clear the entire chat?" 
+            `clear ${cutoffLabel}?`
         );
 
     if (!confirmed) {
@@ -9794,7 +9878,7 @@ async uploadTestImage(file) {
     const finalConfirmation =
         window.confirm(
             "final confirmation:\n\n" +
-            "delete the entire chat?"
+            `delete ${cutoffLabel}?`
         );
 
     if (!finalConfirmation) {
@@ -9810,9 +9894,17 @@ async uploadTestImage(file) {
                         "POST",
 
                     headers: {
+                        "Content-Type":
+                            "application/json",
+
                         "Authorization":
                             `Bearer ${this.adminKey}`
-                    }
+                    },
+
+                    body:
+                        JSON.stringify({
+                            cutoff
+                        })
                 }
             );
 
@@ -9834,12 +9926,17 @@ async uploadTestImage(file) {
         }
 
         if (!request.ok) {
-          
             if (
                 result?.chatCleared ===
                     true
             ) {
-                this.clearChatInterface();
+                if (result?.cutoff) {
+                    this.clearChatThrough(
+                        result.cutoff
+                    );
+                } else {
+                    this.clearChatInterface();
+                }
             }
 
             throw new Error(
@@ -9848,18 +9945,31 @@ async uploadTestImage(file) {
             );
         }
 
-       
-        this.clearChatInterface();
+        if (result?.cutoff) {
+            this.clearChatThrough(
+                result.cutoff
+            );
+        } else {
+            this.clearChatInterface();
+        }
 
         console.log(
-            "Chat cleared:",
+            "chat cleared:",
             {
+                cutoff:
+                    result?.cutoff ||
+                    null,
+
                 messages:
                     result?.deletedMessages ||
                     0,
 
                 imageRows:
                     result?.deletedImageRows ||
+                    0,
+
+                reactions:
+                    result?.deletedReactions ||
                     0,
 
                 r2Objects:
@@ -9869,13 +9979,65 @@ async uploadTestImage(file) {
         );
     } catch (error) {
         console.error(
-            "could not clear entire chat:",
+            "could not clear chat:",
             error
         );
 
         window.alert(
-            `could not completely clear chat: ${error.message}`
+            `could not clear chat: ${error.message}`
         );
+    }
+}
+
+clearChatThrough(cutoff) {
+    const cutoffTime =
+        new Date(cutoff).getTime();
+
+    if (!Number.isFinite(cutoffTime)) {
+        return;
+    }
+
+    for (
+        const row
+        of this.messages.querySelectorAll(
+            ".chatMessage"
+        )
+    ) {
+        const timestamp =
+            Number(
+                row.dataset.timestamp
+            );
+
+        if (
+            Number.isFinite(timestamp) &&
+            timestamp <= cutoffTime
+        ) {
+            const uploadId =
+                row.dataset.imageUploadId;
+
+            if (uploadId) {
+                this.imageUploadRows.delete(
+                    uploadId
+                );
+
+                this.activeImageUploads.delete(
+                    uploadId
+                );
+            }
+
+            row.remove();
+        }
+    }
+
+    this.closeModerationMenu();
+
+    if (
+        this.replyTarget?.createdAt &&
+        new Date(
+            this.replyTarget.createdAt
+        ).getTime() <= cutoffTime
+    ) {
+        this.clearReplyTarget();
     }
 }
 
@@ -9908,14 +10070,27 @@ clearChatInterface() {
 	async deleteImageUpload(
     uploadId
 ) {
-    if (
-        !this.isAdmin ||
-        !uploadId
-    ) {
+    if (!uploadId) {
         return;
     }
 
     try {
+        const headers = {
+            "Content-Type":
+                "application/json",
+
+            "X-Chat-Client-Id":
+                this.clientId
+        };
+
+        if (
+            this.isAdmin &&
+            this.adminKey
+        ) {
+            headers.Authorization =
+                `Bearer ${this.adminKey}`;
+        }
+
         const response =
             await fetch(
                 `${this.imageUploadConfig.apiBase}/delete`,
@@ -9923,13 +10098,7 @@ clearChatInterface() {
                     method:
                         "POST",
 
-                    headers: {
-                        "Content-Type":
-                            "application/json",
-
-                        "Authorization":
-                            `Bearer ${this.adminKey}`
-                    },
+                    headers,
 
                     body:
                         JSON.stringify({
