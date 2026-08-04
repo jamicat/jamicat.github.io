@@ -962,9 +962,6 @@ setupAdminAuthentication() {
         return;
     }
 
-    /*title.title =
-    "double-click for admin login";*/
-
     title.addEventListener(
         "dblclick",
         event => {
@@ -1222,9 +1219,6 @@ createBanManagerButton() {
         return;
     }
 
-    /*
-     * Keep only one admin manager open.
-     */
     this.closeAdminManagers();
 
     const panel =
@@ -1694,12 +1688,6 @@ if (clearButton) {
             );
         }
 
-        /*
-         * Update immediately for this browser.
-         *
-         * The authoritative WebSocket broadcast will
-         * follow and replace the full state.
-         */
         this.watchParty.enabled =
             shouldEnable;
 
@@ -1831,12 +1819,6 @@ if (clearButton) {
             );
         }
 
-        /*
-         * Do not manually clear this.watchParty.queue.
-         *
-         * The Worker broadcasts the authoritative
-         * Watch Party state to every connected client.
-         */
         this.partyManagerBusy = false;
         this.renderPartyManager();
 
@@ -5166,12 +5148,6 @@ async removeWatchPartyItem(
             );
         }
 
-        /*
-         * Do not manually edit this.watchParty.queue here.
-         *
-         * The Worker broadcasts the authoritative queue
-         * through the existing watchparty-state WebSocket.
-         */
     } catch (error) {
         console.error(
             "could not remove watch party video:",
@@ -7072,13 +7048,6 @@ appendEditedMarker(container, message) {
 beginInlineEdit(message) {
     const row = this.findMessageElement(message.id);
     if (!row || this.activeInlineEdit) return;
-
-    /*
-     * Always edit the newest message snapshot stored on the row.
-     * The context-menu closure may have been created before a live edit
-     * arrived, so using its original object would reopen stale text and
-     * submit an obsolete edit_version.
-     */
     const currentMessage =
         row.jamiChatMessage ||
         message;
@@ -7140,11 +7109,6 @@ async saveInlineEdit() {
         if (response.status === 409) throw new Error("this message changed before your edit was saved. reload and try again.");
         if (!response.ok) throw new Error(result?.error || `edit failed (${response.status})`);
 
-        /*
-         * Apply the authoritative Worker response immediately. Do not wait
-         * for the WebSocket broadcast: it may arrive later, and reopening
-         * edit before then must still use the new text and edit_version.
-         */
         if (result?.message) {
             this.applyEditedMessage(
                 result.message
@@ -9137,12 +9101,6 @@ applyImageUploadState(upload) {
         return;
     }
 
-    /*
-     * History records should display
-     * their image immediately rather
-     * than replaying the completion
-     * dialog on every refresh.
-     */
     if (
         upload.showCompletionDialog !==
             true
@@ -9155,11 +9113,6 @@ applyImageUploadState(upload) {
         return;
     }
 
-    /*
-     * The uploader may receive completion
-     * through both WebSocket and XHR.
-     * Show the dialog only once.
-     */
     if (
         row.dataset
             .completionDialogShown ===
@@ -9593,11 +9546,6 @@ async uploadTestImage(file) {
     const upload =
         session.upload;
 
-    /*
-     * The broadcast may already have
-     * created this row. This call safely
-     * reuses it if so.
-     */
     this.addImageUpload(
         upload
     );
@@ -9670,12 +9618,6 @@ async uploadTestImage(file) {
                 return;
             }
 
-            /*
-             * Browser transfer can reach
-             * 100 before R2 has committed.
-             * Keep it at 99 until Worker
-             * completion is confirmed.
-             */
             const progress =
                 Math.max(
                     0,
@@ -9695,9 +9637,6 @@ async uploadTestImage(file) {
                     progress
                 );
 
-            /*
-             * Update the uploader instantly.
-             */
             this.applyImageUploadState({
                 uploadId:
                     upload.uploadId,
@@ -9745,11 +9684,6 @@ async uploadTestImage(file) {
                         upload.uploadId
                     );
 
-                /*
-                 * WebSocket completion should
-                 * normally arrive first or soon
-                 * afterward. This is a fallback.
-                 */
                 this.applyImageUploadState({
                     uploadId:
                         upload.uploadId,
@@ -10078,9 +10012,6 @@ clearChatInterface() {
     activeUpload.cancelled =
         true;
 
-    /*
-     * Abort local transmission first.
-     */
     try {
         activeUpload.xhr?.abort();
     } catch {}
@@ -10129,11 +10060,6 @@ clearChatInterface() {
             uploadId
         );
 
-        /*
-         * The WebSocket broadcast normally
-         * removes it for every browser.
-         * This is the local fallback.
-         */
         if (
             result?.cancelled === true
         ) {
@@ -10276,10 +10202,6 @@ restoreSettings() {
         this.nameInput.value = savedName;
     }
 
-    /*
-     * Chat resizing was removed. Always return to the original
-     * 480 x 500 layout and discard geometry left by the experiment.
-     */
     for (const key of [
         "chat_width",
         "chat_height",
@@ -11234,11 +11156,6 @@ requestAnimationFrame(
                 return;
             }
 
-            /*
-             * This capture-phase listener closes the picker even when
-             * the clicked message, image, reply, or reaction stops the
-             * normal bubbling phase.
-             */
             this.closeEmojiPicker();
         },
         true
