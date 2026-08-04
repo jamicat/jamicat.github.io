@@ -2098,6 +2098,10 @@ input[data-watch-party-url]::placeholder{
 #chatWindow .chatMessage:hover
 .jami-message-hover-actions,
 #chatWindow .chatMessage:focus-within
+.jami-message-hover-actions,
+#chatWindow .chatMessage[
+    data-reaction-picker-open="true"
+]
 .jami-message-hover-actions {
     opacity: 1;
     pointer-events: auto;
@@ -2274,41 +2278,6 @@ input[data-watch-party-url]::placeholder{
     min-height: 360px;
 }
 
-#chatWindow .jami-chat-resize-handle {
-    position: absolute;
-    z-index: 20;
-    left: 0;
-    bottom: 0;
-    width: 22px;
-    height: 22px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    border-radius: 0 8px 0 0;
-    background:
-        linear-gradient(
-            135deg,
-            transparent 0 42%,
-            rgba(255,255,255,.18) 43% 49%,
-            transparent 50% 61%,
-            rgba(255,255,255,.28) 62% 68%,
-            transparent 69%
-        );
-    cursor: nesw-resize;
-    opacity: .55;
-    transition:
-        opacity 120ms ease,
-        background-color 120ms ease;
-    touch-action: none;
-}
-
-#chatWindow .jami-chat-resize-handle:hover,
-#chatWindow .jami-chat-resize-handle:focus-visible {
-    opacity: 1;
-    background-color:
-        rgba(255,255,255,.04);
-    outline: none;
-}
 
 #chatWindow .jami-chat-reply-reference {
     max-width: min(100%, 390px);
@@ -2361,4 +2330,37 @@ input[data-watch-party-url]::placeholder{
         min-width: 0;
         min-height: 0;
     }
+}
+
+
+/*
+ * Invisible bottom-right resize hit area.
+ * No diagonal grip or visual indicator.
+ */
+#chatWindow .jami-chat-resize-handle {
+    position: absolute;
+    z-index: 30;
+    right: 0;
+    bottom: 0;
+    left: auto;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    opacity: 0;
+    cursor: nwse-resize;
+    touch-action: none;
+}
+
+#chatWindow .jami-chat-resize-handle:hover,
+#chatWindow .jami-chat-resize-handle:focus-visible {
+    opacity: 0;
+    outline: none;
+}
+
+#chatWindow[data-minimized="true"]
+.jami-chat-resize-handle {
+    display: none;
 }
