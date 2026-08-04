@@ -633,13 +633,6 @@ transition-[height] duration-200
             </button>
         </div>
 
-        <button
-            type="button"
-            class="jami-chat-resize-handle"
-            data-jami-chat-resize-handle
-            aria-label="resize chat"
-            title="resize chat"
-        ></button>
     `;
 
     document.body.appendChild(windowElement);
@@ -786,10 +779,6 @@ this.controlsElement =
 this.minimizeButton =
     this.window.querySelector("#chatMinimize");
 
-this.resizeHandle =
-    this.window.querySelector(
-        "[data-jami-chat-resize-handle]"
-    );
 
 this.createReplyComposerPreview();
 
@@ -5994,7 +5983,10 @@ renderAllReactionRows() {
     });
 }
 
-renderReactionRow(row) {
+renderReactionRow(
+    row,
+    animatedReactionKeys = null
+) {
     const target = this.getReactionTarget(row);
 
     if (!target) {
@@ -6053,7 +6045,11 @@ renderReactionRow(row) {
 
         button.type = "button";
         button.className =
-            "jami-reaction-pill jami-reaction-pill-pop";
+            animatedReactionKeys?.has(
+                reaction.key
+            )
+                ? "jami-reaction-pill jami-reaction-pill-pop"
+                : "jami-reaction-pill";
         button.dataset.reacted =
             reacted ? "true" : "false";
         button.setAttribute(
@@ -6231,6 +6227,62 @@ applyReactionSnapshot(value) {
             snapshot.targetId
         );
 
+    const previousReactions =
+        this.messageReactions.get(key) || [];
+
+    const previousByKey =
+        new Map(
+            previousReactions.map(
+                reaction => [
+                    reaction.key,
+                    reaction
+                ]
+            )
+        );
+
+    const changedReactionKeys =
+        new Set();
+
+    for (
+        const reaction
+        of snapshot.reactions
+    ) {
+        const previous =
+            previousByKey.get(
+                reaction.key
+            );
+
+        const previousClients =
+            Array.isArray(
+                previous?.clientIds
+            )
+                ? [...previous.clientIds]
+                    .sort()
+                    .join("\u0000")
+                : "";
+
+        const nextClients =
+            Array.isArray(
+                reaction.clientIds
+            )
+                ? [...reaction.clientIds]
+                    .sort()
+                    .join("\u0000")
+                : "";
+
+        if (
+            !previous ||
+            previous.count !==
+                reaction.count ||
+            previousClients !==
+                nextClients
+        ) {
+            changedReactionKeys.add(
+                reaction.key
+            );
+        }
+    }
+
     if (snapshot.reactions.length) {
         this.messageReactions.set(
             key,
@@ -6247,7 +6299,10 @@ applyReactionSnapshot(value) {
             row.dataset.reactionTargetId ===
             snapshot.targetId
         ) {
-            this.renderReactionRow(row);
+            this.renderReactionRow(
+                row,
+                changedReactionKeys
+            );
         }
     });
 
