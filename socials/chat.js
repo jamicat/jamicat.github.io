@@ -5838,6 +5838,7 @@ ensureMessageHoverActions(row) {
             event => {
                 event.preventDefault();
                 event.stopPropagation();
+				event.currentTarget.blur();
 
                 const reactions =
                     this.messageReactions.get(
