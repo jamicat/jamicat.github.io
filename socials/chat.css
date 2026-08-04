@@ -2236,13 +2236,6 @@ input[data-watch-party-url]::placeholder{
     display: none !important;
 }
 
-
-#chatWindow {
-    min-width: 360px;
-    min-height: 360px;
-}
-
-
 #chatWindow .jami-chat-reply-reference {
     max-width: min(100%, 390px);
 }
@@ -2282,12 +2275,5 @@ input[data-watch-party-url]::placeholder{
 @media (prefers-reduced-motion: reduce) {
     #chatWindow .jami-reaction-pill-pop {
         animation: none;
-    }
-}
-
-@media (max-width: 640px) {
-    #chatWindow {
-        min-width: 0;
-        min-height: 0;
     }
 }
