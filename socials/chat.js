@@ -11504,103 +11504,107 @@ requestAnimationFrame(
         }
     );
 
-    document.addEventListener(
-        "pointerdown",
-        event => {
-            if (!this.emojiPickerOpen) {
-                return;
-            }
+   document.addEventListener(
+    "pointerdown",
+    event => {
+        if (!this.emojiPickerOpen) {
+            return;
+        }
 
-           const path =
-    typeof event.composedPath ===
-        "function"
-        ? event.composedPath()
-        : [];
-
-const clickedInsidePicker =
-    path.includes(
-        this.emojiPicker
-    ) ||
-    path.some(node =>
-        node?.getRootNode?.() ===
-            this.emojiPicker
-                ?.shadowRoot
-    );
-
-const clickedEmojiButton =
-    path.includes(
-        this.emojiButton
-    );
-
-if (
-    clickedInsidePicker ||
-    clickedEmojiButton
-) {
-    return;
-}
-
-                this.closeEmojiPicker();
-                return;
-            }
-
-            if (
-                this.emojiPickerMode !==
-                    "reaction"
-            ) {
-                return;
-            }
-
+        if (
+            this.emojiPickerMode ===
+                "message"
+        ) {
             const path =
                 typeof event.composedPath ===
                     "function"
                     ? event.composedPath()
                     : [];
 
-            const pickerHostIndex =
-                path.indexOf(
-                    this.reactionEmojiPicker
+            const clickedInsidePicker =
+                path.includes(
+                    this.emojiPicker
+                ) ||
+                path.some(node =>
+                    node?.getRootNode?.() ===
+                        this.emojiPicker
+                            ?.shadowRoot
                 );
 
-            const insideVisiblePicker =
-                pickerHostIndex > 0 &&
-                path
-                    .slice(
-                        0,
-                        pickerHostIndex
-                    )
-                    .some(node =>
-                        node?.getRootNode?.() ===
-                            this.reactionEmojiPicker
-                                ?.shadowRoot
-                    );
-
-            if (insideVisiblePicker) {
-                return;
-            }
+            const clickedEmojiButton =
+                path.includes(
+                    this.emojiButton
+                );
 
             if (
-                this.emojiPickerAnchor &&
-                this.emojiPickerAnchor
-                    .contains(
-                        event.target
-                    )
-            ) {
-                return;
-            }
-
-            if (
-                this.emojiButton &&
-                this.emojiButton.contains(
-                    event.target
-                )
+                clickedInsidePicker ||
+                clickedEmojiButton
             ) {
                 return;
             }
 
             this.closeEmojiPicker();
-        },
-        true
-    );
+            return;
+        }
+
+        if (
+            this.emojiPickerMode !==
+                "reaction"
+        ) {
+            return;
+        }
+
+        const path =
+            typeof event.composedPath ===
+                "function"
+                ? event.composedPath()
+                : [];
+
+        const pickerHostIndex =
+            path.indexOf(
+                this.reactionEmojiPicker
+            );
+
+        const insideVisiblePicker =
+            pickerHostIndex > 0 &&
+            path
+                .slice(
+                    0,
+                    pickerHostIndex
+                )
+                .some(node =>
+                    node?.getRootNode?.() ===
+                        this.reactionEmojiPicker
+                            ?.shadowRoot
+                );
+
+        if (insideVisiblePicker) {
+            return;
+        }
+
+        if (
+            this.emojiPickerAnchor &&
+            this.emojiPickerAnchor.contains(
+                event.target
+            )
+        ) {
+            return;
+        }
+
+        if (
+            this.emojiButton &&
+            this.emojiButton.contains(
+                event.target
+            )
+        ) {
+            return;
+        }
+
+        this.closeEmojiPicker();
+    },
+    true
+);
+
 }
 
 	injectCustomEmojisIntoPicker(
