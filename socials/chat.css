@@ -122,9 +122,6 @@
     background: rgba(255, 255, 255, 0.30);
 }
 
-/*
- * Watch Party playlist checkbox.
- */
 #chatWatchPartyPanel
 .watch-party-playlist-label {
     color:
@@ -955,12 +952,6 @@ input[data-watch-party-url],
 }
 }
 
-/*
- * Default Watch Party theme.
- *
- * This intentionally restores the original panel
- * appearance and overrides leftover colour rules.
- */
 #chatWatchPartyPanel[data-theme="default"] {
     border-color:
         rgba(255, 255, 255, 0.15);
@@ -1494,9 +1485,6 @@ input[data-watch-party-url]::placeholder{
     color:transparent;
 }
 
-/*
- * Current video YouTube link.
- */
 #chatWatchPartyPanel
 [data-watch-party-video-link] {
     color: rgba(255, 255, 255, 0.58);
@@ -2001,8 +1989,6 @@ input[data-watch-party-url]::placeholder{
 #chatWindow .jami-chat-message-highlight { animation: jami-chat-reply-highlight 1.4s ease-out; }
 @keyframes jami-chat-reply-highlight { 0%,30% { background: rgba(255,255,255,.12); } 100% { background: transparent; } }
 
-
-/* Message reactions */
 #chatWindow .jami-message-reactions {
     display: flex;
     flex-wrap: wrap;
