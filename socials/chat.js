@@ -11511,22 +11511,33 @@ requestAnimationFrame(
                 return;
             }
 
-            if (
-                this.emojiPickerMode ===
-                    "message"
-            ) {
-                if (
-                    this.emojiPickerContainer
-                        ?.contains(
-                            event.target
-                        ) ||
-                    this.emojiButton
-                        ?.contains(
-                            event.target
-                        )
-                ) {
-                    return;
-                }
+           const path =
+    typeof event.composedPath ===
+        "function"
+        ? event.composedPath()
+        : [];
+
+const clickedInsidePicker =
+    path.includes(
+        this.emojiPicker
+    ) ||
+    path.some(node =>
+        node?.getRootNode?.() ===
+            this.emojiPicker
+                ?.shadowRoot
+    );
+
+const clickedEmojiButton =
+    path.includes(
+        this.emojiButton
+    );
+
+if (
+    clickedInsidePicker ||
+    clickedEmojiButton
+) {
+    return;
+}
 
                 this.closeEmojiPicker();
                 return;
