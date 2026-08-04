@@ -7339,10 +7339,12 @@ menu.style.top =
         return;
     }
 
-    const confirmed =
-        window.confirm(
-            `delete message #${id}?`
-        );
+   const confirmed =
+    window.confirm(
+        this.isAdmin
+            ? `delete message #${id}?`
+            : "delete message?"
+    );
 
     if (!confirmed) {
         return;
@@ -9786,10 +9788,10 @@ async uploadTestImage(file) {
 
     const cutoffInput =
         window.prompt(
-            "enter a date and time to clear chat up to and including that point.\n\n" +
+            "enter a date and time to clear chat up to:\n" +
             "format: yyyy-mm-dd hh:mm\n" +
             "example: 2026-08-04 18:30\n\n" +
-            "leave this empty to clear the full chat.",
+            "leave empty to clear the full chat.",
             ""
         );
 
