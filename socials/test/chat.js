@@ -5488,7 +5488,7 @@ addMessage(message) {
     this.openModerationMenu(
         event.clientX,
         event.clientY,
-        message
+        row.jamiChatMessage || message
     );
 });
 
@@ -5574,7 +5574,9 @@ this.appendEditedMarker(messageBody, message);
     compactTime.className = [
     "absolute",
     "left-0",
-    "top-[10px]",
+    message?.reply_target_id
+        ? "top-[29px]"
+        : "top-[10px]",
     "w-8",
     "text-right",
     "text-[8px]",
@@ -6120,16 +6122,32 @@ appendEditedMarker(container, message) {
 beginInlineEdit(message) {
     const row = this.findMessageElement(message.id);
     if (!row || this.activeInlineEdit) return;
+
+    /*
+     * Always edit the newest message snapshot stored on the row.
+     * The context-menu closure may have been created before a live edit
+     * arrived, so using its original object would reopen stale text and
+     * submit an obsolete edit_version.
+     */
+    const currentMessage =
+        row.jamiChatMessage ||
+        message;
+
     const text = row.querySelector(".chatText");
     if (!text) return;
-    const original = String(message.message || "");
+    const original = String(currentMessage.message || "");
     const editor = document.createElement("textarea");
     editor.className = "jami-chat-inline-editor theme-body";
     editor.value = original;
     editor.rows = Math.min(6, Math.max(1, original.split("\n").length));
     text.hidden = true;
     text.after(editor);
-    this.activeInlineEdit = { row, text, editor, message };
+    this.activeInlineEdit = {
+        row,
+        text,
+        editor,
+        message: currentMessage
+    };
     editor.focus();
     editor.setSelectionRange(editor.value.length, editor.value.length);
     const cancel = () => this.cancelInlineEdit();
@@ -6171,7 +6189,36 @@ async saveInlineEdit() {
         const result = await response.json();
         if (response.status === 409) throw new Error("this message changed before your edit was saved. reload and try again.");
         if (!response.ok) throw new Error(result?.error || `edit failed (${response.status})`);
-        this.cancelInlineEdit();
+
+        /*
+         * Apply the authoritative Worker response immediately. Do not wait
+         * for the WebSocket broadcast: it may arrive later, and reopening
+         * edit before then must still use the new text and edit_version.
+         */
+        if (result?.message) {
+            this.applyEditedMessage(
+                result.message
+            );
+        } else {
+            Object.assign(
+                active.message,
+                {
+                    message,
+                    edited_at:
+                        new Date().toISOString(),
+                    edit_version:
+                        Number(
+                            active.message.edit_version ||
+                            1
+                        ) + 1
+                }
+            );
+
+            active.row.jamiChatMessage =
+                active.message;
+
+            this.cancelInlineEdit();
+        }
     } catch (error) {
         active.editor.disabled = false;
         window.alert(error.message);
