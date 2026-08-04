@@ -2291,16 +2291,3 @@ input[data-watch-party-url]::placeholder{
         min-height: 0;
     }
 }
-
-
-#chatWindow:not([data-minimized="true"]) {
-    width: 480px;
-    height: 500px;
-}
-
-@media (max-width: 640px) {
-    #chatWindow:not([data-minimized="true"]) {
-        width: min(480px, calc(100vw - 2rem));
-        height: 500px;
-    }
-}
