@@ -2978,13 +2978,44 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function showArt() {
+const artFrames = [
+    "/art-frames/strawberry-daisy.png",
+    "/art-frames/moon-clouds.png",
+    "/art-frames/cat-yarn.png",
+    "/art-frames/ribbon-lace.png",
+    "/art-frames/rainbow-beads.png",
+    "/art-frames/candy-gold.png",
+    "/art-frames/pixel-garden.png"
+];
+
+const shuffledFrames = [...artFrames];
+
+for (
+    let index = shuffledFrames.length - 1;
+    index > 0;
+    index -= 1
+) {
+    const randomIndex =
+        Math.floor(
+            Math.random() * (index + 1)
+        );
+
+    [
+        shuffledFrames[index],
+        shuffledFrames[randomIndex]
+    ] = [
+        shuffledFrames[randomIndex],
+        shuffledFrames[index]
+    ];
+}
+
 $('#terminalContent').html(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
   <div id="artGallery" class="grid grid-cols-2 gap-4">
-   <a href="2.png" class="block rounded overflow-hidden">
+   <a href="2.png" class="jami-art-thumbnail block rounded">
     <img src="2.png" alt="jamie - saproena" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
-    <a href="anim_jam.gif" class="block rounded overflow-hidden">
+    <a href="anim_jam.gif" class="jami-art-thumbnail block rounded">
     <img src="anim_thumb.jpg" alt="jamie - xandy" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
     </div>
@@ -2993,12 +3024,244 @@ $('#terminalContent').html(`
     </div>
   `);
 
+const galleryElement =
+    document.getElementById(
+        "artGallery"
+    );
+
+galleryElement
+    ?.querySelectorAll(
+        ".jami-art-thumbnail"
+    )
+    .forEach((thumbnail, index) => {
+        thumbnail.style.setProperty(
+            "--jami-art-frame",
+            `url("${shuffledFrames[
+                index %
+                shuffledFrames.length
+            ]}")`
+        );
+    });
+
 setTimeout(() => {
-lightGallery(document.getElementById('artGallery'), {
-thumbnail: true,
-zoom: true,
-download: false,
-});
+    if (!galleryElement) {
+        return;
+    }
+
+    const frameAssignments =
+        shuffledFrames.map(
+            frame => frame
+        );
+
+    let activeFrame = null;
+    let syncFrameRequest = null;
+    let galleryOpen = false;
+    let zoomed = false;
+
+    const removeLightboxFrame = () => {
+        if (syncFrameRequest) {
+            cancelAnimationFrame(
+                syncFrameRequest
+            );
+
+            syncFrameRequest = null;
+        }
+
+        activeFrame?.remove();
+        activeFrame = null;
+    };
+
+    const syncLightboxFrame = () => {
+        syncFrameRequest = null;
+
+        if (!galleryOpen) {
+            removeLightboxFrame();
+            return;
+        }
+
+        const outer =
+            document.querySelector(
+                ".lg-outer.jami-art-lightgallery"
+            );
+
+        const currentSlide =
+            outer?.querySelector(
+                ".lg-current"
+            );
+
+        const image =
+            currentSlide?.querySelector(
+                ".lg-image"
+            );
+
+        if (
+            !outer ||
+            !image ||
+            zoomed
+        ) {
+            if (activeFrame) {
+                activeFrame.hidden = true;
+            }
+
+            return;
+        }
+
+        const rect =
+            image.getBoundingClientRect();
+
+        if (
+            rect.width <= 1 ||
+            rect.height <= 1
+        ) {
+            return;
+        }
+
+        if (!activeFrame) {
+            activeFrame =
+                document.createElement(
+                    "div"
+                );
+
+            activeFrame.className =
+                "jami-art-lightbox-frame";
+
+            activeFrame.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+            document.body.appendChild(
+                activeFrame
+            );
+        }
+
+        const slideIndex =
+            Number(
+                currentSlide.getAttribute(
+                    "data-index"
+                )
+            );
+
+        const safeIndex =
+            Number.isFinite(slideIndex)
+                ? slideIndex
+                : 0;
+
+        activeFrame.style.setProperty(
+            "--jami-art-frame",
+            `url("${frameAssignments[
+                safeIndex %
+                frameAssignments.length
+            ]}")`
+        );
+
+        activeFrame.style.left =
+            `${rect.left}px`;
+
+        activeFrame.style.top =
+            `${rect.top}px`;
+
+        activeFrame.style.width =
+            `${rect.width}px`;
+
+        activeFrame.style.height =
+            `${rect.height}px`;
+
+        activeFrame.hidden = false;
+    };
+
+    const scheduleFrameSync = () => {
+        if (syncFrameRequest) {
+            cancelAnimationFrame(
+                syncFrameRequest
+            );
+        }
+
+        syncFrameRequest =
+            requestAnimationFrame(
+                syncLightboxFrame
+            );
+    };
+
+    galleryElement.addEventListener(
+        "lgAfterOpen",
+        () => {
+            galleryOpen = true;
+            zoomed = false;
+
+            scheduleFrameSync();
+
+            setTimeout(
+                scheduleFrameSync,
+                120
+            );
+        }
+    );
+
+    galleryElement.addEventListener(
+        "lgAfterSlide",
+        () => {
+            zoomed = false;
+
+            scheduleFrameSync();
+
+            setTimeout(
+                scheduleFrameSync,
+                120
+            );
+        }
+    );
+
+    galleryElement.addEventListener(
+        "lgZoomIn",
+        () => {
+            zoomed = true;
+
+            if (activeFrame) {
+                activeFrame.hidden = true;
+            }
+        }
+    );
+
+    galleryElement.addEventListener(
+        "lgZoomOut",
+        () => {
+            zoomed = false;
+
+            setTimeout(
+                scheduleFrameSync,
+                80
+            );
+        }
+    );
+
+    galleryElement.addEventListener(
+        "lgAfterClose",
+        () => {
+            galleryOpen = false;
+            zoomed = false;
+
+            removeLightboxFrame();
+        }
+    );
+
+    window.addEventListener(
+        "resize",
+        scheduleFrameSync
+    );
+
+    window.visualViewport?.addEventListener(
+        "resize",
+        scheduleFrameSync
+    );
+
+    lightGallery(galleryElement, {
+        thumbnail: true,
+        zoom: true,
+        download: false,
+        addClass:
+            "jami-art-lightgallery"
+    });
 }, 100); 
   
 const currentTheme = localStorage.getItem('theme') || 'Default';
