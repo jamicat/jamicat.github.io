@@ -1901,14 +1901,6 @@ input[data-watch-party-url]::placeholder{
         8s linear infinite;
 }
 
-
-
-
-
-
-
-
-/* Completed-image remix controls. */
 .jami-chat-image-shell {
     position: relative;
     display: inline-flex;
@@ -1986,7 +1978,6 @@ input[data-watch-party-url]::placeholder{
 }
 
 
-/* Replies and inline message editing. */
 #chatWindow .jami-chat-reply-composer {
     display: flex; align-items: center; gap: 8px; padding: 7px 9px;
     border: 1px solid rgba(255,255,255,.12); border-radius: 10px;
@@ -2074,7 +2065,6 @@ input[data-watch-party-url]::placeholder{
     object-fit: contain;
 }
 
-/* Floating actions do not reserve message height. */
 #chatWindow .jami-message-hover-actions {
     position: absolute;
     z-index: 8;
@@ -2203,9 +2193,6 @@ input[data-watch-party-url]::placeholder{
     background: rgba(255,255,255,.09);
 }
 
-
-
-/* Full Discord-style reaction picker and recent quick reactions */
 #chatWindow .jami-message-hover-custom-emoji {
     display: block;
     width: 18px;
@@ -2247,13 +2234,6 @@ input[data-watch-party-url]::placeholder{
 }
 
 
-
-
-/*
- * Dedicated reaction EmojiMart instance.
- * The composer instance stays mounted in its original location so
- * EmojiMart's virtualised list keeps stable measurements.
- */
 .jami-reaction-emoji-picker-host {
     position: fixed;
     z-index: 100006;
@@ -2266,13 +2246,11 @@ input[data-watch-party-url]::placeholder{
     max-height: min(460px, calc(100vh - 16px));
 }
 
-/* The old hand-built reaction grid remains disabled. */
 .jami-reaction-picker {
     display: none !important;
 }
 
 
-/* Final chat polish. */
 #chatWindow {
     min-width: 360px;
     min-height: 360px;
@@ -2322,10 +2300,6 @@ input[data-watch-party-url]::placeholder{
 }
 
 @media (max-width: 640px) {
-    #chatWindow .jami-chat-resize-handle {
-        display: none;
-    }
-
     #chatWindow {
         min-width: 0;
         min-height: 0;
@@ -2333,40 +2307,6 @@ input[data-watch-party-url]::placeholder{
 }
 
 
-/*
- * Invisible bottom-right resize hit area.
- * No diagonal grip or visual indicator.
- */
-#chatWindow .jami-chat-resize-handle {
-    position: absolute;
-    z-index: 30;
-    right: 0;
-    bottom: 0;
-    left: auto;
-    width: 22px;
-    height: 22px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    opacity: 0;
-    cursor: nwse-resize;
-    touch-action: none;
-}
-
-#chatWindow .jami-chat-resize-handle:hover,
-#chatWindow .jami-chat-resize-handle:focus-visible {
-    opacity: 0;
-    outline: none;
-}
-
-#chatWindow[data-minimized="true"]
-.jami-chat-resize-handle {
-    display: none;
-}
-
-
-/* Chat resizing removed: restore the original widget dimensions. */
 #chatWindow:not([data-minimized="true"]) {
     width: 480px;
     height: 500px;
