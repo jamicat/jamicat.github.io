@@ -11521,27 +11521,35 @@ requestAnimationFrame(
                     ? event.composedPath()
                     : [];
 
-            const clickedInsidePicker =
-                path.includes(
-                    this.emojiPicker
-                ) ||
-                path.some(node =>
-                    node?.getRootNode?.() ===
-                        this.emojiPicker
-                            ?.shadowRoot
-                );
+           const pickerHostIndex =
+    path.indexOf(
+        this.emojiPicker
+    );
 
-            const clickedEmojiButton =
-                path.includes(
-                    this.emojiButton
-                );
+const insideVisiblePicker =
+    pickerHostIndex > 0 &&
+    path
+        .slice(
+            0,
+            pickerHostIndex
+        )
+        .some(node =>
+            node?.getRootNode?.() ===
+                this.emojiPicker
+                    ?.shadowRoot
+        );
 
-            if (
-                clickedInsidePicker ||
-                clickedEmojiButton
-            ) {
-                return;
-            }
+const clickedEmojiButton =
+    path.includes(
+        this.emojiButton
+    );
+
+if (
+    insideVisiblePicker ||
+    clickedEmojiButton
+) {
+    return;
+}
 
             this.closeEmojiPicker();
             return;
