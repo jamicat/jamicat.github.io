@@ -10092,14 +10092,19 @@ async uploadTestImage(file) {
         return;
     }
 
-    const cutoffInput =
-        window.prompt(
-            "enter a date and time to clear chat from that point onward:\n" +
-            "format: yyyy-mm-dd hh:mm\n" +
-            "example: 2026-08-04 18:30\n\n" +
-            "leave empty to clear the full chat.",
-            ""
-        );
+    const todayExample =
+    new Date()
+        .toISOString()
+        .slice(0, 10);
+
+const cutoffInput =
+    window.prompt(
+        "enter a date and time to clear chat from that point onward:\n" +
+        "format: yyyy-mm-dd hh:mm\n" +
+        `example: ${todayExample} 13:30\n\n` +
+        "leave empty to clear the full chat.",
+        ""
+    );
 
     if (cutoffInput === null) {
         return;
