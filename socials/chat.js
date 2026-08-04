@@ -11084,15 +11084,27 @@ requestAnimationFrame(
                 return;
             }
 
-            const picker = this.reactionEmojiPicker;
-            const rect = picker?.getBoundingClientRect?.();
+            const pickerPanel =
+                this.reactionEmojiPicker
+                    ?.shadowRoot
+                    ?.querySelector(
+                        ".picker"
+                    );
+
+            const pickerRect =
+                pickerPanel
+                    ?.getBoundingClientRect?.();
 
             const insideVisiblePicker =
-                rect &&
-                event.clientX >= rect.left &&
-                event.clientX <= rect.right &&
-                event.clientY >= rect.top &&
-                event.clientY <= rect.bottom;
+                pickerRect &&
+                event.clientX >=
+                    pickerRect.left &&
+                event.clientX <=
+                    pickerRect.right &&
+                event.clientY >=
+                    pickerRect.top &&
+                event.clientY <=
+                    pickerRect.bottom;
 
             if (insideVisiblePicker) {
                 return;
@@ -11573,11 +11585,15 @@ closeEmojiPicker() {
         "false"
     );
 
-    this.emojiPickerAnchor
-        ?.closest(".chatMessage")
-        ?.removeAttribute(
-            "data-reaction-picker-open"
-        );
+    document
+        .querySelectorAll(
+            "[data-reaction-picker-open]"
+        )
+        .forEach(message => {
+            message.removeAttribute(
+                "data-reaction-picker-open"
+            );
+        });
 
     this.emojiPickerMode = "message";
     this.emojiReactionTarget = null;
