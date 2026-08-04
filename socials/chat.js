@@ -5796,6 +5796,18 @@ ensureMessageHoverActions(row) {
         return;
     }
 
+    const hoverMessage =
+        this.getReplyMessageForRow(row);
+
+    const canEditOwnMessage =
+        Boolean(
+            hoverMessage &&
+            !hoverMessage.imageUpload &&
+            hoverMessage.id &&
+            hoverMessage.client_id ===
+                this.clientId
+        );
+
     const actions =
         document.createElement("div");
 
@@ -5918,6 +5930,35 @@ ensureMessageHoverActions(row) {
         }
     );
 
+    let editButton = null;
+
+    if (canEditOwnMessage) {
+        editButton =
+            document.createElement("button");
+
+        editButton.type = "button";
+        editButton.className =
+            "jami-message-hover-action jami-message-hover-edit";
+        editButton.textContent = "✎";
+        editButton.title = "edit";
+        editButton.setAttribute(
+            "aria-label",
+            "edit"
+        );
+
+        editButton.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                this.beginInlineEdit(
+                    hoverMessage
+                );
+            }
+        );
+    }
+
     const replyButton =
         document.createElement("button");
 
@@ -5937,17 +5978,25 @@ ensureMessageHoverActions(row) {
             event.preventDefault();
             event.stopPropagation();
 
-            const message =
-                this.getReplyMessageForRow(row);
-
-            if (message) {
-                this.setReplyTarget(message);
+            if (hoverMessage) {
+                this.setReplyTarget(
+                    hoverMessage
+                );
             }
         }
     );
 
     actions.append(
-        pickerButton,
+        pickerButton
+    );
+
+    if (editButton) {
+        actions.append(
+            editButton
+        );
+    }
+
+    actions.append(
         replyButton
     );
 
