@@ -11507,48 +11507,81 @@ requestAnimationFrame(
     document.addEventListener(
         "pointerdown",
         event => {
-            if (!this.emojiPickerOpen || this.emojiPickerMode !== "reaction") {
+            if (!this.emojiPickerOpen) {
+                return;
+            }
+
+            if (
+                this.emojiPickerMode ===
+                    "message"
+            ) {
+                if (
+                    this.emojiPickerContainer
+                        ?.contains(
+                            event.target
+                        ) ||
+                    this.emojiButton
+                        ?.contains(
+                            event.target
+                        )
+                ) {
+                    return;
+                }
+
+                this.closeEmojiPicker();
+                return;
+            }
+
+            if (
+                this.emojiPickerMode !==
+                    "reaction"
+            ) {
                 return;
             }
 
             const path =
-    typeof event.composedPath ===
-        "function"
-        ? event.composedPath()
-        : [];
+                typeof event.composedPath ===
+                    "function"
+                    ? event.composedPath()
+                    : [];
 
-const pickerHostIndex =
-    path.indexOf(
-        this.reactionEmojiPicker
-    );
+            const pickerHostIndex =
+                path.indexOf(
+                    this.reactionEmojiPicker
+                );
 
-const insideVisiblePicker =
-    pickerHostIndex > 0 &&
-    path
-        .slice(
-            0,
-            pickerHostIndex
-        )
-        .some(node =>
-            node?.getRootNode?.() ===
-                this.reactionEmojiPicker
-                    ?.shadowRoot
-        );
+            const insideVisiblePicker =
+                pickerHostIndex > 0 &&
+                path
+                    .slice(
+                        0,
+                        pickerHostIndex
+                    )
+                    .some(node =>
+                        node?.getRootNode?.() ===
+                            this.reactionEmojiPicker
+                                ?.shadowRoot
+                    );
 
-if (insideVisiblePicker) {
-    return;
-}
+            if (insideVisiblePicker) {
+                return;
+            }
 
             if (
                 this.emojiPickerAnchor &&
-                this.emojiPickerAnchor.contains(event.target)
+                this.emojiPickerAnchor
+                    .contains(
+                        event.target
+                    )
             ) {
                 return;
             }
 
             if (
                 this.emojiButton &&
-                this.emojiButton.contains(event.target)
+                this.emojiButton.contains(
+                    event.target
+                )
             ) {
                 return;
             }
