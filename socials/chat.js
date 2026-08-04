@@ -6291,6 +6291,143 @@ applyReactionSnapshot(value) {
 }
 
 
+applyDeletedUserContent(data) {
+    const messageIds =
+        new Set(
+            Array.isArray(data.messageIds)
+                ? data.messageIds.map(
+                    value => String(value)
+                )
+                : []
+        );
+
+    const imageUploadIds =
+        new Set(
+            Array.isArray(data.imageUploadIds)
+                ? data.imageUploadIds.map(
+                    value => String(value)
+                )
+                : []
+        );
+
+    for (const messageId of messageIds) {
+        this.findMessageElement(
+            messageId
+        )?.remove();
+
+        this.messageReactions.delete(
+            this.reactionTargetKey(
+                "chat",
+                messageId
+            )
+        );
+    }
+
+    for (const uploadId of imageUploadIds) {
+        const active =
+            this.activeImageUploads.get(
+                uploadId
+            );
+
+        if (active) {
+            active.cancelled = true;
+
+            try {
+                active.xhr?.abort();
+            } catch {}
+        }
+
+        this.activeImageUploads.delete(
+            uploadId
+        );
+
+        this.imageUploadRows
+            .get(uploadId)
+            ?.remove();
+
+        this.imageUploadRows.delete(
+            uploadId
+        );
+
+        this.messageReactions.delete(
+            this.reactionTargetKey(
+                "image",
+                uploadId
+            )
+        );
+    }
+
+    for (
+        const reference
+        of this.messages.querySelectorAll(
+            ".jami-chat-reply-reference"
+        )
+    ) {
+        const targetType =
+            reference.dataset
+                .replyTargetType;
+
+        const targetId =
+            reference.dataset
+                .replyTargetId;
+
+        const targetWasDeleted =
+            (
+                targetType === "chat" &&
+                messageIds.has(targetId)
+            ) ||
+            (
+                targetType === "image" &&
+                imageUploadIds.has(targetId)
+            );
+
+        if (!targetWasDeleted) {
+            continue;
+        }
+
+        const preview =
+            reference.querySelector(
+                ".jami-chat-reply-reference-preview"
+            );
+
+        if (preview) {
+            preview.textContent =
+                "original message unavailable";
+        }
+
+        reference.disabled = true;
+    }
+
+    if (
+        this.replyTarget &&
+        (
+            (
+                this.replyTarget.type ===
+                    "chat" &&
+                messageIds.has(
+                    String(
+                        this.replyTarget.id
+                    )
+                )
+            ) ||
+            (
+                this.replyTarget.type ===
+                    "image" &&
+                imageUploadIds.has(
+                    String(
+                        this.replyTarget.id
+                    )
+                )
+            )
+        )
+    ) {
+        this.clearReplyTarget();
+    }
+
+    this.closeModerationMenu();
+}
+
+
 addMessage(message) {
     const previousRow =
         this.messages.lastElementChild;
@@ -7216,6 +7353,14 @@ openModerationMenu(x, y, message) {
             await this.banClient(message.client_id, message.name);
         }));
 
+        buttons.push(this.createModerationMenuButton("delete user's messages", async () => {
+            this.closeModerationMenu();
+            await this.deleteUserContent(
+                message.client_id,
+                message.name
+            );
+        }));
+
         buttons.push(this.createModerationMenuButton("edit message of the day", () => {
             this.closeModerationMenu();
             this.editMotd();
@@ -7416,6 +7561,105 @@ menu.style.top =
 
         window.alert(
             `could not delete message: ${error.message}`
+        );
+    }
+}
+
+	async deleteUserContent(
+    clientId,
+    name
+) {
+    if (!clientId) {
+        window.alert(
+            "this message has no client id"
+        );
+
+        return;
+    }
+
+    if (
+        !this.isAdmin ||
+        !this.adminKey
+    ) {
+        window.alert(
+            "admin authentication is required"
+        );
+
+        this.disableAdminMode();
+        return;
+    }
+
+    const displayName =
+        name || "this user";
+
+    const confirmed =
+        window.confirm(
+            `delete all messages, replies and uploaded images from ${displayName}?\n\n` +
+            "this cannot be undone."
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        const response =
+            await fetch(
+                `${this.API}/api/admin/chat/delete-user-content`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        "Authorization":
+                            `Bearer ${this.adminKey}`
+                    },
+
+                    body:
+                        JSON.stringify({
+                            clientId
+                        })
+                }
+            );
+
+        let result = null;
+
+        try {
+            result =
+                await response.json();
+        } catch {}
+
+        if (response.status === 401) {
+            this.disableAdminMode();
+
+            window.alert(
+                "your admin session is no longer valid"
+            );
+
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `delete failed (${response.status})`
+            );
+        }
+
+        window.alert(
+            `deleted ${result.deletedMessages || 0} messages and ` +
+            `${result.deletedImages || 0} images from ${displayName}`
+        );
+    } catch (error) {
+        console.error(
+            "could not delete user content:",
+            error
+        );
+
+        window.alert(
+            `could not delete user's messages: ${error.message}`
         );
     }
 }
@@ -8049,6 +8293,18 @@ if (
     return;
 }
 		
+
+if (
+    data.type ===
+        "user-content-deleted"
+) {
+    this.applyDeletedUserContent(
+        data
+    );
+
+    return;
+}
+
 if (data.type === "delete") {
     const messageElement =
         this.findMessageElement(data.id);
