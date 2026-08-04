@@ -2364,3 +2364,17 @@ input[data-watch-party-url]::placeholder{
 .jami-chat-resize-handle {
     display: none;
 }
+
+
+/* Chat resizing removed: restore the original widget dimensions. */
+#chatWindow:not([data-minimized="true"]) {
+    width: 480px;
+    height: 500px;
+}
+
+@media (max-width: 640px) {
+    #chatWindow:not([data-minimized="true"]) {
+        width: min(480px, calc(100vw - 2rem));
+        height: 500px;
+    }
+}
