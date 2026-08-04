@@ -75,13 +75,6 @@ this.membersElement = null;
 this.mainElement = null;
 this.controlsElement = null;
 this.minimizeButton = null;
-this.resizeHandle = null;
-this.minimumChatWidth = 360;
-this.minimumChatHeight = 360;
-this.defaultChatWidth = 480;
-this.defaultChatHeight = 500;
-this.expandedChatWidth = 480;
-this.expandedChatHeight = 500;
 this.membersToggle = null;
 this.chatTitle = null;
 this.motdElement = null;
@@ -10228,144 +10221,52 @@ restoreSettings() {
         this.nameInput.value = savedName;
     }
 
+    /*
+     * Chat resizing was removed. Always return to the original
+     * 480 x 500 layout and discard geometry left by the experiment.
+     */
+    for (const key of [
+        "chat_width",
+        "chat_height",
+        "chat_left",
+        "chat_top"
+    ]) {
+        localStorage.removeItem(key);
+    }
+
+    this.window.style.width = "";
+    this.window.style.height = "";
+    this.window.style.left = "";
+    this.window.style.top = "";
+    this.window.style.right = "";
+    this.window.style.bottom = "";
+
     const isMobile =
         window.matchMedia(
             "(max-width: 640px)"
         ).matches;
+
     if (isMobile) {
         this.window.dataset.x = "0";
         this.window.dataset.y = "0";
+
         this.window.style.transform =
             "translate(0px, 0px)";
 
         return;
     }
 
-    const rawSavedWidth =
-        parseFloat(
-            localStorage.getItem(
-                "chat_width"
-            )
-        );
+    const x =
+        localStorage.getItem("chat_x") || "0";
 
-    const rawSavedHeight =
-        parseFloat(
-            localStorage.getItem(
-                "chat_height"
-            )
-        );
+    const y =
+        localStorage.getItem("chat_y") || "0";
 
-    const maximumWidth =
-        Math.max(
-            this.minimumChatWidth,
-            window.innerWidth - 32
-        );
+    this.window.dataset.x = x;
+    this.window.dataset.y = y;
 
-    const maximumHeight =
-        Math.max(
-            this.minimumChatHeight,
-            window.innerHeight - 32
-        );
-
-    const savedWidthIsValid =
-        Number.isFinite(rawSavedWidth) &&
-        rawSavedWidth >= this.minimumChatWidth &&
-        rawSavedWidth <= maximumWidth;
-
-    const savedHeightIsValid =
-        Number.isFinite(rawSavedHeight) &&
-        rawSavedHeight >= this.minimumChatHeight &&
-        rawSavedHeight <= maximumHeight;
-
-    this.expandedChatWidth =
-        savedWidthIsValid
-            ? rawSavedWidth
-            : Math.min(
-                maximumWidth,
-                this.defaultChatWidth
-            );
-
-    this.expandedChatHeight =
-        savedHeightIsValid
-            ? rawSavedHeight
-            : Math.min(
-                maximumHeight,
-                this.defaultChatHeight
-            );
-
-    if (!savedWidthIsValid) {
-        localStorage.removeItem(
-            "chat_width"
-        );
-    }
-
-    if (!savedHeightIsValid) {
-        localStorage.removeItem(
-            "chat_height"
-        );
-    }
-
-    this.window.style.width =
-        `${this.expandedChatWidth}px`;
-
-    this.window.style.height =
-        `${this.expandedChatHeight}px`;
-
-    const savedLeft =
-        parseFloat(
-            localStorage.getItem(
-                "chat_left"
-            )
-        );
-
-    const savedTop =
-        parseFloat(
-            localStorage.getItem(
-                "chat_top"
-            )
-        );
-
-    if (
-        Number.isFinite(savedLeft) &&
-        Number.isFinite(savedTop)
-    ) {
-        this.window.style.left =
-            `${savedLeft}px`;
-
-        this.window.style.top =
-            `${savedTop}px`;
-
-        this.window.style.right =
-            "auto";
-
-        this.window.style.bottom =
-            "auto";
-    } else {
-        /*
-         * Preserve the old drag position once, then convert the
-         * fixed right/bottom placement into stable left/top values.
-         */
-        const legacyX =
-            parseFloat(
-                localStorage.getItem(
-                    "chat_x"
-                )
-            ) || 0;
-
-        const legacyY =
-            parseFloat(
-                localStorage.getItem(
-                    "chat_y"
-                )
-            ) || 0;
-
-        this.window.style.transform =
-            `translate(${legacyX}px, ${legacyY}px)`;
-
-        requestAnimationFrame(() => {
-            this.freezeChatWindowPosition();
-        });
-    }
+    this.window.style.transform =
+        `translate(${x}px, ${y}px)`;
 }
 
 	getRangePointerRatio(
@@ -11214,19 +11115,42 @@ requestAnimationFrame(
                     ? event.composedPath()
                     : [];
 
+            const pointInside =
+                element => {
+                    if (
+                        !element ||
+                        typeof element
+                            .getBoundingClientRect !==
+                            "function"
+                    ) {
+                        return false;
+                    }
+
+                    const rect =
+                        element
+                            .getBoundingClientRect();
+
+                    return (
+                        event.clientX >= rect.left &&
+                        event.clientX <= rect.right &&
+                        event.clientY >= rect.top &&
+                        event.clientY <= rect.bottom
+                    );
+                };
+
             const insideComposerPicker =
                 path.includes(
-                    this.emojiPickerContainer
-                ) ||
-                path.includes(
+                    this.emojiPicker
+                ) &&
+                pointInside(
                     this.emojiPicker
                 );
 
             const insideReactionPicker =
                 path.includes(
-                    this.reactionEmojiPickerContainer
-                ) ||
-                path.includes(
+                    this.reactionEmojiPicker
+                ) &&
+                pointInside(
                     this.reactionEmojiPicker
                 );
 
@@ -11238,7 +11162,9 @@ requestAnimationFrame(
             }
 
             const onComposerButton =
-                path.includes(this.emojiButton);
+                path.includes(
+                    this.emojiButton
+                );
 
             const onReactionAnchor =
                 this.emojiPickerAnchor &&
@@ -11246,11 +11172,6 @@ requestAnimationFrame(
                     this.emojiPickerAnchor
                 );
 
-            /*
-             * Let the actual button click perform its own toggle.
-             * Any other pointer press closes immediately, including
-             * clicks inside chat elements that stop propagation.
-             */
             if (
                 onComposerButton ||
                 onReactionAnchor
@@ -11258,6 +11179,11 @@ requestAnimationFrame(
                 return;
             }
 
+            /*
+             * This capture-phase listener closes the picker even when
+             * the clicked message, image, reply, or reaction stops the
+             * normal bubbling phase.
+             */
             this.closeEmojiPicker();
         },
         true
@@ -12310,22 +12236,21 @@ freezeChatWindowPosition() {
 }
 
 setupDragging() {
-    this.freezeChatWindowPosition();
+    const self = this;
 
     interact(this.window).draggable({
         allowFrom:
             ".chat-drag-area",
 
         ignoreFrom:
-            "button, input, a, " +
-            "[data-jami-chat-resize-handle]",
+            "button, input, a",
 
         inertia: true,
 
         modifiers: [
             interact.modifiers.restrictRect({
                 restriction: "parent",
-                endOnly: false
+                endOnly: true
             })
         ],
 
@@ -12334,168 +12259,50 @@ setupDragging() {
                 this.closeEmojiPicker();
             },
 
-            move: event => {
+            move(event) {
                 const target =
                     event.target;
 
-                const currentLeft =
-                    parseFloat(
-                        target.style.left
-                    ) || 0;
+                const x =
+                    (
+                        parseFloat(
+                            target.dataset.x
+                        ) || 0
+                    ) +
+                    event.dx;
 
-                const currentTop =
-                    parseFloat(
-                        target.style.top
-                    ) || 0;
+                const y =
+                    (
+                        parseFloat(
+                            target.dataset.y
+                        ) || 0
+                    ) +
+                    event.dy;
 
-                target.style.left =
-                    `${currentLeft + event.dx}px`;
+                target.style.transform =
+                    `translate(${x}px, ${y}px)`;
 
-                target.style.top =
-                    `${currentTop + event.dy}px`;
+                target.dataset.x =
+                    String(x);
+
+                target.dataset.y =
+                    String(y);
             },
 
-            end: event => {
-                const target =
-                    event.target;
-
+            end(event) {
                 localStorage.setItem(
-                    "chat_left",
-                    String(
-                        Math.round(
-                            parseFloat(
-                                target.style.left
-                            ) || 0
-                        )
-                    )
+                    "chat_x",
+                    event.target.dataset.x ||
+                        "0"
                 );
 
                 localStorage.setItem(
-                    "chat_top",
-                    String(
-                        Math.round(
-                            parseFloat(
-                                target.style.top
-                            ) || 0
-                        )
-                    )
+                    "chat_y",
+                    event.target.dataset.y ||
+                        "0"
                 );
 
-                this.keepTitleBarInViewport();
-            }
-        }
-    });
-
-    interact(this.window).resizable({
-        edges: {
-            right:
-                "[data-jami-chat-resize-handle]",
-            bottom:
-                "[data-jami-chat-resize-handle]"
-        },
-
-        inertia: false,
-
-        modifiers: [
-            interact.modifiers.restrictSize({
-                min: {
-                    width:
-                        this.minimumChatWidth,
-                    height:
-                        this.minimumChatHeight
-                },
-
-                max: {
-                    width:
-                        Math.max(
-                            this.minimumChatWidth,
-                            window.innerWidth - 32
-                        ),
-
-                    height:
-                        Math.max(
-                            this.minimumChatHeight,
-                            window.innerHeight - 32
-                        )
-                }
-            })
-        ],
-
-        listeners: {
-            start: () => {
-                if (this.isMinimized) {
-                    return;
-                }
-
-                this.freezeChatWindowPosition();
-                this.closeEmojiPicker();
-            },
-
-            move: event => {
-                if (this.isMinimized) {
-                    return;
-                }
-
-                const target =
-                    event.target;
-
-                target.style.width =
-                    `${event.rect.width}px`;
-
-                target.style.height =
-                    `${event.rect.height}px`;
-
-                this.expandedChatWidth =
-                    event.rect.width;
-
-                this.expandedChatHeight =
-                    event.rect.height;
-            },
-
-            end: event => {
-                if (this.isMinimized) {
-                    return;
-                }
-
-                const rect =
-                    event.target
-                        .getBoundingClientRect();
-
-                this.expandedChatWidth =
-                    Math.round(rect.width);
-
-                this.expandedChatHeight =
-                    Math.round(rect.height);
-
-                localStorage.setItem(
-                    "chat_width",
-                    String(
-                        this.expandedChatWidth
-                    )
-                );
-
-                localStorage.setItem(
-                    "chat_height",
-                    String(
-                        this.expandedChatHeight
-                    )
-                );
-
-                localStorage.setItem(
-                    "chat_left",
-                    String(
-                        Math.round(rect.left)
-                    )
-                );
-
-                localStorage.setItem(
-                    "chat_top",
-                    String(
-                        Math.round(rect.top)
-                    )
-                );
-
-                this.keepTitleBarInViewport();
+                self.keepTitleBarInViewport();
             }
         }
     });
@@ -12838,168 +12645,87 @@ toggleMinimized() {
 }
 
 setMinimized(minimized) {
-    const shouldMinimize =
-        minimized === true;
+    this.preserveTitleBarDuringResize();
+    this.isMinimized = minimized;
 
-    if (
-        shouldMinimize ===
-        this.isMinimized
-    ) {
-        return;
+    if (!minimized) {
+        this.clearUnreadCount();
+
+        requestAnimationFrame(() => {
+            this.scrollMessagesToBottom();
+        });
     }
-
-    if (shouldMinimize) {
-        const rect =
-            this.window.getBoundingClientRect();
-
-        if (
-            rect.width >=
-                this.minimumChatWidth &&
-            rect.height >=
-                this.minimumChatHeight
-        ) {
-            this.expandedChatWidth =
-                Math.round(rect.width);
-
-            this.expandedChatHeight =
-                Math.round(rect.height);
-        }
-    }
-
-    this.isMinimized =
-        shouldMinimize;
-
-    this.window.dataset.minimized =
-        shouldMinimize
-            ? "true"
-            : "false";
 
     this.mainElement.classList.toggle(
         "hidden",
-        shouldMinimize
+        minimized
     );
 
     this.controlsElement.classList.toggle(
         "hidden",
-        shouldMinimize
-    );
-
-    this.motdElement?.classList.toggle(
-        "hidden",
-        shouldMinimize ||
-        !this.currentMotd
-    );
-
-    this.typingElement?.classList.toggle(
-        "hidden",
-        shouldMinimize ||
-        this.typingUsers.size === 0
+        minimized
     );
 
     if (this.membersToggle) {
         this.membersToggle.classList.toggle(
             "hidden",
-            shouldMinimize
+            minimized
         );
     }
 
     if (this.banManagerButton) {
         this.banManagerButton.classList.toggle(
             "hidden",
-            shouldMinimize
+            minimized
         );
     }
 
     if (this.partyManagerButton) {
         this.partyManagerButton.classList.toggle(
             "hidden",
-            shouldMinimize
+            minimized
         );
     }
 
-    this.window.classList.remove(
+    this.window.classList.toggle(
         "h-[500px]",
-        "h-10"
+        !minimized
     );
 
-    if (shouldMinimize) {
-        this.closeAvatarPicker();
-        this.closeEmojiPicker();
-        this.closeBanManager();
-        this.closePartyManager();
+    this.window.classList.toggle(
+        "h-10",
+        minimized
+    );
 
-        this.window.style.height =
-            "40px";
-    } else {
-        const maximumWidth =
-            Math.max(
-                this.minimumChatWidth,
-                window.innerWidth - 32
-            );
-
-        const maximumHeight =
-            Math.max(
-                this.minimumChatHeight,
-                window.innerHeight - 32
-            );
-
-        this.expandedChatWidth =
-            Math.min(
-                maximumWidth,
-                Math.max(
-                    this.minimumChatWidth,
-                    Number(
-                        this.expandedChatWidth
-                    ) ||
-                    this.defaultChatWidth
-                )
-            );
-
-        this.expandedChatHeight =
-            Math.min(
-                maximumHeight,
-                Math.max(
-                    this.minimumChatHeight,
-                    Number(
-                        this.expandedChatHeight
-                    ) ||
-                    this.defaultChatHeight
-                )
-            );
-
-        this.window.style.width =
-            `${this.expandedChatWidth}px`;
-
-        this.window.style.height =
-            `${this.expandedChatHeight}px`;
-
-        this.clearUnreadCount();
-
-        requestAnimationFrame(() => {
-            this.keepTitleBarInViewport();
-            this.scrollMessagesToBottom();
-        });
-    }
+    this.window.style.height = "";
+    this.window.style.width = "";
 
     this.minimizeButton.textContent =
-        shouldMinimize ? "+" : "−";
+        minimized ? "+" : "−";
 
     this.minimizeButton.setAttribute(
         "aria-expanded",
-        String(!shouldMinimize)
+        String(!minimized)
     );
 
     this.minimizeButton.setAttribute(
         "aria-label",
-        shouldMinimize
+        minimized
             ? "restore live chat"
             : "minimize live chat"
     );
 
     this.minimizeButton.title =
-        shouldMinimize
+        minimized
             ? "restore chat"
             : "minimize chat";
+
+    if (minimized) {
+        this.closeAvatarPicker();
+        this.closeEmojiPicker();
+        this.closeBanManager();
+        this.closePartyManager();
+    }
 }
 
 keepTitleBarInViewport() {
