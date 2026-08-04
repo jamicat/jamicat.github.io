@@ -11511,27 +11511,29 @@ requestAnimationFrame(
                 return;
             }
 
-            const pickerPanel =
-    this.reactionEmojiPicker
-        ?.shadowRoot
-        ?.querySelector(".picker");
-
-const path =
-    typeof event.composedPath === "function"
+            const path =
+    typeof event.composedPath ===
+        "function"
         ? event.composedPath()
         : [];
 
-const insideVisiblePicker =
-    Boolean(
-        pickerPanel &&
-        path.some(node =>
-            node === pickerPanel ||
-            (
-                node instanceof Element &&
-                pickerPanel.contains(node)
-            )
-        )
+const pickerHostIndex =
+    path.indexOf(
+        this.reactionEmojiPicker
     );
+
+const insideVisiblePicker =
+    pickerHostIndex > 0 &&
+    path
+        .slice(
+            0,
+            pickerHostIndex
+        )
+        .some(node =>
+            node?.getRootNode?.() ===
+                this.reactionEmojiPicker
+                    ?.shadowRoot
+        );
 
 if (insideVisiblePicker) {
     return;
