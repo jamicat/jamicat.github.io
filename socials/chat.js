@@ -10044,7 +10044,7 @@ async uploadTestImage(file) {
 
     const cutoffInput =
         window.prompt(
-            "enter a date and time to clear chat up to:\n" +
+            "enter a date and time to clear chat from that point onward:\n" +
             "format: yyyy-mm-dd hh:mm\n" +
             "example: 2026-08-04 18:30\n\n" +
             "leave empty to clear the full chat.",
@@ -10121,7 +10121,7 @@ async uploadTestImage(file) {
             localDate.toISOString();
 
         cutoffLabel =
-            `chat up to ${cleanedCutoff}`;
+            `chat from ${cleanedCutoff} onward`;
     }
 
     const confirmed =
@@ -10268,7 +10268,7 @@ clearChatThrough(cutoff) {
 
         if (
             Number.isFinite(timestamp) &&
-            timestamp <= cutoffTime
+            timestamp >= cutoffTime
         ) {
             const uploadId =
                 row.dataset.imageUploadId;
@@ -10293,7 +10293,7 @@ clearChatThrough(cutoff) {
         this.replyTarget?.createdAt &&
         new Date(
             this.replyTarget.createdAt
-        ).getTime() <= cutoffTime
+        ).getTime() >= cutoffTime
     ) {
         this.clearReplyTarget();
     }
