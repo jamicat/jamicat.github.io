@@ -651,84 +651,6 @@ transition-[height] duration-200
 
     document.body.appendChild(windowElement);
 
-    if (
-        !document.querySelector(
-            "style[data-jami-chat-resize-hotfix]"
-        )
-    ) {
-        const resizeStyle =
-            document.createElement("style");
-
-        resizeStyle.dataset
-            .jamiChatResizeHotfix = "true";
-
-        resizeStyle.textContent = `
-            #chatWindow {
-                min-width: 360px;
-                min-height: 360px;
-            }
-
-            #chatWindow[data-minimized="true"] {
-                min-width: 0 !important;
-                min-height: 0 !important;
-                height: 40px !important;
-            }
-
-            #chatWindow .jami-chat-resize-handle {
-                position: absolute;
-                z-index: 30;
-                right: 0;
-                bottom: 0;
-                left: auto;
-                width: 24px;
-                height: 24px;
-                margin: 0;
-                padding: 0;
-                border: 0;
-                border-radius: 9px 0 0 0;
-                background:
-                    linear-gradient(
-                        135deg,
-                        transparent 0 48%,
-                        rgba(255,255,255,.18) 49% 55%,
-                        transparent 56% 66%,
-                        rgba(255,255,255,.34) 67% 73%,
-                        transparent 74%
-                    );
-                cursor: nwse-resize;
-                opacity: .72;
-                touch-action: none;
-            }
-
-            #chatWindow .jami-chat-resize-handle:hover,
-            #chatWindow .jami-chat-resize-handle:focus-visible {
-                opacity: 1;
-                background-color:
-                    rgba(255,255,255,.05);
-                outline: none;
-            }
-
-            #chatWindow[data-minimized="true"]
-            .jami-chat-resize-handle {
-                display: none;
-            }
-
-            @media (max-width: 640px) {
-                #chatWindow .jami-chat-resize-handle {
-                    display: none;
-                }
-
-                #chatWindow {
-                    min-width: 0;
-                    min-height: 0;
-                }
-            }
-        `;
-
-        document.head.appendChild(
-            resizeStyle
-        );
-    }
 
     this.window = windowElement;
     this.messages = this.window.querySelector("#chatMessages");
@@ -10389,17 +10311,61 @@ restoreSettings() {
     this.window.style.height =
         `${this.expandedChatHeight}px`;
 
-    const x =
-        localStorage.getItem("chat_x") || "0";
+    const savedLeft =
+        parseFloat(
+            localStorage.getItem(
+                "chat_left"
+            )
+        );
 
-    const y =
-        localStorage.getItem("chat_y") || "0";
+    const savedTop =
+        parseFloat(
+            localStorage.getItem(
+                "chat_top"
+            )
+        );
 
-    this.window.dataset.x = x;
-    this.window.dataset.y = y;
+    if (
+        Number.isFinite(savedLeft) &&
+        Number.isFinite(savedTop)
+    ) {
+        this.window.style.left =
+            `${savedLeft}px`;
 
-    this.window.style.transform =
-        `translate(${x}px, ${y}px)`;
+        this.window.style.top =
+            `${savedTop}px`;
+
+        this.window.style.right =
+            "auto";
+
+        this.window.style.bottom =
+            "auto";
+    } else {
+        /*
+         * Preserve the old drag position once, then convert the
+         * fixed right/bottom placement into stable left/top values.
+         */
+        const legacyX =
+            parseFloat(
+                localStorage.getItem(
+                    "chat_x"
+                )
+            ) || 0;
+
+        const legacyY =
+            parseFloat(
+                localStorage.getItem(
+                    "chat_y"
+                )
+            ) || 0;
+
+        this.window.style.transform =
+            `translate(${legacyX}px, ${legacyY}px)`;
+
+        requestAnimationFrame(() => {
+            this.freezeChatWindowPosition();
+        });
+    }
 }
 
 	getRangePointerRatio(
@@ -11238,11 +11204,7 @@ requestAnimationFrame(
     document.addEventListener(
         "pointerdown",
         event => {
-            if (
-                !this.emojiPickerOpen ||
-                this.emojiPickerMode !==
-                    "reaction"
-            ) {
+            if (!this.emojiPickerOpen) {
                 return;
             }
 
@@ -11252,6 +11214,14 @@ requestAnimationFrame(
                     ? event.composedPath()
                     : [];
 
+            const insideComposerPicker =
+                path.includes(
+                    this.emojiPickerContainer
+                ) ||
+                path.includes(
+                    this.emojiPicker
+                );
+
             const insideReactionPicker =
                 path.includes(
                     this.reactionEmojiPickerContainer
@@ -11260,73 +11230,37 @@ requestAnimationFrame(
                     this.reactionEmojiPicker
                 );
 
-            const onCurrentAnchor =
-                this.emojiPickerAnchor &&
-                path.includes(
-                    this.emojiPickerAnchor
-                );
-
             if (
-                insideReactionPicker ||
-                onCurrentAnchor
+                insideComposerPicker ||
+                insideReactionPicker
             ) {
                 return;
             }
 
-            /*
-             * Close for any other click inside the chat, including
-             * elements whose handlers stop normal bubbling.
-             */
-            if (path.includes(this.window)) {
-                this.closeEmojiPicker();
-            }
-        },
-        true
-    );
-
-    document.addEventListener(
-        "click",
-        event => {
-            if (!this.emojiPickerOpen) {
-                return;
-            }
-
-            const path =
-                typeof event.composedPath === "function"
-                    ? event.composedPath()
-                    : [];
-
-            const clickedPicker =
-                path.includes(
-                    this.emojiPickerContainer
-                ) ||
-                path.includes(
-                    this.emojiPicker
-                ) ||
-                path.includes(
-                    this.reactionEmojiPickerContainer
-                ) ||
-                path.includes(
-                    this.reactionEmojiPicker
-                );
-
-            const clickedButton =
+            const onComposerButton =
                 path.includes(this.emojiButton);
 
-            const clickedReactionAnchor =
+            const onReactionAnchor =
                 this.emojiPickerAnchor &&
                 path.includes(
                     this.emojiPickerAnchor
                 );
 
+            /*
+             * Let the actual button click perform its own toggle.
+             * Any other pointer press closes immediately, including
+             * clicks inside chat elements that stop propagation.
+             */
             if (
-                !clickedPicker &&
-                !clickedButton &&
-                !clickedReactionAnchor
+                onComposerButton ||
+                onReactionAnchor
             ) {
-                this.closeEmojiPicker();
+                return;
             }
-        }
+
+            this.closeEmojiPicker();
+        },
+        true
     );
 }
 
@@ -11676,10 +11610,26 @@ openEmojiPicker({
             ? target
             : null;
 
+    const previousAnchor =
+        this.emojiPickerAnchor;
+
+    previousAnchor
+        ?.closest(".chatMessage")
+        ?.removeAttribute(
+            "data-reaction-picker-open"
+        );
+
     this.emojiPickerAnchor =
         reactionMode
             ? anchor
             : null;
+
+    this.emojiPickerAnchor
+        ?.closest(".chatMessage")
+        ?.setAttribute(
+            "data-reaction-picker-open",
+            "true"
+        );
 
     this.emojiPickerOpen = true;
 
@@ -11768,6 +11718,12 @@ closeEmojiPicker() {
         "aria-expanded",
         "false"
     );
+
+    this.emojiPickerAnchor
+        ?.closest(".chatMessage")
+        ?.removeAttribute(
+            "data-reaction-picker-open"
+        );
 
     this.emojiPickerMode = "message";
     this.emojiReactionTarget = null;
@@ -12309,162 +12265,240 @@ if (
     );
 }
 	
-setupDragging() {
+freezeChatWindowPosition() {
+    if (!this.window) {
+        return;
+    }
 
-	const self = this;
-	
+    const rect =
+        this.window.getBoundingClientRect();
+
+    this.window.style.left =
+        `${Math.round(rect.left)}px`;
+
+    this.window.style.top =
+        `${Math.round(rect.top)}px`;
+
+    this.window.style.right =
+        "auto";
+
+    this.window.style.bottom =
+        "auto";
+
+    this.window.style.transform =
+        "none";
+
+    this.window.dataset.x = "0";
+    this.window.dataset.y = "0";
+
+    localStorage.setItem(
+        "chat_left",
+        String(
+            Math.round(rect.left)
+        )
+    );
+
+    localStorage.setItem(
+        "chat_top",
+        String(
+            Math.round(rect.top)
+        )
+    );
+
+    localStorage.removeItem("chat_x");
+    localStorage.removeItem("chat_y");
+}
+
+setupDragging() {
+    this.freezeChatWindowPosition();
+
     interact(this.window).draggable({
-        allowFrom: ".chat-drag-area",
-        ignoreFrom: "button, input, a",
+        allowFrom:
+            ".chat-drag-area",
+
+        ignoreFrom:
+            "button, input, a, " +
+            "[data-jami-chat-resize-handle]",
 
         inertia: true,
 
         modifiers: [
             interact.modifiers.restrictRect({
                 restriction: "parent",
-                endOnly: true
+                endOnly: false
             })
         ],
 
         listeners: {
-            move(event) {
-                const target = event.target;
-
-                const x =
-                    (parseFloat(target.dataset.x) || 0) +
-                    event.dx;
-
-                const y =
-                    (parseFloat(target.dataset.y) || 0) +
-                    event.dy;
-
-                target.style.transform =
-                    `translate(${x}px, ${y}px)`;
-
-                target.dataset.x = String(x);
-                target.dataset.y = String(y);
+            start: () => {
+                this.closeEmojiPicker();
             },
 
-            end(event) {
+            move: event => {
+                const target =
+                    event.target;
+
+                const currentLeft =
+                    parseFloat(
+                        target.style.left
+                    ) || 0;
+
+                const currentTop =
+                    parseFloat(
+                        target.style.top
+                    ) || 0;
+
+                target.style.left =
+                    `${currentLeft + event.dx}px`;
+
+                target.style.top =
+                    `${currentTop + event.dy}px`;
+            },
+
+            end: event => {
+                const target =
+                    event.target;
+
                 localStorage.setItem(
-                    "chat_x",
-                    event.target.dataset.x || "0"
+                    "chat_left",
+                    String(
+                        Math.round(
+                            parseFloat(
+                                target.style.left
+                            ) || 0
+                        )
+                    )
                 );
 
                 localStorage.setItem(
-                    "chat_y",
-                    event.target.dataset.y || "0"
+                    "chat_top",
+                    String(
+                        Math.round(
+                            parseFloat(
+                                target.style.top
+                            ) || 0
+                        )
+                    )
                 );
 
-				self.keepTitleBarInViewport();
+                this.keepTitleBarInViewport();
             }
         }
     });
 
-interact(this.window).resizable({
-    edges: {
-        right:
-            "[data-jami-chat-resize-handle]",
-        bottom:
-            "[data-jami-chat-resize-handle]"
-    },
+    interact(this.window).resizable({
+        edges: {
+            right:
+                "[data-jami-chat-resize-handle]",
+            bottom:
+                "[data-jami-chat-resize-handle]"
+        },
 
-    inertia: false,
+        inertia: false,
 
-    modifiers: [
-        interact.modifiers.restrictSize({
-            min: {
-                width:
-                    this.minimumChatWidth,
-                height:
-                    this.minimumChatHeight
+        modifiers: [
+            interact.modifiers.restrictSize({
+                min: {
+                    width:
+                        this.minimumChatWidth,
+                    height:
+                        this.minimumChatHeight
+                },
+
+                max: {
+                    width:
+                        Math.max(
+                            this.minimumChatWidth,
+                            window.innerWidth - 32
+                        ),
+
+                    height:
+                        Math.max(
+                            this.minimumChatHeight,
+                            window.innerHeight - 32
+                        )
+                }
+            })
+        ],
+
+        listeners: {
+            start: () => {
+                if (this.isMinimized) {
+                    return;
+                }
+
+                this.freezeChatWindowPosition();
+                this.closeEmojiPicker();
             },
 
-            max: {
-                width:
-                    Math.max(
-                        this.minimumChatWidth,
-                        window.innerWidth - 32
-                    ),
+            move: event => {
+                if (this.isMinimized) {
+                    return;
+                }
 
-                height:
-                    Math.max(
-                        this.minimumChatHeight,
-                        window.innerHeight - 32
+                const target =
+                    event.target;
+
+                target.style.width =
+                    `${event.rect.width}px`;
+
+                target.style.height =
+                    `${event.rect.height}px`;
+
+                this.expandedChatWidth =
+                    event.rect.width;
+
+                this.expandedChatHeight =
+                    event.rect.height;
+            },
+
+            end: event => {
+                if (this.isMinimized) {
+                    return;
+                }
+
+                const rect =
+                    event.target
+                        .getBoundingClientRect();
+
+                this.expandedChatWidth =
+                    Math.round(rect.width);
+
+                this.expandedChatHeight =
+                    Math.round(rect.height);
+
+                localStorage.setItem(
+                    "chat_width",
+                    String(
+                        this.expandedChatWidth
                     )
+                );
+
+                localStorage.setItem(
+                    "chat_height",
+                    String(
+                        this.expandedChatHeight
+                    )
+                );
+
+                localStorage.setItem(
+                    "chat_left",
+                    String(
+                        Math.round(rect.left)
+                    )
+                );
+
+                localStorage.setItem(
+                    "chat_top",
+                    String(
+                        Math.round(rect.top)
+                    )
+                );
+
+                this.keepTitleBarInViewport();
             }
-        })
-    ],
-
-    listeners: {
-        start: () => {
-            if (this.isMinimized) {
-                return;
-            }
-
-            this.closeEmojiPicker();
-        },
-
-        move: event => {
-            if (this.isMinimized) {
-                return;
-            }
-
-            const target =
-                event.target;
-
-            target.style.width =
-                `${event.rect.width}px`;
-
-            target.style.height =
-                `${event.rect.height}px`;
-
-            /*
-             * A bottom-right resize keeps the existing top-left
-             * position and transform untouched.
-             */
-            this.expandedChatWidth =
-                event.rect.width;
-
-            this.expandedChatHeight =
-                event.rect.height;
-        },
-
-        end: event => {
-            if (this.isMinimized) {
-                return;
-            }
-
-            const target =
-                event.target;
-
-            const rect =
-                target.getBoundingClientRect();
-
-            this.expandedChatWidth =
-                Math.round(rect.width);
-
-            this.expandedChatHeight =
-                Math.round(rect.height);
-
-            localStorage.setItem(
-                "chat_width",
-                String(
-                    this.expandedChatWidth
-                )
-            );
-
-            localStorage.setItem(
-                "chat_height",
-                String(
-                    this.expandedChatHeight
-                )
-            );
-
-            this.keepTitleBarInViewport();
         }
-    }
-});
+    });
 
 interact(
     this.watchPartyPanel
