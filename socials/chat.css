@@ -2323,3 +2323,7 @@ input[data-watch-party-url]::placeholder{
     margin-right: 0.125rem;
 }
 
+.jami-member-afk {
+    color: rgb(251 146 60);
+}
+
