@@ -2309,11 +2309,11 @@ input[data-watch-party-url]::placeholder{
 }
 
 .chatMessage > img.discord-chat-avatar {
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 2.25rem;
+    height: 2.25rem;
     margin-top: -7px;
-    margin-left: 0.125rem;
-    margin-right: 0.125rem;
+    transform: scale(0.8);
+    transform-origin: center top;
 }
 
 #chatMembers img.discord-chat-avatar {
