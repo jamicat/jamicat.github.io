@@ -2329,7 +2329,7 @@ input[data-watch-party-url]::placeholder{
 
 .jami-discord-server-tag {
     position: relative;
-top: 1px;
+top: -0.2px;
     display: inline-flex;
     flex: 0 0 auto;
     align-items: center;
