@@ -2277,3 +2277,49 @@ input[data-watch-party-url]::placeholder{
         animation: none;
     }
 }
+
+
+#chatAvatarButton:disabled {
+    cursor: default;
+    opacity: 0.9;
+}
+
+#chatName:disabled {
+    cursor: default;
+    opacity: 0.85;
+}
+
+#chatDiscordAuthAvatar {
+    image-rendering: auto;
+}
+
+
+#chatName.chat-discord-name-active {
+    padding-top: 0.3rem;
+    padding-right: 5.25rem;
+    padding-bottom: 0.95rem;
+}
+
+#chatDiscordLogout {
+    z-index: 1;
+}
+
+#chatAvatarPicker #chatDiscordAuthButton {
+    font-family: var(--body-font);
+}
+
+.chatMessage > img.discord-chat-avatar {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-top: -7px;
+    margin-left: 0.125rem;
+    margin-right: 0.125rem;
+}
+
+#chatMembers img.discord-chat-avatar {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 0.125rem;
+    margin-right: 0.125rem;
+}
+
