@@ -2328,6 +2328,8 @@ input[data-watch-party-url]::placeholder{
 }
 
 .jami-discord-server-tag {
+    position: relative;
+top: 1px;
     display: inline-flex;
     flex: 0 0 auto;
     align-items: center;
@@ -2351,6 +2353,7 @@ input[data-watch-party-url]::placeholder{
 }
 
 .jami-discord-server-tag-text {
+    font-family: "Nunito", sans-serif;
     overflow: hidden;
     max-width: 3.4rem;
     color: rgba(255, 255, 255, 0.72);
