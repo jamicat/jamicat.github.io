@@ -115,6 +115,11 @@ this.discordAuthButton = null;
 this.discordLogoutButton = null;
 this.discordUsernameElement = null;
 	
+this.memberDiscordProfile = null;
+this.isAfk = false;
+this.afkTimer = null;
+this.lastActivityReset = 0;
+
 this.adminKey =
     sessionStorage.getItem(
         "chat_admin_key"
@@ -202,6 +207,7 @@ this.setupAvatarPicker();
 this.setupEmojiPicker();
 this.setupMembersToggle();
 this.setupNameSaving();
+this.setupMemberActivity();
 this.setupDragging();
 this.setupImageRemixing();
 window.addEventListener(
@@ -1023,6 +1029,17 @@ document.addEventListener(
                 this.partyManagerButton
         ) {
             this.closePartyManager();
+        }
+
+        if (
+            this.memberDiscordProfile &&
+            !this.memberDiscordProfile
+                .contains(event.target) &&
+            !event.target.closest?.(
+                "[data-discord-member-row]"
+            )
+        ) {
+            this.closeMemberDiscordProfile();
         }
     }
 );
@@ -7943,6 +7960,259 @@ applyChatAvatarStyle(
     );
 }
 
+setupMemberActivity() {
+    const markActive = () => {
+        const now = Date.now();
+
+        if (
+            now - this.lastActivityReset <
+                750 &&
+            !this.isAfk
+        ) {
+            return;
+        }
+
+        this.lastActivityReset = now;
+
+        window.clearTimeout(
+            this.afkTimer
+        );
+
+        if (this.isAfk) {
+            this.isAfk = false;
+            this.sendPresence();
+        }
+
+        this.afkTimer =
+            window.setTimeout(
+                () => {
+                    this.isAfk = true;
+                    this.sendPresence();
+                },
+                5 * 60 * 1000
+            );
+    };
+
+    [
+        "pointerdown",
+        "pointermove",
+        "keydown",
+        "touchstart",
+        "scroll"
+    ].forEach(eventName => {
+        document.addEventListener(
+            eventName,
+            markActive,
+            {
+                passive: true,
+                capture: true
+            }
+        );
+    });
+
+    document.addEventListener(
+        "visibilitychange",
+        () => {
+            if (
+                document.visibilityState ===
+                    "visible"
+            ) {
+                markActive();
+            }
+        }
+    );
+
+    markActive();
+}
+
+openMemberDiscordProfile(
+    member,
+    row
+) {
+    if (
+        !member?.discord ||
+        !member.discordUserId ||
+        !(row instanceof Element)
+    ) {
+        return;
+    }
+
+    this.closeMemberDiscordProfile();
+
+    const panel =
+        document.createElement("div");
+
+    panel.className =
+        "jami-discord-member-profile";
+
+    const avatar =
+        document.createElement("img");
+
+    avatar.src =
+        this.resolveChatAvatarSource(
+            member.avatar
+        );
+
+    avatar.alt = "";
+    avatar.className =
+        "jami-discord-member-profile-avatar";
+
+    const details =
+        document.createElement("div");
+
+    details.className =
+        "min-w-0 flex-1";
+
+    const displayName =
+        document.createElement("div");
+
+    displayName.className =
+        "theme-heading truncate text-sm text-white";
+
+    displayName.textContent =
+        member.name || "discord user";
+
+    const username =
+        document.createElement("div");
+
+    username.className =
+        "theme-body mt-0.5 truncate text-[10px] text-white/55";
+
+    username.textContent =
+        member.discordUsername
+            ? `@${member.discordUsername}`
+            : "discord-linked";
+
+    const idLabel =
+        document.createElement("div");
+
+    idLabel.className =
+        "theme-body mt-3 text-[9px] text-white/40";
+
+    idLabel.textContent =
+        "discord id";
+
+    const idRow =
+        document.createElement("div");
+
+    idRow.className =
+        "mt-1 flex items-center gap-2";
+
+    const idValue =
+        document.createElement("code");
+
+    idValue.className =
+        "min-w-0 flex-1 break-all text-[10px] text-white/80";
+
+    idValue.textContent =
+        member.discordUserId;
+
+    const copyButton =
+        document.createElement("button");
+
+    copyButton.type = "button";
+    copyButton.className =
+        "theme-body jami-discord-member-copy";
+    copyButton.textContent = "copy";
+
+    copyButton.addEventListener(
+        "click",
+        async event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            try {
+                await navigator.clipboard
+                    .writeText(
+                        member.discordUserId
+                    );
+
+                copyButton.textContent =
+                    "copied";
+
+                window.setTimeout(
+                    () => {
+                        copyButton.textContent =
+                            "copy";
+                    },
+                    1200
+                );
+            } catch {
+                copyButton.textContent =
+                    "failed";
+            }
+        }
+    );
+
+    details.append(
+        displayName,
+        username,
+        idLabel
+    );
+
+    idRow.append(
+        idValue,
+        copyButton
+    );
+
+    details.appendChild(idRow);
+
+    panel.append(
+        avatar,
+        details
+    );
+
+    document.body.appendChild(panel);
+
+    this.memberDiscordProfile = panel;
+
+    const rowRect =
+        row.getBoundingClientRect();
+
+    const panelRect =
+        panel.getBoundingClientRect();
+
+    const gap = 8;
+
+    let left =
+        rowRect.left -
+        panelRect.width -
+        gap;
+
+    if (left < 8) {
+        left =
+            Math.min(
+                window.innerWidth -
+                    panelRect.width -
+                    8,
+                rowRect.right + gap
+            );
+    }
+
+    let top = rowRect.top;
+
+    if (
+        top + panelRect.height >
+        window.innerHeight - 8
+    ) {
+        top =
+            window.innerHeight -
+            panelRect.height -
+            8;
+    }
+
+    panel.style.left =
+        `${Math.max(8, left)}px`;
+
+    panel.style.top =
+        `${Math.max(8, top)}px`;
+}
+
+closeMemberDiscordProfile() {
+    this.memberDiscordProfile?.remove();
+    this.memberDiscordProfile = null;
+}
+
 	renderMembers(members) {
     this.membersElement.replaceChildren();
 
@@ -7961,6 +8231,18 @@ applyChatAvatarStyle(
 
         row.className =
             "flex min-w-0 items-center gap-2";
+
+        if (
+            member.discord &&
+            member.discordUserId
+        ) {
+            row.dataset.discordMemberRow =
+                "true";
+
+            row.classList.add(
+                "cursor-pointer"
+            );
+        }
 
         const avatar = document.createElement("img");
 
@@ -7989,7 +8271,9 @@ applyChatAvatarStyle(
         const name = document.createElement("span");
 
         name.className =
-            "min-w-0 truncate text-white/75";
+            member.afk === true
+                ? "min-w-0 truncate jami-member-afk"
+                : "min-w-0 truncate text-white/75";
 
         name.textContent =
             member.name || "anonymous";
@@ -7999,6 +8283,27 @@ applyChatAvatarStyle(
 
         row.append(avatar, name);
         this.membersElement.appendChild(row);
+
+        row.addEventListener(
+            "click",
+            event => {
+                if (
+                    event.button !== 0 ||
+                    !member.discord ||
+                    !member.discordUserId
+                ) {
+                    return;
+                }
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                this.openMemberDiscordProfile(
+                    member,
+                    row
+                );
+            }
+        );
 
 		
 		row.addEventListener("contextmenu", event => {
@@ -8042,6 +8347,8 @@ applyChatAvatarStyle(
         clientId: this.clientId,
         name,
         avatar,
+        afk:
+            this.isAfk === true,
         discordToken:
             this.discordAuthToken || ""
     }));
