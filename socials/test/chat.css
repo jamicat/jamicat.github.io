@@ -2323,51 +2323,7 @@ input[data-watch-party-url]::placeholder{
     margin-right: 0.125rem;
 }
 
-
-
 .jami-member-afk {
     color: rgb(251 146 60);
 }
 
-.jami-discord-member-profile {
-    position: fixed;
-    z-index: 100004;
-    display: flex;
-    width: 260px;
-    max-width: calc(100vw - 16px);
-    gap: 12px;
-    padding: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 16px;
-    background: rgba(15, 15, 18, 0.96);
-    color: white;
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-}
-
-.jami-discord-member-profile-avatar {
-    width: 44px;
-    height: 44px;
-    flex: 0 0 auto;
-    border-radius: 999px;
-    object-fit: cover;
-}
-
-.jami-discord-member-copy {
-    flex: 0 0 auto;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.06);
-    padding: 4px 7px;
-    color: rgba(255, 255, 255, 0.68);
-    font-size: 9px;
-    transition:
-        background 150ms ease,
-        color 150ms ease;
-}
-
-.jami-discord-member-copy:hover {
-    background: rgba(255, 255, 255, 0.11);
-    color: white;
-}
