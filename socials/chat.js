@@ -114,6 +114,10 @@ this.discordUser = null;
 this.discordAuthButton = null;
 this.discordLogoutButton = null;
 this.discordUsernameElement = null;
+
+this.isAfk = false;
+this.afkTimer = null;
+this.lastActivityReset = 0;
 	
 this.adminKey =
     sessionStorage.getItem(
@@ -202,6 +206,7 @@ this.setupAvatarPicker();
 this.setupEmojiPicker();
 this.setupMembersToggle();
 this.setupNameSaving();
+this.setupMemberActivity();
 this.setupDragging();
 this.setupImageRemixing();
 window.addEventListener(
@@ -7943,6 +7948,71 @@ applyChatAvatarStyle(
     );
 }
 
+setupMemberActivity() {
+    const markActive = () => {
+        const now = Date.now();
+
+        if (
+            now - this.lastActivityReset <
+                750 &&
+            !this.isAfk
+        ) {
+            return;
+        }
+
+        this.lastActivityReset = now;
+
+        window.clearTimeout(
+            this.afkTimer
+        );
+
+        if (this.isAfk) {
+            this.isAfk = false;
+            this.sendPresence();
+        }
+
+        this.afkTimer =
+            window.setTimeout(
+                () => {
+                    this.isAfk = true;
+                    this.sendPresence();
+                },
+                5 * 60 * 1000
+            );
+    };
+
+    [
+        "pointerdown",
+        "pointermove",
+        "keydown",
+        "touchstart",
+        "scroll"
+    ].forEach(eventName => {
+        document.addEventListener(
+            eventName,
+            markActive,
+            {
+                passive: true,
+                capture: true
+            }
+        );
+    });
+
+    document.addEventListener(
+        "visibilitychange",
+        () => {
+            if (
+                document.visibilityState ===
+                    "visible"
+            ) {
+                markActive();
+            }
+        }
+    );
+
+    markActive();
+}
+
 	renderMembers(members) {
     this.membersElement.replaceChildren();
 
@@ -7989,7 +8059,9 @@ applyChatAvatarStyle(
         const name = document.createElement("span");
 
         name.className =
-            "min-w-0 truncate text-white/75";
+            member.afk === true
+                ? "min-w-0 truncate jami-member-afk"
+                : "min-w-0 truncate text-white/75";
 
         name.textContent =
             member.name || "anonymous";
@@ -8042,6 +8114,8 @@ applyChatAvatarStyle(
         clientId: this.clientId,
         name,
         avatar,
+        afk:
+            this.isAfk === true,
         discordToken:
             this.discordAuthToken || ""
     }));
