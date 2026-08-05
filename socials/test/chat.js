@@ -8155,7 +8155,7 @@ setupMemberActivity() {
         const row = document.createElement("div");
 
         row.className =
-            "flex min-w-0 items-center gap-2";
+            "flex min-w-0 items-center gap-1";
 
         const avatar = document.createElement("img");
 
