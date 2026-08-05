@@ -6888,18 +6888,24 @@ this.appendEditedMarker(messageBody, message);
 
 time.title =
     fullTimestamp;
+const identity =
+    document.createElement("span");
 
-       header.append(
+identity.className =
+    "flex items-center gap-[3px]";
+
+identity.appendChild(
     name
 );
 
 if (serverBadge) {
-    header.appendChild(
+    identity.appendChild(
         serverBadge
     );
 }
 
-header.appendChild(
+header.append(
+    identity,
     time
 );
 
