@@ -6573,11 +6573,42 @@ addMessage(message) {
             previousRow?.dataset.timestamp || 0
         );
 
+    const previousMessage =
+        previousRow?.jamiChatMessage ||
+        null;
+
     const sameAuthor =
         Boolean(previousRow) &&
         Boolean(message.client_id) &&
         previousRow.dataset.clientId ===
             message.client_id;
+
+    const sameIdentity =
+        Boolean(previousMessage) &&
+        previousMessage.name ===
+            message.name &&
+        previousMessage.avatar ===
+            message.avatar &&
+        (
+            previousMessage
+                .discord_server_tag ||
+            ""
+        ) ===
+            (
+                message
+                    .discord_server_tag ||
+                ""
+            ) &&
+        (
+            previousMessage
+                .discord_server_badge_url ||
+            ""
+        ) ===
+            (
+                message
+                    .discord_server_badge_url ||
+                ""
+            );
 
     const closeInTime =
         Number.isFinite(currentTime) &&
@@ -6587,6 +6618,7 @@ addMessage(message) {
 
     const isContinuation =
         sameAuthor &&
+        sameIdentity &&
         closeInTime;
 
     const row =
@@ -6788,7 +6820,7 @@ this.appendEditedMarker(messageBody, message);
             document.createElement("div");
 
         header.className =
-    "flex min-w-0 items-baseline gap-2";
+    "flex min-w-0 items-baseline";
 
         const name =
             document.createElement("span");
@@ -6799,20 +6831,113 @@ this.appendEditedMarker(messageBody, message);
         name.textContent =
             message.name || "anonymous";
 
+        const serverTag =
+            typeof message
+                .discord_server_tag ===
+                "string"
+                ? message
+                    .discord_server_tag
+                    .trim()
+                : "";
+
+        const serverBadgeUrl =
+            typeof message
+                .discord_server_badge_url ===
+                "string" &&
+            /^https:\/\/cdn\.discordapp\.com\/clan-badges\//i
+                .test(
+                    message
+                        .discord_server_badge_url
+                )
+                ? message
+                    .discord_server_badge_url
+                : "";
+
+        let serverBadge = null;
+
+        if (serverTag) {
+            serverBadge =
+                document.createElement(
+                    "span"
+                );
+
+            serverBadge.className =
+                "jami-discord-server-tag";
+
+            if (serverBadgeUrl) {
+                const serverBadgeIcon =
+                    document.createElement(
+                        "img"
+                    );
+
+                serverBadgeIcon.src =
+                    serverBadgeUrl;
+
+                serverBadgeIcon.alt = "";
+
+                serverBadgeIcon.className =
+                    "jami-discord-server-tag-icon";
+
+                serverBadgeIcon.addEventListener(
+                    "error",
+                    () => {
+                        serverBadgeIcon.remove();
+                    },
+                    {
+                        once: true
+                    }
+                );
+
+                serverBadge.appendChild(
+                    serverBadgeIcon
+                );
+            }
+
+            const serverBadgeText =
+                document.createElement(
+                    "span"
+                );
+
+            serverBadgeText.className =
+                "jami-discord-server-tag-text";
+
+            serverBadgeText.textContent =
+                serverTag;
+
+            serverBadge.appendChild(
+                serverBadgeText
+            );
+        }
+
         const time =
             document.createElement("span");
 
         time.className =
-    "chatTime shrink-0 whitespace-nowrap text-[9px] text-white/35";
+    "chatTime ml-1.5 shrink-0 whitespace-nowrap text-[9px] text-white/35";
 
        time.textContent =
     groupTimestamp;
 
 time.title =
     fullTimestamp;
+const identity =
+    document.createElement("span");
 
-       header.append(
-    name,
+identity.className =
+    "flex items-center gap-[3px]";
+
+identity.appendChild(
+    name
+);
+
+if (serverBadge) {
+    identity.appendChild(
+        serverBadge
+    );
+}
+
+header.append(
+    identity,
     time
 );
 
