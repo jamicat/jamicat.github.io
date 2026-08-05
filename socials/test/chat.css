@@ -2309,8 +2309,9 @@ input[data-watch-party-url]::placeholder{
 }
 
 .chatMessage > img.discord-chat-avatar {
-    width: 2rem;
-    height: 2rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-top: -7px;
     margin-left: 0.125rem;
     margin-right: 0.125rem;
 }
