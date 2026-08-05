@@ -114,12 +114,11 @@ this.discordUser = null;
 this.discordAuthButton = null;
 this.discordLogoutButton = null;
 this.discordUsernameElement = null;
-	
-this.memberDiscordProfile = null;
+
 this.isAfk = false;
 this.afkTimer = null;
 this.lastActivityReset = 0;
-
+	
 this.adminKey =
     sessionStorage.getItem(
         "chat_admin_key"
@@ -1029,17 +1028,6 @@ document.addEventListener(
                 this.partyManagerButton
         ) {
             this.closePartyManager();
-        }
-
-        if (
-            this.memberDiscordProfile &&
-            !this.memberDiscordProfile
-                .contains(event.target) &&
-            !event.target.closest?.(
-                "[data-discord-member-row]"
-            )
-        ) {
-            this.closeMemberDiscordProfile();
         }
     }
 );
@@ -8025,194 +8013,6 @@ setupMemberActivity() {
     markActive();
 }
 
-openMemberDiscordProfile(
-    member,
-    row
-) {
-    if (
-        !member?.discord ||
-        !member.discordUserId ||
-        !(row instanceof Element)
-    ) {
-        return;
-    }
-
-    this.closeMemberDiscordProfile();
-
-    const panel =
-        document.createElement("div");
-
-    panel.className =
-        "jami-discord-member-profile";
-
-    const avatar =
-        document.createElement("img");
-
-    avatar.src =
-        this.resolveChatAvatarSource(
-            member.avatar
-        );
-
-    avatar.alt = "";
-    avatar.className =
-        "jami-discord-member-profile-avatar";
-
-    const details =
-        document.createElement("div");
-
-    details.className =
-        "min-w-0 flex-1";
-
-    const displayName =
-        document.createElement("div");
-
-    displayName.className =
-        "theme-heading truncate text-sm text-white";
-
-    displayName.textContent =
-        member.name || "discord user";
-
-    const username =
-        document.createElement("div");
-
-    username.className =
-        "theme-body mt-0.5 truncate text-[10px] text-white/55";
-
-    username.textContent =
-        member.discordUsername
-            ? `@${member.discordUsername}`
-            : "discord-linked";
-
-    const idLabel =
-        document.createElement("div");
-
-    idLabel.className =
-        "theme-body mt-3 text-[9px] text-white/40";
-
-    idLabel.textContent =
-        "discord id";
-
-    const idRow =
-        document.createElement("div");
-
-    idRow.className =
-        "mt-1 flex items-center gap-2";
-
-    const idValue =
-        document.createElement("code");
-
-    idValue.className =
-        "min-w-0 flex-1 break-all text-[10px] text-white/80";
-
-    idValue.textContent =
-        member.discordUserId;
-
-    const copyButton =
-        document.createElement("button");
-
-    copyButton.type = "button";
-    copyButton.className =
-        "theme-body jami-discord-member-copy";
-    copyButton.textContent = "copy";
-
-    copyButton.addEventListener(
-        "click",
-        async event => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            try {
-                await navigator.clipboard
-                    .writeText(
-                        member.discordUserId
-                    );
-
-                copyButton.textContent =
-                    "copied";
-
-                window.setTimeout(
-                    () => {
-                        copyButton.textContent =
-                            "copy";
-                    },
-                    1200
-                );
-            } catch {
-                copyButton.textContent =
-                    "failed";
-            }
-        }
-    );
-
-    details.append(
-        displayName,
-        username,
-        idLabel
-    );
-
-    idRow.append(
-        idValue,
-        copyButton
-    );
-
-    details.appendChild(idRow);
-
-    panel.append(
-        avatar,
-        details
-    );
-
-    document.body.appendChild(panel);
-
-    this.memberDiscordProfile = panel;
-
-    const rowRect =
-        row.getBoundingClientRect();
-
-    const panelRect =
-        panel.getBoundingClientRect();
-
-    const gap = 8;
-
-    let left =
-        rowRect.left -
-        panelRect.width -
-        gap;
-
-    if (left < 8) {
-        left =
-            Math.min(
-                window.innerWidth -
-                    panelRect.width -
-                    8,
-                rowRect.right + gap
-            );
-    }
-
-    let top = rowRect.top;
-
-    if (
-        top + panelRect.height >
-        window.innerHeight - 8
-    ) {
-        top =
-            window.innerHeight -
-            panelRect.height -
-            8;
-    }
-
-    panel.style.left =
-        `${Math.max(8, left)}px`;
-
-    panel.style.top =
-        `${Math.max(8, top)}px`;
-}
-
-closeMemberDiscordProfile() {
-    this.memberDiscordProfile?.remove();
-    this.memberDiscordProfile = null;
-}
-
 	renderMembers(members) {
     this.membersElement.replaceChildren();
 
@@ -8231,18 +8031,6 @@ closeMemberDiscordProfile() {
 
         row.className =
             "flex min-w-0 items-center gap-2";
-
-        if (
-            member.discord &&
-            member.discordUserId
-        ) {
-            row.dataset.discordMemberRow =
-                "true";
-
-            row.classList.add(
-                "cursor-pointer"
-            );
-        }
 
         const avatar = document.createElement("img");
 
@@ -8283,27 +8071,6 @@ closeMemberDiscordProfile() {
 
         row.append(avatar, name);
         this.membersElement.appendChild(row);
-
-        row.addEventListener(
-            "click",
-            event => {
-                if (
-                    event.button !== 0 ||
-                    !member.discord ||
-                    !member.discordUserId
-                ) {
-                    return;
-                }
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                this.openMemberDiscordProfile(
-                    member,
-                    row
-                );
-            }
-        );
 
 		
 		row.addEventListener("contextmenu", event => {
