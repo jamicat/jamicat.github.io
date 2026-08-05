@@ -6632,7 +6632,7 @@ addMessage(message) {
     "items-start",
     isContinuation
         ? ""
-        : "mt-2 gap-3"
+        : "mt-2 gap-2"
 ].join(" ");
 	
 	row.dataset.continuation =
@@ -6727,7 +6727,7 @@ const fullTimestamp =
         document.createElement("div");
 
     compactContent.className =
-         "min-w-0 flex-1 pl-12";
+         "min-w-0 flex-1 pl-11";
 
     const messageBody =
     document.createElement("div");
@@ -9034,14 +9034,20 @@ async uploadImageRemix(detail) {
 
     formData.append(
         "name",
-        this.nameInput?.value?.trim() ||
-            "anonymous"
+        this.discordUser
+            ?.displayName ||
+        this.nameInput
+            ?.value
+            ?.trim() ||
+        "anonymous"
     );
 
     formData.append(
         "avatar",
+        this.discordUser
+            ?.avatarUrl ||
         this.avatar ||
-            "original.gif"
+        "original.gif"
     );
 
     try {
@@ -9050,6 +9056,13 @@ async uploadImageRemix(detail) {
                 `${this.imageUploadConfig.apiBase}/remix`,
                 {
                     method: "POST",
+                    headers:
+                        this.discordAuthToken
+                            ? {
+                                "Authorization":
+                                    `Bearer ${this.discordAuthToken}`
+                            }
+                            : {},
                     body: formData
                 }
             );
@@ -9448,7 +9461,7 @@ showCompletedImage(
         "flex",
         "items-start",
         "mt-2",
-        "gap-3"
+        "gap-2"
     ].join(" ");
 
     row.dataset.imageUploadId =
@@ -10138,7 +10151,13 @@ async uploadTestImage(file) {
 
                     headers: {
                         "Content-Type":
-                            "application/json"
+                            "application/json",
+                        ...(this.discordAuthToken
+                            ? {
+                                "Authorization":
+                                    `Bearer ${this.discordAuthToken}`
+                            }
+                            : {})
                     },
 
                     body:
@@ -10147,12 +10166,16 @@ async uploadTestImage(file) {
                                 this.clientId,
 
                             name:
+                                this.discordUser
+                                    ?.displayName ||
                                 this.nameInput
                                     ?.value
                                     ?.trim() ||
                                 "anonymous",
 
                             avatar:
+                                this.discordUser
+                                    ?.avatarUrl ||
                                 this.avatar ||
                                 "original.gif",
 
