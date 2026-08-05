@@ -6788,7 +6788,7 @@ this.appendEditedMarker(messageBody, message);
             document.createElement("div");
 
         header.className =
-    "flex min-w-0 items-baseline gap-2";
+    "flex min-w-0 items-baseline gap-1";
 
         const name =
             document.createElement("span");
