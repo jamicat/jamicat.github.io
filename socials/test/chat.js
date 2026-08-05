@@ -6573,11 +6573,42 @@ addMessage(message) {
             previousRow?.dataset.timestamp || 0
         );
 
+    const previousMessage =
+        previousRow?.jamiChatMessage ||
+        null;
+
     const sameAuthor =
         Boolean(previousRow) &&
         Boolean(message.client_id) &&
         previousRow.dataset.clientId ===
             message.client_id;
+
+    const sameIdentity =
+        Boolean(previousMessage) &&
+        previousMessage.name ===
+            message.name &&
+        previousMessage.avatar ===
+            message.avatar &&
+        (
+            previousMessage
+                .discord_server_tag ||
+            ""
+        ) ===
+            (
+                message
+                    .discord_server_tag ||
+                ""
+            ) &&
+        (
+            previousMessage
+                .discord_server_badge_url ||
+            ""
+        ) ===
+            (
+                message
+                    .discord_server_badge_url ||
+                ""
+            );
 
     const closeInTime =
         Number.isFinite(currentTime) &&
@@ -6587,6 +6618,7 @@ addMessage(message) {
 
     const isContinuation =
         sameAuthor &&
+        sameIdentity &&
         closeInTime;
 
     const row =
