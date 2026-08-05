@@ -2327,3 +2327,36 @@ input[data-watch-party-url]::placeholder{
     color: rgb(251 146 60);
 }
 
+.jami-discord-server-tag {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.2rem;
+    min-width: 0;
+    padding: 0.08rem 0.32rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.4rem;
+    background: rgba(255, 255, 255, 0.06);
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.jami-discord-server-tag-icon {
+    display: block;
+    width: 0.72rem;
+    height: 0.72rem;
+    flex: 0 0 auto;
+    object-fit: contain;
+    image-rendering: auto;
+}
+
+.jami-discord-server-tag-text {
+    overflow: hidden;
+    max-width: 3.4rem;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.48rem;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
