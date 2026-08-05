@@ -6799,6 +6799,84 @@ this.appendEditedMarker(messageBody, message);
         name.textContent =
             message.name || "anonymous";
 
+        const serverTag =
+            typeof message
+                .discord_server_tag ===
+                "string"
+                ? message
+                    .discord_server_tag
+                    .trim()
+                : "";
+
+        const serverBadgeUrl =
+            typeof message
+                .discord_server_badge_url ===
+                "string" &&
+            /^https:\/\/cdn\.discordapp\.com\/clan-badges\//i
+                .test(
+                    message
+                        .discord_server_badge_url
+                )
+                ? message
+                    .discord_server_badge_url
+                : "";
+
+        let serverBadge = null;
+
+        if (serverTag) {
+            serverBadge =
+                document.createElement(
+                    "span"
+                );
+
+            serverBadge.className =
+                "jami-discord-server-tag";
+
+            if (serverBadgeUrl) {
+                const serverBadgeIcon =
+                    document.createElement(
+                        "img"
+                    );
+
+                serverBadgeIcon.src =
+                    serverBadgeUrl;
+
+                serverBadgeIcon.alt = "";
+
+                serverBadgeIcon.className =
+                    "jami-discord-server-tag-icon";
+
+                serverBadgeIcon.addEventListener(
+                    "error",
+                    () => {
+                        serverBadgeIcon.remove();
+                    },
+                    {
+                        once: true
+                    }
+                );
+
+                serverBadge.appendChild(
+                    serverBadgeIcon
+                );
+            }
+
+            const serverBadgeText =
+                document.createElement(
+                    "span"
+                );
+
+            serverBadgeText.className =
+                "theme-heading jami-discord-server-tag-text";
+
+            serverBadgeText.textContent =
+                serverTag;
+
+            serverBadge.appendChild(
+                serverBadgeText
+            );
+        }
+
         const time =
             document.createElement("span");
 
@@ -6812,7 +6890,16 @@ time.title =
     fullTimestamp;
 
        header.append(
-    name,
+    name
+);
+
+if (serverBadge) {
+    header.appendChild(
+        serverBadge
+    );
+}
+
+header.appendChild(
     time
 );
 
