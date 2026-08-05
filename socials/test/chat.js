@@ -6788,7 +6788,7 @@ this.appendEditedMarker(messageBody, message);
             document.createElement("div");
 
         header.className =
-    "flex min-w-0 items-baseline gap-1";
+    "flex min-w-0 items-baseline";
 
         const name =
             document.createElement("span");
@@ -6881,7 +6881,7 @@ this.appendEditedMarker(messageBody, message);
             document.createElement("span");
 
         time.className =
-    "chatTime shrink-0 whitespace-nowrap text-[9px] text-white/35";
+    "chatTime ml-1.5 shrink-0 whitespace-nowrap text-[9px] text-white/35";
 
        time.textContent =
     groupTimestamp;
