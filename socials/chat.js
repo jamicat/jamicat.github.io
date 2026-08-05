@@ -104,6 +104,16 @@ this.recentReactionStorageKey =
     "jamicat_recent_reactions";
 this.recentReactions =
     this.loadRecentReactions();
+
+this.discordAuthToken =
+    localStorage.getItem(
+        "chat_discord_session"
+    ) || "";
+
+this.discordUser = null;
+this.discordAuthButton = null;
+this.discordLogoutButton = null;
+this.discordUsernameElement = null;
 	
 this.adminKey =
     sessionStorage.getItem(
@@ -179,6 +189,7 @@ this.createWindow();
 	
 this.applyCurrentTheme();
 this.restoreSettings();
+this.setupDiscordAuthentication();
 
 if (
     window.matchMedia("(max-width:640px)").matches
@@ -463,26 +474,78 @@ transition-[height] duration-200
                 id="chatAvatarGrid"
                 class="grid grid-cols-5 gap-2"
             ></div>
+
+            <button
+                id="chatDiscordAuthButton"
+                type="button"
+                class="
+                    theme-body
+                    mt-3 w-full rounded-lg
+                    border border-white/10
+                    bg-white/5 px-2 py-2
+                    text-[9px] text-white/65
+                    transition
+                    hover:bg-white/10
+                    hover:text-white
+                    disabled:cursor-wait
+                    disabled:opacity-50
+                "
+            >
+                log in with discord
+            </button>
         </div>
     </div>
 
-    <input
-        id="chatName"
-        type="text"
-        maxlength="20"
-        autocomplete="nickname"
-        placeholder="name"
-        class="
-            theme-body
-            h-11 min-w-0 flex-1 rounded-xl
-            border border-white/10
-            bg-black/30 px-3 py-2
-            text-xs text-white
-            placeholder:text-white/35
-            outline-none
-            focus:border-white/25
-        "
-    >
+    <div class="relative min-w-0 flex-1">
+        <input
+            id="chatName"
+            type="text"
+            maxlength="20"
+            autocomplete="nickname"
+            placeholder="name"
+            class="
+                theme-body
+                h-11 w-full min-w-0 rounded-xl
+                border border-white/10
+                bg-black/30 px-3 py-2
+                text-xs text-white
+                placeholder:text-white/35
+                outline-none
+                focus:border-white/25
+            "
+        >
+
+        <div
+            id="chatDiscordUsername"
+            class="
+                theme-body
+                pointer-events-none
+                absolute bottom-1.5 left-3
+                hidden max-w-[calc(100%-5.5rem)]
+                truncate text-[8px] text-white/40
+            "
+        ></div>
+
+        <button
+            id="chatDiscordLogout"
+            type="button"
+            class="
+                theme-body
+                absolute right-2 top-1/2
+                hidden -translate-y-1/2
+                rounded-lg border border-white/10
+                bg-white/5 px-2 py-1
+                text-[8px] text-white/60
+                transition
+                hover:bg-white/10
+                hover:text-white
+                disabled:cursor-wait
+                disabled:opacity-50
+            "
+        >
+            log out
+        </button>
+    </div>
 </div>
 
             <div class="relative">
@@ -761,6 +824,21 @@ this.avatarPicker =
 
 this.avatarGrid =
     this.window.querySelector("#chatAvatarGrid");
+
+this.discordAuthButton =
+    this.window.querySelector(
+        "#chatDiscordAuthButton"
+    );
+
+this.discordLogoutButton =
+    this.window.querySelector(
+        "#chatDiscordLogout"
+    );
+
+this.discordUsernameElement =
+    this.window.querySelector(
+        "#chatDiscordUsername"
+    );
 
 this.membersElement =
     this.window.querySelector("#chatMembers");
@@ -6670,15 +6748,19 @@ this.appendEditedMarker(messageBody, message);
             document.createElement("img");
 
         avatar.src =
-            `/avatars/${
-                message.avatar ||
-                "original.gif"
-            }`;
+            this.resolveChatAvatarSource(
+                message.avatar
+            );
 
         avatar.alt = "";
 
         avatar.className =
-            "pixel-avatar h-9 w-9 shrink-0 object-contain -mt-[11px]";
+            "h-9 w-9 shrink-0 -mt-[11px]";
+
+        this.applyChatAvatarStyle(
+            avatar,
+            message.avatar
+        );
 
         avatar.addEventListener(
             "error",
@@ -7813,6 +7895,54 @@ menu.style.top =
     }
 }
 
+
+resolveChatAvatarSource(avatar) {
+    if (
+        typeof avatar === "string" &&
+        /^https:\/\/cdn\.discordapp\.com\//i.test(
+            avatar
+        )
+    ) {
+        return avatar;
+    }
+
+    return `/avatars/${
+        avatar || "original.gif"
+    }`;
+}
+
+applyChatAvatarStyle(
+    image,
+    avatar
+) {
+    const discordAvatar =
+        typeof avatar === "string" &&
+        /^https:\/\/cdn\.discordapp\.com\//i.test(
+            avatar
+        );
+
+    image.classList.toggle(
+        "pixel-avatar",
+        !discordAvatar
+    );
+    image.classList.toggle(
+        "object-contain",
+        !discordAvatar
+    );
+    image.classList.toggle(
+        "rounded-full",
+        discordAvatar
+    );
+    image.classList.toggle(
+        "object-cover",
+        discordAvatar
+    );
+    image.classList.toggle(
+        "discord-chat-avatar",
+        discordAvatar
+    );
+}
+
 	renderMembers(members) {
     this.membersElement.replaceChildren();
 
@@ -7835,11 +7965,18 @@ menu.style.top =
         const avatar = document.createElement("img");
 
         avatar.src =
-            `/avatars/${member.avatar || "original.gif"}`;
+            this.resolveChatAvatarSource(
+                member.avatar
+            );
 
         avatar.alt = "";
         avatar.className =
-            "pixel-avatar h-7 w-7 shrink-0 object-contain";
+            "h-7 w-7 shrink-0";
+
+        this.applyChatAvatarStyle(
+            avatar,
+            member.avatar
+        );
 
         avatar.addEventListener(
             "error",
@@ -7892,13 +8029,21 @@ menu.style.top =
     }
 
     const name =
-        this.nameInput.value.trim() || "anonymous";
+        this.discordUser?.displayName ||
+        this.nameInput.value.trim() ||
+        "anonymous";
+
+    const avatar =
+        this.discordUser?.avatarUrl ||
+        this.avatar;
 
     this.socket.send(JSON.stringify({
         type: "presence",
         clientId: this.clientId,
         name,
-        avatar: this.avatar
+        avatar,
+        discordToken:
+            this.discordAuthToken || ""
     }));
 }
 
@@ -7916,6 +8061,7 @@ menu.style.top =
             type: "typing",
             clientId: this.clientId,
             name:
+                this.discordUser?.displayName ||
                 this.nameInput.value.trim() ||
                 "anonymous",
             isTyping
@@ -9185,15 +9331,19 @@ showCompletedImage(
         );
 
     avatar.src =
-        `/avatars/${
-            upload.avatar ||
-            "original.gif"
-        }`;
+        this.resolveChatAvatarSource(
+            upload.avatar
+        );
 
     avatar.alt = "";
 
     avatar.className =
-        "pixel-avatar h-9 w-9 shrink-0 object-contain -mt-[11px]";
+        "h-9 w-9 shrink-0 -mt-[11px]";
+
+    this.applyChatAvatarStyle(
+        avatar,
+        upload.avatar
+    );
 
     avatar.addEventListener(
         "error",
@@ -10580,7 +10730,14 @@ clearChatInterface() {
 }
 	
 async sendMessage() {
-    const name = this.nameInput.value.trim();
+    const name =
+        this.discordUser?.displayName ||
+        this.nameInput.value.trim();
+
+    const avatar =
+        this.discordUser?.avatarUrl ||
+        this.avatar;
+
     const message = this.messageInput.value.trim();
 
     if (!name || !message || this.sendButton.disabled) {
@@ -10594,13 +10751,19 @@ async sendMessage() {
         const response = await fetch(`${this.API}/api/chat`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                ...(this.discordAuthToken
+                    ? {
+                        "Authorization":
+                            `Bearer ${this.discordAuthToken}`
+                    }
+                    : {})
             },
            body: JSON.stringify({
     clientId: this.clientId,
     name,
     message,
-    avatar: this.avatar,
+    avatar,
     replyTargetType: this.replyTarget?.type || null,
     replyTargetId: this.replyTarget?.id || null
 })
@@ -10856,6 +11019,10 @@ formatDuration(seconds) {
 
 setupNameSaving() {
     this.nameInput.addEventListener("input", () => {
+        if (this.discordUser) {
+            return;
+        }
+
         localStorage.setItem(
             "chat_name",
             this.nameInput.value
@@ -12311,6 +12478,350 @@ insertIntoMessageInput(value) {
     );
 }
 	
+setupDiscordAuthentication() {
+    if (!this.discordAuthButton) {
+        return;
+    }
+
+    this.discordAuthButton.addEventListener(
+        "click",
+        () => this.loginWithDiscord()
+    );
+
+    this.discordLogoutButton?.addEventListener(
+        "click",
+        () => this.logoutDiscord()
+    );
+
+    window.addEventListener(
+        "message",
+        event => {
+            if (
+                event.origin !== this.API ||
+                event.data?.type !==
+                    "jamicat-discord-auth"
+            ) {
+                return;
+            }
+
+            if (
+                typeof event.data.token !==
+                    "string" ||
+                !event.data.user
+            ) {
+                this.discordAuthButton.disabled =
+                    false;
+                this.discordAuthButton.textContent =
+                    "log in with discord";
+                return;
+            }
+
+            localStorage.setItem(
+                "chat_discord_session",
+                event.data.token
+            );
+
+            this.discordAuthToken =
+                event.data.token;
+
+            this.applyDiscordIdentity(
+                event.data.user
+            );
+        }
+    );
+
+    if (this.discordAuthToken) {
+        this.restoreDiscordSession();
+    } else {
+        this.renderDiscordAuthState();
+    }
+}
+
+async loginWithDiscord() {
+    if (
+        this.discordAuthButton?.disabled ||
+        this.discordUser
+    ) {
+        return;
+    }
+
+    this.discordAuthButton.disabled = true;
+    this.discordAuthButton.textContent =
+        "opening discord...";
+
+    const authUrl =
+        new URL(
+            `${this.API}/api/auth/discord/start`
+        );
+
+    authUrl.searchParams.set(
+        "origin",
+        window.location.origin
+    );
+
+    const popup =
+        window.open(
+            authUrl.toString(),
+            "jamicatDiscordLogin",
+            [
+                "popup=yes",
+                "width=520",
+                "height=720",
+                "resizable=yes",
+                "scrollbars=yes"
+            ].join(",")
+        );
+
+    if (!popup) {
+        this.discordAuthButton.disabled =
+            false;
+        this.discordAuthButton.textContent =
+            "log in with discord";
+        return;
+    }
+
+    popup.focus();
+
+    const popupTimer =
+        window.setInterval(
+            () => {
+                if (!popup.closed) {
+                    return;
+                }
+
+                window.clearInterval(
+                    popupTimer
+                );
+
+                if (!this.discordUser) {
+                    this.discordAuthButton
+                        .disabled = false;
+                    this.discordAuthButton
+                        .textContent =
+                            "log in with discord";
+                }
+            },
+            500
+        );
+}
+
+async restoreDiscordSession() {
+    this.discordAuthButton.disabled = true;
+    this.discordAuthButton.textContent =
+        "checking discord...";
+
+    try {
+        const response = await fetch(
+            `${this.API}/api/auth/session`,
+            {
+                headers: {
+                    "Authorization":
+                        `Bearer ${
+                            this.discordAuthToken
+                        }`
+                }
+            }
+        );
+
+        const result =
+            await response.json();
+
+        if (
+            !response.ok ||
+            !result?.user
+        ) {
+            throw new Error(
+                result?.error ||
+                "discord session expired"
+            );
+        }
+
+        this.applyDiscordIdentity(
+            result.user
+        );
+    } catch {
+        this.clearDiscordIdentity();
+    }
+}
+
+applyDiscordIdentity(user) {
+    if (
+        !user ||
+        typeof user.id !== "string" ||
+        typeof user.displayName !==
+            "string" ||
+        typeof user.avatarUrl !==
+            "string"
+    ) {
+        return;
+    }
+
+    this.discordUser = {
+        id: user.id,
+        username:
+            typeof user.username ===
+                "string"
+                ? user.username
+                : "",
+        displayName:
+            user.displayName,
+        avatarUrl:
+            user.avatarUrl
+    };
+
+    this.closeAvatarPicker();
+
+    this.nameInput.value =
+        this.discordUser.displayName;
+    this.nameInput.disabled = true;
+    this.nameInput.setAttribute(
+        "aria-disabled",
+        "true"
+    );
+    this.nameInput.classList.add(
+        "chat-discord-name-active"
+    );
+
+    this.avatarButton.disabled = true;
+    this.avatarButton.setAttribute(
+        "aria-disabled",
+        "true"
+    );
+
+    this.avatarPreview.src =
+        this.discordUser.avatarUrl;
+    this.avatarPreview.classList.remove(
+        "pixel-avatar",
+        "object-contain"
+    );
+    this.avatarPreview.classList.add(
+        "rounded-full",
+        "object-cover"
+    );
+
+    this.renderDiscordAuthState();
+    this.sendPresence();
+}
+
+clearDiscordIdentity() {
+    localStorage.removeItem(
+        "chat_discord_session"
+    );
+
+    this.discordAuthToken = "";
+    this.discordUser = null;
+
+    const guestName =
+        localStorage.getItem(
+            "chat_name"
+        ) || "";
+
+    const guestAvatar =
+        localStorage.getItem(
+            "chat_avatar"
+        ) || "original.gif";
+
+    this.avatar = guestAvatar;
+    this.nameInput.value = guestName;
+    this.nameInput.disabled = false;
+    this.nameInput.removeAttribute(
+        "aria-disabled"
+    );
+    this.nameInput.classList.remove(
+        "chat-discord-name-active"
+    );
+
+    this.avatarButton.disabled = false;
+    this.avatarButton.removeAttribute(
+        "aria-disabled"
+    );
+
+    this.avatarPreview.src =
+        `/avatars/${guestAvatar}`;
+    this.avatarPreview.classList.add(
+        "pixel-avatar",
+        "object-contain"
+    );
+    this.avatarPreview.classList.remove(
+        "rounded-full",
+        "object-cover"
+    );
+
+    this.renderAvatarPicker();
+    this.renderDiscordAuthState();
+    this.sendPresence();
+}
+
+async logoutDiscord() {
+    const token =
+        this.discordAuthToken;
+
+    if (this.discordLogoutButton) {
+        this.discordLogoutButton.disabled =
+            true;
+        this.discordLogoutButton.textContent =
+            "logging out...";
+    }
+
+    if (token) {
+        try {
+            await fetch(
+                `${this.API}/api/auth/logout`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Authorization":
+                            `Bearer ${token}`
+                    }
+                }
+            );
+        } catch {}
+    }
+
+    this.clearDiscordIdentity();
+}
+
+renderDiscordAuthState() {
+    const loggedIn =
+        Boolean(this.discordUser);
+
+    if (this.discordUsernameElement) {
+        this.discordUsernameElement.textContent =
+            loggedIn
+                ? `@${this.discordUser.username}`
+                : "";
+        this.discordUsernameElement.classList
+            .toggle(
+                "hidden",
+                !loggedIn
+            );
+    }
+
+    if (this.discordLogoutButton) {
+        this.discordLogoutButton.classList
+            .toggle(
+                "hidden",
+                !loggedIn
+            );
+        this.discordLogoutButton.disabled =
+            false;
+        this.discordLogoutButton.textContent =
+            "log out";
+    }
+
+    if (this.discordAuthButton) {
+        this.discordAuthButton.classList
+            .toggle(
+                "hidden",
+                loggedIn
+            );
+        this.discordAuthButton.disabled =
+            false;
+        this.discordAuthButton.textContent =
+            "log in with discord";
+    }
+}
+
 	setupAvatarPicker() {
     this.avatars = [
         "original.gif",
@@ -12329,6 +12840,10 @@ insertIntoMessageInput(value) {
 
     this.avatarButton.addEventListener("click", event => {
         event.stopPropagation();
+
+        if (this.discordUser) {
+            return;
+        }
 
         const isOpen =
             this.avatarPicker.classList.contains("opacity-100");
@@ -12399,6 +12914,10 @@ renderAvatarPicker() {
 }
 
 selectAvatar(filename) {
+    if (this.discordUser) {
+        return;
+    }
+
     this.avatar = filename;
 	
 
@@ -12416,6 +12935,10 @@ selectAvatar(filename) {
 }
 
 openAvatarPicker() {
+    if (this.discordUser) {
+        return;
+    }
+
     this.avatarPicker.classList.remove(
         "invisible",
         "pointer-events-none",
