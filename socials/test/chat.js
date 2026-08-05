@@ -6867,7 +6867,7 @@ this.appendEditedMarker(messageBody, message);
                 );
 
             serverBadgeText.className =
-                "theme-heading jami-discord-server-tag-text";
+                "jami-discord-server-tag-text";
 
             serverBadgeText.textContent =
                 serverTag;
