@@ -354,7 +354,7 @@ transition-[height] duration-200
         class="
             min-h-0 min-w-0 flex-1
             overflow-y-auto
-            pl-3 pr-1 py-3
+            pl-1 pr-1 py-3
             theme-body text-xs
         "
         aria-live="polite"
@@ -5544,6 +5544,18 @@ normaliseReactionSnapshot(value) {
                 )
                 : [];
 
+        const reactorNames =
+            Array.isArray(item?.reactorNames)
+                ? item.reactorNames
+                    .filter(name =>
+                        typeof name === "string" &&
+                        name.trim()
+                    )
+                    .map(name =>
+                        name.trim().slice(0, 20)
+                    )
+                : [];
+
         if (
             !key ||
             (kind === "custom" && !src) ||
@@ -5564,7 +5576,8 @@ normaliseReactionSnapshot(value) {
                 Number(item?.count) ||
                 clientIds.length
             ),
-            clientIds
+            clientIds,
+            reactorNames
         };
     }).filter(Boolean);
 
@@ -6095,6 +6108,97 @@ renderAllReactionRows() {
     });
 }
 
+formatReactionTooltip(
+    reaction
+) {
+    const rawLabel =
+        typeof reaction?.label === "string"
+            ? reaction.label.trim()
+            : "";
+
+    const fallbackLabel =
+        typeof reaction?.value === "string"
+            ? reaction.value.trim()
+            : "reaction";
+
+    const label =
+        reaction?.kind === "custom"
+            ? `:${(
+                rawLabel ||
+                fallbackLabel ||
+                "reaction"
+            ).replace(/^:+|:+$/g, "")}:`
+            : (
+                rawLabel ||
+                fallbackLabel ||
+                "reaction"
+            );
+
+    const names =
+        Array.isArray(
+            reaction?.reactorNames
+        )
+            ? reaction.reactorNames
+                .filter(name =>
+                    typeof name === "string" &&
+                    name.trim()
+                )
+                .map(name =>
+                    name.trim()
+                )
+            : [];
+
+    const visibleNames =
+        names.slice(0, 3);
+
+    let peopleText = "";
+
+    if (visibleNames.length === 1) {
+        peopleText =
+            visibleNames[0];
+    } else if (
+        visibleNames.length === 2
+    ) {
+        peopleText =
+            `${visibleNames[0]} and ` +
+            `${visibleNames[1]}`;
+    } else if (
+        visibleNames.length === 3
+    ) {
+        peopleText =
+            `${visibleNames[0]}, ` +
+            `${visibleNames[1]}, and ` +
+            `${visibleNames[2]}`;
+    }
+
+    const remaining =
+        Math.max(
+            0,
+            Number(reaction?.count || 0) -
+                visibleNames.length
+        );
+
+    if (remaining > 0) {
+        peopleText =
+            visibleNames.length
+                ? `${visibleNames.join(", ")}, ` +
+                  `and ${remaining} ` +
+                  `${remaining === 1
+                      ? "other"
+                      : "others"}`
+                : `${remaining} ` +
+                  `${remaining === 1
+                      ? "other"
+                      : "others"}`;
+    }
+
+    if (!peopleText) {
+        peopleText = "someone";
+    }
+
+    return `${label} reacted by ${peopleText}`;
+}
+
 renderReactionRow(
     row,
     animatedReactionKeys = null
@@ -6170,6 +6274,26 @@ renderReactionRow(
         );
 		
         button.removeAttribute("title");
+
+        const tooltip =
+            document.createElement("span");
+
+        tooltip.className =
+            "jami-reaction-tooltip theme-body";
+
+        tooltip.textContent =
+            this.formatReactionTooltip(
+                reaction
+            );
+
+        button.setAttribute(
+            "aria-label",
+            tooltip.textContent
+        );
+
+        button.appendChild(
+            tooltip
+        );
 
         if (reaction.kind === "custom") {
             const image =
@@ -6267,7 +6391,13 @@ async setReactionActive(
                 method: "POST",
                 headers: {
                     "Content-Type":
-                        "application/json"
+                        "application/json",
+                    ...(this.discordAuthToken
+                        ? {
+                            "Authorization":
+                                `Bearer ${this.discordAuthToken}`
+                        }
+                        : {})
                 },
                 body: JSON.stringify({
                     targetType:
@@ -6276,6 +6406,13 @@ async setReactionActive(
                         target.targetId,
                     clientId:
                         this.clientId,
+                    reactorName:
+                        this.discordUser
+                            ?.displayName ||
+                        this.nameInput
+                            ?.value
+                            ?.trim() ||
+                        "anonymous",
                     active: active === true,
                     reaction: {
                         key: reaction.key,
