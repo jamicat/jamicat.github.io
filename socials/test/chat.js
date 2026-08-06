@@ -6121,10 +6121,20 @@ formatReactionTooltip(
             ? reaction.value.trim()
             : "reaction";
 
+    const customId =
+        typeof reaction?.key === "string" &&
+        reaction.key.startsWith(
+            "custom:"
+        )
+            ? reaction.key
+                .slice(7)
+                .trim()
+            : "";
+
     const label =
         reaction?.kind === "custom"
             ? `:${(
-                rawLabel ||
+                customId ||
                 fallbackLabel ||
                 "reaction"
             ).replace(/^:+|:+$/g, "")}:`
@@ -6197,6 +6207,117 @@ formatReactionTooltip(
     }
 
     return `${label} reacted by ${peopleText}`;
+}
+
+hideReactionTooltip() {
+    document
+        .querySelector(
+            ".jami-reaction-tooltip"
+        )
+        ?.remove();
+}
+
+showReactionTooltip(
+    anchor,
+    text
+) {
+    if (
+        !(anchor instanceof HTMLElement) ||
+        !text
+    ) {
+        return;
+    }
+
+    this.hideReactionTooltip();
+
+    const tooltip =
+        document.createElement("div");
+
+    tooltip.className =
+        "jami-reaction-tooltip theme-body";
+
+    tooltip.textContent = text;
+
+    document.body.appendChild(
+        tooltip
+    );
+
+    const anchorRect =
+        anchor.getBoundingClientRect();
+
+    const tooltipRect =
+        tooltip.getBoundingClientRect();
+
+    const viewportPadding = 8;
+    const tooltipGap = 7;
+
+    const centeredLeft =
+        anchorRect.left +
+        (
+            anchorRect.width -
+            tooltipRect.width
+        ) / 2;
+
+    const left =
+        Math.max(
+            viewportPadding,
+            Math.min(
+                centeredLeft,
+                window.innerWidth -
+                    tooltipRect.width -
+                    viewportPadding
+            )
+        );
+
+    const fitsAbove =
+        anchorRect.top -
+        tooltipRect.height -
+        tooltipGap >=
+        viewportPadding;
+
+    const top =
+        fitsAbove
+            ? anchorRect.top -
+              tooltipRect.height -
+              tooltipGap
+            : anchorRect.bottom +
+              tooltipGap;
+
+    const anchorCenter =
+        anchorRect.left +
+        anchorRect.width / 2;
+
+    const arrowLeft =
+        Math.max(
+            8,
+            Math.min(
+                anchorCenter - left,
+                tooltipRect.width - 8
+            )
+        );
+
+    tooltip.dataset.placement =
+        fitsAbove
+            ? "above"
+            : "below";
+
+    tooltip.style.left =
+        `${Math.round(left)}px`;
+
+    tooltip.style.top =
+        `${Math.round(top)}px`;
+
+    tooltip.style.setProperty(
+        "--jami-reaction-tooltip-arrow-left",
+        `${Math.round(arrowLeft)}px`
+    );
+
+    requestAnimationFrame(
+        () => {
+            tooltip.dataset.visible =
+                "true";
+        }
+    );
 }
 
 renderReactionRow(
@@ -6275,24 +6396,48 @@ renderReactionRow(
 		
         button.removeAttribute("title");
 
-        const tooltip =
-            document.createElement("span");
-
-        tooltip.className =
-            "jami-reaction-tooltip theme-body";
-
-        tooltip.textContent =
+        const tooltipText =
             this.formatReactionTooltip(
                 reaction
             );
 
         button.setAttribute(
             "aria-label",
-            tooltip.textContent
+            tooltipText
         );
 
-        button.appendChild(
-            tooltip
+        button.addEventListener(
+            "pointerenter",
+            () => {
+                this.showReactionTooltip(
+                    button,
+                    tooltipText
+                );
+            }
+        );
+
+        button.addEventListener(
+            "pointerleave",
+            () => {
+                this.hideReactionTooltip();
+            }
+        );
+
+        button.addEventListener(
+            "focus",
+            () => {
+                this.showReactionTooltip(
+                    button,
+                    tooltipText
+                );
+            }
+        );
+
+        button.addEventListener(
+            "blur",
+            () => {
+                this.hideReactionTooltip();
+            }
         );
 
         if (reaction.kind === "custom") {
@@ -6335,6 +6480,8 @@ renderReactionRow(
             event => {
                 event.preventDefault();
                 event.stopPropagation();
+
+                this.hideReactionTooltip();
 
                 this.setReactionActive(
                     target,
