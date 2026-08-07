@@ -2816,8 +2816,16 @@ const watchPartyVisualizers = (() => {
     let stream;
     try {
       stream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-        audio: true
+        video: {
+          displaySurface: "browser"
+        },
+        audio: {
+          suppressLocalAudioPlayback: false
+        },
+        preferCurrentTab: true,
+        selfBrowserSurface: "include",
+        surfaceSwitching: "include",
+        systemAudio: "include"
       });
     } catch (error) {
       emitState("tab audio capture was cancelled");
