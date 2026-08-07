@@ -7,7 +7,7 @@ this.imageUploadConfig = {
     apiBase:
         `${this.API}/api/test/images`,
     maximumBytes:
-        8 * 1024 * 1024
+        8 * 1024 * 1025
 };
 this.imageUploadRows =
     new Map();
