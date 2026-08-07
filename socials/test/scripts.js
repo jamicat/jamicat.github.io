@@ -2172,6 +2172,795 @@ function playNextNormalVideo() {
   });
 }
 
+
+
+/*
+ * Client-side Watch Party audio visualizers.
+ *
+ * The YouTube player lives in a cross-origin iframe, so the visualizers
+ * analyse a user-approved display/tab capture stream. One analyser feeds
+ * every visualizer panel; each panel renders independently and uses native
+ * pointer events for dragging/resizing so it does not conflict with
+ * Interact.js.
+ */
+const watchPartyVisualizers = (() => {
+  const MAX_PANELS = 5;
+  const DEFAULT_MODE = "bars";
+  const MODES = new Set([
+    "wave",
+    "bars",
+    "decay",
+    "line",
+    "peaks",
+    "mountain"
+  ]);
+  const STORAGE_KEY = "watch_party_visualizer_panels";
+
+  let captureStream = null;
+  let audioContext = null;
+  let sourceNode = null;
+  let analyser = null;
+  let frequencyData = null;
+  let timeData = null;
+  let nextPanelId = 1;
+  let topZ = 100004;
+  let restoring = false;
+  let watchPartyEnabled = false;
+
+  const panels = new Map();
+
+  function normaliseMode(mode) {
+    return MODES.has(mode) ? mode : DEFAULT_MODE;
+  }
+
+  function isSupported() {
+    return Boolean(
+      navigator.mediaDevices &&
+      typeof navigator.mediaDevices.getDisplayMedia === "function" &&
+      (window.AudioContext || window.webkitAudioContext)
+    );
+  }
+
+  function emitState(message = "") {
+    window.dispatchEvent(
+      new CustomEvent("watch-party-visualizer-state", {
+        detail: {
+          supported: isSupported(),
+          active: Boolean(captureStream && analyser),
+          panelCount: panels.size,
+          maxPanels: MAX_PANELS,
+          watchPartyEnabled,
+          message
+        }
+      })
+    );
+  }
+
+  function safeJsonParse(value, fallback) {
+    try {
+      return JSON.parse(value);
+    } catch {
+      return fallback;
+    }
+  }
+
+  function savePanels() {
+    if (restoring) return;
+
+    const saved = [...panels.values()].map(panel => ({
+      mode: panel.mode,
+      left: parseFloat(panel.element.style.left) || 24,
+      top: parseFloat(panel.element.style.top) || 24,
+      width: panel.element.offsetWidth,
+      height: panel.element.offsetHeight
+    }));
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(saved)
+    );
+  }
+
+  function loadSavedPanels() {
+    const value = safeJsonParse(
+      localStorage.getItem(STORAGE_KEY) || "[]",
+      []
+    );
+
+    return Array.isArray(value)
+      ? value.slice(0, MAX_PANELS)
+      : [];
+  }
+
+  function getWatchPartyTheme() {
+    return (
+      document.getElementById("chatWatchPartyPanel")
+        ?.dataset.theme ||
+      localStorage.getItem("watch_party_theme") ||
+      "default"
+    );
+  }
+
+  function bringToFront(panel) {
+    topZ += 1;
+    panel.element.style.zIndex = String(topZ);
+  }
+
+  function clampPanel(panel) {
+    const element = panel.element;
+    const edge = 8;
+    const width = element.offsetWidth;
+    const height = element.offsetHeight;
+
+    const maxLeft = Math.max(edge, window.innerWidth - width - edge);
+    const maxTop = Math.max(edge, window.innerHeight - height - edge);
+
+    let left = parseFloat(element.style.left) || edge;
+    let top = parseFloat(element.style.top) || edge;
+
+    left = Math.min(Math.max(edge, left), maxLeft);
+    top = Math.min(Math.max(edge, top), maxTop);
+
+    element.style.left = `${left}px`;
+    element.style.top = `${top}px`;
+  }
+
+  function setPanelMode(panel, mode) {
+    panel.mode = normaliseMode(mode);
+    panel.element.dataset.visualizerMode = panel.mode;
+
+    panel.element
+      .querySelectorAll("[data-visualizer-panel-mode]")
+      .forEach(button => {
+        button.classList.toggle(
+          "is-selected",
+          button.dataset.visualizerPanelMode === panel.mode
+        );
+      });
+
+    const label = panel.element.querySelector(
+      "[data-visualizer-mode-label]"
+    );
+
+    if (label) {
+      const labels = {
+        wave: "waveform",
+        bars: "equalizer",
+        decay: "spectrum",
+        line: "frequency line",
+        peaks: "peaks",
+        mountain: "filled spectrum"
+      };
+      label.textContent = labels[panel.mode] || "equalizer";
+    }
+
+    savePanels();
+  }
+
+  function getPanelModeButtons() {
+    return `
+      <button type="button" data-visualizer-panel-mode="wave" title="waveform" aria-label="waveform"></button>
+      <button type="button" data-visualizer-panel-mode="bars" title="equalizer" aria-label="equalizer"></button>
+      <button type="button" data-visualizer-panel-mode="decay" title="spectrum" aria-label="spectrum"></button>
+      <button type="button" data-visualizer-panel-mode="line" title="frequency line" aria-label="frequency line"></button>
+      <button type="button" data-visualizer-panel-mode="peaks" title="peaks" aria-label="peaks"></button>
+      <button type="button" data-visualizer-panel-mode="mountain" title="filled spectrum" aria-label="filled spectrum"></button>
+    `;
+  }
+
+  function attachNativeWindowControls(panel) {
+    const element = panel.element;
+    const dragHandle = element.querySelector(
+      "[data-visualizer-drag-handle]"
+    );
+    const resizeHandle = element.querySelector(
+      "[data-visualizer-resize-handle]"
+    );
+
+    dragHandle?.addEventListener("pointerdown", event => {
+      if (event.button !== 0 || event.target.closest("button")) return;
+      event.preventDefault();
+      bringToFront(panel);
+
+      const pointerId = event.pointerId;
+      const startX = event.clientX;
+      const startY = event.clientY;
+      const startLeft = parseFloat(element.style.left) || 0;
+      const startTop = parseFloat(element.style.top) || 0;
+
+      dragHandle.setPointerCapture?.(pointerId);
+      document.body.style.userSelect = "none";
+
+      const move = moveEvent => {
+        if (moveEvent.pointerId !== pointerId) return;
+        moveEvent.preventDefault();
+        element.style.left = `${startLeft + moveEvent.clientX - startX}px`;
+        element.style.top = `${startTop + moveEvent.clientY - startY}px`;
+        clampPanel(panel);
+      };
+
+      const finish = finishEvent => {
+        if (
+          finishEvent.pointerId !== undefined &&
+          finishEvent.pointerId !== pointerId
+        ) return;
+        window.removeEventListener("pointermove", move, true);
+        window.removeEventListener("pointerup", finish, true);
+        window.removeEventListener("pointercancel", finish, true);
+        document.body.style.userSelect = "";
+        try {
+          if (dragHandle.hasPointerCapture?.(pointerId)) {
+            dragHandle.releasePointerCapture(pointerId);
+          }
+        } catch {}
+        clampPanel(panel);
+        savePanels();
+      };
+
+      window.addEventListener("pointermove", move, { capture: true, passive: false });
+      window.addEventListener("pointerup", finish, true);
+      window.addEventListener("pointercancel", finish, true);
+    });
+
+    resizeHandle?.addEventListener("pointerdown", event => {
+      if (event.button !== 0) return;
+      event.preventDefault();
+      event.stopPropagation();
+      bringToFront(panel);
+
+      const pointerId = event.pointerId;
+      const startX = event.clientX;
+      const startY = event.clientY;
+      const startWidth = element.offsetWidth;
+      const startHeight = element.offsetHeight;
+
+      resizeHandle.setPointerCapture?.(pointerId);
+      document.body.style.userSelect = "none";
+      document.body.style.cursor = "nwse-resize";
+
+      const move = moveEvent => {
+        if (moveEvent.pointerId !== pointerId) return;
+        moveEvent.preventDefault();
+
+        const maxWidth = Math.max(220, window.innerWidth - (parseFloat(element.style.left) || 0) - 8);
+        const maxHeight = Math.max(150, window.innerHeight - (parseFloat(element.style.top) || 0) - 8);
+
+        const width = Math.min(
+          maxWidth,
+          Math.max(220, startWidth + moveEvent.clientX - startX)
+        );
+        const height = Math.min(
+          maxHeight,
+          Math.max(150, startHeight + moveEvent.clientY - startY)
+        );
+
+        element.style.width = `${width}px`;
+        element.style.height = `${height}px`;
+      };
+
+      const finish = finishEvent => {
+        if (
+          finishEvent.pointerId !== undefined &&
+          finishEvent.pointerId !== pointerId
+        ) return;
+        window.removeEventListener("pointermove", move, true);
+        window.removeEventListener("pointerup", finish, true);
+        window.removeEventListener("pointercancel", finish, true);
+        document.body.style.userSelect = "";
+        document.body.style.cursor = "";
+        try {
+          if (resizeHandle.hasPointerCapture?.(pointerId)) {
+            resizeHandle.releasePointerCapture(pointerId);
+          }
+        } catch {}
+        clampPanel(panel);
+        savePanels();
+      };
+
+      window.addEventListener("pointermove", move, { capture: true, passive: false });
+      window.addEventListener("pointerup", finish, true);
+      window.addEventListener("pointercancel", finish, true);
+    });
+  }
+
+  function createPanel(mode = DEFAULT_MODE, geometry = null) {
+    if (panels.size >= MAX_PANELS) {
+      emitState("maximum of 5 visualizers reached");
+      return null;
+    }
+
+    const id = nextPanelId++;
+    const element = document.createElement("section");
+    element.className = "watch-party-visualizer-window terminal2";
+    element.dataset.visualizerId = String(id);
+    element.dataset.theme = getWatchPartyTheme();
+    element.innerHTML = `
+      <div class="watch-party-visualizer-titlebar" data-visualizer-drag-handle>
+        <div class="min-w-0">
+          <div class="watch-party-visualizer-title theme-heading text-blue-glow">visualizer</div>
+          <div class="watch-party-visualizer-mode-label theme-body" data-visualizer-mode-label></div>
+        </div>
+        <div class="watch-party-visualizer-title-actions">
+          <button type="button" data-visualizer-modes-toggle aria-label="choose visualizer mode" title="choose visualizer mode">⋮</button>
+          <button type="button" data-visualizer-close aria-label="close visualizer" title="close visualizer">×</button>
+        </div>
+      </div>
+      <div class="watch-party-visualizer-mode-picker" data-visualizer-mode-picker hidden>
+        ${getPanelModeButtons()}
+      </div>
+      <div class="watch-party-visualizer-canvas-wrap">
+        <canvas data-visualizer-canvas></canvas>
+        <div class="watch-party-visualizer-inactive theme-body" data-visualizer-inactive hidden>audio capture stopped</div>
+      </div>
+      <div class="watch-party-visualizer-resize" data-visualizer-resize-handle aria-hidden="true"></div>
+    `;
+
+    const defaultOffset = 26 * panels.size;
+    const left = Number.isFinite(Number(geometry?.left))
+      ? Number(geometry.left)
+      : Math.max(12, Math.round((window.innerWidth - 330) / 2) + defaultOffset);
+    const top = Number.isFinite(Number(geometry?.top))
+      ? Number(geometry.top)
+      : Math.max(12, Math.round((window.innerHeight - 210) / 2) + defaultOffset);
+    const width = Number.isFinite(Number(geometry?.width))
+      ? Math.max(220, Number(geometry.width))
+      : 330;
+    const height = Number.isFinite(Number(geometry?.height))
+      ? Math.max(150, Number(geometry.height))
+      : 210;
+
+    element.style.left = `${left}px`;
+    element.style.top = `${top}px`;
+    element.style.width = `${width}px`;
+    element.style.height = `${height}px`;
+    element.style.zIndex = String(++topZ);
+
+    document.body.appendChild(element);
+
+    const canvas = element.querySelector("[data-visualizer-canvas]");
+    const panel = {
+      id,
+      element,
+      canvas,
+      context: canvas.getContext("2d"),
+      mode: normaliseMode(mode),
+      animationFrame: 0
+    };
+
+    panels.set(id, panel);
+    attachNativeWindowControls(panel);
+    setPanelMode(panel, panel.mode);
+    clampPanel(panel);
+
+    element.addEventListener("pointerdown", () => bringToFront(panel));
+
+    element.querySelector("[data-visualizer-close]")?.addEventListener("click", event => {
+      event.stopPropagation();
+      removePanel(id);
+    });
+
+    const picker = element.querySelector("[data-visualizer-mode-picker]");
+    element.querySelector("[data-visualizer-modes-toggle]")?.addEventListener("click", event => {
+      event.stopPropagation();
+      picker.hidden = !picker.hidden;
+    });
+
+    picker?.querySelectorAll("[data-visualizer-panel-mode]").forEach(button => {
+      button.addEventListener("click", event => {
+        event.stopPropagation();
+        setPanelMode(panel, button.dataset.visualizerPanelMode);
+        picker.hidden = true;
+      });
+    });
+
+    window.chat?.applyCurrentTheme?.();
+    startPanelLoop(panel);
+    savePanels();
+    emitState();
+    return panel;
+  }
+
+  function removePanel(id) {
+    const panel = panels.get(Number(id));
+    if (!panel) return;
+    cancelAnimationFrame(panel.animationFrame);
+    panel.element.remove();
+    panels.delete(panel.id);
+    savePanels();
+    emitState();
+  }
+
+  function resizeCanvas(panel) {
+    const canvas = panel.canvas;
+    const rect = canvas.getBoundingClientRect();
+    const ratio = Math.min(2, window.devicePixelRatio || 1);
+    const width = Math.max(1, Math.round(rect.width * ratio));
+    const height = Math.max(1, Math.round(rect.height * ratio));
+
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+    }
+
+    panel.context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    return { width: rect.width, height: rect.height };
+  }
+
+  function getAccent(panel) {
+    const style = getComputedStyle(panel.element);
+    return style.getPropertyValue("--visualizer-accent").trim() ||
+      style.getPropertyValue("--watch-party-accent").trim() ||
+      "#60a5fa";
+  }
+
+  function makeGradient(ctx, width, height, accent, vertical = false) {
+    const gradient = vertical
+      ? ctx.createLinearGradient(0, 0, 0, height)
+      : ctx.createLinearGradient(0, 0, width, 0);
+    gradient.addColorStop(0, accent);
+    gradient.addColorStop(0.38, "#86efac");
+    gradient.addColorStop(0.7, "#60a5fa");
+    gradient.addColorStop(1, "#f472b6");
+    return gradient;
+  }
+
+  function roundedRect(ctx, x, y, width, height, radius) {
+    const r = Math.min(radius, width / 2, height / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + width, y, x + width, y + height, r);
+    ctx.arcTo(x + width, y + height, x, y + height, r);
+    ctx.arcTo(x, y + height, x, y, r);
+    ctx.arcTo(x, y, x + width, y, r);
+    ctx.closePath();
+  }
+
+  function drawBars(ctx, width, height, data, accent, centred = false) {
+    const count = Math.min(38, data.length);
+    const step = Math.max(1, Math.floor(data.length / count));
+    const gap = 2;
+    const barWidth = Math.max(2, (width - gap * (count - 1)) / count);
+    const gradient = makeGradient(ctx, width, height, accent, false);
+    ctx.fillStyle = gradient;
+
+    for (let i = 0; i < count; i++) {
+      const value = data[i * step] / 255;
+      const barHeight = Math.max(2, value * (centred ? height * 0.44 : height * 0.84));
+      const x = i * (barWidth + gap);
+      const y = centred ? height / 2 - barHeight : height - barHeight;
+      roundedRect(ctx, x, y, barWidth, centred ? barHeight * 2 : barHeight, Math.min(3, barWidth / 2));
+      ctx.fill();
+    }
+  }
+
+  function drawDecay(ctx, width, height, data, accent) {
+    const count = Math.min(34, data.length);
+    const gap = 2;
+    const barWidth = Math.max(2, (width - gap * (count - 1)) / count);
+    ctx.fillStyle = accent;
+    for (let i = 0; i < count; i++) {
+      const sourceIndex = Math.min(data.length - 1, Math.floor((i / count) ** 1.7 * data.length * 0.72));
+      const raw = data[sourceIndex] / 255;
+      const falloff = Math.max(0.1, 1 - i / (count * 1.1));
+      const barHeight = Math.max(2, raw * falloff * height * 0.9);
+      roundedRect(ctx, i * (barWidth + gap), height - barHeight, barWidth, barHeight, 2);
+      ctx.fill();
+    }
+  }
+
+  function drawLine(ctx, width, height, data, accent, filled = false, low = false) {
+    const points = Math.min(80, data.length);
+    const step = Math.max(1, Math.floor(data.length / points));
+    const gradient = makeGradient(ctx, width, height, accent, false);
+    const baseline = low ? height * 0.82 : height * 0.72;
+
+    ctx.beginPath();
+    for (let i = 0; i < points; i++) {
+      const value = data[i * step] / 255;
+      const x = (i / Math.max(1, points - 1)) * width;
+      const y = baseline - value * (low ? height * 0.45 : height * 0.64);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = low ? 1.7 : 2.2;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    ctx.stroke();
+
+    if (filled) {
+      ctx.lineTo(width, height);
+      ctx.lineTo(0, height);
+      ctx.closePath();
+      const fill = makeGradient(ctx, width, height, accent, true);
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = fill;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  function drawWave(ctx, width, height, data, accent) {
+    const gradient = makeGradient(ctx, width, height, accent, false);
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    const slice = width / data.length;
+    let x = 0;
+    for (let i = 0; i < data.length; i++) {
+      const v = data[i] / 128;
+      const y = v * height / 2;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+      x += slice;
+    }
+    ctx.stroke();
+
+    ctx.fillStyle = gradient;
+    const dotCount = 18;
+    for (let i = 0; i < dotCount; i++) {
+      const index = Math.floor((i / dotCount) * data.length);
+      const y = (data[index] / 128) * height / 2;
+      const xPos = (i / Math.max(1, dotCount - 1)) * width;
+      ctx.beginPath();
+      ctx.arc(xPos, y, 1.4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function drawPanel(panel) {
+    const ctx = panel.context;
+    const { width, height } = resizeCanvas(panel);
+    ctx.clearRect(0, 0, width, height);
+
+    if (!analyser || !frequencyData || !timeData) {
+      panel.element.querySelector("[data-visualizer-inactive]")?.removeAttribute("hidden");
+      return;
+    }
+
+    panel.element.querySelector("[data-visualizer-inactive]")?.setAttribute("hidden", "");
+    analyser.getByteFrequencyData(frequencyData);
+    analyser.getByteTimeDomainData(timeData);
+    const accent = getAccent(panel);
+
+    switch (panel.mode) {
+      case "wave":
+        drawWave(ctx, width, height, timeData, accent);
+        break;
+      case "decay":
+        drawDecay(ctx, width, height, frequencyData, accent);
+        break;
+      case "line":
+        drawLine(ctx, width, height, frequencyData, accent, true, false);
+        break;
+      case "peaks":
+        drawLine(ctx, width, height, frequencyData, accent, false, true);
+        break;
+      case "mountain":
+        drawLine(ctx, width, height, frequencyData, accent, true, true);
+        break;
+      case "bars":
+      default:
+        drawBars(ctx, width, height, frequencyData, accent, false);
+        break;
+    }
+  }
+
+  function startPanelLoop(panel) {
+    cancelAnimationFrame(panel.animationFrame);
+    const loop = () => {
+      if (!panels.has(panel.id)) return;
+      drawPanel(panel);
+      panel.animationFrame = requestAnimationFrame(loop);
+    };
+    panel.animationFrame = requestAnimationFrame(loop);
+  }
+
+  function stopAudioGraph() {
+    try { sourceNode?.disconnect(); } catch {}
+    sourceNode = null;
+    analyser = null;
+    frequencyData = null;
+    timeData = null;
+
+    if (audioContext) {
+      const context = audioContext;
+      audioContext = null;
+      context.close().catch(() => {});
+    }
+
+    if (captureStream) {
+      const stream = captureStream;
+      captureStream = null;
+      stream.getTracks().forEach(track => {
+        try { track.stop(); } catch {}
+      });
+    }
+  }
+
+  function markCaptureStopped(message = "audio capture stopped") {
+    stopAudioGraph();
+    panels.forEach(panel => {
+      panel.element
+        .querySelector("[data-visualizer-inactive]")
+        ?.removeAttribute("hidden");
+    });
+    emitState(message);
+  }
+
+  async function start(defaultMode = DEFAULT_MODE) {
+    if (!watchPartyEnabled) {
+      const error = new Error(
+        "visualizers are available while watch party is enabled"
+      );
+      emitState(error.message);
+      throw error;
+    }
+
+    if (!isSupported()) {
+      const error = new Error(
+        "tab-audio capture is not available in this browser"
+      );
+      emitState(error.message);
+      throw error;
+    }
+
+    if (captureStream && analyser) {
+      if (panels.size === 0) createPanel(defaultMode);
+      emitState();
+      return getState();
+    }
+
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: true
+      });
+    } catch (error) {
+      emitState("tab audio capture was cancelled");
+      throw error;
+    }
+
+    const audioTracks = stream.getAudioTracks();
+    if (audioTracks.length === 0) {
+      stream.getTracks().forEach(track => track.stop());
+      const error = new Error(
+        "no tab audio was shared — select a browser tab and enable audio sharing if your browser provides that option"
+      );
+      emitState(error.message);
+      throw error;
+    }
+
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    const context = new AudioContextClass();
+    await context.resume();
+
+    const source = context.createMediaStreamSource(stream);
+    const nextAnalyser = context.createAnalyser();
+    nextAnalyser.fftSize = 2048;
+    nextAnalyser.smoothingTimeConstant = 0.82;
+    nextAnalyser.minDecibels = -90;
+    nextAnalyser.maxDecibels = -10;
+    source.connect(nextAnalyser);
+
+    captureStream = stream;
+    audioContext = context;
+    sourceNode = source;
+    analyser = nextAnalyser;
+    frequencyData = new Uint8Array(nextAnalyser.frequencyBinCount);
+    timeData = new Uint8Array(nextAnalyser.fftSize);
+
+    const endHandler = () => {
+      if (captureStream === stream) {
+        markCaptureStopped("tab audio sharing ended");
+      }
+    };
+    stream.getTracks().forEach(track => track.addEventListener("ended", endHandler, { once: true }));
+
+    if (panels.size === 0) {
+      const saved = loadSavedPanels();
+      if (saved.length > 0) {
+        restoring = true;
+        saved.forEach(item => createPanel(normaliseMode(item.mode), item));
+        restoring = false;
+        savePanels();
+      } else {
+        createPanel(defaultMode);
+      }
+    }
+
+    emitState("visualizers enabled");
+    return getState();
+  }
+
+  function stop({ removePanels = true, message = "visualizers disabled", emit = true } = {}) {
+    stopAudioGraph();
+    if (removePanels) {
+      const saved = [...panels.values()].map(panel => ({
+        mode: panel.mode,
+        left: parseFloat(panel.element.style.left) || 24,
+        top: parseFloat(panel.element.style.top) || 24,
+        width: panel.element.offsetWidth,
+        height: panel.element.offsetHeight
+      }));
+      if (saved.length) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+      }
+      panels.forEach(panel => {
+        cancelAnimationFrame(panel.animationFrame);
+        panel.element.remove();
+      });
+      panels.clear();
+    }
+    if (emit) {
+      emitState(message);
+    }
+  }
+
+  function setWatchPartyEnabled(enabled) {
+    watchPartyEnabled = enabled === true;
+
+    if (!watchPartyEnabled) {
+      const hadVisualizerState = Boolean(
+        captureStream || analyser || panels.size > 0
+      );
+
+      if (hadVisualizerState) {
+        stop({
+          removePanels: true,
+          message: "visualizers paused while watch party is disabled",
+          emit: false
+        });
+      }
+
+      return;
+    }
+
+  }
+
+  function addPanel(mode = DEFAULT_MODE) {
+    return createPanel(normaliseMode(mode));
+  }
+
+  function syncTheme(theme = getWatchPartyTheme()) {
+    panels.forEach(panel => {
+      panel.element.dataset.theme = theme || "default";
+    });
+  }
+
+  function getState() {
+    return {
+      supported: isSupported(),
+      active: Boolean(captureStream && analyser),
+      panelCount: panels.size,
+      maxPanels: MAX_PANELS,
+      watchPartyEnabled
+    };
+  }
+
+  window.addEventListener("resize", () => {
+    panels.forEach(clampPanel);
+  });
+
+  return {
+    MAX_PANELS,
+    DEFAULT_MODE,
+    isSupported,
+    start,
+    stop,
+    setWatchPartyEnabled,
+    addPanel,
+    removePanel,
+    syncTheme,
+    getState
+  };
+})();
+
+window.watchPartyVisualizers = watchPartyVisualizers;
+
 window.watchPartyPlayer = {
  applyState(state) {
   currentWatchPartyState = state;
@@ -3028,8 +3817,8 @@ function siteFAQ() {
   id="aboutScroll"
   class="
     themed-scrollbar
-    max-h-[52vh]
-    sm:max-h-[58vh]
+    max-h-[44vh]
+    sm:max-h-[44vh]
     overflow-y-auto
     overscroll-contain
     pr-3
