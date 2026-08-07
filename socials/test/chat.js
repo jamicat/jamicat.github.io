@@ -10376,20 +10376,6 @@ showCompletedImage(
                 row.jamiImageUpload ||
                 upload;
 
-            const ownsUpload =
-                Boolean(
-                    currentUpload.clientId
-                ) &&
-                currentUpload.clientId ===
-                    this.clientId;
-
-            if (
-                !ownsUpload &&
-                !this.isAdmin
-            ) {
-                return;
-            }
-
             event.preventDefault();
             event.stopPropagation();
 
