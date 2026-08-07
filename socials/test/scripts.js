@@ -2673,8 +2673,8 @@ const watchPartyVisualizers = (() => {
       ctx.lineTo(width, height);
       ctx.lineTo(0, height);
       ctx.closePath();
-      const fill = makeGradient(ctx, width, height, accent, true);
-      ctx.globalAlpha = 0.65;
+      const fill = makeGradient(ctx, width, height, accent, false);
+      ctx.globalAlpha = low ? 0.72 : 0.42;
       ctx.fillStyle = fill;
       ctx.fill();
       ctx.globalAlpha = 1;
