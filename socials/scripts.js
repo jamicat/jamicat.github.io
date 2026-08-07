@@ -2594,25 +2594,21 @@ const watchPartyVisualizers = (() => {
     ctx.closePath();
   }
 
-  function drawBars(ctx, width, height, data, accent, centred = false) {
-    const count = Math.min(38, data.length);
-    const gap = 2;
-    const barWidth = Math.max(2, (width - gap * (count - 1)) / count);
-    const gradient = makeGradient(ctx, width, height, accent, false);
+  function getLogSpectrum(data, count) {
+    const safeCount = Math.max(2, Math.min(count, data.length));
     const sampleRate = audioContext?.sampleRate || 48000;
     const fftSize = analyser?.fftSize || data.length * 2;
     const nyquist = sampleRate / 2;
     const minFrequency = 40;
     const maxFrequency = Math.min(16000, nyquist * 0.92);
     const frequencyRange = maxFrequency / minFrequency;
+    const values = new Float32Array(safeCount);
 
-    ctx.fillStyle = gradient;
-
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < safeCount; i++) {
       const lowFrequency =
-        minFrequency * Math.pow(frequencyRange, i / count);
+        minFrequency * Math.pow(frequencyRange, i / safeCount);
       const highFrequency =
-        minFrequency * Math.pow(frequencyRange, (i + 1) / count);
+        minFrequency * Math.pow(frequencyRange, (i + 1) / safeCount);
 
       const lowBin = Math.max(
         1,
@@ -2637,8 +2633,28 @@ const watchPartyVisualizers = (() => {
       const average = samples > 0 ? total / samples : 0;
       const normalized = average / 255;
       const perceptualBoost = Math.pow(normalized, 0.65);
-      const highFrequencyLift = 1 + 0.45 * (i / Math.max(1, count - 1));
-      const value = Math.min(1, perceptualBoost * highFrequencyLift);
+      const highFrequencyLift =
+        1 + 0.45 * (i / Math.max(1, safeCount - 1));
+
+      values[i] = Math.min(
+        1,
+        perceptualBoost * highFrequencyLift
+      );
+    }
+
+    return values;
+  }
+
+  function drawBars(ctx, width, height, data, accent, centred = false) {
+    const values = getLogSpectrum(data, 38);
+    const count = values.length;
+    const gap = 2;
+    const barWidth = Math.max(2, (width - gap * (count - 1)) / count);
+    const gradient = makeGradient(ctx, width, height, accent, false);
+    ctx.fillStyle = gradient;
+
+    for (let i = 0; i < count; i++) {
+      const value = values[i];
       const barHeight = Math.max(
         2,
         value * (centred ? height * 0.44 : height * 0.84)
@@ -2659,29 +2675,35 @@ const watchPartyVisualizers = (() => {
   }
 
   function drawDecay(ctx, width, height, data, accent) {
-    const count = Math.min(34, data.length);
+    const values = getLogSpectrum(data, 34);
+    const count = values.length;
     const gap = 2;
     const barWidth = Math.max(2, (width - gap * (count - 1)) / count);
     ctx.fillStyle = accent;
+
     for (let i = 0; i < count; i++) {
-      const sourceIndex = Math.min(data.length - 1, Math.floor((i / count) ** 1.7 * data.length * 0.72));
-      const raw = data[sourceIndex] / 255;
-      const falloff = Math.max(0.1, 1 - i / (count * 1.1));
-      const barHeight = Math.max(2, raw * falloff * height * 0.9);
-      roundedRect(ctx, i * (barWidth + gap), height - barHeight, barWidth, barHeight, 2);
+      const barHeight = Math.max(2, values[i] * height * 0.9);
+      roundedRect(
+        ctx,
+        i * (barWidth + gap),
+        height - barHeight,
+        barWidth,
+        barHeight,
+        2
+      );
       ctx.fill();
     }
   }
 
   function drawLine(ctx, width, height, data, accent, filled = false, low = false) {
-    const points = Math.min(80, data.length);
-    const step = Math.max(1, Math.floor(data.length / points));
+    const values = getLogSpectrum(data, 64);
+    const points = values.length;
     const gradient = makeGradient(ctx, width, height, accent, false);
     const baseline = low ? height * 0.82 : height * 0.72;
 
     ctx.beginPath();
     for (let i = 0; i < points; i++) {
-      const value = data[i * step] / 255;
+      const value = values[i];
       const x = (i / Math.max(1, points - 1)) * width;
       const y = baseline - value * (low ? height * 0.45 : height * 0.64);
       if (i === 0) ctx.moveTo(x, y);
