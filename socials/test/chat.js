@@ -3154,7 +3154,20 @@ const hasWatchPartyVideo =
         aria-expanded="${this.watchPartyVisualizerOpen ? "true" : "false"}"
         title="visualizers"
     >
-        <span class="inline-block rotate-180" aria-hidden="true">〽</span>
+        <svg
+            aria-hidden="true"
+            viewBox="0 0 18 18"
+            class="h-4 w-4"
+            fill="none"
+        >
+            <path
+                d="M2 13L6 9L9 11L13 5L16 7"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+        </svg>
     </button>
 
     <button
@@ -9358,7 +9371,7 @@ async openNameHistoryManager(
 
         body.classList.toggle(
             "is-scrollable",
-            history.length > 5
+            history.length >= 5
         );
 
         body.appendChild(list);
