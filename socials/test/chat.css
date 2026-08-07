@@ -2671,12 +2671,18 @@ top: -0.2px;
 
 .jami-name-history-body {
     min-height: 72px;
-    overflow-y: auto;
+    overflow-y: visible;
     padding: 10px 14px;
     scrollbar-width: thin;
     scrollbar-color:
         rgba(255, 255, 255, .22)
         transparent;
+}
+
+
+.jami-name-history-body.is-scrollable {
+    max-height: 252px;
+    overflow-y: auto;
 }
 
 .jami-name-history-body::-webkit-scrollbar {
@@ -3292,6 +3298,9 @@ top: -0.2px;
     justify-content: space-between;
     gap: 8px;
     padding-bottom: 10px;
+    cursor: move;
+    user-select: none;
+    touch-action: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
