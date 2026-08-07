@@ -131,6 +131,8 @@ this.banManagerButton = null;
 this.partyManager = null;
 this.partyManagerButton = null;
 this.partyManagerBusy = false;
+this.savedRemixManager = null;
+this.savedRemixManagerBusy = false;
 this.watchPartyVideoMode = "cinematic";
 this.WATCH_PARTY_COLOURS = [
     "red",
@@ -864,6 +866,27 @@ this.minimizeButton =
 
 
 this.createReplyComposerPreview();
+
+this.messages?.addEventListener(
+    "contextmenu",
+    event => {
+        if (
+            event.target.closest(
+                ".chatMessage"
+            )
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.openChatContextMenu(
+            event.clientX,
+            event.clientY
+        );
+    }
+);
 
 	   this.motdElement.addEventListener(
     "contextmenu",
@@ -7814,6 +7837,22 @@ openModerationMenu(x, y, message) {
         }));
     }
 
+    const savedRemixDivider =
+        document.createElement("div");
+    savedRemixDivider.className =
+        "my-1 border-t border-white/10";
+    buttons.push(savedRemixDivider);
+
+    buttons.push(
+        this.createModerationMenuButton(
+            "saved remixes",
+            () => {
+                this.closeModerationMenu();
+                this.openSavedRemixManager();
+            }
+        )
+    );
+
     if (this.isAdmin) {
         buttons.push(this.createModerationMenuButton(`ban ${message.name || "user"}`, async () => {
             this.closeModerationMenu();
@@ -7857,6 +7896,608 @@ openModerationMenu(x, y, message) {
     menu.style.left = `${Math.max(padding, Math.min(x, window.innerWidth - rect.width - padding))}px`;
     menu.style.top = `${Math.max(padding, Math.min(y, window.innerHeight - rect.height - padding))}px`;
     this.moderationMenu = menu;
+}
+
+openChatContextMenu(x, y) {
+    this.closeModerationMenu();
+
+    const menu =
+        document.createElement("div");
+
+    menu.className = [
+        "fixed",
+        "z-[100000]",
+        "w-44",
+        "overflow-hidden",
+        "rounded-xl",
+        "border",
+        "border-white/15",
+        "bg-black/90",
+        "py-1",
+        "text-[11px]",
+        "text-white",
+        "shadow-xl",
+        "backdrop-blur-xl",
+        "theme-body"
+    ].join(" ");
+
+    menu.appendChild(
+        this.createModerationMenuButton(
+            "saved remixes",
+            () => {
+                this.closeModerationMenu();
+                this.openSavedRemixManager();
+            }
+        )
+    );
+
+    document.body.appendChild(menu);
+
+    const rect =
+        menu.getBoundingClientRect();
+
+    const padding = 8;
+
+    menu.style.left =
+        `${Math.max(
+            padding,
+            Math.min(
+                x,
+                window.innerWidth -
+                    rect.width -
+                    padding
+            )
+        )}px`;
+
+    menu.style.top =
+        `${Math.max(
+            padding,
+            Math.min(
+                y,
+                window.innerHeight -
+                    rect.height -
+                    padding
+            )
+        )}px`;
+
+    this.moderationMenu = menu;
+}
+
+closeSavedRemixManager() {
+    if (!this.savedRemixManager) {
+        return;
+    }
+
+    this.savedRemixManager.remove();
+    this.savedRemixManager = null;
+    this.savedRemixManagerBusy = false;
+}
+
+async openSavedRemixManager() {
+    this.closeSavedRemixManager();
+
+    const overlay =
+        document.createElement("div");
+
+    overlay.className =
+        "jami-saved-remix-overlay";
+
+    const panel =
+        document.createElement("section");
+
+    panel.id =
+        "chatSavedRemixManager";
+
+    panel.className =
+        "terminal2 theme-body jami-saved-remix-manager";
+
+    const header =
+        document.createElement("div");
+
+    header.className =
+        "jami-saved-remix-header";
+
+    const title =
+        document.createElement("div");
+
+    title.className =
+        "theme-heading jami-saved-remix-title";
+
+    title.textContent =
+        "saved remixes";
+
+    const close =
+        document.createElement("button");
+
+    close.type = "button";
+    close.className =
+        "jami-saved-remix-close";
+    close.textContent = "×";
+    close.title =
+        "close saved remixes";
+
+    close.addEventListener(
+        "click",
+        () =>
+            this.closeSavedRemixManager()
+    );
+
+    header.append(
+        title,
+        close
+    );
+
+    const status =
+        document.createElement("div");
+
+    status.className =
+        "jami-saved-remix-status";
+    status.textContent =
+        "loading saved remixes...";
+
+    const grid =
+        document.createElement("div");
+
+    grid.className =
+        "jami-saved-remix-grid";
+
+    panel.append(
+        header,
+        status,
+        grid
+    );
+
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener(
+        "mousedown",
+        event => {
+            if (event.target === overlay) {
+                this.closeSavedRemixManager();
+            }
+        }
+    );
+
+    this.savedRemixManager =
+        overlay;
+
+    try {
+        const request =
+            await fetch(
+                `${this.API}/api/chat/saved-remixes`,
+                {
+                    cache: "no-store"
+                }
+            );
+
+        const items =
+            await request.json();
+
+        if (!request.ok) {
+            throw new Error(
+                items?.error ||
+                "could not load saved remixes"
+            );
+        }
+
+        grid.replaceChildren();
+
+        if (
+            !Array.isArray(items) ||
+            items.length === 0
+        ) {
+            status.textContent =
+                "no saved remixes yet";
+            return;
+        }
+
+        status.textContent =
+            `${items.length} saved remix${
+                items.length === 1
+                    ? ""
+                    : "es"
+            }`;
+
+        for (const item of items) {
+            grid.appendChild(
+                this.createSavedRemixCard(
+                    item
+                )
+            );
+        }
+    } catch (error) {
+        console.error(
+            "Could not load saved remixes:",
+            error
+        );
+
+        status.textContent =
+            "could not load saved remixes";
+    }
+}
+
+createSavedRemixCard(item) {
+    const card =
+        document.createElement("article");
+
+    card.className =
+        "jami-saved-remix-card";
+
+    const image =
+        document.createElement("img");
+
+    image.className =
+        "jami-saved-remix-thumb";
+    image.src =
+        item.imageUrl;
+    image.alt =
+        item.originalName ||
+        "saved remix";
+    image.loading = "lazy";
+
+    const meta =
+        document.createElement("div");
+
+    meta.className =
+        "jami-saved-remix-meta";
+
+    const creator =
+        document.createElement("div");
+
+    creator.className =
+        "jami-saved-remix-creator";
+
+    creator.textContent =
+        `created by ${
+            item.creatorName ||
+            "anonymous"
+        }`;
+
+    const created =
+        document.createElement("div");
+
+    created.className =
+        "jami-saved-remix-date";
+
+    const createdDate =
+        new Date(
+            item.createdAt ||
+            item.savedAt
+        );
+
+    created.textContent =
+        Number.isNaN(
+            createdDate.getTime()
+        )
+            ? ""
+            : createdDate
+                .toLocaleString(
+                    undefined,
+                    {
+                        dateStyle:
+                            "medium",
+                        timeStyle:
+                            "short"
+                    }
+                );
+
+    const saved =
+        document.createElement("div");
+
+    saved.className =
+        "jami-saved-remix-saved-by";
+
+    const savedDate =
+        new Date(item.savedAt);
+
+    saved.textContent =
+        `saved by ${
+            item.savedByName ||
+            "admin"
+        }${
+            Number.isNaN(
+                savedDate.getTime()
+            )
+                ? ""
+                : ` · ${
+                    savedDate.toLocaleString(
+                        undefined,
+                        {
+                            dateStyle:
+                                "medium",
+                            timeStyle:
+                                "short"
+                        }
+                    )
+                }`
+        }`;
+
+    meta.append(
+        creator,
+        created,
+        saved
+    );
+
+    const actions =
+        document.createElement("div");
+
+    actions.className =
+        "jami-saved-remix-actions";
+
+    const repost =
+        document.createElement("button");
+
+    repost.type = "button";
+    repost.className =
+        "jami-saved-remix-action";
+    repost.textContent =
+        "repost";
+
+    repost.addEventListener(
+        "click",
+        async () => {
+            repost.disabled = true;
+
+            try {
+                await this.repostSavedRemix(
+                    item.savedId
+                );
+
+                this.closeSavedRemixManager();
+            } finally {
+                repost.disabled = false;
+            }
+        }
+    );
+
+    actions.appendChild(repost);
+
+    if (this.isAdmin) {
+        const remove =
+            document.createElement(
+                "button"
+            );
+
+        remove.type = "button";
+        remove.className =
+            "jami-saved-remix-action jami-saved-remix-delete";
+        remove.textContent =
+            "delete";
+
+        remove.addEventListener(
+            "click",
+            async () => {
+                const confirmed =
+                    window.confirm(
+                        "delete this saved remix permanently?"
+                    );
+
+                if (!confirmed) {
+                    return;
+                }
+
+                remove.disabled = true;
+
+                try {
+                    await this.deleteSavedRemix(
+                        item.savedId
+                    );
+
+                    card.remove();
+
+                    const grid =
+                        this.savedRemixManager
+                            ?.querySelector(
+                                ".jami-saved-remix-grid"
+                            );
+
+                    if (
+                        grid &&
+                        grid.children.length === 0
+                    ) {
+                        const status =
+                            this.savedRemixManager
+                                .querySelector(
+                                    ".jami-saved-remix-status"
+                                );
+
+                        if (status) {
+                            status.textContent =
+                                "no saved remixes yet";
+                        }
+                    }
+                } finally {
+                    remove.disabled = false;
+                }
+            }
+        );
+
+        actions.appendChild(remove);
+    }
+
+    card.append(
+        image,
+        meta,
+        actions
+    );
+
+    return card;
+}
+
+async saveRemix(upload, button = null) {
+    if (
+        !this.isAdmin ||
+        !upload?.uploadId
+    ) {
+        return;
+    }
+
+    if (button) {
+        button.disabled = true;
+        button.textContent =
+            "saving...";
+    }
+
+    try {
+        const request =
+            await fetch(
+                `${this.API}/api/admin/saved-remixes/save`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                        "Authorization":
+                            `Bearer ${this.adminKey}`
+                    },
+                    body:
+                        JSON.stringify({
+                            uploadId:
+                                upload.uploadId,
+                            savedByClientId:
+                                this.clientId,
+                            savedByName:
+                                this.discordUser
+                                    ?.displayName ||
+                                this.nameInput
+                                    ?.value
+                                    ?.trim() ||
+                                "admin"
+                        })
+                }
+            );
+
+        const result =
+            await request.json();
+
+        if (!request.ok) {
+            throw new Error(
+                result?.error ||
+                "could not save remix"
+            );
+        }
+
+        if (button) {
+            button.textContent =
+                result.alreadySaved
+                    ? "saved"
+                    : "saved";
+            button.classList.add(
+                "is-saved"
+            );
+        }
+    } catch (error) {
+        console.error(
+            "Could not save remix:",
+            error
+        );
+
+        window.alert(
+            `could not save remix: ${error.message}`
+        );
+
+        if (button) {
+            button.textContent =
+                "save remix";
+        }
+    } finally {
+        if (button) {
+            button.disabled = false;
+        }
+    }
+}
+
+async deleteSavedRemix(savedId) {
+    const request =
+        await fetch(
+            `${this.API}/api/admin/saved-remixes/delete`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json",
+                    "Authorization":
+                        `Bearer ${this.adminKey}`
+                },
+                body:
+                    JSON.stringify({
+                        savedId
+                    })
+            }
+        );
+
+    const result =
+        await request.json();
+
+    if (!request.ok) {
+        window.alert(
+            result?.error ||
+            "could not delete saved remix"
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
+async repostSavedRemix(savedId) {
+    try {
+        const request =
+            await fetch(
+                `${this.API}/api/chat/saved-remixes/repost`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                        ...(this.discordAuthToken
+                            ? {
+                                "Authorization":
+                                    `Bearer ${this.discordAuthToken}`
+                            }
+                            : {})
+                    },
+                    body:
+                        JSON.stringify({
+                            savedId,
+                            clientId:
+                                this.clientId,
+                            name:
+                                this.nameInput
+                                    ?.value
+                                    ?.trim() ||
+                                "anonymous",
+                            avatar:
+                                this.avatar
+                        })
+                }
+            );
+
+        const result =
+            await request.json();
+
+        if (!request.ok) {
+            throw new Error(
+                result?.error ||
+                "could not repost saved remix"
+            );
+        }
+
+        return result.upload;
+    } catch (error) {
+        console.error(
+            "Could not repost saved remix:",
+            error
+        );
+
+        window.alert(
+            `could not repost saved remix: ${error.message}`
+        );
+
+        throw error;
+    }
 }
 
 openMemberModerationMenu(x, y, member) {
@@ -9366,6 +10007,43 @@ createCompletedImageElement(
                     name.trim()
                 )
             : [];
+
+    if (
+        remixChain.length > 0 &&
+        this.isAdmin
+    ) {
+        const saveButton =
+            document.createElement(
+                "button"
+            );
+
+        saveButton.type = "button";
+        saveButton.className = [
+            "jami-image-remix-trigger",
+            "jami-image-save-remix-trigger",
+            "theme-body"
+        ].join(" ");
+
+        saveButton.textContent =
+            "save remix";
+
+        saveButton.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                this.saveRemix(
+                    upload,
+                    saveButton
+                );
+            }
+        );
+
+        shell.appendChild(
+            saveButton
+        );
+    }
 
     if (remixChain.length > 0) {
         const attribution =
