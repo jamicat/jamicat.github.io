@@ -1998,7 +1998,7 @@ input[data-watch-party-url]::placeholder{
     font-family: var(--body-font, Consolas, monospace);
 }
 
-#chatWindow .jami-reaction-tooltip {
+.jami-reaction-tooltip {
     position: fixed;
     z-index: 100010;
     width: max-content;
