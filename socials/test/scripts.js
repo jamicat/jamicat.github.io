@@ -2070,11 +2070,6 @@ if (
     watchPartyAutomaticNextPending =
         true;
 
-    /*
-     * Capture the video and index now.
-     * Do not read them later after an
-     * asynchronous state update.
-     */
     const endedVideoId =
         watchPartyState
             .currentVideoId;
@@ -2123,11 +2118,6 @@ if (
                     );
                 }
 
-                /*
-                 * result.stale means another
-                 * browser advanced first.
-                 * That is expected, not an error.
-                 */
             }
         )
         .catch(error => {
@@ -2172,17 +2162,6 @@ function playNextNormalVideo() {
   });
 }
 
-
-
-/*
- * Client-side Watch Party audio visualizers.
- *
- * The YouTube player lives in a cross-origin iframe, so the visualizers
- * analyse a user-approved display/tab capture stream. One analyser feeds
- * every visualizer panel; each panel renders independently and uses native
- * pointer events for dragging/resizing so it does not conflict with
- * Interact.js.
- */
 const watchPartyVisualizers = (() => {
   const MAX_PANELS = 5;
   const DEFAULT_MODE = "bars";
@@ -2617,18 +2596,64 @@ const watchPartyVisualizers = (() => {
 
   function drawBars(ctx, width, height, data, accent, centred = false) {
     const count = Math.min(38, data.length);
-    const step = Math.max(1, Math.floor(data.length / count));
     const gap = 2;
     const barWidth = Math.max(2, (width - gap * (count - 1)) / count);
     const gradient = makeGradient(ctx, width, height, accent, false);
+    const sampleRate = audioContext?.sampleRate || 48000;
+    const fftSize = analyser?.fftSize || data.length * 2;
+    const nyquist = sampleRate / 2;
+    const minFrequency = 40;
+    const maxFrequency = Math.min(16000, nyquist * 0.92);
+    const frequencyRange = maxFrequency / minFrequency;
+
     ctx.fillStyle = gradient;
 
     for (let i = 0; i < count; i++) {
-      const value = data[i * step] / 255;
-      const barHeight = Math.max(2, value * (centred ? height * 0.44 : height * 0.84));
+      const lowFrequency =
+        minFrequency * Math.pow(frequencyRange, i / count);
+      const highFrequency =
+        minFrequency * Math.pow(frequencyRange, (i + 1) / count);
+
+      const lowBin = Math.max(
+        1,
+        Math.floor(lowFrequency * fftSize / sampleRate)
+      );
+      const highBin = Math.min(
+        data.length - 1,
+        Math.max(
+          lowBin,
+          Math.ceil(highFrequency * fftSize / sampleRate)
+        )
+      );
+
+      let total = 0;
+      let samples = 0;
+
+      for (let bin = lowBin; bin <= highBin; bin++) {
+        total += data[bin];
+        samples++;
+      }
+
+      const average = samples > 0 ? total / samples : 0;
+      const normalized = average / 255;
+      const perceptualBoost = Math.pow(normalized, 0.65);
+      const highFrequencyLift = 1 + 0.45 * (i / Math.max(1, count - 1));
+      const value = Math.min(1, perceptualBoost * highFrequencyLift);
+      const barHeight = Math.max(
+        2,
+        value * (centred ? height * 0.44 : height * 0.84)
+      );
       const x = i * (barWidth + gap);
       const y = centred ? height / 2 - barHeight : height - barHeight;
-      roundedRect(ctx, x, y, barWidth, centred ? barHeight * 2 : barHeight, Math.min(3, barWidth / 2));
+
+      roundedRect(
+        ctx,
+        x,
+        y,
+        barWidth,
+        centred ? barHeight * 2 : barHeight,
+        Math.min(3, barWidth / 2)
+      );
       ctx.fill();
     }
   }
