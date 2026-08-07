@@ -3161,3 +3161,152 @@ top: -0.2px;
         display: none;
     }
 }
+
+/* Watch Party visualizer menu */
+#chatWatchPartyVisualizerMenu {
+    --watch-party-accent: #60a5fa;
+    --watch-party-accent-rgb: 96, 165, 250;
+    --watch-party-panel-bg: rgba(3, 9, 22, 0.97);
+    --visualizer-accent: var(--watch-party-accent);
+    --visualizer-accent-rgb: var(--watch-party-accent-rgb);
+    font-family: var(--body-font, Consolas, monospace);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="red"] {
+    --watch-party-accent: #ef4444;
+    --watch-party-accent-rgb: 239, 68, 68;
+    --watch-party-panel-bg: rgba(20, 4, 6, 0.97);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="orange"] {
+    --watch-party-accent: #f97316;
+    --watch-party-accent-rgb: 249, 115, 22;
+    --watch-party-panel-bg: rgba(22, 9, 3, 0.97);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="yellow"] {
+    --watch-party-accent: #eab308;
+    --watch-party-accent-rgb: 234, 179, 8;
+    --watch-party-panel-bg: rgba(19, 15, 2, 0.97);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="green"] {
+    --watch-party-accent: #22c55e;
+    --watch-party-accent-rgb: 34, 197, 94;
+    --watch-party-panel-bg: rgba(3, 18, 9, 0.97);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="cyan"] {
+    --watch-party-accent: #06b6d4;
+    --watch-party-accent-rgb: 6, 182, 212;
+    --watch-party-panel-bg: rgba(2, 16, 19, 0.97);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="blue"] {
+    --watch-party-accent: #3b82f6;
+    --watch-party-accent-rgb: 59, 130, 246;
+    --watch-party-panel-bg: rgba(3, 9, 22, 0.97);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="purple"] {
+    --watch-party-accent: #a855f7;
+    --watch-party-accent-rgb: 168, 85, 247;
+    --watch-party-panel-bg: rgba(14, 5, 22, 0.97);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="pink"] {
+    --watch-party-accent: #ec4899;
+    --watch-party-accent-rgb: 236, 72, 153;
+    --watch-party-panel-bg: rgba(22, 4, 13, 0.97);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme]:not([data-theme="default"]):not([data-theme="rainbow"]) {
+    border-color: var(--watch-party-accent);
+    background: var(--watch-party-panel-bg);
+    box-shadow: none;
+}
+
+#chatWatchPartyVisualizerMenu[data-theme]:not([data-theme="default"]):not([data-theme="rainbow"]) .theme-heading {
+    color: var(--watch-party-accent);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="rainbow"] {
+    --visualizer-accent: #67e8f9;
+    --visualizer-accent-rgb: 103, 232, 249;
+    border: 2px solid transparent;
+    background:
+        linear-gradient(
+            120deg,
+            rgba(255, 59, 48, 0.16),
+            rgba(255, 149, 0, 0.14),
+            rgba(255, 204, 0, 0.12),
+            rgba(52, 199, 89, 0.13),
+            rgba(0, 199, 190, 0.14),
+            rgba(10, 132, 255, 0.16),
+            rgba(94, 92, 230, 0.15),
+            rgba(175, 82, 222, 0.16),
+            rgba(255, 45, 85, 0.15),
+            rgba(255, 59, 48, 0.16)
+        ) padding-box,
+        linear-gradient(rgba(3, 3, 5, 0.82), rgba(3, 3, 5, 0.82)) padding-box,
+        linear-gradient(
+            110deg,
+            #ff3b30,
+            #ff9500,
+            #ffcc00,
+            #34c759,
+            #00c7be,
+            #0a84ff,
+            #5e5ce6,
+            #af52de,
+            #ff2d55,
+            #ff3b30
+        ) border-box;
+    background-size: 300% 300%, 100% 100%, 300% 300%;
+    animation: watch-party-rainbow-panel-shift 10s linear infinite;
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="rainbow"] .theme-heading {
+    color: transparent;
+    background-image: linear-gradient(
+        90deg,
+        #ff453a,
+        #ff9f0a,
+        #ffd60a,
+        #30d158,
+        #64d2ff,
+        #0a84ff,
+        #bf5af2,
+        #ff375f,
+        #ff453a
+    );
+    background-size: 300% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: watch-party-rainbow-shift 6s linear infinite;
+}
+
+.watch-party-visualizer-menu-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#chatWatchPartyVisualizerMenu .watch-party-visualizer-action {
+    border-color: rgba(var(--visualizer-accent-rgb), .4);
+    color: var(--visualizer-accent);
+    background: rgba(var(--visualizer-accent-rgb), .06);
+}
+
+#chatWatchPartyVisualizerMenu .watch-party-visualizer-action:hover:not(:disabled) {
+    background: rgba(var(--visualizer-accent-rgb), .13);
+}
+
+@media (max-width: 640px) {
+    #chatWatchPartyVisualizerMenu {
+        width: min(18rem, calc(100vw - 20px));
+    }
+}
