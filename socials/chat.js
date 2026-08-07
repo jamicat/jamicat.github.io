@@ -5544,6 +5544,18 @@ normaliseReactionSnapshot(value) {
                 )
                 : [];
 
+        const reactorNames =
+            Array.isArray(item?.reactorNames)
+                ? item.reactorNames
+                    .filter(name =>
+                        typeof name === "string" &&
+                        name.trim()
+                    )
+                    .map(name =>
+                        name.trim().slice(0, 20)
+                    )
+                : [];
+
         if (
             !key ||
             (kind === "custom" && !src) ||
@@ -5564,7 +5576,8 @@ normaliseReactionSnapshot(value) {
                 Number(item?.count) ||
                 clientIds.length
             ),
-            clientIds
+            clientIds,
+            reactorNames
         };
     }).filter(Boolean);
 
@@ -6095,6 +6108,141 @@ renderAllReactionRows() {
     });
 }
 
+formatReactionTooltip(
+    reaction
+) {
+    const customId =
+        typeof reaction?.key === "string" &&
+        reaction.key.startsWith("custom:")
+            ? reaction.key.slice(7).trim()
+            : "";
+
+    const emojiName =
+        reaction?.kind === "custom"
+            ? `:${customId || "reaction"}:`
+            : (
+                typeof reaction?.label === "string" &&
+                reaction.label.trim()
+                    ? reaction.label.trim()
+                    : reaction?.value || "reaction"
+            );
+
+    const names =
+        Array.isArray(reaction?.reactorNames)
+            ? reaction.reactorNames
+                .filter(name =>
+                    typeof name === "string" &&
+                    name.trim()
+                )
+                .map(name => name.trim())
+            : [];
+
+    const visibleNames = names.slice(0, 3);
+    const remaining = Math.max(
+        0,
+        Number(reaction?.count || 0) -
+            visibleNames.length
+    );
+
+    let people = "someone";
+
+    if (visibleNames.length === 1) {
+        people = visibleNames[0];
+    } else if (visibleNames.length === 2) {
+        people =
+            `${visibleNames[0]} and ${visibleNames[1]}`;
+    } else if (visibleNames.length === 3) {
+        people = remaining > 0
+            ? `${visibleNames.join(", ")}, and ${remaining} ${remaining === 1 ? "other" : "others"}`
+            : `${visibleNames[0]}, ${visibleNames[1]}, and ${visibleNames[2]}`;
+    } else if (remaining > 0) {
+        people =
+            `${remaining} ${remaining === 1 ? "other" : "others"}`;
+    }
+
+    return `${emojiName} reacted by ${people}`;
+}
+
+hideReactionTooltip() {
+    document
+        .querySelector(".jami-reaction-tooltip")
+        ?.remove();
+}
+
+showReactionTooltip(
+    anchor,
+    text
+) {
+    if (
+        !(anchor instanceof HTMLElement) ||
+        !text
+    ) {
+        return;
+    }
+
+    this.hideReactionTooltip();
+
+    const tooltip =
+        document.createElement("div");
+
+    tooltip.className =
+        "jami-reaction-tooltip theme-body";
+    tooltip.textContent = text;
+
+    document.body.appendChild(tooltip);
+
+    const anchorRect =
+        anchor.getBoundingClientRect();
+    const tooltipRect =
+        tooltip.getBoundingClientRect();
+
+    const viewportPadding = 8;
+    const gap = 7;
+
+    const left = Math.max(
+        viewportPadding,
+        Math.min(
+            anchorRect.left +
+                (anchorRect.width - tooltipRect.width) / 2,
+            window.innerWidth -
+                tooltipRect.width -
+                viewportPadding
+        )
+    );
+
+    const fitsAbove =
+        anchorRect.top -
+            tooltipRect.height -
+            gap >=
+        viewportPadding;
+
+    const top = fitsAbove
+        ? anchorRect.top - tooltipRect.height - gap
+        : anchorRect.bottom + gap;
+
+    tooltip.style.left =
+        `${Math.round(left)}px`;
+    tooltip.style.top =
+        `${Math.round(top)}px`;
+    tooltip.dataset.placement =
+        fitsAbove ? "above" : "below";
+
+    const arrowLeft = Math.max(
+        9,
+        Math.min(
+            anchorRect.left +
+                anchorRect.width / 2 -
+                left,
+            tooltipRect.width - 9
+        )
+    );
+
+    tooltip.style.setProperty(
+        "--jami-reaction-tooltip-arrow-left",
+        `${Math.round(arrowLeft)}px`
+    );
+}
+
 renderReactionRow(
     row,
     animatedReactionKeys = null
@@ -6171,6 +6319,48 @@ renderReactionRow(
 		
         button.removeAttribute("title");
 
+        const tooltipText =
+            this.formatReactionTooltip(reaction);
+
+        button.setAttribute(
+            "aria-label",
+            tooltipText
+        );
+
+        button.addEventListener(
+            "pointerenter",
+            () => {
+                this.showReactionTooltip(
+                    button,
+                    tooltipText
+                );
+            }
+        );
+
+        button.addEventListener(
+            "pointerleave",
+            () => {
+                this.hideReactionTooltip();
+            }
+        );
+
+        button.addEventListener(
+            "focus",
+            () => {
+                this.showReactionTooltip(
+                    button,
+                    tooltipText
+                );
+            }
+        );
+
+        button.addEventListener(
+            "blur",
+            () => {
+                this.hideReactionTooltip();
+            }
+        );
+
         if (reaction.kind === "custom") {
             const image =
                 document.createElement("img");
@@ -6211,6 +6401,8 @@ renderReactionRow(
             event => {
                 event.preventDefault();
                 event.stopPropagation();
+
+                this.hideReactionTooltip();
 
                 this.setReactionActive(
                     target,
@@ -6267,7 +6459,13 @@ async setReactionActive(
                 method: "POST",
                 headers: {
                     "Content-Type":
-                        "application/json"
+                        "application/json",
+                    ...(this.discordAuthToken
+                        ? {
+                            "Authorization":
+                                `Bearer ${this.discordAuthToken}`
+                        }
+                        : {})
                 },
                 body: JSON.stringify({
                     targetType:
@@ -6276,6 +6474,13 @@ async setReactionActive(
                         target.targetId,
                     clientId:
                         this.clientId,
+                    reactorName:
+                        this.discordUser
+                            ?.displayName ||
+                        this.nameInput
+                            ?.value
+                            ?.trim() ||
+                        "Anonymous",
                     active: active === true,
                     reaction: {
                         key: reaction.key,
