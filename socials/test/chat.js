@@ -8615,7 +8615,6 @@ async openNameHistoryManager(
 
     panel.append(
         header,
-        subject,
         body,
         footer
     );
@@ -8709,9 +8708,17 @@ async openNameHistoryManager(
 
             name.className =
                 "jami-name-history-name";
-            name.textContent =
+
+            const previousName =
                 entry.previousName ||
                 "anonymous";
+
+            const newName =
+                entry.newName ||
+                "anonymous";
+
+            name.textContent =
+                `${previousName} - ${newName}`;
 
             const timestamp =
                 document.createElement(
