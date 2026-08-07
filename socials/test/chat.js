@@ -134,7 +134,6 @@ this.partyManagerBusy = false;
 this.savedRemixManager = null;
 this.savedRemixManagerBusy = false;
 this.nameHistoryManager = null;
-this.nameHistoryObserveTimer = null;
 this.watchPartyVideoMode = "cinematic";
 this.WATCH_PARTY_COLOURS = [
     "red",
@@ -12493,78 +12492,6 @@ setupNameSaving() {
 
         this.sendPresence();
     });
-
-    this.nameInput.addEventListener(
-        "change",
-        () => {
-            if (this.discordUser) {
-                return;
-            }
-
-            this.observeCurrentName();
-        }
-    );
-
-    /*
-     * Seed the first normal name without creating
-     * history. If a Discord session is currently
-     * being restored, wait for that identity instead.
-     */
-    if (
-        !this.discordAuthToken &&
-        this.nameInput.value.trim()
-    ) {
-        this.observeCurrentName();
-    }
-}
-
-async observeCurrentName() {
-    const normalName =
-        this.nameInput
-            ?.value
-            ?.trim() ||
-        "";
-
-    const resolvedName =
-        this.discordUser
-            ?.displayName
-            ?.trim() ||
-        normalName;
-
-    if (!resolvedName) {
-        return;
-    }
-
-    try {
-        await fetch(
-            `${this.API}/api/chat/name-history/observe`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type":
-                        "application/json",
-                    ...(this.discordAuthToken
-                        ? {
-                            "Authorization":
-                                `Bearer ${this.discordAuthToken}`
-                        }
-                        : {})
-                },
-                body:
-                    JSON.stringify({
-                        clientId:
-                            this.clientId,
-                        name:
-                            resolvedName
-                    })
-            }
-        );
-    } catch (error) {
-        console.error(
-            "Could not record chat name:",
-            error
-        );
-    }
 }
 
 	renderMessageContent(container, message) {
@@ -14236,7 +14163,6 @@ applyDiscordIdentity(user) {
 
     this.renderDiscordAuthState();
     this.sendPresence();
-    this.observeCurrentName();
 }
 
 clearDiscordIdentity() {
@@ -14286,7 +14212,6 @@ clearDiscordIdentity() {
     this.renderAvatarPicker();
     this.renderDiscordAuthState();
     this.sendPresence();
-    this.observeCurrentName();
 }
 
 async logoutDiscord() {
