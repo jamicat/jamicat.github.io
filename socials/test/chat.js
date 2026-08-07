@@ -3161,7 +3161,7 @@ const hasWatchPartyVideo =
             fill="none"
         >
             <path
-                d="M2 13L6 9L9 11L13 5L16 7"
+                d="M2 13L6 9L9 11L13 5L16 2"
                 stroke="currentColor"
                 stroke-width="1.6"
                 stroke-linecap="round"
