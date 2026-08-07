@@ -6459,7 +6459,13 @@ async setReactionActive(
                 method: "POST",
                 headers: {
                     "Content-Type":
-                        "application/json"
+                        "application/json",
+                    ...(this.discordAuthToken
+                        ? {
+                            "Authorization":
+                                `Bearer ${this.discordAuthToken}`
+                        }
+                        : {})
                 },
                 body: JSON.stringify({
                     targetType:
@@ -6468,6 +6474,13 @@ async setReactionActive(
                         target.targetId,
                     clientId:
                         this.clientId,
+                    reactorName:
+                        this.discordUser
+                            ?.displayName ||
+                        this.nameInput
+                            ?.value
+                            ?.trim() ||
+                        "Anonymous",
                     active: active === true,
                     reaction: {
                         key: reaction.key,
