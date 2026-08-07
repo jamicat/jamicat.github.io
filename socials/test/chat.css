@@ -2033,7 +2033,7 @@ input[data-watch-party-url]::placeholder{
     left:
         var(
             --jami-reaction-tooltip-arrow-left,
-            50%
+            60%
         );
     width: 7px;
     height: 7px;
