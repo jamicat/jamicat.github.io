@@ -2681,7 +2681,7 @@ top: -0.2px;
 
 
 .jami-name-history-body.is-scrollable {
-    max-height: 252px;
+    max-height: 212px;
     overflow-y: auto;
 }
 
