@@ -2609,8 +2609,6 @@ top: -0.2px;
     justify-content: center;
     padding: 18px;
     background: rgba(0, 0, 0, .30);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
 }
 
 .jami-name-history-manager {
@@ -2621,11 +2619,9 @@ top: -0.2px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, .16);
     border-radius: 18px;
-    background: rgba(16, 16, 18, .92);
+    background: rgba(16, 16, 18, .97);
     color: rgba(255, 255, 255, .92);
     box-shadow: 0 18px 60px rgba(0, 0, 0, .55);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
 }
 
 .jami-name-history-header {
