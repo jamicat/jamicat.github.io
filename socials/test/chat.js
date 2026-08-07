@@ -140,6 +140,8 @@ this.watchPartyVisualizerMode =
         "watch_party_visualizer_mode"
     ) || "bars";
 this.watchPartyVisualizerMessage = "";
+this.watchPartyVisualizerMenu = null;
+this.watchPartyVisualizerOpen = false;
 this.WATCH_PARTY_COLOURS = [
     "red",
     "orange",
@@ -210,6 +212,10 @@ window.addEventListener(
 
         if (this.watchPartyOpen) {
             this.renderWatchParty();
+        }
+
+        if (this.watchPartyVisualizerOpen) {
+            this.renderWatchPartyVisualizerMenu();
         }
     }
 );
@@ -1013,6 +1019,10 @@ window.addEventListener(
             this.positionWatchPartyPanel({
                 forceClamp: true
             });
+        }
+
+        if (this.watchPartyVisualizerOpen) {
+            this.positionWatchPartyVisualizerMenu();
         }
     }
 );
@@ -2819,6 +2829,7 @@ window.setDiscordStatusVisible?.(
 
    if (!isEnabled) {
     this.watchPartyOpen = false;
+    this.closeWatchPartyVisualizerMenu();
     this.watchPartyAddUrl = "";
     this.watchPartyAddMessage = "";
     this.watchPartyAddError = false;
@@ -3030,34 +3041,6 @@ const hasWatchPartyVideo =
         this.watchParty.currentVideoId
     );
 
-const visualizerController =
-    window.watchPartyVisualizers;
-
-const visualizerState =
-    visualizerController?.getState?.() || {
-        supported: false,
-        active: false,
-        panelCount: 0,
-        maxPanels: 5
-    };
-
-const visualizerModes =
-    [
-        ["wave", "waveform"],
-        ["bars", "equalizer"],
-        ["decay", "spectrum"],
-        ["line", "frequency line"],
-        ["peaks", "peaks"],
-        ["mountain", "filled spectrum"]
-    ];
-
-if (!visualizerModes.some(
-    ([mode]) =>
-        mode === this.watchPartyVisualizerMode
-)) {
-    this.watchPartyVisualizerMode = "bars";
-}
-
     this.watchPartyPanel.innerHTML = `
         <div
     class="
@@ -3152,6 +3135,27 @@ if (!visualizerModes.some(
         this.watchPartyVideoMode
     )}
 </button>
+
+    <button
+        type="button"
+        data-watch-party-visualizer-menu-toggle
+        class="
+            no-drag
+            flex h-7 w-7
+            items-center justify-center
+            rounded-md
+            text-base leading-none
+            text-white/70
+            transition
+            hover:bg-white/10
+            hover:text-white
+        "
+        aria-label="open visualizer menu"
+        aria-expanded="${this.watchPartyVisualizerOpen ? "true" : "false"}"
+        title="visualizers"
+    >
+        〽
+    </button>
 
     <button
         type="button"
@@ -3726,135 +3730,6 @@ if (!visualizerModes.some(
             </div>
         </div>
 
-       <section
-    data-watch-party-visualizers
-    class="
-        watch-party-visualizers
-        mt-4
-        shrink-0
-        border-t border-white/10
-        pt-3
-    "
->
-    <div class="flex items-center justify-between gap-2">
-        <div
-            data-watch-party-visualizer-heading
-            class="
-                theme-heading
-                text-[9px]
-                uppercase tracking-widest
-                text-white/40
-            "
-        >
-            visualizers
-        </div>
-
-        <div
-            data-watch-party-visualizer-count
-            class="theme-body text-[8px] text-white/35"
-        >
-            ${visualizerState.panelCount}/${visualizerState.maxPanels}
-        </div>
-    </div>
-
-    <div class="mt-2 flex gap-2">
-        <button
-            type="button"
-            data-watch-party-visualizer-toggle
-            class="
-                watch-party-visualizer-action
-                theme-body
-                flex-1 rounded-lg border
-                px-2 py-1.5
-                text-[8px]
-                transition
-                disabled:cursor-not-allowed
-                disabled:opacity-35
-            "
-            ${
-                visualizerState.supported &&
-                isEnabled
-                    ? ""
-                    : "disabled"
-            }
-        >
-            ${visualizerState.active ? "disable" : "enable"}
-        </button>
-
-        <button
-            type="button"
-            data-watch-party-visualizer-add
-            class="
-                watch-party-visualizer-action
-                theme-body
-                flex-1 rounded-lg border
-                px-2 py-1.5
-                text-[8px]
-                transition
-                disabled:cursor-not-allowed
-                disabled:opacity-35
-            "
-            ${
-                isEnabled &&
-                visualizerState.active &&
-                visualizerState.panelCount < visualizerState.maxPanels
-                    ? ""
-                    : "disabled"
-            }
-        >
-            add panel
-        </button>
-    </div>
-
-    <div
-        data-watch-party-visualizer-grid
-        class="watch-party-visualizer-grid mt-2"
-    >
-        ${visualizerModes.map(([mode, label]) => `
-            <button
-                type="button"
-                data-watch-party-visualizer-mode="${mode}"
-                class="watch-party-visualizer-choice ${
-                    this.watchPartyVisualizerMode === mode
-                        ? "is-selected"
-                        : ""
-                }"
-                aria-pressed="${
-                    this.watchPartyVisualizerMode === mode
-                        ? "true"
-                        : "false"
-                }"
-                title="${label}"
-            >
-                <span
-                    class="watch-party-visualizer-preview watch-party-visualizer-preview--${mode}"
-                    aria-hidden="true"
-                ></span>
-                <span class="theme-body watch-party-visualizer-choice-label">${label}</span>
-            </button>
-        `).join("")}
-    </div>
-
-    <div
-        data-watch-party-visualizer-message
-        class="
-            theme-body
-            mt-2 min-h-[13px]
-            text-[8px] leading-relaxed
-            text-white/40
-        "
-    >
-        ${this.escapeHtml(
-            this.watchPartyVisualizerMessage ||
-            (!isEnabled
-                ? "visualizers are available while watch party is enabled"
-                : visualizerState.supported
-                    ? "tab-audio visualizers — select this browser tab and enable audio sharing when prompted"
-                    : "tab-audio capture is not available in this browser")
-        )}
-    </div>
-</section>
-
        <div
     class="
         mt-4
@@ -4043,151 +3918,24 @@ if (videoModeButton) {
 }
 
 
-const visualizerToggleButton =
+const visualizerMenuToggle =
     this.watchPartyPanel.querySelector(
-        "[data-watch-party-visualizer-toggle]"
+        "[data-watch-party-visualizer-menu-toggle]"
     );
 
-const visualizerAddButton =
-    this.watchPartyPanel.querySelector(
-        "[data-watch-party-visualizer-add]"
-    );
-
-this.watchPartyPanel
-    .querySelectorAll(
-        "[data-watch-party-visualizer-mode]"
-    )
-    .forEach(button => {
-        button.addEventListener(
-            "click",
-            event => {
-                event.preventDefault();
-                event.stopPropagation();
-
-                const selectedMode =
-                    button.dataset
-                        .watchPartyVisualizerMode;
-
-                if (!selectedMode) {
-                    return;
-                }
-
-                this.watchPartyVisualizerMode =
-                    selectedMode;
-
-                localStorage.setItem(
-                    "watch_party_visualizer_mode",
-                    selectedMode
-                );
-
-                this.watchPartyPanel
-                    .querySelectorAll(
-                        "[data-watch-party-visualizer-mode]"
-                    )
-                    .forEach(modeButton => {
-                        const selected =
-                            modeButton === button;
-
-                        modeButton.classList.toggle(
-                            "is-selected",
-                            selected
-                        );
-
-                        modeButton.setAttribute(
-                            "aria-pressed",
-                            String(selected)
-                        );
-                    });
-            }
-        );
-    });
-
-if (visualizerToggleButton) {
-    visualizerToggleButton.addEventListener(
-        "click",
-        async event => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            const controller =
-                window.watchPartyVisualizers;
-
-            if (!controller) {
-                this.watchPartyVisualizerMessage =
-                    "visualizer controller is unavailable";
-                this.renderWatchParty();
-                return;
-            }
-
-            const state =
-                controller.getState?.() || {};
-
-            if (state.active) {
-                controller.stop?.({
-                    removePanels: true
-                });
-                return;
-            }
-
-            visualizerToggleButton.disabled = true;
-            this.watchPartyVisualizerMessage =
-                "select this browser tab and enable audio sharing";
-
-            const messageElement =
-                this.watchPartyPanel.querySelector(
-                    "[data-watch-party-visualizer-message]"
-                );
-
-            if (messageElement) {
-                messageElement.textContent =
-                    this.watchPartyVisualizerMessage;
-            }
-
-            try {
-                await controller.start?.(
-                    this.watchPartyVisualizerMode
-                );
-            } catch (error) {
-                if (
-                    error?.name !== "NotAllowedError" &&
-                    error?.name !== "AbortError"
-                ) {
-                    window.alert(
-                        error?.message ||
-                        "could not start the visualizer"
-                    );
-                }
-            } finally {
-                if (this.watchPartyOpen) {
-                    this.renderWatchParty();
-                }
-            }
-        }
-    );
-}
-
-if (visualizerAddButton) {
-    visualizerAddButton.addEventListener(
+if (visualizerMenuToggle) {
+    visualizerMenuToggle.addEventListener(
         "click",
         event => {
             event.preventDefault();
             event.stopPropagation();
-
-            const controller =
-                window.watchPartyVisualizers;
-
-            const state =
-                controller?.getState?.();
-
-            if (!state?.active) {
-                return;
-            }
-
-            controller.addPanel?.(
-                this.watchPartyVisualizerMode
-            );
+            this.toggleWatchPartyVisualizerMenu();
         }
     );
+}
+
+if (this.watchPartyVisualizerOpen) {
+    this.renderWatchPartyVisualizerMenu();
 }
 
     const closeButton =
@@ -4202,6 +3950,7 @@ if (visualizerAddButton) {
                 event.stopPropagation();
 
                 this.watchPartyOpen = false;
+                this.closeWatchPartyVisualizerMenu();
                 this.renderWatchParty();
             }
         );
@@ -7581,6 +7330,330 @@ content.append(
     });
 }
 
+
+ensureWatchPartyVisualizerMenu() {
+    if (this.watchPartyVisualizerMenu) {
+        return this.watchPartyVisualizerMenu;
+    }
+
+    const menu = document.createElement("div");
+    menu.id = "chatWatchPartyVisualizerMenu";
+    menu.className = `
+        terminal2
+        invisible pointer-events-none opacity-0
+        fixed z-[100003]
+        w-72
+        overflow-hidden
+        rounded-2xl
+        border border-white/15
+        bg-black/95
+        p-3
+        text-white
+        shadow-xl
+        backdrop-blur-xl
+        transition-opacity duration-150
+    `;
+
+    menu.dataset.theme =
+        this.watchPartyPanel?.dataset.theme ||
+        localStorage.getItem("watch_party_theme") ||
+        "default";
+
+    document.body.appendChild(menu);
+    this.watchPartyVisualizerMenu = menu;
+    return menu;
+}
+
+positionWatchPartyVisualizerMenu() {
+    const menu = this.watchPartyVisualizerMenu;
+    const party = this.watchPartyPanel;
+
+    if (!menu || !party || !this.watchPartyVisualizerOpen) {
+        return;
+    }
+
+    const gap = 10;
+    const edge = 10;
+    const partyRect = party.getBoundingClientRect();
+    const menuRect = menu.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    let left = partyRect.right + gap;
+    if (left + menuRect.width > viewportWidth - edge) {
+        left = partyRect.left - menuRect.width - gap;
+    }
+    if (left < edge) {
+        left = Math.max(
+            edge,
+            Math.min(
+                viewportWidth - menuRect.width - edge,
+                partyRect.left
+            )
+        );
+    }
+
+    let top = partyRect.top;
+    top = Math.max(
+        edge,
+        Math.min(
+            viewportHeight - menuRect.height - edge,
+            top
+        )
+    );
+
+    menu.style.left = `${left}px`;
+    menu.style.top = `${top}px`;
+}
+
+closeWatchPartyVisualizerMenu() {
+    this.watchPartyVisualizerOpen = false;
+
+    if (!this.watchPartyVisualizerMenu) {
+        return;
+    }
+
+    this.watchPartyVisualizerMenu.classList.add(
+        "invisible",
+        "pointer-events-none",
+        "opacity-0"
+    );
+}
+
+toggleWatchPartyVisualizerMenu() {
+    if (!this.watchParty?.enabled) {
+        return;
+    }
+
+    this.watchPartyVisualizerOpen =
+        !this.watchPartyVisualizerOpen;
+
+    if (!this.watchPartyVisualizerOpen) {
+        this.closeWatchPartyVisualizerMenu();
+        this.renderWatchParty();
+        return;
+    }
+
+    this.renderWatchPartyVisualizerMenu();
+    this.renderWatchParty();
+}
+
+renderWatchPartyVisualizerMenu() {
+    if (!this.watchParty?.enabled) {
+        this.closeWatchPartyVisualizerMenu();
+        return;
+    }
+
+    const menu = this.ensureWatchPartyVisualizerMenu();
+    const controller = window.watchPartyVisualizers;
+    const state = controller?.getState?.() || {
+        supported: false,
+        active: false,
+        panelCount: 0,
+        maxPanels: 5
+    };
+
+    const modes = [
+        ["wave", "waveform"],
+        ["bars", "equalizer"],
+        ["decay", "spectrum"],
+        ["line", "frequency line"],
+        ["peaks", "peaks"],
+        ["mountain", "filled spectrum"]
+    ];
+
+    if (!modes.some(([mode]) => mode === this.watchPartyVisualizerMode)) {
+        this.watchPartyVisualizerMode = "bars";
+    }
+
+    menu.dataset.theme =
+        this.watchPartyPanel?.dataset.theme ||
+        localStorage.getItem("watch_party_theme") ||
+        "default";
+
+    menu.innerHTML = `
+        <div class="watch-party-visualizer-menu-titlebar">
+            <div>
+                <div class="theme-heading text-[10px] font-bold tracking-widest">
+                    visualizers
+                </div>
+                <div class="theme-body mt-0.5 text-[8px] text-white/35">
+                    ${state.panelCount}/${state.maxPanels}
+                </div>
+            </div>
+            <button
+                type="button"
+                data-close-watch-party-visualizer-menu
+                class="rounded-md px-2 py-1 text-sm text-white/50 transition hover:bg-white/10 hover:text-white"
+                aria-label="close visualizer menu"
+                title="close visualizer menu"
+            >×</button>
+        </div>
+
+        <div class="mt-3 flex gap-2">
+            <button
+                type="button"
+                data-watch-party-visualizer-toggle
+                class="watch-party-visualizer-action theme-body flex-1 rounded-lg border px-2 py-1.5 text-[8px] transition disabled:cursor-not-allowed disabled:opacity-35"
+                ${state.supported ? "" : "disabled"}
+            >${state.active ? "disable" : "enable"}</button>
+
+            <button
+                type="button"
+                data-watch-party-visualizer-add
+                class="watch-party-visualizer-action theme-body flex-1 rounded-lg border px-2 py-1.5 text-[8px] transition disabled:cursor-not-allowed disabled:opacity-35"
+                ${state.active && state.panelCount < state.maxPanels ? "" : "disabled"}
+            >add panel</button>
+        </div>
+
+        <div class="watch-party-visualizer-grid mt-2">
+            ${modes.map(([mode, label]) => `
+                <button
+                    type="button"
+                    data-watch-party-visualizer-mode="${mode}"
+                    class="watch-party-visualizer-choice ${
+                        this.watchPartyVisualizerMode === mode
+                            ? "is-selected"
+                            : ""
+                    }"
+                    aria-pressed="${
+                        this.watchPartyVisualizerMode === mode
+                            ? "true"
+                            : "false"
+                    }"
+                    title="${label}"
+                >
+                    <span class="watch-party-visualizer-preview watch-party-visualizer-preview--${mode}" aria-hidden="true"></span>
+                    <span class="theme-body watch-party-visualizer-choice-label">${label}</span>
+                </button>
+            `).join("")}
+        </div>
+
+        <div
+            data-watch-party-visualizer-message
+            class="theme-body mt-2 min-h-[13px] text-[8px] leading-relaxed text-white/40"
+        >${this.escapeHtml(
+            this.watchPartyVisualizerMessage ||
+            (state.supported
+                ? "select this browser tab and enable audio sharing when prompted"
+                : "tab-audio capture is not available in this browser")
+        )}</div>
+    `;
+
+    menu.classList.remove(
+        "invisible",
+        "pointer-events-none",
+        "opacity-0"
+    );
+
+    menu.querySelector(
+        "[data-close-watch-party-visualizer-menu]"
+    )?.addEventListener("click", event => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.closeWatchPartyVisualizerMenu();
+        this.renderWatchParty();
+    });
+
+    menu.querySelectorAll(
+        "[data-watch-party-visualizer-mode]"
+    ).forEach(button => {
+        button.addEventListener("click", event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const selectedMode =
+                button.dataset.watchPartyVisualizerMode;
+
+            if (!selectedMode) {
+                return;
+            }
+
+            this.watchPartyVisualizerMode = selectedMode;
+            localStorage.setItem(
+                "watch_party_visualizer_mode",
+                selectedMode
+            );
+            this.renderWatchPartyVisualizerMenu();
+        });
+    });
+
+    const toggleButton = menu.querySelector(
+        "[data-watch-party-visualizer-toggle]"
+    );
+
+    toggleButton?.addEventListener("click", async event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!controller) {
+            this.watchPartyVisualizerMessage =
+                "visualizer controller is unavailable";
+            this.renderWatchPartyVisualizerMenu();
+            return;
+        }
+
+        const currentState = controller.getState?.() || {};
+
+        if (currentState.active) {
+            controller.stop?.({ removePanels: true });
+            return;
+        }
+
+        toggleButton.disabled = true;
+        this.watchPartyVisualizerMessage =
+            "select this browser tab and enable audio sharing";
+
+        const messageElement = menu.querySelector(
+            "[data-watch-party-visualizer-message]"
+        );
+        if (messageElement) {
+            messageElement.textContent =
+                this.watchPartyVisualizerMessage;
+        }
+
+        try {
+            await controller.start?.(
+                this.watchPartyVisualizerMode
+            );
+        } catch (error) {
+            if (
+                error?.name !== "NotAllowedError" &&
+                error?.name !== "AbortError"
+            ) {
+                window.alert(
+                    error?.message ||
+                    "could not start the visualizer"
+                );
+            }
+        } finally {
+            if (this.watchPartyVisualizerOpen) {
+                this.renderWatchPartyVisualizerMenu();
+            }
+        }
+    });
+
+    menu.querySelector(
+        "[data-watch-party-visualizer-add]"
+    )?.addEventListener("click", event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const currentState = controller?.getState?.();
+        if (!currentState?.active) {
+            return;
+        }
+
+        controller.addPanel?.(
+            this.watchPartyVisualizerMode
+        );
+    });
+
+    requestAnimationFrame(() => {
+        this.positionWatchPartyVisualizerMenu();
+    });
+}
+
 	scrollMessagesToBottom() {
     if (!this.messages) {
         return;
@@ -7685,6 +7758,11 @@ setWatchPartyVideoMode(mode) {
 
     this.watchPartyPanel.dataset.theme =
         selectedColour;
+
+    if (this.watchPartyVisualizerMenu) {
+        this.watchPartyVisualizerMenu.dataset.theme =
+            selectedColour;
+    }
 
     localStorage.setItem(
         "watch_party_theme",
