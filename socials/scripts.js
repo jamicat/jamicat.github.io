@@ -2070,11 +2070,6 @@ if (
     watchPartyAutomaticNextPending =
         true;
 
-    /*
-     * Capture the video and index now.
-     * Do not read them later after an
-     * asynchronous state update.
-     */
     const endedVideoId =
         watchPartyState
             .currentVideoId;
@@ -2123,11 +2118,6 @@ if (
                     );
                 }
 
-                /*
-                 * result.stale means another
-                 * browser advanced first.
-                 * That is expected, not an error.
-                 */
             }
         )
         .catch(error => {
@@ -2172,17 +2162,6 @@ function playNextNormalVideo() {
   });
 }
 
-
-
-/*
- * Client-side Watch Party audio visualizers.
- *
- * The YouTube player lives in a cross-origin iframe, so the visualizers
- * analyse a user-approved display/tab capture stream. One analyser feeds
- * every visualizer panel; each panel renders independently and uses native
- * pointer events for dragging/resizing so it does not conflict with
- * Interact.js.
- */
 const watchPartyVisualizers = (() => {
   const MAX_PANELS = 5;
   const DEFAULT_MODE = "bars";
