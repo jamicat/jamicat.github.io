@@ -133,6 +133,8 @@ this.partyManagerButton = null;
 this.partyManagerBusy = false;
 this.savedRemixManager = null;
 this.savedRemixManagerBusy = false;
+this.nameHistoryManager = null;
+this.nameHistoryObserveTimer = null;
 this.watchPartyVideoMode = "cinematic";
 this.WATCH_PARTY_COLOURS = [
     "red",
@@ -7854,6 +7856,20 @@ openModerationMenu(x, y, message) {
     );
 
     if (this.isAdmin) {
+        buttons.push(
+            this.createModerationMenuButton(
+                "name history",
+                () => {
+                    this.closeModerationMenu();
+                    this.openNameHistoryManager(
+                        message.client_id,
+                        message.name ||
+                            "user"
+                    );
+                }
+            )
+        );
+
         buttons.push(this.createModerationMenuButton(`ban ${message.name || "user"}`, async () => {
             this.closeModerationMenu();
             await this.banClient(message.client_id, message.name);
@@ -8500,6 +8516,340 @@ async repostSavedRemix(savedId) {
     }
 }
 
+closeNameHistoryManager() {
+    if (!this.nameHistoryManager) {
+        return;
+    }
+
+    this.nameHistoryManager.remove();
+    this.nameHistoryManager = null;
+}
+
+async openNameHistoryManager(
+    clientId,
+    displayName = "user"
+) {
+    if (
+        !this.isAdmin ||
+        !clientId
+    ) {
+        return;
+    }
+
+    this.closeNameHistoryManager();
+
+    const overlay =
+        document.createElement("div");
+
+    overlay.className =
+        "jami-name-history-overlay";
+
+    const panel =
+        document.createElement("section");
+
+    panel.id =
+        "chatNameHistoryManager";
+
+    panel.className =
+        "terminal2 theme-body jami-name-history-manager";
+
+    const header =
+        document.createElement("div");
+
+    header.className =
+        "jami-name-history-header";
+
+    const heading =
+        document.createElement("div");
+
+    heading.className =
+        "theme-heading jami-name-history-title";
+
+    heading.textContent =
+        "name history";
+
+    const close =
+        document.createElement("button");
+
+    close.type = "button";
+    close.className =
+        "jami-name-history-close";
+    close.textContent = "×";
+    close.title =
+        "close name history";
+
+    close.addEventListener(
+        "click",
+        () =>
+            this.closeNameHistoryManager()
+    );
+
+    header.append(
+        heading,
+        close
+    );
+
+    const subject =
+        document.createElement("div");
+
+    subject.className =
+        "jami-name-history-subject";
+
+    subject.textContent =
+        displayName;
+
+    const body =
+        document.createElement("div");
+
+    body.className =
+        "jami-name-history-body";
+
+    body.textContent =
+        "loading name history...";
+
+    const footer =
+        document.createElement("div");
+
+    footer.className =
+        "jami-name-history-footer";
+
+    panel.append(
+        header,
+        subject,
+        body,
+        footer
+    );
+
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener(
+        "mousedown",
+        event => {
+            if (event.target === overlay) {
+                this.closeNameHistoryManager();
+            }
+        }
+    );
+
+    this.nameHistoryManager =
+        overlay;
+
+    try {
+        const request =
+            await fetch(
+                `${this.API}/api/admin/name-history`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                        "Authorization":
+                            `Bearer ${this.adminKey}`
+                    },
+                    body:
+                        JSON.stringify({
+                            clientId
+                        })
+                }
+            );
+
+        const result =
+            await request.json();
+
+        if (!request.ok) {
+            throw new Error(
+                result?.error ||
+                "could not load name history"
+            );
+        }
+
+        body.replaceChildren();
+        footer.replaceChildren();
+
+        const history =
+            Array.isArray(result.history)
+                ? result.history
+                : [];
+
+        if (history.length === 0) {
+            const empty =
+                document.createElement(
+                    "div"
+                );
+
+            empty.className =
+                "jami-name-history-empty";
+            empty.textContent =
+                "no changes made";
+
+            body.appendChild(empty);
+            return;
+        }
+
+        const list =
+            document.createElement("div");
+
+        list.className =
+            "jami-name-history-list";
+
+        for (const entry of history) {
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+            row.className =
+                "jami-name-history-row";
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+            name.className =
+                "jami-name-history-name";
+            name.textContent =
+                entry.previousName ||
+                "anonymous";
+
+            const timestamp =
+                document.createElement(
+                    "div"
+                );
+
+            timestamp.className =
+                "jami-name-history-time";
+
+            const date =
+                new Date(
+                    entry.changedAt
+                );
+
+            timestamp.textContent =
+                Number.isNaN(
+                    date.getTime()
+                )
+                    ? ""
+                    : date.toLocaleString(
+                        undefined,
+                        {
+                            dateStyle:
+                                "medium",
+                            timeStyle:
+                                "medium"
+                        }
+                    );
+
+            row.append(
+                name,
+                timestamp
+            );
+
+            list.appendChild(row);
+        }
+
+        body.appendChild(list);
+
+        const clear =
+            document.createElement("button");
+
+        clear.type = "button";
+        clear.className =
+            "jami-name-history-delete";
+        clear.textContent =
+            "delete history";
+
+        clear.addEventListener(
+            "click",
+            async () => {
+                const confirmed =
+                    window.confirm(
+                        `delete name history for ${displayName}?`
+                    );
+
+                if (!confirmed) {
+                    return;
+                }
+
+                clear.disabled = true;
+
+                try {
+                    const deleteRequest =
+                        await fetch(
+                            `${this.API}/api/admin/name-history/delete`,
+                            {
+                                method:
+                                    "POST",
+                                headers: {
+                                    "Content-Type":
+                                        "application/json",
+                                    "Authorization":
+                                        `Bearer ${this.adminKey}`
+                                },
+                                body:
+                                    JSON.stringify({
+                                        clientId
+                                    })
+                            }
+                        );
+
+                    const deleteResult =
+                        await deleteRequest
+                            .json();
+
+                    if (!deleteRequest.ok) {
+                        throw new Error(
+                            deleteResult
+                                ?.error ||
+                            "could not delete name history"
+                        );
+                    }
+
+                    body.replaceChildren();
+
+                    const empty =
+                        document.createElement(
+                            "div"
+                        );
+
+                    empty.className =
+                        "jami-name-history-empty";
+                    empty.textContent =
+                        "no changes made";
+
+                    body.appendChild(
+                        empty
+                    );
+
+                    footer.replaceChildren();
+                } catch (error) {
+                    console.error(
+                        "Could not delete name history:",
+                        error
+                    );
+
+                    window.alert(
+                        `could not delete name history: ${error.message}`
+                    );
+
+                    clear.disabled = false;
+                }
+            }
+        );
+
+        footer.appendChild(clear);
+    } catch (error) {
+        console.error(
+            "Could not load name history:",
+            error
+        );
+
+        body.textContent =
+            "could not load name history";
+    }
+}
+
 openMemberModerationMenu(x, y, member) {
     const menu = document.createElement("div");
 
@@ -8530,6 +8880,18 @@ menu.style.left =
 menu.style.top =
     `${Math.max(viewportPadding, top)}px`;
 
+    const historyButton =
+        this.createModerationMenuButton(
+            "name history",
+            () => {
+                this.closeModerationMenu();
+                this.openNameHistoryManager(
+                    member.clientId,
+                    member.name
+                );
+            }
+        );
+
     const banButton = this.createModerationMenuButton(
         `ban ${member.name}`,
         async () => {
@@ -8538,7 +8900,10 @@ menu.style.top =
         }
     );
 
-    menu.appendChild(banButton);
+    menu.append(
+        historyButton,
+        banButton
+    );
 
     document.body.appendChild(menu);
     this.moderationMenu = menu;
@@ -12121,6 +12486,78 @@ setupNameSaving() {
 
         this.sendPresence();
     });
+
+    this.nameInput.addEventListener(
+        "change",
+        () => {
+            if (this.discordUser) {
+                return;
+            }
+
+            this.observeCurrentName();
+        }
+    );
+
+    /*
+     * Seed the first normal name without creating
+     * history. If a Discord session is currently
+     * being restored, wait for that identity instead.
+     */
+    if (
+        !this.discordAuthToken &&
+        this.nameInput.value.trim()
+    ) {
+        this.observeCurrentName();
+    }
+}
+
+async observeCurrentName() {
+    const normalName =
+        this.nameInput
+            ?.value
+            ?.trim() ||
+        "";
+
+    const resolvedName =
+        this.discordUser
+            ?.displayName
+            ?.trim() ||
+        normalName;
+
+    if (!resolvedName) {
+        return;
+    }
+
+    try {
+        await fetch(
+            `${this.API}/api/chat/name-history/observe`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json",
+                    ...(this.discordAuthToken
+                        ? {
+                            "Authorization":
+                                `Bearer ${this.discordAuthToken}`
+                        }
+                        : {})
+                },
+                body:
+                    JSON.stringify({
+                        clientId:
+                            this.clientId,
+                        name:
+                            resolvedName
+                    })
+            }
+        );
+    } catch (error) {
+        console.error(
+            "Could not record chat name:",
+            error
+        );
+    }
 }
 
 	renderMessageContent(container, message) {
@@ -13792,6 +14229,7 @@ applyDiscordIdentity(user) {
 
     this.renderDiscordAuthState();
     this.sendPresence();
+    this.observeCurrentName();
 }
 
 clearDiscordIdentity() {
@@ -13841,6 +14279,7 @@ clearDiscordIdentity() {
     this.renderAvatarPicker();
     this.renderDiscordAuthState();
     this.sendPresence();
+    this.observeCurrentName();
 }
 
 async logoutDiscord() {
