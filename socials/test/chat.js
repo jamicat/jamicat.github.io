@@ -7735,8 +7735,8 @@ renderWatchPartyVisualizerMenu() {
         >${this.escapeHtml(
             this.watchPartyVisualizerMessage ||
             (state.supported
-                ? "select this browser tab and enable audio sharing when prompted"
-                : "tab-audio capture is not available in this browser")
+                ? "select this browser tab and enable audio sharing"
+                : "tab audio capture is not available in this browser")
         )}</div>
     `;
 
@@ -11468,6 +11468,46 @@ showCompletedImage(
         upload.name ||
         "anonymous";
 
+    const serverTag =
+        typeof upload.discordServerTag === "string"
+            ? upload.discordServerTag.trim()
+            : "";
+
+    const serverBadgeUrl =
+        typeof upload.discordServerBadgeUrl === "string" &&
+        /^https:\/\/cdn\.discordapp\.com\/clan-badges\//i.test(
+            upload.discordServerBadgeUrl
+        )
+            ? upload.discordServerBadgeUrl
+            : "";
+
+    let serverBadge = null;
+
+    if (serverTag) {
+        serverBadge = document.createElement("span");
+        serverBadge.className = "jami-discord-server-tag";
+
+        if (serverBadgeUrl) {
+            const serverBadgeIcon = document.createElement("img");
+            serverBadgeIcon.src = serverBadgeUrl;
+            serverBadgeIcon.alt = "";
+            serverBadgeIcon.className =
+                "jami-discord-server-tag-icon";
+            serverBadgeIcon.addEventListener(
+                "error",
+                () => serverBadgeIcon.remove(),
+                { once: true }
+            );
+            serverBadge.appendChild(serverBadgeIcon);
+        }
+
+        const serverBadgeText = document.createElement("span");
+        serverBadgeText.className =
+            "jami-discord-server-tag-text";
+        serverBadgeText.textContent = serverTag;
+        serverBadge.appendChild(serverBadgeText);
+    }
+
     const time =
         document.createElement(
             "span"
@@ -11510,8 +11550,17 @@ showCompletedImage(
     body.dataset.imageUploadBody =
         "true";
 
+    const identity = document.createElement("span");
+    identity.className =
+        "flex items-center gap-[3px]";
+    identity.appendChild(name);
+
+    if (serverBadge) {
+        identity.appendChild(serverBadge);
+    }
+
     header.append(
-        name,
+        identity,
         time
     );
 
