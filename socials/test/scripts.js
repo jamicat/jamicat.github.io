@@ -2836,7 +2836,7 @@ const watchPartyVisualizers = (() => {
     if (audioTracks.length === 0) {
       stream.getTracks().forEach(track => track.stop());
       const error = new Error(
-        "no tab audio was shared — select a browser tab and enable audio sharing if your browser provides that option"
+        "tab audio is unavailable in this browser"
       );
       emitState(error.message);
       throw error;
