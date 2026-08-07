@@ -6111,109 +6111,61 @@ renderAllReactionRows() {
 formatReactionTooltip(
     reaction
 ) {
-    const rawLabel =
-        typeof reaction?.label === "string"
-            ? reaction.label.trim()
-            : "";
-
-    const fallbackLabel =
-        typeof reaction?.value === "string"
-            ? reaction.value.trim()
-            : "reaction";
-
     const customId =
         typeof reaction?.key === "string" &&
-        reaction.key.startsWith(
-            "custom:"
-        )
-            ? reaction.key
-                .slice(7)
-                .trim()
+        reaction.key.startsWith("custom:")
+            ? reaction.key.slice(7).trim()
             : "";
 
-    const label =
+    const emojiName =
         reaction?.kind === "custom"
-            ? `:${(
-                customId ||
-                fallbackLabel ||
-                "reaction"
-            ).replace(/^:+|:+$/g, "")}:`
+            ? `:${customId || "reaction"}:`
             : (
-                rawLabel ||
-                fallbackLabel ||
-                "reaction"
+                typeof reaction?.label === "string" &&
+                reaction.label.trim()
+                    ? reaction.label.trim()
+                    : reaction?.value || "reaction"
             );
 
     const names =
-        Array.isArray(
-            reaction?.reactorNames
-        )
+        Array.isArray(reaction?.reactorNames)
             ? reaction.reactorNames
                 .filter(name =>
                     typeof name === "string" &&
                     name.trim()
                 )
-                .map(name =>
-                    name.trim()
-                )
+                .map(name => name.trim())
             : [];
 
-    const visibleNames =
-        names.slice(0, 3);
+    const visibleNames = names.slice(0, 3);
+    const remaining = Math.max(
+        0,
+        Number(reaction?.count || 0) -
+            visibleNames.length
+    );
 
-    let peopleText = "";
+    let people = "someone";
 
     if (visibleNames.length === 1) {
-        peopleText =
-            visibleNames[0];
-    } else if (
-        visibleNames.length === 2
-    ) {
-        peopleText =
-            `${visibleNames[0]} and ` +
-            `${visibleNames[1]}`;
-    } else if (
-        visibleNames.length === 3
-    ) {
-        peopleText =
-            `${visibleNames[0]}, ` +
-            `${visibleNames[1]}, and ` +
-            `${visibleNames[2]}`;
+        people = visibleNames[0];
+    } else if (visibleNames.length === 2) {
+        people =
+            `${visibleNames[0]} and ${visibleNames[1]}`;
+    } else if (visibleNames.length === 3) {
+        people = remaining > 0
+            ? `${visibleNames.join(", ")}, and ${remaining} ${remaining === 1 ? "other" : "others"}`
+            : `${visibleNames[0]}, ${visibleNames[1]}, and ${visibleNames[2]}`;
+    } else if (remaining > 0) {
+        people =
+            `${remaining} ${remaining === 1 ? "other" : "others"}`;
     }
 
-    const remaining =
-        Math.max(
-            0,
-            Number(reaction?.count || 0) -
-                visibleNames.length
-        );
-
-    if (remaining > 0) {
-        peopleText =
-            visibleNames.length
-                ? `${visibleNames.join(", ")}, ` +
-                  `and ${remaining} ` +
-                  `${remaining === 1
-                      ? "other"
-                      : "others"}`
-                : `${remaining} ` +
-                  `${remaining === 1
-                      ? "other"
-                      : "others"}`;
-    }
-
-    if (!peopleText) {
-        peopleText = "someone";
-    }
-
-    return `${label} reacted by ${peopleText}`;
+    return `${emojiName} reacted by ${people}`;
 }
 
 hideReactionTooltip() {
     document
-        .querySelector(
-            ".jami-reaction-tooltip"
-        )
+        .querySelector(".jami-reaction-tooltip")
         ?.remove();
 }
 
@@ -6235,88 +6187,59 @@ showReactionTooltip(
 
     tooltip.className =
         "jami-reaction-tooltip theme-body";
-
     tooltip.textContent = text;
 
-    document.body.appendChild(
-        tooltip
-    );
+    document.body.appendChild(tooltip);
 
     const anchorRect =
         anchor.getBoundingClientRect();
-
     const tooltipRect =
         tooltip.getBoundingClientRect();
 
     const viewportPadding = 8;
-    const tooltipGap = 7;
+    const gap = 7;
 
-    const centeredLeft =
-        anchorRect.left +
-        (
-            anchorRect.width -
-            tooltipRect.width
-        ) / 2;
-
-    const left =
-        Math.max(
-            viewportPadding,
-            Math.min(
-                centeredLeft,
-                window.innerWidth -
-                    tooltipRect.width -
-                    viewportPadding
-            )
-        );
+    const left = Math.max(
+        viewportPadding,
+        Math.min(
+            anchorRect.left +
+                (anchorRect.width - tooltipRect.width) / 2,
+            window.innerWidth -
+                tooltipRect.width -
+                viewportPadding
+        )
+    );
 
     const fitsAbove =
         anchorRect.top -
-        tooltipRect.height -
-        tooltipGap >=
+            tooltipRect.height -
+            gap >=
         viewportPadding;
 
-    const top =
-        fitsAbove
-            ? anchorRect.top -
-              tooltipRect.height -
-              tooltipGap
-            : anchorRect.bottom +
-              tooltipGap;
-
-    const anchorCenter =
-        anchorRect.left +
-        anchorRect.width / 2;
-
-    const arrowLeft =
-        Math.max(
-            8,
-            Math.min(
-                anchorCenter - left,
-                tooltipRect.width - 8
-            )
-        );
-
-    tooltip.dataset.placement =
-        fitsAbove
-            ? "above"
-            : "below";
+    const top = fitsAbove
+        ? anchorRect.top - tooltipRect.height - gap
+        : anchorRect.bottom + gap;
 
     tooltip.style.left =
         `${Math.round(left)}px`;
-
     tooltip.style.top =
         `${Math.round(top)}px`;
+    tooltip.dataset.placement =
+        fitsAbove ? "above" : "below";
+
+    const arrowLeft = Math.max(
+        9,
+        Math.min(
+            anchorRect.left +
+                anchorRect.width / 2 -
+                left,
+            tooltipRect.width - 9
+        )
+    );
 
     tooltip.style.setProperty(
         "--jami-reaction-tooltip-arrow-left",
         `${Math.round(arrowLeft)}px`
-    );
-
-    requestAnimationFrame(
-        () => {
-            tooltip.dataset.visible =
-                "true";
-        }
     );
 }
 
@@ -6397,9 +6320,7 @@ renderReactionRow(
         button.removeAttribute("title");
 
         const tooltipText =
-            this.formatReactionTooltip(
-                reaction
-            );
+            this.formatReactionTooltip(reaction);
 
         button.setAttribute(
             "aria-label",
@@ -6538,13 +6459,7 @@ async setReactionActive(
                 method: "POST",
                 headers: {
                     "Content-Type":
-                        "application/json",
-                    ...(this.discordAuthToken
-                        ? {
-                            "Authorization":
-                                `Bearer ${this.discordAuthToken}`
-                        }
-                        : {})
+                        "application/json"
                 },
                 body: JSON.stringify({
                     targetType:
@@ -6553,13 +6468,6 @@ async setReactionActive(
                         target.targetId,
                     clientId:
                         this.clientId,
-                    reactorName:
-                        this.discordUser
-                            ?.displayName ||
-                        this.nameInput
-                            ?.value
-                            ?.trim() ||
-                        "anonymous",
                     active: active === true,
                     reaction: {
                         key: reaction.key,
