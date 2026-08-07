@@ -135,6 +135,11 @@ this.savedRemixManager = null;
 this.savedRemixManagerBusy = false;
 this.nameHistoryManager = null;
 this.watchPartyVideoMode = "cinematic";
+this.watchPartyVisualizerMode =
+    localStorage.getItem(
+        "watch_party_visualizer_mode"
+    ) || "bars";
+this.watchPartyVisualizerMessage = "";
 this.WATCH_PARTY_COLOURS = [
     "red",
     "orange",
@@ -194,6 +199,21 @@ this.createWindow();
     }
 );
 	
+window.addEventListener(
+    "watch-party-visualizer-state",
+    event => {
+        const detail = event.detail || {};
+        this.watchPartyVisualizerMessage =
+            typeof detail.message === "string"
+                ? detail.message
+                : "";
+
+        if (this.watchPartyOpen) {
+            this.renderWatchParty();
+        }
+    }
+);
+
 this.applyCurrentTheme();
 this.restoreSettings();
 this.setupDiscordAuthentication();
@@ -2775,6 +2795,10 @@ const addInputSelectionStart =
     const isEnabled =
         this.watchParty.enabled === true;
 
+window.watchPartyVisualizers?.setWatchPartyEnabled?.(
+    isEnabled
+);
+
 	this.watchPartyVideoMode =
     localStorage.getItem(
         "watch_party_video_mode"
@@ -3005,7 +3029,35 @@ const hasWatchPartyVideo =
     Boolean(
         this.watchParty.currentVideoId
     );
-	
+
+const visualizerController =
+    window.watchPartyVisualizers;
+
+const visualizerState =
+    visualizerController?.getState?.() || {
+        supported: false,
+        active: false,
+        panelCount: 0,
+        maxPanels: 5
+    };
+
+const visualizerModes =
+    [
+        ["wave", "waveform"],
+        ["bars", "equalizer"],
+        ["decay", "spectrum"],
+        ["line", "frequency line"],
+        ["peaks", "peaks"],
+        ["mountain", "filled spectrum"]
+    ];
+
+if (!visualizerModes.some(
+    ([mode]) =>
+        mode === this.watchPartyVisualizerMode
+)) {
+    this.watchPartyVisualizerMode = "bars";
+}
+
     this.watchPartyPanel.innerHTML = `
         <div
     class="
@@ -3674,6 +3726,135 @@ const hasWatchPartyVideo =
             </div>
         </div>
 
+       <section
+    data-watch-party-visualizers
+    class="
+        watch-party-visualizers
+        mt-4
+        shrink-0
+        border-t border-white/10
+        pt-3
+    "
+>
+    <div class="flex items-center justify-between gap-2">
+        <div
+            data-watch-party-visualizer-heading
+            class="
+                theme-heading
+                text-[9px]
+                uppercase tracking-widest
+                text-white/40
+            "
+        >
+            visualizers
+        </div>
+
+        <div
+            data-watch-party-visualizer-count
+            class="theme-body text-[8px] text-white/35"
+        >
+            ${visualizerState.panelCount}/${visualizerState.maxPanels}
+        </div>
+    </div>
+
+    <div class="mt-2 flex gap-2">
+        <button
+            type="button"
+            data-watch-party-visualizer-toggle
+            class="
+                watch-party-visualizer-action
+                theme-body
+                flex-1 rounded-lg border
+                px-2 py-1.5
+                text-[8px]
+                transition
+                disabled:cursor-not-allowed
+                disabled:opacity-35
+            "
+            ${
+                visualizerState.supported &&
+                isEnabled
+                    ? ""
+                    : "disabled"
+            }
+        >
+            ${visualizerState.active ? "disable" : "enable"}
+        </button>
+
+        <button
+            type="button"
+            data-watch-party-visualizer-add
+            class="
+                watch-party-visualizer-action
+                theme-body
+                flex-1 rounded-lg border
+                px-2 py-1.5
+                text-[8px]
+                transition
+                disabled:cursor-not-allowed
+                disabled:opacity-35
+            "
+            ${
+                isEnabled &&
+                visualizerState.active &&
+                visualizerState.panelCount < visualizerState.maxPanels
+                    ? ""
+                    : "disabled"
+            }
+        >
+            add panel
+        </button>
+    </div>
+
+    <div
+        data-watch-party-visualizer-grid
+        class="watch-party-visualizer-grid mt-2"
+    >
+        ${visualizerModes.map(([mode, label]) => `
+            <button
+                type="button"
+                data-watch-party-visualizer-mode="${mode}"
+                class="watch-party-visualizer-choice ${
+                    this.watchPartyVisualizerMode === mode
+                        ? "is-selected"
+                        : ""
+                }"
+                aria-pressed="${
+                    this.watchPartyVisualizerMode === mode
+                        ? "true"
+                        : "false"
+                }"
+                title="${label}"
+            >
+                <span
+                    class="watch-party-visualizer-preview watch-party-visualizer-preview--${mode}"
+                    aria-hidden="true"
+                ></span>
+                <span class="theme-body watch-party-visualizer-choice-label">${label}</span>
+            </button>
+        `).join("")}
+    </div>
+
+    <div
+        data-watch-party-visualizer-message
+        class="
+            theme-body
+            mt-2 min-h-[13px]
+            text-[8px] leading-relaxed
+            text-white/40
+        "
+    >
+        ${this.escapeHtml(
+            this.watchPartyVisualizerMessage ||
+            (!isEnabled
+                ? "visualizers are available while watch party is enabled"
+                : visualizerState.supported
+                    ? "tab-audio visualizers — select this browser tab and enable audio sharing when prompted"
+                    : "tab-audio capture is not available in this browser")
+        )}
+    </div>
+</section>
+
        <div
     class="
         mt-4
@@ -3860,7 +4041,155 @@ if (videoModeButton) {
         }
     );
 }
-	
+
+
+const visualizerToggleButton =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-visualizer-toggle]"
+    );
+
+const visualizerAddButton =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-visualizer-add]"
+    );
+
+this.watchPartyPanel
+    .querySelectorAll(
+        "[data-watch-party-visualizer-mode]"
+    )
+    .forEach(button => {
+        button.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const selectedMode =
+                    button.dataset
+                        .watchPartyVisualizerMode;
+
+                if (!selectedMode) {
+                    return;
+                }
+
+                this.watchPartyVisualizerMode =
+                    selectedMode;
+
+                localStorage.setItem(
+                    "watch_party_visualizer_mode",
+                    selectedMode
+                );
+
+                this.watchPartyPanel
+                    .querySelectorAll(
+                        "[data-watch-party-visualizer-mode]"
+                    )
+                    .forEach(modeButton => {
+                        const selected =
+                            modeButton === button;
+
+                        modeButton.classList.toggle(
+                            "is-selected",
+                            selected
+                        );
+
+                        modeButton.setAttribute(
+                            "aria-pressed",
+                            String(selected)
+                        );
+                    });
+            }
+        );
+    });
+
+if (visualizerToggleButton) {
+    visualizerToggleButton.addEventListener(
+        "click",
+        async event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const controller =
+                window.watchPartyVisualizers;
+
+            if (!controller) {
+                this.watchPartyVisualizerMessage =
+                    "visualizer controller is unavailable";
+                this.renderWatchParty();
+                return;
+            }
+
+            const state =
+                controller.getState?.() || {};
+
+            if (state.active) {
+                controller.stop?.({
+                    removePanels: true
+                });
+                return;
+            }
+
+            visualizerToggleButton.disabled = true;
+            this.watchPartyVisualizerMessage =
+                "select this browser tab and enable audio sharing";
+
+            const messageElement =
+                this.watchPartyPanel.querySelector(
+                    "[data-watch-party-visualizer-message]"
+                );
+
+            if (messageElement) {
+                messageElement.textContent =
+                    this.watchPartyVisualizerMessage;
+            }
+
+            try {
+                await controller.start?.(
+                    this.watchPartyVisualizerMode
+                );
+            } catch (error) {
+                if (
+                    error?.name !== "NotAllowedError" &&
+                    error?.name !== "AbortError"
+                ) {
+                    window.alert(
+                        error?.message ||
+                        "could not start the visualizer"
+                    );
+                }
+            } finally {
+                if (this.watchPartyOpen) {
+                    this.renderWatchParty();
+                }
+            }
+        }
+    );
+}
+
+if (visualizerAddButton) {
+    visualizerAddButton.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const controller =
+                window.watchPartyVisualizers;
+
+            const state =
+                controller?.getState?.();
+
+            if (!state?.active) {
+                return;
+            }
+
+            controller.addPanel?.(
+                this.watchPartyVisualizerMode
+            );
+        }
+    );
+}
+
     const closeButton =
         this.watchPartyPanel.querySelector(
             "[data-close-watch-party]"
@@ -7359,6 +7688,10 @@ setWatchPartyVideoMode(mode) {
 
     localStorage.setItem(
         "watch_party_theme",
+        selectedColour
+    );
+
+    window.watchPartyVisualizers?.syncTheme?.(
         selectedColour
     );
 
