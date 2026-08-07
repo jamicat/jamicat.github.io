@@ -3154,7 +3154,7 @@ const hasWatchPartyVideo =
         aria-expanded="${this.watchPartyVisualizerOpen ? "true" : "false"}"
         title="visualizers"
     >
-        〽
+        <span class="inline-block rotate-180" aria-hidden="true">〽</span>
     </button>
 
     <button
@@ -7359,6 +7359,162 @@ ensureWatchPartyVisualizerMenu() {
         localStorage.getItem("watch_party_theme") ||
         "default";
 
+    const savedLeft =
+        parseFloat(
+            localStorage.getItem(
+                "watch_party_visualizer_menu_left"
+            )
+        );
+
+    const savedTop =
+        parseFloat(
+            localStorage.getItem(
+                "watch_party_visualizer_menu_top"
+            )
+        );
+
+    if (
+        Number.isFinite(savedLeft) &&
+        Number.isFinite(savedTop)
+    ) {
+        menu.style.left = `${savedLeft}px`;
+        menu.style.top = `${savedTop}px`;
+        menu.dataset.positioned = "true";
+    }
+
+    let dragState = null;
+
+    const stopDrag = event => {
+        if (!dragState) {
+            return;
+        }
+
+        if (
+            event?.pointerId !== undefined &&
+            event.pointerId !== dragState.pointerId
+        ) {
+            return;
+        }
+
+        localStorage.setItem(
+            "watch_party_visualizer_menu_left",
+            menu.style.left || "0"
+        );
+
+        localStorage.setItem(
+            "watch_party_visualizer_menu_top",
+            menu.style.top || "0"
+        );
+
+        try {
+            if (
+                dragState.handle?.hasPointerCapture?.(
+                    dragState.pointerId
+                )
+            ) {
+                dragState.handle.releasePointerCapture(
+                    dragState.pointerId
+                );
+            }
+        } catch {}
+
+        dragState = null;
+        document.body.style.userSelect = "";
+    };
+
+    menu.addEventListener(
+        "pointerdown",
+        event => {
+            const handle =
+                event.target.closest(
+                    ".watch-party-visualizer-menu-titlebar"
+                );
+
+            if (
+                !handle ||
+                event.target.closest("button")
+            ) {
+                return;
+            }
+
+            const rect =
+                menu.getBoundingClientRect();
+
+            dragState = {
+                pointerId: event.pointerId,
+                handle,
+                offsetX:
+                    event.clientX - rect.left,
+                offsetY:
+                    event.clientY - rect.top
+            };
+
+            menu.dataset.positioned = "true";
+            menu.style.left = `${rect.left}px`;
+            menu.style.top = `${rect.top}px`;
+
+            try {
+                handle.setPointerCapture(
+                    event.pointerId
+                );
+            } catch {}
+
+            document.body.style.userSelect =
+                "none";
+
+            event.preventDefault();
+        }
+    );
+
+    menu.addEventListener(
+        "pointermove",
+        event => {
+            if (
+                !dragState ||
+                event.pointerId !==
+                    dragState.pointerId
+            ) {
+                return;
+            }
+
+            const edge = 10;
+            const width = menu.offsetWidth;
+            const height = menu.offsetHeight;
+
+            const left = Math.max(
+                edge,
+                Math.min(
+                    window.innerWidth - width - edge,
+                    event.clientX -
+                        dragState.offsetX
+                )
+            );
+
+            const top = Math.max(
+                edge,
+                Math.min(
+                    window.innerHeight - height - edge,
+                    event.clientY -
+                        dragState.offsetY
+                )
+            );
+
+            menu.style.left = `${left}px`;
+            menu.style.top = `${top}px`;
+            event.preventDefault();
+        }
+    );
+
+    menu.addEventListener(
+        "pointerup",
+        stopDrag
+    );
+
+    menu.addEventListener(
+        "pointercancel",
+        stopDrag
+    );
+
     document.body.appendChild(menu);
     this.watchPartyVisualizerMenu = menu;
     return menu;
@@ -7378,6 +7534,37 @@ positionWatchPartyVisualizerMenu() {
     const menuRect = menu.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
+
+    if (menu.dataset.positioned === "true") {
+        const currentLeft =
+            parseFloat(menu.style.left);
+
+        const currentTop =
+            parseFloat(menu.style.top);
+
+        if (
+            Number.isFinite(currentLeft) &&
+            Number.isFinite(currentTop)
+        ) {
+            menu.style.left = `${Math.max(
+                edge,
+                Math.min(
+                    viewportWidth - menuRect.width - edge,
+                    currentLeft
+                )
+            )}px`;
+
+            menu.style.top = `${Math.max(
+                edge,
+                Math.min(
+                    viewportHeight - menuRect.height - edge,
+                    currentTop
+                )
+            )}px`;
+
+            return;
+        }
+    }
 
     let left = partyRect.right + gap;
     if (left + menuRect.width > viewportWidth - edge) {
@@ -9168,6 +9355,11 @@ async openNameHistoryManager(
 
             list.appendChild(row);
         }
+
+        body.classList.toggle(
+            "is-scrollable",
+            history.length > 5
+        );
 
         body.appendChild(list);
 
