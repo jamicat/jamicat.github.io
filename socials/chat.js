@@ -131,7 +131,17 @@ this.banManagerButton = null;
 this.partyManager = null;
 this.partyManagerButton = null;
 this.partyManagerBusy = false;
+this.savedRemixManager = null;
+this.savedRemixManagerBusy = false;
+this.nameHistoryManager = null;
 this.watchPartyVideoMode = "cinematic";
+this.watchPartyVisualizerMode =
+    localStorage.getItem(
+        "watch_party_visualizer_mode"
+    ) || "bars";
+this.watchPartyVisualizerMessage = "";
+this.watchPartyVisualizerMenu = null;
+this.watchPartyVisualizerOpen = false;
 this.WATCH_PARTY_COLOURS = [
     "red",
     "orange",
@@ -191,6 +201,25 @@ this.createWindow();
     }
 );
 	
+window.addEventListener(
+    "watch-party-visualizer-state",
+    event => {
+        const detail = event.detail || {};
+        this.watchPartyVisualizerMessage =
+            typeof detail.message === "string"
+                ? detail.message
+                : "";
+
+        if (this.watchPartyOpen) {
+            this.renderWatchParty();
+        }
+
+        if (this.watchPartyVisualizerOpen) {
+            this.renderWatchPartyVisualizerMenu();
+        }
+    }
+);
+
 this.applyCurrentTheme();
 this.restoreSettings();
 this.setupDiscordAuthentication();
@@ -865,6 +894,27 @@ this.minimizeButton =
 
 this.createReplyComposerPreview();
 
+this.messages?.addEventListener(
+    "contextmenu",
+    event => {
+        if (
+            event.target.closest(
+                ".chatMessage"
+            )
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.openChatContextMenu(
+            event.clientX,
+            event.clientY
+        );
+    }
+);
+
 	   this.motdElement.addEventListener(
     "contextmenu",
     event => {
@@ -969,6 +1019,10 @@ window.addEventListener(
             this.positionWatchPartyPanel({
                 forceClamp: true
             });
+        }
+
+        if (this.watchPartyVisualizerOpen) {
+            this.positionWatchPartyVisualizerMenu();
         }
     }
 );
@@ -2751,6 +2805,10 @@ const addInputSelectionStart =
     const isEnabled =
         this.watchParty.enabled === true;
 
+window.watchPartyVisualizers?.setWatchPartyEnabled?.(
+    isEnabled
+);
+
 	this.watchPartyVideoMode =
     localStorage.getItem(
         "watch_party_video_mode"
@@ -2771,6 +2829,7 @@ window.setDiscordStatusVisible?.(
 
    if (!isEnabled) {
     this.watchPartyOpen = false;
+    this.closeWatchPartyVisualizerMenu();
     this.watchPartyAddUrl = "";
     this.watchPartyAddMessage = "";
     this.watchPartyAddError = false;
@@ -2981,7 +3040,7 @@ const hasWatchPartyVideo =
     Boolean(
         this.watchParty.currentVideoId
     );
-	
+
     this.watchPartyPanel.innerHTML = `
         <div
     class="
@@ -3076,6 +3135,40 @@ const hasWatchPartyVideo =
         this.watchPartyVideoMode
     )}
 </button>
+
+    <button
+        type="button"
+        data-watch-party-visualizer-menu-toggle
+        class="
+            no-drag
+            flex h-7 w-7
+            items-center justify-center
+            rounded-md
+            text-base leading-none
+            text-white/70
+            transition
+            hover:bg-white/10
+            hover:text-white
+        "
+        aria-label="open visualizer menu"
+        aria-expanded="${this.watchPartyVisualizerOpen ? "true" : "false"}"
+        title="visualizers"
+    >
+        <svg
+            aria-hidden="true"
+            viewBox="0 0 18 18"
+            class="h-4 w-4"
+            fill="none"
+        >
+            <path
+                d="M2 13L6 9L9 11L13 5L16 7"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+        </svg>
+    </button>
 
     <button
         type="button"
@@ -3836,7 +3929,28 @@ if (videoModeButton) {
         }
     );
 }
-	
+
+
+const visualizerMenuToggle =
+    this.watchPartyPanel.querySelector(
+        "[data-watch-party-visualizer-menu-toggle]"
+    );
+
+if (visualizerMenuToggle) {
+    visualizerMenuToggle.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+            this.toggleWatchPartyVisualizerMenu();
+        }
+    );
+}
+
+if (this.watchPartyVisualizerOpen) {
+    this.renderWatchPartyVisualizerMenu();
+}
+
     const closeButton =
         this.watchPartyPanel.querySelector(
             "[data-close-watch-party]"
@@ -3849,6 +3963,7 @@ if (videoModeButton) {
                 event.stopPropagation();
 
                 this.watchPartyOpen = false;
+                this.closeWatchPartyVisualizerMenu();
                 this.renderWatchParty();
             }
         );
@@ -7228,6 +7343,517 @@ content.append(
     });
 }
 
+
+ensureWatchPartyVisualizerMenu() {
+    if (this.watchPartyVisualizerMenu) {
+        return this.watchPartyVisualizerMenu;
+    }
+
+    const menu = document.createElement("div");
+    menu.id = "chatWatchPartyVisualizerMenu";
+    menu.className = `
+        terminal2
+        invisible pointer-events-none opacity-0
+        fixed z-[100003]
+        w-72
+        overflow-hidden
+        rounded-2xl
+        border border-white/15
+        bg-black/95
+        p-3
+        text-white
+        shadow-xl
+        backdrop-blur-xl
+        transition-opacity duration-150
+    `;
+
+    menu.dataset.theme =
+        this.watchPartyPanel?.dataset.theme ||
+        localStorage.getItem("watch_party_theme") ||
+        "default";
+
+    const savedLeft =
+        parseFloat(
+            localStorage.getItem(
+                "watch_party_visualizer_menu_left"
+            )
+        );
+
+    const savedTop =
+        parseFloat(
+            localStorage.getItem(
+                "watch_party_visualizer_menu_top"
+            )
+        );
+
+    if (
+        Number.isFinite(savedLeft) &&
+        Number.isFinite(savedTop)
+    ) {
+        menu.style.left = `${savedLeft}px`;
+        menu.style.top = `${savedTop}px`;
+        menu.dataset.positioned = "true";
+    }
+
+    let dragState = null;
+
+    const stopDrag = event => {
+        if (!dragState) {
+            return;
+        }
+
+        if (
+            event?.pointerId !== undefined &&
+            event.pointerId !== dragState.pointerId
+        ) {
+            return;
+        }
+
+        localStorage.setItem(
+            "watch_party_visualizer_menu_left",
+            menu.style.left || "0"
+        );
+
+        localStorage.setItem(
+            "watch_party_visualizer_menu_top",
+            menu.style.top || "0"
+        );
+
+        try {
+            if (
+                dragState.handle?.hasPointerCapture?.(
+                    dragState.pointerId
+                )
+            ) {
+                dragState.handle.releasePointerCapture(
+                    dragState.pointerId
+                );
+            }
+        } catch {}
+
+        dragState = null;
+        document.body.style.userSelect = "";
+    };
+
+    menu.addEventListener(
+        "pointerdown",
+        event => {
+            const handle =
+                event.target.closest(
+                    ".watch-party-visualizer-menu-titlebar"
+                );
+
+            if (
+                !handle ||
+                event.target.closest("button")
+            ) {
+                return;
+            }
+
+            const rect =
+                menu.getBoundingClientRect();
+
+            dragState = {
+                pointerId: event.pointerId,
+                handle,
+                offsetX:
+                    event.clientX - rect.left,
+                offsetY:
+                    event.clientY - rect.top
+            };
+
+            menu.dataset.positioned = "true";
+            menu.style.left = `${rect.left}px`;
+            menu.style.top = `${rect.top}px`;
+
+            try {
+                handle.setPointerCapture(
+                    event.pointerId
+                );
+            } catch {}
+
+            document.body.style.userSelect =
+                "none";
+
+            event.preventDefault();
+        }
+    );
+
+    menu.addEventListener(
+        "pointermove",
+        event => {
+            if (
+                !dragState ||
+                event.pointerId !==
+                    dragState.pointerId
+            ) {
+                return;
+            }
+
+            const edge = 10;
+            const width = menu.offsetWidth;
+            const height = menu.offsetHeight;
+
+            const left = Math.max(
+                edge,
+                Math.min(
+                    window.innerWidth - width - edge,
+                    event.clientX -
+                        dragState.offsetX
+                )
+            );
+
+            const top = Math.max(
+                edge,
+                Math.min(
+                    window.innerHeight - height - edge,
+                    event.clientY -
+                        dragState.offsetY
+                )
+            );
+
+            menu.style.left = `${left}px`;
+            menu.style.top = `${top}px`;
+            event.preventDefault();
+        }
+    );
+
+    menu.addEventListener(
+        "pointerup",
+        stopDrag
+    );
+
+    menu.addEventListener(
+        "pointercancel",
+        stopDrag
+    );
+
+    document.body.appendChild(menu);
+    this.watchPartyVisualizerMenu = menu;
+    return menu;
+}
+
+positionWatchPartyVisualizerMenu() {
+    const menu = this.watchPartyVisualizerMenu;
+    const party = this.watchPartyPanel;
+
+    if (!menu || !party || !this.watchPartyVisualizerOpen) {
+        return;
+    }
+
+    const gap = 10;
+    const edge = 10;
+    const partyRect = party.getBoundingClientRect();
+    const menuRect = menu.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    if (menu.dataset.positioned === "true") {
+        const currentLeft =
+            parseFloat(menu.style.left);
+
+        const currentTop =
+            parseFloat(menu.style.top);
+
+        if (
+            Number.isFinite(currentLeft) &&
+            Number.isFinite(currentTop)
+        ) {
+            menu.style.left = `${Math.max(
+                edge,
+                Math.min(
+                    viewportWidth - menuRect.width - edge,
+                    currentLeft
+                )
+            )}px`;
+
+            menu.style.top = `${Math.max(
+                edge,
+                Math.min(
+                    viewportHeight - menuRect.height - edge,
+                    currentTop
+                )
+            )}px`;
+
+            return;
+        }
+    }
+
+    let left = partyRect.right + gap;
+    if (left + menuRect.width > viewportWidth - edge) {
+        left = partyRect.left - menuRect.width - gap;
+    }
+    if (left < edge) {
+        left = Math.max(
+            edge,
+            Math.min(
+                viewportWidth - menuRect.width - edge,
+                partyRect.left
+            )
+        );
+    }
+
+    let top = partyRect.top;
+    top = Math.max(
+        edge,
+        Math.min(
+            viewportHeight - menuRect.height - edge,
+            top
+        )
+    );
+
+    menu.style.left = `${left}px`;
+    menu.style.top = `${top}px`;
+}
+
+closeWatchPartyVisualizerMenu() {
+    this.watchPartyVisualizerOpen = false;
+
+    if (!this.watchPartyVisualizerMenu) {
+        return;
+    }
+
+    this.watchPartyVisualizerMenu.classList.add(
+        "invisible",
+        "pointer-events-none",
+        "opacity-0"
+    );
+}
+
+toggleWatchPartyVisualizerMenu() {
+    if (!this.watchParty?.enabled) {
+        return;
+    }
+
+    this.watchPartyVisualizerOpen =
+        !this.watchPartyVisualizerOpen;
+
+    if (!this.watchPartyVisualizerOpen) {
+        this.closeWatchPartyVisualizerMenu();
+        this.renderWatchParty();
+        return;
+    }
+
+    this.renderWatchPartyVisualizerMenu();
+    this.renderWatchParty();
+}
+
+renderWatchPartyVisualizerMenu() {
+    if (!this.watchParty?.enabled) {
+        this.closeWatchPartyVisualizerMenu();
+        return;
+    }
+
+    const menu = this.ensureWatchPartyVisualizerMenu();
+    const controller = window.watchPartyVisualizers;
+    const state = controller?.getState?.() || {
+        supported: false,
+        active: false,
+        panelCount: 0,
+        maxPanels: 5
+    };
+
+    const modes = [
+        ["wave", "waveform"],
+        ["bars", "equalizer"],
+        ["decay", "spectrum"],
+        ["line", "frequency line"],
+        ["peaks", "peaks"],
+        ["mountain", "filled spectrum"]
+    ];
+
+    if (!modes.some(([mode]) => mode === this.watchPartyVisualizerMode)) {
+        this.watchPartyVisualizerMode = "bars";
+    }
+
+    menu.dataset.theme =
+        this.watchPartyPanel?.dataset.theme ||
+        localStorage.getItem("watch_party_theme") ||
+        "default";
+
+    menu.innerHTML = `
+        <div class="watch-party-visualizer-menu-titlebar">
+            <div>
+                <div class="theme-heading text-[10px] font-bold tracking-widest">
+                    visualizers
+                </div>
+                <div class="theme-body mt-0.5 text-[8px] text-white/35">
+                    ${state.panelCount}/${state.maxPanels}
+                </div>
+            </div>
+            <button
+                type="button"
+                data-close-watch-party-visualizer-menu
+                class="rounded-md px-2 py-1 text-sm text-white/50 transition hover:bg-white/10 hover:text-white"
+                aria-label="close visualizer menu"
+                title="close visualizer menu"
+            >×</button>
+        </div>
+
+        <div class="mt-3 flex gap-2">
+            <button
+                type="button"
+                data-watch-party-visualizer-toggle
+                class="watch-party-visualizer-action theme-body flex-1 rounded-lg border px-2 py-1.5 text-[8px] transition disabled:cursor-not-allowed disabled:opacity-35"
+                ${state.supported ? "" : "disabled"}
+            >${state.active ? "disable" : "enable"}</button>
+
+            <button
+                type="button"
+                data-watch-party-visualizer-add
+                class="watch-party-visualizer-action theme-body flex-1 rounded-lg border px-2 py-1.5 text-[8px] transition disabled:cursor-not-allowed disabled:opacity-35"
+                ${state.active && state.panelCount < state.maxPanels ? "" : "disabled"}
+            >add panel</button>
+        </div>
+
+        <div class="watch-party-visualizer-grid mt-2">
+            ${modes.map(([mode, label]) => `
+                <button
+                    type="button"
+                    data-watch-party-visualizer-mode="${mode}"
+                    class="watch-party-visualizer-choice ${
+                        this.watchPartyVisualizerMode === mode
+                            ? "is-selected"
+                            : ""
+                    }"
+                    aria-pressed="${
+                        this.watchPartyVisualizerMode === mode
+                            ? "true"
+                            : "false"
+                    }"
+                    title="${label}"
+                >
+                    <span class="watch-party-visualizer-preview watch-party-visualizer-preview--${mode}" aria-hidden="true"></span>
+                    <span class="theme-body watch-party-visualizer-choice-label">${label}</span>
+                </button>
+            `).join("")}
+        </div>
+
+        <div
+            data-watch-party-visualizer-message
+            class="theme-body mt-2 min-h-[13px] text-[8px] leading-relaxed text-white/40"
+        >${this.escapeHtml(
+            this.watchPartyVisualizerMessage ||
+            (state.supported
+                ? "select this browser tab and enable audio sharing when prompted"
+                : "tab-audio capture is not available in this browser")
+        )}</div>
+    `;
+
+    menu.classList.remove(
+        "invisible",
+        "pointer-events-none",
+        "opacity-0"
+    );
+
+    menu.querySelector(
+        "[data-close-watch-party-visualizer-menu]"
+    )?.addEventListener("click", event => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.closeWatchPartyVisualizerMenu();
+        this.renderWatchParty();
+    });
+
+    menu.querySelectorAll(
+        "[data-watch-party-visualizer-mode]"
+    ).forEach(button => {
+        button.addEventListener("click", event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const selectedMode =
+                button.dataset.watchPartyVisualizerMode;
+
+            if (!selectedMode) {
+                return;
+            }
+
+            this.watchPartyVisualizerMode = selectedMode;
+            localStorage.setItem(
+                "watch_party_visualizer_mode",
+                selectedMode
+            );
+            this.renderWatchPartyVisualizerMenu();
+        });
+    });
+
+    const toggleButton = menu.querySelector(
+        "[data-watch-party-visualizer-toggle]"
+    );
+
+    toggleButton?.addEventListener("click", async event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!controller) {
+            this.watchPartyVisualizerMessage =
+                "visualizer controller is unavailable";
+            this.renderWatchPartyVisualizerMenu();
+            return;
+        }
+
+        const currentState = controller.getState?.() || {};
+
+        if (currentState.active) {
+            controller.stop?.({ removePanels: true });
+            return;
+        }
+
+        toggleButton.disabled = true;
+        this.watchPartyVisualizerMessage =
+            "select this browser tab and enable audio sharing";
+
+        const messageElement = menu.querySelector(
+            "[data-watch-party-visualizer-message]"
+        );
+        if (messageElement) {
+            messageElement.textContent =
+                this.watchPartyVisualizerMessage;
+        }
+
+        try {
+            await controller.start?.(
+                this.watchPartyVisualizerMode
+            );
+        } catch (error) {
+            if (
+                error?.name !== "NotAllowedError" &&
+                error?.name !== "AbortError"
+            ) {
+                window.alert(
+                    error?.message ||
+                    "could not start the visualizer"
+                );
+            }
+        } finally {
+            if (this.watchPartyVisualizerOpen) {
+                this.renderWatchPartyVisualizerMenu();
+            }
+        }
+    });
+
+    menu.querySelector(
+        "[data-watch-party-visualizer-add]"
+    )?.addEventListener("click", event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const currentState = controller?.getState?.();
+        if (!currentState?.active) {
+            return;
+        }
+
+        controller.addPanel?.(
+            this.watchPartyVisualizerMode
+        );
+    });
+
+    requestAnimationFrame(() => {
+        this.positionWatchPartyVisualizerMenu();
+    });
+}
+
 	scrollMessagesToBottom() {
     if (!this.messages) {
         return;
@@ -7333,8 +7959,17 @@ setWatchPartyVideoMode(mode) {
     this.watchPartyPanel.dataset.theme =
         selectedColour;
 
+    if (this.watchPartyVisualizerMenu) {
+        this.watchPartyVisualizerMenu.dataset.theme =
+            selectedColour;
+    }
+
     localStorage.setItem(
         "watch_party_theme",
+        selectedColour
+    );
+
+    window.watchPartyVisualizers?.syncTheme?.(
         selectedColour
     );
 
@@ -7814,7 +8449,37 @@ openModerationMenu(x, y, message) {
         }));
     }
 
+    const savedRemixDivider =
+        document.createElement("div");
+    savedRemixDivider.className =
+        "my-1 border-t border-white/10";
+    buttons.push(savedRemixDivider);
+
+    buttons.push(
+        this.createModerationMenuButton(
+            "saved remixes",
+            () => {
+                this.closeModerationMenu();
+                this.openSavedRemixManager();
+            }
+        )
+    );
+
     if (this.isAdmin) {
+        buttons.push(
+            this.createModerationMenuButton(
+                "name history",
+                () => {
+                    this.closeModerationMenu();
+                    this.openNameHistoryManager(
+                        message.client_id,
+                        message.name ||
+                            "user"
+                    );
+                }
+            )
+        );
+
         buttons.push(this.createModerationMenuButton(`ban ${message.name || "user"}`, async () => {
             this.closeModerationMenu();
             await this.banClient(message.client_id, message.name);
@@ -7859,6 +8524,957 @@ openModerationMenu(x, y, message) {
     this.moderationMenu = menu;
 }
 
+openChatContextMenu(x, y) {
+    this.closeModerationMenu();
+
+    const menu =
+        document.createElement("div");
+
+    menu.className = [
+        "fixed",
+        "z-[100000]",
+        "w-44",
+        "overflow-hidden",
+        "rounded-xl",
+        "border",
+        "border-white/15",
+        "bg-black/90",
+        "py-1",
+        "text-[11px]",
+        "text-white",
+        "shadow-xl",
+        "backdrop-blur-xl",
+        "theme-body"
+    ].join(" ");
+
+    menu.appendChild(
+        this.createModerationMenuButton(
+            "saved remixes",
+            () => {
+                this.closeModerationMenu();
+                this.openSavedRemixManager();
+            }
+        )
+    );
+
+    document.body.appendChild(menu);
+
+    const rect =
+        menu.getBoundingClientRect();
+
+    const padding = 8;
+
+    menu.style.left =
+        `${Math.max(
+            padding,
+            Math.min(
+                x,
+                window.innerWidth -
+                    rect.width -
+                    padding
+            )
+        )}px`;
+
+    menu.style.top =
+        `${Math.max(
+            padding,
+            Math.min(
+                y,
+                window.innerHeight -
+                    rect.height -
+                    padding
+            )
+        )}px`;
+
+    this.moderationMenu = menu;
+}
+
+closeSavedRemixManager() {
+    if (!this.savedRemixManager) {
+        return;
+    }
+
+    this.savedRemixManager.remove();
+    this.savedRemixManager = null;
+    this.savedRemixManagerBusy = false;
+}
+
+async openSavedRemixManager() {
+    this.closeSavedRemixManager();
+
+    const overlay =
+        document.createElement("div");
+
+    overlay.className =
+        "jami-saved-remix-overlay";
+
+    const panel =
+        document.createElement("section");
+
+    panel.id =
+        "chatSavedRemixManager";
+
+    panel.className =
+        "terminal2 theme-body jami-saved-remix-manager";
+
+    const header =
+        document.createElement("div");
+
+    header.className =
+        "jami-saved-remix-header";
+
+    const title =
+        document.createElement("div");
+
+    title.className =
+        "theme-heading jami-saved-remix-title";
+
+    title.textContent =
+        "saved remixes";
+
+    const close =
+        document.createElement("button");
+
+    close.type = "button";
+    close.className =
+        "jami-saved-remix-close";
+    close.textContent = "×";
+    close.title =
+        "close saved remixes";
+
+    close.addEventListener(
+        "click",
+        () =>
+            this.closeSavedRemixManager()
+    );
+
+    header.append(
+        title,
+        close
+    );
+
+    const status =
+        document.createElement("div");
+
+    status.className =
+        "jami-saved-remix-status";
+    status.textContent =
+        "loading saved remixes...";
+
+    const grid =
+        document.createElement("div");
+
+    grid.className =
+        "jami-saved-remix-grid";
+
+    panel.append(
+        header,
+        status,
+        grid
+    );
+
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener(
+        "mousedown",
+        event => {
+            if (event.target === overlay) {
+                this.closeSavedRemixManager();
+            }
+        }
+    );
+
+    this.savedRemixManager =
+        overlay;
+
+    try {
+        const request =
+            await fetch(
+                `${this.API}/api/chat/saved-remixes`,
+                {
+                    cache: "no-store"
+                }
+            );
+
+        const items =
+            await request.json();
+
+        if (!request.ok) {
+            throw new Error(
+                items?.error ||
+                "could not load saved remixes"
+            );
+        }
+
+        grid.replaceChildren();
+
+        if (
+            !Array.isArray(items) ||
+            items.length === 0
+        ) {
+            status.textContent =
+                "no saved remixes yet";
+            return;
+        }
+
+        status.textContent =
+            `${items.length} saved remix${
+                items.length === 1
+                    ? ""
+                    : "es"
+            }`;
+
+        for (const item of items) {
+            grid.appendChild(
+                this.createSavedRemixCard(
+                    item
+                )
+            );
+        }
+    } catch (error) {
+        console.error(
+            "Could not load saved remixes:",
+            error
+        );
+
+        status.textContent =
+            "could not load saved remixes";
+    }
+}
+
+createSavedRemixCard(item) {
+    const card =
+        document.createElement("article");
+
+    card.className =
+        "jami-saved-remix-card";
+
+    const image =
+        document.createElement("img");
+
+    image.className =
+        "jami-saved-remix-thumb";
+    image.src =
+        item.imageUrl;
+    image.alt =
+        item.originalName ||
+        "saved remix";
+    image.loading = "lazy";
+
+    const meta =
+        document.createElement("div");
+
+    meta.className =
+        "jami-saved-remix-meta";
+
+    const creator =
+        document.createElement("div");
+
+    creator.className =
+        "jami-saved-remix-creator";
+
+    creator.textContent =
+        `created by ${
+            item.creatorName ||
+            "anonymous"
+        }`;
+
+    const created =
+        document.createElement("div");
+
+    created.className =
+        "jami-saved-remix-date";
+
+    const createdDate =
+        new Date(
+            item.createdAt ||
+            item.savedAt
+        );
+
+    created.textContent =
+        Number.isNaN(
+            createdDate.getTime()
+        )
+            ? ""
+            : createdDate
+                .toLocaleString(
+                    undefined,
+                    {
+                        dateStyle:
+                            "medium",
+                        timeStyle:
+                            "short"
+                    }
+                );
+
+    const saved =
+        document.createElement("div");
+
+    saved.className =
+        "jami-saved-remix-saved-by";
+
+    const savedDate =
+        new Date(item.savedAt);
+
+    saved.textContent =
+        `saved by ${
+            item.savedByName ||
+            "admin"
+        }${
+            Number.isNaN(
+                savedDate.getTime()
+            )
+                ? ""
+                : ` · ${
+                    savedDate.toLocaleString(
+                        undefined,
+                        {
+                            dateStyle:
+                                "medium",
+                            timeStyle:
+                                "short"
+                        }
+                    )
+                }`
+        }`;
+
+    meta.append(
+        creator,
+        created,
+        saved
+    );
+
+    const actions =
+        document.createElement("div");
+
+    actions.className =
+        "jami-saved-remix-actions";
+
+    const repost =
+        document.createElement("button");
+
+    repost.type = "button";
+    repost.className =
+        "jami-saved-remix-action";
+    repost.textContent =
+        "repost";
+
+    repost.addEventListener(
+        "click",
+        async () => {
+            repost.disabled = true;
+
+            try {
+                await this.repostSavedRemix(
+                    item.savedId
+                );
+
+                this.closeSavedRemixManager();
+            } finally {
+                repost.disabled = false;
+            }
+        }
+    );
+
+    actions.appendChild(repost);
+
+    if (this.isAdmin) {
+        const remove =
+            document.createElement(
+                "button"
+            );
+
+        remove.type = "button";
+        remove.className =
+            "jami-saved-remix-action jami-saved-remix-delete";
+        remove.textContent =
+            "delete";
+
+        remove.addEventListener(
+            "click",
+            async () => {
+                const confirmed =
+                    window.confirm(
+                        "delete this saved remix permanently?"
+                    );
+
+                if (!confirmed) {
+                    return;
+                }
+
+                remove.disabled = true;
+
+                try {
+                    await this.deleteSavedRemix(
+                        item.savedId
+                    );
+
+                    card.remove();
+
+                    const grid =
+                        this.savedRemixManager
+                            ?.querySelector(
+                                ".jami-saved-remix-grid"
+                            );
+
+                    if (
+                        grid &&
+                        grid.children.length === 0
+                    ) {
+                        const status =
+                            this.savedRemixManager
+                                .querySelector(
+                                    ".jami-saved-remix-status"
+                                );
+
+                        if (status) {
+                            status.textContent =
+                                "no saved remixes yet";
+                        }
+                    }
+                } finally {
+                    remove.disabled = false;
+                }
+            }
+        );
+
+        actions.appendChild(remove);
+    }
+
+    card.append(
+        image,
+        meta,
+        actions
+    );
+
+    return card;
+}
+
+async saveRemix(upload, button = null) {
+    if (
+        !this.isAdmin ||
+        !upload?.uploadId
+    ) {
+        return;
+    }
+
+    if (button) {
+        button.disabled = true;
+        button.textContent =
+            "saving...";
+    }
+
+    try {
+        const request =
+            await fetch(
+                `${this.API}/api/admin/saved-remixes/save`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                        "Authorization":
+                            `Bearer ${this.adminKey}`
+                    },
+                    body:
+                        JSON.stringify({
+                            uploadId:
+                                upload.uploadId,
+                            savedByClientId:
+                                this.clientId,
+                            savedByName:
+                                this.discordUser
+                                    ?.displayName ||
+                                this.nameInput
+                                    ?.value
+                                    ?.trim() ||
+                                "admin"
+                        })
+                }
+            );
+
+        const result =
+            await request.json();
+
+        if (!request.ok) {
+            throw new Error(
+                result?.error ||
+                "could not save remix"
+            );
+        }
+
+        if (button) {
+            button.textContent =
+                result.alreadySaved
+                    ? "saved"
+                    : "saved";
+            button.classList.add(
+                "is-saved"
+            );
+        }
+    } catch (error) {
+        console.error(
+            "Could not save remix:",
+            error
+        );
+
+        window.alert(
+            `could not save remix: ${error.message}`
+        );
+
+        if (button) {
+            button.textContent =
+                "save remix";
+        }
+    } finally {
+        if (button) {
+            button.disabled = false;
+        }
+    }
+}
+
+async deleteSavedRemix(savedId) {
+    const request =
+        await fetch(
+            `${this.API}/api/admin/saved-remixes/delete`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json",
+                    "Authorization":
+                        `Bearer ${this.adminKey}`
+                },
+                body:
+                    JSON.stringify({
+                        savedId
+                    })
+            }
+        );
+
+    const result =
+        await request.json();
+
+    if (!request.ok) {
+        window.alert(
+            result?.error ||
+            "could not delete saved remix"
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
+async repostSavedRemix(savedId) {
+    try {
+        const request =
+            await fetch(
+                `${this.API}/api/chat/saved-remixes/repost`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                        ...(this.discordAuthToken
+                            ? {
+                                "Authorization":
+                                    `Bearer ${this.discordAuthToken}`
+                            }
+                            : {})
+                    },
+                    body:
+                        JSON.stringify({
+                            savedId,
+                            clientId:
+                                this.clientId,
+                            name:
+                                this.nameInput
+                                    ?.value
+                                    ?.trim() ||
+                                "anonymous",
+                            avatar:
+                                this.avatar
+                        })
+                }
+            );
+
+        const result =
+            await request.json();
+
+        if (!request.ok) {
+            throw new Error(
+                result?.error ||
+                "could not repost saved remix"
+            );
+        }
+
+        return result.upload;
+    } catch (error) {
+        console.error(
+            "Could not repost saved remix:",
+            error
+        );
+
+        window.alert(
+            `could not repost saved remix: ${error.message}`
+        );
+
+        throw error;
+    }
+}
+
+closeNameHistoryManager() {
+    if (!this.nameHistoryManager) {
+        return;
+    }
+
+    this.nameHistoryManager.remove();
+    this.nameHistoryManager = null;
+}
+
+async openNameHistoryManager(
+    clientId,
+    displayName = "user"
+) {
+    if (
+        !this.isAdmin ||
+        !clientId
+    ) {
+        return;
+    }
+
+    this.closeNameHistoryManager();
+
+    const overlay =
+        document.createElement("div");
+
+    overlay.className =
+        "jami-name-history-overlay";
+
+    overlay.dataset.clientId =
+        clientId;
+
+    const panel =
+        document.createElement("section");
+
+    panel.id =
+        "chatNameHistoryManager";
+
+    panel.className =
+        "terminal2 theme-body jami-name-history-manager";
+
+    const header =
+        document.createElement("div");
+
+    header.className =
+        "jami-name-history-header";
+
+    const heading =
+        document.createElement("div");
+
+    heading.className =
+        "theme-heading jami-name-history-title";
+
+    heading.textContent =
+        "name history";
+
+    const close =
+        document.createElement("button");
+
+    close.type = "button";
+    close.className =
+        "jami-name-history-close";
+    close.textContent = "×";
+    close.title =
+        "close name history";
+
+    close.addEventListener(
+        "click",
+        () =>
+            this.closeNameHistoryManager()
+    );
+
+    header.append(
+        heading,
+        close
+    );
+
+    const subject =
+        document.createElement("div");
+
+    subject.className =
+        "jami-name-history-subject";
+
+    subject.textContent =
+        displayName;
+
+    const body =
+        document.createElement("div");
+
+    body.className =
+        "jami-name-history-body";
+
+    body.textContent =
+        "loading name history...";
+
+    const footer =
+        document.createElement("div");
+
+    footer.className =
+        "jami-name-history-footer";
+
+    panel.append(
+        header,
+        body,
+        footer
+    );
+
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener(
+        "mousedown",
+        event => {
+            if (event.target === overlay) {
+                this.closeNameHistoryManager();
+            }
+        }
+    );
+
+    this.nameHistoryManager =
+        overlay;
+
+    try {
+        const request =
+            await fetch(
+                `${this.API}/api/admin/name-history`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                        "Authorization":
+                            `Bearer ${this.adminKey}`
+                    },
+                    body:
+                        JSON.stringify({
+                            clientId
+                        })
+                }
+            );
+
+        const result =
+            await request.json();
+
+        if (!request.ok) {
+            throw new Error(
+                result?.error ||
+                "could not load name history"
+            );
+        }
+
+        body.replaceChildren();
+        footer.replaceChildren();
+
+        const history =
+            Array.isArray(result.history)
+                ? result.history
+                : [];
+
+        if (history.length === 0) {
+            const empty =
+                document.createElement(
+                    "div"
+                );
+
+            empty.className =
+                "jami-name-history-empty";
+            empty.textContent =
+                "no changes made";
+
+            body.appendChild(empty);
+            return;
+        }
+
+        const list =
+            document.createElement("div");
+
+        list.className =
+            "jami-name-history-list";
+
+        for (const entry of history) {
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+            row.className =
+                "jami-name-history-row";
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+            name.className =
+                "jami-name-history-name";
+
+            const previousName =
+                entry.previousName ||
+                "anonymous";
+
+            const newName =
+                entry.newName ||
+                "anonymous";
+
+            name.textContent =
+                `${previousName} - ${newName}`;
+
+            const timestamp =
+                document.createElement(
+                    "div"
+                );
+
+            timestamp.className =
+                "jami-name-history-time";
+
+            const date =
+                new Date(
+                    entry.changedAt
+                );
+
+            timestamp.textContent =
+                Number.isNaN(
+                    date.getTime()
+                )
+                    ? ""
+                    : date.toLocaleString(
+                        undefined,
+                        {
+                            dateStyle:
+                                "medium",
+                            timeStyle:
+                                "medium"
+                        }
+                    );
+
+            row.append(
+                name,
+                timestamp
+            );
+
+            list.appendChild(row);
+        }
+
+        body.classList.toggle(
+            "is-scrollable",
+            history.length >= 5
+        );
+
+        body.appendChild(list);
+
+        const clear =
+            document.createElement("button");
+
+        clear.type = "button";
+        clear.className =
+            "jami-name-history-delete";
+        clear.textContent =
+            "delete history";
+
+        clear.addEventListener(
+            "click",
+            async () => {
+                const confirmed =
+                    window.confirm(
+                        `delete name history for ${displayName}?`
+                    );
+
+                if (!confirmed) {
+                    return;
+                }
+
+                clear.disabled = true;
+
+                try {
+                    const deleteRequest =
+                        await fetch(
+                            `${this.API}/api/admin/name-history/delete`,
+                            {
+                                method:
+                                    "POST",
+                                headers: {
+                                    "Content-Type":
+                                        "application/json",
+                                    "Authorization":
+                                        `Bearer ${this.adminKey}`
+                                },
+                                body:
+                                    JSON.stringify({
+                                        clientId
+                                    })
+                            }
+                        );
+
+                    const deleteResult =
+                        await deleteRequest
+                            .json();
+
+                    if (!deleteRequest.ok) {
+                        throw new Error(
+                            deleteResult
+                                ?.error ||
+                            "could not delete name history"
+                        );
+                    }
+
+                    body.replaceChildren();
+
+                    const empty =
+                        document.createElement(
+                            "div"
+                        );
+
+                    empty.className =
+                        "jami-name-history-empty";
+                    empty.textContent =
+                        "no changes made";
+
+                    body.appendChild(
+                        empty
+                    );
+
+                    footer.replaceChildren();
+                } catch (error) {
+                    console.error(
+                        "Could not delete name history:",
+                        error
+                    );
+
+                    window.alert(
+                        `could not delete name history: ${error.message}`
+                    );
+
+                    clear.disabled = false;
+                }
+            }
+        );
+
+        footer.appendChild(clear);
+    } catch (error) {
+        console.error(
+            "Could not load name history:",
+            error
+        );
+
+        body.textContent =
+            "could not load name history";
+    }
+}
+
 openMemberModerationMenu(x, y, member) {
     const menu = document.createElement("div");
 
@@ -7889,6 +9505,18 @@ menu.style.left =
 menu.style.top =
     `${Math.max(viewportPadding, top)}px`;
 
+    const historyButton =
+        this.createModerationMenuButton(
+            "name history",
+            () => {
+                this.closeModerationMenu();
+                this.openNameHistoryManager(
+                    member.clientId,
+                    member.name
+                );
+            }
+        );
+
     const banButton = this.createModerationMenuButton(
         `ban ${member.name}`,
         async () => {
@@ -7897,7 +9525,10 @@ menu.style.top =
         }
     );
 
-    menu.appendChild(banButton);
+    menu.append(
+        historyButton,
+        banButton
+    );
 
     document.body.appendChild(menu);
     this.moderationMenu = menu;
@@ -8950,6 +10581,19 @@ if (data.type === "message") {
         data.message
     );
 
+    if (
+        this.nameHistoryManager &&
+        data.message?.client_id &&
+        this.nameHistoryManager.dataset
+            .clientId ===
+            data.message.client_id
+    ) {
+        this.openNameHistoryManager(
+            data.message.client_id,
+            data.message.name || "user"
+        );
+    }
+
     return;
 }
 
@@ -9367,6 +11011,43 @@ createCompletedImageElement(
                 )
             : [];
 
+    if (
+        remixChain.length > 0 &&
+        this.isAdmin
+    ) {
+        const saveButton =
+            document.createElement(
+                "button"
+            );
+
+        saveButton.type = "button";
+        saveButton.className = [
+            "jami-image-remix-trigger",
+            "jami-image-save-remix-trigger",
+            "theme-body"
+        ].join(" ");
+
+        saveButton.textContent =
+            "save remix";
+
+        saveButton.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                this.saveRemix(
+                    upload,
+                    saveButton
+                );
+            }
+        );
+
+        shell.appendChild(
+            saveButton
+        );
+    }
+
     if (remixChain.length > 0) {
         const attribution =
             document.createElement(
@@ -9697,20 +11378,6 @@ showCompletedImage(
             const currentUpload =
                 row.jamiImageUpload ||
                 upload;
-
-            const ownsUpload =
-                Boolean(
-                    currentUpload.clientId
-                ) &&
-                currentUpload.clientId ===
-                    this.clientId;
-
-            if (
-                !ownsUpload &&
-                !this.isAdmin
-            ) {
-                return;
-            }
 
             event.preventDefault();
             event.stopPropagation();
