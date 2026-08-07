@@ -7735,8 +7735,8 @@ renderWatchPartyVisualizerMenu() {
         >${this.escapeHtml(
             this.watchPartyVisualizerMessage ||
             (state.supported
-                ? "select this browser tab and enable audio sharing when prompted"
-                : "tab-audio capture is not available in this browser")
+                ? "select this browser tab and enable audio sharing"
+                : "tab audio capture is not available in this browser")
         )}</div>
     `;
 
