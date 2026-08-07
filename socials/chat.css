@@ -2362,3 +2362,52 @@ top: -0.2px;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+/* Floating reaction hover tooltip. Kept outside #chatWindow so it cannot be clipped. */
+.jami-reaction-tooltip {
+    position: fixed;
+    z-index: 100010;
+    box-sizing: border-box;
+    width: max-content;
+    max-width: min(360px, calc(100vw - 16px));
+    padding: 6px 8px;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 7px;
+    background: rgba(255,255,255,.06);
+    color: rgba(255,255,255,.96);
+    box-shadow: 0 4px 12px rgba(0,0,0,.18);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    font-family: var(--body-font, Consolas, monospace);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: normal;
+    text-align: left;
+    pointer-events: none;
+}
+
+.jami-reaction-tooltip::after {
+    content: "";
+    position: absolute;
+    left: var(--jami-reaction-tooltip-arrow-left, 50%);
+    width: 7px;
+    height: 7px;
+    background: rgba(255,255,255,.06);
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.jami-reaction-tooltip[data-placement="above"]::after {
+    top: 100%;
+    margin-top: -4px;
+    border-right: 1px solid rgba(255,255,255,.18);
+    border-bottom: 1px solid rgba(255,255,255,.18);
+}
+
+.jami-reaction-tooltip[data-placement="below"]::after {
+    bottom: 100%;
+    margin-bottom: -4px;
+    border-left: 1px solid rgba(255,255,255,.18);
+    border-top: 1px solid rgba(255,255,255,.18);
+}
+
