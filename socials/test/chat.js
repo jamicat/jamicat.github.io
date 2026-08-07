@@ -8876,6 +8876,9 @@ async openNameHistoryManager(
     overlay.className =
         "jami-name-history-overlay";
 
+    overlay.dataset.clientId =
+        clientId;
+
     const panel =
         document.createElement("section");
 
@@ -10294,6 +10297,19 @@ if (data.type === "message") {
     this.playNotificationSound(
         data.message
     );
+
+    if (
+        this.nameHistoryManager &&
+        data.message?.client_id &&
+        this.nameHistoryManager.dataset
+            .clientId ===
+            data.message.client_id
+    ) {
+        this.openNameHistoryManager(
+            data.message.client_id,
+            data.message.name || "user"
+        );
+    }
 
     return;
 }
