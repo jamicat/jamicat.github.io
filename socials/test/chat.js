@@ -7650,7 +7650,8 @@ renderWatchPartyVisualizerMenu() {
         supported: false,
         active: false,
         panelCount: 0,
-        maxPanels: 5
+        maxPanels: 5,
+        hyperMode: false
     };
 
     const modes = [
@@ -7705,6 +7706,20 @@ renderWatchPartyVisualizerMenu() {
                 ${state.active && state.panelCount < state.maxPanels ? "" : "disabled"}
             >add panel</button>
         </div>
+
+        ${state.active ? `
+            <label
+                class="watch-party-playlist-label theme-body mt-2 flex cursor-pointer items-center gap-2 text-[8px]"
+            >
+                <input
+                    type="checkbox"
+                    data-watch-party-visualizer-hyper
+                    class="watch-party-playlist-checkbox"
+                    ${state.hyperMode ? "checked" : ""}
+                >
+                <span>hyper mode</span>
+            </label>
+        ` : ""}
 
         <div class="watch-party-visualizer-grid mt-2">
             ${modes.map(([mode, label]) => `
@@ -7831,6 +7846,15 @@ renderWatchPartyVisualizerMenu() {
                 this.renderWatchPartyVisualizerMenu();
             }
         }
+    });
+
+    menu.querySelector(
+        "[data-watch-party-visualizer-hyper]"
+    )?.addEventListener("change", event => {
+        event.stopPropagation();
+        controller?.setHyperMode?.(
+            event.currentTarget.checked === true
+        );
     });
 
     menu.querySelector(
