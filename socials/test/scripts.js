@@ -2174,6 +2174,9 @@ const watchPartyVisualizers = (() => {
     "mountain"
   ]);
   const STORAGE_KEY = "watch_party_visualizer_panels";
+  const HYPER_STORAGE_KEY = "watch_party_visualizer_hyper_mode";
+  const NORMAL_SMOOTHING = 0.82;
+  const HYPER_SMOOTHING = 0.55;
 
   let captureStream = null;
   let audioContext = null;
@@ -2185,6 +2188,8 @@ const watchPartyVisualizers = (() => {
   let topZ = 100004;
   let restoring = false;
   let watchPartyEnabled = false;
+  let hyperMode =
+    localStorage.getItem(HYPER_STORAGE_KEY) === "true";
 
   const panels = new Map();
 
@@ -2209,6 +2214,7 @@ const watchPartyVisualizers = (() => {
           panelCount: panels.size,
           maxPanels: MAX_PANELS,
           watchPartyEnabled,
+          hyperMode,
           message
         }
       })
@@ -2594,7 +2600,7 @@ const watchPartyVisualizers = (() => {
     ctx.closePath();
   }
 
-  function getLogSpectrum(data, count) {
+  function getLogSpectrum(data, count, panel = null) {
     const safeCount = Math.max(2, Math.min(count, data.length));
     const sampleRate = audioContext?.sampleRate || 48000;
     const fftSize = analyser?.fftSize || data.length * 2;
@@ -2603,6 +2609,9 @@ const watchPartyVisualizers = (() => {
     const maxFrequency = Math.min(16000, nyquist * 0.92);
     const frequencyRange = maxFrequency / minFrequency;
     const values = new Float32Array(safeCount);
+    const peakValues = hyperMode
+      ? new Float32Array(safeCount)
+      : null;
 
     for (let i = 0; i < safeCount; i++) {
       const lowFrequency =
@@ -2623,10 +2632,13 @@ const watchPartyVisualizers = (() => {
       );
 
       let total = 0;
+      let peak = 0;
       let samples = 0;
 
       for (let bin = lowBin; bin <= highBin; bin++) {
-        total += data[bin];
+        const sample = data[bin];
+        total += sample;
+        peak = Math.max(peak, sample);
         samples++;
       }
 
@@ -2640,13 +2652,61 @@ const watchPartyVisualizers = (() => {
         1,
         perceptualBoost * highFrequencyLift
       );
+
+      if (peakValues) {
+        const normalizedPeak = peak / 255;
+        peakValues[i] = Math.min(
+          1,
+          Math.pow(normalizedPeak, 0.55) *
+            highFrequencyLift
+        );
+      }
     }
 
-    return values;
+    if (!hyperMode || !panel || !peakValues) {
+      return values;
+    }
+
+    if (!(panel.hyperSpectrum instanceof Map)) {
+      panel.hyperSpectrum = new Map();
+    }
+
+    let displayed = panel.hyperSpectrum.get(safeCount);
+    if (!(displayed instanceof Float32Array) || displayed.length !== safeCount) {
+      displayed = new Float32Array(safeCount);
+      panel.hyperSpectrum.set(safeCount, displayed);
+    }
+
+    const output = new Float32Array(safeCount);
+
+    for (let i = 0; i < safeCount; i++) {
+      /*
+       * hyper mode keeps the same logarithmic frequency bands,
+       * then adds entertainment-style dynamics: some transient
+       * peak energy, extra perceptual lift, fast attack and a
+       * slower release. The normal mode above remains unchanged.
+       */
+      const combined = Math.min(
+        1,
+        values[i] * 0.72 + peakValues[i] * 0.38
+      );
+      const target = Math.min(
+        1,
+        Math.pow(combined, 0.72)
+      );
+      const previous = displayed[i];
+      const response = target > previous ? 0.72 : 0.14;
+      const next = previous + (target - previous) * response;
+
+      displayed[i] = next;
+      output[i] = next;
+    }
+
+    return output;
   }
 
-  function drawBars(ctx, width, height, data, accent, centred = false) {
-    const values = getLogSpectrum(data, 38);
+  function drawBars(ctx, width, height, data, accent, centred = false, panel = null) {
+    const values = getLogSpectrum(data, 38, panel);
     const count = values.length;
     const gap = 2;
     const barWidth = Math.max(2, (width - gap * (count - 1)) / count);
@@ -2674,8 +2734,8 @@ const watchPartyVisualizers = (() => {
     }
   }
 
-  function drawDecay(ctx, width, height, data, accent) {
-    const values = getLogSpectrum(data, 34);
+  function drawDecay(ctx, width, height, data, accent, panel = null) {
+    const values = getLogSpectrum(data, 34, panel);
     const count = values.length;
     const gap = 2;
     const barWidth = Math.max(2, (width - gap * (count - 1)) / count);
@@ -2695,8 +2755,8 @@ const watchPartyVisualizers = (() => {
     }
   }
 
-  function drawLine(ctx, width, height, data, accent, filled = false, low = false) {
-    const values = getLogSpectrum(data, 64);
+  function drawLine(ctx, width, height, data, accent, filled = false, low = false, panel = null) {
+    const values = getLogSpectrum(data, 64, panel);
     const points = values.length;
     const gradient = makeGradient(ctx, width, height, accent, false);
     const baseline = low ? height * 0.82 : height * 0.72;
@@ -2777,20 +2837,20 @@ const watchPartyVisualizers = (() => {
         drawWave(ctx, width, height, timeData, accent);
         break;
       case "decay":
-        drawDecay(ctx, width, height, frequencyData, accent);
+        drawDecay(ctx, width, height, frequencyData, accent, panel);
         break;
       case "line":
-        drawLine(ctx, width, height, frequencyData, accent, true, false);
+        drawLine(ctx, width, height, frequencyData, accent, true, false, panel);
         break;
       case "peaks":
-        drawLine(ctx, width, height, frequencyData, accent, false, true);
+        drawLine(ctx, width, height, frequencyData, accent, false, true, panel);
         break;
       case "mountain":
-        drawLine(ctx, width, height, frequencyData, accent, true, true);
+        drawLine(ctx, width, height, frequencyData, accent, true, true, panel);
         break;
       case "bars":
       default:
-        drawBars(ctx, width, height, frequencyData, accent, false);
+        drawBars(ctx, width, height, frequencyData, accent, false, panel);
         break;
     }
   }
@@ -2896,7 +2956,8 @@ const watchPartyVisualizers = (() => {
     const source = context.createMediaStreamSource(stream);
     const nextAnalyser = context.createAnalyser();
     nextAnalyser.fftSize = 2048;
-    nextAnalyser.smoothingTimeConstant = 0.82;
+    nextAnalyser.smoothingTimeConstant =
+      hyperMode ? HYPER_SMOOTHING : NORMAL_SMOOTHING;
     nextAnalyser.minDecibels = -90;
     nextAnalyser.maxDecibels = -10;
     source.connect(nextAnalyser);
@@ -2986,13 +3047,36 @@ const watchPartyVisualizers = (() => {
     });
   }
 
+  function setHyperMode(enabled) {
+    hyperMode = enabled === true;
+    localStorage.setItem(
+      HYPER_STORAGE_KEY,
+      hyperMode ? "true" : "false"
+    );
+
+    if (analyser) {
+      analyser.smoothingTimeConstant =
+        hyperMode ? HYPER_SMOOTHING : NORMAL_SMOOTHING;
+    }
+
+    panels.forEach(panel => {
+      panel.hyperSpectrum?.clear?.();
+    });
+
+    emitState(
+      hyperMode ? "hyper mode enabled" : "hyper mode disabled"
+    );
+    return getState();
+  }
+
   function getState() {
     return {
       supported: isSupported(),
       active: Boolean(captureStream && analyser),
       panelCount: panels.size,
       maxPanels: MAX_PANELS,
-      watchPartyEnabled
+      watchPartyEnabled,
+      hyperMode
     };
   }
 
@@ -3010,6 +3094,7 @@ const watchPartyVisualizers = (() => {
     addPanel,
     removePanel,
     syncTheme,
+    setHyperMode,
     getState
   };
 })();
