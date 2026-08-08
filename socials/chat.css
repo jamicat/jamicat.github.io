@@ -123,6 +123,8 @@
 }
 
 #chatWatchPartyPanel
+.watch-party-playlist-label,
+#chatWatchPartyVisualizerMenu
 .watch-party-playlist-label {
     color:
         rgba(
@@ -136,6 +138,8 @@
 }
 
 #chatWatchPartyPanel
+.watch-party-playlist-label:hover,
+#chatWatchPartyVisualizerMenu
 .watch-party-playlist-label:hover {
     color:
         rgba(
@@ -145,6 +149,8 @@
 }
 
 #chatWatchPartyPanel
+.watch-party-playlist-checkbox,
+#chatWatchPartyVisualizerMenu
 .watch-party-playlist-checkbox {
     appearance: none;
     -webkit-appearance: none;
@@ -184,6 +190,8 @@
 }
 
 #chatWatchPartyPanel
+.watch-party-playlist-checkbox:hover,
+#chatWatchPartyVisualizerMenu
 .watch-party-playlist-checkbox:hover {
     border-color:
         var(--watch-party-accent);
@@ -203,11 +211,15 @@
 }
 
 #chatWatchPartyPanel
+.watch-party-playlist-checkbox:active,
+#chatWatchPartyVisualizerMenu
 .watch-party-playlist-checkbox:active {
     transform: scale(0.92);
 }
 
 #chatWatchPartyPanel
+.watch-party-playlist-checkbox:focus-visible,
+#chatWatchPartyVisualizerMenu
 .watch-party-playlist-checkbox:focus-visible {
     outline:
         1px solid
@@ -217,6 +229,8 @@
 }
 
 #chatWatchPartyPanel
+.watch-party-playlist-checkbox:checked,
+#chatWatchPartyVisualizerMenu
 .watch-party-playlist-checkbox:checked {
     border-color:
         var(--watch-party-accent);
@@ -240,6 +254,8 @@
 }
 
 #chatWatchPartyPanel
+.watch-party-playlist-checkbox:disabled,
+#chatWatchPartyVisualizerMenu
 .watch-party-playlist-checkbox:disabled {
     cursor: wait;
 }
@@ -3396,6 +3412,11 @@ top: -0.2px;
     user-select: none;
     touch-action: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#chatWatchPartyVisualizerMenu {
+    --watch-party-accent: var(--visualizer-accent);
+    --watch-party-accent-rgb: var(--visualizer-accent-rgb);
 }
 
 #chatWatchPartyVisualizerMenu .watch-party-visualizer-action {
