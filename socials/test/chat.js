@@ -11545,23 +11545,61 @@ showCompletedImage(
             upload.createdAt
         );
 
-    time.textContent =
-        Number.isNaN(
+    const hasValidCreatedDate =
+        !Number.isNaN(
             createdDate.getTime()
-        )
+        );
+
+    const formattedTime =
+        hasValidCreatedDate
+            ? createdDate.toLocaleTimeString(
+                undefined,
+                {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false
+                }
+            )
+            : "--:--";
+
+    const now = new Date();
+
+    const isPreviousDay =
+        hasValidCreatedDate &&
+        (
+            createdDate.getFullYear() !==
+                now.getFullYear() ||
+            createdDate.getMonth() !==
+                now.getMonth() ||
+            createdDate.getDate() !==
+                now.getDate()
+        );
+
+    time.textContent =
+        !hasValidCreatedDate
             ? "--:--"
-            : createdDate
-                .toLocaleTimeString(
-                    undefined,
+            : isPreviousDay
+                ? `${createdDate.toLocaleDateString(
+                    "en-GB",
                     {
-                        hour:
-                            "2-digit",
-                        minute:
-                            "2-digit",
-                        hour12:
-                            false
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric"
                     }
-                );
+                )} ${formattedTime}`
+                : formattedTime;
+
+    time.title =
+        hasValidCreatedDate
+            ? createdDate.toLocaleString(
+                undefined,
+                {
+                    dateStyle: "full",
+                    timeStyle: "medium",
+                    hour12: false
+                }
+            )
+            : "unknown time";
 
     const body =
         document.createElement(
