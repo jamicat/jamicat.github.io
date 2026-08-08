@@ -3414,9 +3414,34 @@ top: -0.2px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-#chatWatchPartyVisualizerMenu {
-    --watch-party-accent: var(--visualizer-accent);
-    --watch-party-accent-rgb: var(--visualizer-accent-rgb);
+#chatWatchPartyVisualizerMenu[data-theme="default"]
+.watch-party-playlist-label {
+    color: rgba(255, 255, 255, 0.50);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="default"]
+.watch-party-playlist-label:hover {
+    color: rgba(255, 255, 255, 0.78);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="default"]
+.watch-party-playlist-checkbox {
+    border-color: rgba(255, 255, 255, 0.38);
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="default"]
+.watch-party-playlist-checkbox:hover {
+    border-color: rgba(255, 255, 255, 0.70);
+    background-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 7px rgba(255, 255, 255, 0.15);
+}
+
+#chatWatchPartyVisualizerMenu[data-theme="default"]
+.watch-party-playlist-checkbox:checked {
+    border-color: rgba(255, 255, 255, 0.78);
+    background-color: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 0 7px rgba(255, 255, 255, 0.22);
 }
 
 #chatWatchPartyVisualizerMenu .watch-party-visualizer-action {
