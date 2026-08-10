@@ -3487,78 +3487,99 @@ top: -0.2px;
 }
 
 .jami-confetti-message-content {
+    position: relative;
+    z-index: 1;
     min-width: 0;
     overflow-wrap: anywhere;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.12);
+
+    /*
+        Keep the text genuinely unreadable, while the
+        radial background feathers the spoiler edges.
+    */
     filter: blur(6px);
-    opacity: 0.38;
+    opacity: 0.34;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(255, 255, 255, 0.22) 0%,
+            rgba(255, 255, 255, 0.14) 46%,
+            rgba(255, 255, 255, 0.055) 72%,
+            transparent 100%
+        );
+
+    border-radius: 999px;
+
+    box-shadow:
+        0 0 7px rgba(255, 255, 255, 0.08),
+        0 0 14px rgba(255, 255, 255, 0.04);
+
     transition:
         filter 180ms ease,
         opacity 180ms ease,
-        background 180ms ease;
+        background 180ms ease,
+        box-shadow 180ms ease;
 }
 
-/* soft spoiler veil above the blurred message */
-.jami-confetti-message::before {
+/*
+    Soft neutral haze over only the spoiler area.
+    This avoids the hard rounded-rectangle look.
+*/
+.jami-confetti-message-content::before {
     content: "";
     position: absolute;
-    left: 29px;
-    right: 4px;
-    top: 2px;
-    bottom: 2px;
-    z-index: 3;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.10);
-    box-shadow:
-        inset 0 0 8px rgba(255, 255, 255, 0.07),
-        0 0 7px rgba(255, 255, 255, 0.06);
-    pointer-events: none;
-    transition: opacity 180ms ease;
-}
+    inset: -2px -5px;
+    z-index: 2;
 
-/* irregular confetti sitting on top of the spoiler */
-.jami-confetti-message::after {
-    content: "";
-    position: absolute;
-    left: 29px;
-    right: 4px;
-    top: 2px;
-    bottom: 2px;
-    z-index: 4;
-    border-radius: 6px;
-    pointer-events: none;
+    border-radius: 999px;
+
     background:
-        linear-gradient(24deg, #ff9f0a 0 100%)
-            9% 62% / 3px 6px no-repeat,
-        linear-gradient(-37deg, #ff375f 0 100%)
-            21% 28% / 5px 2px no-repeat,
-        linear-gradient(11deg, #ffd60a 0 100%)
-            37% 72% / 2px 5px no-repeat,
-        linear-gradient(48deg, #0a84ff 0 100%)
-            48% 36% / 4px 2px no-repeat,
-        linear-gradient(-18deg, #64d2ff 0 100%)
-            63% 68% / 2px 6px no-repeat,
-        linear-gradient(31deg, #bf5af2 0 100%)
-            78% 31% / 4px 3px no-repeat,
-        linear-gradient(-42deg, #30d158 0 100%)
-            89% 59% / 3px 5px no-repeat,
-        linear-gradient(15deg, #ff453a 0 100%)
-            56% 18% / 3px 3px no-repeat;
-    opacity: 0.9;
-    transition: opacity 180ms ease;
+        radial-gradient(
+            ellipse at center,
+            rgba(255, 255, 255, 0.15) 0%,
+            rgba(255, 255, 255, 0.085) 48%,
+            rgba(255, 255, 255, 0.025) 74%,
+            transparent 100%
+        );
+
+    filter: blur(2.5px);
+    pointer-events: none;
+
+    transition:
+        opacity 180ms ease;
 }
 
-.jami-confetti-message.is-revealed
-.jami-confetti-message-content {
-    background: transparent;
-    filter: none;
-    opacity: 1;
+/*
+    JS creates a unique, seeded confetti layout per
+    message. It is clipped to the spoiler's footprint.
+*/
+.jami-confetti-spoiler-overlay {
+    position: absolute;
+
+    left: 29px;
+    right: 5px;
+    top: 2px;
+    bottom: 2px;
+
+    z-index: 4;
+
+    overflow: hidden;
+    border-radius: 999px;
+
+    pointer-events: none;
+
+    transition:
+        opacity 180ms ease;
 }
 
-.jami-confetti-message.is-revealed::before,
-.jami-confetti-message.is-revealed::after {
-    opacity: 0;
+.jami-confetti-spoiler-piece {
+    position: absolute;
+    display: block;
+
+    pointer-events: none;
+
+    box-shadow:
+        0 0 2px rgba(255, 255, 255, 0.07);
 }
 
 .jami-confetti-message-content img {
@@ -3567,11 +3588,17 @@ top: -0.2px;
 
 .jami-confetti-message.is-revealed
 .jami-confetti-message-content {
-    color: inherit;
-    text-shadow: none;
     background: transparent;
     box-shadow: none;
+    filter: none;
     opacity: 1;
+}
+
+.jami-confetti-message.is-revealed
+.jami-confetti-message-content::before,
+.jami-confetti-message.is-revealed
+.jami-confetti-spoiler-overlay {
+    opacity: 0;
 }
 
 .jami-confetti-message.is-revealed
