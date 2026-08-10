@@ -98,6 +98,7 @@ this.replyTarget = null;
 this.replyComposerPreview = null;
 this.activeInlineEdit = null;
 this.messageReactions = new Map();
+this.revealedConfettiMessages = new Set();
 this.reactionPicker = null;
 this.reactionRequestBusy = new Set();
 this.recentReactionStorageKey =
@@ -6928,6 +6929,14 @@ addMessage(message) {
                 message
                     .discord_server_badge_url ||
                 ""
+            ) &&
+        (
+            previousMessage.message_type ||
+            "text"
+        ) ===
+            (
+                message.message_type ||
+                "text"
             );
 
     const closeInTime =
@@ -6937,6 +6946,7 @@ addMessage(message) {
             5 * 60 * 1000;
 
     const isContinuation =
+        message.message_type !== "confetti" &&
         sameAuthor &&
         sameIdentity &&
         closeInTime;
@@ -7063,9 +7073,9 @@ const text =
 text.className =
     "chatText break-words leading-relaxed";
 
-this.renderMessageContent(
+this.renderChatMessageContent(
     text,
-    message.message || ""
+    message
 );
 
 messageBody.appendChild(text);
@@ -7275,9 +7285,9 @@ const text =
 text.className =
     "chatText break-words leading-relaxed";
 
-this.renderMessageContent(
+this.renderChatMessageContent(
     text,
-    message.message || ""
+    message
 );
 
 messageBody.appendChild(text);
@@ -8441,7 +8451,11 @@ openModerationMenu(x, y, message) {
     const ownsMessage = Boolean(
         message.client_id && message.client_id === this.clientId
     );
-    const canEdit = !isImage && Boolean(message.id) && (ownsMessage || this.isAdmin);
+    const canEdit =
+        !isImage &&
+        message.message_type !== "confetti" &&
+        Boolean(message.id) &&
+        (ownsMessage || this.isAdmin);
     const canDelete = ownsMessage || this.isAdmin;
 
     const buttons = [];
@@ -8522,6 +8536,11 @@ openModerationMenu(x, y, message) {
             this.editMotd();
         }));
 
+        buttons.push(this.createModerationMenuButton("post confetti message", () => {
+            this.closeModerationMenu();
+            this.postConfettiMessage();
+        }));
+
         buttons.push(this.createModerationMenuButton("copy message ID", async () => {
             const identifier = message.imageUploadId || message.id;
             try { await navigator.clipboard.writeText(String(identifier)); }
@@ -8580,6 +8599,26 @@ openChatContextMenu(x, y) {
             }
         )
     );
+
+    if (this.isAdmin) {
+        const divider =
+            document.createElement("div");
+
+        divider.className =
+            "my-1 border-t border-white/10";
+
+        menu.appendChild(divider);
+
+        menu.appendChild(
+            this.createModerationMenuButton(
+                "post confetti message",
+                () => {
+                    this.closeModerationMenu();
+                    this.postConfettiMessage();
+                }
+            )
+        );
+    }
 
     document.body.appendChild(menu);
 
@@ -13236,6 +13275,311 @@ setupNameSaving() {
         this.sendPresence();
     });
 }
+
+
+    renderChatMessageContent(container, message) {
+        if (message?.message_type === "confetti") {
+            this.renderConfettiMessage(
+                container,
+                message
+            );
+            return;
+        }
+
+        this.renderMessageContent(
+            container,
+            message?.message || ""
+        );
+    }
+
+    renderConfettiMessage(container, message) {
+        container.replaceChildren();
+
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+        button.className =
+            "jami-confetti-message";
+        button.title =
+            "click to celebrate";
+
+        const icon =
+            document.createElement("span");
+
+        icon.className =
+            "jami-confetti-message-icon";
+        icon.textContent = "🎉";
+
+        const content =
+            document.createElement("span");
+
+        content.className =
+            "jami-confetti-message-content";
+
+        this.renderMessageContent(
+            content,
+            message?.message || ""
+        );
+
+        const messageId =
+            Number(message?.id);
+
+        const key =
+            Number.isInteger(messageId) &&
+            messageId > 0
+                ? String(messageId)
+                : "";
+
+        const revealed =
+            key &&
+            this.revealedConfettiMessages.has(
+                key
+            );
+
+        button.classList.toggle(
+            "is-revealed",
+            Boolean(revealed)
+        );
+
+        button.setAttribute(
+            "aria-label",
+            revealed
+                ? "replay confetti message"
+                : "reveal confetti message"
+        );
+
+        button.append(icon, content);
+
+        button.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (key) {
+                    this.revealedConfettiMessages.add(
+                        key
+                    );
+                }
+
+                button.classList.add(
+                    "is-revealed"
+                );
+
+                button.setAttribute(
+                    "aria-label",
+                    "replay confetti message"
+                );
+
+                this.playConfettiEffect(
+                    message?.message || ""
+                );
+            }
+        );
+
+        container.appendChild(button);
+    }
+
+    playConfettiEffect(message) {
+        if (!this.window) {
+            return;
+        }
+
+        this.window
+            .querySelectorAll(
+                ".jami-confetti-effect-layer"
+            )
+            .forEach(element =>
+                element.remove()
+            );
+
+        const layer =
+            document.createElement("div");
+
+        layer.className =
+            "jami-confetti-effect-layer";
+        layer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        const burst =
+            document.createElement("div");
+
+        burst.className =
+            "jami-confetti-burst";
+
+        const particleCount = 64;
+
+        for (
+            let index = 0;
+            index < particleCount;
+            index += 1
+        ) {
+            const particle =
+                document.createElement("i");
+
+            const angle =
+                Math.random() * Math.PI * 2;
+
+            const distance =
+                95 + Math.random() * 170;
+
+            particle.className =
+                `jami-confetti-particle jami-confetti-colour-${
+                    (index % 8) + 1
+                }`;
+
+            particle.style.setProperty(
+                "--confetti-x",
+                `${Math.cos(angle) * distance}px`
+            );
+
+            particle.style.setProperty(
+                "--confetti-y",
+                `${Math.sin(angle) * distance}px`
+            );
+
+            particle.style.setProperty(
+                "--confetti-delay",
+                `${Math.random() * 120}ms`
+            );
+
+            particle.style.setProperty(
+                "--confetti-rotate",
+                `${180 + Math.random() * 720}deg`
+            );
+
+            burst.appendChild(particle);
+        }
+
+        const effectMessage =
+            document.createElement("div");
+
+        effectMessage.className =
+            "jami-confetti-effect-message theme-heading";
+
+        const effectIcon =
+            document.createElement("span");
+
+        effectIcon.className =
+            "jami-confetti-effect-icon";
+        effectIcon.textContent = "🎉";
+
+        const effectText =
+            document.createElement("span");
+
+        effectText.className =
+            "jami-confetti-effect-text";
+
+        this.renderMessageContent(
+            effectText,
+            message
+        );
+
+        effectMessage.append(
+            effectIcon,
+            effectText
+        );
+
+        layer.append(
+            burst,
+            effectMessage
+        );
+
+        this.window.appendChild(layer);
+
+        window.setTimeout(
+            () => layer.remove(),
+            3000
+        );
+    }
+
+    async postConfettiMessage() {
+        if (!this.isAdmin || !this.adminKey) {
+            return;
+        }
+
+        const message = window.prompt(
+            "confetti message (emoji and :customemoji: supported):"
+        );
+
+        if (message === null) {
+            return;
+        }
+
+        const cleaned =
+            message.trim().slice(0, 250);
+
+        if (!cleaned) {
+            window.alert(
+                "confetti message cannot be empty"
+            );
+            return;
+        }
+
+        const name =
+            this.discordUser?.displayName ||
+            this.nameInput?.value.trim() ||
+            "admin";
+
+        const avatar =
+            this.discordUser?.avatarUrl ||
+            this.avatar;
+
+        const primaryGuild =
+            this.discordUser?.primaryGuild ||
+            null;
+
+        try {
+            const response = await fetch(
+                `${this.API}/api/admin/chat/confetti`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                        "Authorization":
+                            `Bearer ${this.adminKey}`
+                    },
+                    body: JSON.stringify({
+                        clientId:
+                            this.clientId,
+                        name,
+                        avatar,
+                        message: cleaned,
+                        discordServerTag:
+                            primaryGuild?.tag ||
+                            null,
+                        discordServerBadgeUrl:
+                            primaryGuild?.badgeUrl ||
+                            null
+                    })
+                }
+            );
+
+            const result =
+                await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    result?.error ||
+                    "could not post confetti message"
+                );
+            }
+        } catch (error) {
+            console.error(
+                "could not post confetti message:",
+                error
+            );
+
+            window.alert(
+                error.message ||
+                "could not post confetti message"
+            );
+        }
+    }
 
 	renderMessageContent(container, message) {
     container.replaceChildren();
