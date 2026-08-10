@@ -6015,6 +6015,8 @@ ensureMessageHoverActions(row) {
         Boolean(
             hoverMessage &&
             !hoverMessage.imageUpload &&
+            hoverMessage.message_type !==
+                "confetti" &&
             hoverMessage.id &&
             hoverMessage.client_id ===
                 this.clientId
@@ -8325,6 +8327,13 @@ beginInlineEdit(message) {
     const currentMessage =
         row.jamiChatMessage ||
         message;
+
+    if (
+        currentMessage?.message_type ===
+            "confetti"
+    ) {
+        return;
+    }
 
     const text = row.querySelector(".chatText");
     if (!text) return;
