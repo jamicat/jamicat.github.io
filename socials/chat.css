@@ -3491,14 +3491,14 @@ top: -0.2px;
     border-radius: 5px;
     filter: blur(5px);
     opacity: 0.48;
-   background:
-    radial-gradient(circle at 8% 55%, rgba(255, 55, 95, .90) 0 7%, transparent 18%),
-    radial-gradient(circle at 27% 30%, rgba(255, 214, 10, .88) 0 8%, transparent 19%),
-    radial-gradient(circle at 46% 68%, rgba(48, 209, 88, .82) 0 7%, transparent 18%),
-    radial-gradient(circle at 64% 34%, rgba(10, 132, 255, .88) 0 9%, transparent 20%),
-    radial-gradient(circle at 82% 65%, rgba(255, 159, 10, .88) 0 8%, transparent 19%),
-    radial-gradient(circle at 96% 32%, rgba(191, 90, 242, .82) 0 7%, transparent 18%),
-    rgba(255, 255, 255, .10);
+  background:
+    radial-gradient(circle at 12% 42%, rgba(255, 149, 0, .92) 0 8%, transparent 17%),
+    radial-gradient(circle at 31% 68%, rgba(255, 45, 85, .92) 0 7%, transparent 16%),
+    radial-gradient(circle at 47% 33%, rgba(10, 132, 255, .94) 0 9%, transparent 19%),
+    radial-gradient(circle at 62% 66%, rgba(255, 204, 0, .92) 0 8%, transparent 17%),
+    radial-gradient(circle at 78% 37%, rgba(255, 55, 95, .90) 0 8%, transparent 17%),
+    radial-gradient(circle at 92% 61%, rgba(64, 200, 255, .92) 0 9%, transparent 18%),
+    rgba(255, 255, 255, .08);
 
     box-shadow:
         0 0 8px rgba(100, 210, 255, 0.16),
