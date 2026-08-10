@@ -13463,6 +13463,71 @@ setupNameSaving() {
             burst.appendChild(particle);
         }
 
+        const settled =
+            document.createElement("div");
+
+        settled.className =
+            "jami-confetti-settled";
+
+        const settledCount = 38;
+
+        for (
+            let index = 0;
+            index < settledCount;
+            index += 1
+        ) {
+            const piece =
+                document.createElement("i");
+
+            piece.className =
+                `jami-confetti-settled-piece jami-confetti-colour-${
+                    (index % 8) + 1
+                }`;
+
+            const finalX =
+                5 + Math.random() * 90;
+
+            const finalY =
+                12 + Math.random() * 76;
+
+            piece.style.setProperty(
+                "--settled-x",
+                `${finalX}vw`
+            );
+
+            piece.style.setProperty(
+                "--settled-y",
+                `${finalY}vh`
+            );
+
+            piece.style.setProperty(
+                "--settled-left",
+                `${finalX}%`
+            );
+
+            piece.style.setProperty(
+                "--settled-top",
+                `${finalY}%`
+            );
+
+            piece.style.setProperty(
+                "--settled-spin",
+                `${Math.random() * 820 - 410}deg`
+            );
+
+            piece.style.setProperty(
+                "--settled-tilt",
+                `${Math.random() * 90 - 45}deg`
+            );
+
+            piece.style.setProperty(
+                "--settled-delay",
+                `${180 + Math.random() * 480}ms`
+            );
+
+            settled.appendChild(piece);
+        }
+
         const effectMessage =
             document.createElement("div");
 
@@ -13492,8 +13557,164 @@ setupNameSaving() {
             effectText
         );
 
+        const emojiLayer =
+            document.createElement("div");
+
+        emojiLayer.className =
+            "jami-confetti-emoji-layer";
+
+        const emojiItems = [];
+        const messageValue =
+            typeof message === "string"
+                ? message
+                : "";
+
+        const shortcodePattern =
+            /:([a-z0-9_+-]+):/gi;
+
+        let shortcodeMatch;
+
+        while (
+            (
+                shortcodeMatch =
+                    shortcodePattern.exec(
+                        messageValue
+                    )
+            ) !== null
+        ) {
+            const emojiId =
+                shortcodeMatch[1].toLowerCase();
+
+            const customEmoji =
+                this.customEmojiLookup.get(
+                    emojiId
+                );
+
+            if (customEmoji) {
+                emojiItems.push({
+                    kind: "custom",
+                    src: customEmoji.src,
+                    alt: `:${customEmoji.id}:`
+                });
+            }
+        }
+
+        const segmenter =
+            typeof Intl?.Segmenter === "function"
+                ? new Intl.Segmenter(
+                    undefined,
+                    {
+                        granularity:
+                            "grapheme"
+                    }
+                )
+                : null;
+
+        const graphemes =
+            segmenter
+                ? Array.from(
+                    segmenter.segment(
+                        messageValue
+                    ),
+                    item => item.segment
+                )
+                : Array.from(messageValue);
+
+        for (const grapheme of graphemes) {
+            if (
+                /\p{Extended_Pictographic}/u
+                    .test(grapheme)
+            ) {
+                emojiItems.push({
+                    kind: "unicode",
+                    value: grapheme
+                });
+            }
+        }
+
+        const emojiBursts =
+            emojiItems
+                .slice(0, 6)
+                .flatMap(item => [
+                    item,
+                    item
+                ])
+                .slice(0, 10);
+
+        for (
+            let index = 0;
+            index < emojiBursts.length;
+            index += 1
+        ) {
+            const item =
+                emojiBursts[index];
+
+            const emojiPiece =
+                document.createElement("span");
+
+            emojiPiece.className =
+                "jami-confetti-emoji-piece";
+
+            const finalX =
+                9 + Math.random() * 82;
+
+            const finalY =
+                14 + Math.random() * 70;
+
+            emojiPiece.style.setProperty(
+                "--emoji-left",
+                `${finalX}%`
+            );
+
+            emojiPiece.style.setProperty(
+                "--emoji-top",
+                `${finalY}%`
+            );
+
+            emojiPiece.style.setProperty(
+                "--emoji-spin",
+                `${Math.random() * 560 - 280}deg`
+            );
+
+            emojiPiece.style.setProperty(
+                "--emoji-delay",
+                `${120 + Math.random() * 520}ms`
+            );
+
+            emojiPiece.style.setProperty(
+                "--emoji-scale",
+                `${
+                    0.82 +
+                    Math.random() * 0.48
+                }`
+            );
+
+            if (item.kind === "custom") {
+                const image =
+                    document.createElement("img");
+
+                image.src = item.src;
+                image.alt = item.alt;
+                image.className =
+                    "jami-confetti-emoji-image";
+
+                emojiPiece.appendChild(
+                    image
+                );
+            } else {
+                emojiPiece.textContent =
+                    item.value;
+            }
+
+            emojiLayer.appendChild(
+                emojiPiece
+            );
+        }
+
         layer.append(
             burst,
+            settled,
+            emojiLayer,
             effectMessage
         );
 
@@ -13501,10 +13722,9 @@ setupNameSaving() {
 
         window.setTimeout(
             () => layer.remove(),
-            3000
+            6200
         );
     }
-
     async postConfettiMessage() {
         if (!this.isAdmin || !this.adminKey) {
             return;
