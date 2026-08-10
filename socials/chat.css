@@ -3491,10 +3491,10 @@ top: -0.2px;
     border-radius: 5px;
     filter: blur(6px);
     opacity: 0.48;
-
+    background: rgba(255, 255, 255, 0.18);
     box-shadow:
-        0 0 8px rgba(100, 210, 255, 0.16),
-        0 0 12px rgba(191, 90, 242, 0.10);
+        0 0 8px rgba(255, 255, 255, 0.12),
+        0 0 12px rgba(255, 255, 255, 0.07);
 
     transition:
         filter 180ms ease,
@@ -3503,33 +3503,47 @@ top: -0.2px;
         box-shadow 180ms ease;
 }
 
-.jami-confetti-message-content::before {
+.jami-confetti-message-content::before,
+.jami-confetti-message-content::after {
     content: "";
     position: absolute;
-    inset: -40%;
-    background:
-        conic-gradient(
-            from 25deg at 50% 50%,
-            rgba(255, 149, 0, .78),
-            rgba(255, 190, 20, .76),
-            rgba(255, 55, 95, .80),
-            rgba(25, 145, 245, .78),
-            rgba(70, 200, 235, .74),
-            rgba(255, 149, 0, .78)
-        );
-    filter: blur(14px);
-    opacity: .92;
+    z-index: 2;
+    width: 3px;
+    height: 3px;
+    border-radius: 1px;
     pointer-events: none;
+    opacity: 0.95;
+    transition: opacity 180ms ease;
 }
 
-.jami-confetti-message-content > * {
-    position: relative;
-    z-index: 1;
-}
-
-.jami-confetti-message.is-revealed
 .jami-confetti-message-content::before {
-    opacity: 0;
+    left: 12%;
+    top: 28%;
+    background: #ff9f0a;
+    box-shadow:
+        13px 5px 0 #ff375f,
+        27px -3px 0 #ffd60a,
+        41px 6px 0 #0a84ff,
+        56px -1px 0 #64d2ff,
+        70px 5px 0 #bf5af2,
+        84px -4px 0 #30d158,
+        98px 4px 0 #ff453a;
+}
+
+.jami-confetti-message-content::after {
+    left: 19%;
+    top: 66%;
+    width: 2px;
+    height: 4px;
+    background: #64d2ff;
+    transform: rotate(18deg);
+    box-shadow:
+        15px -5px 0 #ffd60a,
+        30px 2px 0 #ff453a,
+        45px -6px 0 #30d158,
+        60px 1px 0 #bf5af2,
+        75px -5px 0 #ff9f0a,
+        90px 2px 0 #0a84ff;
 }
 
 .jami-confetti-message-content img {
@@ -3542,6 +3556,13 @@ top: -0.2px;
     box-shadow: none;
     filter: none;
     opacity: 1;
+}
+
+.jami-confetti-message.is-revealed
+.jami-confetti-message-content::before,
+.jami-confetti-message.is-revealed
+.jami-confetti-message-content::after {
+    opacity: 0;
 }
 
 .jami-confetti-message.is-revealed
