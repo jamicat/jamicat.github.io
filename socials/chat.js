@@ -13709,7 +13709,7 @@ setupNameSaving() {
         const name =
             this.discordUser?.displayName ||
             this.nameInput?.value.trim() ||
-            "admin";
+            "anonymous";
 
         const avatar =
             this.discordUser?.avatarUrl ||
