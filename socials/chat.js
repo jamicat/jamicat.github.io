@@ -13310,8 +13310,6 @@ setupNameSaving() {
         button.type = "button";
         button.className =
             "jami-confetti-message";
-        button.title =
-            "click to celebrate";
 
         const icon =
             document.createElement("span");
@@ -13511,7 +13509,7 @@ setupNameSaving() {
         }
 
         const message = window.prompt(
-            "confetti message (emoji and :customemoji: supported):"
+            "confetti message:"
         );
 
         if (message === null) {
