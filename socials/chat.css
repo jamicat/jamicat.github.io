@@ -3489,7 +3489,6 @@ top: -0.2px;
     overflow: hidden;
     overflow-wrap: anywhere;
     border-radius: 5px;
-    filter: blur(6px);
     opacity: 0.48;
     background: rgba(255, 255, 255, 0.18);
     box-shadow:
@@ -3503,13 +3502,18 @@ top: -0.2px;
         box-shadow 180ms ease;
 }
 
+.jami-confetti-message-content > * {
+    filter: blur(6px);
+    transition: filter 180ms ease;
+}
+
 .jami-confetti-message-content::before,
 .jami-confetti-message-content::after {
     content: "";
     position: absolute;
     z-index: 2;
-    width: 3px;
-    height: 3px;
+    width: 4px;
+    height: 4px;
     border-radius: 1px;
     pointer-events: none;
     opacity: 0.95;
@@ -3533,8 +3537,8 @@ top: -0.2px;
 .jami-confetti-message-content::after {
     left: 19%;
     top: 66%;
-    width: 2px;
-    height: 4px;
+    width: 3px;
+    height: 6px;
     background: #64d2ff;
     transform: rotate(18deg);
     box-shadow:
@@ -3563,6 +3567,11 @@ top: -0.2px;
 .jami-confetti-message.is-revealed
 .jami-confetti-message-content::after {
     opacity: 0;
+}
+
+.jami-confetti-message.is-revealed
+.jami-confetti-message-content > * {
+    filter: none;
 }
 
 .jami-confetti-message.is-revealed
