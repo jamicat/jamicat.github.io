@@ -13365,17 +13365,54 @@ setupNameSaving() {
             let attempts = 0;
 
             do {
-                left = 6 + random() * 88;
-                top = 16 + random() * 68;
+                /*
+                    Give each piece a loose horizontal lane first,
+                    then jitter it enough to stay organic. This
+                    spreads the confetti across the spoiler instead
+                    of allowing a dense centre cluster.
+                */
+                const lane =
+                    (
+                        index +
+                        0.35 +
+                        random() * 0.30
+                    ) /
+                    pieceCount;
+
+                left =
+                    5 +
+                    lane * 90 +
+                    (random() - 0.5) * 8;
+
+                left =
+                    Math.max(
+                        5,
+                        Math.min(95, left)
+                    );
+
+                top =
+                    13 +
+                    random() * 74;
+
                 attempts += 1;
             } while (
-                attempts < 18 &&
-                occupied.some(point =>
-                    Math.hypot(
-                        point.left - left,
-                        point.top - top
-                    ) < 9
-                )
+                attempts < 24 &&
+                occupied.some(point => {
+                    const horizontalGap =
+                        Math.abs(
+                            point.left - left
+                        );
+
+                    const verticalGap =
+                        Math.abs(
+                            point.top - top
+                        );
+
+                    return (
+                        horizontalGap < 7.5 &&
+                        verticalGap < 22
+                    );
+                })
             );
 
             occupied.push({ left, top });
