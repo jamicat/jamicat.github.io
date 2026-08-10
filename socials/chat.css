@@ -3489,16 +3489,17 @@ top: -0.2px;
     overflow: hidden;
     overflow-wrap: anywhere;
     border-radius: 5px;
-    filter: blur(5px);
+    filter: blur(6px);
     opacity: 0.48;
-  background:
-    radial-gradient(circle at 12% 42%, rgba(255, 149, 0, .92) 0 8%, transparent 17%),
-    radial-gradient(circle at 31% 68%, rgba(255, 45, 85, .92) 0 7%, transparent 16%),
-    radial-gradient(circle at 47% 33%, rgba(10, 132, 255, .94) 0 9%, transparent 19%),
-    radial-gradient(circle at 62% 66%, rgba(255, 204, 0, .92) 0 8%, transparent 17%),
-    radial-gradient(circle at 78% 37%, rgba(255, 55, 95, .90) 0 8%, transparent 17%),
-    radial-gradient(circle at 92% 61%, rgba(64, 200, 255, .92) 0 9%, transparent 18%),
-    rgba(255, 255, 255, .08);
+ background:
+    linear-gradient(
+        90deg,
+        rgba(255, 149, 0, .72) 0%,
+        rgba(255, 190, 20, .68) 22%,
+        rgba(255, 55, 95, .70) 48%,
+        rgba(35, 150, 245, .72) 76%,
+        rgba(70, 200, 235, .66) 100%
+    );
 
     box-shadow:
         0 0 8px rgba(100, 210, 255, 0.16),
