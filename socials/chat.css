@@ -3479,70 +3479,90 @@ top: -0.2px;
 }
 
 .jami-confetti-message-icon {
+    position: relative;
+    z-index: 5;
     flex: 0 0 auto;
     filter: none;
     opacity: 1;
 }
 
-
 .jami-confetti-message-content {
-    position: relative;
     min-width: 0;
-    overflow: hidden;
     overflow-wrap: anywhere;
     border-radius: 5px;
-
-    /* obscure direct text without blurring the overlay above it */
-    color: transparent;
-    text-shadow:
-        0 0 6px rgba(255, 255, 255, 0.72);
-
-    opacity: 0.48;
-    background: rgba(255, 255, 255, 0.18);
-    box-shadow:
-        0 0 8px rgba(255, 255, 255, 0.12),
-        0 0 12px rgba(255, 255, 255, 0.07);
-
+    background: rgba(255, 255, 255, 0.12);
+    filter: blur(6px);
+    opacity: 0.38;
     transition:
-        color 180ms ease,
-        text-shadow 180ms ease,
+        filter 180ms ease,
         opacity 180ms ease,
-        background 180ms ease,
-        box-shadow 180ms ease;
+        background 180ms ease;
 }
 
-/* sharp confetti sits inside the spoiler bounds */
-.jami-confetti-message-content::before {
+/* soft spoiler veil above the blurred message */
+.jami-confetti-message::before {
     content: "";
     position: absolute;
-    inset: 0;
-    z-index: 4;
+    left: 29px;
+    right: 4px;
+    top: 2px;
+    bottom: 2px;
+    z-index: 3;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.10);
+    box-shadow:
+        inset 0 0 8px rgba(255, 255, 255, 0.07),
+        0 0 7px rgba(255, 255, 255, 0.06);
     pointer-events: none;
-    opacity: 0.95;
+    transition: opacity 180ms ease;
+}
 
+/* irregular confetti sitting on top of the spoiler */
+.jami-confetti-message::after {
+    content: "";
+    position: absolute;
+    left: 29px;
+    right: 4px;
+    top: 2px;
+    bottom: 2px;
+    z-index: 4;
+    border-radius: 6px;
+    pointer-events: none;
     background:
-        linear-gradient(18deg, #ff9f0a 0 100%) 10% 28% / 4px 7px no-repeat,
-        linear-gradient(-22deg, #ff375f 0 100%) 24% 64% / 5px 3px no-repeat,
-        linear-gradient(12deg, #ffd60a 0 100%) 38% 24% / 3px 6px no-repeat,
-        linear-gradient(-14deg, #0a84ff 0 100%) 51% 67% / 4px 4px no-repeat,
-        linear-gradient(26deg, #64d2ff 0 100%) 64% 31% / 3px 7px no-repeat,
-        linear-gradient(-18deg, #bf5af2 0 100%) 76% 63% / 5px 3px no-repeat,
-        linear-gradient(15deg, #30d158 0 100%) 88% 30% / 3px 6px no-repeat;
-
+        linear-gradient(24deg, #ff9f0a 0 100%)
+            9% 62% / 3px 6px no-repeat,
+        linear-gradient(-37deg, #ff375f 0 100%)
+            21% 28% / 5px 2px no-repeat,
+        linear-gradient(11deg, #ffd60a 0 100%)
+            37% 72% / 2px 5px no-repeat,
+        linear-gradient(48deg, #0a84ff 0 100%)
+            48% 36% / 4px 2px no-repeat,
+        linear-gradient(-18deg, #64d2ff 0 100%)
+            63% 68% / 2px 6px no-repeat,
+        linear-gradient(31deg, #bf5af2 0 100%)
+            78% 31% / 4px 3px no-repeat,
+        linear-gradient(-42deg, #30d158 0 100%)
+            89% 59% / 3px 5px no-repeat,
+        linear-gradient(15deg, #ff453a 0 100%)
+            56% 18% / 3px 3px no-repeat;
+    opacity: 0.9;
     transition: opacity 180ms ease;
 }
 
 .jami-confetti-message.is-revealed
-.jami-confetti-message-content::before {
+.jami-confetti-message-content {
+    background: transparent;
+    filter: none;
+    opacity: 1;
+}
+
+.jami-confetti-message.is-revealed::before,
+.jami-confetti-message.is-revealed::after {
     opacity: 0;
 }
 
 .jami-confetti-message-content img {
-    filter: blur(6px);
     opacity: 0.42;
-    transition:
-        filter 180ms ease,
-        opacity 180ms ease;
 }
 
 .jami-confetti-message.is-revealed
@@ -3556,7 +3576,6 @@ top: -0.2px;
 
 .jami-confetti-message.is-revealed
 .jami-confetti-message-content img {
-    filter: none;
     opacity: 1;
 }
 
