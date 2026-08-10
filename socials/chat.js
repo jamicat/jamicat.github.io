@@ -13301,6 +13301,137 @@ setupNameSaving() {
         );
     }
 
+    createConfettiSpoilerOverlay(seedValue = "") {
+        const overlay =
+            document.createElement("span");
+
+        overlay.className =
+            "jami-confetti-spoiler-overlay";
+
+        const colours = [
+            "#ff9f0a",
+            "#ff375f",
+            "#ffd60a",
+            "#0a84ff",
+            "#64d2ff",
+            "#bf5af2",
+            "#30d158",
+            "#ff453a"
+        ];
+
+        let seed = 2166136261;
+
+        for (const char of String(seedValue)) {
+            seed ^= char.charCodeAt(0);
+            seed = Math.imul(seed, 16777619);
+        }
+
+        const random = () => {
+            seed += 0x6D2B79F5;
+
+            let value = seed;
+
+            value = Math.imul(
+                value ^ value >>> 15,
+                value | 1
+            );
+
+            value ^= value +
+                Math.imul(
+                    value ^ value >>> 7,
+                    value | 61
+                );
+
+            return (
+                (
+                    value ^
+                    value >>> 14
+                ) >>> 0
+            ) / 4294967296;
+        };
+
+        const pieceCount =
+            8 + Math.floor(random() * 7);
+
+        const occupied = [];
+
+        for (
+            let index = 0;
+            index < pieceCount;
+            index += 1
+        ) {
+            let left = 0;
+            let top = 0;
+            let attempts = 0;
+
+            do {
+                left = 6 + random() * 88;
+                top = 16 + random() * 68;
+                attempts += 1;
+            } while (
+                attempts < 18 &&
+                occupied.some(point =>
+                    Math.hypot(
+                        point.left - left,
+                        point.top - top
+                    ) < 9
+                )
+            );
+
+            occupied.push({ left, top });
+
+            const piece =
+                document.createElement("i");
+
+            piece.className =
+                "jami-confetti-spoiler-piece";
+
+            const width =
+                2 + Math.floor(random() * 4);
+
+            const height =
+                2 + Math.floor(random() * 6);
+
+            const rotation =
+                -75 + random() * 150;
+
+            piece.style.left =
+                `${left}%`;
+
+            piece.style.top =
+                `${top}%`;
+
+            piece.style.width =
+                `${width}px`;
+
+            piece.style.height =
+                `${height}px`;
+
+            piece.style.background =
+                colours[
+                    Math.floor(
+                        random() *
+                        colours.length
+                    )
+                ];
+
+            piece.style.opacity =
+                `${0.74 + random() * 0.22}`;
+
+            piece.style.transform =
+                `translate(-50%, -50%) rotate(${rotation}deg)`;
+
+            piece.style.borderRadius =
+                random() > 0.8
+                    ? "999px"
+                    : "1px";
+
+            overlay.appendChild(piece);
+        }
+
+        return overlay;
+    }
+
     renderConfettiMessage(container, message) {
         container.replaceChildren();
 
@@ -13356,7 +13487,19 @@ setupNameSaving() {
                 : "reveal confetti message"
         );
 
-        button.append(icon, content);
+        const spoilerOverlay =
+            this.createConfettiSpoilerOverlay(
+                key ||
+                message?.createdAt ||
+                message?.message ||
+                ""
+            );
+
+        button.append(
+            icon,
+            content,
+            spoilerOverlay
+        );
 
         button.addEventListener(
             "click",
