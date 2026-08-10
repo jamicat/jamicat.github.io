@@ -3459,3 +3459,216 @@ top: -0.2px;
         width: min(18rem, calc(100vw - 20px));
     }
 }
+
+
+/* admin confetti messages */
+.jami-confetti-message {
+    display: inline-flex;
+    max-width: 100%;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 6px 2px 3px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.jami-confetti-message:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.jami-confetti-message:focus-visible {
+    outline: 1px solid rgba(255, 255, 255, 0.45);
+    outline-offset: 2px;
+}
+
+.jami-confetti-message-icon {
+    flex: 0 0 auto;
+    filter: none;
+    opacity: 1;
+}
+
+.jami-confetti-message-content {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.16);
+    filter: blur(5px);
+    opacity: 0.38;
+    transition:
+        filter 180ms ease,
+        opacity 180ms ease,
+        background 180ms ease;
+}
+
+.jami-confetti-message-content img {
+    opacity: 0.22;
+}
+
+.jami-confetti-message.is-revealed
+.jami-confetti-message-content {
+    background: transparent;
+    filter: none;
+    opacity: 1;
+}
+
+.jami-confetti-message.is-revealed
+.jami-confetti-message-content img {
+    opacity: 1;
+}
+
+.jami-confetti-effect-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 80;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.jami-confetti-burst {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    width: 1px;
+    height: 1px;
+}
+
+.jami-confetti-particle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 7px;
+    height: 11px;
+    border-radius: 2px;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    animation:
+        jami-confetti-particle-burst
+        1150ms
+        cubic-bezier(.12,.72,.23,1)
+        var(--confetti-delay, 0ms)
+        both;
+}
+
+.jami-confetti-colour-1 { background: #ff453a; }
+.jami-confetti-colour-2 { background: #ff9f0a; }
+.jami-confetti-colour-3 { background: #ffd60a; }
+.jami-confetti-colour-4 { background: #30d158; }
+.jami-confetti-colour-5 { background: #64d2ff; }
+.jami-confetti-colour-6 { background: #0a84ff; }
+.jami-confetti-colour-7 { background: #bf5af2; }
+.jami-confetti-colour-8 { background: #ff375f; }
+
+.jami-confetti-effect-message {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    max-width: min(88%, 390px);
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 13px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.84);
+    color: rgba(255, 255, 255, 0.96);
+    font-family: var(--heading-font, Consolas, monospace);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: center;
+    text-shadow: 0 0 14px rgba(255, 255, 255, 0.24);
+    box-shadow:
+        0 12px 36px rgba(0, 0, 0, 0.48),
+        0 0 24px rgba(255, 255, 255, 0.08);
+    animation:
+        jami-confetti-message-pop
+        3000ms
+        ease
+        both;
+}
+
+.jami-confetti-effect-icon {
+    flex: 0 0 auto;
+    font-size: 23px;
+}
+
+.jami-confetti-effect-text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.jami-confetti-effect-text img {
+    width: 40px;
+    height: 40px;
+}
+
+@keyframes jami-confetti-particle-burst {
+    0% {
+        opacity: 0;
+        transform:
+            translate(-50%, -50%)
+            scale(.6)
+            rotate(0deg);
+    }
+
+    12% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform:
+            translate(
+                calc(-50% + var(--confetti-x)),
+                calc(-50% + var(--confetti-y))
+            )
+            scale(1)
+            rotate(var(--confetti-rotate));
+    }
+}
+
+@keyframes jami-confetti-message-pop {
+    0% {
+        opacity: 0;
+        transform: scale(.72) translateY(8px);
+    }
+
+    10% {
+        opacity: 1;
+        transform: scale(1.06) translateY(0);
+    }
+
+    18%, 78% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(.96) translateY(-10px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .jami-confetti-particle {
+        animation-duration: 1ms;
+    }
+
+    .jami-confetti-effect-message {
+        animation-name:
+            jami-confetti-message-reduced;
+    }
+}
+
+@keyframes jami-confetti-message-reduced {
+    0%, 82% { opacity: 1; }
+    100% { opacity: 0; }
+}
