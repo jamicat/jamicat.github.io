@@ -7805,3 +7805,414 @@ html[data-chat-theme="paws"]
     color: rgba(238,157,174) !important;
 }
 
+
+/* chat theme separation cleanup */
+#chatWindow[data-chat-theme] {
+    --jami-chat-accent: rgba(238, 157, 174);
+}
+
+#chatWindow[data-chat-theme="original"],
+#chatWindow[data-chat-theme="original"] .theme-body,
+#chatWindow[data-chat-theme="original"] .theme-heading,
+#chatWindow[data-chat-theme="original"] button,
+#chatWindow[data-chat-theme="original"] input {
+    font-family: "Nunito", sans-serif !important;
+}
+
+#chatWindow[data-chat-theme="stars"],
+#chatWindow[data-chat-theme="stars"] .theme-body,
+#chatWindow[data-chat-theme="stars"] .theme-heading,
+#chatWindow[data-chat-theme="stars"] button,
+#chatWindow[data-chat-theme="stars"] input {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .theme-heading,
+#chatWindow[data-chat-theme="paws"] #chatTitle {
+    font-family: "Fink", sans-serif !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .theme-body,
+#chatWindow[data-chat-theme="paws"] button,
+#chatWindow[data-chat-theme="paws"] input {
+    font-family:
+        "nintendoh",
+        "Nunito",
+        sans-serif !important;
+}
+
+/* keep every top-bar control in one visual baseline */
+#chatWindow[data-chat-theme]
+#chatTitleBar > div,
+#chatWindow[data-chat-theme]
+#chatTitleBar > div > div,
+#chatWindow[data-chat-theme]
+#chatTitleBar .relative {
+    align-items: center !important;
+}
+
+#chatWindow[data-chat-theme]
+#chatThemeButton {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 24px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    transform: none !important;
+    vertical-align: middle !important;
+}
+
+/* final Animal Crossing pink; this intentionally overrides every older mauve rule */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatTitleBar button,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembersToggle,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatConnectionStatus,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatThemeButton,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMinimize {
+    color: rgba(238, 157, 174) !important;
+}
+
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-cute-send-arrow {
+    color: #fff !important;
+    border-color: rgba(238, 157, 174) !important;
+    background: rgba(238, 157, 174) !important;
+    box-shadow: none !important;
+}
+
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-cute-send-arrow:hover,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-cute-send-arrow:active {
+    color: #fff !important;
+    border-color: rgba(238, 157, 174) !important;
+    background: rgba(238, 157, 174) !important;
+}
+
+/* Original composer: rebuild the old two-row controls without replacing any live inputs/buttons */
+#chatWindow[data-chat-theme="original"]
+#chatControls {
+    gap: 8px !important;
+    padding: 10px !important;
+    background: rgba(0, 0, 0, .12) !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-cute-composer-wrap {
+    display: block !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-original-composer {
+    display: grid !important;
+    gap: 8px !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-original-name-row,
+#chatWindow[data-chat-theme="original"]
+.jami-original-message-row {
+    display: flex !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-original-name-field {
+    position: relative !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-cute-avatar-button,
+#chatWindow[data-chat-theme="original"]
+.jami-original-image-button,
+#chatWindow[data-chat-theme="original"]
+.jami-cute-square-button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 42px !important;
+    width: 42px !important;
+    height: 42px !important;
+    padding: 0 !important;
+    border:
+        1px solid rgba(255,255,255,.12) !important;
+    border-radius: 12px !important;
+    background: rgba(0,0,0,.18) !important;
+    color: rgba(255,255,255,.82) !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-original-name-input {
+    display: block !important;
+    width: 100% !important;
+    height: 42px !important;
+    min-width: 0 !important;
+    padding: 0 12px !important;
+    border:
+        1px solid rgba(255,255,255,.12) !important;
+    border-radius: 12px !important;
+    outline: none !important;
+    background: rgba(255,255,255,.055) !important;
+    color: #fff !important;
+    font-size: 12px !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-original-name-input::placeholder {
+    color: rgba(255,255,255,.36) !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-cute-message-shell {
+    display: grid !important;
+    grid-template-columns:
+        minmax(0, 1fr)
+        34px !important;
+    align-items: center !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+    height: 42px !important;
+    padding: 0 4px 0 12px !important;
+    border:
+        1px solid rgba(255,255,255,.12) !important;
+    border-radius: 12px !important;
+    background: rgba(255,255,255,.055) !important;
+    box-shadow: none !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-cute-message-input {
+    width: 100% !important;
+    min-width: 0 !important;
+    border: 0 !important;
+    outline: none !important;
+    background: transparent !important;
+    color: #fff !important;
+    font-size: 12px !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-cute-message-input::placeholder {
+    color: rgba(255,255,255,.36) !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-cute-message-emoji {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    background: transparent !important;
+    color: rgba(255,255,255,.72) !important;
+    font-size: 15px !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-original-send-row {
+    display: block !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-original-send-button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 32px !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    border:
+        1px solid rgba(255,255,255,.12) !important;
+    border-radius: 11px !important;
+    background: rgba(255,255,255,.09) !important;
+    color: #fff !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+#chatWindow[data-chat-theme="original"]
+.jami-original-send-button:hover,
+#chatWindow[data-chat-theme="original"]
+.jami-original-send-button:active {
+    background: rgba(255,255,255,.14) !important;
+    color: #fff !important;
+}
+
+/* Original avatar picker */
+html[data-chat-theme="original"]
+#chatAvatarPicker {
+    width: 220px !important;
+    padding: 11px !important;
+    border:
+        1px solid rgba(255,255,255,.12) !important;
+    border-radius: 14px !important;
+    background: rgba(20,20,22,.88) !important;
+    color: #fff !important;
+    box-shadow:
+        0 14px 36px rgba(0,0,0,.38) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    font-family: "Nunito", sans-serif !important;
+}
+
+html[data-chat-theme="original"]
+#chatAvatarPicker .jami-cute-profile-title {
+    margin: 0 0 9px !important;
+    color: rgba(255,255,255,.72) !important;
+    font: 700 10px/1 "Nunito", sans-serif !important;
+    letter-spacing: .08em !important;
+    text-transform: uppercase !important;
+}
+
+html[data-chat-theme="original"]
+#chatAvatarPicker .jami-cute-profile-name-wrap,
+html[data-chat-theme="original"]
+#chatAvatarPicker .jami-cute-avatar-label {
+    display: none !important;
+}
+
+html[data-chat-theme="original"]
+#chatAvatarGrid {
+    display: grid !important;
+    grid-template-columns:
+        repeat(5, minmax(0,1fr)) !important;
+    gap: 7px !important;
+}
+
+html[data-chat-theme="original"]
+#chatAvatarGrid button {
+    min-width: 0 !important;
+    aspect-ratio: 1 !important;
+    border:
+        1px solid rgba(255,255,255,.10) !important;
+    border-radius: 9px !important;
+    background: rgba(255,255,255,.055) !important;
+}
+
+html[data-chat-theme="original"]
+#chatDiscordAuthButton,
+html[data-chat-theme="original"]
+#chatDiscordLogout {
+    color: rgba(255,255,255,.66) !important;
+    border-color: rgba(255,255,255,.12) !important;
+    background: rgba(255,255,255,.055) !important;
+    font-family: "Nunito", sans-serif !important;
+}
+
+/* Lock detached chat panels to the CHAT theme, never the website theme. */
+html[data-chat-theme="original"]
+.jami-admin-glass-panel,
+html[data-chat-theme="original"]
+.jami-admin-glass-panel *,
+html[data-chat-theme="original"]
+#chatWatchPartyPanel,
+html[data-chat-theme="original"]
+#chatWatchPartyPanel *,
+html[data-chat-theme="original"]
+#chatWatchPartyVisualizerMenu,
+html[data-chat-theme="original"]
+#chatWatchPartyVisualizerMenu *,
+html[data-chat-theme="original"]
+.jami-chat-context-menu,
+html[data-chat-theme="original"]
+.jami-chat-context-menu *,
+html[data-chat-theme="original"]
+.jami-saved-remix-manager,
+html[data-chat-theme="original"]
+.jami-saved-remix-manager *,
+html[data-chat-theme="original"]
+.jami-name-history-manager,
+html[data-chat-theme="original"]
+.jami-name-history-manager * {
+    font-family: "Nunito", sans-serif !important;
+}
+
+html[data-chat-theme="stars"]
+.jami-admin-glass-panel,
+html[data-chat-theme="stars"]
+.jami-admin-glass-panel *,
+html[data-chat-theme="stars"]
+#chatWatchPartyPanel,
+html[data-chat-theme="stars"]
+#chatWatchPartyPanel *,
+html[data-chat-theme="stars"]
+#chatWatchPartyVisualizerMenu,
+html[data-chat-theme="stars"]
+#chatWatchPartyVisualizerMenu *,
+html[data-chat-theme="stars"]
+.jami-chat-context-menu,
+html[data-chat-theme="stars"]
+.jami-chat-context-menu * {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="paws"]
+.jami-admin-glass-panel,
+html[data-chat-theme="paws"]
+.jami-admin-glass-panel *,
+html[data-chat-theme="paws"]
+#chatWatchPartyPanel,
+html[data-chat-theme="paws"]
+#chatWatchPartyPanel *,
+html[data-chat-theme="paws"]
+#chatWatchPartyVisualizerMenu,
+html[data-chat-theme="paws"]
+#chatWatchPartyVisualizerMenu *,
+html[data-chat-theme="paws"]
+.jami-chat-context-menu,
+html[data-chat-theme="paws"]
+.jami-chat-context-menu * {
+    font-family:
+        "nintendoh",
+        "Nunito",
+        sans-serif !important;
+}
+
+/* Animal Crossing detached panel pink remains the exact requested RGB. */
+html[data-chat-theme="paws"]
+.jami-admin-glass-panel,
+html[data-chat-theme="paws"]
+.jami-admin-glass-panel *,
+html[data-chat-theme="paws"]
+.jami-name-history-manager,
+html[data-chat-theme="paws"]
+.jami-name-history-manager * {
+    color: rgba(238, 157, 174) !important;
+}
+
