@@ -6999,3 +6999,16 @@ html[data-chat-pastel="paws"]
     transform: scale(.94) !important;
 }
 
+
+
+html[data-chat-pastel="paws"]
+#chatWindow[data-chat-pastel="paws"]
+#chatTitleBar button.theme-body {
+    color: #a94f6b !important;
+}
+
+html[data-chat-pastel="paws"]
+#chatWindow[data-chat-pastel="paws"]
+#chatTitleBar button.theme-body:hover {
+    color: #8f405c !important;
+}
