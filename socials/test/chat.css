@@ -6300,3 +6300,228 @@ html[data-chat-pastel="paws"]
     display: none !important;
 }
 
+#chatWindow[data-chat-pastel]
+#chatWatchPartyButton.hidden {
+    display: none !important;
+}
+
+html[data-chat-pastel]
+.jami-name-history-overlay {
+    background:
+        rgba(20, 16, 28, .22);
+
+    backdrop-filter:
+        blur(8px);
+
+    -webkit-backdrop-filter:
+        blur(8px);
+}
+
+html[data-chat-pastel="stars"]
+.jami-name-history-manager {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+
+    border-color:
+        rgba(235, 225, 255, .82);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(194, 181, 244, .97),
+            rgba(160, 151, 226, .95),
+            rgba(121, 139, 199, .92)
+        );
+
+    color: #fff;
+
+    box-shadow:
+        0 20px 58px
+        rgba(30, 23, 62, .32),
+        0 0 28px
+        rgba(202, 188, 255, .22);
+}
+
+html[data-chat-pastel="paws"]
+.jami-name-history-manager {
+    border-color:
+        rgba(255, 255, 255, .92);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 224, 234, .98),
+            rgba(255, 233, 226, .97),
+            rgba(224, 242, 225, .95)
+        );
+
+    color: #5f4b53;
+
+    box-shadow:
+        0 20px 58px
+        rgba(75, 50, 58, .20),
+        0 0 26px
+        rgba(255, 198, 219, .18);
+}
+
+html[data-chat-pastel]
+.jami-name-history-header {
+    border-bottom-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .24
+        );
+
+    background:
+        rgba(255, 255, 255, .10);
+}
+
+html[data-chat-pastel="paws"]
+.jami-name-history-header {
+    border-bottom-color:
+        rgba(187, 112, 139, .18);
+
+    background:
+        rgba(255, 255, 255, .30);
+}
+
+html[data-chat-pastel]
+.jami-name-history-title {
+    color: inherit;
+}
+
+html[data-chat-pastel]
+.jami-name-history-close {
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .30
+        );
+
+    background:
+        rgba(255, 255, 255, .12);
+
+    color: inherit;
+}
+
+html[data-chat-pastel="paws"]
+.jami-name-history-close {
+    border-color:
+        rgba(187, 112, 139, .22);
+
+    background:
+        rgba(255, 255, 255, .44);
+}
+
+html[data-chat-pastel]
+.jami-name-history-close:hover {
+    background:
+        rgba(255, 255, 255, .24);
+
+    color: inherit;
+}
+
+html[data-chat-pastel="paws"]
+.jami-name-history-close:hover {
+    background:
+        rgba(255, 255, 255, .62);
+}
+
+html[data-chat-pastel]
+.jami-name-history-subject {
+    border-bottom-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .18
+        );
+
+    color: inherit;
+    opacity: .78;
+}
+
+html[data-chat-pastel="paws"]
+.jami-name-history-subject {
+    border-bottom-color:
+        rgba(187, 112, 139, .14);
+}
+
+html[data-chat-pastel]
+.jami-name-history-row {
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .26
+        );
+
+    background:
+        rgba(255, 255, 255, .10);
+}
+
+html[data-chat-pastel="paws"]
+.jami-name-history-row {
+    border-color:
+        rgba(187, 112, 139, .17);
+
+    background:
+        rgba(255, 255, 255, .42);
+}
+
+html[data-chat-pastel]
+.jami-name-history-name {
+    color: inherit;
+}
+
+html[data-chat-pastel]
+.jami-name-history-time,
+html[data-chat-pastel]
+.jami-name-history-empty {
+    color: inherit;
+    opacity: .56;
+}
+
+html[data-chat-pastel]
+.jami-name-history-body {
+    scrollbar-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .48
+        )
+        transparent;
+}
+
+html[data-chat-pastel]
+.jami-name-history-body::-webkit-scrollbar-thumb {
+    background:
+        rgba(
+            var(--jami-pastel-rgb),
+            .44
+        );
+}
+
+html[data-chat-pastel="paws"]
+.jami-name-history-body::-webkit-scrollbar-thumb {
+    background:
+        rgba(187, 112, 139, .32);
+}
+
+html[data-chat-pastel]
+.jami-name-history-delete {
+    border-color:
+        rgba(248, 113, 113, .36);
+
+    background:
+        rgba(248, 113, 113, .10);
+
+    color:
+        rgba(255, 225, 229, .92);
+}
+
+html[data-chat-pastel="paws"]
+.jami-name-history-delete {
+    color:
+        rgba(167, 70, 89, .86);
+}
+
