@@ -4147,10 +4147,15 @@ top: -0.2px;
 }
 
 #chatWindow[data-chat-pastel="stars"] #chatMain::before {
-    opacity: .42;
+    opacity: .48;
 
     background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='98' height='98' viewBox='0 0 98 98'%3E%3Cg fill='none' stroke='%23c5b8ff' stroke-opacity='.58' stroke-linecap='round'%3E%3Cpath d='M17 12v7M13.5 15.5h7'/%3E%3Cpath d='M72 20v5M69.5 22.5h5'/%3E%3Cpath d='M45 71v6M42 74h6'/%3E%3Cpath d='M84 56v4M82 58h4'/%3E%3C/g%3E%3Ccircle cx='28' cy='51' r='1.2' fill='%238fcfff' fill-opacity='.72'/%3E%3Ccircle cx='77' cy='77' r='1.2' fill='%23ffc2e5' fill-opacity='.68'/%3E%3C/svg%3E");
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='107' height='101' viewBox='0 0 107 101'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cg stroke='%23c8baff' stroke-opacity='.72'%3E%3Cpath d='M16 12v7M12.5 15.5h7'/%3E%3Cpath d='M75 20v5M72.5 22.5h5'/%3E%3C/g%3E%3Cg stroke='%238fd4ff' stroke-opacity='.76'%3E%3Cpath d='M45 72v6M42 75h6'/%3E%3Cpath d='M91 57v4M89 59h4'/%3E%3C/g%3E%3Cg stroke='%23ffb9dd' stroke-opacity='.72'%3E%3Cpath d='M27 50v5M24.5 52.5h5'/%3E%3C/g%3E%3Cg stroke='%23ffe59a' stroke-opacity='.74'%3E%3Cpath d='M61 39v4M59 41h4'/%3E%3C/g%3E%3C/g%3E%3Ccircle cx='81' cy='79' r='1.3' fill='%23ffc2e5' fill-opacity='.75'/%3E%3Ccircle cx='34' cy='85' r='1.2' fill='%238fd4ff' fill-opacity='.82'/%3E%3Ccircle cx='96' cy='28' r='1.1' fill='%23ffe59a' fill-opacity='.82'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='151' height='137' viewBox='0 0 151 137'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M31 31v4M29 33h4' stroke='%23ffb9dd' stroke-opacity='.48'/%3E%3Cpath d='M119 88v5M116.5 90.5h5' stroke='%23c8baff' stroke-opacity='.45'/%3E%3Cpath d='M74 113v4M72 115h4' stroke='%238fd4ff' stroke-opacity='.44'/%3E%3C/g%3E%3C/svg%3E");
+
+    background-position:
+        0 0,
+        37px 21px;
 }
 
 #chatWindow[data-chat-pastel="paws"] #chatMain::before {
@@ -4669,5 +4674,486 @@ top: -0.2px;
         background: transparent;
         box-shadow: none;
     }
+}
+
+html[data-chat-pastel="stars"] {
+    --jami-pastel-rgb: 197, 184, 255;
+    --jami-pastel-2-rgb: 143, 205, 255;
+    --jami-pastel-3-rgb: 255, 194, 229;
+    --jami-pastel-4-rgb: 255, 229, 154;
+    --jami-panel-rgb: 75, 66, 124;
+    --jami-panel-2-rgb: 104, 94, 164;
+    --jami-text-rgb: 250, 247, 255;
+    --jami-muted-rgb: 219, 212, 242;
+}
+
+html[data-chat-pastel="paws"] {
+    --jami-pastel-rgb: 255, 186, 205;
+    --jami-pastel-2-rgb: 176, 226, 199;
+    --jami-pastel-3-rgb: 255, 215, 171;
+    --jami-pastel-4-rgb: 216, 198, 255;
+    --jami-panel-rgb: 83, 67, 75;
+    --jami-panel-2-rgb: 119, 95, 101;
+    --jami-text-rgb: 255, 248, 247;
+    --jami-muted-rgb: 237, 216, 217;
+}
+
+html[data-chat-pastel] .jami-chat-context-menu {
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .34
+        );
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                var(--jami-panel-2-rgb),
+                .28
+            ),
+            rgba(
+                var(--jami-panel-rgb),
+                .18
+            ),
+            rgba(7, 8, 13, .10)
+        );
+
+    color:
+        rgba(
+            var(--jami-text-rgb),
+            .96
+        );
+
+    box-shadow:
+        0 12px 34px rgba(0, 0, 0, .34),
+        0 0 20px
+        rgba(
+            var(--jami-pastel-rgb),
+            .10
+        );
+
+    backdrop-filter:
+        blur(18px)
+        saturate(1.18);
+
+    -webkit-backdrop-filter:
+        blur(18px)
+        saturate(1.18);
+}
+
+html[data-chat-pastel]
+.jami-chat-context-item:hover,
+html[data-chat-pastel]
+.jami-chat-context-item:focus-visible {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(
+                var(--jami-pastel-rgb),
+                .18
+            ),
+            rgba(
+                var(--jami-pastel-2-rgb),
+                .09
+            )
+        );
+}
+
+html[data-chat-pastel]
+.jami-chat-context-icon {
+    color:
+        rgba(
+            var(--jami-pastel-2-rgb),
+            .86
+        );
+}
+
+html[data-chat-pastel]
+.jami-chat-context-divider {
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                var(--jami-pastel-rgb),
+                .30
+            ),
+            transparent
+        );
+}
+
+html[data-chat-pastel]
+.jami-chat-context-item-danger {
+    color:
+        rgba(255, 129, 145, .98);
+}
+
+html[data-chat-pastel]
+.jami-admin-glass-panel {
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .36
+        ) !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                var(--jami-panel-2-rgb),
+                .54
+            ),
+            rgba(
+                var(--jami-panel-rgb),
+                .38
+            ),
+            rgba(8, 9, 14, .24)
+        ) !important;
+
+    color:
+        rgba(
+            var(--jami-text-rgb),
+            .96
+        ) !important;
+
+    box-shadow:
+        0 18px 48px rgba(0, 0, 0, .34),
+        0 0 24px
+        rgba(
+            var(--jami-pastel-rgb),
+            .12
+        );
+
+    backdrop-filter:
+        blur(18px)
+        saturate(1.16);
+
+    -webkit-backdrop-filter:
+        blur(18px)
+        saturate(1.16);
+}
+
+html[data-chat-pastel]
+.jami-admin-glass-panel
+.border-white\/10 {
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .18
+        ) !important;
+}
+
+html[data-chat-pastel]
+.jami-admin-glass-panel
+.bg-white\/5 {
+    background:
+        rgba(
+            var(--jami-pastel-rgb),
+            .10
+        ) !important;
+}
+
+html[data-chat-pastel]
+.jami-admin-glass-panel
+.hover\:bg-white\/10:hover {
+    background:
+        rgba(
+            var(--jami-pastel-rgb),
+            .18
+        ) !important;
+}
+
+html[data-chat-pastel]
+#chatAvatarPicker {
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .32
+        ) !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                var(--jami-panel-2-rgb),
+                .52
+            ),
+            rgba(
+                var(--jami-panel-rgb),
+                .36
+            ),
+            rgba(8, 9, 14, .22)
+        ) !important;
+
+    box-shadow:
+        0 16px 42px rgba(0, 0, 0, .34),
+        0 0 22px
+        rgba(
+            var(--jami-pastel-rgb),
+            .10
+        );
+
+    backdrop-filter:
+        blur(18px)
+        saturate(1.15);
+
+    -webkit-backdrop-filter:
+        blur(18px)
+        saturate(1.15);
+}
+
+html[data-chat-pastel]
+#chatAvatarPicker button {
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .18
+        ) !important;
+}
+
+html[data-chat-pastel]
+#chatAvatarPicker button:hover {
+    background:
+        rgba(
+            var(--jami-pastel-rgb),
+            .14
+        ) !important;
+}
+
+html[data-chat-pastel]
+#chatWatchPartyPanel {
+    border-color:
+        rgba(
+            var(--watch-party-accent-rgb, var(--jami-pastel-rgb)),
+            .32
+        ) !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                var(--jami-panel-2-rgb),
+                .62
+            ),
+            rgba(
+                var(--jami-panel-rgb),
+                .46
+            ) 48%,
+            rgba(
+                var(--watch-party-accent-rgb, 96, 165, 250),
+                .08
+            )
+        ) !important;
+
+    box-shadow:
+        0 18px 48px rgba(0, 0, 0, .34),
+        0 0 24px
+        rgba(
+            var(--jami-pastel-rgb),
+            .11
+        ) !important;
+
+    backdrop-filter:
+        blur(18px)
+        saturate(1.16);
+
+    -webkit-backdrop-filter:
+        blur(18px)
+        saturate(1.16);
+}
+
+html[data-chat-pastel]
+#chatWatchPartyPanel
+[data-watch-party-now-playing],
+html[data-chat-pastel]
+#chatWatchPartyPanel
+[data-watch-party-queue-box] {
+    background:
+        rgba(
+            var(--jami-pastel-rgb),
+            .08
+        ) !important;
+
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .20
+        ) !important;
+}
+
+html[data-chat-pastel]
+#chatWatchPartyPanel input {
+    background:
+        rgba(
+            var(--jami-panel-rgb),
+            .24
+        ) !important;
+
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .22
+        ) !important;
+}
+
+html[data-chat-pastel]
+#chatWatchPartyPanel button {
+    backdrop-filter:
+        blur(10px);
+
+    -webkit-backdrop-filter:
+        blur(10px);
+}
+
+html[data-chat-pastel]
+.jami-saved-remix-overlay {
+    background:
+        rgba(0, 0, 0, .24);
+
+    backdrop-filter:
+        blur(6px);
+
+    -webkit-backdrop-filter:
+        blur(6px);
+}
+
+html[data-chat-pastel]
+.jami-saved-remix-manager {
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .34
+        );
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                var(--jami-panel-2-rgb),
+                .56
+            ),
+            rgba(
+                var(--jami-panel-rgb),
+                .40
+            ),
+            rgba(8, 9, 14, .24)
+        );
+
+    color:
+        rgba(
+            var(--jami-text-rgb),
+            .96
+        );
+
+    box-shadow:
+        0 18px 54px rgba(0, 0, 0, .38),
+        0 0 26px
+        rgba(
+            var(--jami-pastel-rgb),
+            .12
+        );
+}
+
+html[data-chat-pastel]
+.jami-saved-remix-header {
+    border-bottom-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .18
+        );
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(
+                var(--jami-pastel-rgb),
+                .14
+            ),
+            rgba(
+                var(--jami-pastel-2-rgb),
+                .06
+            )
+        );
+}
+
+html[data-chat-pastel]
+.jami-saved-remix-card {
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .20
+        );
+
+    background:
+        rgba(
+            var(--jami-pastel-rgb),
+            .07
+        );
+}
+
+html[data-chat-pastel]
+.jami-saved-remix-action,
+html[data-chat-pastel]
+.jami-saved-remix-close {
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .20
+        );
+
+    background:
+        rgba(
+            var(--jami-pastel-rgb),
+            .08
+        );
+
+    color:
+        rgba(
+            var(--jami-text-rgb),
+            .82
+        );
+}
+
+html[data-chat-pastel]
+.jami-saved-remix-action:hover,
+html[data-chat-pastel]
+.jami-saved-remix-close:hover {
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .42
+        );
+
+    background:
+        rgba(
+            var(--jami-pastel-rgb),
+            .16
+        );
+
+    color:
+        rgba(
+            var(--jami-text-rgb),
+            1
+        );
+}
+
+html[data-chat-pastel]
+.jami-saved-remix-grid {
+    scrollbar-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .48
+        )
+        transparent;
+}
+
+html[data-chat-pastel]
+.jami-saved-remix-grid::-webkit-scrollbar-thumb {
+    background:
+        rgba(
+            var(--jami-pastel-rgb),
+            .44
+        );
 }
 
