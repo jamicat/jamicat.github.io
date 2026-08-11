@@ -170,7 +170,50 @@ localStorage.setItem(
 "chat_client_id",
 this.clientId
 );
-	
+
+this.guestNames = [
+    "tuna",
+    "pixelpaws",
+    "stardust",
+    "meowmix",
+    "luna",
+    "mochi",
+    "cosmicat",
+    "nyanbean",
+    "peachy",
+    "whiskers",
+    "pixelcat",
+    "boba",
+    "miso",
+    "tofu",
+    "maple",
+    "flora",
+    "isabelle",
+    "lolly",
+    "poppy",
+    "merry"
+];
+
+this.guestName =
+    localStorage.getItem(
+        "chat_guest_name"
+    ) || "";
+
+if (!this.guestName) {
+    this.guestName =
+        this.guestNames[
+            Math.floor(
+                Math.random() *
+                this.guestNames.length
+            )
+        ];
+
+    localStorage.setItem(
+        "chat_guest_name",
+        this.guestName
+    );
+}
+
 this.createWindow();
 
 	window.addEventListener(
@@ -222,6 +265,7 @@ window.addEventListener(
 );
 
 this.applyCurrentTheme();
+this.setupChatPastelThemeSync();
 this.restoreSettings();
 this.setupDiscordAuthentication();
 
@@ -301,7 +345,7 @@ transition-[height] duration-200
                     text-white text-blue-glow
                 "
             >
-                CAT CHAT
+                jamichat
             </span>
 
            <div class="flex items-center gap-3">
@@ -453,21 +497,14 @@ transition-[height] duration-200
             "
         >
 
-	<div class="flex items-stretch gap-2">
+	<div class="relative jami-cute-composer-wrap">
+	<div class="jami-cute-composer-row">
     <div class="relative shrink-0">
         <button
             id="chatAvatarButton"
             type="button"
-            class="
-                flex h-11 w-11
-                items-center justify-center
-                rounded-xl
-                border border-white/10
-                bg-black/20
-                transition
-                hover:bg-white/5
-            "
-            aria-label="choose avatar"
+            class="jami-cute-avatar-button"
+            aria-label="profile and avatar"
             aria-expanded="false"
             aria-controls="chatAvatarPicker"
         >
@@ -479,30 +516,45 @@ transition-[height] duration-200
             >
         </button>
 
-       <div
-    id="chatAvatarPicker"
-    class="
-        invisible pointer-events-none opacity-0
-        absolute bottom-full left-0 z-20
-        mb-2 w-56
-        overflow-hidden
-        rounded-2xl
-        border border-white/10
-        bg-[#1f1f1f]
-        p-3
-        shadow-xl
-        transition-opacity
-    "
->
-            <div
-                class="
-                    theme-heading
-                    mb-3 text-[10px]
-                    font-bold uppercase tracking-widest
-                    text-white/60
-                "
-            >
-                select avatar
+        <div
+            id="chatAvatarPicker"
+            class="
+                invisible pointer-events-none opacity-0
+                absolute bottom-full left-0 z-20
+                mb-2 overflow-hidden
+                rounded-2xl
+                border border-white/10
+                bg-[#1f1f1f]
+                p-3 shadow-xl
+                transition-opacity
+            "
+        >
+            <div class="theme-heading jami-cute-profile-title">
+                profile
+            </div>
+
+            <div class="jami-cute-profile-name-wrap">
+                <input
+                    id="chatName"
+                    type="text"
+                    maxlength="20"
+                    autocomplete="nickname"
+                    placeholder="name"
+                    class="theme-body jami-cute-profile-name-input"
+                >
+
+                <div
+                    id="chatDiscordUsername"
+                    class="
+                        theme-body
+                        hidden truncate
+                        text-[8px] text-white/40
+                    "
+                ></div>
+            </div>
+
+            <div class="theme-heading jami-cute-avatar-label">
+                choose avatar
             </div>
 
             <div
@@ -528,154 +580,90 @@ transition-[height] duration-200
             >
                 log in with discord
             </button>
+
+            <button
+                id="chatDiscordLogout"
+                type="button"
+                class="
+                    theme-body
+                    mt-2 hidden w-full rounded-lg
+                    border border-white/10
+                    bg-white/5 px-2 py-2
+                    text-[9px] text-white/60
+                    transition
+                    hover:bg-white/10
+                    hover:text-white
+                    disabled:cursor-wait
+                    disabled:opacity-50
+                "
+            >
+                log out
+            </button>
         </div>
     </div>
 
-    <div class="relative min-w-0 flex-1">
-        <input
-            id="chatName"
-            type="text"
-            maxlength="20"
-            autocomplete="nickname"
-            placeholder="name"
-            class="
-                theme-body
-                h-11 w-full min-w-0 rounded-xl
-                border border-white/10
-                bg-black/30 px-3 py-2
-                text-xs text-white
-                placeholder:text-white/35
-                outline-none
-                focus:border-white/25
-            "
-        >
+    <input
+        id="chatImageUploadInput"
+        type="file"
+        accept="image/png,image/jpeg,image/gif,image/webp"
+        class="hidden"
+    >
 
-        <div
-            id="chatDiscordUsername"
-            class="
-                theme-body
-                pointer-events-none
-                absolute bottom-1.5 left-3
-                hidden max-w-[calc(100%-5.5rem)]
-                truncate text-[8px] text-white/40
-            "
-        ></div>
-
-        <button
-            id="chatDiscordLogout"
-            type="button"
-            class="
-                theme-body
-                absolute right-2 top-1/2
-                hidden -translate-y-1/2
-                rounded-lg border border-white/10
-                bg-white/5 px-2 py-1
-                text-[8px] text-white/60
-                transition
-                hover:bg-white/10
-                hover:text-white
-                disabled:cursor-wait
-                disabled:opacity-50
-            "
-        >
-            log out
-        </button>
-    </div>
-</div>
-
-            <div class="relative">
-			
-    <div class="flex items-stretch gap-2">
-	<button
-    id="chatImageUploadButton"
-    type="button"
-    class="
-        flex h-9 w-9 shrink-0
-        items-center justify-center
-        rounded-xl
-        border border-white/10
-        bg-black/20
-        text-base leading-none
-        transition
-        hover:bg-white/5
-        active:scale-95
-    "
-    aria-label="upload image"
-    title="upload image"
->
-    🖼️
-</button>
-
-<input
-    id="chatImageUploadInput"
-    type="file"
-    accept="image/png,image/jpeg,image/gif,image/webp"
-    class="hidden"
->
-
+    <div class="jami-cute-message-shell">
         <input
             id="chatMessage"
             type="text"
             maxlength="250"
             autocomplete="off"
             placeholder="type a message..."
-            class="
-                theme-body
-                min-w-0 flex-1 rounded-xl
-                border border-white/10
-                bg-black/30 px-3 py-2
-                text-xs text-white
-                placeholder:text-white/35
-                outline-none
-                focus:border-white/25
-            "
+            class="theme-body jami-cute-message-input"
         >
-<button
-    id="chatWatchPartyButton"
-    type="button"
-    class="
-        flex h-9 w-9 shrink-0
-        items-center justify-center
-        rounded-xl
-        border border-white/10
-        bg-black/20
-        text-base leading-none
-        transition
-        hover:bg-white/5
-        active:scale-95
-    "
-	aria-expanded="false"
-    aria-controls="chatWatchPartyPanel"
-    aria-label="watch party"
-    title="watch party"
->
-    📺
-</button>
 
         <button
             id="chatEmojiButton"
             type="button"
-            class="
-                flex h-9 w-9 shrink-0
-                items-center justify-center
-                rounded-xl
-                border border-white/10
-                bg-black/20
-                text-base leading-none
-                transition
-                hover:bg-white/5
-                active:scale-95
-            "
+            class="jami-cute-message-emoji"
             aria-label="choose emoji"
             aria-expanded="false"
             aria-controls="chatEmojiPicker"
             title="choose emoji"
         >
-            🐱
+            ☺
         </button>
 
-		
+        <button
+            id="chatImageUploadButton"
+            type="button"
+            class="jami-cute-message-plus"
+            aria-label="upload image"
+            title="upload image"
+        >
+            +
+        </button>
+
+        <button
+            id="chatSend"
+            type="button"
+            class="theme-body jami-cute-send-arrow"
+            aria-label="send message"
+            title="send message"
+        >
+            ➜
+        </button>
     </div>
+
+    <button
+        id="chatWatchPartyButton"
+        type="button"
+        class="jami-cute-square-button"
+        aria-expanded="false"
+        aria-controls="chatWatchPartyPanel"
+        aria-label="watch party"
+        title="watch party"
+    >
+        📺
+    </button>
+</div>
 
 <div
     id="chatWatchPartyPanel"
@@ -711,24 +699,7 @@ transition-[height] duration-200
     ></div>
 </div>
 
-            <button
-                id="chatSend"
-                type="button"
-                class="
-                    theme-body
-                    w-full rounded-xl
-                    border border-white/10
-                    bg-white/5 px-3 py-2
-                    text-xs text-white
-                    transition
-                    hover:bg-white/10
-                    active:scale-[0.98]
-                    disabled:cursor-not-allowed
-                    disabled:opacity-40
-                "
-            >
-                send
-            </button>
+
         </div>
 
     `;
@@ -5042,8 +5013,7 @@ toggleWatchParty() {
     }
 
     const name =
-        this.nameInput?.value.trim() ||
-        "anonymous";
+        this.getEffectiveChatName();
 
 		const queueLengthBeforeAdd =
     Array.isArray(this.watchParty?.queue)
@@ -6593,12 +6563,7 @@ async setReactionActive(
                     clientId:
                         this.clientId,
                     reactorName:
-                        this.discordUser
-                            ?.displayName ||
-                        this.nameInput
-                            ?.value
-                            ?.trim() ||
-                        "Anonymous",
+                        this.getEffectiveChatName(),
                     active: active === true,
                     reaction: {
                         key: reaction.key,
@@ -9171,12 +9136,7 @@ async saveRemix(upload, button = null) {
                             savedByClientId:
                                 this.clientId,
                             savedByName:
-                                this.discordUser
-                                    ?.displayName ||
-                                this.nameInput
-                                    ?.value
-                                    ?.trim() ||
-                                "admin"
+                                this.getEffectiveChatName()
                         })
                 }
             );
@@ -9278,10 +9238,7 @@ async repostSavedRemix(savedId) {
                             clientId:
                                 this.clientId,
                             name:
-                                this.nameInput
-                                    ?.value
-                                    ?.trim() ||
-                                "anonymous",
+                                this.getEffectiveChatName(),
                             avatar:
                                 this.avatar
                         })
@@ -10354,9 +10311,7 @@ setupMemberActivity() {
     }
 
     const name =
-        this.discordUser?.displayName ||
-        this.nameInput.value.trim() ||
-        "anonymous";
+        this.getEffectiveChatName();
 
     const avatar =
         this.discordUser?.avatarUrl ||
@@ -10388,9 +10343,7 @@ setupMemberActivity() {
             type: "typing",
             clientId: this.clientId,
             name:
-                this.discordUser?.displayName ||
-                this.nameInput.value.trim() ||
-                "anonymous",
+                this.getEffectiveChatName(),
             isTyping
         })
     );
@@ -11175,12 +11128,7 @@ async uploadImageRemix(detail) {
 
     formData.append(
         "name",
-        this.discordUser
-            ?.displayName ||
-        this.nameInput
-            ?.value
-            ?.trim() ||
-        "anonymous"
+        this.getEffectiveChatName()
     );
 
     formData.append(
@@ -12417,12 +12365,7 @@ async uploadTestImage(file) {
                                 this.clientId,
 
                             name:
-                                this.discordUser
-                                    ?.displayName ||
-                                this.nameInput
-                                    ?.value
-                                    ?.trim() ||
-                                "anonymous",
+                                this.getEffectiveChatName(),
 
                             avatar:
                                 this.discordUser
@@ -13202,10 +13145,19 @@ clearChatInterface() {
     }
 }
 	
+
+getEffectiveChatName() {
+    return (
+        this.discordUser?.displayName ||
+        this.nameInput?.value?.trim() ||
+        this.guestName ||
+        "guest"
+    );
+}
+
 async sendMessage() {
     const name =
-        this.discordUser?.displayName ||
-        this.nameInput.value.trim();
+        this.getEffectiveChatName();
 
     const avatar =
         this.discordUser?.avatarUrl ||
@@ -13218,7 +13170,7 @@ async sendMessage() {
     }
 
     this.sendButton.disabled = true;
-    this.sendButton.textContent = "sending...";
+    this.sendButton.textContent = "…";
 
     try {
         const response = await fetch(`${this.API}/api/chat`, {
@@ -13305,8 +13257,8 @@ this.messageInput.focus();
 
     this.sendButton.textContent =
         this.isBanned
-            ? "banned"
-            : "send";
+            ? "×"
+            : "➜";
 }
 }
 
@@ -13314,9 +13266,10 @@ restoreSettings() {
     const savedName =
         localStorage.getItem("chat_name");
 
-    if (savedName) {
-        this.nameInput.value = savedName;
-    }
+    this.nameInput.value =
+        savedName ||
+        this.guestName ||
+        "";
 
     for (const key of [
         "chat_width",
@@ -13921,9 +13874,7 @@ setupNameSaving() {
         }
 
         const name =
-            this.discordUser?.displayName ||
-            this.nameInput?.value.trim() ||
-            "anonymous";
+            this.getEffectiveChatName();
 
         const avatar =
             this.discordUser?.avatarUrl ||
@@ -15632,10 +15583,9 @@ applyDiscordIdentity(user) {
         "chat-discord-name-active"
     );
 
-    this.avatarButton.disabled = true;
-    this.avatarButton.setAttribute(
-        "aria-disabled",
-        "true"
+    this.avatarButton.disabled = false;
+    this.avatarButton.removeAttribute(
+        "aria-disabled"
     );
 
     this.avatarPreview.src =
@@ -15664,7 +15614,9 @@ clearDiscordIdentity() {
     const guestName =
         localStorage.getItem(
             "chat_name"
-        ) || "";
+        ) ||
+        this.guestName ||
+        "";
 
     const guestAvatar =
         localStorage.getItem(
@@ -15791,10 +15743,6 @@ renderDiscordAuthState() {
     this.avatarButton.addEventListener("click", event => {
         event.stopPropagation();
 
-        if (this.discordUser) {
-            return;
-        }
-
         const isOpen =
             this.avatarPicker.classList.contains("opacity-100");
 
@@ -15885,10 +15833,6 @@ selectAvatar(filename) {
 }
 
 openAvatarPicker() {
-    if (this.discordUser) {
-        return;
-    }
-
     this.avatarPicker.classList.remove(
         "invisible",
         "pointer-events-none",
@@ -16756,9 +16700,387 @@ keepTitleBarInViewport() {
     );
 }
 	
+	syncChatPastelTheme() {
+    if (!this.window) {
+        return;
+    }
+
+    const previousTheme =
+        this.window.dataset.chatPastel ||
+        "";
+
+    const rootTheme =
+        document.documentElement
+            .getAttribute(
+                "data-chat-pastel"
+            ) || "";
+
+    let nextTheme = "";
+
+    if (
+        rootTheme === "stars" ||
+        rootTheme === "paws"
+    ) {
+        nextTheme = rootTheme;
+    } else {
+        const themeName =
+            String(
+                localStorage.getItem("theme") ||
+                "Stars"
+            ).trim();
+
+        if (themeName === "Stars") {
+            nextTheme = "stars";
+        } else if (themeName === "Default") {
+            nextTheme = "paws";
+        }
+    }
+
+    if (nextTheme) {
+        this.window.dataset.chatPastel =
+            nextTheme;
+    } else {
+        delete this.window.dataset.chatPastel;
+    }
+
+    const hasDecor =
+        this.window
+            .querySelector(
+                "#chatMain"
+            )
+            ?.querySelector(
+                ".jami-chat-pastel-decor"
+            );
+
+    if (
+        previousTheme !== nextTheme ||
+        (
+            nextTheme &&
+            !hasDecor
+        )
+    ) {
+        this.renderChatPastelDecor();
+    }
+}
+
+	renderChatPastelDecor() {
+    const main =
+        this.window?.querySelector(
+            "#chatMain"
+        );
+
+    if (!main) {
+        return;
+    }
+
+    main.querySelector(
+        ".jami-chat-pastel-decor"
+    )?.remove();
+
+    const theme =
+        this.window?.dataset.chatPastel ||
+        "";
+
+    if (
+        theme !== "stars" &&
+        theme !== "paws"
+    ) {
+        return;
+    }
+
+    const layer =
+        document.createElement("div");
+
+    layer.className =
+        "jami-chat-pastel-decor";
+
+    if (theme === "stars") {
+        const colours = [
+            "#d8c9ff",
+            "#ace3ff",
+            "#ffc4e4",
+            "#ffe79e",
+            "#c2efff",
+            "#eee5ff"
+        ];
+
+        const largeCount =
+            18 +
+            Math.floor(
+                Math.random() * 6
+            );
+
+        const tinyCount =
+            44 +
+            Math.floor(
+                Math.random() * 17
+            );
+
+        const occupied = [];
+
+        for (
+            let index = 0;
+            index < largeCount;
+            index += 1
+        ) {
+            let left = 0;
+            let top = 0;
+            let attempts = 0;
+
+            do {
+                left =
+                    6 +
+                    Math.random() * 88;
+
+                const upperBand =
+                    index < Math.ceil(
+                        largeCount * .34
+                    );
+
+                top =
+                    upperBand
+                        ? 5 + Math.random() * 28
+                        : 20 + Math.random() * 72;
+
+                attempts += 1;
+            } while (
+                attempts < 32 &&
+                occupied.some(point =>
+                    Math.hypot(
+                        point.left - left,
+                        point.top - top
+                    ) < 15
+                )
+            );
+
+            occupied.push({
+                left,
+                top
+            });
+
+            const star =
+                document.createElement("i");
+
+            star.className =
+                "jami-chat-star jami-chat-star-four";
+
+            const size =
+                10 +
+                Math.random() * 12;
+
+            star.style.left =
+                `${left}%`;
+
+            star.style.top =
+                `${top}%`;
+
+            star.style.width =
+                `${size}px`;
+
+            star.style.height =
+                `${size}px`;
+
+            star.style.background =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            star.style.opacity =
+                `${.78 + Math.random() * .18}`;
+
+            star.style.transform =
+                `translate(-50%, -50%) rotate(${Math.random() * 20 - 10}deg)`;
+
+            layer.appendChild(star);
+        }
+
+        for (
+            let index = 0;
+            index < tinyCount;
+            index += 1
+        ) {
+            const star =
+                document.createElement("i");
+
+            star.className =
+                "jami-chat-star jami-chat-star-tiny";
+
+            const size =
+                2 +
+                Math.random() * 2.5;
+
+            star.style.left =
+                `${3 + Math.random() * 94}%`;
+
+            const tinyUpperBand =
+                index <
+                Math.ceil(
+                    tinyCount * .30
+                );
+
+            star.style.top =
+                `${
+                    tinyUpperBand
+                        ? 4 + Math.random() * 26
+                        : 16 + Math.random() * 80
+                }%`;
+
+            star.style.width =
+                `${size}px`;
+
+            star.style.height =
+                `${size}px`;
+
+            star.style.background =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            star.style.opacity =
+                `${.60 + Math.random() * .28}`;
+
+            star.style.transform =
+                `translate(-50%, -50%) rotate(${Math.random() * 25 - 12}deg)`;
+
+            layer.appendChild(star);
+        }
+    } else {
+        const colours = [
+            "#f4a9c1",
+            "#a8d8b8",
+            "#f4c795",
+            "#c9b7ee"
+        ];
+
+        const count =
+            13 +
+            Math.floor(
+                Math.random() * 6
+            );
+
+        const occupied = [];
+
+        for (
+            let index = 0;
+            index < count;
+            index += 1
+        ) {
+            let left = 0;
+            let top = 0;
+            let attempts = 0;
+
+            do {
+                left =
+                    7 +
+                    Math.random() * 86;
+
+                const upperBand =
+                    index < Math.ceil(
+                        count * .34
+                    );
+
+                top =
+                    upperBand
+                        ? 7 + Math.random() * 28
+                        : 20 + Math.random() * 70;
+
+                attempts += 1;
+            } while (
+                attempts < 26 &&
+                occupied.some(point =>
+                    Math.hypot(
+                        point.left - left,
+                        point.top - top
+                    ) < 17
+                )
+            );
+
+            occupied.push({
+                left,
+                top
+            });
+
+            const paw =
+                document.createElement("i");
+
+            paw.className =
+                "jami-chat-paw";
+
+            const size =
+                27 +
+                Math.random() * 8;
+
+            paw.style.left =
+                `${left}%`;
+
+            paw.style.top =
+                `${top}%`;
+
+            paw.style.width =
+                `${size}px`;
+
+            paw.style.height =
+                `${size}px`;
+
+            paw.style.color =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            paw.style.opacity =
+                `${.18 + Math.random() * .13}`;
+
+            paw.style.transform =
+                `translate(-50%, -50%) rotate(${-16 + Math.random() * 32}deg)`;
+
+            paw.innerHTML =
+                '<svg viewBox="0 0 64 64" aria-hidden="true">' +
+                '<ellipse cx="13" cy="21" rx="5.5" ry="8.2"></ellipse>' +
+                '<ellipse cx="26" cy="13.5" rx="5.8" ry="8.5"></ellipse>' +
+                '<ellipse cx="39" cy="13.5" rx="5.8" ry="8.5"></ellipse>' +
+                '<ellipse cx="52" cy="21" rx="5.5" ry="8.2"></ellipse>' +
+                '<path d="M18.5 43.5C18.5 34.5 24.5 28 32.5 28S46.5 34.5 46.5 43.5C46.5 50 42.3 55 37.2 55C34.6 55 33.3 52.7 32.5 50.5C31.7 52.7 30.4 55 27.8 55C22.7 55 18.5 50 18.5 43.5Z"></path>' +
+                '</svg>';
+
+            layer.appendChild(paw);
+        }
+    }
+
+    main.appendChild(layer);
+}
+
+	setupChatPastelThemeSync() {
+    this.syncChatPastelTheme();
+
+    window.addEventListener(
+        "site-theme-change",
+        () => {
+            this.syncChatPastelTheme();
+        }
+    );
+
+    window.addEventListener(
+        "storage",
+        event => {
+            if (event.key === "theme") {
+                this.syncChatPastelTheme();
+            }
+        }
+    );
+}
+
 	applyCurrentTheme() {
     const themeName =
-        localStorage.getItem("theme") || "Default";
+        localStorage.getItem("theme") || "Stars";
 
     if (typeof window.applyTheme === "function") {
         window.applyTheme(themeName);
