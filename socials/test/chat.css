@@ -7364,3 +7364,6 @@ html[data-chat-pastel="paws"]
     align-items: center !important;
 }
 
+#chatWindow[data-chat-pastel="paws"] #chatMinimize {
+    transform: translateY(-2px) !important;
+}
