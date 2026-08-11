@@ -7209,3 +7209,65 @@ html[data-chat-pastel="paws"]
     gap: 7px;
 }
 
+#chatWindow[data-chat-pastel]
+#chatTitle::before {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: auto !important;
+    height: auto !important;
+    background-image: none !important;
+    image-rendering: auto !important;
+    font-size: 16px;
+    line-height: 1;
+}
+
+#chatWindow[data-chat-pastel="stars"]
+#chatTitle::before {
+    content: "✦" !important;
+    color: #c9eaff;
+    text-shadow:
+        0 0 7px rgba(201, 234, 255, .58);
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatTitle::before {
+    content: "♡" !important;
+    color: #dc718f;
+    text-shadow:
+        0 0 6px rgba(220, 113, 143, .24);
+    font-size: 17px;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatTitle {
+    gap: 5px !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatMinimize {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    font-size: 24px !important;
+    line-height: 1 !important;
+    padding: 0 0 4px 0 !important;
+    margin: 0 !important;
+    position: static !important;
+    transform: translateY(-2px) !important;
+    align-self: center !important;
+}
+
+#chatWindow[data-chat-pastel="paws"].h-10
+#chatMinimize {
+    transform: translateY(-2px) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatTitleBar > div,
+#chatWindow[data-chat-pastel="paws"]
+#chatTitleBar > div > div {
+    align-items: center !important;
+}
+
