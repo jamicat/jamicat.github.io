@@ -7364,6 +7364,11 @@ html[data-chat-pastel="paws"]
     align-items: center !important;
 }
 
-#chatWindow[data-chat-pastel="paws"] #chatMinimize {
-    transform: translateY(-2px) !important;
+#chatWindow[data-chat-pastel="paws"]:not(.h-10) #chatMinimize {
+    transform: translateY(3px) !important;
+}
+
+/* Minimized state: + */
+#chatWindow[data-chat-pastel="paws"].h-10 #chatMinimize {
+    transform: translateY(-3px) !important;
 }
