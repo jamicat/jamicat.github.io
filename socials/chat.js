@@ -16830,18 +16830,18 @@ keepTitleBarInViewport() {
 
     if (theme === "stars") {
         const colours = [
-            "#cbbcff",
-            "#9edcff",
-            "#ffc4e1",
-            "#ffe7a1",
-            "#ded6ff",
-            "#bcecff"
+            "#d7c8ff",
+            "#aee4ff",
+            "#ffc7e6",
+            "#ffe9a8",
+            "#c8f0ff",
+            "#e6ddff"
         ];
 
         const count =
-            18 +
+            15 +
             Math.floor(
-                Math.random() * 7
+                Math.random() * 6
             );
 
         const occupied = [];
@@ -16857,21 +16857,21 @@ keepTitleBarInViewport() {
 
             do {
                 left =
-                    5 +
-                    Math.random() * 90;
-
-                top =
                     6 +
                     Math.random() * 88;
 
+                top =
+                    7 +
+                    Math.random() * 86;
+
                 attempts += 1;
             } while (
-                attempts < 30 &&
+                attempts < 32 &&
                 occupied.some(point =>
                     Math.hypot(
                         point.left - left,
                         point.top - top
-                    ) < 13
+                    ) < 15
                 )
             );
 
@@ -16883,19 +16883,12 @@ keepTitleBarInViewport() {
             const star =
                 document.createElement("i");
 
-            const roll =
-                Math.random();
-
             star.className =
-                roll < .66
-                    ? "jami-chat-star jami-chat-star-four"
-                    : roll < .90
-                        ? "jami-chat-star jami-chat-star-diamond"
-                        : "jami-chat-star jami-chat-star-dot";
+                "jami-chat-star jami-chat-star-four";
 
             const size =
-                7 +
-                Math.random() * 9;
+                9 +
+                Math.random() * 11;
 
             star.style.left =
                 `${left}%`;
@@ -16918,23 +16911,23 @@ keepTitleBarInViewport() {
                 ];
 
             star.style.opacity =
-                `${.72 + Math.random() * .24}`;
+                `${.78 + Math.random() * .18}`;
 
             star.style.transform =
-                `translate(-50%, -50%) rotate(${Math.random() * 45}deg)`;
+                `translate(-50%, -50%) rotate(${Math.random() * 24 - 12}deg)`;
 
             layer.appendChild(star);
         }
     } else {
         const colours = [
-            "#ffc4d8",
-            "#b9e5ca",
-            "#ffddb5",
-            "#d9cbff"
+            "#ffc8da",
+            "#bfe8ce",
+            "#ffe0bb",
+            "#ddd0ff"
         ];
 
         const count =
-            9 +
+            8 +
             Math.floor(
                 Math.random() * 5
             );
@@ -16952,12 +16945,12 @@ keepTitleBarInViewport() {
 
             do {
                 left =
-                    6 +
-                    Math.random() * 88;
+                    7 +
+                    Math.random() * 86;
 
                 top =
-                    8 +
-                    Math.random() * 84;
+                    9 +
+                    Math.random() * 82;
 
                 attempts += 1;
             } while (
@@ -16966,7 +16959,7 @@ keepTitleBarInViewport() {
                     Math.hypot(
                         point.left - left,
                         point.top - top
-                    ) < 16
+                    ) < 18
                 )
             );
 
@@ -16982,8 +16975,8 @@ keepTitleBarInViewport() {
                 "jami-chat-paw";
 
             const size =
-                11 +
-                Math.random() * 6;
+                15 +
+                Math.random() * 8;
 
             paw.style.left =
                 `${left}%`;
@@ -17006,10 +16999,10 @@ keepTitleBarInViewport() {
                 ];
 
             paw.style.opacity =
-                `${.15 + Math.random() * .13}`;
+                `${.16 + Math.random() * .13}`;
 
             paw.style.transform =
-                `translate(-50%, -50%) rotate(${-22 + Math.random() * 44}deg)`;
+                `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
 
             layer.appendChild(paw);
         }
