@@ -16805,15 +16805,15 @@ keepTitleBarInViewport() {
         ];
 
         const largeCount =
-            18 +
+            24 +
             Math.floor(
                 Math.random() * 6
             );
 
         const tinyCount =
-            44 +
+            62 +
             Math.floor(
-                Math.random() * 17
+                Math.random() * 19
             );
 
         const occupied = [];
@@ -16832,15 +16832,20 @@ keepTitleBarInViewport() {
                     6 +
                     Math.random() * 88;
 
-                const upperBand =
-                    index < Math.ceil(
-                        largeCount * .34
-                    );
+                const band =
+                    index % 4;
+
+                const bandStart =
+                    [
+                        5,
+                        27,
+                        49,
+                        71
+                    ][band];
 
                 top =
-                    upperBand
-                        ? 5 + Math.random() * 28
-                        : 20 + Math.random() * 72;
+                    bandStart +
+                    Math.random() * 20;
 
                 attempts += 1;
             } while (
@@ -16915,17 +16920,22 @@ keepTitleBarInViewport() {
             star.style.left =
                 `${3 + Math.random() * 94}%`;
 
-            const tinyUpperBand =
-                index <
-                Math.ceil(
-                    tinyCount * .30
-                );
+            const tinyBand =
+                index % 5;
+
+            const tinyBandStart =
+                [
+                    4,
+                    22,
+                    40,
+                    58,
+                    76
+                ][tinyBand];
 
             star.style.top =
                 `${
-                    tinyUpperBand
-                        ? 4 + Math.random() * 26
-                        : 16 + Math.random() * 80
+                    tinyBandStart +
+                    Math.random() * 17
                 }%`;
 
             star.style.width =
@@ -16959,9 +16969,9 @@ keepTitleBarInViewport() {
         ];
 
         const count =
-            13 +
+            18 +
             Math.floor(
-                Math.random() * 6
+                Math.random() * 7
             );
 
         const occupied = [];
@@ -16980,15 +16990,20 @@ keepTitleBarInViewport() {
                     7 +
                     Math.random() * 86;
 
-                const upperBand =
-                    index < Math.ceil(
-                        count * .34
-                    );
+                const band =
+                    index % 4;
+
+                const bandStart =
+                    [
+                        7,
+                        29,
+                        51,
+                        73
+                    ][band];
 
                 top =
-                    upperBand
-                        ? 7 + Math.random() * 28
-                        : 20 + Math.random() * 70;
+                    bandStart +
+                    Math.random() * 18;
 
                 attempts += 1;
             } while (
