@@ -6043,9 +6043,6 @@ html[data-chat-pastel="paws"]
     transform: translateY(-1px);
 }
 
-#chatWindow[data-chat-pastel] #chatWatchPartyButton {
-    display: none !important;
-}
 
 #chatWindow[data-chat-pastel] #chatConnectionStatus,
 #chatWindow[data-chat-pastel] #chatMembersToggle {
