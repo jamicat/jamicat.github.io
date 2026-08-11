@@ -1363,6 +1363,7 @@ createBanManagerButton() {
         document.createElement("div");
 
     panel.className = [
+        "jami-admin-glass-panel",
         "fixed",
         "z-[100001]",
         "w-72",
@@ -1371,7 +1372,6 @@ createBanManagerButton() {
         "rounded-2xl",
         "border",
         "border-white/15",
-        "bg-black/95",
         "text-white",
         "shadow-xl",
         "backdrop-blur-xl"
@@ -2028,6 +2028,7 @@ if (clearButton) {
         document.createElement("div");
 
     panel.className = [
+        "jami-admin-glass-panel",
         "fixed",
         "z-[100001]",
         "w-72",
@@ -2036,7 +2037,6 @@ if (clearButton) {
         "rounded-2xl",
         "border",
         "border-white/15",
-        "bg-black/95",
         "text-white",
         "shadow-xl",
         "backdrop-blur-xl"
