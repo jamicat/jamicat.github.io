@@ -107,7 +107,25 @@ function applyTheme(themeName) {
   if (!theme) return console.warn(`Theme not found: ${themeName}`);
 
   document.documentElement.setAttribute('data-theme', themeName);
-  document.documentElement.setAttribute('data-theme', themeName);
+
+  const chatPastelTheme =
+    themeName === 'Stars'
+      ? 'stars'
+      : themeName === 'Default'
+        ? 'paws'
+        : '';
+
+  if (chatPastelTheme) {
+    document.documentElement.setAttribute(
+      'data-chat-pastel',
+      chatPastelTheme
+    );
+  } else {
+    document.documentElement.removeAttribute(
+      'data-chat-pastel'
+    );
+  }
+
   document.documentElement.classList.toggle(
   'theme-stars',
   themeName === 'Stars'
@@ -305,6 +323,18 @@ if (toggleBtn) {
   el.classList.add(theme.glowPrimary);
 });
   localStorage.setItem('theme', themeName);
+
+  window.dispatchEvent(
+    new CustomEvent(
+      'site-theme-change',
+      {
+        detail: {
+          themeName,
+          chatPastelTheme
+        }
+      }
+    )
+  );
 
   document.querySelectorAll('.terminal2').forEach(el => {
   Object.values(themes).forEach(t => {
@@ -2680,12 +2710,6 @@ const watchPartyVisualizers = (() => {
     const output = new Float32Array(safeCount);
 
     for (let i = 0; i < safeCount; i++) {
-      /*
-       * hyper mode keeps the same logarithmic frequency bands,
-       * then adds entertainment-style dynamics: some transient
-       * peak energy, extra perceptual lift, fast attack and a
-       * slower release. The normal mode above remains unchanged.
-       */
       const combined = Math.min(
         1,
         values[i] * 0.72 + peakValues[i] * 0.38
@@ -3909,7 +3933,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function showArt() {
 $('#terminalContent').html(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
-  <div id="artGallery" class="grid grid-cols-2 gap-4">
+  <div id="artGallery" class="grid grid-cols-3 gap-4">
+   <a href="party.jpg" class="block rounded overflow-hidden">
+    <img src="party_thumb.jpg" alt="yaaaypartypopper" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
    <a href="2.png" class="block rounded overflow-hidden">
     <img src="2.png" alt="jamie - saproena" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
