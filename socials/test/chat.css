@@ -7430,3 +7430,15 @@ html[data-chat-pastel="paws"]
     opacity: 1 !important;
     transform: none !important;
 }
+
+
+#chatWindow[data-chat-pastel="paws"]
+.jami-discord-server-tag-text {
+    color: #a94f6b !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+.jami-discord-server-tag {
+    border-color: rgba(169, 79, 107, .18) !important;
+    background: rgba(233, 138, 168, .10) !important;
+}
