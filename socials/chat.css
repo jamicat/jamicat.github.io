@@ -5157,3 +5157,166 @@ html[data-chat-pastel]
         );
 }
 
+@font-face {
+    font-family: "JamiFredoka";
+    src: url("./fredoka.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+}
+
+#chatWindow[data-chat-pastel="stars"],
+#chatWindow[data-chat-pastel="stars"] button,
+#chatWindow[data-chat-pastel="stars"] input,
+#chatWindow[data-chat-pastel="stars"] .theme-body,
+#chatWindow[data-chat-pastel="stars"] .theme-heading {
+    font-family:
+        "JamiFredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMain::before {
+    display: none;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMain {
+    position: relative;
+    overflow: hidden;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-chat-pastel-decor {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-chat-star,
+#chatWindow[data-chat-pastel]
+.jami-chat-paw {
+    position: absolute;
+    display: block;
+    pointer-events: none;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-chat-star {
+    filter:
+        drop-shadow(
+            0 0 4px
+            rgba(255, 255, 255, .26)
+        );
+}
+
+#chatWindow[data-chat-pastel]
+.jami-chat-star-four {
+    clip-path:
+        polygon(
+            50% 0,
+            61% 39%,
+            100% 50%,
+            61% 61%,
+            50% 100%,
+            39% 61%,
+            0 50%,
+            39% 39%
+        );
+}
+
+#chatWindow[data-chat-pastel]
+.jami-chat-star-diamond {
+    clip-path:
+        polygon(
+            50% 0,
+            100% 50%,
+            50% 100%,
+            0 50%
+        );
+}
+
+#chatWindow[data-chat-pastel]
+.jami-chat-star-dot {
+    border-radius: 999px;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-chat-paw {
+    -webkit-mask-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='14' cy='21' rx='6' ry='8'/%3E%3Cellipse cx='27' cy='15' rx='6' ry='8'/%3E%3Cellipse cx='40' cy='15' rx='6' ry='8'/%3E%3Cellipse cx='52' cy='21' rx='6' ry='8'/%3E%3Cpath d='M20 43c0-8 5.6-13 12.5-13S45 35 45 43c0 6.4-4.8 10.5-12.5 10.5S20 49.4 20 43Zm7.5 1.3c1.6 2.4 3.3 3.4 5 3.4 1.8 0 3.5-1.1 5.1-3.5-1.5.8-3.2 1.2-5 1.2s-3.5-.4-5.1-1.1Z'/%3E%3C/svg%3E");
+
+    mask-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='14' cy='21' rx='6' ry='8'/%3E%3Cellipse cx='27' cy='15' rx='6' ry='8'/%3E%3Cellipse cx='40' cy='15' rx='6' ry='8'/%3E%3Cellipse cx='52' cy='21' rx='6' ry='8'/%3E%3Cpath d='M20 43c0-8 5.6-13 12.5-13S45 35 45 43c0 6.4-4.8 10.5-12.5 10.5S20 49.4 20 43Zm7.5 1.3c1.6 2.4 3.3 3.4 5 3.4 1.8 0 3.5-1.1 5.1-3.5-1.5.8-3.2 1.2-5 1.2s-3.5-.4-5.1-1.1Z'/%3E%3C/svg%3E");
+
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMessages,
+#chatWindow[data-chat-pastel]
+#chatMembersPanel {
+    position: relative;
+    z-index: 1;
+}
+
+#chatWindow[data-chat-pastel]
+#chatName,
+#chatWindow[data-chat-pastel]
+#chatMessage {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(
+                var(--chat-pastel-rgb),
+                .20
+            ),
+            rgba(
+                var(--chat-control-rgb),
+                .23
+            )
+        ) !important;
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255, 255, 255, .09),
+        inset 0 0 18px
+        rgba(
+            var(--chat-pastel-rgb),
+            .07
+        );
+}
+
+#chatWindow[data-chat-pastel]
+#chatMinimize {
+    width: 36px;
+    height: 36px;
+    font-size: 27px !important;
+    font-weight: 900;
+    line-height: 1;
+    border-radius: 11px;
+    color:
+        rgba(
+            var(--chat-text-rgb),
+            .94
+        ) !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMinimize:hover {
+    background:
+        rgba(
+            var(--chat-pastel-rgb),
+            .16
+        );
+}
+
