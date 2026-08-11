@@ -8618,3 +8618,64 @@ body > #chatEmojiPicker {
     max-width: calc(100vw - 16px) !important;
 }
 
+
+/* final top-bar colour/alignment + Original dimensions */
+html[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatWindow[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatBanManagerButton.theme-body,
+html[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatWindow[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatPartyManagerButton.theme-body,
+html[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatWindow[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatMembersToggle.theme-body,
+html[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatWindow[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatThemeButton.theme-body,
+html[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatWindow[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatMinimize {
+    color: rgba(238, 157, 174) !important;
+    text-shadow: none !important;
+}
+
+html[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatWindow[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatSend.jami-cute-send-arrow,
+html[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatWindow[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatSend.jami-cute-send-arrow:hover,
+html[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatWindow[data-chat-theme="paws"][data-chat-pastel="paws"]
+#chatSend.jami-cute-send-arrow:active {
+    color: rgba(238, 157, 174) !important;
+    border-color: rgba(238, 157, 174, .28) !important;
+    background: rgba(238, 157, 174, .14) !important;
+    box-shadow: none !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatThemeButton,
+#chatWindow[data-chat-theme="stars"] #chatThemeButton,
+#chatWindow[data-chat-theme="paws"] #chatThemeButton {
+    display: inline-block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: normal !important;
+    vertical-align: baseline !important;
+    transform: translateY(-1px) !important;
+}
+
+#chatWindow[data-chat-theme="original"]:not(.h-10) {
+    width: 440px !important;
+    height: 450px !important;
+    max-width: calc(100vw - 2rem) !important;
+}
+
+#chatWindow[data-chat-theme="original"].h-10 {
+    width: 440px !important;
+    height: 40px !important;
+    max-width: calc(100vw - 2rem) !important;
+}
+
