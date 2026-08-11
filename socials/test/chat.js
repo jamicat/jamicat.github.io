@@ -16832,9 +16832,15 @@ keepTitleBarInViewport() {
                     6 +
                     Math.random() * 88;
 
+                const upperBand =
+                    index < Math.ceil(
+                        largeCount * .34
+                    );
+
                 top =
-                    7 +
-                    Math.random() * 86;
+                    upperBand
+                        ? 5 + Math.random() * 28
+                        : 20 + Math.random() * 72;
 
                 attempts += 1;
             } while (
@@ -16909,8 +16915,18 @@ keepTitleBarInViewport() {
             star.style.left =
                 `${3 + Math.random() * 94}%`;
 
+            const tinyUpperBand =
+                index <
+                Math.ceil(
+                    tinyCount * .30
+                );
+
             star.style.top =
-                `${4 + Math.random() * 92}%`;
+                `${
+                    tinyUpperBand
+                        ? 4 + Math.random() * 26
+                        : 16 + Math.random() * 80
+                }%`;
 
             star.style.width =
                 `${size}px`;
@@ -16943,9 +16959,9 @@ keepTitleBarInViewport() {
         ];
 
         const count =
-            9 +
+            13 +
             Math.floor(
-                Math.random() * 5
+                Math.random() * 6
             );
 
         const occupied = [];
@@ -16964,9 +16980,15 @@ keepTitleBarInViewport() {
                     7 +
                     Math.random() * 86;
 
+                const upperBand =
+                    index < Math.ceil(
+                        count * .34
+                    );
+
                 top =
-                    8 +
-                    Math.random() * 84;
+                    upperBand
+                        ? 7 + Math.random() * 28
+                        : 20 + Math.random() * 70;
 
                 attempts += 1;
             } while (
@@ -16975,7 +16997,7 @@ keepTitleBarInViewport() {
                     Math.hypot(
                         point.left - left,
                         point.top - top
-                    ) < 18
+                    ) < 17
                 )
             );
 
