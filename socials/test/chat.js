@@ -454,20 +454,12 @@ transition-[height] duration-200
             "
         >
 
-	<div class="flex items-stretch gap-2">
+	<div class="jami-cute-name-row">
     <div class="relative shrink-0">
         <button
             id="chatAvatarButton"
             type="button"
-            class="
-                flex h-11 w-11
-                items-center justify-center
-                rounded-xl
-                border border-white/10
-                bg-black/20
-                transition
-                hover:bg-white/5
-            "
+            class="jami-cute-avatar-button"
             aria-label="choose avatar"
             aria-expanded="false"
             aria-controls="chatAvatarPicker"
@@ -539,16 +531,7 @@ transition-[height] duration-200
             maxlength="20"
             autocomplete="nickname"
             placeholder="name"
-            class="
-                theme-body
-                h-11 w-full min-w-0 rounded-xl
-                border border-white/10
-                bg-black/30 px-3 py-2
-                text-xs text-white
-                placeholder:text-white/35
-                outline-none
-                focus:border-white/25
-            "
+            class="theme-body jami-cute-name-input"
         >
 
         <div
@@ -586,97 +569,69 @@ transition-[height] duration-200
 
             <div class="relative">
 			
-    <div class="flex items-stretch gap-2">
-	<button
-    id="chatImageUploadButton"
-    type="button"
-    class="
-        flex h-9 w-9 shrink-0
-        items-center justify-center
-        rounded-xl
-        border border-white/10
-        bg-black/20
-        text-base leading-none
-        transition
-        hover:bg-white/5
-        active:scale-95
-    "
-    aria-label="upload image"
-    title="upload image"
->
-    🖼️
-</button>
+    <div class="jami-cute-composer-row">
+    <button
+        id="chatImageUploadButton"
+        type="button"
+        class="jami-cute-square-button"
+        aria-label="upload image"
+        title="upload image"
+    >
+        🖼️
+    </button>
 
-<input
-    id="chatImageUploadInput"
-    type="file"
-    accept="image/png,image/jpeg,image/gif,image/webp"
-    class="hidden"
->
+    <input
+        id="chatImageUploadInput"
+        type="file"
+        accept="image/png,image/jpeg,image/gif,image/webp"
+        class="hidden"
+    >
 
+    <div class="jami-cute-message-shell">
         <input
             id="chatMessage"
             type="text"
             maxlength="250"
             autocomplete="off"
             placeholder="type a message..."
-            class="
-                theme-body
-                min-w-0 flex-1 rounded-xl
-                border border-white/10
-                bg-black/30 px-3 py-2
-                text-xs text-white
-                placeholder:text-white/35
-                outline-none
-                focus:border-white/25
-            "
+            class="theme-body jami-cute-message-input"
         >
-<button
-    id="chatWatchPartyButton"
-    type="button"
-    class="
-        flex h-9 w-9 shrink-0
-        items-center justify-center
-        rounded-xl
-        border border-white/10
-        bg-black/20
-        text-base leading-none
-        transition
-        hover:bg-white/5
-        active:scale-95
-    "
-	aria-expanded="false"
-    aria-controls="chatWatchPartyPanel"
-    aria-label="watch party"
-    title="watch party"
->
-    📺
-</button>
 
         <button
             id="chatEmojiButton"
             type="button"
-            class="
-                flex h-9 w-9 shrink-0
-                items-center justify-center
-                rounded-xl
-                border border-white/10
-                bg-black/20
-                text-base leading-none
-                transition
-                hover:bg-white/5
-                active:scale-95
-            "
+            class="jami-cute-message-emoji"
             aria-label="choose emoji"
             aria-expanded="false"
             aria-controls="chatEmojiPicker"
             title="choose emoji"
         >
-            🐱
+            ☺
         </button>
 
-		
+        <button
+            id="chatSend"
+            type="button"
+            class="theme-body jami-cute-send-arrow"
+            aria-label="send message"
+            title="send message"
+        >
+            ➜
+        </button>
     </div>
+
+    <button
+        id="chatWatchPartyButton"
+        type="button"
+        class="jami-cute-square-button"
+        aria-expanded="false"
+        aria-controls="chatWatchPartyPanel"
+        aria-label="watch party"
+        title="watch party"
+    >
+        📺
+    </button>
+</div>
 
 <div
     id="chatWatchPartyPanel"
@@ -712,24 +667,7 @@ transition-[height] duration-200
     ></div>
 </div>
 
-            <button
-                id="chatSend"
-                type="button"
-                class="
-                    theme-body
-                    w-full rounded-xl
-                    border border-white/10
-                    bg-white/5 px-3 py-2
-                    text-xs text-white
-                    transition
-                    hover:bg-white/10
-                    active:scale-[0.98]
-                    disabled:cursor-not-allowed
-                    disabled:opacity-40
-                "
-            >
-                send
-            </button>
+
         </div>
 
     `;
@@ -16838,17 +16776,23 @@ keepTitleBarInViewport() {
             "#e6ddff"
         ];
 
-        const count =
-            15 +
+        const starCount =
+            14 +
             Math.floor(
-                Math.random() * 6
+                Math.random() * 5
+            );
+
+        const dotCount =
+            14 +
+            Math.floor(
+                Math.random() * 8
             );
 
         const occupied = [];
 
         for (
             let index = 0;
-            index < count;
+            index < starCount;
             index += 1
         ) {
             let left = 0;
@@ -16887,7 +16831,7 @@ keepTitleBarInViewport() {
                 "jami-chat-star jami-chat-star-four";
 
             const size =
-                9 +
+                10 +
                 Math.random() * 11;
 
             star.style.left =
@@ -16918,6 +16862,47 @@ keepTitleBarInViewport() {
 
             layer.appendChild(star);
         }
+
+        for (
+            let index = 0;
+            index < dotCount;
+            index += 1
+        ) {
+            const dot =
+                document.createElement("i");
+
+            dot.className =
+                "jami-chat-star jami-chat-star-dot";
+
+            const size =
+                1.5 +
+                Math.random() * 2.4;
+
+            dot.style.left =
+                `${3 + Math.random() * 94}%`;
+
+            dot.style.top =
+                `${4 + Math.random() * 92}%`;
+
+            dot.style.width =
+                `${size}px`;
+
+            dot.style.height =
+                `${size}px`;
+
+            dot.style.background =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            dot.style.opacity =
+                `${.62 + Math.random() * .28}`;
+
+            layer.appendChild(dot);
+        }
     } else {
         const colours = [
             "#ffc8da",
@@ -16929,7 +16914,7 @@ keepTitleBarInViewport() {
         const count =
             8 +
             Math.floor(
-                Math.random() * 5
+                Math.random() * 4
             );
 
         const occupied = [];
@@ -16959,7 +16944,7 @@ keepTitleBarInViewport() {
                     Math.hypot(
                         point.left - left,
                         point.top - top
-                    ) < 18
+                    ) < 19
                 )
             );
 
@@ -16975,7 +16960,7 @@ keepTitleBarInViewport() {
                 "jami-chat-paw";
 
             const size =
-                15 +
+                18 +
                 Math.random() * 8;
 
             paw.style.left =
@@ -16999,10 +16984,10 @@ keepTitleBarInViewport() {
                 ];
 
             paw.style.opacity =
-                `${.16 + Math.random() * .13}`;
+                `${.15 + Math.random() * .12}`;
 
             paw.style.transform =
-                `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
+                `translate(-50%, -50%) rotate(${-16 + Math.random() * 32}deg)`;
 
             layer.appendChild(paw);
         }
