@@ -7052,6 +7052,8 @@ this.appendEditedMarker(messageBody, message);
         document.createElement("span");
 
     compactTime.className = [
+    "chatTime",
+    "chatContinuationTime",
     "absolute",
     "left-0",
     message?.reply_target_id
@@ -7059,10 +7061,7 @@ this.appendEditedMarker(messageBody, message);
         : "top-[10px]",
     "w-8",
     "text-right",
-    "text-[8px]",
-    "text-white/0",
-    "transition",
-    "group-hover:text-white/45"
+    "text-[8px]"
 ].join(" ");
 
     compactTime.textContent =
