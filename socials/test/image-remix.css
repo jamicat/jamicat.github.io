@@ -1428,3 +1428,25 @@ html[data-chat-theme="paws"]
     color: rgba(238,157,174);
 }
 
+html[data-chat-theme="original"] .jami-remix-editor,
+html[data-chat-theme="original"] .jami-remix-editor * {
+    font-family: "Nunito", sans-serif !important;
+}
+
+html[data-chat-theme="stars"] .jami-remix-editor,
+html[data-chat-theme="stars"] .jami-remix-editor * {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="paws"] .jami-remix-editor,
+html[data-chat-theme="paws"] .jami-remix-editor * {
+    font-family:
+        "nintendoh",
+        "Nunito",
+        sans-serif !important;
+}
+
