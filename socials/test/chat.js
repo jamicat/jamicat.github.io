@@ -16794,6 +16794,92 @@ keepTitleBarInViewport() {
     layer.className =
         "jami-chat-pastel-decor";
 
+    const width =
+        Math.max(
+            main.clientWidth,
+            320
+        );
+
+    const height =
+        Math.max(
+            main.clientHeight,
+            260
+        );
+
+    const occupied = [];
+
+    const findPosition = ({
+        size,
+        gap,
+        minLeft,
+        maxLeft,
+        minTop,
+        maxTop,
+        attempts = 240
+    }) => {
+        for (
+            let attempt = 0;
+            attempt < attempts;
+            attempt += 1
+        ) {
+            const left =
+                minLeft +
+                Math.random() *
+                (maxLeft - minLeft);
+
+            const top =
+                minTop +
+                Math.random() *
+                (maxTop - minTop);
+
+            const x =
+                width *
+                left /
+                100;
+
+            const y =
+                height *
+                top /
+                100;
+
+            const radius =
+                size / 2;
+
+            const blocked =
+                occupied.some(point => {
+                    const dx =
+                        x - point.x;
+
+                    const dy =
+                        y - point.y;
+
+                    const minimumDistance =
+                        radius +
+                        point.radius +
+                        gap;
+
+                    return (
+                        dx * dx +
+                        dy * dy
+                    ) <
+                        minimumDistance *
+                        minimumDistance;
+                });
+
+            if (!blocked) {
+                return {
+                    left,
+                    top,
+                    x,
+                    y,
+                    radius
+                };
+            }
+        }
+
+        return null;
+    };
+
     if (theme === "stars") {
         const colours = [
             "#d8c9ff",
@@ -16816,51 +16902,60 @@ keepTitleBarInViewport() {
                 Math.random() * 19
             );
 
-        const occupied = [];
-
         for (
             let index = 0;
             index < largeCount;
             index += 1
         ) {
-            let left = 0;
-            let top = 0;
-            let attempts = 0;
+            const size =
+                10 +
+                Math.random() * 12;
 
-            do {
-                left =
-                    6 +
-                    Math.random() * 88;
+            const band =
+                index % 4;
 
-                const band =
-                    index % 4;
+            const bandStart =
+                [
+                    5,
+                    27,
+                    49,
+                    71
+                ][band];
 
-                const bandStart =
-                    [
-                        5,
-                        27,
-                        49,
-                        71
-                    ][band];
+            let position =
+                findPosition({
+                    size,
+                    gap: 9,
+                    minLeft: 5,
+                    maxLeft: 95,
+                    minTop: bandStart,
+                    maxTop: Math.min(
+                        bandStart + 20,
+                        95
+                    )
+                });
 
-                top =
-                    bandStart +
-                    Math.random() * 20;
+            if (!position) {
+                position =
+                    findPosition({
+                        size,
+                        gap: 8,
+                        minLeft: 5,
+                        maxLeft: 95,
+                        minTop: 5,
+                        maxTop: 95,
+                        attempts: 360
+                    });
+            }
 
-                attempts += 1;
-            } while (
-                attempts < 32 &&
-                occupied.some(point =>
-                    Math.hypot(
-                        point.left - left,
-                        point.top - top
-                    ) < 19
-                )
-            );
+            if (!position) {
+                continue;
+            }
 
             occupied.push({
-                left,
-                top
+                x: position.x,
+                y: position.y,
+                radius: position.radius
             });
 
             const star =
@@ -16869,15 +16964,11 @@ keepTitleBarInViewport() {
             star.className =
                 "jami-chat-star jami-chat-star-four";
 
-            const size =
-                10 +
-                Math.random() * 12;
-
             star.style.left =
-                `${left}%`;
+                `${position.left}%`;
 
             star.style.top =
-                `${top}%`;
+                `${position.top}%`;
 
             star.style.width =
                 `${size}px`;
@@ -16907,45 +16998,57 @@ keepTitleBarInViewport() {
             index < tinyCount;
             index += 1
         ) {
-            let left = 0;
-            let top = 0;
-            let attempts = 0;
+            const size =
+                2 +
+                Math.random() * 2.5;
 
-            do {
-                left =
-                    3 +
-                    Math.random() * 94;
+            const band =
+                index % 5;
 
-                const tinyBand =
-                    index % 5;
+            const bandStart =
+                [
+                    4,
+                    22,
+                    40,
+                    58,
+                    76
+                ][band];
 
-                const tinyBandStart =
-                    [
-                        4,
-                        22,
-                        40,
-                        58,
-                        76
-                    ][tinyBand];
+            let position =
+                findPosition({
+                    size,
+                    gap: 3,
+                    minLeft: 3,
+                    maxLeft: 97,
+                    minTop: bandStart,
+                    maxTop: Math.min(
+                        bandStart + 17,
+                        97
+                    ),
+                    attempts: 180
+                });
 
-                top =
-                    tinyBandStart +
-                    Math.random() * 17;
+            if (!position) {
+                position =
+                    findPosition({
+                        size,
+                        gap: 2.5,
+                        minLeft: 3,
+                        maxLeft: 97,
+                        minTop: 3,
+                        maxTop: 97,
+                        attempts: 280
+                    });
+            }
 
-                attempts += 1;
-            } while (
-                attempts < 20 &&
-                occupied.some(point =>
-                    Math.hypot(
-                        point.left - left,
-                        point.top - top
-                    ) < 6
-                )
-            );
+            if (!position) {
+                continue;
+            }
 
             occupied.push({
-                left,
-                top
+                x: position.x,
+                y: position.y,
+                radius: position.radius
             });
 
             const star =
@@ -16954,15 +17057,11 @@ keepTitleBarInViewport() {
             star.className =
                 "jami-chat-star jami-chat-star-tiny";
 
-            const size =
-                2 +
-                Math.random() * 2.5;
-
             star.style.left =
-                `${left}%`;
+                `${position.left}%`;
 
             star.style.top =
-                `${top}%`;
+                `${position.top}%`;
 
             star.style.width =
                 `${size}px`;
@@ -17000,51 +17099,61 @@ keepTitleBarInViewport() {
                 Math.random() * 7
             );
 
-        const occupied = [];
-
         for (
             let index = 0;
             index < count;
             index += 1
         ) {
-            let left = 0;
-            let top = 0;
-            let attempts = 0;
+            const size =
+                27 +
+                Math.random() * 8;
 
-            do {
-                left =
-                    7 +
-                    Math.random() * 86;
+            const band =
+                index % 4;
 
-                const band =
-                    index % 4;
+            const bandStart =
+                [
+                    7,
+                    29,
+                    51,
+                    73
+                ][band];
 
-                const bandStart =
-                    [
-                        7,
-                        29,
-                        51,
-                        73
-                    ][band];
+            let position =
+                findPosition({
+                    size,
+                    gap: 11,
+                    minLeft: 5,
+                    maxLeft: 95,
+                    minTop: bandStart,
+                    maxTop: Math.min(
+                        bandStart + 18,
+                        95
+                    ),
+                    attempts: 280
+                });
 
-                top =
-                    bandStart +
-                    Math.random() * 18;
+            if (!position) {
+                position =
+                    findPosition({
+                        size,
+                        gap: 9,
+                        minLeft: 5,
+                        maxLeft: 95,
+                        minTop: 5,
+                        maxTop: 95,
+                        attempts: 420
+                    });
+            }
 
-                attempts += 1;
-            } while (
-                attempts < 26 &&
-                occupied.some(point =>
-                    Math.hypot(
-                        point.left - left,
-                        point.top - top
-                    ) < 22
-                )
-            );
+            if (!position) {
+                continue;
+            }
 
             occupied.push({
-                left,
-                top
+                x: position.x,
+                y: position.y,
+                radius: position.radius
             });
 
             const paw =
@@ -17053,15 +17162,11 @@ keepTitleBarInViewport() {
             paw.className =
                 "jami-chat-paw";
 
-            const size =
-                27 +
-                Math.random() * 8;
-
             paw.style.left =
-                `${left}%`;
+                `${position.left}%`;
 
             paw.style.top =
-                `${top}%`;
+                `${position.top}%`;
 
             paw.style.width =
                 `${size}px`;
