@@ -16768,31 +16768,31 @@ keepTitleBarInViewport() {
 
     if (theme === "stars") {
         const colours = [
-            "#d7c8ff",
-            "#aee4ff",
-            "#ffc7e6",
-            "#ffe9a8",
-            "#c8f0ff",
-            "#e6ddff"
+            "#d8c9ff",
+            "#ace3ff",
+            "#ffc4e4",
+            "#ffe79e",
+            "#c2efff",
+            "#eee5ff"
         ];
 
-        const starCount =
-            14 +
+        const largeCount =
+            13 +
             Math.floor(
                 Math.random() * 5
             );
 
-        const dotCount =
-            14 +
+        const tinyCount =
+            16 +
             Math.floor(
-                Math.random() * 8
+                Math.random() * 9
             );
 
         const occupied = [];
 
         for (
             let index = 0;
-            index < starCount;
+            index < largeCount;
             index += 1
         ) {
             let left = 0;
@@ -16832,7 +16832,7 @@ keepTitleBarInViewport() {
 
             const size =
                 10 +
-                Math.random() * 11;
+                Math.random() * 12;
 
             star.style.left =
                 `${left}%`;
@@ -16858,39 +16858,39 @@ keepTitleBarInViewport() {
                 `${.78 + Math.random() * .18}`;
 
             star.style.transform =
-                `translate(-50%, -50%) rotate(${Math.random() * 24 - 12}deg)`;
+                `translate(-50%, -50%) rotate(${Math.random() * 20 - 10}deg)`;
 
             layer.appendChild(star);
         }
 
         for (
             let index = 0;
-            index < dotCount;
+            index < tinyCount;
             index += 1
         ) {
-            const dot =
+            const star =
                 document.createElement("i");
 
-            dot.className =
-                "jami-chat-star jami-chat-star-dot";
+            star.className =
+                "jami-chat-star jami-chat-star-tiny";
 
             const size =
-                1.5 +
-                Math.random() * 2.4;
+                2 +
+                Math.random() * 2.5;
 
-            dot.style.left =
+            star.style.left =
                 `${3 + Math.random() * 94}%`;
 
-            dot.style.top =
+            star.style.top =
                 `${4 + Math.random() * 92}%`;
 
-            dot.style.width =
+            star.style.width =
                 `${size}px`;
 
-            dot.style.height =
+            star.style.height =
                 `${size}px`;
 
-            dot.style.background =
+            star.style.background =
                 colours[
                     Math.floor(
                         Math.random() *
@@ -16898,23 +16898,26 @@ keepTitleBarInViewport() {
                     )
                 ];
 
-            dot.style.opacity =
-                `${.62 + Math.random() * .28}`;
+            star.style.opacity =
+                `${.60 + Math.random() * .28}`;
 
-            layer.appendChild(dot);
+            star.style.transform =
+                `translate(-50%, -50%) rotate(${Math.random() * 25 - 12}deg)`;
+
+            layer.appendChild(star);
         }
     } else {
         const colours = [
-            "#ffc8da",
-            "#bfe8ce",
-            "#ffe0bb",
-            "#ddd0ff"
+            "#f4a9c1",
+            "#a8d8b8",
+            "#f4c795",
+            "#c9b7ee"
         ];
 
         const count =
-            8 +
+            9 +
             Math.floor(
-                Math.random() * 4
+                Math.random() * 5
             );
 
         const occupied = [];
@@ -16934,17 +16937,17 @@ keepTitleBarInViewport() {
                     Math.random() * 86;
 
                 top =
-                    9 +
-                    Math.random() * 82;
+                    8 +
+                    Math.random() * 84;
 
                 attempts += 1;
             } while (
-                attempts < 24 &&
+                attempts < 26 &&
                 occupied.some(point =>
                     Math.hypot(
                         point.left - left,
                         point.top - top
-                    ) < 19
+                    ) < 18
                 )
             );
 
@@ -16960,7 +16963,7 @@ keepTitleBarInViewport() {
                 "jami-chat-paw";
 
             const size =
-                18 +
+                27 +
                 Math.random() * 8;
 
             paw.style.left =
@@ -16975,7 +16978,7 @@ keepTitleBarInViewport() {
             paw.style.height =
                 `${size}px`;
 
-            paw.style.backgroundColor =
+            paw.style.color =
                 colours[
                     Math.floor(
                         Math.random() *
@@ -16984,10 +16987,19 @@ keepTitleBarInViewport() {
                 ];
 
             paw.style.opacity =
-                `${.15 + Math.random() * .12}`;
+                `${.18 + Math.random() * .13}`;
 
             paw.style.transform =
                 `translate(-50%, -50%) rotate(${-16 + Math.random() * 32}deg)`;
+
+            paw.innerHTML =
+                '<svg viewBox="0 0 64 64" aria-hidden="true">' +
+                '<ellipse cx="13" cy="21" rx="5.5" ry="8.2"></ellipse>' +
+                '<ellipse cx="26" cy="13.5" rx="5.8" ry="8.5"></ellipse>' +
+                '<ellipse cx="39" cy="13.5" rx="5.8" ry="8.5"></ellipse>' +
+                '<ellipse cx="52" cy="21" rx="5.5" ry="8.2"></ellipse>' +
+                '<path d="M18.5 43.5C18.5 34.5 24.5 28 32.5 28S46.5 34.5 46.5 43.5C46.5 50 42.3 55 37.2 55C34.6 55 33.3 52.7 32.5 50.5C31.7 52.7 30.4 55 27.8 55C22.7 55 18.5 50 18.5 43.5Z"></path>' +
+                '</svg>';
 
             layer.appendChild(paw);
         }
