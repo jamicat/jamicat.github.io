@@ -3491,11 +3491,6 @@ top: -0.2px;
     z-index: 1;
     min-width: 0;
     overflow-wrap: anywhere;
-
-    /*
-        Keep the text genuinely unreadable, while the
-        radial background feathers the spoiler edges.
-    */
     filter: blur(6px);
     opacity: 0.34;
 
@@ -3521,10 +3516,6 @@ top: -0.2px;
         box-shadow 180ms ease;
 }
 
-/*
-    Soft neutral haze over only the spoiler area.
-    This avoids the hard rounded-rectangle look.
-*/
 .jami-confetti-message-content::before {
     content: "";
     position: absolute;
@@ -3549,10 +3540,6 @@ top: -0.2px;
         opacity 180ms ease;
 }
 
-/*
-    JS creates a unique, seeded confetti layout per
-    message. It is clipped to the spoiler's footprint.
-*/
 .jami-confetti-spoiler-overlay {
     position: absolute;
 
@@ -3759,8 +3746,6 @@ top: -0.2px;
     100% { opacity: 0; }
 }
 
-
-/* compact glass context menus */
 .jami-chat-context-menu {
     position: fixed;
     z-index: 100000;
@@ -3776,12 +3761,8 @@ top: -0.2px;
 
     border-radius: 12px;
 
-    /*
-        Slightly darker than the emoji/reaction glass,
-        while retaining the same translucent language.
-    */
     background:
-        rgba(10, 10, 12, 0.68);
+        rgba(10, 10, 12, 0);
 
     color:
         rgba(255, 255, 255, 0.92);
