@@ -7365,10 +7365,9 @@ html[data-chat-pastel="paws"]
 }
 
 #chatWindow[data-chat-pastel="paws"]:not(.h-10) #chatMinimize {
-    transform: translateY(3px) !important;
+    transform: translateY(1px) !important;
 }
 
-/* Minimized state: + */
 #chatWindow[data-chat-pastel="paws"].h-10 #chatMinimize {
     transform: translateY(-3px) !important;
 }
