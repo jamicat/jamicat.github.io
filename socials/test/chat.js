@@ -372,6 +372,36 @@ transition-[height] duration-200
         connecting
     </span>
 
+    <div class="relative">
+        <button
+            id="chatThemeButton"
+            type="button"
+            class="theme-body jami-chat-theme-button"
+            aria-label="change chat theme"
+            aria-expanded="false"
+            aria-controls="chatThemeMenu"
+            title="change chat theme"
+        >
+            theme
+        </button>
+
+        <div
+            id="chatThemeMenu"
+            class="jami-chat-theme-menu invisible pointer-events-none opacity-0"
+            role="menu"
+        >
+            <button type="button" data-chat-theme-choice="original" role="menuitem">
+                original
+            </button>
+            <button type="button" data-chat-theme-choice="stars" role="menuitem">
+                stars
+            </button>
+            <button type="button" data-chat-theme-choice="paws" role="menuitem">
+                animal crossing
+            </button>
+        </div>
+    </div>
+
     <button
         id="chatMinimize"
         type="button"
@@ -863,6 +893,71 @@ this.controlsElement =
 this.minimizeButton =
     this.window.querySelector("#chatMinimize");
 
+this.chatThemeButton =
+    this.window.querySelector("#chatThemeButton");
+
+this.chatThemeMenu =
+    this.window.querySelector("#chatThemeMenu");
+
+if (
+    this.chatThemeButton &&
+    this.chatThemeMenu
+) {
+    this.chatThemeButton.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const open =
+                this.chatThemeButton
+                    .getAttribute(
+                        "aria-expanded"
+                    ) === "true";
+
+            this.setChatThemeMenuOpen(
+                !open
+            );
+        }
+    );
+
+    this.chatThemeMenu
+        .querySelectorAll(
+            "[data-chat-theme-choice]"
+        )
+        .forEach(button => {
+            button.addEventListener(
+                "click",
+                event => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    this.setChatTheme(
+                        button.dataset
+                            .chatThemeChoice
+                    );
+                }
+            );
+        });
+
+    document.addEventListener(
+        "click",
+        event => {
+            if (
+                !this.chatThemeMenu
+                    ?.contains(
+                        event.target
+                    ) &&
+                event.target !==
+                    this.chatThemeButton
+            ) {
+                this.setChatThemeMenuOpen(
+                    false
+                );
+            }
+        }
+    );
+}
 
 this.createReplyComposerPreview();
 
@@ -16705,43 +16800,149 @@ keepTitleBarInViewport() {
         return;
     }
 
-    const previousTheme =
-        this.window.dataset.chatPastel ||
-        "";
+    const storedTheme =
+        String(
+            localStorage.getItem(
+                "chat_theme"
+            ) || ""
+        ).trim();
 
-    const rootTheme =
-        document.documentElement
-            .getAttribute(
-                "data-chat-pastel"
-            ) || "";
+    let nextTheme =
+        [
+            "original",
+            "stars",
+            "paws"
+        ].includes(
+            storedTheme
+        )
+            ? storedTheme
+            : "";
 
-    let nextTheme = "";
-
-    if (
-        rootTheme === "stars" ||
-        rootTheme === "paws"
-    ) {
-        nextTheme = rootTheme;
-    } else {
-        const themeName =
+    if (!nextTheme) {
+        const siteTheme =
             String(
-                localStorage.getItem("theme") ||
-                "Stars"
+                localStorage.getItem(
+                    "theme"
+                ) || "Stars"
             ).trim();
 
-        if (themeName === "Stars") {
-            nextTheme = "stars";
-        } else if (themeName === "Default") {
-            nextTheme = "paws";
-        }
+        nextTheme =
+            siteTheme === "Default"
+                ? "paws"
+                : siteTheme === "Stars"
+                    ? "stars"
+                    : "original";
+
+        localStorage.setItem(
+            "chat_theme",
+            nextTheme
+        );
     }
 
-    if (nextTheme) {
+    this.applyChatTheme(
+        nextTheme,
+        false
+    );
+}
+
+	setChatTheme(themeName) {
+    const cleaned =
+        String(
+            themeName || ""
+        ).trim();
+
+    if (
+        ![
+            "original",
+            "stars",
+            "paws"
+        ].includes(
+            cleaned
+        )
+    ) {
+        return;
+    }
+
+    localStorage.setItem(
+        "chat_theme",
+        cleaned
+    );
+
+    this.applyChatTheme(
+        cleaned,
+        true
+    );
+
+    this.setChatThemeMenuOpen(
+        false
+    );
+}
+
+	applyChatTheme(
+    themeName,
+    forceDecor = false
+) {
+    if (!this.window) {
+        return;
+    }
+
+    const cleaned =
+        [
+            "original",
+            "stars",
+            "paws"
+        ].includes(
+            themeName
+        )
+            ? themeName
+            : "original";
+
+    const previousTheme =
+        this.window.dataset.chatTheme ||
+        "original";
+
+    this.window.dataset.chatTheme =
+        cleaned;
+
+    document.documentElement
+        .setAttribute(
+            "data-chat-theme",
+            cleaned
+        );
+
+    if (
+        cleaned === "stars" ||
+        cleaned === "paws"
+    ) {
         this.window.dataset.chatPastel =
-            nextTheme;
+            cleaned;
+
+        document.documentElement
+            .setAttribute(
+                "data-chat-pastel",
+                cleaned
+            );
     } else {
         delete this.window.dataset.chatPastel;
+
+        document.documentElement
+            .removeAttribute(
+                "data-chat-pastel"
+            );
     }
+
+    this.chatThemeMenu
+        ?.querySelectorAll(
+            "[data-chat-theme-choice]"
+        )
+        .forEach(button => {
+            button.classList.toggle(
+                "is-active",
+                button.dataset
+                    .chatThemeChoice ===
+                    cleaned
+            );
+        });
 
     const hasDecor =
         this.window
@@ -16753,14 +16954,71 @@ keepTitleBarInViewport() {
             );
 
     if (
-        previousTheme !== nextTheme ||
+        forceDecor ||
+        previousTheme !== cleaned ||
         (
-            nextTheme &&
+            (
+                cleaned === "stars" ||
+                cleaned === "paws"
+            ) &&
             !hasDecor
+        ) ||
+        (
+            cleaned === "original" &&
+            hasDecor
         )
     ) {
         this.renderChatPastelDecor();
     }
+
+    window.dispatchEvent(
+        new CustomEvent(
+            "chat-theme-change",
+            {
+                detail: {
+                    themeName: cleaned
+                }
+            }
+        )
+    );
+}
+
+	setChatThemeMenuOpen(open) {
+    if (
+        !this.chatThemeButton ||
+        !this.chatThemeMenu
+    ) {
+        return;
+    }
+
+    const shouldOpen =
+        open === true;
+
+    this.chatThemeButton
+        .setAttribute(
+            "aria-expanded",
+            shouldOpen
+                ? "true"
+                : "false"
+        );
+
+    this.chatThemeMenu
+        .classList.toggle(
+            "invisible",
+            !shouldOpen
+        );
+
+    this.chatThemeMenu
+        .classList.toggle(
+            "pointer-events-none",
+            !shouldOpen
+        );
+
+    this.chatThemeMenu
+        .classList.toggle(
+            "opacity-0",
+            !shouldOpen
+        );
 }
 
 	renderChatPastelDecor() {
@@ -17208,16 +17466,12 @@ keepTitleBarInViewport() {
     this.syncChatPastelTheme();
 
     window.addEventListener(
-        "site-theme-change",
-        () => {
-            this.syncChatPastelTheme();
-        }
-    );
-
-    window.addEventListener(
         "storage",
         event => {
-            if (event.key === "theme") {
+            if (
+                event.key ===
+                    "chat_theme"
+            ) {
                 this.syncChatPastelTheme();
             }
         }
