@@ -16854,7 +16854,7 @@ keepTitleBarInViewport() {
                     Math.hypot(
                         point.left - left,
                         point.top - top
-                    ) < 15
+                    ) < 19
                 )
             );
 
@@ -16907,6 +16907,47 @@ keepTitleBarInViewport() {
             index < tinyCount;
             index += 1
         ) {
+            let left = 0;
+            let top = 0;
+            let attempts = 0;
+
+            do {
+                left =
+                    3 +
+                    Math.random() * 94;
+
+                const tinyBand =
+                    index % 5;
+
+                const tinyBandStart =
+                    [
+                        4,
+                        22,
+                        40,
+                        58,
+                        76
+                    ][tinyBand];
+
+                top =
+                    tinyBandStart +
+                    Math.random() * 17;
+
+                attempts += 1;
+            } while (
+                attempts < 20 &&
+                occupied.some(point =>
+                    Math.hypot(
+                        point.left - left,
+                        point.top - top
+                    ) < 6
+                )
+            );
+
+            occupied.push({
+                left,
+                top
+            });
+
             const star =
                 document.createElement("i");
 
@@ -16918,25 +16959,10 @@ keepTitleBarInViewport() {
                 Math.random() * 2.5;
 
             star.style.left =
-                `${3 + Math.random() * 94}%`;
-
-            const tinyBand =
-                index % 5;
-
-            const tinyBandStart =
-                [
-                    4,
-                    22,
-                    40,
-                    58,
-                    76
-                ][tinyBand];
+                `${left}%`;
 
             star.style.top =
-                `${
-                    tinyBandStart +
-                    Math.random() * 17
-                }%`;
+                `${top}%`;
 
             star.style.width =
                 `${size}px`;
@@ -17012,7 +17038,7 @@ keepTitleBarInViewport() {
                     Math.hypot(
                         point.left - left,
                         point.top - top
-                    ) < 17
+                    ) < 22
                 )
             );
 
