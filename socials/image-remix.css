@@ -1199,3 +1199,109 @@ html[data-chat-pastel]
         );
 }
 
+html[data-chat-pastel="stars"] {
+    --jami-remix-pastel-rgb: 218, 205, 255;
+    --jami-remix-pastel-2-rgb: 174, 228, 255;
+    --jami-remix-pastel-3-rgb: 255, 205, 232;
+    --jami-remix-panel-rgb: 160, 148, 220;
+    --jami-remix-panel-2-rgb: 184, 171, 238;
+    --jami-remix-text-rgb: 255, 253, 255;
+}
+
+html[data-chat-pastel="paws"] {
+    --jami-remix-pastel-rgb: 255, 210, 224;
+    --jami-remix-pastel-2-rgb: 205, 239, 218;
+    --jami-remix-pastel-3-rgb: 255, 229, 197;
+    --jami-remix-panel-rgb: 183, 151, 161;
+    --jami-remix-panel-2-rgb: 205, 177, 180;
+    --jami-remix-text-rgb: 255, 252, 250;
+}
+
+html[data-chat-pastel="stars"] .jami-remix-editor,
+html[data-chat-pastel="stars"] .jami-remix-editor button,
+html[data-chat-pastel="stars"] .jami-remix-editor input,
+html[data-chat-pastel="stars"] .jami-remix-program-message {
+    font-family:
+        "JamiFredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-pastel]
+.jami-remix-editor,
+html[data-chat-pastel]
+.jami-remix-program-message {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                var(--jami-remix-panel-2-rgb),
+                .56
+            ),
+            rgba(
+                var(--jami-remix-panel-rgb),
+                .38
+            ),
+            rgba(255, 255, 255, .05)
+        );
+
+    border-color:
+        rgba(
+            var(--jami-remix-pastel-rgb),
+            .42
+        );
+
+    box-shadow:
+        0 20px 64px rgba(0, 0, 0, .26),
+        0 0 32px
+        rgba(
+            var(--jami-remix-pastel-rgb),
+            .18
+        );
+}
+
+html[data-chat-pastel]
+.jami-remix-header {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(
+                var(--jami-remix-pastel-rgb),
+                .24
+            ),
+            rgba(
+                var(--jami-remix-pastel-2-rgb),
+                .12
+            )
+        );
+}
+
+html[data-chat-pastel]
+.jami-remix-sidebar {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(
+                var(--jami-remix-pastel-2-rgb),
+                .14
+            ),
+            rgba(
+                var(--jami-remix-pastel-rgb),
+                .08
+            )
+        );
+}
+
+html[data-chat-pastel]
+.jami-remix-filter,
+html[data-chat-pastel]
+.jami-remix-footer button,
+html[data-chat-pastel]
+.jami-remix-emoji-picker {
+    background:
+        rgba(
+            var(--jami-remix-pastel-rgb),
+            .13
+        );
+}
+
