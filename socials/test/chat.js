@@ -1305,6 +1305,7 @@ createBanManagerButton() {
         document.createElement("button");
 
     button.type = "button";
+    button.id = "chatBanManagerButton";
     button.textContent = "bans";
 
     button.className = [
@@ -1361,6 +1362,7 @@ createBanManagerButton() {
         document.createElement("button");
 
     button.type = "button";
+    button.id = "chatPartyManagerButton";
     button.textContent = "party";
 
     button.className = [
