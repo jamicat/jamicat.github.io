@@ -108,24 +108,6 @@ function applyTheme(themeName) {
 
   document.documentElement.setAttribute('data-theme', themeName);
 
-  const chatPastelTheme =
-    themeName === 'Stars'
-      ? 'stars'
-      : themeName === 'Default'
-        ? 'paws'
-        : '';
-
-  if (chatPastelTheme) {
-    document.documentElement.setAttribute(
-      'data-chat-pastel',
-      chatPastelTheme
-    );
-  } else {
-    document.documentElement.removeAttribute(
-      'data-chat-pastel'
-    );
-  }
-
   document.documentElement.classList.toggle(
   'theme-stars',
   themeName === 'Stars'
@@ -329,8 +311,7 @@ if (toggleBtn) {
       'site-theme-change',
       {
         detail: {
-          themeName,
-          chatPastelTheme
+          themeName
         }
       }
     )
