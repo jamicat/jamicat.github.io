@@ -222,6 +222,7 @@ window.addEventListener(
 );
 
 this.applyCurrentTheme();
+this.setupChatPastelThemeSync();
 this.restoreSettings();
 this.setupDiscordAuthentication();
 
@@ -16756,9 +16757,66 @@ keepTitleBarInViewport() {
     );
 }
 	
+	syncChatPastelTheme() {
+    if (!this.window) {
+        return;
+    }
+
+    const rootTheme =
+        document.documentElement
+            .getAttribute(
+                "data-chat-pastel"
+            ) || "";
+
+    if (
+        rootTheme === "stars" ||
+        rootTheme === "paws"
+    ) {
+        this.window.dataset.chatPastel =
+            rootTheme;
+        return;
+    }
+
+    const themeName =
+        String(
+            localStorage.getItem("theme") ||
+            "Stars"
+        ).trim();
+
+    if (themeName === "Stars") {
+        this.window.dataset.chatPastel =
+            "stars";
+    } else if (themeName === "Default") {
+        this.window.dataset.chatPastel =
+            "paws";
+    } else {
+        delete this.window.dataset.chatPastel;
+    }
+}
+
+	setupChatPastelThemeSync() {
+    this.syncChatPastelTheme();
+
+    window.addEventListener(
+        "site-theme-change",
+        () => {
+            this.syncChatPastelTheme();
+        }
+    );
+
+    window.addEventListener(
+        "storage",
+        event => {
+            if (event.key === "theme") {
+                this.syncChatPastelTheme();
+            }
+        }
+    );
+}
+
 	applyCurrentTheme() {
     const themeName =
-        localStorage.getItem("theme") || "Default";
+        localStorage.getItem("theme") || "Stars";
 
     if (typeof window.applyTheme === "function") {
         window.applyTheme(themeName);
