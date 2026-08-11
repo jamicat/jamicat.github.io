@@ -3758,3 +3758,164 @@ top: -0.2px;
     0%, 82% { opacity: 1; }
     100% { opacity: 0; }
 }
+
+
+/* compact glass context menus */
+.jami-chat-context-menu {
+    position: fixed;
+    z-index: 100000;
+
+    width: 168px;
+    overflow: hidden;
+
+    padding: 4px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.13);
+
+    border-radius: 12px;
+
+    /*
+        Slightly darker than the emoji/reaction glass,
+        while retaining the same translucent language.
+    */
+    background:
+        rgba(10, 10, 12, 0.90);
+
+    color:
+        rgba(255, 255, 255, 0.92);
+
+    font-family:
+        var(
+            --body-font,
+            Consolas,
+            monospace
+        );
+
+    font-size: 10px;
+    line-height: 1.15;
+
+    box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.42);
+
+    backdrop-filter:
+        blur(14px);
+
+    -webkit-backdrop-filter:
+        blur(14px);
+}
+
+.jami-chat-context-item {
+    display: flex;
+
+    width: 100%;
+    min-height: 27px;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding:
+        5px 7px;
+
+    border: 0;
+    border-radius: 7px;
+
+    background:
+        transparent;
+
+    color: inherit;
+
+    font: inherit;
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 120ms ease,
+        color 120ms ease,
+        transform 80ms ease;
+}
+
+.jami-chat-context-item:hover,
+.jami-chat-context-item:focus-visible {
+    outline: none;
+
+    background:
+        rgba(255, 255, 255, 0.09);
+
+    color:
+        rgba(255, 255, 255, 1);
+}
+
+.jami-chat-context-item:active {
+    transform:
+        translateY(1px);
+}
+
+.jami-chat-context-icon {
+    display: inline-flex;
+
+    width: 14px;
+    height: 14px;
+
+    flex: 0 0 14px;
+
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0.68;
+}
+
+.jami-chat-context-icon svg {
+    display: block;
+
+    width: 14px;
+    height: 14px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.jami-chat-context-label {
+    min-width: 0;
+    flex: 1;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.jami-chat-context-divider {
+    height: 1px;
+
+    margin:
+        3px 3px;
+
+    background:
+        rgba(255, 255, 255, 0.10);
+}
+
+.jami-chat-context-item-danger {
+    color:
+        rgba(255, 102, 110, 0.94);
+}
+
+.jami-chat-context-item-danger:hover,
+.jami-chat-context-item-danger:focus-visible {
+    background:
+        rgba(255, 70, 80, 0.12);
+
+    color:
+        rgba(255, 122, 130, 1);
+}
+
+.jami-chat-context-item-danger
+.jami-chat-context-icon {
+    opacity: 0.88;
+}
