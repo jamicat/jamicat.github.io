@@ -7012,3 +7012,31 @@ html[data-chat-pastel="paws"]
 #chatTitleBar button.theme-body:hover {
     color: #8f405c !important;
 }
+
+#chatWindow[data-chat-pastel]
+.jami-cute-composer-wrap {
+    position: relative;
+}
+
+#chatWindow[data-chat-pastel]
+#chatEmojiPicker {
+    right: 0;
+    bottom: calc(100% + 8px);
+    z-index: 100004;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatTitle.theme-heading {
+    font-family:
+        var(--heading-font, "Fink", sans-serif) !important;
+}
+
+#chatWindow[data-chat-pastel="stars"]
+#chatTitle.theme-heading {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
