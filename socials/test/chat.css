@@ -8216,3 +8216,347 @@ html[data-chat-theme="paws"]
     color: rgba(238, 157, 174) !important;
 }
 
+
+/* final independent chat-theme repair */
+#chatWindow[data-chat-theme] .chatContinuationTime {
+    opacity: 0 !important;
+    transition: opacity 90ms ease !important;
+}
+
+#chatWindow[data-chat-theme] .chatMessage:hover .chatContinuationTime {
+    opacity: 1 !important;
+}
+
+#chatWindow[data-chat-theme="original"] .chatContinuationTime {
+    color: rgba(255,255,255,.45) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] .chatContinuationTime {
+    color: rgba(238,232,255,.58) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .chatContinuationTime {
+    color: rgba(238,157,174,.72) !important;
+}
+
+#chatWindow[data-chat-theme="original"],
+#chatWindow[data-chat-theme="original"] * {
+    font-family: "Nunito", sans-serif !important;
+}
+
+#chatWindow[data-chat-theme="stars"],
+#chatWindow[data-chat-theme="stars"] * {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+#chatWindow[data-chat-theme="paws"],
+#chatWindow[data-chat-theme="paws"] * {
+    font-family:
+        "nintendoh",
+        "Nunito",
+        sans-serif !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatTitle,
+#chatWindow[data-chat-theme="paws"] #chatMembersPanel .theme-heading {
+    font-family:
+        "Fink",
+        "nintendoh",
+        "Nunito",
+        sans-serif !important;
+}
+
+#chatWindow[data-chat-theme="original"] {
+    border-color: rgba(255,255,255,.15) !important;
+    background: rgba(0,0,0,.20) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] {
+    border-color: rgba(205,194,255,.48) !important;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(171,158,232,.97),
+            rgba(118,129,196,.97)
+        ) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] {
+    border-color: rgba(238,157,174,.38) !important;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,225,231,.98),
+            rgba(235,244,229,.97)
+        ) !important;
+}
+
+#chatWindow[data-chat-pastel] .jami-chat-pastel-decor {
+    display: block !important;
+    z-index: 1 !important;
+    opacity: 1 !important;
+}
+
+#chatWindow[data-chat-pastel] #chatMessages,
+#chatWindow[data-chat-pastel] #chatMembersPanel,
+#chatWindow[data-chat-pastel] #chatMembers {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+#chatWindow[data-chat-theme] #chatThemeButton {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    font-weight: inherit !important;
+    transform: none !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatThemeButton,
+#chatWindow[data-chat-theme="original"] #chatMembersToggle,
+#chatWindow[data-chat-theme="original"] #chatTitleBar > div > button:not(#chatMinimize) {
+    color: rgba(255,255,255,.50) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] #chatThemeButton,
+#chatWindow[data-chat-theme="stars"] #chatMembersToggle,
+#chatWindow[data-chat-theme="stars"] #chatTitleBar > div > button:not(#chatMinimize) {
+    color: rgba(247,244,255,.58) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatTitleBar button,
+#chatWindow[data-chat-theme="paws"] #chatMembersToggle,
+#chatWindow[data-chat-theme="paws"] #chatThemeButton {
+    color: rgba(238,157,174) !important;
+    text-shadow: none !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatConnectionStatus {
+    color: rgba(238,157,174,.62) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .jami-cute-send-arrow,
+#chatWindow[data-chat-theme="paws"] .jami-cute-send-arrow:hover,
+#chatWindow[data-chat-theme="paws"] .jami-cute-send-arrow:active {
+    color: #fff !important;
+    border-color: rgba(238,157,174) !important;
+    background: rgba(238,157,174) !important;
+    box-shadow: none !important;
+}
+
+#chatWindow #chatWatchPartyButton.hidden {
+    display: none !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatControls {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 10px !important;
+    border-top: 1px solid rgba(255,255,255,.10) !important;
+    background: rgba(0,0,0,.10) !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-composer {
+    display: grid !important;
+    gap: 8px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-name-row,
+#chatWindow[data-chat-theme="original"] .jami-original-message-row {
+    display: flex !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-name-field {
+    position: relative !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-cute-avatar-button,
+#chatWindow[data-chat-theme="original"] .jami-original-image-button,
+#chatWindow[data-chat-theme="original"] .jami-original-emoji-button,
+#chatWindow[data-chat-theme="original"] #chatWatchPartyButton {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    padding: 0 !important;
+    border: 1px solid rgba(255,255,255,.10) !important;
+    border-radius: 12px !important;
+    background: rgba(0,0,0,.20) !important;
+    color: rgba(255,255,255,.86) !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-cute-avatar-button {
+    flex-basis: 44px !important;
+    width: 44px !important;
+    height: 44px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-name-input {
+    display: block !important;
+    width: 100% !important;
+    height: 44px !important;
+    min-width: 0 !important;
+    padding: 0 12px !important;
+    border: 1px solid rgba(255,255,255,.10) !important;
+    border-radius: 12px !important;
+    outline: none !important;
+    background: rgba(0,0,0,.30) !important;
+    color: #fff !important;
+    font-size: 12px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-name-input::placeholder,
+#chatWindow[data-chat-theme="original"] .jami-original-message-input::placeholder {
+    color: rgba(255,255,255,.35) !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-message-input {
+    display: block !important;
+    flex: 1 1 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    height: 36px !important;
+    padding: 0 12px !important;
+    border: 1px solid rgba(255,255,255,.10) !important;
+    border-radius: 12px !important;
+    outline: none !important;
+    background: rgba(0,0,0,.30) !important;
+    color: #fff !important;
+    font-size: 12px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-send-row {
+    display: block !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-send-button,
+#chatWindow[data-chat-theme="original"] .jami-original-send-button:hover,
+#chatWindow[data-chat-theme="original"] .jami-original-send-button:active {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 32px !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    border: 1px solid rgba(255,255,255,.10) !important;
+    border-radius: 12px !important;
+    background: rgba(255,255,255,.07) !important;
+    color: #fff !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-send-button:hover,
+#chatWindow[data-chat-theme="original"] .jami-original-send-button:active {
+    background: rgba(255,255,255,.11) !important;
+}
+
+html[data-chat-theme="original"] #chatAvatarPicker {
+    width: 220px !important;
+    padding: 11px !important;
+    border: 1px solid rgba(255,255,255,.10) !important;
+    border-radius: 14px !important;
+    background: rgba(24,24,26,.92) !important;
+    color: #fff !important;
+    box-shadow: 0 14px 36px rgba(0,0,0,.38) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+}
+
+html[data-chat-theme="original"] #chatAvatarPicker .jami-cute-profile-title {
+    margin: 0 0 9px !important;
+    color: rgba(255,255,255,.62) !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: .10em !important;
+    text-transform: uppercase !important;
+}
+
+html[data-chat-theme="original"] #chatAvatarPicker .jami-cute-profile-name-wrap,
+html[data-chat-theme="original"] #chatAvatarPicker .jami-cute-avatar-label {
+    display: none !important;
+}
+
+html[data-chat-theme="original"] #chatAvatarGrid {
+    display: grid !important;
+    grid-template-columns: repeat(5,minmax(0,1fr)) !important;
+    gap: 7px !important;
+}
+
+html[data-chat-theme="original"] #chatAvatarGrid button {
+    min-width: 0 !important;
+    aspect-ratio: 1 !important;
+    border: 1px solid rgba(255,255,255,.10) !important;
+    border-radius: 9px !important;
+    background: rgba(255,255,255,.055) !important;
+}
+
+html[data-chat-theme="original"] .jami-admin-glass-panel,
+html[data-chat-theme="original"] .jami-admin-glass-panel *,
+html[data-chat-theme="original"] #chatWatchPartyPanel,
+html[data-chat-theme="original"] #chatWatchPartyPanel *,
+html[data-chat-theme="original"] #chatWatchPartyVisualizerMenu,
+html[data-chat-theme="original"] #chatWatchPartyVisualizerMenu *,
+html[data-chat-theme="original"] .jami-chat-context-menu,
+html[data-chat-theme="original"] .jami-chat-context-menu *,
+html[data-chat-theme="original"] .jami-name-history-manager,
+html[data-chat-theme="original"] .jami-name-history-manager *,
+html[data-chat-theme="original"] .jami-saved-remix-manager,
+html[data-chat-theme="original"] .jami-saved-remix-manager * {
+    font-family: "Nunito", sans-serif !important;
+}
+
+html[data-chat-theme="stars"] .jami-admin-glass-panel,
+html[data-chat-theme="stars"] .jami-admin-glass-panel *,
+html[data-chat-theme="stars"] #chatWatchPartyPanel,
+html[data-chat-theme="stars"] #chatWatchPartyPanel *,
+html[data-chat-theme="stars"] #chatWatchPartyVisualizerMenu,
+html[data-chat-theme="stars"] #chatWatchPartyVisualizerMenu *,
+html[data-chat-theme="stars"] .jami-chat-context-menu,
+html[data-chat-theme="stars"] .jami-chat-context-menu * {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="paws"] .jami-admin-glass-panel,
+html[data-chat-theme="paws"] .jami-admin-glass-panel *,
+html[data-chat-theme="paws"] #chatWatchPartyPanel,
+html[data-chat-theme="paws"] #chatWatchPartyPanel *,
+html[data-chat-theme="paws"] #chatWatchPartyVisualizerMenu,
+html[data-chat-theme="paws"] #chatWatchPartyVisualizerMenu *,
+html[data-chat-theme="paws"] .jami-chat-context-menu,
+html[data-chat-theme="paws"] .jami-chat-context-menu * {
+    font-family:
+        "nintendoh",
+        "Nunito",
+        sans-serif !important;
+}
+
