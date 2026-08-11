@@ -13157,7 +13157,7 @@ async sendMessage() {
     }
 
     this.sendButton.disabled = true;
-    this.sendButton.textContent = "sending...";
+    this.sendButton.textContent = "…";
 
     try {
         const response = await fetch(`${this.API}/api/chat`, {
@@ -13244,8 +13244,8 @@ this.messageInput.focus();
 
     this.sendButton.textContent =
         this.isBanned
-            ? "banned"
-            : "send";
+            ? "×"
+            : "➜";
 }
 }
 
