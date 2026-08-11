@@ -16810,9 +16810,9 @@ keepTitleBarInViewport() {
             );
 
         const tinyCount =
-            16 +
+            28 +
             Math.floor(
-                Math.random() * 9
+                Math.random() * 13
             );
 
         const occupied = [];
