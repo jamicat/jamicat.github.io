@@ -6150,10 +6150,6 @@ html[data-chat-pastel="paws"]
     overflow: hidden;
 }
 
-#chatWindow[data-chat-pastel]
-#chatWatchPartyButton {
-    display: flex !important;
-}
 
 #chatWindow[data-chat-pastel]
 .jami-chat-star-tiny {
