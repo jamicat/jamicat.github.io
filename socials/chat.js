@@ -8487,13 +8487,6 @@ openModerationMenu(x, y, message) {
         buttons.push(divider);
     };
 
-    /*
-        own message:
-        edit, reply
-
-        somebody else's message:
-        reply first; admins can edit underneath it
-    */
     if (ownsMessage) {
         if (canEdit) {
             buttons.push(
@@ -8561,11 +8554,6 @@ openModerationMenu(x, y, message) {
         );
     }
 
-    /*
-        saved remixes is available to everyone.
-        If there was no delete group, keep a divider
-        between reply/edit and the utility section.
-    */
     if (!canDelete) {
         addDivider();
     }
@@ -13597,12 +13585,6 @@ setupNameSaving() {
             let attempts = 0;
 
             do {
-                /*
-                    Give each piece a loose horizontal lane first,
-                    then jitter it enough to stay organic. This
-                    spreads the confetti across the spoiler instead
-                    of allowing a dense centre cluster.
-                */
                 const lane =
                     (
                         index +
