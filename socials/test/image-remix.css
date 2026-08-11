@@ -1384,3 +1384,47 @@ html[data-chat-pastel] .jami-remix-footer button:hover {
     transform: translateY(-1px);
 }
 
+
+html[data-chat-theme="original"]
+.jami-remix-editor,
+html[data-chat-theme="original"]
+.jami-remix-editor button,
+html[data-chat-theme="original"]
+.jami-remix-editor input,
+html[data-chat-theme="original"]
+.jami-remix-program-message {
+    font-family:
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="stars"]
+.jami-remix-editor,
+html[data-chat-theme="stars"]
+.jami-remix-editor button,
+html[data-chat-theme="stars"]
+.jami-remix-editor input,
+html[data-chat-theme="stars"]
+.jami-remix-program-message {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="paws"]
+.jami-remix-editor,
+html[data-chat-theme="paws"]
+.jami-remix-editor button,
+html[data-chat-theme="paws"]
+.jami-remix-editor input,
+html[data-chat-theme="paws"]
+.jami-remix-program-message {
+    font-family:
+        "nintendoh",
+        "Nunito",
+        sans-serif !important;
+    color: rgba(238,157,174);
+}
+
