@@ -170,7 +170,50 @@ localStorage.setItem(
 "chat_client_id",
 this.clientId
 );
-	
+
+this.guestNames = [
+    "tuna",
+    "pixelpaws",
+    "stardust",
+    "meowmix",
+    "luna",
+    "mochi",
+    "cosmicat",
+    "nyanbean",
+    "peachy",
+    "whiskers",
+    "pixelcat",
+    "boba",
+    "miso",
+    "tofu",
+    "maple",
+    "flora",
+    "isabelle",
+    "lolly",
+    "poppy",
+    "merry"
+];
+
+this.guestName =
+    localStorage.getItem(
+        "chat_guest_name"
+    ) || "";
+
+if (!this.guestName) {
+    this.guestName =
+        this.guestNames[
+            Math.floor(
+                Math.random() *
+                this.guestNames.length
+            )
+        ];
+
+    localStorage.setItem(
+        "chat_guest_name",
+        this.guestName
+    );
+}
+
 this.createWindow();
 
 	window.addEventListener(
@@ -454,13 +497,13 @@ transition-[height] duration-200
             "
         >
 
-	<div class="jami-cute-name-row">
+	<div class="jami-cute-composer-row">
     <div class="relative shrink-0">
         <button
             id="chatAvatarButton"
             type="button"
             class="jami-cute-avatar-button"
-            aria-label="choose avatar"
+            aria-label="profile and avatar"
             aria-expanded="false"
             aria-controls="chatAvatarPicker"
         >
@@ -472,30 +515,45 @@ transition-[height] duration-200
             >
         </button>
 
-       <div
-    id="chatAvatarPicker"
-    class="
-        invisible pointer-events-none opacity-0
-        absolute bottom-full left-0 z-20
-        mb-2 w-56
-        overflow-hidden
-        rounded-2xl
-        border border-white/10
-        bg-[#1f1f1f]
-        p-3
-        shadow-xl
-        transition-opacity
-    "
->
-            <div
-                class="
-                    theme-heading
-                    mb-3 text-[10px]
-                    font-bold uppercase tracking-widest
-                    text-white/60
-                "
-            >
-                select avatar
+        <div
+            id="chatAvatarPicker"
+            class="
+                invisible pointer-events-none opacity-0
+                absolute bottom-full left-0 z-20
+                mb-2 overflow-hidden
+                rounded-2xl
+                border border-white/10
+                bg-[#1f1f1f]
+                p-3 shadow-xl
+                transition-opacity
+            "
+        >
+            <div class="theme-heading jami-cute-profile-title">
+                profile
+            </div>
+
+            <div class="jami-cute-profile-name-wrap">
+                <input
+                    id="chatName"
+                    type="text"
+                    maxlength="20"
+                    autocomplete="nickname"
+                    placeholder="name"
+                    class="theme-body jami-cute-profile-name-input"
+                >
+
+                <div
+                    id="chatDiscordUsername"
+                    class="
+                        theme-body
+                        hidden truncate
+                        text-[8px] text-white/40
+                    "
+                ></div>
+            </div>
+
+            <div class="theme-heading jami-cute-avatar-label">
+                choose avatar
             </div>
 
             <div
@@ -521,64 +579,27 @@ transition-[height] duration-200
             >
                 log in with discord
             </button>
+
+            <button
+                id="chatDiscordLogout"
+                type="button"
+                class="
+                    theme-body
+                    mt-2 hidden w-full rounded-lg
+                    border border-white/10
+                    bg-white/5 px-2 py-2
+                    text-[9px] text-white/60
+                    transition
+                    hover:bg-white/10
+                    hover:text-white
+                    disabled:cursor-wait
+                    disabled:opacity-50
+                "
+            >
+                log out
+            </button>
         </div>
     </div>
-
-    <div class="relative min-w-0 flex-1">
-        <input
-            id="chatName"
-            type="text"
-            maxlength="20"
-            autocomplete="nickname"
-            placeholder="name"
-            class="theme-body jami-cute-name-input"
-        >
-
-        <div
-            id="chatDiscordUsername"
-            class="
-                theme-body
-                pointer-events-none
-                absolute bottom-1.5 left-3
-                hidden max-w-[calc(100%-5.5rem)]
-                truncate text-[8px] text-white/40
-            "
-        ></div>
-
-        <button
-            id="chatDiscordLogout"
-            type="button"
-            class="
-                theme-body
-                absolute right-2 top-1/2
-                hidden -translate-y-1/2
-                rounded-lg border border-white/10
-                bg-white/5 px-2 py-1
-                text-[8px] text-white/60
-                transition
-                hover:bg-white/10
-                hover:text-white
-                disabled:cursor-wait
-                disabled:opacity-50
-            "
-        >
-            log out
-        </button>
-    </div>
-</div>
-
-            <div class="relative">
-			
-    <div class="jami-cute-composer-row">
-    <button
-        id="chatImageUploadButton"
-        type="button"
-        class="jami-cute-square-button"
-        aria-label="upload image"
-        title="upload image"
-    >
-        🖼️
-    </button>
 
     <input
         id="chatImageUploadInput"
@@ -607,6 +628,16 @@ transition-[height] duration-200
             title="choose emoji"
         >
             ☺
+        </button>
+
+        <button
+            id="chatImageUploadButton"
+            type="button"
+            class="jami-cute-message-plus"
+            aria-label="upload image"
+            title="upload image"
+        >
+            +
         </button>
 
         <button
@@ -4981,8 +5012,7 @@ toggleWatchParty() {
     }
 
     const name =
-        this.nameInput?.value.trim() ||
-        "anonymous";
+        this.getEffectiveChatName();
 
 		const queueLengthBeforeAdd =
     Array.isArray(this.watchParty?.queue)
@@ -6532,12 +6562,7 @@ async setReactionActive(
                     clientId:
                         this.clientId,
                     reactorName:
-                        this.discordUser
-                            ?.displayName ||
-                        this.nameInput
-                            ?.value
-                            ?.trim() ||
-                        "Anonymous",
+                        this.getEffectiveChatName(),
                     active: active === true,
                     reaction: {
                         key: reaction.key,
@@ -9110,12 +9135,7 @@ async saveRemix(upload, button = null) {
                             savedByClientId:
                                 this.clientId,
                             savedByName:
-                                this.discordUser
-                                    ?.displayName ||
-                                this.nameInput
-                                    ?.value
-                                    ?.trim() ||
-                                "admin"
+                                this.getEffectiveChatName()
                         })
                 }
             );
@@ -9217,10 +9237,7 @@ async repostSavedRemix(savedId) {
                             clientId:
                                 this.clientId,
                             name:
-                                this.nameInput
-                                    ?.value
-                                    ?.trim() ||
-                                "anonymous",
+                                this.getEffectiveChatName(),
                             avatar:
                                 this.avatar
                         })
@@ -10293,9 +10310,7 @@ setupMemberActivity() {
     }
 
     const name =
-        this.discordUser?.displayName ||
-        this.nameInput.value.trim() ||
-        "anonymous";
+        this.getEffectiveChatName();
 
     const avatar =
         this.discordUser?.avatarUrl ||
@@ -10327,9 +10342,7 @@ setupMemberActivity() {
             type: "typing",
             clientId: this.clientId,
             name:
-                this.discordUser?.displayName ||
-                this.nameInput.value.trim() ||
-                "anonymous",
+                this.getEffectiveChatName(),
             isTyping
         })
     );
@@ -11114,12 +11127,7 @@ async uploadImageRemix(detail) {
 
     formData.append(
         "name",
-        this.discordUser
-            ?.displayName ||
-        this.nameInput
-            ?.value
-            ?.trim() ||
-        "anonymous"
+        this.getEffectiveChatName()
     );
 
     formData.append(
@@ -12356,12 +12364,7 @@ async uploadTestImage(file) {
                                 this.clientId,
 
                             name:
-                                this.discordUser
-                                    ?.displayName ||
-                                this.nameInput
-                                    ?.value
-                                    ?.trim() ||
-                                "anonymous",
+                                this.getEffectiveChatName(),
 
                             avatar:
                                 this.discordUser
@@ -13141,10 +13144,19 @@ clearChatInterface() {
     }
 }
 	
+
+getEffectiveChatName() {
+    return (
+        this.discordUser?.displayName ||
+        this.nameInput?.value?.trim() ||
+        this.guestName ||
+        "guest"
+    );
+}
+
 async sendMessage() {
     const name =
-        this.discordUser?.displayName ||
-        this.nameInput.value.trim();
+        this.getEffectiveChatName();
 
     const avatar =
         this.discordUser?.avatarUrl ||
@@ -13253,9 +13265,10 @@ restoreSettings() {
     const savedName =
         localStorage.getItem("chat_name");
 
-    if (savedName) {
-        this.nameInput.value = savedName;
-    }
+    this.nameInput.value =
+        savedName ||
+        this.guestName ||
+        "";
 
     for (const key of [
         "chat_width",
@@ -13860,9 +13873,7 @@ setupNameSaving() {
         }
 
         const name =
-            this.discordUser?.displayName ||
-            this.nameInput?.value.trim() ||
-            "anonymous";
+            this.getEffectiveChatName();
 
         const avatar =
             this.discordUser?.avatarUrl ||
@@ -15571,10 +15582,9 @@ applyDiscordIdentity(user) {
         "chat-discord-name-active"
     );
 
-    this.avatarButton.disabled = true;
-    this.avatarButton.setAttribute(
-        "aria-disabled",
-        "true"
+    this.avatarButton.disabled = false;
+    this.avatarButton.removeAttribute(
+        "aria-disabled"
     );
 
     this.avatarPreview.src =
@@ -15603,7 +15613,9 @@ clearDiscordIdentity() {
     const guestName =
         localStorage.getItem(
             "chat_name"
-        ) || "";
+        ) ||
+        this.guestName ||
+        "";
 
     const guestAvatar =
         localStorage.getItem(
@@ -15730,10 +15742,6 @@ renderDiscordAuthState() {
     this.avatarButton.addEventListener("click", event => {
         event.stopPropagation();
 
-        if (this.discordUser) {
-            return;
-        }
-
         const isOpen =
             this.avatarPicker.classList.contains("opacity-100");
 
@@ -15824,10 +15832,6 @@ selectAvatar(filename) {
 }
 
 openAvatarPicker() {
-    if (this.discordUser) {
-        return;
-    }
-
     this.avatarPicker.classList.remove(
         "invisible",
         "pointer-events-none",
