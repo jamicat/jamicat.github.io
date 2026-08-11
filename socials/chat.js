@@ -8469,10 +8469,7 @@ openModerationMenu(x, y, message) {
         message.message_type !==
             "confetti" &&
         Boolean(message.id) &&
-        (
-            ownsMessage ||
-            this.isAdmin
-        );
+        ownsMessage;
 
     const canDelete =
         ownsMessage ||
@@ -8536,19 +8533,6 @@ openModerationMenu(x, y, message) {
             )
         );
 
-        if (canEdit) {
-            buttons.push(
-                this.createModerationMenuButton(
-                    "edit",
-                    () => {
-                        this.closeModerationMenu();
-                        this.beginInlineEdit(
-                            message
-                        );
-                    }
-                )
-            );
-        }
     }
 
     if (canDelete) {
@@ -8642,6 +8626,8 @@ openModerationMenu(x, y, message) {
             )
         );
 
+        addDivider();
+
         buttons.push(
             this.createModerationMenuButton(
                 "name history",
@@ -8651,26 +8637,6 @@ openModerationMenu(x, y, message) {
                         message.client_id,
                         message.name ||
                             "user"
-                    );
-                }
-            )
-        );
-
-        /*
-            destructive/global admin actions live
-            together beneath the bottom divider.
-        */
-        addDivider();
-
-        buttons.push(
-            this.createModerationMenuButton(
-                "delete user's messages",
-                async () => {
-                    this.closeModerationMenu();
-
-                    await this.deleteUserContent(
-                        message.client_id,
-                        message.name
                     );
                 }
             )
@@ -8686,6 +8652,20 @@ openModerationMenu(x, y, message) {
                     this.closeModerationMenu();
 
                     await this.banClient(
+                        message.client_id,
+                        message.name
+                    );
+                }
+            )
+        );
+
+        buttons.push(
+            this.createModerationMenuButton(
+                "delete user's messages",
+                async () => {
+                    this.closeModerationMenu();
+
+                    await this.deleteUserContent(
                         message.client_id,
                         message.name
                     );
