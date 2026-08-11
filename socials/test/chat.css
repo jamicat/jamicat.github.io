@@ -8560,3 +8560,61 @@ html[data-chat-theme="paws"] .jami-chat-context-menu * {
         sans-serif !important;
 }
 
+
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitleBar #chatMembersToggle,
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitleBar #chatThemeButton,
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitleBar #chatConnectionStatus,
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitleBar #chatMinimize,
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitleBar button[data-admin-action],
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitleBar button[data-chat-admin-action] {
+    color: rgba(238, 157, 174) !important;
+    text-shadow: none !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatThemeButton,
+#chatWindow[data-chat-theme="stars"] #chatThemeButton,
+#chatWindow[data-chat-theme="paws"] #chatThemeButton {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 24px !important;
+    vertical-align: middle !important;
+    transform: none !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatTitleBar > div,
+#chatWindow[data-chat-theme="stars"] #chatTitleBar > div,
+#chatWindow[data-chat-theme="paws"] #chatTitleBar > div,
+#chatWindow[data-chat-theme="original"] #chatTitleBar > div > div,
+#chatWindow[data-chat-theme="stars"] #chatTitleBar > div > div,
+#chatWindow[data-chat-theme="paws"] #chatTitleBar > div > div {
+    align-items: center !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .jami-cute-send-arrow,
+#chatWindow[data-chat-theme="paws"] .jami-cute-send-arrow:hover,
+#chatWindow[data-chat-theme="paws"] .jami-cute-send-arrow:active {
+    color: rgba(238, 157, 174) !important;
+    border-color: rgba(238, 157, 174, .28) !important;
+    background: rgba(238, 157, 174, .14) !important;
+    box-shadow: none !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatWatchPartyButton.hidden,
+#chatWindow[data-chat-theme="stars"] #chatWatchPartyButton.hidden,
+#chatWindow[data-chat-theme="paws"] #chatWatchPartyButton.hidden {
+    display: none !important;
+}
+
+body > #chatEmojiPicker {
+    position: fixed !important;
+    z-index: 100004 !important;
+    margin: 0 !important;
+    max-width: calc(100vw - 16px) !important;
+}
+
