@@ -7040,3 +7040,138 @@ html[data-chat-pastel="paws"]
         sans-serif !important;
 }
 
+#chatWindow[data-chat-pastel]
+#chatTitle {
+    position: relative;
+    gap: 6px;
+}
+
+#chatWindow[data-chat-pastel]
+#chatTitle::before {
+    content: "";
+    display: inline-block;
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    image-rendering: pixelated;
+}
+
+#chatWindow[data-chat-pastel="stars"]
+#chatTitle::before {
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' shape-rendering='crispEdges'%3E%3Cpath fill='%23efe7ff' d='M7 0h4v4h3v3h4v4h-4v3h-3v4H7v-4H4v-3H0V7h4V4h3z'/%3E%3Cpath fill='%23c8b8ff' d='M8 2h2v4h4v2h2v2h-2v2h-4v4H8v-4H4v-2H2V8h2V6h4z'/%3E%3Cpath fill='%239fddff' d='M8 5h2v2h2v4h-2v2H8v-2H6V7h2z'/%3E%3C/svg%3E");
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatTitle::before {
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff1f4' d='M4 2h4v2h2V2h4v2h2v6h-2v2h-2v2h-2v2H8v-2H6v-2H4v-2H2V4h2z'/%3E%3Cpath fill='%23e98aa8' d='M4 4h4v2h2V4h4v2h1v4h-2v2h-2v2H9v-2H7v-2H5V6H4z'/%3E%3Cpath fill='%23f7b6ca' d='M6 5h2v2h2V5h2v2h2v3h-2v2h-2v2H8v-2H6v-2H5V7h1z'/%3E%3C/svg%3E");
+}
+
+#chatWindow[data-chat-pastel="stars"]
+#chatTitle::after,
+#chatWindow[data-chat-pastel="paws"]
+#chatTitle::after {
+    content: none !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+.jami-reaction-pill,
+#chatWindow[data-chat-pastel="paws"]
+.jami-reaction-pill *,
+#chatWindow[data-chat-pastel="paws"]
+.jami-reaction-summary,
+#chatWindow[data-chat-pastel="paws"]
+.jami-reaction-summary * {
+    color: #a94f6b !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+.jami-reaction-pill {
+    border-color:
+        rgba(169, 79, 107, .20) !important;
+    background:
+        rgba(255, 255, 255, .38) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+.jami-reaction-pill:hover {
+    border-color:
+        rgba(169, 79, 107, .34) !important;
+    background:
+        rgba(255, 255, 255, .54) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+.jami-reaction-pill[data-reacted="true"] {
+    border-color:
+        rgba(169, 79, 107, .46) !important;
+    background:
+        rgba(233, 138, 168, .18) !important;
+}
+
+html[data-chat-pastel="paws"]
+.jami-reaction-toast,
+html[data-chat-pastel="paws"]
+.jami-reaction-toast * {
+    color: #a94f6b !important;
+}
+
+html[data-chat-pastel="paws"]
+.jami-reaction-toast {
+    border-color:
+        rgba(169, 79, 107, .24) !important;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 234, 239, .94),
+            rgba(250, 224, 229, .90)
+        ) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatTitleBar {
+    display: flex !important;
+    align-items: center !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatTitleBar > div {
+    display: flex !important;
+    align-items: center !important;
+    height: 52px !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatTitleBar > div > div {
+    display: flex !important;
+    align-items: center !important;
+    height: 52px !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatMinimize {
+    position: static !important;
+    top: auto !important;
+    align-self: center !important;
+    transform: translateY(-1px) !important;
+    padding: 0 0 4px 0 !important;
+}
+
+#chatWindow[data-chat-pastel="paws"].h-10
+#chatMinimize {
+    transform: translateY(-1px) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatMembersToggle,
+#chatWindow[data-chat-pastel="paws"]
+#chatConnectionStatus,
+#chatWindow[data-chat-pastel="paws"]
+#chatMinimize {
+    align-self: center !important;
+}
+
