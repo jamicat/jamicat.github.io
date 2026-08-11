@@ -16700,39 +16700,62 @@ keepTitleBarInViewport() {
         return;
     }
 
+    const previousTheme =
+        this.window.dataset.chatPastel ||
+        "";
+
     const rootTheme =
         document.documentElement
             .getAttribute(
                 "data-chat-pastel"
             ) || "";
 
+    let nextTheme = "";
+
     if (
         rootTheme === "stars" ||
         rootTheme === "paws"
     ) {
-        this.window.dataset.chatPastel =
-            rootTheme;
-        this.renderChatPastelDecor();
-        return;
+        nextTheme = rootTheme;
+    } else {
+        const themeName =
+            String(
+                localStorage.getItem("theme") ||
+                "Stars"
+            ).trim();
+
+        if (themeName === "Stars") {
+            nextTheme = "stars";
+        } else if (themeName === "Default") {
+            nextTheme = "paws";
+        }
     }
 
-    const themeName =
-        String(
-            localStorage.getItem("theme") ||
-            "Stars"
-        ).trim();
-
-    if (themeName === "Stars") {
+    if (nextTheme) {
         this.window.dataset.chatPastel =
-            "stars";
-    } else if (themeName === "Default") {
-        this.window.dataset.chatPastel =
-            "paws";
+            nextTheme;
     } else {
         delete this.window.dataset.chatPastel;
     }
 
-    this.renderChatPastelDecor();
+    const hasDecor =
+        this.window
+            .querySelector(
+                "#chatMain"
+            )
+            ?.querySelector(
+                ".jami-chat-pastel-decor"
+            );
+
+    if (
+        previousTheme !== nextTheme ||
+        (
+            nextTheme &&
+            !hasDecor
+        )
+    ) {
+        this.renderChatPastelDecor();
+    }
 }
 
 	renderChatPastelDecor() {
