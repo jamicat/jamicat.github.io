@@ -5691,9 +5691,17 @@ html[data-chat-pastel="paws"]
 
 #chatWindow[data-chat-pastel] {
     width: 510px !important;
-    height: 560px !important;
     max-width: calc(100vw - 24px) !important;
     border-radius: 24px !important;
+}
+
+#chatWindow[data-chat-pastel]:not(.h-10) {
+    height: 560px !important;
+}
+
+#chatWindow[data-chat-pastel].h-10 {
+    height: 40px !important;
+    min-height: 40px !important;
 }
 
 #chatWindow[data-chat-pastel="stars"] {
@@ -6248,5 +6256,47 @@ html[data-chat-pastel="paws"]
             rgba(255,255,255,.68),
             rgba(255,245,248,.56)
         ) !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMain {
+    margin-top: 8px !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMotd.hidden + #chatMain {
+    margin-top: 10px !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMotd:not(.hidden) + #chatMain {
+    margin-top: 8px !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMessages {
+    padding-top: 18px !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMembersPanel {
+    padding-top: 18px !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMain {
+    border-top-left-radius: 18px !important;
+    border-top-right-radius: 18px !important;
+}
+
+#chatWindow[data-chat-pastel].h-10
+#chatMotd,
+#chatWindow[data-chat-pastel].h-10
+#chatMain,
+#chatWindow[data-chat-pastel].h-10
+#chatTyping,
+#chatWindow[data-chat-pastel].h-10
+#chatControls {
+    display: none !important;
 }
 
