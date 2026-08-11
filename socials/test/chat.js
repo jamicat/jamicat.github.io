@@ -98,6 +98,7 @@ this.replyTarget = null;
 this.replyComposerPreview = null;
 this.activeInlineEdit = null;
 this.messageReactions = new Map();
+this.revealedConfettiMessages = new Set();
 this.reactionPicker = null;
 this.reactionRequestBusy = new Set();
 this.recentReactionStorageKey =
@@ -221,6 +222,7 @@ window.addEventListener(
 );
 
 this.applyCurrentTheme();
+this.setupChatPastelThemeSync();
 this.restoreSettings();
 this.setupDiscordAuthentication();
 
@@ -300,7 +302,7 @@ transition-[height] duration-200
                     text-white text-blue-glow
                 "
             >
-                CAT CHAT
+                jamichat
             </span>
 
            <div class="flex items-center gap-3">
@@ -1362,6 +1364,7 @@ createBanManagerButton() {
         document.createElement("div");
 
     panel.className = [
+        "jami-admin-glass-panel",
         "fixed",
         "z-[100001]",
         "w-72",
@@ -1370,7 +1373,6 @@ createBanManagerButton() {
         "rounded-2xl",
         "border",
         "border-white/15",
-        "bg-black/95",
         "text-white",
         "shadow-xl",
         "backdrop-blur-xl"
@@ -2027,6 +2029,7 @@ if (clearButton) {
         document.createElement("div");
 
     panel.className = [
+        "jami-admin-glass-panel",
         "fixed",
         "z-[100001]",
         "w-72",
@@ -2035,7 +2038,6 @@ if (clearButton) {
         "rounded-2xl",
         "border",
         "border-white/15",
-        "bg-black/95",
         "text-white",
         "shadow-xl",
         "backdrop-blur-xl"
@@ -6014,6 +6016,8 @@ ensureMessageHoverActions(row) {
         Boolean(
             hoverMessage &&
             !hoverMessage.imageUpload &&
+            hoverMessage.message_type !==
+                "confetti" &&
             hoverMessage.id &&
             hoverMessage.client_id ===
                 this.clientId
@@ -6928,6 +6932,14 @@ addMessage(message) {
                 message
                     .discord_server_badge_url ||
                 ""
+            ) &&
+        (
+            previousMessage.message_type ||
+            "text"
+        ) ===
+            (
+                message.message_type ||
+                "text"
             );
 
     const closeInTime =
@@ -6937,6 +6949,7 @@ addMessage(message) {
             5 * 60 * 1000;
 
     const isContinuation =
+        message.message_type !== "confetti" &&
         sameAuthor &&
         sameIdentity &&
         closeInTime;
@@ -7063,9 +7076,9 @@ const text =
 text.className =
     "chatText break-words leading-relaxed";
 
-this.renderMessageContent(
+this.renderChatMessageContent(
     text,
-    message.message || ""
+    message
 );
 
 messageBody.appendChild(text);
@@ -7275,9 +7288,9 @@ const text =
 text.className =
     "chatText break-words leading-relaxed";
 
-this.renderMessageContent(
+this.renderChatMessageContent(
     text,
-    message.message || ""
+    message
 );
 
 messageBody.appendChild(text);
@@ -8316,6 +8329,13 @@ beginInlineEdit(message) {
         row.jamiChatMessage ||
         message;
 
+    if (
+        currentMessage?.message_type ===
+            "confetti"
+    ) {
+        return;
+    }
+
     const text = row.querySelector(".chatText");
     if (!text) return;
     const original = String(currentMessage.message || "");
@@ -8429,55 +8449,115 @@ closeModerationMenu() {
 openModerationMenu(x, y, message) {
     this.closeModerationMenu();
 
-    const menu = document.createElement("div");
-    menu.className = [
-        "fixed", "z-[100000]", "w-44", "overflow-hidden",
-        "rounded-xl", "border", "border-white/15", "bg-black/90",
-        "py-1", "text-[11px]", "text-white", "shadow-xl", "backdrop-blur-xl",
-        "theme-body"
-    ].join(" ");
+    const menu =
+        document.createElement("div");
 
-    const isImage = Boolean(message.imageUpload);
-    const ownsMessage = Boolean(
-        message.client_id && message.client_id === this.clientId
-    );
-    const canEdit = !isImage && Boolean(message.id) && (ownsMessage || this.isAdmin);
-    const canDelete = ownsMessage || this.isAdmin;
+    menu.className =
+        "jami-chat-context-menu theme-body";
+
+    const isImage =
+        Boolean(message.imageUpload);
+
+    const ownsMessage =
+        Boolean(
+            message.client_id &&
+            message.client_id ===
+                this.clientId
+        );
+
+    const canEdit =
+        !isImage &&
+        message.message_type !==
+            "confetti" &&
+        Boolean(message.id) &&
+        ownsMessage;
+
+    const canDelete =
+        ownsMessage ||
+        this.isAdmin;
 
     const buttons = [];
 
-    if (canEdit) {
-        buttons.push(this.createModerationMenuButton("edit", () => {
-            this.closeModerationMenu();
-            this.beginInlineEdit(message);
-        }));
-    }
+    const addDivider = () => {
+        const divider =
+            document.createElement("div");
 
-    buttons.push(this.createModerationMenuButton("reply", () => {
-        this.closeModerationMenu();
-        this.setReplyTarget(message);
-    }));
+        divider.className =
+            "jami-chat-context-divider";
+
+        buttons.push(divider);
+    };
+
+    if (ownsMessage) {
+        if (canEdit) {
+            buttons.push(
+                this.createModerationMenuButton(
+                    "edit",
+                    () => {
+                        this.closeModerationMenu();
+                        this.beginInlineEdit(
+                            message
+                        );
+                    }
+                )
+            );
+        }
+
+        buttons.push(
+            this.createModerationMenuButton(
+                "reply",
+                () => {
+                    this.closeModerationMenu();
+                    this.setReplyTarget(
+                        message
+                    );
+                }
+            )
+        );
+    } else {
+        buttons.push(
+            this.createModerationMenuButton(
+                "reply",
+                () => {
+                    this.closeModerationMenu();
+                    this.setReplyTarget(
+                        message
+                    );
+                }
+            )
+        );
+
+    }
 
     if (canDelete) {
-        const divider = document.createElement("div");
-        divider.className = "my-1 border-t border-white/10";
-        buttons.push(divider);
+        addDivider();
 
-        buttons.push(this.createModerationMenuButton("delete message", () => {
-            this.closeModerationMenu();
-            if (message.imageUploadId) {
-                this.deleteImageUpload(message.imageUploadId);
-            } else {
-                this.deleteMessage(message.id);
-            }
-        }));
+        buttons.push(
+            this.createModerationMenuButton(
+                "delete message",
+                () => {
+                    this.closeModerationMenu();
+
+                    if (message.imageUploadId) {
+                        this.deleteImageUpload(
+                            message.imageUploadId
+                        );
+                    } else {
+                        this.deleteMessage(
+                            message.id
+                        );
+                    }
+                },
+                {
+                    danger: true
+                }
+            )
+        );
     }
 
-    const savedRemixDivider =
-        document.createElement("div");
-    savedRemixDivider.className =
-        "my-1 border-t border-white/10";
-    buttons.push(savedRemixDivider);
+    if (!canDelete) {
+        addDivider();
+    }
 
     buttons.push(
         this.createModerationMenuButton(
@@ -8492,6 +8572,53 @@ openModerationMenu(x, y, message) {
     if (this.isAdmin) {
         buttons.push(
             this.createModerationMenuButton(
+                "edit message of the day",
+                () => {
+                    this.closeModerationMenu();
+                    this.editMotd();
+                }
+            )
+        );
+
+        buttons.push(
+            this.createModerationMenuButton(
+                "post confetti message",
+                () => {
+                    this.closeModerationMenu();
+                    this.postConfettiMessage();
+                }
+            )
+        );
+
+        buttons.push(
+            this.createModerationMenuButton(
+                "copy message ID",
+                async () => {
+                    const identifier =
+                        message.imageUploadId ||
+                        message.id;
+
+                    try {
+                        await navigator.clipboard
+                            .writeText(
+                                String(identifier)
+                            );
+                    } catch (error) {
+                        console.error(
+                            "could not copy message ID:",
+                            error
+                        );
+                    }
+
+                    this.closeModerationMenu();
+                }
+            )
+        );
+
+        addDivider();
+
+        buttons.push(
+            this.createModerationMenuButton(
                 "name history",
                 () => {
                     this.closeModerationMenu();
@@ -8504,47 +8631,78 @@ openModerationMenu(x, y, message) {
             )
         );
 
-        buttons.push(this.createModerationMenuButton(`ban ${message.name || "user"}`, async () => {
-            this.closeModerationMenu();
-            await this.banClient(message.client_id, message.name);
-        }));
+        buttons.push(
+            this.createModerationMenuButton(
+                `ban ${
+                    message.name ||
+                    "user"
+                }`,
+                async () => {
+                    this.closeModerationMenu();
 
-        buttons.push(this.createModerationMenuButton("delete user's messages", async () => {
-            this.closeModerationMenu();
-            await this.deleteUserContent(
-                message.client_id,
-                message.name
-            );
-        }));
+                    await this.banClient(
+                        message.client_id,
+                        message.name
+                    );
+                }
+            )
+        );
 
-        buttons.push(this.createModerationMenuButton("edit message of the day", () => {
-            this.closeModerationMenu();
-            this.editMotd();
-        }));
+        buttons.push(
+            this.createModerationMenuButton(
+                "delete user's messages",
+                async () => {
+                    this.closeModerationMenu();
 
-        buttons.push(this.createModerationMenuButton("copy message ID", async () => {
-            const identifier = message.imageUploadId || message.id;
-            try { await navigator.clipboard.writeText(String(identifier)); }
-            catch (error) { console.error("could not copy message ID:", error); }
-            this.closeModerationMenu();
-        }));
+                    await this.deleteUserContent(
+                        message.client_id,
+                        message.name
+                    );
+                }
+            )
+        );
 
-        const divider2 = document.createElement("div");
-        divider2.className = "my-1 border-t border-white/10";
-        buttons.push(divider2);
-        buttons.push(this.createModerationMenuButton("clear chat", () => {
-            this.closeModerationMenu();
-            this.clearEntireChat();
-        }));
+        buttons.push(
+            this.createModerationMenuButton(
+                "clear chat",
+                () => {
+                    this.closeModerationMenu();
+                    this.clearEntireChat();
+                }
+            )
+        );
     }
 
     menu.append(...buttons);
     document.body.appendChild(menu);
 
-    const rect = menu.getBoundingClientRect();
+    const rect =
+        menu.getBoundingClientRect();
+
     const padding = 8;
-    menu.style.left = `${Math.max(padding, Math.min(x, window.innerWidth - rect.width - padding))}px`;
-    menu.style.top = `${Math.max(padding, Math.min(y, window.innerHeight - rect.height - padding))}px`;
+
+    menu.style.left =
+        `${Math.max(
+            padding,
+            Math.min(
+                x,
+                window.innerWidth -
+                    rect.width -
+                    padding
+            )
+        )}px`;
+
+    menu.style.top =
+        `${Math.max(
+            padding,
+            Math.min(
+                y,
+                window.innerHeight -
+                    rect.height -
+                    padding
+            )
+        )}px`;
+
     this.moderationMenu = menu;
 }
 
@@ -8554,22 +8712,8 @@ openChatContextMenu(x, y) {
     const menu =
         document.createElement("div");
 
-    menu.className = [
-        "fixed",
-        "z-[100000]",
-        "w-44",
-        "overflow-hidden",
-        "rounded-xl",
-        "border",
-        "border-white/15",
-        "bg-black/90",
-        "py-1",
-        "text-[11px]",
-        "text-white",
-        "shadow-xl",
-        "backdrop-blur-xl",
-        "theme-body"
-    ].join(" ");
+    menu.className =
+        "jami-chat-context-menu theme-body";
 
     menu.appendChild(
         this.createModerationMenuButton(
@@ -8580,6 +8724,26 @@ openChatContextMenu(x, y) {
             }
         )
     );
+
+    if (this.isAdmin) {
+        const divider =
+            document.createElement("div");
+
+        divider.className =
+            "jami-chat-context-divider";
+
+        menu.appendChild(divider);
+
+        menu.appendChild(
+            this.createModerationMenuButton(
+                "post confetti message",
+                () => {
+                    this.closeModerationMenu();
+                    this.postConfettiMessage();
+                }
+            )
+        );
+    }
 
     document.body.appendChild(menu);
 
@@ -9503,7 +9667,7 @@ openMemberModerationMenu(x, y, member) {
     const menu = document.createElement("div");
 
     menu.className =
-        "fixed z-[100000] w-44 rounded-xl border border-white/15 bg-black/90 py-1 text-[11px] text-white shadow-xl backdrop-blur-xl";
+        "jami-chat-context-menu theme-body";
 
     const menuWidth = 176;
 const menuHeight = 60;
@@ -9560,24 +9724,129 @@ menu.style.top =
 
 	createModerationMenuButton(
     label,
-    onClick
+    onClick,
+    options = {}
 ) {
     const button =
         document.createElement("button");
 
     button.type = "button";
 
-    button.className = [
-        "block",
-        "w-full",
-        "px-3",
-        "py-2",
-        "text-left",
-        "transition",
-        "hover:bg-white/10"
-    ].join(" ");
+    button.className =
+        "jami-chat-context-item";
 
-    button.textContent = label;
+    if (options.danger === true) {
+        button.classList.add(
+            "jami-chat-context-item-danger"
+        );
+    }
+
+    const icon =
+        document.createElement("span");
+
+    icon.className =
+        "jami-chat-context-icon";
+
+    icon.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    const normalized =
+        String(label).toLowerCase();
+
+    const icons = {
+        edit:
+            '<svg viewBox="0 0 24 24"><path d="M4 20h4l11-11-4-4L4 16v4Zm9.5-13.5 4 4"/></svg>',
+        reply:
+            '<svg viewBox="0 0 24 24"><path d="M9 8 4 12l5 4v-3h4.5c3.2 0 5.5 1.4 6.5 4-.2-5.3-2.8-8-7.5-8H9V8Z"/></svg>',
+        delete:
+            '<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3m-8 0 1 13h8l1-13M10 11v5m4-5v5"/></svg>',
+        remixes:
+            '<svg viewBox="0 0 24 24"><path d="M4 6h10v10H4zM10 10h10v10H10z"/></svg>',
+        motd:
+            '<svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg>',
+        confetti:
+            '<svg viewBox="0 0 24 24"><path d="m5 19 4-10 6 6-10 4Zm8-11 2-3m2 5 3-1m-8-5 1-2m6 12 2 1"/></svg>',
+        copy:
+            '<svg viewBox="0 0 24 24"><path d="M8 8h11v11H8zM5 16H4V5h11v1"/></svg>',
+        history:
+            '<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2-5.3L4 9m0-5v5h5M12 8v5l3 2"/></svg>',
+        userDelete:
+            '<svg viewBox="0 0 24 24"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-6 9c.8-4 3-6 6-6 1 0 1.9.2 2.7.6M15 15l6 6m0-6-6 6"/></svg>',
+        ban:
+            '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="m6.5 6.5 11 11"/></svg>',
+        clear:
+            '<svg viewBox="0 0 24 24"><path d="M4 7h16M8 7V4h8v3m-9 0 1 13h8l1-13"/></svg>'
+    };
+
+    let iconMarkup =
+        icons.edit;
+
+    if (normalized === "reply") {
+        iconMarkup = icons.reply;
+    } else if (
+        normalized ===
+        "delete message"
+    ) {
+        iconMarkup = icons.delete;
+    } else if (
+        normalized ===
+        "saved remixes"
+    ) {
+        iconMarkup = icons.remixes;
+    } else if (
+        normalized ===
+        "edit message of the day"
+    ) {
+        iconMarkup = icons.motd;
+    } else if (
+        normalized ===
+        "post confetti message"
+    ) {
+        iconMarkup = icons.confetti;
+    } else if (
+        normalized ===
+        "copy message id"
+    ) {
+        iconMarkup = icons.copy;
+    } else if (
+        normalized ===
+        "name history"
+    ) {
+        iconMarkup = icons.history;
+    } else if (
+        normalized ===
+        "delete user's messages"
+    ) {
+        iconMarkup = icons.userDelete;
+    } else if (
+        normalized.startsWith("ban ")
+    ) {
+        iconMarkup = icons.ban;
+    } else if (
+        normalized ===
+        "clear chat"
+    ) {
+        iconMarkup = icons.clear;
+    }
+
+    icon.innerHTML =
+        iconMarkup;
+
+    const text =
+        document.createElement("span");
+
+    text.className =
+        "jami-chat-context-label";
+
+    text.textContent =
+        label;
+
+    button.append(
+        icon,
+        text
+    );
 
     button.addEventListener(
         "click",
@@ -13237,6 +13506,483 @@ setupNameSaving() {
     });
 }
 
+
+    renderChatMessageContent(container, message) {
+        if (message?.message_type === "confetti") {
+            this.renderConfettiMessage(
+                container,
+                message
+            );
+            return;
+        }
+
+        this.renderMessageContent(
+            container,
+            message?.message || ""
+        );
+    }
+
+    createConfettiSpoilerOverlay(seedValue = "") {
+        const overlay =
+            document.createElement("span");
+
+        overlay.className =
+            "jami-confetti-spoiler-overlay";
+
+        const colours = [
+            "#ff9f0a",
+            "#ff375f",
+            "#ffd60a",
+            "#0a84ff",
+            "#64d2ff",
+            "#bf5af2",
+            "#30d158",
+            "#ff453a"
+        ];
+
+        let seed = 2166136261;
+
+        for (const char of String(seedValue)) {
+            seed ^= char.charCodeAt(0);
+            seed = Math.imul(seed, 16777619);
+        }
+
+        const random = () => {
+            seed += 0x6D2B79F5;
+
+            let value = seed;
+
+            value = Math.imul(
+                value ^ value >>> 15,
+                value | 1
+            );
+
+            value ^= value +
+                Math.imul(
+                    value ^ value >>> 7,
+                    value | 61
+                );
+
+            return (
+                (
+                    value ^
+                    value >>> 14
+                ) >>> 0
+            ) / 4294967296;
+        };
+
+        const pieceCount =
+            8 + Math.floor(random() * 7);
+
+        const occupied = [];
+
+        for (
+            let index = 0;
+            index < pieceCount;
+            index += 1
+        ) {
+            let left = 0;
+            let top = 0;
+            let attempts = 0;
+
+            do {
+                const lane =
+                    (
+                        index +
+                        0.35 +
+                        random() * 0.30
+                    ) /
+                    pieceCount;
+
+                left =
+                    5 +
+                    lane * 90 +
+                    (random() - 0.5) * 8;
+
+                left =
+                    Math.max(
+                        5,
+                        Math.min(95, left)
+                    );
+
+                top =
+                    13 +
+                    random() * 74;
+
+                attempts += 1;
+            } while (
+                attempts < 24 &&
+                occupied.some(point => {
+                    const horizontalGap =
+                        Math.abs(
+                            point.left - left
+                        );
+
+                    const verticalGap =
+                        Math.abs(
+                            point.top - top
+                        );
+
+                    return (
+                        horizontalGap < 7.5 &&
+                        verticalGap < 22
+                    );
+                })
+            );
+
+            occupied.push({ left, top });
+
+            const piece =
+                document.createElement("i");
+
+            piece.className =
+                "jami-confetti-spoiler-piece";
+
+            const width =
+                2 + Math.floor(random() * 4);
+
+            const height =
+                2 + Math.floor(random() * 6);
+
+            const rotation =
+                -75 + random() * 150;
+
+            piece.style.left =
+                `${left}%`;
+
+            piece.style.top =
+                `${top}%`;
+
+            piece.style.width =
+                `${width}px`;
+
+            piece.style.height =
+                `${height}px`;
+
+            piece.style.background =
+                colours[
+                    Math.floor(
+                        random() *
+                        colours.length
+                    )
+                ];
+
+            piece.style.opacity =
+                `${0.74 + random() * 0.22}`;
+
+            piece.style.transform =
+                `translate(-50%, -50%) rotate(${rotation}deg)`;
+
+            piece.style.borderRadius =
+                random() > 0.8
+                    ? "999px"
+                    : "1px";
+
+            overlay.appendChild(piece);
+        }
+
+        return overlay;
+    }
+
+    renderConfettiMessage(container, message) {
+        container.replaceChildren();
+
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+        button.className =
+            "jami-confetti-message";
+
+        const icon =
+            document.createElement("span");
+
+        icon.className =
+            "jami-confetti-message-icon";
+        icon.textContent = "🎉";
+
+        const content =
+            document.createElement("span");
+
+        content.className =
+            "jami-confetti-message-content";
+
+        this.renderMessageContent(
+            content,
+            message?.message || ""
+        );
+
+        const messageId =
+            Number(message?.id);
+
+        const key =
+            Number.isInteger(messageId) &&
+            messageId > 0
+                ? String(messageId)
+                : "";
+
+        const revealed =
+            key &&
+            this.revealedConfettiMessages.has(
+                key
+            );
+
+        button.classList.toggle(
+            "is-revealed",
+            Boolean(revealed)
+        );
+
+        button.setAttribute(
+            "aria-label",
+            revealed
+                ? "replay confetti message"
+                : "reveal confetti message"
+        );
+
+        const spoilerOverlay =
+            this.createConfettiSpoilerOverlay(
+                key ||
+                message?.createdAt ||
+                message?.message ||
+                ""
+            );
+
+        button.append(
+            icon,
+            content,
+            spoilerOverlay
+        );
+
+        button.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (key) {
+                    this.revealedConfettiMessages.add(
+                        key
+                    );
+                }
+
+                button.classList.add(
+                    "is-revealed"
+                );
+
+                button.setAttribute(
+                    "aria-label",
+                    "replay confetti message"
+                );
+
+                this.playConfettiEffect(
+                    message?.message || ""
+                );
+            }
+        );
+
+        container.appendChild(button);
+    }
+
+    playConfettiEffect(message) {
+        if (!this.window) {
+            return;
+        }
+
+        this.window
+            .querySelectorAll(
+                ".jami-confetti-effect-layer"
+            )
+            .forEach(element =>
+                element.remove()
+            );
+
+        const layer =
+            document.createElement("div");
+
+        layer.className =
+            "jami-confetti-effect-layer";
+        layer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        const burst =
+            document.createElement("div");
+
+        burst.className =
+            "jami-confetti-burst";
+
+        const particleCount = 64;
+
+        for (
+            let index = 0;
+            index < particleCount;
+            index += 1
+        ) {
+            const particle =
+                document.createElement("i");
+
+            const angle =
+                Math.random() * Math.PI * 2;
+
+            const distance =
+                95 + Math.random() * 170;
+
+            particle.className =
+                `jami-confetti-particle jami-confetti-colour-${
+                    (index % 8) + 1
+                }`;
+
+            particle.style.setProperty(
+                "--confetti-x",
+                `${Math.cos(angle) * distance}px`
+            );
+
+            particle.style.setProperty(
+                "--confetti-y",
+                `${Math.sin(angle) * distance}px`
+            );
+
+            particle.style.setProperty(
+                "--confetti-delay",
+                `${Math.random() * 120}ms`
+            );
+
+            particle.style.setProperty(
+                "--confetti-rotate",
+                `${180 + Math.random() * 720}deg`
+            );
+
+            burst.appendChild(particle);
+        }
+
+        const effectMessage =
+            document.createElement("div");
+
+        effectMessage.className =
+            "jami-confetti-effect-message theme-heading";
+
+        const effectIcon =
+            document.createElement("span");
+
+        effectIcon.className =
+            "jami-confetti-effect-icon";
+        effectIcon.textContent = "🎉";
+
+        const effectText =
+            document.createElement("span");
+
+        effectText.className =
+            "jami-confetti-effect-text";
+
+        this.renderMessageContent(
+            effectText,
+            message
+        );
+
+        effectMessage.append(
+            effectIcon,
+            effectText
+        );
+
+        layer.append(
+            burst,
+            effectMessage
+        );
+
+        this.window.appendChild(layer);
+
+        window.setTimeout(
+            () => layer.remove(),
+            3000
+        );
+    }
+
+    async postConfettiMessage() {
+        if (!this.isAdmin || !this.adminKey) {
+            return;
+        }
+
+        const message = window.prompt(
+            "confetti message:"
+        );
+
+        if (message === null) {
+            return;
+        }
+
+        const cleaned =
+            message.trim().slice(0, 250);
+
+        if (!cleaned) {
+            window.alert(
+                "confetti message cannot be empty"
+            );
+            return;
+        }
+
+        const name =
+            this.discordUser?.displayName ||
+            this.nameInput?.value.trim() ||
+            "anonymous";
+
+        const avatar =
+            this.discordUser?.avatarUrl ||
+            this.avatar;
+
+        const primaryGuild =
+            this.discordUser?.primaryGuild ||
+            null;
+
+        try {
+            const response = await fetch(
+                `${this.API}/api/admin/chat/confetti`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                        "Authorization":
+                            `Bearer ${this.adminKey}`
+                    },
+                    body: JSON.stringify({
+                        clientId:
+                            this.clientId,
+                        name,
+                        avatar,
+                        message: cleaned,
+                        discordServerTag:
+                            primaryGuild?.tag ||
+                            null,
+                        discordServerBadgeUrl:
+                            primaryGuild?.badgeUrl ||
+                            null
+                    })
+                }
+            );
+
+            const result =
+                await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    result?.error ||
+                    "could not post confetti message"
+                );
+            }
+        } catch (error) {
+            console.error(
+                "could not post confetti message:",
+                error
+            );
+
+            window.alert(
+                error.message ||
+                "could not post confetti message"
+            );
+        }
+    }
+
 	renderMessageContent(container, message) {
     container.replaceChildren();
 
@@ -16011,9 +16757,283 @@ keepTitleBarInViewport() {
     );
 }
 	
+	syncChatPastelTheme() {
+    if (!this.window) {
+        return;
+    }
+
+    const rootTheme =
+        document.documentElement
+            .getAttribute(
+                "data-chat-pastel"
+            ) || "";
+
+    if (
+        rootTheme === "stars" ||
+        rootTheme === "paws"
+    ) {
+        this.window.dataset.chatPastel =
+            rootTheme;
+        this.renderChatPastelDecor();
+        return;
+    }
+
+    const themeName =
+        String(
+            localStorage.getItem("theme") ||
+            "Stars"
+        ).trim();
+
+    if (themeName === "Stars") {
+        this.window.dataset.chatPastel =
+            "stars";
+    } else if (themeName === "Default") {
+        this.window.dataset.chatPastel =
+            "paws";
+    } else {
+        delete this.window.dataset.chatPastel;
+    }
+
+    this.renderChatPastelDecor();
+}
+
+	renderChatPastelDecor() {
+    const main =
+        this.window?.querySelector(
+            "#chatMain"
+        );
+
+    if (!main) {
+        return;
+    }
+
+    main.querySelector(
+        ".jami-chat-pastel-decor"
+    )?.remove();
+
+    const theme =
+        this.window?.dataset.chatPastel ||
+        "";
+
+    if (
+        theme !== "stars" &&
+        theme !== "paws"
+    ) {
+        return;
+    }
+
+    const layer =
+        document.createElement("div");
+
+    layer.className =
+        "jami-chat-pastel-decor";
+
+    if (theme === "stars") {
+        const colours = [
+            "#d7c8ff",
+            "#aee4ff",
+            "#ffc7e6",
+            "#ffe9a8",
+            "#c8f0ff",
+            "#e6ddff"
+        ];
+
+        const count =
+            15 +
+            Math.floor(
+                Math.random() * 6
+            );
+
+        const occupied = [];
+
+        for (
+            let index = 0;
+            index < count;
+            index += 1
+        ) {
+            let left = 0;
+            let top = 0;
+            let attempts = 0;
+
+            do {
+                left =
+                    6 +
+                    Math.random() * 88;
+
+                top =
+                    7 +
+                    Math.random() * 86;
+
+                attempts += 1;
+            } while (
+                attempts < 32 &&
+                occupied.some(point =>
+                    Math.hypot(
+                        point.left - left,
+                        point.top - top
+                    ) < 15
+                )
+            );
+
+            occupied.push({
+                left,
+                top
+            });
+
+            const star =
+                document.createElement("i");
+
+            star.className =
+                "jami-chat-star jami-chat-star-four";
+
+            const size =
+                9 +
+                Math.random() * 11;
+
+            star.style.left =
+                `${left}%`;
+
+            star.style.top =
+                `${top}%`;
+
+            star.style.width =
+                `${size}px`;
+
+            star.style.height =
+                `${size}px`;
+
+            star.style.background =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            star.style.opacity =
+                `${.78 + Math.random() * .18}`;
+
+            star.style.transform =
+                `translate(-50%, -50%) rotate(${Math.random() * 24 - 12}deg)`;
+
+            layer.appendChild(star);
+        }
+    } else {
+        const colours = [
+            "#ffc8da",
+            "#bfe8ce",
+            "#ffe0bb",
+            "#ddd0ff"
+        ];
+
+        const count =
+            8 +
+            Math.floor(
+                Math.random() * 5
+            );
+
+        const occupied = [];
+
+        for (
+            let index = 0;
+            index < count;
+            index += 1
+        ) {
+            let left = 0;
+            let top = 0;
+            let attempts = 0;
+
+            do {
+                left =
+                    7 +
+                    Math.random() * 86;
+
+                top =
+                    9 +
+                    Math.random() * 82;
+
+                attempts += 1;
+            } while (
+                attempts < 24 &&
+                occupied.some(point =>
+                    Math.hypot(
+                        point.left - left,
+                        point.top - top
+                    ) < 18
+                )
+            );
+
+            occupied.push({
+                left,
+                top
+            });
+
+            const paw =
+                document.createElement("i");
+
+            paw.className =
+                "jami-chat-paw";
+
+            const size =
+                15 +
+                Math.random() * 8;
+
+            paw.style.left =
+                `${left}%`;
+
+            paw.style.top =
+                `${top}%`;
+
+            paw.style.width =
+                `${size}px`;
+
+            paw.style.height =
+                `${size}px`;
+
+            paw.style.backgroundColor =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            paw.style.opacity =
+                `${.16 + Math.random() * .13}`;
+
+            paw.style.transform =
+                `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
+
+            layer.appendChild(paw);
+        }
+    }
+
+    main.appendChild(layer);
+}
+
+	setupChatPastelThemeSync() {
+    this.syncChatPastelTheme();
+
+    window.addEventListener(
+        "site-theme-change",
+        () => {
+            this.syncChatPastelTheme();
+        }
+    );
+
+    window.addEventListener(
+        "storage",
+        event => {
+            if (event.key === "theme") {
+                this.syncChatPastelTheme();
+            }
+        }
+    );
+}
+
 	applyCurrentTheme() {
     const themeName =
-        localStorage.getItem("theme") || "Default";
+        localStorage.getItem("theme") || "Stars";
 
     if (typeof window.applyTheme === "function") {
         window.applyTheme(themeName);
