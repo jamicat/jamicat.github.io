@@ -8448,59 +8448,143 @@ closeModerationMenu() {
 openModerationMenu(x, y, message) {
     this.closeModerationMenu();
 
-    const menu = document.createElement("div");
-    menu.className = [
-        "fixed", "z-[100000]", "w-44", "overflow-hidden",
-        "rounded-xl", "border", "border-white/15", "bg-black/90",
-        "py-1", "text-[11px]", "text-white", "shadow-xl", "backdrop-blur-xl",
-        "theme-body"
-    ].join(" ");
+    const menu =
+        document.createElement("div");
 
-    const isImage = Boolean(message.imageUpload);
-    const ownsMessage = Boolean(
-        message.client_id && message.client_id === this.clientId
-    );
+    menu.className =
+        "jami-chat-context-menu theme-body";
+
+    const isImage =
+        Boolean(message.imageUpload);
+
+    const ownsMessage =
+        Boolean(
+            message.client_id &&
+            message.client_id ===
+                this.clientId
+        );
+
     const canEdit =
         !isImage &&
-        message.message_type !== "confetti" &&
+        message.message_type !==
+            "confetti" &&
         Boolean(message.id) &&
-        (ownsMessage || this.isAdmin);
-    const canDelete = ownsMessage || this.isAdmin;
+        (
+            ownsMessage ||
+            this.isAdmin
+        );
+
+    const canDelete =
+        ownsMessage ||
+        this.isAdmin;
 
     const buttons = [];
 
-    if (canEdit) {
-        buttons.push(this.createModerationMenuButton("edit", () => {
-            this.closeModerationMenu();
-            this.beginInlineEdit(message);
-        }));
-    }
+    const addDivider = () => {
+        const divider =
+            document.createElement("div");
 
-    buttons.push(this.createModerationMenuButton("reply", () => {
-        this.closeModerationMenu();
-        this.setReplyTarget(message);
-    }));
+        divider.className =
+            "jami-chat-context-divider";
+
+        buttons.push(divider);
+    };
+
+    /*
+        own message:
+        edit, reply
+
+        somebody else's message:
+        reply first; admins can edit underneath it
+    */
+    if (ownsMessage) {
+        if (canEdit) {
+            buttons.push(
+                this.createModerationMenuButton(
+                    "edit",
+                    () => {
+                        this.closeModerationMenu();
+                        this.beginInlineEdit(
+                            message
+                        );
+                    }
+                )
+            );
+        }
+
+        buttons.push(
+            this.createModerationMenuButton(
+                "reply",
+                () => {
+                    this.closeModerationMenu();
+                    this.setReplyTarget(
+                        message
+                    );
+                }
+            )
+        );
+    } else {
+        buttons.push(
+            this.createModerationMenuButton(
+                "reply",
+                () => {
+                    this.closeModerationMenu();
+                    this.setReplyTarget(
+                        message
+                    );
+                }
+            )
+        );
+
+        if (canEdit) {
+            buttons.push(
+                this.createModerationMenuButton(
+                    "edit",
+                    () => {
+                        this.closeModerationMenu();
+                        this.beginInlineEdit(
+                            message
+                        );
+                    }
+                )
+            );
+        }
+    }
 
     if (canDelete) {
-        const divider = document.createElement("div");
-        divider.className = "my-1 border-t border-white/10";
-        buttons.push(divider);
+        addDivider();
 
-        buttons.push(this.createModerationMenuButton("delete message", () => {
-            this.closeModerationMenu();
-            if (message.imageUploadId) {
-                this.deleteImageUpload(message.imageUploadId);
-            } else {
-                this.deleteMessage(message.id);
-            }
-        }));
+        buttons.push(
+            this.createModerationMenuButton(
+                "delete message",
+                () => {
+                    this.closeModerationMenu();
+
+                    if (message.imageUploadId) {
+                        this.deleteImageUpload(
+                            message.imageUploadId
+                        );
+                    } else {
+                        this.deleteMessage(
+                            message.id
+                        );
+                    }
+                },
+                {
+                    danger: true
+                }
+            )
+        );
     }
 
-    const savedRemixDivider =
-        document.createElement("div");
-    savedRemixDivider.className =
-        "my-1 border-t border-white/10";
-    buttons.push(savedRemixDivider);
+    /*
+        saved remixes is available to everyone.
+        If there was no delete group, keep a divider
+        between reply/edit and the utility section.
+    */
+    if (!canDelete) {
+        addDivider();
+    }
 
     buttons.push(
         this.createModerationMenuButton(
@@ -8515,6 +8599,51 @@ openModerationMenu(x, y, message) {
     if (this.isAdmin) {
         buttons.push(
             this.createModerationMenuButton(
+                "edit message of the day",
+                () => {
+                    this.closeModerationMenu();
+                    this.editMotd();
+                }
+            )
+        );
+
+        buttons.push(
+            this.createModerationMenuButton(
+                "post confetti message",
+                () => {
+                    this.closeModerationMenu();
+                    this.postConfettiMessage();
+                }
+            )
+        );
+
+        buttons.push(
+            this.createModerationMenuButton(
+                "copy message ID",
+                async () => {
+                    const identifier =
+                        message.imageUploadId ||
+                        message.id;
+
+                    try {
+                        await navigator.clipboard
+                            .writeText(
+                                String(identifier)
+                            );
+                    } catch (error) {
+                        console.error(
+                            "could not copy message ID:",
+                            error
+                        );
+                    }
+
+                    this.closeModerationMenu();
+                }
+            )
+        );
+
+        buttons.push(
+            this.createModerationMenuButton(
                 "name history",
                 () => {
                     this.closeModerationMenu();
@@ -8527,52 +8656,84 @@ openModerationMenu(x, y, message) {
             )
         );
 
-        buttons.push(this.createModerationMenuButton(`ban ${message.name || "user"}`, async () => {
-            this.closeModerationMenu();
-            await this.banClient(message.client_id, message.name);
-        }));
+        /*
+            destructive/global admin actions live
+            together beneath the bottom divider.
+        */
+        addDivider();
 
-        buttons.push(this.createModerationMenuButton("delete user's messages", async () => {
-            this.closeModerationMenu();
-            await this.deleteUserContent(
-                message.client_id,
-                message.name
-            );
-        }));
+        buttons.push(
+            this.createModerationMenuButton(
+                "delete user's messages",
+                async () => {
+                    this.closeModerationMenu();
 
-        buttons.push(this.createModerationMenuButton("edit message of the day", () => {
-            this.closeModerationMenu();
-            this.editMotd();
-        }));
+                    await this.deleteUserContent(
+                        message.client_id,
+                        message.name
+                    );
+                }
+            )
+        );
 
-        buttons.push(this.createModerationMenuButton("post confetti message", () => {
-            this.closeModerationMenu();
-            this.postConfettiMessage();
-        }));
+        buttons.push(
+            this.createModerationMenuButton(
+                `ban ${
+                    message.name ||
+                    "user"
+                }`,
+                async () => {
+                    this.closeModerationMenu();
 
-        buttons.push(this.createModerationMenuButton("copy message ID", async () => {
-            const identifier = message.imageUploadId || message.id;
-            try { await navigator.clipboard.writeText(String(identifier)); }
-            catch (error) { console.error("could not copy message ID:", error); }
-            this.closeModerationMenu();
-        }));
+                    await this.banClient(
+                        message.client_id,
+                        message.name
+                    );
+                }
+            )
+        );
 
-        const divider2 = document.createElement("div");
-        divider2.className = "my-1 border-t border-white/10";
-        buttons.push(divider2);
-        buttons.push(this.createModerationMenuButton("clear chat", () => {
-            this.closeModerationMenu();
-            this.clearEntireChat();
-        }));
+        buttons.push(
+            this.createModerationMenuButton(
+                "clear chat",
+                () => {
+                    this.closeModerationMenu();
+                    this.clearEntireChat();
+                }
+            )
+        );
     }
 
     menu.append(...buttons);
     document.body.appendChild(menu);
 
-    const rect = menu.getBoundingClientRect();
+    const rect =
+        menu.getBoundingClientRect();
+
     const padding = 8;
-    menu.style.left = `${Math.max(padding, Math.min(x, window.innerWidth - rect.width - padding))}px`;
-    menu.style.top = `${Math.max(padding, Math.min(y, window.innerHeight - rect.height - padding))}px`;
+
+    menu.style.left =
+        `${Math.max(
+            padding,
+            Math.min(
+                x,
+                window.innerWidth -
+                    rect.width -
+                    padding
+            )
+        )}px`;
+
+    menu.style.top =
+        `${Math.max(
+            padding,
+            Math.min(
+                y,
+                window.innerHeight -
+                    rect.height -
+                    padding
+            )
+        )}px`;
+
     this.moderationMenu = menu;
 }
 
@@ -8582,22 +8743,8 @@ openChatContextMenu(x, y) {
     const menu =
         document.createElement("div");
 
-    menu.className = [
-        "fixed",
-        "z-[100000]",
-        "w-44",
-        "overflow-hidden",
-        "rounded-xl",
-        "border",
-        "border-white/15",
-        "bg-black/90",
-        "py-1",
-        "text-[11px]",
-        "text-white",
-        "shadow-xl",
-        "backdrop-blur-xl",
-        "theme-body"
-    ].join(" ");
+    menu.className =
+        "jami-chat-context-menu theme-body";
 
     menu.appendChild(
         this.createModerationMenuButton(
@@ -8614,7 +8761,7 @@ openChatContextMenu(x, y) {
             document.createElement("div");
 
         divider.className =
-            "my-1 border-t border-white/10";
+            "jami-chat-context-divider";
 
         menu.appendChild(divider);
 
@@ -9551,7 +9698,7 @@ openMemberModerationMenu(x, y, member) {
     const menu = document.createElement("div");
 
     menu.className =
-        "fixed z-[100000] w-44 rounded-xl border border-white/15 bg-black/90 py-1 text-[11px] text-white shadow-xl backdrop-blur-xl";
+        "jami-chat-context-menu theme-body";
 
     const menuWidth = 176;
 const menuHeight = 60;
@@ -9608,24 +9755,129 @@ menu.style.top =
 
 	createModerationMenuButton(
     label,
-    onClick
+    onClick,
+    options = {}
 ) {
     const button =
         document.createElement("button");
 
     button.type = "button";
 
-    button.className = [
-        "block",
-        "w-full",
-        "px-3",
-        "py-2",
-        "text-left",
-        "transition",
-        "hover:bg-white/10"
-    ].join(" ");
+    button.className =
+        "jami-chat-context-item";
 
-    button.textContent = label;
+    if (options.danger === true) {
+        button.classList.add(
+            "jami-chat-context-item-danger"
+        );
+    }
+
+    const icon =
+        document.createElement("span");
+
+    icon.className =
+        "jami-chat-context-icon";
+
+    icon.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    const normalized =
+        String(label).toLowerCase();
+
+    const icons = {
+        edit:
+            '<svg viewBox="0 0 24 24"><path d="M4 20h4l11-11-4-4L4 16v4Zm9.5-13.5 4 4"/></svg>',
+        reply:
+            '<svg viewBox="0 0 24 24"><path d="M9 8 4 12l5 4v-3h4.5c3.2 0 5.5 1.4 6.5 4-.2-5.3-2.8-8-7.5-8H9V8Z"/></svg>',
+        delete:
+            '<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3m-8 0 1 13h8l1-13M10 11v5m4-5v5"/></svg>',
+        remixes:
+            '<svg viewBox="0 0 24 24"><path d="M4 6h10v10H4zM10 10h10v10H10z"/></svg>',
+        motd:
+            '<svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg>',
+        confetti:
+            '<svg viewBox="0 0 24 24"><path d="m5 19 4-10 6 6-10 4Zm8-11 2-3m2 5 3-1m-8-5 1-2m6 12 2 1"/></svg>',
+        copy:
+            '<svg viewBox="0 0 24 24"><path d="M8 8h11v11H8zM5 16H4V5h11v1"/></svg>',
+        history:
+            '<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2-5.3L4 9m0-5v5h5M12 8v5l3 2"/></svg>',
+        userDelete:
+            '<svg viewBox="0 0 24 24"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-6 9c.8-4 3-6 6-6 1 0 1.9.2 2.7.6M15 15l6 6m0-6-6 6"/></svg>',
+        ban:
+            '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="m6.5 6.5 11 11"/></svg>',
+        clear:
+            '<svg viewBox="0 0 24 24"><path d="M4 7h16M8 7V4h8v3m-9 0 1 13h8l1-13"/></svg>'
+    };
+
+    let iconMarkup =
+        icons.edit;
+
+    if (normalized === "reply") {
+        iconMarkup = icons.reply;
+    } else if (
+        normalized ===
+        "delete message"
+    ) {
+        iconMarkup = icons.delete;
+    } else if (
+        normalized ===
+        "saved remixes"
+    ) {
+        iconMarkup = icons.remixes;
+    } else if (
+        normalized ===
+        "edit message of the day"
+    ) {
+        iconMarkup = icons.motd;
+    } else if (
+        normalized ===
+        "post confetti message"
+    ) {
+        iconMarkup = icons.confetti;
+    } else if (
+        normalized ===
+        "copy message id"
+    ) {
+        iconMarkup = icons.copy;
+    } else if (
+        normalized ===
+        "name history"
+    ) {
+        iconMarkup = icons.history;
+    } else if (
+        normalized ===
+        "delete user's messages"
+    ) {
+        iconMarkup = icons.userDelete;
+    } else if (
+        normalized.startsWith("ban ")
+    ) {
+        iconMarkup = icons.ban;
+    } else if (
+        normalized ===
+        "clear chat"
+    ) {
+        iconMarkup = icons.clear;
+    }
+
+    icon.innerHTML =
+        iconMarkup;
+
+    const text =
+        document.createElement("span");
+
+    text.className =
+        "jami-chat-context-label";
+
+    text.textContent =
+        label;
+
+    button.append(
+        icon,
+        text
+    );
 
     button.addEventListener(
         "click",
