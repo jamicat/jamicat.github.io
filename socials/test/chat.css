@@ -7271,3 +7271,96 @@ html[data-chat-pastel="paws"]
     align-items: center !important;
 }
 
+html[data-chat-pastel="paws"]
+.jami-chat-context-menu
+.jami-chat-context-item-danger,
+html[data-chat-pastel="paws"]
+.jami-chat-context-menu
+.jami-chat-context-item-danger * {
+    color: #d94d67 !important;
+}
+
+html[data-chat-pastel="paws"]
+.jami-chat-context-menu
+.jami-chat-context-item-danger:hover,
+html[data-chat-pastel="paws"]
+.jami-chat-context-menu
+.jami-chat-context-item-danger:focus-visible {
+    color: #c53e59 !important;
+    background:
+        rgba(217, 77, 103, .10) !important;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-message-emoji,
+#chatWindow[data-chat-pastel]
+.jami-cute-message-plus,
+#chatWindow[data-chat-pastel]
+.jami-cute-send-arrow,
+#chatWindow[data-chat-pastel]
+.jami-cute-avatar-button {
+    transition:
+        background-color 90ms ease,
+        opacity 90ms ease !important;
+    transform: none !important;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-message-emoji:hover,
+#chatWindow[data-chat-pastel]
+.jami-cute-message-plus:hover,
+#chatWindow[data-chat-pastel]
+.jami-cute-send-arrow:hover,
+#chatWindow[data-chat-pastel]
+.jami-cute-avatar-button:hover {
+    transform: none !important;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-message-emoji:active,
+#chatWindow[data-chat-pastel]
+.jami-cute-message-plus:active,
+#chatWindow[data-chat-pastel]
+.jami-cute-send-arrow:active,
+#chatWindow[data-chat-pastel]
+.jami-cute-avatar-button:active {
+    transform: none !important;
+    opacity: .78;
+}
+
+#chatWindow[data-chat-pastel]
+#chatAvatarPicker {
+    transition:
+        opacity 100ms ease !important;
+    transform: none !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatMinimize,
+#chatWindow[data-chat-pastel="paws"].h-10
+#chatMinimize {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+    position: static !important;
+    top: auto !important;
+    margin: 0 !important;
+    padding: 0 0 2px 0 !important;
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    line-height: 26px !important;
+    transform: translateY(1px) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatTitleBar > div,
+#chatWindow[data-chat-pastel="paws"]
+#chatTitleBar > div > div {
+    align-items: center !important;
+}
+
