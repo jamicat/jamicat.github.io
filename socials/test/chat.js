@@ -16931,6 +16931,10 @@ keepTitleBarInViewport() {
             );
     }
 
+    this.applyChatComposerLayout(
+        cleaned
+    );
+
     this.chatThemeMenu
         ?.querySelectorAll(
             "[data-chat-theme-choice]"
@@ -17019,6 +17023,265 @@ keepTitleBarInViewport() {
             "opacity-0",
             !shouldOpen
         );
+}
+
+	applyChatComposerLayout(themeName) {
+    if (!this.window) {
+        return;
+    }
+
+    const wrap =
+        this.window.querySelector(
+            ".jami-cute-composer-wrap"
+        );
+
+    const cuteRow =
+        wrap?.querySelector(
+            ".jami-cute-composer-row"
+        );
+
+    const avatarWrap =
+        this.avatarButton?.parentElement;
+
+    const messageShell =
+        this.messageInput?.closest(
+            ".jami-cute-message-shell"
+        );
+
+    const profileNameWrap =
+        this.avatarPicker?.querySelector(
+            ".jami-cute-profile-name-wrap"
+        );
+
+    const profileTitle =
+        this.avatarPicker?.querySelector(
+            ".jami-cute-profile-title"
+        );
+
+    const avatarLabel =
+        this.avatarPicker?.querySelector(
+            ".jami-cute-avatar-label"
+        );
+
+    if (
+        !wrap ||
+        !cuteRow ||
+        !avatarWrap ||
+        !messageShell
+    ) {
+        return;
+    }
+
+    let originalRoot =
+        wrap.querySelector(
+            ".jami-original-composer"
+        );
+
+    if (!originalRoot) {
+        originalRoot =
+            document.createElement("div");
+
+        originalRoot.className =
+            "jami-original-composer";
+
+        originalRoot.innerHTML =
+            '<div class="jami-original-name-row">' +
+            '<div class="jami-original-name-field"></div>' +
+            '</div>' +
+            '<div class="jami-original-message-row"></div>' +
+            '<div class="jami-original-send-row"></div>';
+
+        wrap.insertBefore(
+            originalRoot,
+            cuteRow
+        );
+    }
+
+    const originalNameRow =
+        originalRoot.querySelector(
+            ".jami-original-name-row"
+        );
+
+    const originalNameField =
+        originalRoot.querySelector(
+            ".jami-original-name-field"
+        );
+
+    const originalMessageRow =
+        originalRoot.querySelector(
+            ".jami-original-message-row"
+        );
+
+    const originalSendRow =
+        originalRoot.querySelector(
+            ".jami-original-send-row"
+        );
+
+    if (themeName === "original") {
+        originalRoot.hidden = false;
+        cuteRow.hidden = true;
+
+        originalNameRow.insertBefore(
+            avatarWrap,
+            originalNameField
+        );
+
+        if (this.nameInput) {
+            originalNameField.appendChild(
+                this.nameInput
+            );
+
+            this.nameInput.classList.add(
+                "jami-original-name-input"
+            );
+        }
+
+        if (
+            this.discordUsernameElement
+        ) {
+            originalNameField.appendChild(
+                this.discordUsernameElement
+            );
+        }
+
+        if (this.discordLogoutButton) {
+            originalNameField.appendChild(
+                this.discordLogoutButton
+            );
+        }
+
+        if (this.imageUploadButton) {
+            originalMessageRow.appendChild(
+                this.imageUploadButton
+            );
+
+            this.imageUploadButton.textContent =
+                "🖼️";
+
+            this.imageUploadButton.classList.add(
+                "jami-original-image-button"
+            );
+        }
+
+        originalMessageRow.appendChild(
+            messageShell
+        );
+
+        if (this.watchPartyButton) {
+            originalMessageRow.appendChild(
+                this.watchPartyButton
+            );
+        }
+
+        if (this.sendButton) {
+            originalSendRow.appendChild(
+                this.sendButton
+            );
+
+            this.sendButton.textContent =
+                "send";
+
+            this.sendButton.classList.add(
+                "jami-original-send-button"
+            );
+        }
+
+        if (profileTitle) {
+            profileTitle.textContent =
+                "select avatar";
+        }
+
+        if (avatarLabel) {
+            avatarLabel.hidden = true;
+        }
+
+        return;
+    }
+
+    originalRoot.hidden = true;
+    cuteRow.hidden = false;
+
+    cuteRow.insertBefore(
+        avatarWrap,
+        cuteRow.firstChild
+    );
+
+    if (
+        profileNameWrap &&
+        this.nameInput
+    ) {
+        profileNameWrap.appendChild(
+            this.nameInput
+        );
+
+        this.nameInput.classList.remove(
+            "jami-original-name-input"
+        );
+    }
+
+    if (
+        profileNameWrap &&
+        this.discordUsernameElement
+    ) {
+        profileNameWrap.appendChild(
+            this.discordUsernameElement
+        );
+    }
+
+    if (
+        this.avatarPicker &&
+        this.discordLogoutButton
+    ) {
+        this.avatarPicker.appendChild(
+            this.discordLogoutButton
+        );
+    }
+
+    if (this.imageUploadButton) {
+        messageShell.insertBefore(
+            this.imageUploadButton,
+            this.sendButton
+        );
+
+        this.imageUploadButton.textContent =
+            "+";
+
+        this.imageUploadButton.classList.remove(
+            "jami-original-image-button"
+        );
+    }
+
+    if (this.sendButton) {
+        messageShell.appendChild(
+            this.sendButton
+        );
+
+        this.sendButton.textContent =
+            "➜";
+
+        this.sendButton.classList.remove(
+            "jami-original-send-button"
+        );
+    }
+
+    cuteRow.appendChild(
+        messageShell
+    );
+
+    if (this.watchPartyButton) {
+        cuteRow.appendChild(
+            this.watchPartyButton
+        );
+    }
+
+    if (profileTitle) {
+        profileTitle.textContent =
+            "profile";
+    }
+
+    if (avatarLabel) {
+        avatarLabel.hidden = false;
+    }
 }
 
 	renderChatPastelDecor() {
