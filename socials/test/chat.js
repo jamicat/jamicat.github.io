@@ -316,7 +316,6 @@ this.loadHistory()
 
     windowElement.id = "chatWindow";
     windowElement.className = `
-    terminal2
     fixed right-4 bottom-4 sm:right-8 sm:bottom-8 z-[99999]
     flex h-[500px] w-[480px] max-w-[calc(100vw-2rem)]
     flex-col overflow-hidden
@@ -15093,6 +15092,69 @@ toggleEmojiPicker() {
     }
 }
 
+positionMessageEmojiPicker() {
+    if (
+        !this.emojiPickerContainer ||
+        !this.emojiButton
+    ) {
+        return;
+    }
+
+    const anchorRect =
+        this.emojiButton
+            .getBoundingClientRect();
+
+    const pickerRect =
+        this.emojiPickerContainer
+            .getBoundingClientRect();
+
+    const width =
+        pickerRect.width || 320;
+
+    const height =
+        pickerRect.height || 460;
+
+    const left =
+        Math.max(
+            8,
+            Math.min(
+                window.innerWidth -
+                    width -
+                    8,
+                anchorRect.right -
+                    width
+            )
+        );
+
+    const aboveTop =
+        anchorRect.top -
+        height -
+        8;
+
+    const top =
+        aboveTop >= 8
+            ? aboveTop
+            : Math.min(
+                window.innerHeight -
+                    height -
+                    8,
+                anchorRect.bottom +
+                    8
+            );
+
+    Object.assign(
+        this.emojiPickerContainer.style,
+        {
+            position: "fixed",
+            left: `${left}px`,
+            top: `${Math.max(8, top)}px`,
+            right: "auto",
+            bottom: "auto",
+            zIndex: "100004"
+        }
+    );
+}
+
 positionReactionEmojiPicker(anchor) {
     if (
         !this.reactionEmojiPickerContainer ||
@@ -15238,6 +15300,15 @@ openEmojiPicker({
             "opacity-100"
         );
 
+        if (
+            this.emojiPickerContainer.parentNode !==
+            document.body
+        ) {
+            document.body.appendChild(
+                this.emojiPickerContainer
+            );
+        }
+
         this.emojiPickerContainer.classList.remove(
             "invisible",
             "pointer-events-none",
@@ -15246,6 +15317,12 @@ openEmojiPicker({
 
         this.emojiPickerContainer.classList.add(
             "opacity-100"
+        );
+
+        requestAnimationFrame(
+            () => {
+                this.positionMessageEmojiPicker();
+            }
         );
     }
 
