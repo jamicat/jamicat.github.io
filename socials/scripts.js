@@ -2680,12 +2680,6 @@ const watchPartyVisualizers = (() => {
     const output = new Float32Array(safeCount);
 
     for (let i = 0; i < safeCount; i++) {
-      /*
-       * hyper mode keeps the same logarithmic frequency bands,
-       * then adds entertainment-style dynamics: some transient
-       * peak energy, extra perceptual lift, fast attack and a
-       * slower release. The normal mode above remains unchanged.
-       */
       const combined = Math.min(
         1,
         values[i] * 0.72 + peakValues[i] * 0.38
