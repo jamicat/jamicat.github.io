@@ -7446,3 +7446,133 @@ html[data-chat-pastel="paws"]
     border-color: rgba(169, 79, 107, .18) !important;
     background: rgba(233, 138, 168, .10) !important;
 }
+
+#chatWindow[data-chat-pastel="paws"] {
+    --jami-ac-pink-rgb: 238, 157, 174;
+    --jami-ac-pink: rgba(238, 157, 174);
+}
+
+#chatWindow[data-chat-pastel="paws"],
+#chatWindow[data-chat-pastel="paws"] #chatTitle,
+#chatWindow[data-chat-pastel="paws"] #chatTitle::before,
+#chatWindow[data-chat-pastel="paws"] #chatMembersToggle,
+#chatWindow[data-chat-pastel="paws"] #chatConnectionStatus,
+#chatWindow[data-chat-pastel="paws"] #chatMinimize,
+#chatWindow[data-chat-pastel="paws"] #chatMotd,
+#chatWindow[data-chat-pastel="paws"] #chatMotd *,
+#chatWindow[data-chat-pastel="paws"] #chatMembersPanel,
+#chatWindow[data-chat-pastel="paws"] #chatMembersPanel *,
+#chatWindow[data-chat-pastel="paws"] #chatAvatarPicker,
+#chatWindow[data-chat-pastel="paws"] #chatAvatarPicker *,
+#chatWindow[data-chat-pastel="paws"] .chatMessageName,
+#chatWindow[data-chat-pastel="paws"] .chatText,
+#chatWindow[data-chat-pastel="paws"] .chatTime,
+#chatWindow[data-chat-pastel="paws"] .chatContinuationTime,
+#chatWindow[data-chat-pastel="paws"] .jami-discord-server-tag-text,
+#chatWindow[data-chat-pastel="paws"] .jami-reaction-pill,
+#chatWindow[data-chat-pastel="paws"] .jami-reaction-pill *,
+#chatWindow[data-chat-pastel="paws"] .jami-reaction-summary,
+#chatWindow[data-chat-pastel="paws"] .jami-reaction-summary *,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-profile-name-input,
+#chatWindow[data-chat-pastel="paws"] #chatDiscordUsername,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-message-shell,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-message-shell *,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-message-emoji,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-message-plus,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-send-arrow,
+#chatWindow[data-chat-pastel="paws"] #chatTitleBar button.theme-body {
+    color: rgba(238, 157, 174) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] #chatMessage::placeholder,
+#chatWindow[data-chat-pastel="paws"] #chatName::placeholder,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-profile-name-input::placeholder {
+    color: rgba(238, 157, 174) !important;
+    opacity: .72;
+}
+
+#chatWindow[data-chat-pastel="paws"] .jami-cute-send-arrow {
+    color: #fff !important;
+    background: rgba(238, 157, 174) !important;
+    border-color: rgba(238, 157, 174) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] .jami-cute-send-arrow:hover,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-send-arrow:active {
+    color: #fff !important;
+    background: rgba(238, 157, 174) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] .jami-cute-message-emoji:hover,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-message-emoji:active,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-message-plus:hover,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-message-plus:active,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-avatar-button:hover,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-avatar-button:active {
+    color: rgba(238, 157, 174) !important;
+    background-color: rgba(238, 157, 174, .14) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] .jami-discord-server-tag {
+    color: rgba(238, 157, 174) !important;
+    border-color: rgba(238, 157, 174, .28) !important;
+    background: rgba(238, 157, 174, .12) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] .jami-reaction-pill {
+    color: rgba(238, 157, 174) !important;
+    border-color: rgba(238, 157, 174, .28) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] .jami-reaction-pill:hover,
+#chatWindow[data-chat-pastel="paws"] .jami-reaction-pill[data-reacted="true"] {
+    color: rgba(238, 157, 174) !important;
+    border-color: rgba(238, 157, 174, .42) !important;
+    background: rgba(238, 157, 174, .14) !important;
+}
+
+html[data-chat-pastel="paws"] .jami-admin-glass-panel,
+html[data-chat-pastel="paws"] .jami-admin-glass-panel *,
+html[data-chat-pastel="paws"] #chatWatchPartyPanel,
+html[data-chat-pastel="paws"] #chatWatchPartyPanel *,
+html[data-chat-pastel="paws"] .jami-name-history-manager,
+html[data-chat-pastel="paws"] .jami-name-history-manager *,
+html[data-chat-pastel="paws"] .jami-reaction-toast,
+html[data-chat-pastel="paws"] .jami-reaction-toast * {
+    color: rgba(238, 157, 174) !important;
+}
+
+html[data-chat-pastel="paws"] .jami-admin-glass-panel button,
+html[data-chat-pastel="paws"] #chatWatchPartyPanel button,
+html[data-chat-pastel="paws"] .jami-name-history-manager button {
+    color: rgba(238, 157, 174) !important;
+}
+
+html[data-chat-pastel="paws"] .jami-admin-glass-panel button:disabled,
+html[data-chat-pastel="paws"] #chatWatchPartyPanel button:disabled,
+html[data-chat-pastel="paws"] .jami-name-history-manager button:disabled {
+    color: rgba(238, 157, 174, .48) !important;
+}
+
+html[data-chat-pastel="paws"] #chatWatchPartyPanel input,
+html[data-chat-pastel="paws"] #chatWatchPartyPanel input::placeholder,
+html[data-chat-pastel="paws"] .jami-admin-glass-panel input,
+html[data-chat-pastel="paws"] .jami-admin-glass-panel input::placeholder {
+    color: rgba(238, 157, 174) !important;
+}
+
+html[data-chat-pastel="paws"] .jami-reaction-toast {
+    border-color: rgba(238, 157, 174, .30) !important;
+}
+
+html[data-chat-pastel="paws"] .jami-name-history-close,
+html[data-chat-pastel="paws"] .jami-name-history-row {
+    border-color: rgba(238, 157, 174, .24) !important;
+}
+
+html[data-chat-pastel="paws"] .jami-name-history-delete,
+html[data-chat-pastel="paws"] .jami-chat-context-menu .jami-chat-context-item-danger,
+html[data-chat-pastel="paws"] .jami-chat-context-menu .jami-chat-context-item-danger * {
+    color: #d94d67 !important;
+}
+
