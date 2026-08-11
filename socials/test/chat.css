@@ -6869,3 +6869,133 @@ html[data-chat-pastel="paws"]
     border-bottom-color: transparent !important;
 }
 
+html[data-chat-pastel="paws"]
+.jami-admin-glass-panel,
+html[data-chat-pastel="paws"]
+.jami-admin-glass-panel *,
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel,
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel * {
+    color: #9d4a65 !important;
+}
+
+html[data-chat-pastel="paws"]
+.jami-admin-glass-panel
+.text-white,
+html[data-chat-pastel="paws"]
+.jami-admin-glass-panel
+.text-white\/90,
+html[data-chat-pastel="paws"]
+.jami-admin-glass-panel
+.text-white\/80,
+html[data-chat-pastel="paws"]
+.jami-admin-glass-panel
+.text-white\/70,
+html[data-chat-pastel="paws"]
+.jami-admin-glass-panel
+.text-white\/60,
+html[data-chat-pastel="paws"]
+.jami-admin-glass-panel
+.text-white\/50,
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel
+.text-white,
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel
+.text-white\/90,
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel
+.text-white\/80,
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel
+.text-white\/70,
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel
+.text-white\/60,
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel
+.text-white\/50 {
+    color: #9d4a65 !important;
+}
+
+html[data-chat-pastel="paws"]
+.jami-admin-glass-panel button,
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel button {
+    color: #94425f !important;
+}
+
+html[data-chat-pastel="paws"]
+.jami-admin-glass-panel button:disabled,
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel button:disabled {
+    color: rgba(148, 66, 95, .48) !important;
+}
+
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel input,
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel input::placeholder {
+    color: #9d4a65 !important;
+}
+
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel input::placeholder {
+    opacity: .52;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMessages {
+    padding-left: 6px !important;
+    padding-right: 8px !important;
+}
+
+#chatWindow[data-chat-pastel]
+.chatMessage {
+    padding-left: 5px !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMinimize {
+    position: relative;
+    top: -2px;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-message-emoji,
+#chatWindow[data-chat-pastel]
+.jami-cute-message-plus,
+#chatWindow[data-chat-pastel]
+.jami-cute-send-arrow {
+    transition:
+        background 120ms ease,
+        transform 120ms ease,
+        opacity 120ms ease !important;
+    transform-origin: center !important;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-message-plus {
+    position: relative;
+    top: -1px;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-message-emoji:hover,
+#chatWindow[data-chat-pastel]
+.jami-cute-message-plus:hover,
+#chatWindow[data-chat-pastel]
+.jami-cute-send-arrow:hover {
+    transform: scale(1.06) !important;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-message-emoji:active,
+#chatWindow[data-chat-pastel]
+.jami-cute-message-plus:active,
+#chatWindow[data-chat-pastel]
+.jami-cute-send-arrow:active {
+    transform: scale(.94) !important;
+}
+
