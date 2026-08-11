@@ -6525,3 +6525,157 @@ html[data-chat-pastel="paws"]
         rgba(167, 70, 89, .86);
 }
 
+#chatWindow[data-chat-pastel]
+.jami-cute-composer-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+#chatWindow[data-chat-pastel]
+#chatAvatarPicker {
+    width: 264px !important;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-profile-title {
+    margin-bottom: 9px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    opacity: .76;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-profile-name-wrap {
+    margin-bottom: 11px;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-profile-name-input {
+    width: 100%;
+    height: 38px;
+    padding: 0 11px;
+    border-radius: 11px;
+    border: 1px solid rgba(var(--chat-pastel-rgb), .30);
+    outline: none;
+    background: rgba(255,255,255,.14);
+    color: inherit;
+    font-size: 11px;
+}
+
+#chatWindow[data-chat-pastel="paws"]
+.jami-cute-profile-name-input {
+    border-color: rgba(183,108,137,.20);
+    background: rgba(255,255,255,.52);
+    color: #684d58;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-profile-name-input:focus {
+    border-color: rgba(var(--chat-pastel-rgb), .62);
+    box-shadow: 0 0 0 2px rgba(var(--chat-pastel-rgb), .10);
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-profile-name-input.chat-discord-name-active {
+    opacity: .88;
+}
+
+#chatWindow[data-chat-pastel]
+#chatDiscordUsername {
+    margin-top: 4px;
+    padding-left: 2px;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-avatar-label {
+    margin-bottom: 8px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    opacity: .62;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-message-shell {
+    grid-template-columns:
+        minmax(0, 1fr)
+        34px
+        34px
+        44px !important;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-message-plus {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    align-self: center;
+    justify-self: center;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: inherit;
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background 120ms ease,
+        transform 120ms ease;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-message-plus:hover {
+    background: rgba(255,255,255,.14);
+    transform: scale(1.04);
+}
+
+#chatWindow[data-chat-pastel="stars"]
+.jami-cute-send-arrow {
+    color: #fff !important;
+    background:
+        linear-gradient(
+            145deg,
+            #a58be8,
+            #8e7ad8
+        ) !important;
+    border:
+        1px solid
+        rgba(240,232,255,.58) !important;
+    box-shadow:
+        0 4px 12px rgba(91,70,155,.25),
+        inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+#chatWindow[data-chat-pastel="paws"]
+.jami-cute-send-arrow {
+    color: #fff !important;
+    background:
+        linear-gradient(
+            145deg,
+            #ee8fab,
+            #df789b
+        ) !important;
+    border:
+        1px solid
+        rgba(255,238,244,.78) !important;
+    box-shadow:
+        0 4px 12px rgba(172,83,117,.20),
+        inset 0 1px 0 rgba(255,255,255,.34);
+}
+
+#chatWindow[data-chat-pastel]
+.jami-cute-send-arrow {
+    font-size: 22px !important;
+    font-weight: 800;
+}
+
+#chatWindow[data-chat-pastel]
+#chatWatchPartyButton.hidden {
+    display: none !important;
+}
+
