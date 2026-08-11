@@ -5159,7 +5159,7 @@ html[data-chat-pastel]
 
 @font-face {
     font-family: "JamiFredoka";
-    src: url("./fredoka.ttf") format("truetype");
+    src: url("/socials/fredoka.ttf") format("truetype");
     font-style: normal;
     font-weight: 100 900;
     font-display: swap;
@@ -5169,7 +5169,12 @@ html[data-chat-pastel]
 #chatWindow[data-chat-pastel="stars"] button,
 #chatWindow[data-chat-pastel="stars"] input,
 #chatWindow[data-chat-pastel="stars"] .theme-body,
-#chatWindow[data-chat-pastel="stars"] .theme-heading {
+#chatWindow[data-chat-pastel="stars"] .theme-heading,
+html[data-chat-pastel="stars"] .jami-chat-context-menu,
+html[data-chat-pastel="stars"] .jami-admin-glass-panel,
+html[data-chat-pastel="stars"] #chatAvatarPicker,
+html[data-chat-pastel="stars"] #chatWatchPartyPanel,
+html[data-chat-pastel="stars"] .jami-saved-remix-manager {
     font-family:
         "JamiFredoka",
         "Nunito",
@@ -5318,5 +5323,276 @@ html[data-chat-pastel]
             var(--chat-pastel-rgb),
             .16
         );
+}
+
+#chatWindow[data-chat-pastel="stars"] {
+    --chat-pastel-rgb: 218, 205, 255;
+    --chat-pastel-2-rgb: 174, 228, 255;
+    --chat-pastel-3-rgb: 255, 205, 232;
+    --chat-panel-rgb: 160, 148, 220;
+    --chat-panel-2-rgb: 184, 171, 238;
+    --chat-text-rgb: 255, 253, 255;
+    --chat-muted-rgb: 239, 233, 252;
+    --chat-control-rgb: 184, 168, 229;
+}
+
+#chatWindow[data-chat-pastel="paws"] {
+    --chat-pastel-rgb: 255, 210, 224;
+    --chat-pastel-2-rgb: 205, 239, 218;
+    --chat-pastel-3-rgb: 255, 229, 197;
+    --chat-panel-rgb: 183, 151, 161;
+    --chat-panel-2-rgb: 205, 177, 180;
+    --chat-text-rgb: 255, 252, 250;
+    --chat-muted-rgb: 247, 234, 232;
+    --chat-control-rgb: 211, 166, 181;
+}
+
+#chatWindow[data-chat-pastel="stars"] {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(188, 174, 240, .72),
+            rgba(149, 145, 219, .63) 48%,
+            rgba(94, 111, 170, .50) 100%
+        ) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(224, 180, 194, .64),
+            rgba(191, 164, 153, .56) 48%,
+            rgba(130, 166, 143, .46) 100%
+        ) !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatTitleBar {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(
+                var(--chat-pastel-rgb),
+                .28
+            ),
+            rgba(
+                var(--chat-pastel-2-rgb),
+                .16
+            ),
+            rgba(255,255,255,.04)
+        ) !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMembersPanel {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(
+                var(--chat-pastel-2-rgb),
+                .15
+            ),
+            rgba(
+                var(--chat-pastel-rgb),
+                .08
+            )
+        ) !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatControls {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(
+                var(--chat-panel-2-rgb),
+                .28
+            ),
+            rgba(
+                var(--chat-panel-rgb),
+                .20
+            )
+        ) !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatName,
+#chatWindow[data-chat-pastel]
+#chatMessage {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(
+                var(--chat-pastel-rgb),
+                .27
+            ),
+            rgba(
+                var(--chat-control-rgb),
+                .28
+            )
+        ) !important;
+
+    border-color:
+        rgba(
+            var(--chat-pastel-rgb),
+            .38
+        ) !important;
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255, 255, 255, .13),
+        inset 0 0 20px
+        rgba(
+            var(--chat-pastel-rgb),
+            .08
+        );
+}
+
+#chatWindow[data-chat-pastel]
+#chatAvatarButton,
+#chatWindow[data-chat-pastel]
+#chatImageUploadButton,
+#chatWindow[data-chat-pastel]
+#chatWatchPartyButton,
+#chatWindow[data-chat-pastel]
+#chatEmojiButton,
+#chatWindow[data-chat-pastel]
+#chatSend {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(
+                var(--chat-pastel-rgb),
+                .24
+            ),
+            rgba(
+                var(--chat-control-rgb),
+                .22
+            )
+        ) !important;
+}
+
+#chatWindow[data-chat-pastel]
+#chatMinimize {
+    width: 40px;
+    height: 40px;
+    font-size: 31px !important;
+    font-weight: 900;
+    line-height: 1;
+    border-radius: 12px;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-chat-paw {
+    -webkit-mask-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='14' cy='20' rx='5.7' ry='7.6'/%3E%3Cellipse cx='27' cy='14' rx='5.8' ry='7.8'/%3E%3Cellipse cx='40' cy='14' rx='5.8' ry='7.8'/%3E%3Cellipse cx='52' cy='20' rx='5.7' ry='7.6'/%3E%3Cpath d='M21 43c0-7.3 5.2-12.2 11.5-12.2S44 35.7 44 43c0 5.9-4.5 9.7-11.5 9.7S21 48.9 21 43Zm7.4 1.3c1.2 1.9 2.6 2.8 4.1 2.8 1.6 0 3-.9 4.3-2.9-1.3.6-2.7.9-4.2.9-1.6 0-3-.3-4.2-.8Z'/%3E%3C/svg%3E");
+
+    mask-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='14' cy='20' rx='5.7' ry='7.6'/%3E%3Cellipse cx='27' cy='14' rx='5.8' ry='7.8'/%3E%3Cellipse cx='40' cy='14' rx='5.8' ry='7.8'/%3E%3Cellipse cx='52' cy='20' rx='5.7' ry='7.6'/%3E%3Cpath d='M21 43c0-7.3 5.2-12.2 11.5-12.2S44 35.7 44 43c0 5.9-4.5 9.7-11.5 9.7S21 48.9 21 43Zm7.4 1.3c1.2 1.9 2.6 2.8 4.1 2.8 1.6 0 3-.9 4.3-2.9-1.3.6-2.7.9-4.2.9-1.6 0-3-.3-4.2-.8Z'/%3E%3C/svg%3E");
+}
+
+html[data-chat-pastel="stars"] {
+    --jami-pastel-rgb: 218, 205, 255;
+    --jami-pastel-2-rgb: 174, 228, 255;
+    --jami-pastel-3-rgb: 255, 205, 232;
+    --jami-pastel-4-rgb: 255, 234, 171;
+    --jami-panel-rgb: 160, 148, 220;
+    --jami-panel-2-rgb: 184, 171, 238;
+    --jami-text-rgb: 255, 253, 255;
+    --jami-muted-rgb: 239, 233, 252;
+}
+
+html[data-chat-pastel="paws"] {
+    --jami-pastel-rgb: 255, 210, 224;
+    --jami-pastel-2-rgb: 205, 239, 218;
+    --jami-pastel-3-rgb: 255, 229, 197;
+    --jami-pastel-4-rgb: 227, 216, 255;
+    --jami-panel-rgb: 183, 151, 161;
+    --jami-panel-2-rgb: 205, 177, 180;
+    --jami-text-rgb: 255, 252, 250;
+    --jami-muted-rgb: 247, 234, 232;
+}
+
+html[data-chat-pastel]
+.jami-chat-context-menu,
+html[data-chat-pastel]
+.jami-admin-glass-panel,
+html[data-chat-pastel]
+#chatAvatarPicker,
+html[data-chat-pastel]
+.jami-saved-remix-manager {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                var(--jami-panel-2-rgb),
+                .56
+            ),
+            rgba(
+                var(--jami-panel-rgb),
+                .38
+            ),
+            rgba(255, 255, 255, .05)
+        ) !important;
+
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .42
+        ) !important;
+}
+
+html[data-chat-pastel]
+#chatWatchPartyPanel {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                var(--jami-panel-2-rgb),
+                .58
+            ),
+            rgba(
+                var(--jami-panel-rgb),
+                .40
+            ) 52%,
+            rgba(
+                var(--watch-party-accent-rgb, 174, 228, 255),
+                .12
+            )
+        ) !important;
+
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .40
+        ) !important;
+}
+
+html[data-chat-pastel]
+.jami-chat-context-menu,
+html[data-chat-pastel]
+.jami-admin-glass-panel,
+html[data-chat-pastel]
+#chatAvatarPicker,
+html[data-chat-pastel]
+#chatWatchPartyPanel,
+html[data-chat-pastel]
+.jami-saved-remix-manager {
+    box-shadow:
+        0 16px 44px rgba(0, 0, 0, .22),
+        0 0 30px
+        rgba(
+            var(--jami-pastel-rgb),
+            .18
+        ) !important;
+
+    backdrop-filter:
+        blur(18px)
+        saturate(1.25);
+
+    -webkit-backdrop-filter:
+        blur(18px)
+        saturate(1.25);
 }
 
