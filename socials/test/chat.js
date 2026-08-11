@@ -497,6 +497,7 @@ transition-[height] duration-200
             "
         >
 
+	<div class="relative jami-cute-composer-wrap">
 	<div class="jami-cute-composer-row">
     <div class="relative shrink-0">
         <button
