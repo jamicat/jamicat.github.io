@@ -318,6 +318,19 @@ if (toggleBtn) {
   );
 
   document.querySelectorAll('.terminal2').forEach(el => {
+  const chatOwned =
+    el.id?.startsWith('chat') ||
+    el.closest?.('#chatWindow') ||
+    el.classList.contains('jami-message-hover-actions') ||
+    el.classList.contains('jami-chat-context-menu') ||
+    el.classList.contains('jami-admin-glass-panel') ||
+    el.classList.contains('jami-saved-remix-manager') ||
+    el.classList.contains('jami-name-history-manager');
+
+  if (chatOwned) {
+    return;
+  }
+
   Object.values(themes).forEach(t => {
     el.classList.remove(t.terminal2Bg);
   });
