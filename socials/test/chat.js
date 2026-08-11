@@ -363,15 +363,6 @@ transition-[height] duration-200
         hide members
     </button>
 
-    <div class="flex items-center gap-3">
-    <span
-        id="chatConnectionStatus"
-        class="text-[9px] text-white/40"
-        aria-live="polite"
-    >
-        connecting
-    </span>
-
     <div class="relative">
         <button
             id="chatThemeButton"
@@ -401,6 +392,15 @@ transition-[height] duration-200
             </button>
         </div>
     </div>
+
+    <div class="flex items-center gap-3">
+    <span
+        id="chatConnectionStatus"
+        class="text-[9px] text-white/40"
+        aria-live="polite"
+    >
+        connecting
+    </span>
 
     <button
         id="chatMinimize"
@@ -16972,7 +16972,11 @@ keepTitleBarInViewport() {
             hasDecor
         )
     ) {
-        this.renderChatPastelDecor();
+        requestAnimationFrame(
+            () => {
+                this.renderChatPastelDecor();
+            }
+        );
     }
 
     window.dispatchEvent(
@@ -17040,13 +17044,35 @@ keepTitleBarInViewport() {
             ".jami-cute-composer-row"
         );
 
+    if (
+        !wrap ||
+        !cuteRow ||
+        !this.avatarButton ||
+        !this.messageInput ||
+        !this.sendButton ||
+        !this.emojiButton ||
+        !this.imageUploadButton
+    ) {
+        return;
+    }
+
+    if (!this.chatAvatarWrap) {
+        this.chatAvatarWrap =
+            this.avatarButton.parentElement;
+    }
+
+    if (!this.chatMessageShell) {
+        this.chatMessageShell =
+            this.messageInput.closest(
+                ".jami-cute-message-shell"
+            );
+    }
+
     const avatarWrap =
-        this.avatarButton?.parentElement;
+        this.chatAvatarWrap;
 
     const messageShell =
-        this.messageInput?.closest(
-            ".jami-cute-message-shell"
-        );
+        this.chatMessageShell;
 
     const profileNameWrap =
         this.avatarPicker?.querySelector(
@@ -17062,15 +17088,6 @@ keepTitleBarInViewport() {
         this.avatarPicker?.querySelector(
             ".jami-cute-avatar-label"
         );
-
-    if (
-        !wrap ||
-        !cuteRow ||
-        !avatarWrap ||
-        !messageShell
-    ) {
-        return;
-    }
 
     let originalRoot =
         wrap.querySelector(
@@ -17136,9 +17153,7 @@ keepTitleBarInViewport() {
             );
         }
 
-        if (
-            this.discordUsernameElement
-        ) {
+        if (this.discordUsernameElement) {
             originalNameField.appendChild(
                 this.discordUsernameElement
             );
@@ -17150,21 +17165,23 @@ keepTitleBarInViewport() {
             );
         }
 
-        if (this.imageUploadButton) {
-            originalMessageRow.appendChild(
-                this.imageUploadButton
-            );
+        originalMessageRow.appendChild(
+            this.imageUploadButton
+        );
 
-            this.imageUploadButton.textContent =
-                "🖼️";
+        this.imageUploadButton.textContent =
+            "🖼️";
 
-            this.imageUploadButton.classList.add(
-                "jami-original-image-button"
-            );
-        }
+        this.imageUploadButton.classList.add(
+            "jami-original-image-button"
+        );
 
         originalMessageRow.appendChild(
-            messageShell
+            this.messageInput
+        );
+
+        this.messageInput.classList.add(
+            "jami-original-message-input"
         );
 
         if (this.watchPartyButton) {
@@ -17173,18 +17190,27 @@ keepTitleBarInViewport() {
             );
         }
 
-        if (this.sendButton) {
-            originalSendRow.appendChild(
-                this.sendButton
-            );
+        originalMessageRow.appendChild(
+            this.emojiButton
+        );
 
-            this.sendButton.textContent =
-                "send";
+        this.emojiButton.textContent =
+            "🐱";
 
-            this.sendButton.classList.add(
-                "jami-original-send-button"
-            );
-        }
+        this.emojiButton.classList.add(
+            "jami-original-emoji-button"
+        );
+
+        originalSendRow.appendChild(
+            this.sendButton
+        );
+
+        this.sendButton.textContent =
+            "send";
+
+        this.sendButton.classList.add(
+            "jami-original-send-button"
+        );
 
         if (profileTitle) {
             profileTitle.textContent =
@@ -17194,53 +17220,66 @@ keepTitleBarInViewport() {
         if (avatarLabel) {
             avatarLabel.hidden = true;
         }
+    } else {
+        originalRoot.hidden = true;
+        cuteRow.hidden = false;
 
-        return;
-    }
+        cuteRow.appendChild(
+            avatarWrap
+        );
 
-    originalRoot.hidden = true;
-    cuteRow.hidden = false;
-
-    cuteRow.insertBefore(
-        avatarWrap,
-        cuteRow.firstChild
-    );
-
-    if (
-        profileNameWrap &&
-        this.nameInput
-    ) {
-        profileNameWrap.appendChild(
+        if (
+            profileNameWrap &&
             this.nameInput
-        );
+        ) {
+            profileNameWrap.appendChild(
+                this.nameInput
+            );
 
-        this.nameInput.classList.remove(
-            "jami-original-name-input"
-        );
-    }
+            this.nameInput.classList.remove(
+                "jami-original-name-input"
+            );
+        }
 
-    if (
-        profileNameWrap &&
-        this.discordUsernameElement
-    ) {
-        profileNameWrap.appendChild(
+        if (
+            profileNameWrap &&
             this.discordUsernameElement
-        );
-    }
+        ) {
+            profileNameWrap.appendChild(
+                this.discordUsernameElement
+            );
+        }
 
-    if (
-        this.avatarPicker &&
-        this.discordLogoutButton
-    ) {
-        this.avatarPicker.appendChild(
+        if (
+            this.avatarPicker &&
             this.discordLogoutButton
-        );
-    }
+        ) {
+            this.avatarPicker.appendChild(
+                this.discordLogoutButton
+            );
+        }
 
-    if (this.imageUploadButton) {
-        messageShell.insertBefore(
-            this.imageUploadButton,
-            this.sendButton
+        messageShell.appendChild(
+            this.messageInput
+        );
+
+        this.messageInput.classList.remove(
+            "jami-original-message-input"
+        );
+
+        messageShell.appendChild(
+            this.emojiButton
+        );
+
+        this.emojiButton.textContent =
+            "☺";
+
+        this.emojiButton.classList.remove(
+            "jami-original-emoji-button"
+        );
+
+        messageShell.appendChild(
+            this.imageUploadButton
         );
 
         this.imageUploadButton.textContent =
@@ -17249,9 +17288,7 @@ keepTitleBarInViewport() {
         this.imageUploadButton.classList.remove(
             "jami-original-image-button"
         );
-    }
 
-    if (this.sendButton) {
         messageShell.appendChild(
             this.sendButton
         );
@@ -17262,25 +17299,32 @@ keepTitleBarInViewport() {
         this.sendButton.classList.remove(
             "jami-original-send-button"
         );
-    }
 
-    cuteRow.appendChild(
-        messageShell
-    );
+        cuteRow.appendChild(
+            messageShell
+        );
+
+        if (this.watchPartyButton) {
+            cuteRow.appendChild(
+                this.watchPartyButton
+            );
+        }
+
+        if (profileTitle) {
+            profileTitle.textContent =
+                "profile";
+        }
+
+        if (avatarLabel) {
+            avatarLabel.hidden = false;
+        }
+    }
 
     if (this.watchPartyButton) {
-        cuteRow.appendChild(
-            this.watchPartyButton
+        this.watchPartyButton.classList.toggle(
+            "hidden",
+            this.watchParty?.enabled !== true
         );
-    }
-
-    if (profileTitle) {
-        profileTitle.textContent =
-            "profile";
-    }
-
-    if (avatarLabel) {
-        avatarLabel.hidden = false;
     }
 }
 
