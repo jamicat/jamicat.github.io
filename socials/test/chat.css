@@ -8679,3 +8679,146 @@ html[data-chat-theme="paws"][data-chat-pastel="paws"]
     max-width: calc(100vw - 2rem) !important;
 }
 
+
+#chatWindow[data-chat-theme="original"] {
+    --heading-font: "Nunito", sans-serif;
+    --body-font: "Nunito", sans-serif;
+    border-width: 0 !important;
+    border-color: transparent !important;
+}
+
+#chatWindow[data-chat-theme="stars"] {
+    --heading-font: "JamiFredoka", "Fredoka", "Nunito", sans-serif;
+    --body-font: "JamiFredoka", "Fredoka", "Nunito", sans-serif;
+}
+
+#chatWindow[data-chat-theme="paws"] {
+    --heading-font: "Fink", "nintendoh", "Nunito", sans-serif;
+    --body-font: "nintendoh", "Nunito", sans-serif;
+}
+
+#chatWindow[data-chat-theme="original"] #chatThemeButton {
+    transform: translateY(-2px) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] #chatThemeButton {
+    transform: translateY(-2px) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatThemeButton {
+    transform: translateY(-1px) !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatTitle {
+    font-size: 11px !important;
+    letter-spacing: .055em !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatMembersToggle,
+#chatWindow[data-chat-theme="original"] #chatThemeButton,
+#chatWindow[data-chat-theme="original"] #chatConnectionStatus,
+#chatWindow[data-chat-theme="original"] #chatBanManagerButton,
+#chatWindow[data-chat-theme="original"] #chatPartyManagerButton {
+    font-size: 8px !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatMotd,
+#chatWindow[data-chat-theme="original"] #chatMotd * {
+    font-size: 8px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .chatMessage {
+    font-size: 11px !important;
+    line-height: 1.34 !important;
+}
+
+#chatWindow[data-chat-theme="original"] .chatMessageName {
+    font-size: 11px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .chatText {
+    font-size: 11px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .chatTime,
+#chatWindow[data-chat-theme="original"] .chatContinuationTime {
+    font-size: 8px !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatMembersPanel .theme-heading {
+    font-size: 8px !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatMembers {
+    font-size: 9px !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatMembers * {
+    font-size: 9px !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatTyping {
+    font-size: 8px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-cute-avatar-button {
+    flex-basis: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-cute-avatar-button img {
+    width: 32px !important;
+    height: 32px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-name-input {
+    height: 40px !important;
+    padding: 0 11px !important;
+    font-size: 10px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-message-input {
+    height: 34px !important;
+    padding: 0 11px !important;
+    font-size: 10px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-image-button,
+#chatWindow[data-chat-theme="original"] .jami-original-emoji-button,
+#chatWindow[data-chat-theme="original"] #chatWatchPartyButton {
+    flex-basis: 34px !important;
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 14px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-send-button,
+#chatWindow[data-chat-theme="original"] .jami-original-send-button:hover,
+#chatWindow[data-chat-theme="original"] .jami-original-send-button:active {
+    height: 30px !important;
+    font-size: 9px !important;
+}
+
+#chatWindow[data-chat-theme="original"] #chatControls {
+    gap: 7px !important;
+    padding: 9px !important;
+}
+
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"],
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] .theme-body,
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] button,
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] input,
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] textarea,
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] .chatMessage,
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] .chatMessage *,
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembers,
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembers * {
+    font-family: "nintendoh", "Nunito", sans-serif !important;
+}
+
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitle,
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPanel .theme-heading {
+    font-family: "Fink", "nintendoh", "Nunito", sans-serif !important;
+}
+
