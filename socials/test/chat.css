@@ -7175,3 +7175,37 @@ html[data-chat-pastel="paws"]
     align-self: center !important;
 }
 
+#chatWindow[data-chat-pastel]
+#chatTitle::before {
+    content: "";
+    display: inline-block;
+    flex: 0 0 auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    image-rendering: pixelated;
+}
+
+#chatWindow[data-chat-pastel="stars"]
+#chatTitle::before {
+    width: 28px;
+    height: 28px;
+    background-image:
+        url("./jamicat-stars-title-icon.png");
+}
+
+#chatWindow[data-chat-pastel="paws"]
+#chatTitle::before {
+    width: 29px;
+    height: 29px;
+    background-image:
+        url("./jamicat-ac-title-icon.png");
+}
+
+#chatWindow[data-chat-pastel="stars"]
+#chatTitle,
+#chatWindow[data-chat-pastel="paws"]
+#chatTitle {
+    gap: 7px;
+}
+
