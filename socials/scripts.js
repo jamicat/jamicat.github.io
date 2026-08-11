@@ -107,7 +107,25 @@ function applyTheme(themeName) {
   if (!theme) return console.warn(`Theme not found: ${themeName}`);
 
   document.documentElement.setAttribute('data-theme', themeName);
-  document.documentElement.setAttribute('data-theme', themeName);
+
+  const chatPastelTheme =
+    themeName === 'Stars'
+      ? 'stars'
+      : themeName === 'Default'
+        ? 'paws'
+        : '';
+
+  if (chatPastelTheme) {
+    document.documentElement.setAttribute(
+      'data-chat-pastel',
+      chatPastelTheme
+    );
+  } else {
+    document.documentElement.removeAttribute(
+      'data-chat-pastel'
+    );
+  }
+
   document.documentElement.classList.toggle(
   'theme-stars',
   themeName === 'Stars'
@@ -305,6 +323,18 @@ if (toggleBtn) {
   el.classList.add(theme.glowPrimary);
 });
   localStorage.setItem('theme', themeName);
+
+  window.dispatchEvent(
+    new CustomEvent(
+      'site-theme-change',
+      {
+        detail: {
+          themeName,
+          chatPastelTheme
+        }
+      }
+    )
+  );
 
   document.querySelectorAll('.terminal2').forEach(el => {
   Object.values(themes).forEach(t => {
