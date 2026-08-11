@@ -5596,3 +5596,529 @@ html[data-chat-pastel]
         saturate(1.25);
 }
 
+html[data-chat-pastel="stars"] #chatWatchPartyPanel,
+html[data-chat-pastel="stars"] #chatWatchPartyPanel *,
+html[data-chat-pastel="stars"] #chatWatchPartyVisualizerMenu,
+html[data-chat-pastel="stars"] #chatWatchPartyVisualizerMenu *,
+html[data-chat-pastel="stars"] .jami-admin-glass-panel,
+html[data-chat-pastel="stars"] .jami-admin-glass-panel * {
+    font-family:
+        "JamiFredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+#chatWindow[data-chat-pastel]
+.jami-chat-star-dot {
+    border-radius: 999px;
+    filter:
+        drop-shadow(
+            0 0 2px
+            rgba(255, 255, 255, .25)
+        );
+}
+
+#chatWindow[data-chat-pastel]
+.jami-chat-paw {
+    -webkit-mask-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='13' cy='22' rx='5.5' ry='7.4'/%3E%3Cellipse cx='26' cy='14' rx='5.8' ry='7.8'/%3E%3Cellipse cx='39' cy='14' rx='5.8' ry='7.8'/%3E%3Cellipse cx='52' cy='22' rx='5.5' ry='7.4'/%3E%3Cpath d='M20 43c1.5-8.1 6.4-13.3 12.5-13.3S43.5 34.9 45 43c1 5.5-2.1 10.7-7.1 10.7-2.2 0-3.7-1.4-5.4-1.4s-3.2 1.4-5.4 1.4c-5 0-8.1-5.2-7.1-10.7Z'/%3E%3C/svg%3E");
+
+    mask-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='13' cy='22' rx='5.5' ry='7.4'/%3E%3Cellipse cx='26' cy='14' rx='5.8' ry='7.8'/%3E%3Cellipse cx='39' cy='14' rx='5.8' ry='7.8'/%3E%3Cellipse cx='52' cy='22' rx='5.5' ry='7.4'/%3E%3Cpath d='M20 43c1.5-8.1 6.4-13.3 12.5-13.3S43.5 34.9 45 43c1 5.5-2.1 10.7-7.1 10.7-2.2 0-3.7-1.4-5.4-1.4s-3.2 1.4-5.4 1.4c-5 0-8.1-5.2-7.1-10.7Z'/%3E%3C/svg%3E");
+
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+#chatWatchPartyPanel
+.watch-party-playlist-checkbox:checked,
+#chatWatchPartyVisualizerMenu
+.watch-party-playlist-checkbox:checked {
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.2 6.2 4.8 8.7 9.9 3.4' fill='none' stroke='%23312a46' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+
+    background-repeat:
+        no-repeat !important;
+
+    background-position:
+        center !important;
+
+    background-size:
+        11px 11px !important;
+}
+
+html[data-chat-pastel="stars"]
+#chatWatchPartyPanel
+.watch-party-playlist-checkbox:checked,
+html[data-chat-pastel="stars"]
+#chatWatchPartyVisualizerMenu
+.watch-party-playlist-checkbox:checked {
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .74
+        ) !important;
+
+    background-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .92
+        ) !important;
+}
+
+html[data-chat-pastel="paws"]
+#chatWatchPartyPanel
+.watch-party-playlist-checkbox:checked,
+html[data-chat-pastel="paws"]
+#chatWatchPartyVisualizerMenu
+.watch-party-playlist-checkbox:checked {
+    border-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .76
+        ) !important;
+
+    background-color:
+        rgba(
+            var(--jami-pastel-rgb),
+            .92
+        ) !important;
+}
+
+#chatWindow[data-chat-pastel] {
+    width: 510px !important;
+    height: 560px !important;
+    max-width: calc(100vw - 24px) !important;
+    border-radius: 24px !important;
+}
+
+#chatWindow[data-chat-pastel="stars"] {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(196, 183, 247, .96),
+            rgba(157, 151, 227, .94) 50%,
+            rgba(119, 139, 201, .90)
+        ) !important;
+    border-color:
+        rgba(236, 226, 255, .86) !important;
+    box-shadow:
+        0 22px 55px rgba(26, 20, 58, .34),
+        0 0 36px rgba(194, 181, 255, .30),
+        inset 0 1px 0 rgba(255,255,255,.38) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 223, 233, .98),
+            rgba(255, 232, 226, .96) 50%,
+            rgba(224, 242, 225, .94)
+        ) !important;
+    border-color:
+        rgba(255, 246, 249, .96) !important;
+    color: #594b50 !important;
+    box-shadow:
+        0 22px 55px rgba(62, 46, 53, .20),
+        0 0 32px rgba(255, 197, 219, .24),
+        inset 0 1px 0 rgba(255,255,255,.68) !important;
+}
+
+#chatWindow[data-chat-pastel="stars"],
+#chatWindow[data-chat-pastel="stars"] * {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+#chatWindow[data-chat-pastel="paws"],
+#chatWindow[data-chat-pastel="paws"] * {
+    font-family:
+        var(--body-font, "nintendoh", sans-serif) !important;
+}
+
+#chatWindow[data-chat-pastel] #chatTitleBar {
+    min-height: 52px !important;
+    padding: 0 16px !important;
+    background:
+        rgba(255,255,255,.08) !important;
+}
+
+#chatWindow[data-chat-pastel] #chatTitle {
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    letter-spacing: .01em !important;
+    text-transform: lowercase !important;
+}
+
+#chatWindow[data-chat-pastel="stars"] #chatTitle {
+    color: #fff !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] #chatTitle {
+    color: #814d61 !important;
+    text-shadow: none !important;
+}
+
+#chatWindow[data-chat-pastel] #chatMinimize {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 34px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    border-radius: 13px !important;
+}
+
+#chatWindow[data-chat-pastel] #chatMotd {
+    min-height: 34px;
+    padding: 7px 14px !important;
+    font-size: 10px !important;
+    background:
+        rgba(255,255,255,.055) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] #chatMotd,
+#chatWindow[data-chat-pastel="paws"] #chatMotd * {
+    color: #765b64 !important;
+}
+
+#chatWindow[data-chat-pastel] #chatMain {
+    margin: 0 10px;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+#chatWindow[data-chat-pastel="stars"] #chatMain {
+    border: 1px solid rgba(238, 232, 255, .28);
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.055),
+            rgba(104, 95, 173, .13)
+        );
+}
+
+#chatWindow[data-chat-pastel="paws"] #chatMain {
+    border: 1px solid rgba(198, 146, 165, .16);
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.44),
+            rgba(255,255,255,.22)
+        );
+}
+
+#chatWindow[data-chat-pastel] #chatMembersPanel {
+    width: 132px !important;
+    padding: 14px 10px !important;
+}
+
+#chatWindow[data-chat-pastel="stars"] #chatMembersPanel {
+    border-left-color:
+        rgba(238, 232, 255, .26) !important;
+    background:
+        rgba(255,255,255,.055) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] #chatMembersPanel {
+    border-left-color:
+        rgba(185, 128, 148, .16) !important;
+    background:
+        rgba(255,255,255,.22) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] #chatMembersPanel,
+#chatWindow[data-chat-pastel="paws"] #chatMembersPanel * {
+    color: #684f58 !important;
+}
+
+#chatWindow[data-chat-pastel] #chatMessages {
+    padding: 14px 10px 16px !important;
+}
+
+#chatWindow[data-chat-pastel] .chatMessage {
+    padding-left: 9px !important;
+    padding-right: 7px !important;
+    border-radius: 12px !important;
+}
+
+#chatWindow[data-chat-pastel="stars"] .chatMessage:hover {
+    background:
+        rgba(255,255,255,.12) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] .chatMessage:hover {
+    background:
+        rgba(255,255,255,.42) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] .chatMessageName,
+#chatWindow[data-chat-pastel="paws"] .chatText {
+    color: #5c4850 !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] .chatTime {
+    color: rgba(94, 66, 77, .58) !important;
+}
+
+#chatWindow[data-chat-pastel] #chatControls {
+    padding: 12px 12px 14px !important;
+    gap: 9px !important;
+    border-top: 0 !important;
+    background: transparent !important;
+}
+
+#chatWindow[data-chat-pastel] .jami-cute-name-row,
+#chatWindow[data-chat-pastel] .jami-cute-composer-row {
+    display: flex;
+    align-items: stretch;
+    gap: 9px;
+}
+
+#chatWindow[data-chat-pastel] .jami-cute-name-row {
+    min-height: 48px;
+}
+
+#chatWindow[data-chat-pastel] .jami-cute-avatar-button,
+#chatWindow[data-chat-pastel] .jami-cute-square-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    border:
+        1px solid
+        rgba(
+            var(--chat-pastel-rgb),
+            .48
+        );
+    background:
+        rgba(255,255,255,.12);
+    transition:
+        transform 120ms ease,
+        background 120ms ease;
+}
+
+#chatWindow[data-chat-pastel="paws"] .jami-cute-avatar-button,
+#chatWindow[data-chat-pastel="paws"] .jami-cute-square-button {
+    border-color:
+        rgba(183, 108, 137, .25);
+    background:
+        rgba(255,255,255,.40);
+}
+
+#chatWindow[data-chat-pastel] .jami-cute-avatar-button:hover,
+#chatWindow[data-chat-pastel] .jami-cute-square-button:hover {
+    transform: translateY(-1px);
+    background:
+        rgba(255,255,255,.22);
+}
+
+#chatWindow[data-chat-pastel] .jami-cute-name-input,
+#chatWindow[data-chat-pastel] .jami-cute-message-input {
+    width: 100%;
+    border: 0;
+    outline: none;
+    color: inherit;
+    background: transparent !important;
+    font-size: 13px !important;
+}
+
+#chatWindow[data-chat-pastel] .jami-cute-name-input {
+    min-width: 0;
+    height: 48px;
+    padding: 0 15px;
+    border-radius: 15px;
+    border:
+        1px solid
+        rgba(
+            var(--chat-pastel-rgb),
+            .50
+        );
+    background:
+        rgba(255,255,255,.18) !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] .jami-cute-name-input {
+    border-color:
+        rgba(183, 108, 137, .28);
+    background:
+        rgba(255,255,255,.56) !important;
+    color: #684d58 !important;
+}
+
+#chatWindow[data-chat-pastel] .jami-cute-message-shell {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        38px
+        42px;
+    align-items: center;
+    min-width: 0;
+    flex: 1;
+    height: 48px;
+    padding-left: 15px;
+    border-radius: 16px;
+    border:
+        1px solid
+        rgba(
+            var(--chat-pastel-rgb),
+            .52
+        );
+    background:
+        rgba(255,255,255,.18);
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.14);
+}
+
+#chatWindow[data-chat-pastel="paws"] .jami-cute-message-shell {
+    border-color:
+        rgba(183, 108, 137, .30);
+    background:
+        rgba(255,255,255,.58);
+    color: #684d58;
+}
+
+#chatWindow[data-chat-pastel] .jami-cute-message-emoji,
+#chatWindow[data-chat-pastel] .jami-cute-send-arrow {
+    height: 36px;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    color: inherit;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+#chatWindow[data-chat-pastel] .jami-cute-message-emoji:hover {
+    background:
+        rgba(255,255,255,.14);
+}
+
+#chatWindow[data-chat-pastel] .jami-cute-send-arrow {
+    margin-right: 4px;
+    color: #fff;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(
+                var(--chat-pastel-rgb),
+                .98
+            ),
+            rgba(
+                var(--chat-pastel-2-rgb),
+                .88
+            )
+        );
+    box-shadow:
+        0 3px 10px
+        rgba(
+            var(--chat-pastel-rgb),
+            .22
+        );
+}
+
+#chatWindow[data-chat-pastel="paws"] .jami-cute-send-arrow {
+    color: #7b4b5d;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 193, 217, .98),
+            rgba(255, 227, 190, .96)
+        );
+}
+
+#chatWindow[data-chat-pastel] .jami-cute-send-arrow:hover {
+    transform: translateY(-1px);
+}
+
+#chatWindow[data-chat-pastel] #chatWatchPartyButton {
+    display: none !important;
+}
+
+#chatWindow[data-chat-pastel] #chatConnectionStatus,
+#chatWindow[data-chat-pastel] #chatMembersToggle {
+    font-size: 10px !important;
+}
+
+html[data-chat-pastel="stars"] .jami-chat-context-menu,
+html[data-chat-pastel="stars"] .jami-admin-glass-panel,
+html[data-chat-pastel="stars"] #chatAvatarPicker,
+html[data-chat-pastel="stars"] #chatWatchPartyPanel,
+html[data-chat-pastel="stars"] .jami-saved-remix-manager {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(194, 181, 244, .97),
+            rgba(160, 151, 226, .95),
+            rgba(121, 139, 199, .92)
+        ) !important;
+    border-color:
+        rgba(235, 225, 255, .80) !important;
+}
+
+html[data-chat-pastel="paws"] .jami-chat-context-menu,
+html[data-chat-pastel="paws"] .jami-admin-glass-panel,
+html[data-chat-pastel="paws"] #chatAvatarPicker,
+html[data-chat-pastel="paws"] #chatWatchPartyPanel,
+html[data-chat-pastel="paws"] .jami-saved-remix-manager {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 224, 234, .98),
+            rgba(255, 233, 226, .97),
+            rgba(224, 242, 225, .95)
+        ) !important;
+    color: #5e4d53 !important;
+    border-color:
+        rgba(255,255,255,.90) !important;
+}
+
+html[data-chat-pastel="paws"] .jami-chat-context-menu *,
+html[data-chat-pastel="paws"] .jami-admin-glass-panel *,
+html[data-chat-pastel="paws"] #chatAvatarPicker *,
+html[data-chat-pastel="paws"] #chatWatchPartyPanel *,
+html[data-chat-pastel="paws"] .jami-saved-remix-manager * {
+    color: inherit;
+}
+
+html[data-chat-pastel] .jami-chat-context-menu,
+html[data-chat-pastel] .jami-admin-glass-panel,
+html[data-chat-pastel] #chatAvatarPicker,
+html[data-chat-pastel] #chatWatchPartyPanel,
+html[data-chat-pastel] .jami-saved-remix-manager {
+    backdrop-filter:
+        blur(7px)
+        saturate(1.10) !important;
+    -webkit-backdrop-filter:
+        blur(7px)
+        saturate(1.10) !important;
+}
+
+html[data-chat-pastel="stars"]
+.jami-chat-context-item:hover,
+html[data-chat-pastel="stars"]
+.jami-chat-context-item:focus-visible {
+    background:
+        rgba(255,255,255,.18) !important;
+}
+
+html[data-chat-pastel="paws"]
+.jami-chat-context-item:hover,
+html[data-chat-pastel="paws"]
+.jami-chat-context-item:focus-visible {
+    background:
+        rgba(255,255,255,.48) !important;
+}
+
