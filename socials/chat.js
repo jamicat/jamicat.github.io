@@ -16792,6 +16792,167 @@ keepTitleBarInViewport() {
     } else {
         delete this.window.dataset.chatPastel;
     }
+
+    this.renderChatPastelDecor();
+}
+
+	renderChatPastelDecor() {
+    const main =
+        this.window?.querySelector(
+            "#chatMain"
+        );
+
+    if (!main) {
+        return;
+    }
+
+    main.querySelector(
+        ".jami-chat-pastel-decor"
+    )?.remove();
+
+    const theme =
+        this.window?.dataset.chatPastel ||
+        "";
+
+    if (
+        theme !== "stars" &&
+        theme !== "paws"
+    ) {
+        return;
+    }
+
+    const layer =
+        document.createElement("div");
+
+    layer.className =
+        "jami-chat-pastel-decor";
+
+    if (theme === "stars") {
+        const colours = [
+            "#cbbcff",
+            "#97d8ff",
+            "#ffc0df",
+            "#ffe69b",
+            "#ddd4ff",
+            "#bfe9ff"
+        ];
+
+        const count =
+            34 +
+            Math.floor(
+                Math.random() * 14
+            );
+
+        for (
+            let index = 0;
+            index < count;
+            index += 1
+        ) {
+            const star =
+                document.createElement("i");
+
+            const shapeRoll =
+                Math.random();
+
+            star.className =
+                shapeRoll < .58
+                    ? "jami-chat-star jami-chat-star-four"
+                    : shapeRoll < .86
+                        ? "jami-chat-star jami-chat-star-diamond"
+                        : "jami-chat-star jami-chat-star-dot";
+
+            const size =
+                3 +
+                Math.random() * 6;
+
+            star.style.left =
+                `${2 + Math.random() * 96}%`;
+
+            star.style.top =
+                `${2 + Math.random() * 96}%`;
+
+            star.style.width =
+                `${size}px`;
+
+            star.style.height =
+                `${size}px`;
+
+            star.style.background =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            star.style.opacity =
+                `${.56 + Math.random() * .34}`;
+
+            star.style.transform =
+                `translate(-50%, -50%) rotate(${Math.random() * 45}deg)`;
+
+            layer.appendChild(star);
+        }
+    } else {
+        const colours = [
+            "#ffc0d5",
+            "#b8e7cb",
+            "#ffd9b0",
+            "#d8c9ff"
+        ];
+
+        const count =
+            12 +
+            Math.floor(
+                Math.random() * 7
+            );
+
+        for (
+            let index = 0;
+            index < count;
+            index += 1
+        ) {
+            const paw =
+                document.createElement("i");
+
+            paw.className =
+                "jami-chat-paw";
+
+            const size =
+                13 +
+                Math.random() * 10;
+
+            paw.style.left =
+                `${4 + Math.random() * 92}%`;
+
+            paw.style.top =
+                `${5 + Math.random() * 90}%`;
+
+            paw.style.width =
+                `${size}px`;
+
+            paw.style.height =
+                `${size}px`;
+
+            paw.style.backgroundColor =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            paw.style.opacity =
+                `${.16 + Math.random() * .16}`;
+
+            paw.style.transform =
+                `translate(-50%, -50%) rotate(${-28 + Math.random() * 56}deg)`;
+
+            layer.appendChild(paw);
+        }
+    }
+
+    main.appendChild(layer);
 }
 
 	setupChatPastelThemeSync() {
