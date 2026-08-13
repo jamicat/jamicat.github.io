@@ -9217,3 +9217,20 @@ html[data-chat-theme="original"]
     padding-top: 2px !important;
     padding-bottom: 2px !important;
 }
+
+
+/* Original-theme correction: restore the avatar to the prior matched size.
+   Keep the final Discord logout adjustment unchanged. */
+#chatWindow[data-chat-theme="original"] .jami-cute-avatar-button {
+    flex-basis: 43px !important;
+    width: 43px !important;
+    height: 43px !important;
+}
+
+
+/* Original-theme avatar final adjustment. */
+#chatWindow[data-chat-theme="original"] .jami-cute-avatar-button {
+    flex-basis: 44px !important;
+    width: 44px !important;
+    height: 44px !important;
+}
