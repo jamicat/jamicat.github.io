@@ -10466,3 +10466,45 @@ html[data-chat-theme="paws"]
     color: #ed6a7c !important;
 }
 
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+.jami-transfer-message,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-transfer-message {
+    font-family: "Nunito", sans-serif !important;
+    scale: 1.1111111111 !important;
+    transform-origin: left top !important;
+}
+
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+.jami-transfer-message *,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-transfer-message *,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+.jami-program-message,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+.jami-program-message *,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-program-message,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-program-message * {
+    font-family: "Nunito", sans-serif !important;
+}
+
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+.jami-program-message,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-program-message {
+    scale: 1.1111111111 !important;
+    transform-origin: center center !important;
+}
+
