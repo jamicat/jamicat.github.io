@@ -9175,3 +9175,30 @@ html[data-chat-theme="original"]
     padding: 12px !important;
     background: rgba(0, 0, 0, 0.10) !important;
 }
+
+
+/* Original-theme final micro-parity for the identity/composer controls only.
+   These compensate for the tiny rendered-size difference in the selector build. */
+#chatWindow[data-chat-theme="original"] .jami-cute-avatar-button {
+    flex-basis: 43px !important;
+    width: 43px !important;
+    height: 43px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-name-input {
+    height: 43px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-send-button,
+#chatWindow[data-chat-theme="original"] .jami-original-send-button:hover,
+#chatWindow[data-chat-theme="original"] .jami-original-send-button:active {
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+}
+
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatDiscordLogout {
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+}
