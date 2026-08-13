@@ -903,6 +903,12 @@ this.chatThemeButton =
 this.chatThemeMenu =
     this.window.querySelector("#chatThemeMenu");
 
+this.chatThemeMenuHomeParent =
+    this.chatThemeMenu?.parentNode || null;
+
+this.chatThemeMenuHomeNextSibling =
+    this.chatThemeMenu?.nextSibling || null;
+
 const syncChatThemeButtonAlignment = () => {
     if (
         !this.chatThemeButton ||
@@ -17123,6 +17129,33 @@ keepTitleBarInViewport() {
         this.window.dataset.chatTheme ||
         "original";
 
+    const shouldAnimateThemeChange =
+        forceDecor &&
+        previousTheme !== cleaned;
+
+    if (
+        shouldAnimateThemeChange &&
+        typeof this.window.animate ===
+            "function"
+    ) {
+        this.window.animate(
+            [
+                {
+                    opacity: 0.88,
+                    filter: "brightness(.97)"
+                },
+                {
+                    opacity: 1,
+                    filter: "brightness(1)"
+                }
+            ],
+            {
+                duration: 150,
+                easing: "ease-out"
+            }
+        );
+    }
+
     this.window.dataset.chatTheme =
         cleaned;
 
@@ -17232,6 +17265,122 @@ keepTitleBarInViewport() {
                 : "false"
         );
 
+    if (shouldOpen) {
+        const themeName =
+            this.window?.dataset
+                .chatTheme ||
+            "original";
+
+        this.chatThemeMenu.dataset
+            .chatThemeOwner =
+            themeName;
+
+        if (
+            this.chatThemeMenu.parentNode !==
+            document.body
+        ) {
+            document.body.appendChild(
+                this.chatThemeMenu
+            );
+        }
+
+        const rect =
+            this.chatThemeButton
+                .getBoundingClientRect();
+
+        const menuWidth =
+            132;
+
+        const viewportPad =
+            8;
+
+        let left =
+            rect.right -
+            menuWidth;
+
+        left =
+            Math.max(
+                viewportPad,
+                Math.min(
+                    left,
+                    window.innerWidth -
+                    menuWidth -
+                    viewportPad
+                )
+            );
+
+        /*
+         * Expanded chat: menu drops below Theme.
+         * Minimized chat: menu opens above/outside the collapsed bar.
+         */
+        const estimatedHeight =
+            102;
+
+        let top =
+            this.isMinimized
+                ? rect.top -
+                    estimatedHeight -
+                    8
+                : rect.bottom + 8;
+
+        if (
+            top < viewportPad
+        ) {
+            top =
+                rect.bottom + 8;
+        }
+
+        if (
+            top +
+            estimatedHeight >
+            window.innerHeight -
+            viewportPad
+        ) {
+            top =
+                Math.max(
+                    viewportPad,
+                    rect.top -
+                    estimatedHeight -
+                    8
+                );
+        }
+
+        this.chatThemeMenu.style
+            .setProperty(
+                "position",
+                "fixed",
+                "important"
+            );
+
+        this.chatThemeMenu.style
+            .setProperty(
+                "left",
+                `${left}px`,
+                "important"
+            );
+
+        this.chatThemeMenu.style
+            .setProperty(
+                "top",
+                `${top}px`,
+                "important"
+            );
+
+        this.chatThemeMenu.style
+            .setProperty(
+                "right",
+                "auto",
+                "important"
+            );
+
+        this.chatThemeMenu.style
+            .setProperty(
+                "z-index",
+                "100020",
+                "important"
+            );
+    }
+
     this.chatThemeMenu
         .classList.toggle(
             "invisible",
@@ -17249,6 +17398,81 @@ keepTitleBarInViewport() {
             "opacity-0",
             !shouldOpen
         );
+
+    if (!shouldOpen) {
+        const restore = () => {
+            if (
+                !this.chatThemeMenu ||
+                this.chatThemeButton
+                    ?.getAttribute(
+                        "aria-expanded"
+                    ) === "true"
+            ) {
+                return;
+            }
+
+            if (
+                this.chatThemeMenuHomeParent &&
+                this.chatThemeMenu.parentNode ===
+                    document.body
+            ) {
+                if (
+                    this.chatThemeMenuHomeNextSibling &&
+                    this.chatThemeMenuHomeNextSibling
+                        .parentNode ===
+                        this.chatThemeMenuHomeParent
+                ) {
+                    this.chatThemeMenuHomeParent
+                        .insertBefore(
+                            this.chatThemeMenu,
+                            this.chatThemeMenuHomeNextSibling
+                        );
+                } else {
+                    this.chatThemeMenuHomeParent
+                        .appendChild(
+                            this.chatThemeMenu
+                        );
+                }
+            }
+
+            delete this.chatThemeMenu.dataset
+                .chatThemeOwner;
+
+            this.chatThemeMenu.style
+                .removeProperty(
+                    "position"
+                );
+
+            this.chatThemeMenu.style
+                .removeProperty(
+                    "left"
+                );
+
+            this.chatThemeMenu.style
+                .removeProperty(
+                    "top"
+                );
+
+            this.chatThemeMenu.style
+                .removeProperty(
+                    "right"
+                );
+
+            this.chatThemeMenu.style
+                .removeProperty(
+                    "z-index"
+                );
+        };
+
+        /*
+         * Match the existing 90ms opacity fade before returning the menu
+         * to its normal wrapper.
+         */
+        window.setTimeout(
+            restore,
+            100
+        );
+    }
 }
 
 	applyChatComposerLayout(themeName) {
@@ -17715,15 +17939,15 @@ keepTitleBarInViewport() {
         ];
 
         const largeCount =
-            42 +
+            50 +
             Math.floor(
-                Math.random() * 9
+                Math.random() * 11
             );
 
         const tinyCount =
-            128 +
+            150 +
             Math.floor(
-                Math.random() * 25
+                Math.random() * 31
             );
 
         for (
@@ -17892,9 +18116,9 @@ keepTitleBarInViewport() {
         ];
 
         const count =
-            34 +
+            40 +
             Math.floor(
-                Math.random() * 9
+                Math.random() * 11
             );
 
         for (
@@ -17994,6 +18218,211 @@ keepTitleBarInViewport() {
         }
     }
 
+
+    /*
+     * Coverage pass: random placement can still leave visually empty cells.
+     * Fill under-covered cells while respecting the same occupied-distance
+     * checks, so the result feels evenly decorated rather than clustered.
+     */
+    if (theme === "stars") {
+        const colours = [
+            "#d8c9ff",
+            "#ace3ff",
+            "#ffc4e4",
+            "#ffe79e",
+            "#c2efff",
+            "#eee5ff"
+        ];
+
+        const columns = 6;
+        const rows = 5;
+
+        for (let row = 0; row < rows; row += 1) {
+            for (let column = 0; column < columns; column += 1) {
+                const left0 = 3 + column * (94 / columns);
+                const left1 = 3 + (column + 1) * (94 / columns);
+                const top0 = 3 + row * (94 / rows);
+                const top1 = 3 + (row + 1) * (94 / rows);
+
+                const x0 = width * left0 / 100;
+                const x1 = width * left1 / 100;
+                const y0 = height * top0 / 100;
+                const y1 = height * top1 / 100;
+
+                const hasMediumOrLarge =
+                    occupied.some(point =>
+                        point.radius >= 4 &&
+                        point.x >= x0 &&
+                        point.x <= x1 &&
+                        point.y >= y0 &&
+                        point.y <= y1
+                    );
+
+                if (hasMediumOrLarge) {
+                    continue;
+                }
+
+                const size =
+                    9 +
+                    Math.random() * 8;
+
+                const position =
+                    findPosition({
+                        size,
+                        gap: 6,
+                        minLeft: left0 + 1,
+                        maxLeft: left1 - 1,
+                        minTop: top0 + 1,
+                        maxTop: top1 - 1,
+                        attempts: 560
+                    });
+
+                if (!position) {
+                    continue;
+                }
+
+                occupied.push({
+                    x: position.x,
+                    y: position.y,
+                    radius: position.radius
+                });
+
+                const star =
+                    document.createElement("i");
+
+                star.className =
+                    "jami-chat-star jami-chat-star-four";
+
+                star.style.left =
+                    `${position.left}%`;
+
+                star.style.top =
+                    `${position.top}%`;
+
+                star.style.width =
+                    `${size}px`;
+
+                star.style.height =
+                    `${size}px`;
+
+                star.style.background =
+                    colours[
+                        Math.floor(
+                            Math.random() *
+                            colours.length
+                        )
+                    ];
+
+                star.style.opacity =
+                    `${.72 + Math.random() * .22}`;
+
+                star.style.transform =
+                    `translate(-50%, -50%) rotate(${Math.random() * 20 - 10}deg)`;
+
+                layer.appendChild(star);
+            }
+        }
+    } else {
+        const colours = [
+            "#f4a9c1",
+            "#a8d8b8",
+            "#f4c795",
+            "#c9b7ee"
+        ];
+
+        const columns = 5;
+        const rows = 5;
+
+        for (let row = 0; row < rows; row += 1) {
+            for (let column = 0; column < columns; column += 1) {
+                const left0 = 3 + column * (94 / columns);
+                const left1 = 3 + (column + 1) * (94 / columns);
+                const top0 = 3 + row * (94 / rows);
+                const top1 = 3 + (row + 1) * (94 / rows);
+
+                const x0 = width * left0 / 100;
+                const x1 = width * left1 / 100;
+                const y0 = height * top0 / 100;
+                const y1 = height * top1 / 100;
+
+                const hasPaw =
+                    occupied.some(point =>
+                        point.radius >= 9 &&
+                        point.x >= x0 &&
+                        point.x <= x1 &&
+                        point.y >= y0 &&
+                        point.y <= y1
+                    );
+
+                if (hasPaw) {
+                    continue;
+                }
+
+                const size =
+                    20 +
+                    Math.random() * 7;
+
+                const position =
+                    findPosition({
+                        size,
+                        gap: 6,
+                        minLeft: left0 + 1,
+                        maxLeft: left1 - 1,
+                        minTop: top0 + 1,
+                        maxTop: top1 - 1,
+                        attempts: 680
+                    });
+
+                if (!position) {
+                    continue;
+                }
+
+                occupied.push({
+                    x: position.x,
+                    y: position.y,
+                    radius: position.radius
+                });
+
+                const paw =
+                    document.createElement("i");
+
+                paw.className =
+                    "jami-chat-paw";
+
+                paw.style.left =
+                    `${position.left}%`;
+
+                paw.style.top =
+                    `${position.top}%`;
+
+                paw.style.width =
+                    `${size}px`;
+
+                paw.style.height =
+                    `${size}px`;
+
+                paw.style.color =
+                    colours[
+                        Math.floor(
+                            Math.random() *
+                            colours.length
+                        )
+                    ];
+
+                paw.style.opacity =
+                    `${.18 + Math.random() * .14}`;
+
+                paw.style.transform =
+                    `translate(-50%, -50%) rotate(${-16 + Math.random() * 32}deg)`;
+
+                paw.innerHTML =
+                    makePawMarkup();
+
+                layer.appendChild(paw);
+            }
+        }
+    }
+
     main.appendChild(layer);
 
     /* Small decoration everywhere else in the chat shell.
@@ -18077,9 +18506,9 @@ keepTitleBarInViewport() {
         ];
 
         const shellCount =
-            96 +
+            130 +
             Math.floor(
-                Math.random() * 24
+                Math.random() * 31
             );
 
         for (
@@ -18155,9 +18584,9 @@ keepTitleBarInViewport() {
         ];
 
         const shellCount =
-            30 +
+            38 +
             Math.floor(
-                Math.random() * 9
+                Math.random() * 11
             );
 
         for (
@@ -18227,6 +18656,275 @@ keepTitleBarInViewport() {
 
             shellLayer.appendChild(paw);
         }
+    }
+
+
+    /*
+     * Shell coverage pass: guarantee decoration in the title/MOTD/top shell
+     * and composer/control/bottom shell, rather than relying only on random
+     * attempts around the excluded message rectangle.
+     */
+    const shellRegions = [
+        {
+            minLeft: 2,
+            maxLeft: 98,
+            minTop: 2,
+            maxTop: Math.max(
+                6,
+                exclusion.top * 100 / shellHeight - 1
+            )
+        },
+        {
+            minLeft: 2,
+            maxLeft: 98,
+            minTop: Math.min(
+                94,
+                exclusion.bottom * 100 / shellHeight + 1
+            ),
+            maxTop: 98
+        }
+    ].filter(region =>
+        region.maxTop - region.minTop >= 4
+    );
+
+    if (theme === "stars") {
+        const colours = [
+            "#d8c9ff",
+            "#ace3ff",
+            "#ffc4e4",
+            "#ffe79e",
+            "#c2efff",
+            "#eee5ff"
+        ];
+
+        shellRegions.forEach(region => {
+            const columns = 10;
+
+            for (
+                let column = 0;
+                column < columns;
+                column += 1
+            ) {
+                const left0 =
+                    region.minLeft +
+                    column *
+                    (
+                        region.maxLeft -
+                        region.minLeft
+                    ) /
+                    columns;
+
+                const left1 =
+                    region.minLeft +
+                    (column + 1) *
+                    (
+                        region.maxLeft -
+                        region.minLeft
+                    ) /
+                    columns;
+
+                const hasStar =
+                    shellOccupied.some(point => {
+                        const left =
+                            point.x * 100 /
+                            shellWidth;
+
+                        const top =
+                            point.y * 100 /
+                            shellHeight;
+
+                        return (
+                            left >= left0 &&
+                            left <= left1 &&
+                            top >= region.minTop &&
+                            top <= region.maxTop
+                        );
+                    });
+
+                if (hasStar) {
+                    continue;
+                }
+
+                const size =
+                    1.7 +
+                    Math.random() * 2.6;
+
+                const position =
+                    findShellPosition({
+                        size,
+                        gap: 2.5,
+                        minLeft: left0 + .5,
+                        maxLeft: left1 - .5,
+                        minTop: region.minTop + .5,
+                        maxTop: region.maxTop - .5,
+                        attempts: 460
+                    });
+
+                if (!position) {
+                    continue;
+                }
+
+                shellOccupied.push({
+                    x: position.x,
+                    y: position.y,
+                    radius: position.radius
+                });
+
+                const star =
+                    document.createElement("i");
+
+                star.className =
+                    "jami-chat-star jami-chat-star-tiny";
+
+                star.style.left =
+                    `${position.left}%`;
+
+                star.style.top =
+                    `${position.top}%`;
+
+                star.style.width =
+                    `${size}px`;
+
+                star.style.height =
+                    `${size}px`;
+
+                star.style.background =
+                    colours[
+                        Math.floor(
+                            Math.random() *
+                            colours.length
+                        )
+                    ];
+
+                star.style.opacity =
+                    `${.50 + Math.random() * .28}`;
+
+                star.style.transform =
+                    `translate(-50%, -50%) rotate(${Math.random() * 24 - 12}deg)`;
+
+                shellLayer.appendChild(star);
+            }
+        });
+    } else {
+        const colours = [
+            "#f4a9c1",
+            "#a8d8b8",
+            "#f4c795",
+            "#c9b7ee"
+        ];
+
+        shellRegions.forEach(region => {
+            const columns = 7;
+
+            for (
+                let column = 0;
+                column < columns;
+                column += 1
+            ) {
+                const left0 =
+                    region.minLeft +
+                    column *
+                    (
+                        region.maxLeft -
+                        region.minLeft
+                    ) /
+                    columns;
+
+                const left1 =
+                    region.minLeft +
+                    (column + 1) *
+                    (
+                        region.maxLeft -
+                        region.minLeft
+                    ) /
+                    columns;
+
+                const hasPaw =
+                    shellOccupied.some(point => {
+                        const left =
+                            point.x * 100 /
+                            shellWidth;
+
+                        const top =
+                            point.y * 100 /
+                            shellHeight;
+
+                        return (
+                            point.radius >= 6 &&
+                            left >= left0 &&
+                            left <= left1 &&
+                            top >= region.minTop &&
+                            top <= region.maxTop
+                        );
+                    });
+
+                if (hasPaw) {
+                    continue;
+                }
+
+                const size =
+                    15 +
+                    Math.random() * 7;
+
+                const position =
+                    findShellPosition({
+                        size,
+                        gap: 6,
+                        minLeft: left0 + .7,
+                        maxLeft: left1 - .7,
+                        minTop: region.minTop + .8,
+                        maxTop: region.maxTop - .8,
+                        attempts: 620
+                    });
+
+                if (!position) {
+                    continue;
+                }
+
+                shellOccupied.push({
+                    x: position.x,
+                    y: position.y,
+                    radius: position.radius
+                });
+
+                const paw =
+                    document.createElement("i");
+
+                paw.className =
+                    "jami-chat-paw jami-chat-shell-paw";
+
+                paw.style.left =
+                    `${position.left}%`;
+
+                paw.style.top =
+                    `${position.top}%`;
+
+                paw.style.width =
+                    `${size}px`;
+
+                paw.style.height =
+                    `${size}px`;
+
+                paw.style.color =
+                    colours[
+                        Math.floor(
+                            Math.random() *
+                            colours.length
+                        )
+                    ];
+
+                paw.style.opacity =
+                    `${.22 + Math.random() * .11}`;
+
+                paw.style.transform =
+                    `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
+
+                paw.innerHTML =
+                    makePawMarkup();
+
+                shellLayer.appendChild(paw);
+            }
+        });
     }
 
     this.window.appendChild(
