@@ -17819,6 +17819,14 @@ keepTitleBarInViewport() {
         ".jami-chat-shell-decor"
     )?.remove();
 
+    main.querySelector(
+        ".jami-chat-star-haze-main"
+    )?.remove();
+
+    this.window.querySelector(
+        ".jami-chat-star-haze-shell"
+    )?.remove();
+
     const theme =
         this.window.dataset.chatPastel ||
         "";
@@ -17954,6 +17962,130 @@ keepTitleBarInViewport() {
             height,
             occupied
         );
+
+    /*
+     * Stars-only atmospheric haze.
+     * Randomized, very soft cloud blobs create the faint cloudy depth
+     * visible in the reference. Main chat gets the stronger pass;
+     * the outer shell gets fewer, much fainter blobs.
+     */
+    if (theme === "stars") {
+        const mainHaze =
+            document.createElement("div");
+
+        mainHaze.className =
+            "jami-chat-star-haze-main";
+
+        const mainCloudCount =
+            7 +
+            Math.floor(
+                Math.random() * 4
+            );
+
+        for (
+            let index = 0;
+            index < mainCloudCount;
+            index += 1
+        ) {
+            const cloud =
+                document.createElement("i");
+
+            cloud.className =
+                "jami-chat-star-cloud";
+
+            const cloudWidth =
+                105 +
+                Math.random() * 125;
+
+            const cloudHeight =
+                55 +
+                Math.random() * 85;
+
+            cloud.style.left =
+                `${-5 + Math.random() * 105}%`;
+
+            cloud.style.top =
+                `${-4 + Math.random() * 102}%`;
+
+            cloud.style.width =
+                `${cloudWidth}px`;
+
+            cloud.style.height =
+                `${cloudHeight}px`;
+
+            cloud.style.opacity =
+                `${.075 + Math.random() * .075}`;
+
+            cloud.style.transform =
+                `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
+
+            mainHaze.appendChild(
+                cloud
+            );
+        }
+
+        main.prepend(
+            mainHaze
+        );
+
+        const shellHaze =
+            document.createElement("div");
+
+        shellHaze.className =
+            "jami-chat-star-haze-shell";
+
+        const shellCloudCount =
+            4 +
+            Math.floor(
+                Math.random() * 3
+            );
+
+        for (
+            let index = 0;
+            index < shellCloudCount;
+            index += 1
+        ) {
+            const cloud =
+                document.createElement("i");
+
+            cloud.className =
+                "jami-chat-star-cloud";
+
+            const cloudWidth =
+                120 +
+                Math.random() * 145;
+
+            const cloudHeight =
+                55 +
+                Math.random() * 90;
+
+            cloud.style.left =
+                `${-4 + Math.random() * 108}%`;
+
+            cloud.style.top =
+                `${-3 + Math.random() * 106}%`;
+
+            cloud.style.width =
+                `${cloudWidth}px`;
+
+            cloud.style.height =
+                `${cloudHeight}px`;
+
+            cloud.style.opacity =
+                `${.025 + Math.random() * .035}`;
+
+            cloud.style.transform =
+                `translate(-50%, -50%) rotate(${-20 + Math.random() * 40}deg)`;
+
+            shellHaze.appendChild(
+                cloud
+            );
+        }
+
+        this.window.prepend(
+            shellHaze
+        );
+    }
 
     if (theme === "stars") {
         const colours = [
