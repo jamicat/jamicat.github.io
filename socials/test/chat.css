@@ -9584,3 +9584,54 @@ html[data-chat-theme="original"][data-theme="Cat"]
     padding-top: 7px !important;
     padding-bottom: 9px !important;
 }
+
+
+/* ============================================================
+   Theme control alignment correction.
+   Keep the dropdown wrapper as the positioned flex item, but do
+   NOT impose a synthetic 24px text box / line-height on Theme.
+   This lets its glyph baseline follow the same natural metrics
+   as the neighbouring title-bar buttons.
+   ============================================================ */
+
+#chatWindow .jami-chat-theme-wrap {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-content: center !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#chatWindow #chatThemeButton {
+    position: static !important;
+    top: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-content: center !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: normal !important;
+    vertical-align: baseline !important;
+    transform: none !important;
+}
+
+/* Preserve the requested per-chat-theme Theme text sizes. */
+#chatWindow[data-chat-theme="stars"] #chatThemeButton {
+    font-size: 10px !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatThemeButton {
+    font-size: 9px !important;
+}
+
+/*
+ * Intentionally DO NOT override .jami-original-message-input here.
+ * The previous 1px-up type-a-message adjustment remains exactly as-is.
+ */
