@@ -18143,9 +18143,9 @@ keepTitleBarInViewport() {
         ];
 
         const count =
-            49 +
+            38 +
             Math.floor(
-                Math.random() * 12
+                Math.random() * 9
             );
 
         for (
@@ -18467,7 +18467,7 @@ keepTitleBarInViewport() {
             "#eee5ff"
         ];
 
-        const bands = 8;
+        const bands = 9;
 
         for (
             let band = 0;
@@ -18488,7 +18488,7 @@ keepTitleBarInViewport() {
                 width * .03;
 
             const x1 =
-                width * .30;
+                width * .34;
 
             const y0 =
                 height * top0 / 100;
@@ -18513,9 +18513,9 @@ keepTitleBarInViewport() {
                 const position =
                     findPosition({
                         size,
-                        gap: 6,
-                        minLeft: 4,
-                        maxLeft: 29,
+                        gap: 5.5,
+                        minLeft: 3,
+                        maxLeft: 33,
                         minTop: top0 + .7,
                         maxTop: top1 - .7,
                         attempts: 700
@@ -18835,9 +18835,9 @@ keepTitleBarInViewport() {
         ];
 
         const shellCount =
-            48 +
+            34 +
             Math.floor(
-                Math.random() * 12
+                Math.random() * 9
             );
 
         for (
