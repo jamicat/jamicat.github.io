@@ -333,9 +333,26 @@ if (toggleBtn) {
     el.classList.contains('jami-chat-context-menu') ||
     el.classList.contains('jami-admin-glass-panel') ||
     el.classList.contains('jami-saved-remix-manager') ||
-    el.classList.contains('jami-name-history-manager');
+    el.classList.contains('jami-name-history-manager') ||
+    el.classList.contains('watch-party-visualizer-window') ||
+    el.classList.contains('jami-remix-overlay') ||
+    el.classList.contains('jami-image-remixer');
 
-  if (chatOwned) {
+  const chatTheme =
+    document.documentElement.getAttribute('data-chat-theme') ||
+    document.getElementById('chatWindow')?.dataset.chatTheme ||
+    'original';
+
+  /*
+   * Chat-owned terminal2 UI follows the website terminal theme only
+   * while the chat itself is using Original. Stars / Animal Crossing
+   * remain completely isolated from the terminal selector.
+   */
+  if (chatOwned && chatTheme !== 'original') {
+    Object.values(themes).forEach(t => {
+      el.classList.remove(t.terminal2Bg);
+    });
+    el.style.removeProperty('border-color');
     return;
   }
 
@@ -343,6 +360,10 @@ if (toggleBtn) {
     el.classList.remove(t.terminal2Bg);
   });
   el.classList.add(theme.terminal2Bg);
+
+  if (chatOwned && chatTheme === 'original') {
+    el.style.borderColor = theme.borderColor;
+  }
 });
 
 document.querySelectorAll('.gwterminal').forEach(el => {
@@ -4737,4 +4758,17 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   applyTheme(savedTheme);
   initTyped(savedTheme);
+});
+
+
+/* Keep terminal-theme effects scoped to Original chat mode. */
+window.addEventListener('chat-theme-change', () => {
+  const activeSiteTheme =
+    localStorage.getItem('theme') ||
+    document.documentElement.getAttribute('data-theme') ||
+    'Default';
+
+  if (themes[activeSiteTheme]) {
+    applyTheme(activeSiteTheme);
+  }
 });
