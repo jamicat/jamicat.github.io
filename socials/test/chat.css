@@ -7586,10 +7586,7 @@ html[data-chat-pastel="paws"] .jami-chat-context-menu .jami-chat-context-item-da
     color: #fff !important;
     border-color:
         rgba(255, 255, 255, .15) !important;
-    backdrop-filter:
-        blur(16px) !important;
-    -webkit-backdrop-filter:
-        blur(16px) !important;
+
 }
 
 #chatWindow[data-chat-theme="original"]
@@ -8082,8 +8079,7 @@ html[data-chat-theme="original"]
     color: #fff !important;
     box-shadow:
         0 14px 36px rgba(0,0,0,.38) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
+
     font-family: "Nunito", sans-serif !important;
 }
 
@@ -8484,8 +8480,7 @@ html[data-chat-theme="original"] #chatAvatarPicker {
     background: rgba(24,24,26,.92) !important;
     color: #fff !important;
     box-shadow: 0 14px 36px rgba(0,0,0,.38) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
+
 }
 
 html[data-chat-theme="original"] #chatAvatarPicker .jami-cute-profile-title {
@@ -8834,8 +8829,7 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPan
     background: rgba(0, 0, 0, .20) !important;
     color: #fff !important;
     box-shadow: var(--tw-shadow) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
+
 }
 
 #chatWindow[data-chat-theme="original"].h-10 {
@@ -9173,4 +9167,11 @@ html[data-chat-theme="original"]
 #chatAvatarButton img.rounded-full {
     width: 40px !important;
     height: 40px !important;
+}
+
+
+/* Original-theme parity: original chatControls uses p-3 and bg-black/10. */
+#chatWindow[data-chat-theme="original"] #chatControls {
+    padding: 12px !important;
+    background: rgba(0, 0, 0, 0.10) !important;
 }
