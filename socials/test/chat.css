@@ -9506,3 +9506,29 @@ html[data-chat-theme="paws"] .jami-reaction-tooltip {
         "Nunito",
         sans-serif !important;
 }
+
+
+/* ============================================================
+   Chat Theme button final per-theme alignment / size.
+   ============================================================ */
+
+/* Stars: align with Hide Members / Online row. */
+#chatWindow[data-chat-theme="stars"] #chatThemeButton {
+    transform: translateY(-3px) !important;
+    font-size: 10px !important;
+}
+
+/* Animal Crossing chat: preserve its existing transform, size text only. */
+#chatWindow[data-chat-theme="paws"] #chatThemeButton {
+    font-size: 9px !important;
+}
+
+/* Original chat + terminal Animal Crossing / Pixel Cat only:
+   retain existing size/font inheritance and move Theme up 1px. */
+html[data-chat-theme="original"][data-theme="Default"]
+#chatWindow[data-chat-theme="original"] #chatThemeButton,
+html[data-chat-theme="original"][data-theme="Cat"]
+#chatWindow[data-chat-theme="original"] #chatThemeButton {
+    position: relative !important;
+    top: -1px !important;
+}
