@@ -947,10 +947,6 @@ const syncChatThemeButtonAlignment = () => {
         "important"
     );
 
-    /*
-     * Never mirror display:none from Hide Members while minimized.
-     * Theme must remain a visible/clickable title-bar control.
-     */
     this.chatThemeButton.style.setProperty(
         "display",
         "block",
@@ -1985,8 +1981,6 @@ if (clearButton) {
             result =
                 await response.json();
         } catch {
-            // The error handling below covers
-            // non-JSON responses.
         }
 
         if (
@@ -2123,8 +2117,6 @@ if (clearButton) {
             result =
                 await response.json();
         } catch {
-            // The general error below handles
-            // a non-JSON response.
         }
 
         if (response.status === 401) {
@@ -5270,8 +5262,6 @@ this.renderWatchParty();
             result =
                 await response.json();
         } catch {
-            // The error handling below covers
-            // a response that is not valid JSON.
         }
 
         if (!response.ok) {
@@ -5498,8 +5488,6 @@ async removeWatchPartyItem(
             result =
                 await response.json();
         } catch {
-            // The general error below handles
-            // an invalid JSON response.
         }
 
         if (response.status === 401) {
@@ -5621,8 +5609,6 @@ escapeHtml(value) {
             result =
                 await response.json();
         } catch {
-            // The error below will handle
-            // an invalid response.
         }
 
         if (response.status === 401) {
@@ -17064,19 +17050,8 @@ keepTitleBarInViewport() {
             : "";
 
     if (!nextTheme) {
-        const siteTheme =
-            String(
-                localStorage.getItem(
-                    "theme"
-                ) || "Stars"
-            ).trim();
-
         nextTheme =
-            siteTheme === "Default"
-                ? "paws"
-                : siteTheme === "Stars"
-                    ? "stars"
-                    : "original";
+            "paws";
 
         localStorage.setItem(
             "chat_theme",
@@ -17184,11 +17159,6 @@ keepTitleBarInViewport() {
         cleaned
     );
 
-    /*
-     * Animate after the new theme has actually been applied.
-     * Doing it before the data attributes changed made the switch look
-     * like an instant snap despite the Web Animation running.
-     */
     if (
         shouldAnimateThemeChange &&
         typeof this.window.animate ===
@@ -17336,10 +17306,6 @@ keepTitleBarInViewport() {
                 )
             );
 
-        /*
-         * Expanded chat: menu drops below Theme.
-         * Minimized chat: menu opens above/outside the collapsed bar.
-         */
         const estimatedHeight =
             102;
 
@@ -17491,10 +17457,6 @@ keepTitleBarInViewport() {
                 );
         };
 
-        /*
-         * Match the existing 90ms opacity fade before returning the menu
-         * to its normal wrapper.
-         */
         window.setTimeout(
             restore,
             100
@@ -17935,7 +17897,6 @@ keepTitleBarInViewport() {
         return null;
     };
 
-    /* Main/message/member zone decoration. */
     const layer =
         document.createElement("div");
 
@@ -17963,12 +17924,6 @@ keepTitleBarInViewport() {
             occupied
         );
 
-    /*
-     * Stars-only atmospheric haze.
-     * Randomized, very soft cloud blobs create the faint cloudy depth
-     * visible in the reference. Main chat gets the stronger pass;
-     * the outer shell gets fewer, much fainter blobs.
-     */
     if (theme === "stars") {
         const mainHaze =
             document.createElement("div");
@@ -18378,11 +18333,6 @@ keepTitleBarInViewport() {
     }
 
 
-    /*
-     * Coverage pass: random placement can still leave visually empty cells.
-     * Fill under-covered cells while respecting the same occupied-distance
-     * checks, so the result feels evenly decorated rather than clustered.
-     */
     if (theme === "stars") {
         const colours = [
             "#d8c9ff",
@@ -18583,12 +18533,6 @@ keepTitleBarInViewport() {
     }
 
 
-    /*
-     * Left-side coverage pass.
-     * The random distribution can visually read as right-heavy because
-     * messages occupy the left half. Guarantee decoration opportunities
-     * in each left-side vertical band while preserving decor spacing.
-     */
     if (theme === "stars") {
         const colours = [
             "#d8c9ff",
@@ -18807,12 +18751,6 @@ keepTitleBarInViewport() {
     }
 
 
-    /*
-     * Stars edge-balance pass.
-     * Keep the overall count calmer, but make sure the far-right,
-     * upper-left and lower-left do not read as empty. Uses the same
-     * occupied-radius checks, so it never deliberately overlaps.
-     */
     if (theme === "stars") {
         const colours = [
             "#d8c9ff",
@@ -18933,8 +18871,6 @@ keepTitleBarInViewport() {
 
     main.appendChild(layer);
 
-    /* Small decoration everywhere else in the chat shell.
-       The main/message zone is excluded so it does not double-stack. */
     const shellLayer =
         document.createElement("div");
 
@@ -19167,11 +19103,6 @@ keepTitleBarInViewport() {
     }
 
 
-    /*
-     * Shell coverage pass: guarantee decoration in the title/MOTD/top shell
-     * and composer/control/bottom shell, rather than relying only on random
-     * attempts around the excluded message rectangle.
-     */
     const shellRegions = [
         {
             minLeft: 2,
