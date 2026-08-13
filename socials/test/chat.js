@@ -341,10 +341,10 @@ transition-[height] duration-200
                 class="
                     theme-heading
                     text-xs font-bold tracking-widest
-                    text-white text-blue-glow
+                    text-white text-pink-glow
                 "
             >
-                jamichat
+                CAT CHAT
             </span>
 
            <div class="flex items-center gap-3">
