@@ -10019,3 +10019,180 @@ html[data-chat-theme="stars"]
 #chatMembers > div > span {
     color: rgba(194, 190, 237, .94) !important;
 }
+
+
+/* ============================================================
+   Cute-theme polish v8 — final colour/control touchups
+   Original theme intentionally untouched.
+   ============================================================ */
+
+/* -------------------- STARS -------------------- */
+
+/* Members heading + member names match white chat text. */
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatMembersPanel .theme-heading,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatMembers > div > span {
+    color: #ffffff !important;
+}
+
+/* Bans / Party / Hide Members / Theme: white. */
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatBanManagerButton,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatPartyManagerButton,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatMembersToggle,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatThemeButton {
+    color: #ffffff !important;
+}
+
+/* Send button uses the UI purple; arrow stays white. */
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatSend.jami-cute-send-arrow,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatSend.jami-cute-send-arrow:hover,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatSend.jami-cute-send-arrow:active {
+    color: #ffffff !important;
+    background: #ae98dd !important;
+    border-color: rgba(255,255,255,.22) !important;
+}
+
+/* Emoji + upload controls: transparent buttons, matching purple glyphs,
+   same slightly-larger size. */
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatEmojiButton,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatImageUploadButton {
+    color: #ae98dd !important;
+    background: transparent !important;
+    font-size: 24px !important;
+    line-height: 1 !important;
+}
+
+/* -------------------- PAWS -------------------- */
+
+/* Chat title + heart. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatTitle,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatTitle::before,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatTitle::after {
+    color: #a04b63 !important;
+}
+
+/* Message text. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.chatText,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.messageBody {
+    color: #6f506c !important;
+}
+
+/* Timestamps + chain timestamps. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.chatTime,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.chatContinuationTime {
+    color: #a04b63 !important;
+}
+
+/* Members heading + member-list names. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembersPanel .theme-heading,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembers > div > span {
+    color: #d8667a !important;
+}
+
+/* Names inside actual chat messages. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.chatMessageName {
+    color: #ed6a7c !important;
+}
+
+/* Bans / Party / Hide Members / Theme + minimize/maximize. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatBanManagerButton,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatPartyManagerButton,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembersToggle,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatThemeButton,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMinimize {
+    color: #ed6a7c !important;
+}
+
+/* Paws send button: white arrow, pink button. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatSend.jami-cute-send-arrow,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatSend.jami-cute-send-arrow:hover,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatSend.jami-cute-send-arrow:active {
+    color: #ffffff !important;
+    background: #ee9dad !important;
+    border-color: rgba(255,255,255,.32) !important;
+}
+
+/* Message input text + placeholder. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMessage {
+    color: #ee9dad !important;
+}
+
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMessage::placeholder {
+    color: #ee9dad !important;
+    opacity: 1 !important;
+}
+
+/* Emoji + upload controls: transparent buttons, same larger size,
+   matching Paw pink. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatEmojiButton,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatImageUploadButton {
+    color: #ee9dad !important;
+    background: transparent !important;
+    font-size: 24px !important;
+    line-height: 1 !important;
+}
