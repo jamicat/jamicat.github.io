@@ -12716,11 +12716,8 @@ async uploadTestImage(file) {
     const input =
         window.prompt(
             "clear chat\n\n" +
-            "leave empty to clear the full chat.\n\n" +
+            "leave empty to clear fully.\n\n" +
             "or enter exactly:\n" +
-            "before dd/mm/yyyy hh:mm\n" +
-            "after dd/mm/yyyy hh:mm\n\n" +
-            "seconds are optional:\n" +
             "before dd/mm/yyyy hh:mm:ss\n" +
             "after dd/mm/yyyy hh:mm:ss",
             ""
