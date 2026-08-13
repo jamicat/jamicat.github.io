@@ -10196,3 +10196,152 @@ html[data-chat-theme="paws"]
     font-size: 24px !important;
     line-height: 1 !important;
 }
+
+
+/* ============================================================
+   Cute-theme polish v9 — specificity cleanup / final touchups
+   Original theme intentionally untouched.
+   ============================================================ */
+
+/* -------------------- STARS -------------------- */
+
+/* Members + member names: white. */
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatMembersPanel .theme-heading,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatMembers > div > span {
+    color: #ffffff !important;
+}
+
+/* Stronger than the older title-bar theme bundles:
+   bans / party / hide members / theme are all white. */
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatTitleBar #chatBanManagerButton,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatTitleBar #chatPartyManagerButton,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatTitleBar #chatMembersToggle,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatTitleBar #chatThemeButton {
+    color: #ffffff !important;
+    text-shadow: none !important;
+}
+
+/* Stars emoji + upload glyphs: transparent buttons, #8271bc glyphs. */
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatEmojiButton,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatImageUploadButton {
+    color: #8271bc !important;
+    background: transparent !important;
+    font-size: 24px !important;
+    line-height: 1 !important;
+}
+
+/* Stars message placeholder matches those glyphs. */
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatMessage::placeholder {
+    color: #8271bc !important;
+    opacity: 1 !important;
+}
+
+/* -------------------- PAWS / ANIMAL CROSSING -------------------- */
+
+/* CAT CHAT + heart. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatTitle,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatTitle::before,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatTitle::after {
+    color: #c1758a !important;
+}
+
+/* Timestamps + chain timestamps. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.chatTime,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.chatContinuationTime {
+    color: #c1758a !important;
+}
+
+/* MEMBERS + member list names. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembersPanel .theme-heading,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembers > div > span {
+    color: #d76e82 !important;
+}
+
+/* Stronger than the old Paw title-bar pink bundle:
+   minimize/maximize + bans + party + hide/show members + theme. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatTitleBar #chatBanManagerButton,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatTitleBar #chatPartyManagerButton,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatTitleBar #chatMembersToggle,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatTitleBar #chatThemeButton,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatTitleBar #chatMinimize {
+    color: #d76e82 !important;
+    text-shadow: none !important;
+}
+
+/* Paw send: white arrow on #ee98ab button. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatSend.jami-cute-send-arrow,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatSend.jami-cute-send-arrow:hover,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatSend.jami-cute-send-arrow:active {
+    color: #ffffff !important;
+    background: #ee98ab !important;
+    border-color: rgba(255,255,255,.32) !important;
+}
+
+/* Paw emoji + upload glyphs: transparent buttons, #ee98ab glyphs. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatEmojiButton,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatImageUploadButton {
+    color: #ee98ab !important;
+    background: transparent !important;
+    font-size: 24px !important;
+    line-height: 1 !important;
+}
+
+/* Paw message placeholder. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMessage::placeholder {
+    color: #ee98ab !important;
+    opacity: 1 !important;
+}
