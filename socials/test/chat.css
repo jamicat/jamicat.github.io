@@ -10345,3 +10345,100 @@ html[data-chat-theme="paws"]
     color: #ee98ab !important;
     opacity: 1 !important;
 }
+
+
+/* ============================================================
+   Cute-theme polish v10 — Stars haze + Paw final corrections
+   Original theme intentionally untouched.
+   ============================================================ */
+
+/* -------------------- STARS RANDOM HAZE -------------------- */
+
+#chatWindow[data-chat-theme="stars"]
+.jami-chat-star-haze-main,
+#chatWindow[data-chat-theme="stars"]
+.jami-chat-star-haze-shell {
+    position: absolute !important;
+    inset: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+}
+
+#chatWindow[data-chat-theme="stars"]
+.jami-chat-star-haze-main {
+    z-index: 0 !important;
+    border-radius: inherit !important;
+}
+
+#chatWindow[data-chat-theme="stars"]
+.jami-chat-star-haze-shell {
+    z-index: 0 !important;
+    border-radius: inherit !important;
+}
+
+#chatWindow[data-chat-theme="stars"]
+.jami-chat-star-cloud {
+    position: absolute !important;
+    display: block !important;
+    border-radius: 999px !important;
+    pointer-events: none !important;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(255,255,255,.88) 0%,
+            rgba(235,230,255,.58) 30%,
+            rgba(215,207,255,.22) 58%,
+            rgba(215,207,255,0) 78%
+        ) !important;
+
+    filter:
+        blur(18px) !important;
+}
+
+/* Ensure the existing Stars decor/content still sits above the haze. */
+#chatWindow[data-chat-theme="stars"]
+.jami-chat-pastel-decor,
+#chatWindow[data-chat-theme="stars"]
+.jami-chat-shell-decor {
+    z-index: 1 !important;
+}
+
+#chatWindow[data-chat-theme="stars"]
+#chatMain > :not(.jami-chat-star-haze-main):not(.jami-chat-pastel-decor) {
+    position: relative;
+    z-index: 2;
+}
+
+/* -------------------- PAWS FINAL CORRECTIONS -------------------- */
+
+/* MEMBERS + member names match chat-message names exactly. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembersPanel .theme-heading,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembers > div > span {
+    color: #ed6a7c !important;
+}
+
+/* Paw send button — deliberately strongest selector in the file.
+   Keep the arrow white and the button #ee98ab through hover/active states. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatControls #chatSend.jami-cute-send-arrow,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatControls #chatSend.jami-cute-send-arrow:hover,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatControls #chatSend.jami-cute-send-arrow:focus,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatControls #chatSend.jami-cute-send-arrow:active {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background: #ee98ab !important;
+    border-color: rgba(255,255,255,.34) !important;
+    text-shadow: none !important;
+}
