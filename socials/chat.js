@@ -170,7 +170,50 @@ localStorage.setItem(
 "chat_client_id",
 this.clientId
 );
-	
+
+this.guestNames = [
+    "tuna",
+    "pixelpaws",
+    "stardust",
+    "meowmix",
+    "luna",
+    "mochi",
+    "cosmicat",
+    "nyanbean",
+    "peachy",
+    "whiskers",
+    "pixelcat",
+    "boba",
+    "miso",
+    "tofu",
+    "maple",
+    "flora",
+    "isabelle",
+    "lolly",
+    "poppy",
+    "merry"
+];
+
+this.guestName =
+    localStorage.getItem(
+        "chat_guest_name"
+    ) || "";
+
+if (!this.guestName) {
+    this.guestName =
+        this.guestNames[
+            Math.floor(
+                Math.random() *
+                this.guestNames.length
+            )
+        ];
+
+    localStorage.setItem(
+        "chat_guest_name",
+        this.guestName
+    );
+}
+
 this.createWindow();
 
 	window.addEventListener(
@@ -222,6 +265,7 @@ window.addEventListener(
 );
 
 this.applyCurrentTheme();
+this.setupChatPastelThemeSync();
 this.restoreSettings();
 this.setupDiscordAuthentication();
 
@@ -272,7 +316,6 @@ this.loadHistory()
 
     windowElement.id = "chatWindow";
     windowElement.className = `
-    terminal2
     fixed right-4 bottom-4 sm:right-8 sm:bottom-8 z-[99999]
     flex h-[500px] w-[480px] max-w-[calc(100vw-2rem)]
     flex-col overflow-hidden
@@ -298,7 +341,7 @@ transition-[height] duration-200
                 class="
                     theme-heading
                     text-xs font-bold tracking-widest
-                    text-white text-blue-glow
+                    text-white text-pink-glow
                 "
             >
                 CAT CHAT
@@ -318,6 +361,41 @@ transition-[height] duration-200
     >
         hide members
     </button>
+
+    <div class="relative jami-chat-theme-wrap">
+        <button
+            id="chatThemeButton"
+            type="button"
+            class="
+                theme-body
+                text-[9px] text-white/50
+                transition hover:text-white
+                jami-chat-theme-button
+            "
+            aria-label="change chat theme"
+            aria-expanded="false"
+            aria-controls="chatThemeMenu"
+            title="change chat theme"
+        >
+            theme
+        </button>
+
+        <div
+            id="chatThemeMenu"
+            class="jami-chat-theme-menu invisible pointer-events-none opacity-0"
+            role="menu"
+        >
+            <button type="button" data-chat-theme-choice="original" role="menuitem">
+                original
+            </button>
+            <button type="button" data-chat-theme-choice="stars" role="menuitem">
+                stars
+            </button>
+            <button type="button" data-chat-theme-choice="paws" role="menuitem">
+                animal crossing
+            </button>
+        </div>
+    </div>
 
     <div class="flex items-center gap-3">
     <span
@@ -453,21 +531,14 @@ transition-[height] duration-200
             "
         >
 
-	<div class="flex items-stretch gap-2">
+	<div class="relative jami-cute-composer-wrap">
+	<div class="jami-cute-composer-row">
     <div class="relative shrink-0">
         <button
             id="chatAvatarButton"
             type="button"
-            class="
-                flex h-11 w-11
-                items-center justify-center
-                rounded-xl
-                border border-white/10
-                bg-black/20
-                transition
-                hover:bg-white/5
-            "
-            aria-label="choose avatar"
+            class="jami-cute-avatar-button"
+            aria-label="profile and avatar"
             aria-expanded="false"
             aria-controls="chatAvatarPicker"
         >
@@ -479,30 +550,45 @@ transition-[height] duration-200
             >
         </button>
 
-       <div
-    id="chatAvatarPicker"
-    class="
-        invisible pointer-events-none opacity-0
-        absolute bottom-full left-0 z-20
-        mb-2 w-56
-        overflow-hidden
-        rounded-2xl
-        border border-white/10
-        bg-[#1f1f1f]
-        p-3
-        shadow-xl
-        transition-opacity
-    "
->
-            <div
-                class="
-                    theme-heading
-                    mb-3 text-[10px]
-                    font-bold uppercase tracking-widest
-                    text-white/60
-                "
-            >
-                select avatar
+        <div
+            id="chatAvatarPicker"
+            class="
+                invisible pointer-events-none opacity-0
+                absolute bottom-full left-0 z-20
+                mb-2 overflow-hidden
+                rounded-2xl
+                border border-white/10
+                bg-[#1f1f1f]
+                p-3 shadow-xl
+                transition-opacity
+            "
+        >
+            <div class="theme-heading jami-cute-profile-title">
+                profile
+            </div>
+
+            <div class="jami-cute-profile-name-wrap">
+                <input
+                    id="chatName"
+                    type="text"
+                    maxlength="20"
+                    autocomplete="nickname"
+                    placeholder="name"
+                    class="theme-body jami-cute-profile-name-input"
+                >
+
+                <div
+                    id="chatDiscordUsername"
+                    class="
+                        theme-body
+                        hidden truncate
+                        text-[8px] text-white/40
+                    "
+                ></div>
+            </div>
+
+            <div class="theme-heading jami-cute-avatar-label">
+                choose avatar
             </div>
 
             <div
@@ -528,154 +614,90 @@ transition-[height] duration-200
             >
                 log in with discord
             </button>
+
+            <button
+                id="chatDiscordLogout"
+                type="button"
+                class="
+                    theme-body
+                    mt-2 hidden w-full rounded-lg
+                    border border-white/10
+                    bg-white/5 px-2 py-2
+                    text-[9px] text-white/60
+                    transition
+                    hover:bg-white/10
+                    hover:text-white
+                    disabled:cursor-wait
+                    disabled:opacity-50
+                "
+            >
+                log out
+            </button>
         </div>
     </div>
 
-    <div class="relative min-w-0 flex-1">
-        <input
-            id="chatName"
-            type="text"
-            maxlength="20"
-            autocomplete="nickname"
-            placeholder="name"
-            class="
-                theme-body
-                h-11 w-full min-w-0 rounded-xl
-                border border-white/10
-                bg-black/30 px-3 py-2
-                text-xs text-white
-                placeholder:text-white/35
-                outline-none
-                focus:border-white/25
-            "
-        >
+    <input
+        id="chatImageUploadInput"
+        type="file"
+        accept="image/png,image/jpeg,image/gif,image/webp"
+        class="hidden"
+    >
 
-        <div
-            id="chatDiscordUsername"
-            class="
-                theme-body
-                pointer-events-none
-                absolute bottom-1.5 left-3
-                hidden max-w-[calc(100%-5.5rem)]
-                truncate text-[8px] text-white/40
-            "
-        ></div>
-
-        <button
-            id="chatDiscordLogout"
-            type="button"
-            class="
-                theme-body
-                absolute right-2 top-1/2
-                hidden -translate-y-1/2
-                rounded-lg border border-white/10
-                bg-white/5 px-2 py-1
-                text-[8px] text-white/60
-                transition
-                hover:bg-white/10
-                hover:text-white
-                disabled:cursor-wait
-                disabled:opacity-50
-            "
-        >
-            log out
-        </button>
-    </div>
-</div>
-
-            <div class="relative">
-			
-    <div class="flex items-stretch gap-2">
-	<button
-    id="chatImageUploadButton"
-    type="button"
-    class="
-        flex h-9 w-9 shrink-0
-        items-center justify-center
-        rounded-xl
-        border border-white/10
-        bg-black/20
-        text-base leading-none
-        transition
-        hover:bg-white/5
-        active:scale-95
-    "
-    aria-label="upload image"
-    title="upload image"
->
-    🖼️
-</button>
-
-<input
-    id="chatImageUploadInput"
-    type="file"
-    accept="image/png,image/jpeg,image/gif,image/webp"
-    class="hidden"
->
-
+    <div class="jami-cute-message-shell">
         <input
             id="chatMessage"
             type="text"
             maxlength="250"
             autocomplete="off"
             placeholder="type a message..."
-            class="
-                theme-body
-                min-w-0 flex-1 rounded-xl
-                border border-white/10
-                bg-black/30 px-3 py-2
-                text-xs text-white
-                placeholder:text-white/35
-                outline-none
-                focus:border-white/25
-            "
+            class="theme-body jami-cute-message-input"
         >
-<button
-    id="chatWatchPartyButton"
-    type="button"
-    class="
-        flex h-9 w-9 shrink-0
-        items-center justify-center
-        rounded-xl
-        border border-white/10
-        bg-black/20
-        text-base leading-none
-        transition
-        hover:bg-white/5
-        active:scale-95
-    "
-	aria-expanded="false"
-    aria-controls="chatWatchPartyPanel"
-    aria-label="watch party"
-    title="watch party"
->
-    📺
-</button>
 
         <button
             id="chatEmojiButton"
             type="button"
-            class="
-                flex h-9 w-9 shrink-0
-                items-center justify-center
-                rounded-xl
-                border border-white/10
-                bg-black/20
-                text-base leading-none
-                transition
-                hover:bg-white/5
-                active:scale-95
-            "
+            class="jami-cute-message-emoji"
             aria-label="choose emoji"
             aria-expanded="false"
             aria-controls="chatEmojiPicker"
             title="choose emoji"
         >
-            🐱
+            ☺
         </button>
 
-		
+        <button
+            id="chatImageUploadButton"
+            type="button"
+            class="jami-cute-message-plus"
+            aria-label="upload image"
+            title="upload image"
+        >
+            +
+        </button>
+
+        <button
+            id="chatSend"
+            type="button"
+            class="theme-body jami-cute-send-arrow"
+            aria-label="send message"
+            title="send message"
+        >
+            ➜
+        </button>
     </div>
+
+    <button
+        id="chatWatchPartyButton"
+        type="button"
+        class="jami-cute-square-button"
+        aria-expanded="false"
+        aria-controls="chatWatchPartyPanel"
+        aria-label="watch party"
+        title="watch party"
+    >
+        📺
+    </button>
+</div>
 
 <div
     id="chatWatchPartyPanel"
@@ -711,24 +733,7 @@ transition-[height] duration-200
     ></div>
 </div>
 
-            <button
-                id="chatSend"
-                type="button"
-                class="
-                    theme-body
-                    w-full rounded-xl
-                    border border-white/10
-                    bg-white/5 px-3 py-2
-                    text-xs text-white
-                    transition
-                    hover:bg-white/10
-                    active:scale-[0.98]
-                    disabled:cursor-not-allowed
-                    disabled:opacity-40
-                "
-            >
-                send
-            </button>
+
         </div>
 
     `;
@@ -892,6 +897,179 @@ this.controlsElement =
 this.minimizeButton =
     this.window.querySelector("#chatMinimize");
 
+this.chatThemeButton =
+    this.window.querySelector("#chatThemeButton");
+
+this.chatThemeMenu =
+    this.window.querySelector("#chatThemeMenu");
+
+this.chatThemeMenuHomeParent =
+    this.chatThemeMenu?.parentNode || null;
+
+this.chatThemeMenuHomeNextSibling =
+    this.chatThemeMenu?.nextSibling || null;
+
+const syncChatThemeButtonAlignment = () => {
+    if (
+        !this.chatThemeButton ||
+        !this.membersToggle
+    ) {
+        return;
+    }
+
+    const membersStyle =
+        getComputedStyle(
+            this.membersToggle
+        );
+
+    const connectionStyle =
+        this.connectionStatus
+            ? getComputedStyle(
+                this.connectionStatus
+            )
+            : null;
+
+    const referenceStyle =
+        membersStyle.display !== "none"
+            ? membersStyle
+            : connectionStyle ||
+                membersStyle;
+
+    this.chatThemeButton.style.setProperty(
+        "font-size",
+        referenceStyle.fontSize,
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "line-height",
+        referenceStyle.lineHeight,
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "display",
+        "block",
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "height",
+        "auto",
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "min-height",
+        "0",
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "margin",
+        "0",
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "padding",
+        "0",
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "transform",
+        "none",
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "top",
+        "auto",
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "vertical-align",
+        referenceStyle.verticalAlign,
+        "important"
+    );
+};
+
+syncChatThemeButtonAlignment();
+
+requestAnimationFrame(
+    syncChatThemeButtonAlignment
+);
+
+window.addEventListener(
+    "chat-theme-change",
+    () => {
+        requestAnimationFrame(
+            syncChatThemeButtonAlignment
+        );
+    }
+);
+
+if (
+    this.chatThemeButton &&
+    this.chatThemeMenu
+) {
+    this.chatThemeButton.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const open =
+                this.chatThemeButton
+                    .getAttribute(
+                        "aria-expanded"
+                    ) === "true";
+
+            this.setChatThemeMenuOpen(
+                !open
+            );
+        }
+    );
+
+    this.chatThemeMenu
+        .querySelectorAll(
+            "[data-chat-theme-choice]"
+        )
+        .forEach(button => {
+            button.addEventListener(
+                "click",
+                event => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    this.setChatTheme(
+                        button.dataset
+                            .chatThemeChoice
+                    );
+                }
+            );
+        });
+
+    document.addEventListener(
+        "click",
+        event => {
+            if (
+                !this.chatThemeMenu
+                    ?.contains(
+                        event.target
+                    ) &&
+                event.target !==
+                    this.chatThemeButton
+            ) {
+                this.setChatThemeMenuOpen(
+                    false
+                );
+            }
+        }
+    );
+}
 
 this.createReplyComposerPreview();
 
@@ -1240,6 +1418,7 @@ createBanManagerButton() {
         document.createElement("button");
 
     button.type = "button";
+    button.id = "chatBanManagerButton";
     button.textContent = "bans";
 
     button.className = [
@@ -1296,6 +1475,7 @@ createBanManagerButton() {
         document.createElement("button");
 
     button.type = "button";
+    button.id = "chatPartyManagerButton";
     button.textContent = "party";
 
     button.className = [
@@ -1801,8 +1981,6 @@ if (clearButton) {
             result =
                 await response.json();
         } catch {
-            // The error handling below covers
-            // non-JSON responses.
         }
 
         if (
@@ -1939,8 +2117,6 @@ if (clearButton) {
             result =
                 await response.json();
         } catch {
-            // The general error below handles
-            // a non-JSON response.
         }
 
         if (response.status === 401) {
@@ -5042,8 +5218,7 @@ toggleWatchParty() {
     }
 
     const name =
-        this.nameInput?.value.trim() ||
-        "anonymous";
+        this.getEffectiveChatName();
 
 		const queueLengthBeforeAdd =
     Array.isArray(this.watchParty?.queue)
@@ -5087,8 +5262,6 @@ this.renderWatchParty();
             result =
                 await response.json();
         } catch {
-            // The error handling below covers
-            // a response that is not valid JSON.
         }
 
         if (!response.ok) {
@@ -5315,8 +5488,6 @@ async removeWatchPartyItem(
             result =
                 await response.json();
         } catch {
-            // The general error below handles
-            // an invalid JSON response.
         }
 
         if (response.status === 401) {
@@ -5438,8 +5609,6 @@ escapeHtml(value) {
             result =
                 await response.json();
         } catch {
-            // The error below will handle
-            // an invalid response.
         }
 
         if (response.status === 401) {
@@ -6593,12 +6762,7 @@ async setReactionActive(
                     clientId:
                         this.clientId,
                     reactorName:
-                        this.discordUser
-                            ?.displayName ||
-                        this.nameInput
-                            ?.value
-                            ?.trim() ||
-                        "Anonymous",
+                        this.getEffectiveChatName(),
                     active: active === true,
                     reaction: {
                         key: reaction.key,
@@ -7087,6 +7251,8 @@ this.appendEditedMarker(messageBody, message);
         document.createElement("span");
 
     compactTime.className = [
+    "chatTime",
+    "chatContinuationTime",
     "absolute",
     "left-0",
     message?.reply_target_id
@@ -7094,10 +7260,7 @@ this.appendEditedMarker(messageBody, message);
         : "top-[10px]",
     "w-8",
     "text-right",
-    "text-[8px]",
-    "text-white/0",
-    "transition",
-    "group-hover:text-white/45"
+    "text-[8px]"
 ].join(" ");
 
     compactTime.textContent =
@@ -9171,12 +9334,7 @@ async saveRemix(upload, button = null) {
                             savedByClientId:
                                 this.clientId,
                             savedByName:
-                                this.discordUser
-                                    ?.displayName ||
-                                this.nameInput
-                                    ?.value
-                                    ?.trim() ||
-                                "admin"
+                                this.getEffectiveChatName()
                         })
                 }
             );
@@ -9278,10 +9436,7 @@ async repostSavedRemix(savedId) {
                             clientId:
                                 this.clientId,
                             name:
-                                this.nameInput
-                                    ?.value
-                                    ?.trim() ||
-                                "anonymous",
+                                this.getEffectiveChatName(),
                             avatar:
                                 this.avatar
                         })
@@ -10354,9 +10509,7 @@ setupMemberActivity() {
     }
 
     const name =
-        this.discordUser?.displayName ||
-        this.nameInput.value.trim() ||
-        "anonymous";
+        this.getEffectiveChatName();
 
     const avatar =
         this.discordUser?.avatarUrl ||
@@ -10388,9 +10541,7 @@ setupMemberActivity() {
             type: "typing",
             clientId: this.clientId,
             name:
-                this.discordUser?.displayName ||
-                this.nameInput.value.trim() ||
-                "anonymous",
+                this.getEffectiveChatName(),
             isTyping
         })
     );
@@ -11173,12 +11324,7 @@ async uploadImageRemix(detail) {
 
     formData.append(
         "name",
-        this.discordUser
-            ?.displayName ||
-        this.nameInput
-            ?.value
-            ?.trim() ||
-        "anonymous"
+        this.getEffectiveChatName()
     );
 
     formData.append(
@@ -12415,12 +12561,7 @@ async uploadTestImage(file) {
                                 this.clientId,
 
                             name:
-                                this.discordUser
-                                    ?.displayName ||
-                                this.nameInput
-                                    ?.value
-                                    ?.trim() ||
-                                "anonymous",
+                                this.getEffectiveChatName(),
 
                             avatar:
                                 this.discordUser
@@ -12706,17 +12847,15 @@ async uploadTestImage(file) {
 }
 
 	async clearEntireChat() {
-    if (
-        !this.isAdmin ||
-        !this.adminKey
-    ) {
+    if (!this.isAdmin || !this.adminKey) {
         return;
     }
 
     const input =
         window.prompt(
+            "clear chat\n\n" +
             "leave empty to clear fully.\n\n" +
-            "or enter:\n" +
+            "or enter exactly:\n" +
             "before dd/mm/yyyy hh:mm:ss\n" +
             "after dd/mm/yyyy hh:mm:ss",
             ""
@@ -12726,13 +12865,10 @@ async uploadTestImage(file) {
         return;
     }
 
-    const cleaned =
-        input.trim();
-
+    const cleaned = input.trim();
     let cutoff = null;
     let direction = null;
-    let displayLabel =
-        "the entire chat";
+    let displayLabel = "the entire chat";
 
     if (cleaned) {
         const match =
@@ -12744,45 +12880,19 @@ async uploadTestImage(file) {
             window.alert(
                 "invalid format.\n\n" +
                 "use exactly:\n" +
-                "before dd/mm/yyyy hh:mm\n" +
-                "after dd/mm/yyyy hh:mm\n\n" +
-                "or include seconds:\n" +
                 "before dd/mm/yyyy hh:mm:ss\n" +
                 "after dd/mm/yyyy hh:mm:ss"
             );
             return;
         }
 
-        const [
-            ,
-            parsedDirection,
-            dayText,
-            monthText,
-            yearText,
-            hourText,
-            minuteText,
-            secondText
-        ] = match;
-
-        const day =
-            Number(dayText);
-
-        const month =
-            Number(monthText);
-
-        const year =
-            Number(yearText);
-
-        const hour =
-            Number(hourText);
-
-        const minute =
-            Number(minuteText);
-
-        const second =
-            Number(
-                secondText || 0
-            );
+        const [, parsedDirection, d, m, y, h, min, s] = match;
+        const day = Number(d);
+        const month = Number(m);
+        const year = Number(y);
+        const hour = Number(h);
+        const minute = Number(min);
+        const second = Number(s || 0);
 
         const localDate =
             new Date(
@@ -12795,53 +12905,32 @@ async uploadTestImage(file) {
                 0
             );
 
-        const valid =
-            localDate.getFullYear() ===
-                year &&
-            localDate.getMonth() ===
-                month - 1 &&
-            localDate.getDate() ===
-                day &&
-            localDate.getHours() ===
-                hour &&
-            localDate.getMinutes() ===
-                minute &&
-            localDate.getSeconds() ===
-                second;
-
-        if (!valid) {
-            window.alert(
-                "invalid date or time."
-            );
+        if (
+            localDate.getFullYear() !== year ||
+            localDate.getMonth() !== month - 1 ||
+            localDate.getDate() !== day ||
+            localDate.getHours() !== hour ||
+            localDate.getMinutes() !== minute ||
+            localDate.getSeconds() !== second
+        ) {
+            window.alert("invalid date or time.");
             return;
         }
 
-        direction =
-            parsedDirection;
-
-        cutoff =
-            localDate.toISOString();
+        direction = parsedDirection;
+        cutoff = localDate.toISOString();
 
         const displayTime =
             localDate.toLocaleString(
                 "en-GB",
                 {
-                    day:
-                        "2-digit",
-                    month:
-                        "2-digit",
-                    year:
-                        "numeric",
-                    hour:
-                        "2-digit",
-                    minute:
-                        "2-digit",
-                    second:
-                        secondText
-                            ? "2-digit"
-                            : undefined,
-                    hour12:
-                        false
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: s ? "2-digit" : undefined,
+                    hour12: false
                 }
             );
 
@@ -12851,17 +12940,16 @@ async uploadTestImage(file) {
                 : `all chat after ${displayTime}`;
     }
 
-    const confirmed =
-        window.confirm(
+    if (
+        !window.confirm(
             cutoff
                 ? (
                     `clear ${displayLabel}?\n\n` +
                     "messages at the exact specified time will be kept."
                 )
                 : "clear the entire chat?"
-        );
-
-    if (!confirmed) {
+        )
+    ) {
         return;
     }
 
@@ -12875,35 +12963,25 @@ async uploadTestImage(file) {
             await fetch(
                 `${this.API}/api/admin/chat/clear`,
                 {
-                    method:
-                        "POST",
-
+                    method: "POST",
                     headers: {
-                        "Content-Type":
-                            "application/json",
-
-                        "Authorization":
-                            `Bearer ${this.adminKey}`
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${this.adminKey}`
                     },
-
-                    body:
-                        JSON.stringify({
-                            cutoff,
-                            direction
-                        })
+                    body: JSON.stringify({
+                        cutoff,
+                        direction
+                    })
                 }
             );
 
         let result = null;
 
         try {
-            result =
-                await request.json();
+            result = await request.json();
         } catch {}
 
-        if (
-            request.status === 401
-        ) {
+        if (request.status === 401) {
             this.disableAdminMode();
 
             throw new Error(
@@ -12912,13 +12990,8 @@ async uploadTestImage(file) {
         }
 
         if (!request.ok) {
-            if (
-                result?.chatCleared ===
-                    true
-            ) {
-                this.applyChatClearResult(
-                    result
-                );
+            if (result?.chatCleared === true) {
+                this.applyChatClearResult(result);
             }
 
             throw new Error(
@@ -12971,16 +13044,12 @@ applyChatClearResult(result) {
     }
 
     if (direction === "before") {
-        this.clearChatBefore(
-            cutoff
-        );
+        this.clearChatBefore(cutoff);
         return;
     }
 
     if (direction === "after") {
-        this.clearChatThrough(
-            cutoff
-        );
+        this.clearChatThrough(cutoff);
     }
 }
 
@@ -13035,7 +13104,6 @@ clearChatThrough(cutoff) {
         this.clearReplyTarget();
     }
 }
-
 
 clearChatBefore(cutoff) {
     const cutoffTime =
@@ -13315,10 +13383,19 @@ clearChatInterface() {
     }
 }
 	
+
+getEffectiveChatName() {
+    return (
+        this.discordUser?.displayName ||
+        this.nameInput?.value?.trim() ||
+        this.guestName ||
+        "guest"
+    );
+}
+
 async sendMessage() {
     const name =
-        this.discordUser?.displayName ||
-        this.nameInput.value.trim();
+        this.getEffectiveChatName();
 
     const avatar =
         this.discordUser?.avatarUrl ||
@@ -13331,7 +13408,10 @@ async sendMessage() {
     }
 
     this.sendButton.disabled = true;
-    this.sendButton.textContent = "sending...";
+    this.sendButton.textContent =
+        this.window?.dataset.chatTheme === "original"
+            ? "sending..."
+            : "…";
 
     try {
         const response = await fetch(`${this.API}/api/chat`, {
@@ -13418,8 +13498,14 @@ this.messageInput.focus();
 
     this.sendButton.textContent =
         this.isBanned
-            ? "banned"
-            : "send";
+            ? "×"
+            : (
+                this.window?.dataset
+                    .chatTheme ===
+                    "original"
+                    ? "send"
+                    : "➜"
+            );
 }
 }
 
@@ -13427,9 +13513,10 @@ restoreSettings() {
     const savedName =
         localStorage.getItem("chat_name");
 
-    if (savedName) {
-        this.nameInput.value = savedName;
-    }
+    this.nameInput.value =
+        savedName ||
+        this.guestName ||
+        "";
 
     for (const key of [
         "chat_width",
@@ -14034,9 +14121,7 @@ setupNameSaving() {
         }
 
         const name =
-            this.discordUser?.displayName ||
-            this.nameInput?.value.trim() ||
-            "anonymous";
+            this.getEffectiveChatName();
 
         const avatar =
             this.discordUser?.avatarUrl ||
@@ -15161,6 +15246,69 @@ toggleEmojiPicker() {
     }
 }
 
+positionMessageEmojiPicker() {
+    if (
+        !this.emojiPickerContainer ||
+        !this.emojiButton
+    ) {
+        return;
+    }
+
+    const anchorRect =
+        this.emojiButton
+            .getBoundingClientRect();
+
+    const pickerRect =
+        this.emojiPickerContainer
+            .getBoundingClientRect();
+
+    const width =
+        pickerRect.width || 320;
+
+    const height =
+        pickerRect.height || 460;
+
+    const left =
+        Math.max(
+            8,
+            Math.min(
+                window.innerWidth -
+                    width -
+                    8,
+                anchorRect.right -
+                    width
+            )
+        );
+
+    const aboveTop =
+        anchorRect.top -
+        height -
+        8;
+
+    const top =
+        aboveTop >= 8
+            ? aboveTop
+            : Math.min(
+                window.innerHeight -
+                    height -
+                    8,
+                anchorRect.bottom +
+                    8
+            );
+
+    Object.assign(
+        this.emojiPickerContainer.style,
+        {
+            position: "fixed",
+            left: `${left}px`,
+            top: `${Math.max(8, top)}px`,
+            right: "auto",
+            bottom: "auto",
+            zIndex: "100004"
+        }
+    );
+}
+
 positionReactionEmojiPicker(anchor) {
     if (
         !this.reactionEmojiPickerContainer ||
@@ -15306,6 +15454,15 @@ openEmojiPicker({
             "opacity-100"
         );
 
+        if (
+            this.emojiPickerContainer.parentNode !==
+            document.body
+        ) {
+            document.body.appendChild(
+                this.emojiPickerContainer
+            );
+        }
+
         this.emojiPickerContainer.classList.remove(
             "invisible",
             "pointer-events-none",
@@ -15314,6 +15471,12 @@ openEmojiPicker({
 
         this.emojiPickerContainer.classList.add(
             "opacity-100"
+        );
+
+        requestAnimationFrame(
+            () => {
+                this.positionMessageEmojiPicker();
+            }
         );
     }
 
@@ -15745,10 +15908,9 @@ applyDiscordIdentity(user) {
         "chat-discord-name-active"
     );
 
-    this.avatarButton.disabled = true;
-    this.avatarButton.setAttribute(
-        "aria-disabled",
-        "true"
+    this.avatarButton.disabled = false;
+    this.avatarButton.removeAttribute(
+        "aria-disabled"
     );
 
     this.avatarPreview.src =
@@ -15777,7 +15939,9 @@ clearDiscordIdentity() {
     const guestName =
         localStorage.getItem(
             "chat_name"
-        ) || "";
+        ) ||
+        this.guestName ||
+        "";
 
     const guestAvatar =
         localStorage.getItem(
@@ -15893,7 +16057,8 @@ renderDiscordAuthState() {
 		"pink.gif",
 		"black.gif",
 		"shark.gif",
-		"duck.gif"
+		"duck.gif",
+		"whitecat.png"
     ];
 
     this.avatarPreview.src =
@@ -15903,10 +16068,6 @@ renderDiscordAuthState() {
 
     this.avatarButton.addEventListener("click", event => {
         event.stopPropagation();
-
-        if (this.discordUser) {
-            return;
-        }
 
         const isOpen =
             this.avatarPicker.classList.contains("opacity-100");
@@ -15998,10 +16159,6 @@ selectAvatar(filename) {
 }
 
 openAvatarPicker() {
-    if (this.discordUser) {
-        return;
-    }
-
     this.avatarPicker.classList.remove(
         "invisible",
         "pointer-events-none",
@@ -16869,9 +17026,2370 @@ keepTitleBarInViewport() {
     );
 }
 	
+	syncChatPastelTheme() {
+    if (!this.window) {
+        return;
+    }
+
+    const storedTheme =
+        String(
+            localStorage.getItem(
+                "chat_theme"
+            ) || ""
+        ).trim();
+
+    let nextTheme =
+        [
+            "original",
+            "stars",
+            "paws"
+        ].includes(
+            storedTheme
+        )
+            ? storedTheme
+            : "";
+
+    if (!nextTheme) {
+        nextTheme =
+            "paws";
+
+        localStorage.setItem(
+            "chat_theme",
+            nextTheme
+        );
+    }
+
+    this.applyChatTheme(
+        nextTheme,
+        false
+    );
+}
+
+	setChatTheme(themeName) {
+    const cleaned =
+        String(
+            themeName || ""
+        ).trim();
+
+    if (
+        ![
+            "original",
+            "stars",
+            "paws"
+        ].includes(
+            cleaned
+        )
+    ) {
+        return;
+    }
+
+    localStorage.setItem(
+        "chat_theme",
+        cleaned
+    );
+
+    this.applyChatTheme(
+        cleaned,
+        true
+    );
+
+    this.setChatThemeMenuOpen(
+        false
+    );
+}
+
+	applyChatTheme(
+    themeName,
+    forceDecor = false
+) {
+    if (!this.window) {
+        return;
+    }
+
+    const cleaned =
+        [
+            "original",
+            "stars",
+            "paws"
+        ].includes(
+            themeName
+        )
+            ? themeName
+            : "original";
+
+    const previousTheme =
+        this.window.dataset.chatTheme ||
+        "original";
+
+    const shouldAnimateThemeChange =
+        forceDecor &&
+        previousTheme !== cleaned;
+
+    this.window.dataset.chatTheme =
+        cleaned;
+
+    document.documentElement
+        .setAttribute(
+            "data-chat-theme",
+            cleaned
+        );
+
+    if (
+        cleaned === "stars" ||
+        cleaned === "paws"
+    ) {
+        this.window.dataset.chatPastel =
+            cleaned;
+
+        document.documentElement
+            .setAttribute(
+                "data-chat-pastel",
+                cleaned
+            );
+    } else {
+        delete this.window.dataset.chatPastel;
+
+        document.documentElement
+            .removeAttribute(
+                "data-chat-pastel"
+            );
+    }
+
+    this.applyChatComposerLayout(
+        cleaned
+    );
+
+    if (
+        shouldAnimateThemeChange &&
+        typeof this.window.animate ===
+            "function"
+    ) {
+        requestAnimationFrame(() => {
+            this.window.animate(
+                [
+                    {
+                        opacity: 0.72,
+                        filter:
+                            "brightness(.94) saturate(.90)"
+                    },
+                    {
+                        opacity: 1,
+                        filter:
+                            "brightness(1) saturate(1)"
+                    }
+                ],
+                {
+                    duration: 190,
+                    easing:
+                        "cubic-bezier(.2,.8,.2,1)"
+                }
+            );
+        });
+    }
+
+    this.chatThemeMenu
+        ?.querySelectorAll(
+            "[data-chat-theme-choice]"
+        )
+        .forEach(button => {
+            button.classList.toggle(
+                "is-active",
+                button.dataset
+                    .chatThemeChoice ===
+                    cleaned
+            );
+        });
+
+    const hasDecor =
+        this.window
+            .querySelector(
+                "#chatMain"
+            )
+            ?.querySelector(
+                ".jami-chat-pastel-decor"
+            );
+
+    if (
+        forceDecor ||
+        previousTheme !== cleaned ||
+        (
+            (
+                cleaned === "stars" ||
+                cleaned === "paws"
+            ) &&
+            !hasDecor
+        ) ||
+        (
+            cleaned === "original" &&
+            hasDecor
+        )
+    ) {
+        requestAnimationFrame(
+            () => {
+                this.renderChatPastelDecor();
+            }
+        );
+    }
+
+    window.dispatchEvent(
+        new CustomEvent(
+            "chat-theme-change",
+            {
+                detail: {
+                    themeName: cleaned
+                }
+            }
+        )
+    );
+}
+
+	setChatThemeMenuOpen(open) {
+    if (
+        !this.chatThemeButton ||
+        !this.chatThemeMenu
+    ) {
+        return;
+    }
+
+    const shouldOpen =
+        open === true;
+
+    this.chatThemeButton
+        .setAttribute(
+            "aria-expanded",
+            shouldOpen
+                ? "true"
+                : "false"
+        );
+
+    if (shouldOpen) {
+        const themeName =
+            this.window?.dataset
+                .chatTheme ||
+            "original";
+
+        this.chatThemeMenu.dataset
+            .chatThemeOwner =
+            themeName;
+
+        if (
+            this.chatThemeMenu.parentNode !==
+            document.body
+        ) {
+            document.body.appendChild(
+                this.chatThemeMenu
+            );
+        }
+
+        const rect =
+            this.chatThemeButton
+                .getBoundingClientRect();
+
+        const menuWidth =
+            132;
+
+        const viewportPad =
+            8;
+
+        let left =
+            rect.right -
+            menuWidth;
+
+        left =
+            Math.max(
+                viewportPad,
+                Math.min(
+                    left,
+                    window.innerWidth -
+                    menuWidth -
+                    viewportPad
+                )
+            );
+
+        const estimatedHeight =
+            102;
+
+        let top =
+            this.isMinimized
+                ? rect.top -
+                    estimatedHeight -
+                    8
+                : rect.bottom + 8;
+
+        if (
+            top < viewportPad
+        ) {
+            top =
+                rect.bottom + 8;
+        }
+
+        if (
+            top +
+            estimatedHeight >
+            window.innerHeight -
+            viewportPad
+        ) {
+            top =
+                Math.max(
+                    viewportPad,
+                    rect.top -
+                    estimatedHeight -
+                    8
+                );
+        }
+
+        this.chatThemeMenu.style
+            .setProperty(
+                "position",
+                "fixed",
+                "important"
+            );
+
+        this.chatThemeMenu.style
+            .setProperty(
+                "left",
+                `${left}px`,
+                "important"
+            );
+
+        this.chatThemeMenu.style
+            .setProperty(
+                "top",
+                `${top}px`,
+                "important"
+            );
+
+        this.chatThemeMenu.style
+            .setProperty(
+                "right",
+                "auto",
+                "important"
+            );
+
+        this.chatThemeMenu.style
+            .setProperty(
+                "z-index",
+                "100020",
+                "important"
+            );
+    }
+
+    this.chatThemeMenu
+        .classList.toggle(
+            "invisible",
+            !shouldOpen
+        );
+
+    this.chatThemeMenu
+        .classList.toggle(
+            "pointer-events-none",
+            !shouldOpen
+        );
+
+    this.chatThemeMenu
+        .classList.toggle(
+            "opacity-0",
+            !shouldOpen
+        );
+
+    if (!shouldOpen) {
+        const restore = () => {
+            if (
+                !this.chatThemeMenu ||
+                this.chatThemeButton
+                    ?.getAttribute(
+                        "aria-expanded"
+                    ) === "true"
+            ) {
+                return;
+            }
+
+            if (
+                this.chatThemeMenuHomeParent &&
+                this.chatThemeMenu.parentNode ===
+                    document.body
+            ) {
+                if (
+                    this.chatThemeMenuHomeNextSibling &&
+                    this.chatThemeMenuHomeNextSibling
+                        .parentNode ===
+                        this.chatThemeMenuHomeParent
+                ) {
+                    this.chatThemeMenuHomeParent
+                        .insertBefore(
+                            this.chatThemeMenu,
+                            this.chatThemeMenuHomeNextSibling
+                        );
+                } else {
+                    this.chatThemeMenuHomeParent
+                        .appendChild(
+                            this.chatThemeMenu
+                        );
+                }
+            }
+
+            delete this.chatThemeMenu.dataset
+                .chatThemeOwner;
+
+            this.chatThemeMenu.style
+                .removeProperty(
+                    "position"
+                );
+
+            this.chatThemeMenu.style
+                .removeProperty(
+                    "left"
+                );
+
+            this.chatThemeMenu.style
+                .removeProperty(
+                    "top"
+                );
+
+            this.chatThemeMenu.style
+                .removeProperty(
+                    "right"
+                );
+
+            this.chatThemeMenu.style
+                .removeProperty(
+                    "z-index"
+                );
+        };
+
+        window.setTimeout(
+            restore,
+            100
+        );
+    }
+}
+
+	applyChatComposerLayout(themeName) {
+    if (!this.window) {
+        return;
+    }
+
+    const wrap =
+        this.window.querySelector(
+            ".jami-cute-composer-wrap"
+        );
+
+    const cuteRow =
+        wrap?.querySelector(
+            ".jami-cute-composer-row"
+        );
+
+    if (
+        !wrap ||
+        !cuteRow ||
+        !this.avatarButton ||
+        !this.messageInput ||
+        !this.sendButton ||
+        !this.emojiButton ||
+        !this.imageUploadButton
+    ) {
+        return;
+    }
+
+    if (!this.chatAvatarWrap) {
+        this.chatAvatarWrap =
+            this.avatarButton.parentElement;
+    }
+
+    if (!this.chatMessageShell) {
+        this.chatMessageShell =
+            this.messageInput.closest(
+                ".jami-cute-message-shell"
+            );
+    }
+
+    const avatarWrap =
+        this.chatAvatarWrap;
+
+    const messageShell =
+        this.chatMessageShell;
+
+    const profileNameWrap =
+        this.avatarPicker?.querySelector(
+            ".jami-cute-profile-name-wrap"
+        );
+
+    const profileTitle =
+        this.avatarPicker?.querySelector(
+            ".jami-cute-profile-title"
+        );
+
+    const avatarLabel =
+        this.avatarPicker?.querySelector(
+            ".jami-cute-avatar-label"
+        );
+
+    let originalRoot =
+        wrap.querySelector(
+            ".jami-original-composer"
+        );
+
+    if (!originalRoot) {
+        originalRoot =
+            document.createElement("div");
+
+        originalRoot.className =
+            "jami-original-composer";
+
+        originalRoot.innerHTML =
+            '<div class="jami-original-name-row">' +
+            '<div class="jami-original-name-field"></div>' +
+            '</div>' +
+            '<div class="jami-original-message-row"></div>' +
+            '<div class="jami-original-send-row"></div>';
+
+        wrap.insertBefore(
+            originalRoot,
+            cuteRow
+        );
+    }
+
+    const originalNameRow =
+        originalRoot.querySelector(
+            ".jami-original-name-row"
+        );
+
+    const originalNameField =
+        originalRoot.querySelector(
+            ".jami-original-name-field"
+        );
+
+    const originalMessageRow =
+        originalRoot.querySelector(
+            ".jami-original-message-row"
+        );
+
+    const originalSendRow =
+        originalRoot.querySelector(
+            ".jami-original-send-row"
+        );
+
+    if (themeName === "original") {
+        originalRoot.hidden = false;
+        cuteRow.hidden = true;
+
+        originalNameRow.insertBefore(
+            avatarWrap,
+            originalNameField
+        );
+
+        if (this.nameInput) {
+            originalNameField.appendChild(
+                this.nameInput
+            );
+
+            this.nameInput.classList.add(
+                "jami-original-name-input"
+            );
+        }
+
+        if (this.discordUsernameElement) {
+            originalNameField.appendChild(
+                this.discordUsernameElement
+            );
+        }
+
+        if (this.discordLogoutButton) {
+            originalNameField.appendChild(
+                this.discordLogoutButton
+            );
+        }
+
+        originalMessageRow.appendChild(
+            this.imageUploadButton
+        );
+
+        this.imageUploadButton.textContent =
+            "🖼️";
+
+        this.imageUploadButton.classList.add(
+            "jami-original-image-button"
+        );
+
+        originalMessageRow.appendChild(
+            this.messageInput
+        );
+
+        this.messageInput.classList.add(
+            "jami-original-message-input"
+        );
+
+        if (this.watchPartyButton) {
+            originalMessageRow.appendChild(
+                this.watchPartyButton
+            );
+        }
+
+        originalMessageRow.appendChild(
+            this.emojiButton
+        );
+
+        this.emojiButton.textContent =
+            "🐱";
+
+        this.emojiButton.classList.add(
+            "jami-original-emoji-button"
+        );
+
+        originalSendRow.appendChild(
+            this.sendButton
+        );
+
+        this.sendButton.textContent =
+            "send";
+
+        this.sendButton.classList.add(
+            "jami-original-send-button"
+        );
+
+        if (profileTitle) {
+            profileTitle.textContent =
+                "select avatar";
+        }
+
+        if (avatarLabel) {
+            avatarLabel.hidden = true;
+        }
+    } else {
+        originalRoot.hidden = true;
+        cuteRow.hidden = false;
+
+        cuteRow.appendChild(
+            avatarWrap
+        );
+
+        if (
+            profileNameWrap &&
+            this.nameInput
+        ) {
+            profileNameWrap.appendChild(
+                this.nameInput
+            );
+
+            this.nameInput.classList.remove(
+                "jami-original-name-input"
+            );
+        }
+
+        if (
+            profileNameWrap &&
+            this.discordUsernameElement
+        ) {
+            profileNameWrap.appendChild(
+                this.discordUsernameElement
+            );
+        }
+
+        if (
+            this.avatarPicker &&
+            this.discordLogoutButton
+        ) {
+            this.avatarPicker.appendChild(
+                this.discordLogoutButton
+            );
+        }
+
+        messageShell.appendChild(
+            this.messageInput
+        );
+
+        this.messageInput.classList.remove(
+            "jami-original-message-input"
+        );
+
+        messageShell.appendChild(
+            this.emojiButton
+        );
+
+        this.emojiButton.textContent =
+            "☺";
+
+        this.emojiButton.classList.remove(
+            "jami-original-emoji-button"
+        );
+
+        messageShell.appendChild(
+            this.imageUploadButton
+        );
+
+        this.imageUploadButton.textContent =
+            "+";
+
+        this.imageUploadButton.classList.remove(
+            "jami-original-image-button"
+        );
+
+        messageShell.appendChild(
+            this.sendButton
+        );
+
+        this.sendButton.textContent =
+            "➜";
+
+        this.sendButton.classList.remove(
+            "jami-original-send-button"
+        );
+
+        cuteRow.appendChild(
+            messageShell
+        );
+
+        if (this.watchPartyButton) {
+            cuteRow.appendChild(
+                this.watchPartyButton
+            );
+        }
+
+        if (profileTitle) {
+            profileTitle.textContent =
+                "profile";
+        }
+
+        if (avatarLabel) {
+            avatarLabel.hidden = false;
+        }
+    }
+
+    if (this.watchPartyButton) {
+        this.watchPartyButton.classList.toggle(
+            "hidden",
+            this.watchParty?.enabled !== true
+        );
+    }
+}
+
+	renderChatPastelDecor() {
+    const main =
+        this.window?.querySelector(
+            "#chatMain"
+        );
+
+    if (!main || !this.window) {
+        return;
+    }
+
+    main.querySelector(
+        ".jami-chat-pastel-decor"
+    )?.remove();
+
+    this.window.querySelector(
+        ".jami-chat-shell-decor"
+    )?.remove();
+
+    main.querySelector(
+        ".jami-chat-star-haze-main"
+    )?.remove();
+
+    this.window.querySelector(
+        ".jami-chat-star-haze-shell"
+    )?.remove();
+
+    const theme =
+        this.window.dataset.chatPastel ||
+        "";
+
+    if (
+        theme !== "stars" &&
+        theme !== "paws"
+    ) {
+        return;
+    }
+
+    const makePawMarkup = () =>
+        '<svg viewBox="0 0 64 64" aria-hidden="true">' +
+        '<ellipse cx="13" cy="21" rx="5.5" ry="8.2"></ellipse>' +
+        '<ellipse cx="26" cy="13.5" rx="5.8" ry="8.5"></ellipse>' +
+        '<ellipse cx="39" cy="13.5" rx="5.8" ry="8.5"></ellipse>' +
+        '<ellipse cx="52" cy="21" rx="5.5" ry="8.2"></ellipse>' +
+        '<path d="M18.5 43.5C18.5 34.5 24.5 28 32.5 28S46.5 34.5 46.5 43.5C46.5 50 42.3 55 37.2 55C34.6 55 33.3 52.7 32.5 50.5C31.7 52.7 30.4 55 27.8 55C22.7 55 18.5 50 18.5 43.5Z"></path>' +
+        '</svg>';
+
+    const createPositionFinder = (
+        width,
+        height,
+        occupied,
+        rejectPoint = null
+    ) => ({
+        size,
+        gap,
+        minLeft,
+        maxLeft,
+        minTop,
+        maxTop,
+        attempts = 320
+    }) => {
+        for (
+            let attempt = 0;
+            attempt < attempts;
+            attempt += 1
+        ) {
+            const left =
+                minLeft +
+                Math.random() *
+                (maxLeft - minLeft);
+
+            const top =
+                minTop +
+                Math.random() *
+                (maxTop - minTop);
+
+            const x =
+                width *
+                left /
+                100;
+
+            const y =
+                height *
+                top /
+                100;
+
+            const radius =
+                size / 2;
+
+            if (
+                rejectPoint &&
+                rejectPoint(
+                    x,
+                    y,
+                    radius
+                )
+            ) {
+                continue;
+            }
+
+            const blocked =
+                occupied.some(point => {
+                    const dx =
+                        x - point.x;
+
+                    const dy =
+                        y - point.y;
+
+                    const minimumDistance =
+                        radius +
+                        point.radius +
+                        gap;
+
+                    return (
+                        dx * dx +
+                        dy * dy
+                    ) <
+                        minimumDistance *
+                        minimumDistance;
+                });
+
+            if (!blocked) {
+                return {
+                    left,
+                    top,
+                    x,
+                    y,
+                    radius
+                };
+            }
+        }
+
+        return null;
+    };
+
+    const layer =
+        document.createElement("div");
+
+    layer.className =
+        "jami-chat-pastel-decor";
+
+    const width =
+        Math.max(
+            main.clientWidth,
+            320
+        );
+
+    const height =
+        Math.max(
+            main.clientHeight,
+            260
+        );
+
+    const occupied = [];
+
+    const findPosition =
+        createPositionFinder(
+            width,
+            height,
+            occupied
+        );
+
+    if (theme === "stars") {
+        const mainHaze =
+            document.createElement("div");
+
+        mainHaze.className =
+            "jami-chat-star-haze-main";
+
+        const mainCloudCount =
+            7 +
+            Math.floor(
+                Math.random() * 4
+            );
+
+        for (
+            let index = 0;
+            index < mainCloudCount;
+            index += 1
+        ) {
+            const cloud =
+                document.createElement("i");
+
+            cloud.className =
+                "jami-chat-star-cloud";
+
+            const cloudWidth =
+                105 +
+                Math.random() * 125;
+
+            const cloudHeight =
+                55 +
+                Math.random() * 85;
+
+            cloud.style.left =
+                `${-5 + Math.random() * 105}%`;
+
+            cloud.style.top =
+                `${-4 + Math.random() * 102}%`;
+
+            cloud.style.width =
+                `${cloudWidth}px`;
+
+            cloud.style.height =
+                `${cloudHeight}px`;
+
+            cloud.style.opacity =
+                `${.075 + Math.random() * .075}`;
+
+            cloud.style.transform =
+                `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
+
+            mainHaze.appendChild(
+                cloud
+            );
+        }
+
+        main.prepend(
+            mainHaze
+        );
+
+        const shellHaze =
+            document.createElement("div");
+
+        shellHaze.className =
+            "jami-chat-star-haze-shell";
+
+        const shellCloudCount =
+            4 +
+            Math.floor(
+                Math.random() * 3
+            );
+
+        for (
+            let index = 0;
+            index < shellCloudCount;
+            index += 1
+        ) {
+            const cloud =
+                document.createElement("i");
+
+            cloud.className =
+                "jami-chat-star-cloud";
+
+            const cloudWidth =
+                120 +
+                Math.random() * 145;
+
+            const cloudHeight =
+                55 +
+                Math.random() * 90;
+
+            cloud.style.left =
+                `${-4 + Math.random() * 108}%`;
+
+            cloud.style.top =
+                `${-3 + Math.random() * 106}%`;
+
+            cloud.style.width =
+                `${cloudWidth}px`;
+
+            cloud.style.height =
+                `${cloudHeight}px`;
+
+            cloud.style.opacity =
+                `${.025 + Math.random() * .035}`;
+
+            cloud.style.transform =
+                `translate(-50%, -50%) rotate(${-20 + Math.random() * 40}deg)`;
+
+            shellHaze.appendChild(
+                cloud
+            );
+        }
+
+        this.window.prepend(
+            shellHaze
+        );
+    }
+
+    if (theme === "stars") {
+        const colours = [
+            "#d8c9ff",
+            "#ace3ff",
+            "#ffc4e4",
+            "#ffe79e",
+            "#c2efff",
+            "#eee5ff"
+        ];
+
+        const largeCount =
+            53 +
+            Math.floor(
+                Math.random() * 10
+            );
+
+        const tinyCount =
+            182 +
+            Math.floor(
+                Math.random() * 28
+            );
+
+        for (
+            let index = 0;
+            index < largeCount;
+            index += 1
+        ) {
+            const size =
+                9 +
+                Math.random() * 11;
+
+            const band =
+                index % 5;
+
+            const bandStart =
+                [
+                    4,
+                    22,
+                    40,
+                    58,
+                    76
+                ][band];
+
+            let position =
+                findPosition({
+                    size,
+                    gap: 7,
+                    minLeft: 4,
+                    maxLeft: 96,
+                    minTop: bandStart,
+                    maxTop: Math.min(
+                        bandStart + 17,
+                        96
+                    ),
+                    attempts: 360
+                });
+
+            if (!position) {
+                position =
+                    findPosition({
+                        size,
+                        gap: 6,
+                        minLeft: 4,
+                        maxLeft: 96,
+                        minTop: 4,
+                        maxTop: 96,
+                        attempts: 520
+                    });
+            }
+
+            if (!position) {
+                continue;
+            }
+
+            occupied.push({
+                x: position.x,
+                y: position.y,
+                radius: position.radius
+            });
+
+            const star =
+                document.createElement("i");
+
+            star.className =
+                "jami-chat-star jami-chat-star-four";
+
+            star.style.left =
+                `${position.left}%`;
+
+            star.style.top =
+                `${position.top}%`;
+
+            star.style.width =
+                `${size}px`;
+
+            star.style.height =
+                `${size}px`;
+
+            star.style.background =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            star.style.opacity =
+                `${.76 + Math.random() * .20}`;
+
+            star.style.transform =
+                `translate(-50%, -50%) rotate(${Math.random() * 20 - 10}deg)`;
+
+            layer.appendChild(star);
+        }
+
+        for (
+            let index = 0;
+            index < tinyCount;
+            index += 1
+        ) {
+            const size =
+                1.8 +
+                Math.random() * 2.4;
+
+            let position =
+                findPosition({
+                    size,
+                    gap: 2.2,
+                    minLeft: 2,
+                    maxLeft: 98,
+                    minTop: 2,
+                    maxTop: 98,
+                    attempts: 300
+                });
+
+            if (!position) {
+                continue;
+            }
+
+            occupied.push({
+                x: position.x,
+                y: position.y,
+                radius: position.radius
+            });
+
+            const star =
+                document.createElement("i");
+
+            star.className =
+                "jami-chat-star jami-chat-star-tiny";
+
+            star.style.left =
+                `${position.left}%`;
+
+            star.style.top =
+                `${position.top}%`;
+
+            star.style.width =
+                `${size}px`;
+
+            star.style.height =
+                `${size}px`;
+
+            star.style.background =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            star.style.opacity =
+                `${.58 + Math.random() * .30}`;
+
+            star.style.transform =
+                `translate(-50%, -50%) rotate(${Math.random() * 25 - 12}deg)`;
+
+            layer.appendChild(star);
+        }
+    } else {
+        const colours = [
+            "#f4a9c1",
+            "#a8d8b8",
+            "#f4c795",
+            "#c9b7ee"
+        ];
+
+        const count =
+            38 +
+            Math.floor(
+                Math.random() * 9
+            );
+
+        for (
+            let index = 0;
+            index < count;
+            index += 1
+        ) {
+            const size =
+                22 +
+                Math.random() * 8;
+
+            const band =
+                index % 5;
+
+            const bandStart =
+                [
+                    4,
+                    22,
+                    40,
+                    58,
+                    76
+                ][band];
+
+            let position =
+                findPosition({
+                    size,
+                    gap: 8,
+                    minLeft: 4,
+                    maxLeft: 96,
+                    minTop: bandStart,
+                    maxTop: Math.min(
+                        bandStart + 17,
+                        96
+                    ),
+                    attempts: 420
+                });
+
+            if (!position) {
+                position =
+                    findPosition({
+                        size,
+                        gap: 7,
+                        minLeft: 4,
+                        maxLeft: 96,
+                        minTop: 4,
+                        maxTop: 96,
+                        attempts: 620
+                    });
+            }
+
+            if (!position) {
+                continue;
+            }
+
+            occupied.push({
+                x: position.x,
+                y: position.y,
+                radius: position.radius
+            });
+
+            const paw =
+                document.createElement("i");
+
+            paw.className =
+                "jami-chat-paw";
+
+            paw.style.left =
+                `${position.left}%`;
+
+            paw.style.top =
+                `${position.top}%`;
+
+            paw.style.width =
+                `${size}px`;
+
+            paw.style.height =
+                `${size}px`;
+
+            paw.style.color =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            paw.style.opacity =
+                `${.17 + Math.random() * .13}`;
+
+            paw.style.transform =
+                `translate(-50%, -50%) rotate(${-16 + Math.random() * 32}deg)`;
+
+            paw.innerHTML =
+                makePawMarkup();
+
+            layer.appendChild(paw);
+        }
+    }
+
+
+    if (theme === "stars") {
+        const colours = [
+            "#d8c9ff",
+            "#ace3ff",
+            "#ffc4e4",
+            "#ffe79e",
+            "#c2efff",
+            "#eee5ff"
+        ];
+
+        const columns = 6;
+        const rows = 5;
+
+        for (let row = 0; row < rows; row += 1) {
+            for (let column = 0; column < columns; column += 1) {
+                const left0 = 3 + column * (94 / columns);
+                const left1 = 3 + (column + 1) * (94 / columns);
+                const top0 = 3 + row * (94 / rows);
+                const top1 = 3 + (row + 1) * (94 / rows);
+
+                const x0 = width * left0 / 100;
+                const x1 = width * left1 / 100;
+                const y0 = height * top0 / 100;
+                const y1 = height * top1 / 100;
+
+                const hasMediumOrLarge =
+                    occupied.some(point =>
+                        point.radius >= 4 &&
+                        point.x >= x0 &&
+                        point.x <= x1 &&
+                        point.y >= y0 &&
+                        point.y <= y1
+                    );
+
+                if (hasMediumOrLarge) {
+                    continue;
+                }
+
+                const size =
+                    9 +
+                    Math.random() * 8;
+
+                const position =
+                    findPosition({
+                        size,
+                        gap: 6,
+                        minLeft: left0 + 1,
+                        maxLeft: left1 - 1,
+                        minTop: top0 + 1,
+                        maxTop: top1 - 1,
+                        attempts: 560
+                    });
+
+                if (!position) {
+                    continue;
+                }
+
+                occupied.push({
+                    x: position.x,
+                    y: position.y,
+                    radius: position.radius
+                });
+
+                const star =
+                    document.createElement("i");
+
+                star.className =
+                    "jami-chat-star jami-chat-star-four";
+
+                star.style.left =
+                    `${position.left}%`;
+
+                star.style.top =
+                    `${position.top}%`;
+
+                star.style.width =
+                    `${size}px`;
+
+                star.style.height =
+                    `${size}px`;
+
+                star.style.background =
+                    colours[
+                        Math.floor(
+                            Math.random() *
+                            colours.length
+                        )
+                    ];
+
+                star.style.opacity =
+                    `${.72 + Math.random() * .22}`;
+
+                star.style.transform =
+                    `translate(-50%, -50%) rotate(${Math.random() * 20 - 10}deg)`;
+
+                layer.appendChild(star);
+            }
+        }
+    } else {
+        const colours = [
+            "#f4a9c1",
+            "#a8d8b8",
+            "#f4c795",
+            "#c9b7ee"
+        ];
+
+        const columns = 5;
+        const rows = 5;
+
+        for (let row = 0; row < rows; row += 1) {
+            for (let column = 0; column < columns; column += 1) {
+                const left0 = 3 + column * (94 / columns);
+                const left1 = 3 + (column + 1) * (94 / columns);
+                const top0 = 3 + row * (94 / rows);
+                const top1 = 3 + (row + 1) * (94 / rows);
+
+                const x0 = width * left0 / 100;
+                const x1 = width * left1 / 100;
+                const y0 = height * top0 / 100;
+                const y1 = height * top1 / 100;
+
+                const hasPaw =
+                    occupied.some(point =>
+                        point.radius >= 9 &&
+                        point.x >= x0 &&
+                        point.x <= x1 &&
+                        point.y >= y0 &&
+                        point.y <= y1
+                    );
+
+                if (hasPaw) {
+                    continue;
+                }
+
+                const size =
+                    20 +
+                    Math.random() * 7;
+
+                const position =
+                    findPosition({
+                        size,
+                        gap: 6,
+                        minLeft: left0 + 1,
+                        maxLeft: left1 - 1,
+                        minTop: top0 + 1,
+                        maxTop: top1 - 1,
+                        attempts: 680
+                    });
+
+                if (!position) {
+                    continue;
+                }
+
+                occupied.push({
+                    x: position.x,
+                    y: position.y,
+                    radius: position.radius
+                });
+
+                const paw =
+                    document.createElement("i");
+
+                paw.className =
+                    "jami-chat-paw";
+
+                paw.style.left =
+                    `${position.left}%`;
+
+                paw.style.top =
+                    `${position.top}%`;
+
+                paw.style.width =
+                    `${size}px`;
+
+                paw.style.height =
+                    `${size}px`;
+
+                paw.style.color =
+                    colours[
+                        Math.floor(
+                            Math.random() *
+                            colours.length
+                        )
+                    ];
+
+                paw.style.opacity =
+                    `${.18 + Math.random() * .14}`;
+
+                paw.style.transform =
+                    `translate(-50%, -50%) rotate(${-16 + Math.random() * 32}deg)`;
+
+                paw.innerHTML =
+                    makePawMarkup();
+
+                layer.appendChild(paw);
+            }
+        }
+    }
+
+
+    if (theme === "stars") {
+        const colours = [
+            "#d8c9ff",
+            "#ace3ff",
+            "#ffc4e4",
+            "#ffe79e",
+            "#c2efff",
+            "#eee5ff"
+        ];
+
+        const bands = 9;
+
+        for (
+            let band = 0;
+            band < bands;
+            band += 1
+        ) {
+            const top0 =
+                3 +
+                band *
+                (94 / bands);
+
+            const top1 =
+                3 +
+                (band + 1) *
+                (94 / bands);
+
+            const x0 =
+                width * .03;
+
+            const x1 =
+                width * .34;
+
+            const y0 =
+                height * top0 / 100;
+
+            const y1 =
+                height * top1 / 100;
+
+            const hasStar =
+                occupied.some(point =>
+                    point.radius >= 4 &&
+                    point.x >= x0 &&
+                    point.x <= x1 &&
+                    point.y >= y0 &&
+                    point.y <= y1
+                );
+
+            if (!hasStar) {
+                const size =
+                    9 +
+                    Math.random() * 8;
+
+                const position =
+                    findPosition({
+                        size,
+                        gap: 5.5,
+                        minLeft: 3,
+                        maxLeft: 33,
+                        minTop: top0 + .7,
+                        maxTop: top1 - .7,
+                        attempts: 700
+                    });
+
+                if (position) {
+                    occupied.push({
+                        x: position.x,
+                        y: position.y,
+                        radius: position.radius
+                    });
+
+                    const star =
+                        document.createElement("i");
+
+                    star.className =
+                        "jami-chat-star jami-chat-star-four";
+
+                    star.style.left =
+                        `${position.left}%`;
+
+                    star.style.top =
+                        `${position.top}%`;
+
+                    star.style.width =
+                        `${size}px`;
+
+                    star.style.height =
+                        `${size}px`;
+
+                    star.style.background =
+                        colours[
+                            Math.floor(
+                                Math.random() *
+                                colours.length
+                            )
+                        ];
+
+                    star.style.opacity =
+                        `${.74 + Math.random() * .22}`;
+
+                    star.style.transform =
+                        `translate(-50%, -50%) rotate(${Math.random() * 20 - 10}deg)`;
+
+                    layer.appendChild(star);
+                }
+            }
+        }
+    } else {
+        const colours = [
+            "#f4a9c1",
+            "#a8d8b8",
+            "#f4c795",
+            "#c9b7ee"
+        ];
+
+        const bands = 7;
+
+        for (
+            let band = 0;
+            band < bands;
+            band += 1
+        ) {
+            const top0 =
+                3 +
+                band *
+                (94 / bands);
+
+            const top1 =
+                3 +
+                (band + 1) *
+                (94 / bands);
+
+            const x0 =
+                width * .03;
+
+            const x1 =
+                width * .31;
+
+            const y0 =
+                height * top0 / 100;
+
+            const y1 =
+                height * top1 / 100;
+
+            const hasPaw =
+                occupied.some(point =>
+                    point.radius >= 9 &&
+                    point.x >= x0 &&
+                    point.x <= x1 &&
+                    point.y >= y0 &&
+                    point.y <= y1
+                );
+
+            if (!hasPaw) {
+                const size =
+                    20 +
+                    Math.random() * 7;
+
+                const position =
+                    findPosition({
+                        size,
+                        gap: 7,
+                        minLeft: 4,
+                        maxLeft: 30,
+                        minTop: top0 + .8,
+                        maxTop: top1 - .8,
+                        attempts: 760
+                    });
+
+                if (position) {
+                    occupied.push({
+                        x: position.x,
+                        y: position.y,
+                        radius: position.radius
+                    });
+
+                    const paw =
+                        document.createElement("i");
+
+                    paw.className =
+                        "jami-chat-paw";
+
+                    paw.style.left =
+                        `${position.left}%`;
+
+                    paw.style.top =
+                        `${position.top}%`;
+
+                    paw.style.width =
+                        `${size}px`;
+
+                    paw.style.height =
+                        `${size}px`;
+
+                    paw.style.color =
+                        colours[
+                            Math.floor(
+                                Math.random() *
+                                colours.length
+                            )
+                        ];
+
+                    paw.style.opacity =
+                        `${.20 + Math.random() * .14}`;
+
+                    paw.style.transform =
+                        `translate(-50%, -50%) rotate(${-16 + Math.random() * 32}deg)`;
+
+                    paw.innerHTML =
+                        makePawMarkup();
+
+                    layer.appendChild(paw);
+                }
+            }
+        }
+    }
+
+
+    if (theme === "stars") {
+        const colours = [
+            "#d8c9ff",
+            "#ace3ff",
+            "#ffc4e4",
+            "#ffe79e",
+            "#c2efff",
+            "#eee5ff"
+        ];
+
+        const edgeRegions = [
+            {
+                minLeft: 3,
+                maxLeft: 28,
+                minTop: 3,
+                maxTop: 33,
+                target: 6
+            },
+            {
+                minLeft: 3,
+                maxLeft: 30,
+                minTop: 66,
+                maxTop: 97,
+                target: 7
+            },
+            {
+                minLeft: 73,
+                maxLeft: 97,
+                minTop: 3,
+                maxTop: 97,
+                target: 12
+            }
+        ];
+
+        edgeRegions.forEach(region => {
+            const x0 =
+                width * region.minLeft / 100;
+            const x1 =
+                width * region.maxLeft / 100;
+            const y0 =
+                height * region.minTop / 100;
+            const y1 =
+                height * region.maxTop / 100;
+
+            let present =
+                occupied.filter(point =>
+                    point.radius >= 4 &&
+                    point.x >= x0 &&
+                    point.x <= x1 &&
+                    point.y >= y0 &&
+                    point.y <= y1
+                ).length;
+
+            while (present < region.target) {
+                const size =
+                    8.5 +
+                    Math.random() * 8;
+
+                const position =
+                    findPosition({
+                        size,
+                        gap: 6.5,
+                        minLeft:
+                            region.minLeft + .7,
+                        maxLeft:
+                            region.maxLeft - .7,
+                        minTop:
+                            region.minTop + .7,
+                        maxTop:
+                            region.maxTop - .7,
+                        attempts: 760
+                    });
+
+                if (!position) {
+                    break;
+                }
+
+                occupied.push({
+                    x: position.x,
+                    y: position.y,
+                    radius: position.radius
+                });
+
+                const star =
+                    document.createElement("i");
+
+                star.className =
+                    "jami-chat-star jami-chat-star-four";
+
+                star.style.left =
+                    `${position.left}%`;
+                star.style.top =
+                    `${position.top}%`;
+                star.style.width =
+                    `${size}px`;
+                star.style.height =
+                    `${size}px`;
+
+                star.style.background =
+                    colours[
+                        Math.floor(
+                            Math.random() *
+                            colours.length
+                        )
+                    ];
+
+                star.style.opacity =
+                    `${.70 + Math.random() * .20}`;
+
+                star.style.transform =
+                    `translate(-50%, -50%) rotate(${Math.random() * 20 - 10}deg)`;
+
+                layer.appendChild(star);
+                present += 1;
+            }
+        });
+    }
+
+    main.appendChild(layer);
+
+    const shellLayer =
+        document.createElement("div");
+
+    shellLayer.className =
+        "jami-chat-shell-decor";
+
+    const shellWidth =
+        Math.max(
+            this.window.clientWidth,
+            320
+        );
+
+    const shellHeight =
+        Math.max(
+            this.window.clientHeight,
+            260
+        );
+
+    const windowRect =
+        this.window
+            .getBoundingClientRect();
+
+    const mainRect =
+        main.getBoundingClientRect();
+
+    const exclusion = {
+        left:
+            mainRect.left -
+            windowRect.left -
+            10,
+        top:
+            mainRect.top -
+            windowRect.top -
+            10,
+        right:
+            mainRect.right -
+            windowRect.left +
+            10,
+        bottom:
+            mainRect.bottom -
+            windowRect.top +
+            10
+    };
+
+    const shellOccupied = [];
+
+    const rejectMain = (
+        x,
+        y,
+        radius
+    ) =>
+        x + radius >
+            exclusion.left &&
+        x - radius <
+            exclusion.right &&
+        y + radius >
+            exclusion.top &&
+        y - radius <
+            exclusion.bottom;
+
+    const findShellPosition =
+        createPositionFinder(
+            shellWidth,
+            shellHeight,
+            shellOccupied,
+            rejectMain
+        );
+
+    if (theme === "stars") {
+        const colours = [
+            "#d8c9ff",
+            "#ace3ff",
+            "#ffc4e4",
+            "#ffe79e",
+            "#c2efff",
+            "#eee5ff"
+        ];
+
+        const shellCount =
+            178 +
+            Math.floor(
+                Math.random() * 38
+            );
+
+        for (
+            let index = 0;
+            index < shellCount;
+            index += 1
+        ) {
+            const size =
+                1.5 +
+                Math.random() * 2.5;
+
+            const position =
+                findShellPosition({
+                    size,
+                    gap: 3,
+                    minLeft: 2,
+                    maxLeft: 98,
+                    minTop: 2,
+                    maxTop: 98,
+                    attempts: 420
+                });
+
+            if (!position) {
+                continue;
+            }
+
+            shellOccupied.push({
+                x: position.x,
+                y: position.y,
+                radius: position.radius
+            });
+
+            const star =
+                document.createElement("i");
+
+            star.className =
+                "jami-chat-star jami-chat-star-tiny";
+
+            star.style.left =
+                `${position.left}%`;
+
+            star.style.top =
+                `${position.top}%`;
+
+            star.style.width =
+                `${size}px`;
+
+            star.style.height =
+                `${size}px`;
+
+            star.style.background =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            star.style.opacity =
+                `${.44 + Math.random() * .25}`;
+
+            star.style.transform =
+                `translate(-50%, -50%) rotate(${Math.random() * 24 - 12}deg)`;
+
+            shellLayer.appendChild(star);
+        }
+    } else {
+        const colours = [
+            "#f4a9c1",
+            "#a8d8b8",
+            "#f4c795",
+            "#c9b7ee"
+        ];
+
+        const shellCount =
+            34 +
+            Math.floor(
+                Math.random() * 9
+            );
+
+        for (
+            let index = 0;
+            index < shellCount;
+            index += 1
+        ) {
+            const size =
+                15 +
+                Math.random() * 8;
+
+            const position =
+                findShellPosition({
+                    size,
+                    gap: 8,
+                    minLeft: 3,
+                    maxLeft: 97,
+                    minTop: 3,
+                    maxTop: 97,
+                    attempts: 520
+                });
+
+            if (!position) {
+                continue;
+            }
+
+            shellOccupied.push({
+                x: position.x,
+                y: position.y,
+                radius: position.radius
+            });
+
+            const paw =
+                document.createElement("i");
+
+            paw.className =
+                "jami-chat-paw jami-chat-shell-paw";
+
+            paw.style.left =
+                `${position.left}%`;
+
+            paw.style.top =
+                `${position.top}%`;
+
+            paw.style.width =
+                `${size}px`;
+
+            paw.style.height =
+                `${size}px`;
+
+            paw.style.color =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            paw.style.opacity =
+                `${.24 + Math.random() * .12}`;
+
+            paw.style.transform =
+                `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
+
+            paw.innerHTML =
+                makePawMarkup();
+
+            shellLayer.appendChild(paw);
+        }
+    }
+
+
+    const shellRegions = [
+        {
+            minLeft: 2,
+            maxLeft: 98,
+            minTop: 2,
+            maxTop: Math.max(
+                6,
+                exclusion.top * 100 / shellHeight - 1
+            )
+        },
+        {
+            minLeft: 2,
+            maxLeft: 98,
+            minTop: Math.min(
+                94,
+                exclusion.bottom * 100 / shellHeight + 1
+            ),
+            maxTop: 98
+        }
+    ].filter(region =>
+        region.maxTop - region.minTop >= 4
+    );
+
+    if (theme === "stars") {
+        const colours = [
+            "#d8c9ff",
+            "#ace3ff",
+            "#ffc4e4",
+            "#ffe79e",
+            "#c2efff",
+            "#eee5ff"
+        ];
+
+        shellRegions.forEach(region => {
+            const columns = 10;
+
+            for (
+                let column = 0;
+                column < columns;
+                column += 1
+            ) {
+                const left0 =
+                    region.minLeft +
+                    column *
+                    (
+                        region.maxLeft -
+                        region.minLeft
+                    ) /
+                    columns;
+
+                const left1 =
+                    region.minLeft +
+                    (column + 1) *
+                    (
+                        region.maxLeft -
+                        region.minLeft
+                    ) /
+                    columns;
+
+                const hasStar =
+                    shellOccupied.some(point => {
+                        const left =
+                            point.x * 100 /
+                            shellWidth;
+
+                        const top =
+                            point.y * 100 /
+                            shellHeight;
+
+                        return (
+                            left >= left0 &&
+                            left <= left1 &&
+                            top >= region.minTop &&
+                            top <= region.maxTop
+                        );
+                    });
+
+                if (hasStar) {
+                    continue;
+                }
+
+                const size =
+                    1.7 +
+                    Math.random() * 2.6;
+
+                const position =
+                    findShellPosition({
+                        size,
+                        gap: 2.5,
+                        minLeft: left0 + .5,
+                        maxLeft: left1 - .5,
+                        minTop: region.minTop + .5,
+                        maxTop: region.maxTop - .5,
+                        attempts: 460
+                    });
+
+                if (!position) {
+                    continue;
+                }
+
+                shellOccupied.push({
+                    x: position.x,
+                    y: position.y,
+                    radius: position.radius
+                });
+
+                const star =
+                    document.createElement("i");
+
+                star.className =
+                    "jami-chat-star jami-chat-star-tiny";
+
+                star.style.left =
+                    `${position.left}%`;
+
+                star.style.top =
+                    `${position.top}%`;
+
+                star.style.width =
+                    `${size}px`;
+
+                star.style.height =
+                    `${size}px`;
+
+                star.style.background =
+                    colours[
+                        Math.floor(
+                            Math.random() *
+                            colours.length
+                        )
+                    ];
+
+                star.style.opacity =
+                    `${.50 + Math.random() * .28}`;
+
+                star.style.transform =
+                    `translate(-50%, -50%) rotate(${Math.random() * 24 - 12}deg)`;
+
+                shellLayer.appendChild(star);
+            }
+        });
+    } else {
+        const colours = [
+            "#f4a9c1",
+            "#a8d8b8",
+            "#f4c795",
+            "#c9b7ee"
+        ];
+
+        shellRegions.forEach(region => {
+            const columns = 7;
+
+            for (
+                let column = 0;
+                column < columns;
+                column += 1
+            ) {
+                const left0 =
+                    region.minLeft +
+                    column *
+                    (
+                        region.maxLeft -
+                        region.minLeft
+                    ) /
+                    columns;
+
+                const left1 =
+                    region.minLeft +
+                    (column + 1) *
+                    (
+                        region.maxLeft -
+                        region.minLeft
+                    ) /
+                    columns;
+
+                const hasPaw =
+                    shellOccupied.some(point => {
+                        const left =
+                            point.x * 100 /
+                            shellWidth;
+
+                        const top =
+                            point.y * 100 /
+                            shellHeight;
+
+                        return (
+                            point.radius >= 6 &&
+                            left >= left0 &&
+                            left <= left1 &&
+                            top >= region.minTop &&
+                            top <= region.maxTop
+                        );
+                    });
+
+                if (hasPaw) {
+                    continue;
+                }
+
+                const size =
+                    15 +
+                    Math.random() * 7;
+
+                const position =
+                    findShellPosition({
+                        size,
+                        gap: 6,
+                        minLeft: left0 + .7,
+                        maxLeft: left1 - .7,
+                        minTop: region.minTop + .8,
+                        maxTop: region.maxTop - .8,
+                        attempts: 620
+                    });
+
+                if (!position) {
+                    continue;
+                }
+
+                shellOccupied.push({
+                    x: position.x,
+                    y: position.y,
+                    radius: position.radius
+                });
+
+                const paw =
+                    document.createElement("i");
+
+                paw.className =
+                    "jami-chat-paw jami-chat-shell-paw";
+
+                paw.style.left =
+                    `${position.left}%`;
+
+                paw.style.top =
+                    `${position.top}%`;
+
+                paw.style.width =
+                    `${size}px`;
+
+                paw.style.height =
+                    `${size}px`;
+
+                paw.style.color =
+                    colours[
+                        Math.floor(
+                            Math.random() *
+                            colours.length
+                        )
+                    ];
+
+                paw.style.opacity =
+                    `${.27 + Math.random() * .12}`;
+
+                paw.style.transform =
+                    `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
+
+                paw.innerHTML =
+                    makePawMarkup();
+
+                shellLayer.appendChild(paw);
+            }
+        });
+    }
+
+    this.window.appendChild(
+        shellLayer
+    );
+}
+
+	setupChatPastelThemeSync() {
+    this.syncChatPastelTheme();
+
+    window.addEventListener(
+        "storage",
+        event => {
+            if (
+                event.key ===
+                    "chat_theme"
+            ) {
+                this.syncChatPastelTheme();
+            }
+        }
+    );
+}
+
 	applyCurrentTheme() {
     const themeName =
-        localStorage.getItem("theme") || "Default";
+        localStorage.getItem("theme") || "Stars";
 
     if (typeof window.applyTheme === "function") {
         window.applyTheme(themeName);
