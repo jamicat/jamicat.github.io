@@ -13393,7 +13393,13 @@ this.messageInput.focus();
     this.sendButton.textContent =
         this.isBanned
             ? "×"
-            : "➜";
+            : (
+                this.window?.dataset
+                    .chatTheme ===
+                    "original"
+                    ? "send"
+                    : "➜"
+            );
 }
 }
 
