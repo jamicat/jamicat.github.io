@@ -167,10 +167,6 @@ this.sourceContext = null;
                             data-jami-remix-emoji-picker
                             hidden
                         ></div>
-
-                        <div class="jami-remix-overlay-hint">
-                            drag to move · corner to resize · top handle to rotate · flip buttons
-                        </div>
                     </aside>
                 </div>
 
