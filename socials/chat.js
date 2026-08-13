@@ -17802,39 +17802,12 @@ keepTitleBarInViewport() {
 
     const makePawMarkup = () =>
         '<svg viewBox="0 0 64 64" aria-hidden="true">' +
-        '<path class="jami-chat-paw-shell" d="M31.8 4.4C25.6 4.4 21.7 8.6 20.7 14.3C18.1 9.9 13.5 8.4 9.6 10.6C4.7 13.4 3.9 19.8 6.4 25.1C8.1 28.7 11.2 31 14.7 31.7C11.5 35.2 9.8 39.8 10.5 44.7C11.6 52.2 18 58.1 25.3 58.1C28.1 58.1 30.1 56.9 32 55.6C33.9 56.9 35.9 58.1 38.7 58.1C46 58.1 52.4 52.2 53.5 44.7C54.2 39.8 52.5 35.2 49.3 31.7C52.8 31 55.9 28.7 57.6 25.1C60.1 19.8 59.3 13.4 54.4 10.6C50.5 8.4 45.9 9.9 43.3 14.3C42.3 8.6 38.4 4.4 32.2 4.4Z"></path>' +
-        '<ellipse class="jami-chat-paw-pad" cx="16.2" cy="22.0" rx="3.45" ry="5.25" transform="rotate(-21 16.2 22.0)"></ellipse>' +
-        '<ellipse class="jami-chat-paw-pad" cx="27.0" cy="16.2" rx="3.55" ry="5.35" transform="rotate(-7 27.0 16.2)"></ellipse>' +
-        '<ellipse class="jami-chat-paw-pad" cx="37.0" cy="16.2" rx="3.55" ry="5.35" transform="rotate(7 37.0 16.2)"></ellipse>' +
-        '<ellipse class="jami-chat-paw-pad" cx="47.8" cy="22.0" rx="3.45" ry="5.25" transform="rotate(21 47.8 22.0)"></ellipse>' +
-        '<path class="jami-chat-paw-pad" d="M18.4 44.2C18.4 40.8 21.3 38.0 25.4 35.7L32 31.8L38.6 35.7C42.7 38.0 45.6 40.8 45.6 44.2C45.6 47.5 43.0 49.8 39.6 49.8C36.9 49.8 34.4 48.5 32 46.7C29.6 48.5 27.1 49.8 24.4 49.8C21.0 49.8 18.4 47.5 18.4 44.2Z"></path>' +
+        '<ellipse cx="13" cy="21" rx="5.5" ry="8.2"></ellipse>' +
+        '<ellipse cx="26" cy="13.5" rx="5.8" ry="8.5"></ellipse>' +
+        '<ellipse cx="39" cy="13.5" rx="5.8" ry="8.5"></ellipse>' +
+        '<ellipse cx="52" cy="21" rx="5.5" ry="8.2"></ellipse>' +
+        '<path d="M18.5 43.5C18.5 34.5 24.5 28 32.5 28S46.5 34.5 46.5 43.5C46.5 50 42.3 55 37.2 55C34.6 55 33.3 52.7 32.5 50.5C31.7 52.7 30.4 55 27.8 55C22.7 55 18.5 50 18.5 43.5Z"></path>' +
         '</svg>';
-
-    const pawPalettes = [
-        { shell: "#f7c8d5", pad: "#ed7f96" },
-        { shell: "#cfe8d7", pad: "#93c9a6" },
-        { shell: "#f8ddb8", pad: "#eeb77a" },
-        { shell: "#ddd2f1", pad: "#b9a1df" },
-        { shell: "#f5cbdc", pad: "#e995b4" }
-    ];
-
-    const applyPawPalette = paw => {
-        const palette =
-            pawPalettes[
-                Math.floor(
-                    Math.random() *
-                    pawPalettes.length
-                )
-            ];
-
-        paw.style.color =
-            palette.shell;
-
-        paw.style.setProperty(
-            "--jami-paw-pad",
-            palette.pad
-        );
-    };
 
     const createPositionFinder = (
         width,
@@ -18080,9 +18053,9 @@ keepTitleBarInViewport() {
         ];
 
         const largeCount =
-            36 +
+            53 +
             Math.floor(
-                Math.random() * 8
+                Math.random() * 10
             );
 
         const tinyCount =
@@ -18097,8 +18070,8 @@ keepTitleBarInViewport() {
             index += 1
         ) {
             const size =
-                8.5 +
-                Math.random() * 8.5;
+                9 +
+                Math.random() * 11;
 
             const band =
                 index % 5;
@@ -18338,7 +18311,13 @@ keepTitleBarInViewport() {
             paw.style.height =
                 `${size}px`;
 
-            applyPawPalette(paw);
+            paw.style.color =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
 
             paw.style.opacity =
                 `${.17 + Math.random() * .13}`;
@@ -18364,8 +18343,8 @@ keepTitleBarInViewport() {
             "#eee5ff"
         ];
 
-        const columns = 5;
-        const rows = 4;
+        const columns = 6;
+        const rows = 5;
 
         for (let row = 0; row < rows; row += 1) {
             for (let column = 0; column < columns; column += 1) {
@@ -18393,8 +18372,8 @@ keepTitleBarInViewport() {
                 }
 
                 const size =
-                    8.5 +
-                    Math.random() * 7;
+                    9 +
+                    Math.random() * 8;
 
                 const position =
                     findPosition({
@@ -18531,7 +18510,13 @@ keepTitleBarInViewport() {
                 paw.style.height =
                     `${size}px`;
 
-                applyPawPalette(paw);
+                paw.style.color =
+                    colours[
+                        Math.floor(
+                            Math.random() *
+                            colours.length
+                        )
+                    ];
 
                 paw.style.opacity =
                     `${.18 + Math.random() * .14}`;
@@ -18558,7 +18543,7 @@ keepTitleBarInViewport() {
             "#eee5ff"
         ];
 
-        const bands = 7;
+        const bands = 9;
 
         for (
             let band = 0;
@@ -18598,8 +18583,8 @@ keepTitleBarInViewport() {
 
             if (!hasStar) {
                 const size =
-                    8.5 +
-                    Math.random() * 7;
+                    9 +
+                    Math.random() * 8;
 
                 const position =
                     findPosition({
@@ -18742,7 +18727,13 @@ keepTitleBarInViewport() {
                     paw.style.height =
                         `${size}px`;
 
-                    applyPawPalette(paw);
+                    paw.style.color =
+                        colours[
+                            Math.floor(
+                                Math.random() *
+                                colours.length
+                            )
+                        ];
 
                     paw.style.opacity =
                         `${.20 + Math.random() * .14}`;
@@ -18776,21 +18767,21 @@ keepTitleBarInViewport() {
                 maxLeft: 28,
                 minTop: 3,
                 maxTop: 33,
-                target: 4
+                target: 6
             },
             {
                 minLeft: 3,
                 maxLeft: 30,
                 minTop: 66,
                 maxTop: 97,
-                target: 4
+                target: 7
             },
             {
                 minLeft: 73,
                 maxLeft: 97,
                 minTop: 3,
                 maxTop: 97,
-                target: 7
+                target: 12
             }
         ];
 
@@ -18815,8 +18806,8 @@ keepTitleBarInViewport() {
 
             while (present < region.target) {
                 const size =
-                    8 +
-                    Math.random() * 7;
+                    8.5 +
+                    Math.random() * 8;
 
                 const position =
                     findPosition({
@@ -19090,7 +19081,13 @@ keepTitleBarInViewport() {
             paw.style.height =
                 `${size}px`;
 
-            applyPawPalette(paw);
+            paw.style.color =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
 
             paw.style.opacity =
                 `${.24 + Math.random() * .12}`;
@@ -19347,7 +19344,13 @@ keepTitleBarInViewport() {
                 paw.style.height =
                     `${size}px`;
 
-                applyPawPalette(paw);
+                paw.style.color =
+                    colours[
+                        Math.floor(
+                            Math.random() *
+                            colours.length
+                        )
+                    ];
 
                 paw.style.opacity =
                     `${.27 + Math.random() * .12}`;
