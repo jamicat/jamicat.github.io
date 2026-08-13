@@ -922,21 +922,38 @@ const syncChatThemeButtonAlignment = () => {
             this.membersToggle
         );
 
+    const connectionStyle =
+        this.connectionStatus
+            ? getComputedStyle(
+                this.connectionStatus
+            )
+            : null;
+
+    const referenceStyle =
+        membersStyle.display !== "none"
+            ? membersStyle
+            : connectionStyle ||
+                membersStyle;
+
     this.chatThemeButton.style.setProperty(
         "font-size",
-        membersStyle.fontSize,
+        referenceStyle.fontSize,
         "important"
     );
 
     this.chatThemeButton.style.setProperty(
         "line-height",
-        membersStyle.lineHeight,
+        referenceStyle.lineHeight,
         "important"
     );
 
+    /*
+     * Never mirror display:none from Hide Members while minimized.
+     * Theme must remain a visible/clickable title-bar control.
+     */
     this.chatThemeButton.style.setProperty(
         "display",
-        membersStyle.display,
+        "block",
         "important"
     );
 
@@ -978,7 +995,7 @@ const syncChatThemeButtonAlignment = () => {
 
     this.chatThemeButton.style.setProperty(
         "vertical-align",
-        membersStyle.verticalAlign,
+        referenceStyle.verticalAlign,
         "important"
     );
 };
@@ -17133,29 +17150,6 @@ keepTitleBarInViewport() {
         forceDecor &&
         previousTheme !== cleaned;
 
-    if (
-        shouldAnimateThemeChange &&
-        typeof this.window.animate ===
-            "function"
-    ) {
-        this.window.animate(
-            [
-                {
-                    opacity: 0.88,
-                    filter: "brightness(.97)"
-                },
-                {
-                    opacity: 1,
-                    filter: "brightness(1)"
-                }
-            ],
-            {
-                duration: 150,
-                easing: "ease-out"
-            }
-        );
-    }
-
     this.window.dataset.chatTheme =
         cleaned;
 
@@ -17189,6 +17183,39 @@ keepTitleBarInViewport() {
     this.applyChatComposerLayout(
         cleaned
     );
+
+    /*
+     * Animate after the new theme has actually been applied.
+     * Doing it before the data attributes changed made the switch look
+     * like an instant snap despite the Web Animation running.
+     */
+    if (
+        shouldAnimateThemeChange &&
+        typeof this.window.animate ===
+            "function"
+    ) {
+        requestAnimationFrame(() => {
+            this.window.animate(
+                [
+                    {
+                        opacity: 0.72,
+                        filter:
+                            "brightness(.94) saturate(.90)"
+                    },
+                    {
+                        opacity: 1,
+                        filter:
+                            "brightness(1) saturate(1)"
+                    }
+                ],
+                {
+                    duration: 190,
+                    easing:
+                        "cubic-bezier(.2,.8,.2,1)"
+                }
+            );
+        });
+    }
 
     this.chatThemeMenu
         ?.querySelectorAll(
@@ -17939,15 +17966,15 @@ keepTitleBarInViewport() {
         ];
 
         const largeCount =
-            50 +
+            62 +
             Math.floor(
-                Math.random() * 11
+                Math.random() * 13
             );
 
         const tinyCount =
-            150 +
+            205 +
             Math.floor(
-                Math.random() * 31
+                Math.random() * 36
             );
 
         for (
@@ -18116,9 +18143,9 @@ keepTitleBarInViewport() {
         ];
 
         const count =
-            40 +
+            49 +
             Math.floor(
-                Math.random() * 11
+                Math.random() * 12
             );
 
         for (
@@ -18423,6 +18450,230 @@ keepTitleBarInViewport() {
         }
     }
 
+
+    /*
+     * Left-side coverage pass.
+     * The random distribution can visually read as right-heavy because
+     * messages occupy the left half. Guarantee decoration opportunities
+     * in each left-side vertical band while preserving decor spacing.
+     */
+    if (theme === "stars") {
+        const colours = [
+            "#d8c9ff",
+            "#ace3ff",
+            "#ffc4e4",
+            "#ffe79e",
+            "#c2efff",
+            "#eee5ff"
+        ];
+
+        const bands = 8;
+
+        for (
+            let band = 0;
+            band < bands;
+            band += 1
+        ) {
+            const top0 =
+                3 +
+                band *
+                (94 / bands);
+
+            const top1 =
+                3 +
+                (band + 1) *
+                (94 / bands);
+
+            const x0 =
+                width * .03;
+
+            const x1 =
+                width * .30;
+
+            const y0 =
+                height * top0 / 100;
+
+            const y1 =
+                height * top1 / 100;
+
+            const hasStar =
+                occupied.some(point =>
+                    point.radius >= 4 &&
+                    point.x >= x0 &&
+                    point.x <= x1 &&
+                    point.y >= y0 &&
+                    point.y <= y1
+                );
+
+            if (!hasStar) {
+                const size =
+                    9 +
+                    Math.random() * 8;
+
+                const position =
+                    findPosition({
+                        size,
+                        gap: 6,
+                        minLeft: 4,
+                        maxLeft: 29,
+                        minTop: top0 + .7,
+                        maxTop: top1 - .7,
+                        attempts: 700
+                    });
+
+                if (position) {
+                    occupied.push({
+                        x: position.x,
+                        y: position.y,
+                        radius: position.radius
+                    });
+
+                    const star =
+                        document.createElement("i");
+
+                    star.className =
+                        "jami-chat-star jami-chat-star-four";
+
+                    star.style.left =
+                        `${position.left}%`;
+
+                    star.style.top =
+                        `${position.top}%`;
+
+                    star.style.width =
+                        `${size}px`;
+
+                    star.style.height =
+                        `${size}px`;
+
+                    star.style.background =
+                        colours[
+                            Math.floor(
+                                Math.random() *
+                                colours.length
+                            )
+                        ];
+
+                    star.style.opacity =
+                        `${.74 + Math.random() * .22}`;
+
+                    star.style.transform =
+                        `translate(-50%, -50%) rotate(${Math.random() * 20 - 10}deg)`;
+
+                    layer.appendChild(star);
+                }
+            }
+        }
+    } else {
+        const colours = [
+            "#f4a9c1",
+            "#a8d8b8",
+            "#f4c795",
+            "#c9b7ee"
+        ];
+
+        const bands = 7;
+
+        for (
+            let band = 0;
+            band < bands;
+            band += 1
+        ) {
+            const top0 =
+                3 +
+                band *
+                (94 / bands);
+
+            const top1 =
+                3 +
+                (band + 1) *
+                (94 / bands);
+
+            const x0 =
+                width * .03;
+
+            const x1 =
+                width * .31;
+
+            const y0 =
+                height * top0 / 100;
+
+            const y1 =
+                height * top1 / 100;
+
+            const hasPaw =
+                occupied.some(point =>
+                    point.radius >= 9 &&
+                    point.x >= x0 &&
+                    point.x <= x1 &&
+                    point.y >= y0 &&
+                    point.y <= y1
+                );
+
+            if (!hasPaw) {
+                const size =
+                    20 +
+                    Math.random() * 7;
+
+                const position =
+                    findPosition({
+                        size,
+                        gap: 7,
+                        minLeft: 4,
+                        maxLeft: 30,
+                        minTop: top0 + .8,
+                        maxTop: top1 - .8,
+                        attempts: 760
+                    });
+
+                if (position) {
+                    occupied.push({
+                        x: position.x,
+                        y: position.y,
+                        radius: position.radius
+                    });
+
+                    const paw =
+                        document.createElement("i");
+
+                    paw.className =
+                        "jami-chat-paw";
+
+                    paw.style.left =
+                        `${position.left}%`;
+
+                    paw.style.top =
+                        `${position.top}%`;
+
+                    paw.style.width =
+                        `${size}px`;
+
+                    paw.style.height =
+                        `${size}px`;
+
+                    paw.style.color =
+                        colours[
+                            Math.floor(
+                                Math.random() *
+                                colours.length
+                            )
+                        ];
+
+                    paw.style.opacity =
+                        `${.20 + Math.random() * .14}`;
+
+                    paw.style.transform =
+                        `translate(-50%, -50%) rotate(${-16 + Math.random() * 32}deg)`;
+
+                    paw.innerHTML =
+                        makePawMarkup();
+
+                    layer.appendChild(paw);
+                }
+            }
+        }
+    }
+
     main.appendChild(layer);
 
     /* Small decoration everywhere else in the chat shell.
@@ -18456,19 +18707,19 @@ keepTitleBarInViewport() {
         left:
             mainRect.left -
             windowRect.left -
-            5,
+            10,
         top:
             mainRect.top -
             windowRect.top -
-            5,
+            10,
         right:
             mainRect.right -
             windowRect.left +
-            5,
+            10,
         bottom:
             mainRect.bottom -
             windowRect.top +
-            5
+            10
     };
 
     const shellOccupied = [];
@@ -18506,9 +18757,9 @@ keepTitleBarInViewport() {
         ];
 
         const shellCount =
-            130 +
+            178 +
             Math.floor(
-                Math.random() * 31
+                Math.random() * 38
             );
 
         for (
@@ -18584,9 +18835,9 @@ keepTitleBarInViewport() {
         ];
 
         const shellCount =
-            38 +
+            48 +
             Math.floor(
-                Math.random() * 11
+                Math.random() * 12
             );
 
         for (
@@ -18646,7 +18897,7 @@ keepTitleBarInViewport() {
                 ];
 
             paw.style.opacity =
-                `${.18 + Math.random() * .10}`;
+                `${.24 + Math.random() * .12}`;
 
             paw.style.transform =
                 `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
@@ -18914,7 +19165,7 @@ keepTitleBarInViewport() {
                     ];
 
                 paw.style.opacity =
-                    `${.22 + Math.random() * .11}`;
+                    `${.27 + Math.random() * .12}`;
 
                 paw.style.transform =
                     `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
