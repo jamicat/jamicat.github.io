@@ -8663,10 +8663,24 @@ openModerationMenu(x, y, message) {
 
         buttons.push(
             this.createModerationMenuButton(
-                "clear chat",
+                "clear chat after...",
                 () => {
                     this.closeModerationMenu();
-                    this.clearEntireChat();
+                    this.clearEntireChat(
+                        "after"
+                    );
+                }
+            )
+        );
+
+        buttons.push(
+            this.createModerationMenuButton(
+                "clear chat before...",
+                () => {
+                    this.closeModerationMenu();
+                    this.clearEntireChat(
+                        "before"
+                    );
                 }
             )
         );
@@ -9824,8 +9838,9 @@ menu.style.top =
     ) {
         iconMarkup = icons.ban;
     } else if (
-        normalized ===
-        "clear chat"
+        normalized.startsWith(
+            "clear chat "
+        )
     ) {
         iconMarkup = icons.clear;
     }
@@ -10806,9 +10821,18 @@ if (
         "chat-cleared"
 ) {
     if (data.cutoff) {
-        this.clearChatThrough(
-            data.cutoff
-        );
+        if (
+            data.direction ===
+                "before"
+        ) {
+            this.clearChatBefore(
+                data.cutoff
+            );
+        } else {
+            this.clearChatThrough(
+                data.cutoff
+            );
+        }
     } else {
         this.clearChatInterface();
     }
@@ -12707,7 +12731,9 @@ async uploadTestImage(file) {
     xhr.send(file);
 }
 
-	async clearEntireChat() {
+	async clearEntireChat(
+    direction = "after"
+) {
     if (
         !this.isAdmin ||
         !this.adminKey
@@ -12715,19 +12741,33 @@ async uploadTestImage(file) {
         return;
     }
 
-    const todayExample =
-    new Date()
-        .toISOString()
-        .slice(0, 10);
+    const clearDirection =
+        direction === "before"
+            ? "before"
+            : "after";
 
-const cutoffInput =
-    window.prompt(
-        "enter a date and time to clear chat from that point onward:\n" +
-        "format: yyyy-mm-dd hh:mm\n" +
-        `example: ${todayExample} 13:30\n\n` +
-        "leave empty to clear the full chat.",
-        ""
-    );
+    const todayExample =
+        new Date()
+            .toISOString()
+            .slice(0, 10);
+
+    const cutoffInput =
+        window.prompt(
+            clearDirection === "before"
+                ? (
+                    "enter a date and time to clear chat before that point:\n" +
+                    "format: yyyy-mm-dd hh:mm\n" +
+                    `example: ${todayExample} 13:30\n\n` +
+                    "leave empty to clear the full chat."
+                )
+                : (
+                    "enter a date and time to clear chat from that point onward:\n" +
+                    "format: yyyy-mm-dd hh:mm\n" +
+                    `example: ${todayExample} 13:30\n\n` +
+                    "leave empty to clear the full chat."
+                ),
+            ""
+        );
 
     if (cutoffInput === null) {
         return;
@@ -12799,7 +12839,9 @@ const cutoffInput =
             localDate.toISOString();
 
         cutoffLabel =
-            `chat from ${cleanedCutoff} onward`;
+            clearDirection === "before"
+                ? `chat before ${cleanedCutoff}`
+                : `chat from ${cleanedCutoff} onward`;
     }
 
     const confirmed =
@@ -12839,7 +12881,9 @@ const cutoffInput =
 
                     body:
                         JSON.stringify({
-                            cutoff
+                            cutoff,
+                            direction:
+                                clearDirection
                         })
                 }
             );
@@ -12867,9 +12911,18 @@ const cutoffInput =
                     true
             ) {
                 if (result?.cutoff) {
-                    this.clearChatThrough(
-                        result.cutoff
-                    );
+                    if (
+                        result?.direction ===
+                            "before"
+                    ) {
+                        this.clearChatBefore(
+                            result.cutoff
+                        );
+                    } else {
+                        this.clearChatThrough(
+                            result.cutoff
+                        );
+                    }
                 } else {
                     this.clearChatInterface();
                 }
@@ -12882,9 +12935,18 @@ const cutoffInput =
         }
 
         if (result?.cutoff) {
-            this.clearChatThrough(
-                result.cutoff
-            );
+            if (
+                result?.direction ===
+                    "before"
+            ) {
+                this.clearChatBefore(
+                    result.cutoff
+                );
+            } else {
+                this.clearChatThrough(
+                    result.cutoff
+                );
+            }
         } else {
             this.clearChatInterface();
         }
@@ -12894,6 +12956,10 @@ const cutoffInput =
             {
                 cutoff:
                     result?.cutoff ||
+                    null,
+
+                direction:
+                    result?.direction ||
                     null,
 
                 messages:
@@ -12976,6 +13042,60 @@ clearChatThrough(cutoff) {
         this.clearReplyTarget();
     }
 }
+
+
+clearChatBefore(cutoff) {
+    const cutoffTime =
+        new Date(cutoff).getTime();
+
+    if (!Number.isFinite(cutoffTime)) {
+        return;
+    }
+
+    for (
+        const row
+        of this.messages.querySelectorAll(
+            ".chatMessage"
+        )
+    ) {
+        const timestamp =
+            Number(
+                row.dataset.timestamp
+            );
+
+        if (
+            Number.isFinite(timestamp) &&
+            timestamp <= cutoffTime
+        ) {
+            const uploadId =
+                row.dataset.imageUploadId;
+
+            if (uploadId) {
+                this.imageUploadRows.delete(
+                    uploadId
+                );
+
+                this.activeImageUploads.delete(
+                    uploadId
+                );
+            }
+
+            row.remove();
+        }
+    }
+
+    this.closeModerationMenu();
+
+    if (
+        this.replyTarget?.createdAt &&
+        new Date(
+            this.replyTarget.createdAt
+        ).getTime() <= cutoffTime
+    ) {
+        this.clearReplyTarget();
+    }
+}
+
 
 clearChatInterface() {
     for (
