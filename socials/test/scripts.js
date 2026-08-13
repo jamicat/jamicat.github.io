@@ -362,7 +362,16 @@ if (toggleBtn) {
   el.classList.add(theme.terminal2Bg);
 
   if (chatOwned && chatTheme === 'original') {
-    el.style.borderColor = theme.borderColor;
+    if (el.id === 'chatWindow') {
+      el.style.borderColor = theme.borderColor;
+    } else {
+      /*
+       * Detached chat panels own their border colours through
+       * data-theme (blue, purple, rainbow, etc.). Do not replace
+       * those accent borders with the terminal theme border.
+       */
+      el.style.removeProperty('border-color');
+    }
   }
 });
 
