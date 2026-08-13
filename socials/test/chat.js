@@ -370,6 +370,7 @@ transition-[height] duration-200
                 theme-body
                 text-[9px] text-white/50
                 transition hover:text-white
+                jami-chat-theme-button
             "
             aria-label="change chat theme"
             aria-expanded="false"
@@ -887,70 +888,6 @@ this.membersElement =
 
 this.membersToggle =
     this.window.querySelector("#chatMembersToggle");
-
-if (
-    this.chatThemeButton &&
-    this.membersToggle
-) {
-    const syncThemeButtonAlignment = () => {
-        const memberStyle =
-            getComputedStyle(
-                this.membersToggle
-            );
-
-        this.chatThemeButton.style.setProperty(
-            "line-height",
-            memberStyle.lineHeight,
-            "important"
-        );
-
-        this.chatThemeButton.style.setProperty(
-            "transform",
-            "none",
-            "important"
-        );
-
-        this.chatThemeButton.style.setProperty(
-            "top",
-            "auto",
-            "important"
-        );
-
-        this.chatThemeButton.style.setProperty(
-            "height",
-            "auto",
-            "important"
-        );
-
-        this.chatThemeButton.style.setProperty(
-            "min-height",
-            "0",
-            "important"
-        );
-
-        this.chatThemeButton.style.setProperty(
-            "display",
-            memberStyle.display,
-            "important"
-        );
-    };
-
-    syncThemeButtonAlignment();
-
-    requestAnimationFrame(
-        syncThemeButtonAlignment
-    );
-
-    window.addEventListener(
-        "chat-theme-change",
-        syncThemeButtonAlignment
-    );
-
-    window.addEventListener(
-        "themechange",
-        syncThemeButtonAlignment
-    );
-}
 	   this.mainElement =
     this.window.querySelector("#chatMain");
 
@@ -965,6 +902,95 @@ this.chatThemeButton =
 
 this.chatThemeMenu =
     this.window.querySelector("#chatThemeMenu");
+
+const syncChatThemeButtonAlignment = () => {
+    if (
+        !this.chatThemeButton ||
+        !this.membersToggle
+    ) {
+        return;
+    }
+
+    const membersStyle =
+        getComputedStyle(
+            this.membersToggle
+        );
+
+    this.chatThemeButton.style.setProperty(
+        "font-size",
+        membersStyle.fontSize,
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "line-height",
+        membersStyle.lineHeight,
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "display",
+        membersStyle.display,
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "height",
+        "auto",
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "min-height",
+        "0",
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "margin",
+        "0",
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "padding",
+        "0",
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "transform",
+        "none",
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "top",
+        "auto",
+        "important"
+    );
+
+    this.chatThemeButton.style.setProperty(
+        "vertical-align",
+        membersStyle.verticalAlign,
+        "important"
+    );
+};
+
+syncChatThemeButtonAlignment();
+
+requestAnimationFrame(
+    syncChatThemeButtonAlignment
+);
+
+window.addEventListener(
+    "chat-theme-change",
+    () => {
+        requestAnimationFrame(
+            syncChatThemeButtonAlignment
+        );
+    }
+);
 
 if (
     this.chatThemeButton &&
