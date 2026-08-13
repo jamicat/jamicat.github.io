@@ -8825,9 +8825,9 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPan
 
 
 #chatWindow[data-chat-theme="original"] {
-    width: calc(480px / 0.9) !important;
-    height: calc(500px / 0.9) !important;
-    max-width: calc((100vw - 2rem) / 0.9) !important;
+    width: 480px !important;
+    height: 500px !important;
+    max-width: calc(100vw - 2rem) !important;
     scale: .9 !important;
     border: 0 !important;
     border-color: transparent !important;
@@ -8839,9 +8839,9 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPan
 }
 
 #chatWindow[data-chat-theme="original"].h-10 {
-    width: calc(480px / 0.9) !important;
-    height: calc(40px / 0.9) !important;
-    max-width: calc((100vw - 2rem) / 0.9) !important;
+    width: 480px !important;
+    height: 40px !important;
+    max-width: calc(100vw - 2rem) !important;
     scale: .9 !important;
 }
 
@@ -9069,4 +9069,18 @@ html[data-chat-theme="original"] #chatAvatarGrid {
 
 #chatWindow[data-chat-theme="original"] #chatWatchPartyButton.hidden {
     display: none !important;
+}
+
+
+/* Original exact outer size: matches the original h-[500px] w-[480px] widget.
+   The existing 0.9 scale remains unchanged. */
+#chatWindow[data-chat-theme="original"]:not(.h-10) {
+    width: 480px !important;
+    height: 500px !important;
+    max-width: calc(100vw - 2rem) !important;
+}
+
+/* Original continuation/chain timestamp parity. */
+#chatWindow[data-chat-theme="original"] .chatContinuationTime {
+    font-size: 8px !important;
 }
