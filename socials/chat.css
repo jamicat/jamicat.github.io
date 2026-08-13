@@ -4089,7 +4089,7 @@ top: -0.2px;
 }
 
 #chatWindow[data-chat-pastel="paws"] #chatTitle::after {
-    content: "♡";
+    content: none !important;
     color:
         rgb(
             var(--chat-pastel-rgb)
