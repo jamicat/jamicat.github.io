@@ -17556,7 +17556,7 @@ keepTitleBarInViewport() {
             "#chatMain"
         );
 
-    if (!main) {
+    if (!main || !this.window) {
         return;
     }
 
@@ -17564,8 +17564,12 @@ keepTitleBarInViewport() {
         ".jami-chat-pastel-decor"
     )?.remove();
 
+    this.window.querySelector(
+        ".jami-chat-shell-decor"
+    )?.remove();
+
     const theme =
-        this.window?.dataset.chatPastel ||
+        this.window.dataset.chatPastel ||
         "";
 
     if (
@@ -17575,34 +17579,28 @@ keepTitleBarInViewport() {
         return;
     }
 
-    const layer =
-        document.createElement("div");
+    const makePawMarkup = () =>
+        '<svg viewBox="0 0 64 64" aria-hidden="true">' +
+        '<ellipse cx="13" cy="21" rx="5.5" ry="8.2"></ellipse>' +
+        '<ellipse cx="26" cy="13.5" rx="5.8" ry="8.5"></ellipse>' +
+        '<ellipse cx="39" cy="13.5" rx="5.8" ry="8.5"></ellipse>' +
+        '<ellipse cx="52" cy="21" rx="5.5" ry="8.2"></ellipse>' +
+        '<path d="M18.5 43.5C18.5 34.5 24.5 28 32.5 28S46.5 34.5 46.5 43.5C46.5 50 42.3 55 37.2 55C34.6 55 33.3 52.7 32.5 50.5C31.7 52.7 30.4 55 27.8 55C22.7 55 18.5 50 18.5 43.5Z"></path>' +
+        '</svg>';
 
-    layer.className =
-        "jami-chat-pastel-decor";
-
-    const width =
-        Math.max(
-            main.clientWidth,
-            320
-        );
-
-    const height =
-        Math.max(
-            main.clientHeight,
-            260
-        );
-
-    const occupied = [];
-
-    const findPosition = ({
+    const createPositionFinder = (
+        width,
+        height,
+        occupied,
+        rejectPoint = null
+    ) => ({
         size,
         gap,
         minLeft,
         maxLeft,
         minTop,
         maxTop,
-        attempts = 240
+        attempts = 320
     }) => {
         for (
             let attempt = 0;
@@ -17631,6 +17629,17 @@ keepTitleBarInViewport() {
 
             const radius =
                 size / 2;
+
+            if (
+                rejectPoint &&
+                rejectPoint(
+                    x,
+                    y,
+                    radius
+                )
+            ) {
+                continue;
+            }
 
             const blocked =
                 occupied.some(point => {
@@ -17667,6 +17676,34 @@ keepTitleBarInViewport() {
         return null;
     };
 
+    /* Main/message/member zone decoration. */
+    const layer =
+        document.createElement("div");
+
+    layer.className =
+        "jami-chat-pastel-decor";
+
+    const width =
+        Math.max(
+            main.clientWidth,
+            320
+        );
+
+    const height =
+        Math.max(
+            main.clientHeight,
+            260
+        );
+
+    const occupied = [];
+
+    const findPosition =
+        createPositionFinder(
+            width,
+            height,
+            occupied
+        );
+
     if (theme === "stars") {
         const colours = [
             "#d8c9ff",
@@ -17678,15 +17715,15 @@ keepTitleBarInViewport() {
         ];
 
         const largeCount =
-            24 +
+            32 +
             Math.floor(
-                Math.random() * 6
+                Math.random() * 7
             );
 
         const tinyCount =
-            62 +
+            98 +
             Math.floor(
-                Math.random() * 19
+                Math.random() * 23
             );
 
         for (
@@ -17695,43 +17732,45 @@ keepTitleBarInViewport() {
             index += 1
         ) {
             const size =
-                10 +
-                Math.random() * 12;
+                9 +
+                Math.random() * 11;
 
             const band =
-                index % 4;
+                index % 5;
 
             const bandStart =
                 [
-                    5,
-                    27,
-                    49,
-                    71
+                    4,
+                    22,
+                    40,
+                    58,
+                    76
                 ][band];
 
             let position =
                 findPosition({
                     size,
-                    gap: 9,
-                    minLeft: 5,
-                    maxLeft: 95,
+                    gap: 7,
+                    minLeft: 4,
+                    maxLeft: 96,
                     minTop: bandStart,
                     maxTop: Math.min(
-                        bandStart + 20,
-                        95
-                    )
+                        bandStart + 17,
+                        96
+                    ),
+                    attempts: 360
                 });
 
             if (!position) {
                 position =
                     findPosition({
                         size,
-                        gap: 8,
-                        minLeft: 5,
-                        maxLeft: 95,
-                        minTop: 5,
-                        maxTop: 95,
-                        attempts: 360
+                        gap: 6,
+                        minLeft: 4,
+                        maxLeft: 96,
+                        minTop: 4,
+                        maxTop: 96,
+                        attempts: 520
                     });
             }
 
@@ -17772,7 +17811,7 @@ keepTitleBarInViewport() {
                 ];
 
             star.style.opacity =
-                `${.78 + Math.random() * .18}`;
+                `${.76 + Math.random() * .20}`;
 
             star.style.transform =
                 `translate(-50%, -50%) rotate(${Math.random() * 20 - 10}deg)`;
@@ -17786,47 +17825,19 @@ keepTitleBarInViewport() {
             index += 1
         ) {
             const size =
-                2 +
-                Math.random() * 2.5;
-
-            const band =
-                index % 5;
-
-            const bandStart =
-                [
-                    4,
-                    22,
-                    40,
-                    58,
-                    76
-                ][band];
+                1.8 +
+                Math.random() * 2.4;
 
             let position =
                 findPosition({
                     size,
-                    gap: 3,
-                    minLeft: 3,
-                    maxLeft: 97,
-                    minTop: bandStart,
-                    maxTop: Math.min(
-                        bandStart + 17,
-                        97
-                    ),
-                    attempts: 180
+                    gap: 2.2,
+                    minLeft: 2,
+                    maxLeft: 98,
+                    minTop: 2,
+                    maxTop: 98,
+                    attempts: 300
                 });
-
-            if (!position) {
-                position =
-                    findPosition({
-                        size,
-                        gap: 2.5,
-                        minLeft: 3,
-                        maxLeft: 97,
-                        minTop: 3,
-                        maxTop: 97,
-                        attempts: 280
-                    });
-            }
 
             if (!position) {
                 continue;
@@ -17865,7 +17876,7 @@ keepTitleBarInViewport() {
                 ];
 
             star.style.opacity =
-                `${.60 + Math.random() * .28}`;
+                `${.58 + Math.random() * .30}`;
 
             star.style.transform =
                 `translate(-50%, -50%) rotate(${Math.random() * 25 - 12}deg)`;
@@ -17881,9 +17892,9 @@ keepTitleBarInViewport() {
         ];
 
         const count =
-            18 +
+            27 +
             Math.floor(
-                Math.random() * 7
+                Math.random() * 8
             );
 
         for (
@@ -17892,44 +17903,45 @@ keepTitleBarInViewport() {
             index += 1
         ) {
             const size =
-                27 +
+                22 +
                 Math.random() * 8;
 
             const band =
-                index % 4;
+                index % 5;
 
             const bandStart =
                 [
-                    7,
-                    29,
-                    51,
-                    73
+                    4,
+                    22,
+                    40,
+                    58,
+                    76
                 ][band];
 
             let position =
                 findPosition({
                     size,
-                    gap: 11,
-                    minLeft: 5,
-                    maxLeft: 95,
+                    gap: 8,
+                    minLeft: 4,
+                    maxLeft: 96,
                     minTop: bandStart,
                     maxTop: Math.min(
-                        bandStart + 18,
-                        95
+                        bandStart + 17,
+                        96
                     ),
-                    attempts: 280
+                    attempts: 420
                 });
 
             if (!position) {
                 position =
                     findPosition({
                         size,
-                        gap: 9,
-                        minLeft: 5,
-                        maxLeft: 95,
-                        minTop: 5,
-                        maxTop: 95,
-                        attempts: 420
+                        gap: 7,
+                        minLeft: 4,
+                        maxLeft: 96,
+                        minTop: 4,
+                        maxTop: 96,
+                        attempts: 620
                     });
             }
 
@@ -17970,25 +17982,256 @@ keepTitleBarInViewport() {
                 ];
 
             paw.style.opacity =
-                `${.18 + Math.random() * .13}`;
+                `${.17 + Math.random() * .13}`;
 
             paw.style.transform =
                 `translate(-50%, -50%) rotate(${-16 + Math.random() * 32}deg)`;
 
             paw.innerHTML =
-                '<svg viewBox="0 0 64 64" aria-hidden="true">' +
-                '<ellipse cx="13" cy="21" rx="5.5" ry="8.2"></ellipse>' +
-                '<ellipse cx="26" cy="13.5" rx="5.8" ry="8.5"></ellipse>' +
-                '<ellipse cx="39" cy="13.5" rx="5.8" ry="8.5"></ellipse>' +
-                '<ellipse cx="52" cy="21" rx="5.5" ry="8.2"></ellipse>' +
-                '<path d="M18.5 43.5C18.5 34.5 24.5 28 32.5 28S46.5 34.5 46.5 43.5C46.5 50 42.3 55 37.2 55C34.6 55 33.3 52.7 32.5 50.5C31.7 52.7 30.4 55 27.8 55C22.7 55 18.5 50 18.5 43.5Z"></path>' +
-                '</svg>';
+                makePawMarkup();
 
             layer.appendChild(paw);
         }
     }
 
     main.appendChild(layer);
+
+    /* Small decoration everywhere else in the chat shell.
+       The main/message zone is excluded so it does not double-stack. */
+    const shellLayer =
+        document.createElement("div");
+
+    shellLayer.className =
+        "jami-chat-shell-decor";
+
+    const shellWidth =
+        Math.max(
+            this.window.clientWidth,
+            320
+        );
+
+    const shellHeight =
+        Math.max(
+            this.window.clientHeight,
+            260
+        );
+
+    const windowRect =
+        this.window
+            .getBoundingClientRect();
+
+    const mainRect =
+        main.getBoundingClientRect();
+
+    const exclusion = {
+        left:
+            mainRect.left -
+            windowRect.left -
+            5,
+        top:
+            mainRect.top -
+            windowRect.top -
+            5,
+        right:
+            mainRect.right -
+            windowRect.left +
+            5,
+        bottom:
+            mainRect.bottom -
+            windowRect.top +
+            5
+    };
+
+    const shellOccupied = [];
+
+    const rejectMain = (
+        x,
+        y,
+        radius
+    ) =>
+        x + radius >
+            exclusion.left &&
+        x - radius <
+            exclusion.right &&
+        y + radius >
+            exclusion.top &&
+        y - radius <
+            exclusion.bottom;
+
+    const findShellPosition =
+        createPositionFinder(
+            shellWidth,
+            shellHeight,
+            shellOccupied,
+            rejectMain
+        );
+
+    if (theme === "stars") {
+        const colours = [
+            "#d8c9ff",
+            "#ace3ff",
+            "#ffc4e4",
+            "#ffe79e",
+            "#c2efff",
+            "#eee5ff"
+        ];
+
+        const shellCount =
+            66 +
+            Math.floor(
+                Math.random() * 18
+            );
+
+        for (
+            let index = 0;
+            index < shellCount;
+            index += 1
+        ) {
+            const size =
+                1.5 +
+                Math.random() * 2.5;
+
+            const position =
+                findShellPosition({
+                    size,
+                    gap: 3,
+                    minLeft: 2,
+                    maxLeft: 98,
+                    minTop: 2,
+                    maxTop: 98,
+                    attempts: 420
+                });
+
+            if (!position) {
+                continue;
+            }
+
+            shellOccupied.push({
+                x: position.x,
+                y: position.y,
+                radius: position.radius
+            });
+
+            const star =
+                document.createElement("i");
+
+            star.className =
+                "jami-chat-star jami-chat-star-tiny";
+
+            star.style.left =
+                `${position.left}%`;
+
+            star.style.top =
+                `${position.top}%`;
+
+            star.style.width =
+                `${size}px`;
+
+            star.style.height =
+                `${size}px`;
+
+            star.style.background =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            star.style.opacity =
+                `${.44 + Math.random() * .25}`;
+
+            star.style.transform =
+                `translate(-50%, -50%) rotate(${Math.random() * 24 - 12}deg)`;
+
+            shellLayer.appendChild(star);
+        }
+    } else {
+        const colours = [
+            "#f4a9c1",
+            "#a8d8b8",
+            "#f4c795",
+            "#c9b7ee"
+        ];
+
+        const shellCount =
+            20 +
+            Math.floor(
+                Math.random() * 7
+            );
+
+        for (
+            let index = 0;
+            index < shellCount;
+            index += 1
+        ) {
+            const size =
+                13 +
+                Math.random() * 7;
+
+            const position =
+                findShellPosition({
+                    size,
+                    gap: 8,
+                    minLeft: 3,
+                    maxLeft: 97,
+                    minTop: 3,
+                    maxTop: 97,
+                    attempts: 520
+                });
+
+            if (!position) {
+                continue;
+            }
+
+            shellOccupied.push({
+                x: position.x,
+                y: position.y,
+                radius: position.radius
+            });
+
+            const paw =
+                document.createElement("i");
+
+            paw.className =
+                "jami-chat-paw jami-chat-shell-paw";
+
+            paw.style.left =
+                `${position.left}%`;
+
+            paw.style.top =
+                `${position.top}%`;
+
+            paw.style.width =
+                `${size}px`;
+
+            paw.style.height =
+                `${size}px`;
+
+            paw.style.color =
+                colours[
+                    Math.floor(
+                        Math.random() *
+                        colours.length
+                    )
+                ];
+
+            paw.style.opacity =
+                `${.10 + Math.random() * .09}`;
+
+            paw.style.transform =
+                `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
+
+            paw.innerHTML =
+                makePawMarkup();
+
+            shellLayer.appendChild(paw);
+        }
+    }
+
+    this.window.appendChild(
+        shellLayer
+    );
 }
 
 	setupChatPastelThemeSync() {
