@@ -10423,7 +10423,7 @@ html[data-chat-theme="paws"]
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatMembers > div > span {
-    color: #ed6a7c !important;
+    color: #ee9dad !important;
 }
 
 /* Paw send button — deliberately strongest selector in the file.
