@@ -9983,7 +9983,7 @@ html[data-chat-theme="stars"]
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatTitleBar #chatConnectionStatus {
-    color: rgb(176, 239, 199) !important;
+    color: #a6dbb8 !important;
     text-shadow: none !important;
 }
 
