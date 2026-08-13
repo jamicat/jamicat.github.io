@@ -9967,3 +9967,55 @@ html[data-chat-theme="paws"] .jami-reaction-tooltip {
 #chatWindow[data-chat-theme="paws"] #chatConnectionStatus {
     color: rgb(176, 239, 199) !important;
 }
+
+
+/* ============================================================
+   Cute-theme polish v7
+   Final colour specificity + calmer Stars distribution.
+   Original theme is intentionally not targeted.
+   ============================================================ */
+
+/* The earlier Paw title-bar bundle was overriding Online with pink.
+   These selectors intentionally outrank it. */
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatTitleBar #chatConnectionStatus,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatTitleBar #chatConnectionStatus {
+    color: rgb(176, 239, 199) !important;
+    text-shadow: none !important;
+}
+
+/* Paw member heading and actual rendered member-name spans:
+   same darker pink as Paw timestamps / chain timestamps. */
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembersPanel .theme-heading,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembers > div > span {
+    color: rgba(201, 118, 139, .78) !important;
+}
+
+/* Paw reaction tooltip: same darker timestamp pink, not bright name pink. */
+html[data-chat-theme="paws"] .jami-reaction-tooltip {
+    color: rgba(201, 118, 139, .78) !important;
+}
+
+/* Stars timestamps use a softer chat-panel periwinkle instead of
+   the darker lavender from the previous pass. */
+#chatWindow[data-chat-theme="stars"] .chatTime,
+#chatWindow[data-chat-theme="stars"] .chatContinuationTime {
+    color: rgba(194, 190, 237, .94) !important;
+}
+
+/* Stars Members heading + member names follow that same timestamp lavender. */
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatMembersPanel .theme-heading,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatMembers > div > span {
+    color: rgba(194, 190, 237, .94) !important;
+}
