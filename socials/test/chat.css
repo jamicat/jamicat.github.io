@@ -9434,3 +9434,37 @@ html[data-chat-theme="paws"] .watch-party-visualizer-window {
     padding-top: 8px !important;
     padding-bottom: 8px !important;
 }
+
+
+/* ============================================================
+   ORIGINAL + terminal Animal Crossing / Pixel Cat:
+   restore the old Watch Party NOW PLAYING font split only.
+   Cute chat themes remain fully isolated.
+   ============================================================ */
+
+/* "NOW PLAYING" follows the active terminal heading font. */
+html[data-chat-theme="original"][data-theme="Default"]
+#chatWatchPartyPanel [data-watch-party-now-playing-heading],
+html[data-chat-theme="original"][data-theme="Cat"]
+#chatWatchPartyPanel [data-watch-party-now-playing-heading] {
+    font-family:
+        var(--heading-font, "Nunito", sans-serif) !important;
+}
+
+/* The time readout never inherits Fink / Pixel Cat heading fonts. */
+html[data-chat-theme="original"][data-theme="Default"]
+#chatWatchPartyPanel [data-watch-party-time],
+html[data-chat-theme="original"][data-theme="Cat"]
+#chatWatchPartyPanel [data-watch-party-time] {
+    font-family: "Nunito", sans-serif !important;
+}
+
+
+/* Original chat + Pixel Cat terminal theme only:
+   move the message input text/placeholder down one additional pixel
+   without changing the input's total vertical padding/height. */
+html[data-chat-theme="original"][data-theme="Cat"]
+#chatWindow[data-chat-theme="original"] .jami-original-message-input {
+    padding-top: 9px !important;
+    padding-bottom: 7px !important;
+}
