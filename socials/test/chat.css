@@ -9240,3 +9240,19 @@ html[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"] .jami-original-name-input {
     height: 44px !important;
 }
+
+
+/* Original-theme final text alignment parity only. */
+
+/* Raise the Discord @name very slightly inside the recovered 44px name field. */
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatDiscordUsername {
+    bottom: 7px !important;
+}
+
+/* Keep the message box itself unchanged; move only its text/placeholder up 1px. */
+#chatWindow[data-chat-theme="original"] .jami-original-message-input {
+    padding-top: 7px !important;
+    padding-bottom: 9px !important;
+}
