@@ -10446,3 +10446,23 @@ html[data-chat-theme="paws"]
     border-color: rgba(255,255,255,.34) !important;
     text-shadow: none !important;
 }
+
+#chatWindow[data-chat-theme="stars"] .jami-transfer-message,
+#chatWindow[data-chat-theme="stars"] .jami-transfer-message *,
+#chatWindow[data-chat-theme="stars"] .jami-program-message,
+#chatWindow[data-chat-theme="stars"] .jami-program-message *,
+#chatWindow[data-chat-theme="paws"] .jami-transfer-message,
+#chatWindow[data-chat-theme="paws"] .jami-transfer-message *,
+#chatWindow[data-chat-theme="paws"] .jami-program-message,
+#chatWindow[data-chat-theme="paws"] .jami-program-message * {
+    font-family:
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembers > div > span {
+    color: #ed6a7c !important;
+}
+
