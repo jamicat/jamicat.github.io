@@ -12716,7 +12716,7 @@ async uploadTestImage(file) {
     const input =
         window.prompt(
             "leave empty to clear fully.\n\n" +
-            "or enter exactly:\n" +
+            "or enter:\n" +
             "before dd/mm/yyyy hh:mm:ss\n" +
             "after dd/mm/yyyy hh:mm:ss",
             ""
