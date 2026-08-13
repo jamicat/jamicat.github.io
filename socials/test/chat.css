@@ -9634,3 +9634,84 @@ html[data-chat-theme="original"][data-theme="Cat"]
  * Intentionally DO NOT override .jami-original-message-input here.
  * The previous 1px-up type-a-message adjustment remains exactly as-is.
  */
+
+
+/* ============================================================
+   Stars / Animal Crossing polish pass.
+   Deliberately scoped away from Original and its terminal-theme bridge.
+   ============================================================ */
+
+/* Bring both cute chat themes down close to the Original widget footprint. */
+#chatWindow[data-chat-theme="stars"]:not(.h-10),
+#chatWindow[data-chat-theme="paws"]:not(.h-10) {
+    width: 480px !important;
+    height: 500px !important;
+    max-width: calc(100vw - 2rem) !important;
+}
+
+/* Whole-shell decorations sit behind every title/MOTD/control surface. */
+#chatWindow[data-chat-pastel] .jami-chat-shell-decor {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    display: block !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    border-radius: inherit !important;
+}
+
+#chatWindow[data-chat-pastel] .jami-chat-shell-decor
+.jami-chat-star,
+#chatWindow[data-chat-pastel] .jami-chat-shell-decor
+.jami-chat-paw {
+    position: absolute !important;
+    pointer-events: none !important;
+}
+
+#chatWindow[data-chat-pastel] > #chatTitleBar,
+#chatWindow[data-chat-pastel] > #chatMotd,
+#chatWindow[data-chat-pastel] > #chatMain,
+#chatWindow[data-chat-pastel] > #chatTyping,
+#chatWindow[data-chat-pastel] > #chatControls {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* Animal Crossing text parity:
+   names stay pink, messages use the softer dark ink from the reference,
+   timestamps use the slightly deeper dusty pink. */
+#chatWindow[data-chat-theme="paws"] .chatMessageName {
+    color: rgb(238, 157, 174) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .chatText,
+#chatWindow[data-chat-theme="paws"] .messageBody,
+#chatWindow[data-chat-theme="paws"] .chatReactionSummary,
+#chatWindow[data-chat-theme="paws"] .jami-reply-preview-text {
+    color: rgb(104, 82, 91) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .chatTime,
+#chatWindow[data-chat-theme="paws"] .chatContinuationTime {
+    color: rgba(201, 118, 139, .78) !important;
+}
+
+/* Keep chain timestamps hover-only exactly as before. */
+#chatWindow[data-chat-theme="paws"] .chatContinuationTime {
+    opacity: 0 !important;
+}
+
+#chatWindow[data-chat-theme="paws"]
+.chatMessage:hover .chatContinuationTime {
+    opacity: 1 !important;
+}
+
+/* Small outside paws are intentionally softer than main-zone paws. */
+#chatWindow[data-chat-theme="paws"]
+.jami-chat-shell-paw {
+    filter:
+        drop-shadow(
+            0 1px 1px
+            rgba(255,255,255,.24)
+        ) !important;
+}
