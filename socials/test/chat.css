@@ -9084,3 +9084,93 @@ html[data-chat-theme="original"] #chatAvatarGrid {
 #chatWindow[data-chat-theme="original"] .chatContinuationTime {
     font-size: 8px !important;
 }
+
+
+/* ============================================================
+   ORIGINAL THEME — Discord identity row recovery only
+   Mirrors the supplied original chat layout:
+   avatar | name field with @username + inline log-out button.
+   ============================================================ */
+
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+.jami-original-name-field {
+    position: relative !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+}
+
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatName.chat-discord-name-active {
+    padding-top: 0.3rem !important;
+    padding-right: 5.25rem !important;
+    padding-bottom: 0.95rem !important;
+}
+
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatDiscordUsername {
+    position: absolute !important;
+    left: 0.75rem !important;
+    bottom: 0.375rem !important;
+    display: block;
+    max-width: calc(100% - 5.5rem) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    color: rgba(255,255,255,.40) !important;
+    font-size: 8px !important;
+    line-height: 1 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    pointer-events: none !important;
+}
+
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatDiscordUsername.hidden {
+    display: none !important;
+}
+
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatDiscordLogout {
+    position: absolute !important;
+    right: 0.5rem !important;
+    top: 50% !important;
+    z-index: 1 !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0.25rem 0.5rem !important;
+    transform: translateY(-50%) !important;
+    border: 1px solid rgba(255,255,255,.10) !important;
+    border-radius: 0.5rem !important;
+    background: rgba(255,255,255,.05) !important;
+    color: rgba(255,255,255,.60) !important;
+    font-size: 8px !important;
+    line-height: 1rem !important;
+    white-space: nowrap !important;
+}
+
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatDiscordLogout.hidden {
+    display: none !important;
+}
+
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatDiscordLogout:hover {
+    background: rgba(255,255,255,.10) !important;
+    color: #fff !important;
+}
+
+/* Keep the Discord avatar aligned with the original 44px identity row. */
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatAvatarButton img.rounded-full {
+    width: 40px !important;
+    height: 40px !important;
+}
