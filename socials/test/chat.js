@@ -17803,11 +17803,11 @@ keepTitleBarInViewport() {
     const makePawMarkup = () =>
         '<svg viewBox="0 0 64 64" aria-hidden="true">' +
         '<path class="jami-chat-paw-shell" d="M31.8 4.4C25.6 4.4 21.7 8.6 20.7 14.3C18.1 9.9 13.5 8.4 9.6 10.6C4.7 13.4 3.9 19.8 6.4 25.1C8.1 28.7 11.2 31 14.7 31.7C11.5 35.2 9.8 39.8 10.5 44.7C11.6 52.2 18 58.1 25.3 58.1C28.1 58.1 30.1 56.9 32 55.6C33.9 56.9 35.9 58.1 38.7 58.1C46 58.1 52.4 52.2 53.5 44.7C54.2 39.8 52.5 35.2 49.3 31.7C52.8 31 55.9 28.7 57.6 25.1C60.1 19.8 59.3 13.4 54.4 10.6C50.5 8.4 45.9 9.9 43.3 14.3C42.3 8.6 38.4 4.4 32.2 4.4Z"></path>' +
-        '<ellipse class="jami-chat-paw-pad" cx="16.7" cy="24.6" rx="3.45" ry="5.25" transform="rotate(-20 16.7 24.6)"></ellipse>' +
-        '<ellipse class="jami-chat-paw-pad" cx="27.1" cy="18.0" rx="3.55" ry="5.35" transform="rotate(-7 27.1 18.0)"></ellipse>' +
-        '<ellipse class="jami-chat-paw-pad" cx="36.9" cy="18.0" rx="3.55" ry="5.35" transform="rotate(7 36.9 18.0)"></ellipse>' +
-        '<ellipse class="jami-chat-paw-pad" cx="47.3" cy="24.6" rx="3.45" ry="5.25" transform="rotate(20 47.3 24.6)"></ellipse>' +
-        '<path class="jami-chat-paw-pad" d="M18.1 44.3C18.1 40.7 21.2 37.9 25.3 35.5C28.1 33.9 30.5 32.3 32 31.4C33.5 32.3 35.9 33.9 38.7 35.5C42.8 37.9 45.9 40.7 45.9 44.3C45.9 47.8 43.1 50.2 39.5 50.2C36.9 50.2 34.7 49.1 33.2 47.8C32.5 47.2 31.5 47.2 30.8 47.8C29.3 49.1 27.1 50.2 24.5 50.2C20.9 50.2 18.1 47.8 18.1 44.3Z"></path>' +
+        '<ellipse class="jami-chat-paw-pad" cx="17.4" cy="26.3" rx="3.45" ry="5.25" transform="rotate(-19 17.4 26.3)"></ellipse>' +
+        '<ellipse class="jami-chat-paw-pad" cx="27.4" cy="19.7" rx="3.55" ry="5.35" transform="rotate(-6 27.4 19.7)"></ellipse>' +
+        '<ellipse class="jami-chat-paw-pad" cx="36.6" cy="19.7" rx="3.55" ry="5.35" transform="rotate(6 36.6 19.7)"></ellipse>' +
+        '<ellipse class="jami-chat-paw-pad" cx="46.6" cy="26.3" rx="3.45" ry="5.25" transform="rotate(19 46.6 26.3)"></ellipse>' +
+        '<path class="jami-chat-paw-pad" d="M18.0 44.3C18.0 40.8 20.8 38.3 24.8 36.0C27.5 34.5 29.5 33.1 30.8 32.2C31.3 31.9 31.7 31.7 32 31.6C32.3 31.7 32.7 31.9 33.2 32.2C34.5 33.1 36.5 34.5 39.2 36.0C43.2 38.3 46.0 40.8 46.0 44.3C46.0 47.8 43.2 50.1 39.6 50.1C36.9 50.1 34.6 49.2 33.1 48.2C32.6 47.8 32.3 47.6 32 47.6C31.7 47.6 31.4 47.8 30.9 48.2C29.4 49.2 27.1 50.1 24.4 50.1C20.8 50.1 18.0 47.8 18.0 44.3Z"></path>' +
         '</svg>';
 
     const pawPalettes = [
