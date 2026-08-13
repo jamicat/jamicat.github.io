@@ -366,7 +366,12 @@ transition-[height] duration-200
         <button
             id="chatThemeButton"
             type="button"
-            class="theme-body jami-chat-theme-button"
+            class="
+                theme-body
+                text-[9px] text-white/50
+                transition hover:text-white
+                jami-chat-theme-button
+            "
             aria-label="change chat theme"
             aria-expanded="false"
             aria-controls="chatThemeMenu"
