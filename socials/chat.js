@@ -8661,29 +8661,40 @@ openModerationMenu(x, y, message) {
             )
         );
 
-        buttons.push(
-            this.createModerationMenuButton(
-                "clear chat after...",
-                () => {
-                    this.closeModerationMenu();
-                    this.clearEntireChat(
-                        "after"
-                    );
-                }
-            )
-        );
+        const clearCutoff =
+            message.created_at ||
+            message.imageUpload?.createdAt ||
+            null;
 
-        buttons.push(
-            this.createModerationMenuButton(
-                "clear chat before...",
-                () => {
-                    this.closeModerationMenu();
-                    this.clearEntireChat(
-                        "before"
-                    );
-                }
-            )
-        );
+        if (clearCutoff) {
+            buttons.push(
+                this.createModerationMenuButton(
+                    "clear chat after",
+                    () => {
+                        this.closeModerationMenu();
+
+                        this.clearChatFromMessage(
+                            clearCutoff,
+                            "after"
+                        );
+                    }
+                )
+            );
+
+            buttons.push(
+                this.createModerationMenuButton(
+                    "clear chat before",
+                    () => {
+                        this.closeModerationMenu();
+
+                        this.clearChatFromMessage(
+                            clearCutoff,
+                            "before"
+                        );
+                    }
+                )
+            );
+        }
     }
 
     menu.append(...buttons);
@@ -12731,7 +12742,8 @@ async uploadTestImage(file) {
     xhr.send(file);
 }
 
-	async clearEntireChat(
+	async clearChatFromMessage(
+    cutoffValue,
     direction = "after"
 ) {
     if (
@@ -12746,120 +12758,44 @@ async uploadTestImage(file) {
             ? "before"
             : "after";
 
-    const todayExample =
-        new Date()
-            .toISOString()
-            .slice(0, 10);
-
-    const cutoffInput =
-        window.prompt(
-            clearDirection === "before"
-                ? (
-                    "enter a date and time to clear chat before that point:\n" +
-                    "format: yyyy-mm-dd hh:mm\n" +
-                    `example: ${todayExample} 13:30\n\n` +
-                    "leave empty to clear the full chat."
-                )
-                : (
-                    "enter a date and time to clear chat from that point onward:\n" +
-                    "format: yyyy-mm-dd hh:mm\n" +
-                    `example: ${todayExample} 13:30\n\n` +
-                    "leave empty to clear the full chat."
-                ),
-            ""
+    const cutoffDate =
+        new Date(
+            cutoffValue
         );
 
-    if (cutoffInput === null) {
+    if (
+        Number.isNaN(
+            cutoffDate.getTime()
+        )
+    ) {
+        window.alert(
+            "could not determine this message's timestamp."
+        );
         return;
     }
 
-    const cleanedCutoff =
-        cutoffInput.trim();
+    const cutoff =
+        cutoffDate.toISOString();
 
-    let cutoff = null;
-    let cutoffLabel =
-        "the entire chat";
+    const displayTime =
+        cutoffDate.toLocaleString();
 
-    if (cleanedCutoff) {
-        const match =
-            cleanedCutoff.match(
-                /^(\d{4})-(\d{2})-(\d{2})[ t](\d{2}):(\d{2})$/
+    const confirmationText =
+        clearDirection === "before"
+            ? (
+                "clear all chat messages before and including this message?\n\n" +
+                displayTime
+            )
+            : (
+                "clear this message and all chat messages after it?\n\n" +
+                displayTime
             );
 
-        if (!match) {
-            window.alert(
-                "invalid date and time.\n\n" +
-                "use: yyyy-mm-dd hh:mm"
-            );
-            return;
-        }
-
-        const [
-            ,
-            yearText,
-            monthText,
-            dayText,
-            hourText,
-            minuteText
-        ] = match;
-
-        const year = Number(yearText);
-        const month = Number(monthText);
-        const day = Number(dayText);
-        const hour = Number(hourText);
-        const minute = Number(minuteText);
-
-        const localDate =
-            new Date(
-                year,
-                month - 1,
-                day,
-                hour,
-                minute,
-                0,
-                0
-            );
-
-        const valid =
-            localDate.getFullYear() === year &&
-            localDate.getMonth() === month - 1 &&
-            localDate.getDate() === day &&
-            localDate.getHours() === hour &&
-            localDate.getMinutes() === minute;
-
-        if (!valid) {
-            window.alert(
-                "invalid date and time.\n\n" +
-                "use: yyyy-mm-dd hh:mm"
-            );
-            return;
-        }
-
-        cutoff =
-            localDate.toISOString();
-
-        cutoffLabel =
-            clearDirection === "before"
-                ? `chat before ${cleanedCutoff}`
-                : `chat from ${cleanedCutoff} onward`;
-    }
-
-    const confirmed =
-        window.confirm(
-            `clear ${cutoffLabel}?`
-        );
-
-    if (!confirmed) {
-        return;
-    }
-
-    const finalConfirmation =
-        window.confirm(
-            "final confirmation:\n\n" +
-            `delete ${cutoffLabel}?`
-        );
-
-    if (!finalConfirmation) {
+    if (
+        !window.confirm(
+            confirmationText
+        )
+    ) {
         return;
     }
 
@@ -12947,38 +12883,7 @@ async uploadTestImage(file) {
                     result.cutoff
                 );
             }
-        } else {
-            this.clearChatInterface();
         }
-
-        console.log(
-            "chat cleared:",
-            {
-                cutoff:
-                    result?.cutoff ||
-                    null,
-
-                direction:
-                    result?.direction ||
-                    null,
-
-                messages:
-                    result?.deletedMessages ||
-                    0,
-
-                imageRows:
-                    result?.deletedImageRows ||
-                    0,
-
-                reactions:
-                    result?.deletedReactions ||
-                    0,
-
-                r2Objects:
-                    result?.deletedR2Objects ||
-                    0
-            }
-        );
     } catch (error) {
         console.error(
             "could not clear chat:",
