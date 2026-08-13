@@ -9860,3 +9860,71 @@ body > .jami-chat-theme-menu.pointer-events-none {
         )
         saturate(1.18) !important;
 }
+
+
+/* ============================================================
+   Cute-theme polish v4
+   Original theme is intentionally excluded from every rule here.
+   ============================================================ */
+
+/* Cute minimized bars must match the same scaled width as expanded cute chats. */
+#chatWindow[data-chat-theme="stars"].h-10,
+#chatWindow[data-chat-theme="paws"].h-10 {
+    width: 480px !important;
+    height: 40px !important;
+    max-width: calc(100vw - 2rem) !important;
+    scale: .9 !important;
+    transform-origin: bottom right !important;
+}
+
+/* Online is pastel green only on the two cute chat themes. */
+#chatWindow[data-chat-theme="stars"] #chatConnectionStatus,
+#chatWindow[data-chat-theme="paws"] #chatConnectionStatus {
+    color: rgb(137, 226, 181) !important;
+}
+
+/* Stars send arrow: darker lavender/purple like the original reference UI. */
+#chatWindow[data-chat-theme="stars"]
+#chatSend.jami-cute-send-arrow,
+#chatWindow[data-chat-theme="stars"]
+#chatSend.jami-cute-send-arrow:hover,
+#chatWindow[data-chat-theme="stars"]
+#chatSend.jami-cute-send-arrow:active {
+    color: rgb(104, 88, 176) !important;
+}
+
+/* Stars timestamp palette: soft lavender, distinct from white message text. */
+#chatWindow[data-chat-theme="stars"] .chatTime,
+#chatWindow[data-chat-theme="stars"] .chatContinuationTime {
+    color: rgba(218, 205, 255, .82) !important;
+}
+
+/* Preserve chain timestamp hover behavior. */
+#chatWindow[data-chat-theme="stars"] .chatContinuationTime {
+    opacity: 0 !important;
+}
+
+#chatWindow[data-chat-theme="stars"]
+.chatMessage:hover .chatContinuationTime {
+    opacity: 1 !important;
+}
+
+/* Paws reaction tooltip text follows the same pink used by names. */
+html[data-chat-theme="paws"] .jami-reaction-tooltip {
+    color: rgb(238, 157, 174) !important;
+}
+
+/* Slightly strengthen shell decor visibility without affecting content. */
+#chatWindow[data-chat-theme="stars"] .jami-chat-shell-decor
+.jami-chat-star-tiny {
+    opacity: .72;
+}
+
+#chatWindow[data-chat-theme="paws"] .jami-chat-shell-paw {
+    filter:
+        drop-shadow(
+            0 1px 1px
+            rgba(255,255,255,.46)
+        )
+        saturate(1.22) !important;
+}
