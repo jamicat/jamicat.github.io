@@ -362,7 +362,7 @@ transition-[height] duration-200
         hide members
     </button>
 
-    <div class="relative">
+    <div class="relative jami-chat-theme-wrap">
         <button
             id="chatThemeButton"
             type="button"
