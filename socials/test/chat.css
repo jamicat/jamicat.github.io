@@ -10000,7 +10000,11 @@ html[data-chat-theme="paws"]
 
 /* Paw reaction tooltip: same darker timestamp pink, not bright name pink. */
 html[data-chat-theme="paws"] .jami-reaction-tooltip {
-    color: rgba(201, 118, 139, .78) !important;
+    color:
+        rgba(
+            var(--chat-muted-rgb),
+            .88
+        ) !important;
 }
 
 /* Stars timestamps use a softer chat-panel periwinkle instead of
