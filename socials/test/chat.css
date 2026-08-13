@@ -9715,3 +9715,72 @@ html[data-chat-theme="original"][data-theme="Cat"]
             rgba(255,255,255,.24)
         ) !important;
 }
+
+
+/* ============================================================
+   Cute-theme polish v2
+   - match Original's visible footprint without touching Original
+   - restore Theme menu interaction/stacking
+   - keep decoration layers behind controls without trapping the menu
+   ============================================================ */
+
+/* Stars/Paws use the same visual footprint as Original's 480x500 @ 0.9. */
+#chatWindow[data-chat-theme="stars"]:not(.h-10),
+#chatWindow[data-chat-theme="paws"]:not(.h-10) {
+    width: 480px !important;
+    height: 500px !important;
+    max-width: calc(100vw - 2rem) !important;
+    scale: .9 !important;
+    transform-origin: bottom right !important;
+}
+
+/* Do not create new stacking contexts on the major chat sections. */
+#chatWindow[data-chat-pastel] > #chatTitleBar,
+#chatWindow[data-chat-pastel] > #chatMotd,
+#chatWindow[data-chat-pastel] > #chatMain,
+#chatWindow[data-chat-pastel] > #chatTyping,
+#chatWindow[data-chat-pastel] > #chatControls {
+    z-index: auto !important;
+}
+
+/* Keep shell decoration behind content without interfering with clicks. */
+#chatWindow[data-chat-pastel] .jami-chat-shell-decor {
+    z-index: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Main decor remains behind messages/members and never catches the pointer. */
+#chatWindow[data-chat-pastel] .jami-chat-pastel-decor {
+    pointer-events: none !important;
+}
+
+/* Restore the Theme menu as the top interactive layer. */
+#chatWindow #chatTitleBar {
+    overflow: visible !important;
+}
+
+#chatWindow .jami-chat-theme-wrap {
+    position: relative !important;
+    z-index: 100007 !important;
+}
+
+#chatWindow #chatThemeMenu {
+    z-index: 100008 !important;
+    pointer-events: auto;
+}
+
+/* Closed state still obeys the existing invisible/pointer-events classes. */
+#chatWindow #chatThemeMenu.invisible,
+#chatWindow #chatThemeMenu.pointer-events-none {
+    pointer-events: none !important;
+}
+
+/* Make outside paws read more clearly against the pale shell. */
+#chatWindow[data-chat-theme="paws"] .jami-chat-shell-paw {
+    filter:
+        drop-shadow(
+            0 1px 1px
+            rgba(255,255,255,.35)
+        )
+        saturate(1.08) !important;
+}
