@@ -7802,7 +7802,7 @@ html[data-chat-theme="paws"]
 }
 
 
-/* chat theme separation cleanup */
+
 #chatWindow[data-chat-theme] {
     --jami-chat-accent: rgba(238, 157, 174);
 }
@@ -7841,7 +7841,7 @@ html[data-chat-theme="paws"]
         sans-serif !important;
 }
 
-/* keep every top-bar control in one visual baseline */
+
 #chatWindow[data-chat-theme]
 #chatTitleBar > div,
 #chatWindow[data-chat-theme]
@@ -7864,7 +7864,7 @@ html[data-chat-theme="paws"]
     vertical-align: middle !important;
 }
 
-/* final Animal Crossing pink; this intentionally overrides every older mauve rule */
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatTitleBar button,
@@ -7903,7 +7903,7 @@ html[data-chat-theme="paws"]
     background: rgba(238, 157, 174) !important;
 }
 
-/* Original composer: rebuild the old two-row controls without replacing any live inputs/buttons */
+
 #chatWindow[data-chat-theme="original"]
 #chatControls {
     gap: 8px !important;
@@ -8066,7 +8066,7 @@ html[data-chat-theme="paws"]
     color: #fff !important;
 }
 
-/* Original avatar picker */
+
 html[data-chat-theme="original"]
 #chatAvatarPicker {
     width: 220px !important;
@@ -8126,7 +8126,7 @@ html[data-chat-theme="original"]
     font-family: "Nunito", sans-serif !important;
 }
 
-/* Lock detached chat panels to the CHAT theme, never the website theme. */
+
 html[data-chat-theme="original"]
 .jami-admin-glass-panel,
 html[data-chat-theme="original"]
@@ -8199,7 +8199,7 @@ html[data-chat-theme="paws"]
         sans-serif !important;
 }
 
-/* Animal Crossing detached panel pink remains the exact requested RGB. */
+
 html[data-chat-theme="paws"]
 .jami-admin-glass-panel,
 html[data-chat-theme="paws"]
@@ -8212,7 +8212,7 @@ html[data-chat-theme="paws"]
 }
 
 
-/* final independent chat-theme repair */
+
 #chatWindow[data-chat-theme] .chatContinuationTime {
     opacity: 0 !important;
     transition: opacity 90ms ease !important;
@@ -8613,7 +8613,7 @@ body > #chatEmojiPicker {
 }
 
 
-/* final top-bar colour/alignment + Original dimensions */
+
 html[data-chat-theme="paws"][data-chat-pastel="paws"]
 #chatWindow[data-chat-theme="paws"][data-chat-pastel="paws"]
 #chatBanManagerButton.theme-body,
@@ -9065,25 +9065,25 @@ html[data-chat-theme="original"] #chatAvatarGrid {
 }
 
 
-/* Original exact outer size: matches the original h-[500px] w-[480px] widget.
-   The existing 0.9 scale remains unchanged. */
+
+
 #chatWindow[data-chat-theme="original"]:not(.h-10) {
     width: 480px !important;
     height: 500px !important;
     max-width: calc(100vw - 2rem) !important;
 }
 
-/* Original continuation/chain timestamp parity. */
+
 #chatWindow[data-chat-theme="original"] .chatContinuationTime {
     font-size: 8px !important;
 }
 
 
-/* ============================================================
-   ORIGINAL THEME — Discord identity row recovery only
-   Mirrors the supplied original chat layout:
-   avatar | name field with @username + inline log-out button.
-   ============================================================ */
+
+
+
+
+
 
 html[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"]
@@ -9160,7 +9160,7 @@ html[data-chat-theme="original"]
     color: #fff !important;
 }
 
-/* Keep the Discord avatar aligned with the original 44px identity row. */
+
 html[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"]
 #chatAvatarButton img.rounded-full {
@@ -9169,15 +9169,15 @@ html[data-chat-theme="original"]
 }
 
 
-/* Original-theme parity: original chatControls uses p-3 and bg-black/10. */
+
 #chatWindow[data-chat-theme="original"] #chatControls {
     padding: 12px !important;
     background: rgba(0, 0, 0, 0.10) !important;
 }
 
 
-/* Original-theme final micro-parity for the identity/composer controls only.
-   These compensate for the tiny rendered-size difference in the selector build. */
+
+
 #chatWindow[data-chat-theme="original"] .jami-cute-avatar-button {
     flex-basis: 43px !important;
     width: 43px !important;
@@ -9203,7 +9203,7 @@ html[data-chat-theme="original"]
 }
 
 
-/* Original-theme final 1px parity: avatar + Discord logout only. */
+
 #chatWindow[data-chat-theme="original"] .jami-cute-avatar-button {
     flex-basis: 42px !important;
     width: 42px !important;
@@ -9218,8 +9218,8 @@ html[data-chat-theme="original"]
 }
 
 
-/* Original-theme correction: restore the avatar to the prior matched size.
-   Keep the final Discord logout adjustment unchanged. */
+
+
 #chatWindow[data-chat-theme="original"] .jami-cute-avatar-button {
     flex-basis: 43px !important;
     width: 43px !important;
@@ -9227,7 +9227,7 @@ html[data-chat-theme="original"]
 }
 
 
-/* Original-theme avatar final adjustment. */
+
 #chatWindow[data-chat-theme="original"] .jami-cute-avatar-button {
     flex-basis: 44px !important;
     width: 44px !important;
@@ -9235,29 +9235,29 @@ html[data-chat-theme="original"]
 }
 
 
-/* Original-theme name field final 1px adjustment. */
+
 #chatWindow[data-chat-theme="original"] .jami-original-name-input {
     height: 44px !important;
 }
 
 
-/* Original-theme final text alignment parity only. */
 
-/* Raise the Discord @name very slightly inside the recovered 44px name field. */
+
+
 html[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"]
 #chatDiscordUsername {
     bottom: 7px !important;
 }
 
-/* Keep the message box itself unchanged; move only its text/placeholder up 1px. */
+
 #chatWindow[data-chat-theme="original"] .jami-original-message-input {
     padding-top: 7px !important;
     padding-bottom: 9px !important;
 }
 
 
-/* Original-theme Discord @name final alignment: 1px higher. */
+
 html[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"]
 #chatDiscordUsername {
@@ -9265,7 +9265,7 @@ html[data-chat-theme="original"]
 }
 
 
-/* Original-theme Discord @name: preserve position, prevent 1px glyph clipping. */
+
 html[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"]
 #chatDiscordUsername {
@@ -9273,19 +9273,19 @@ html[data-chat-theme="original"]
 }
 
 
-/* ============================================================
-   ORIGINAL CHAT THEME — restore website/terminal font inheritance.
-   Only Original follows the current site --body-font / --heading-font.
-   Stars and Animal Crossing remain isolated by their existing rules.
-   ============================================================ */
 
-/* Do not pin Original to Nunito locally. Inherit the live terminal variables. */
+
+
+
+
+
+
 #chatWindow[data-chat-theme="original"] {
     --body-font: inherit !important;
     --heading-font: inherit !important;
 }
 
-/* Main Original chat: body text follows the current terminal body font. */
+
 html[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"],
 html[data-chat-theme="original"]
@@ -9294,7 +9294,7 @@ html[data-chat-theme="original"]
         var(--body-font, "Nunito", sans-serif) !important;
 }
 
-/* Explicit headings follow the current terminal heading font. */
+
 html[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"] .theme-heading,
 html[data-chat-theme="original"]
@@ -9305,7 +9305,7 @@ html[data-chat-theme="original"]
         var(--heading-font, "Nunito", sans-serif) !important;
 }
 
-/* Detached chat-owned UI follows the terminal body font in Original mode. */
+
 html[data-chat-theme="original"] .jami-admin-glass-panel,
 html[data-chat-theme="original"] .jami-admin-glass-panel *,
 html[data-chat-theme="original"] #chatWatchPartyPanel,
@@ -9324,7 +9324,7 @@ html[data-chat-theme="original"] [class*="jami-remix-"] * {
         var(--body-font, "Nunito", sans-serif) !important;
 }
 
-/* Detached headings retain the site theme's heading/body distinction. */
+
 html[data-chat-theme="original"] .jami-admin-glass-panel .theme-heading,
 html[data-chat-theme="original"] #chatWatchPartyPanel .theme-heading,
 html[data-chat-theme="original"] #chatWatchPartyVisualizerMenu .theme-heading,
@@ -9337,22 +9337,22 @@ html[data-chat-theme="original"] [class*="jami-remix-"] .theme-heading {
 }
 
 
-/* ============================================================
-   TERMINAL THEME ↔ CHAT THEME SCOPING
-   Original is allowed to inherit the old terminal treatment.
-   Stars / Animal Crossing remain visually isolated.
-   ============================================================ */
 
-/* The original terminal Default/Animal-Crossing site theme used bg-black/5,
-   border-white/15 and backdrop-blur-xl on the chat terminal. */
+
+
+
+
+
+
+
 html[data-chat-theme="original"][data-theme="Default"]
 #chatWindow[data-chat-theme="original"] {
     background: rgba(0, 0, 0, 0.05) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
-/* Visualizer windows and the remaining detached managers also keep the
-   chat-theme font, instead of following the website selector. */
+
+
 html[data-chat-theme="stars"]
 .watch-party-visualizer-window,
 html[data-chat-theme="stars"]
@@ -9391,18 +9391,18 @@ html[data-chat-theme="paws"]
 }
 
 
-/* ============================================================
-   DETACHED WATCH-PARTY / VISUALIZER BORDER OWNERSHIP
-   ============================================================
-   In Original chat mode, terminal theme changes may change fonts/background
-   classes, but the detached panels keep their own saved data-theme accent
-   borders from the original chat CSS:
-     - #chatWatchPartyPanel[data-theme=...] -> --watch-party-accent
-     - #chatWatchPartyVisualizerMenu[data-theme=...] -> --watch-party-accent
-     - .watch-party-visualizer-window[data-theme=...] -> --visualizer-accent
-   Stars / Animal Crossing chat modes receive no terminal-selector border
-   override at all; their normal chat-theme CSS remains in control.
-   ============================================================ */
+
+
+
+
+
+
+
+
+
+
+
+
 
 html[data-chat-theme="original"][data-theme="Default"]
 #chatWindow[data-chat-theme="original"] {
@@ -9410,12 +9410,12 @@ html[data-chat-theme="original"][data-theme="Default"]
 }
 
 
-/* ============================================================
-   FINAL CUTE-THEME DETACHED BORDER ISOLATION
-   The website/terminal selector must not resurrect the base
-   terminal2 border on these chat-owned panels while Stars or
-   Animal Crossing is the active CHAT theme.
-   ============================================================ */
+
+
+
+
+
+
 
 html[data-chat-theme="stars"] #chatWatchPartyPanel,
 html[data-chat-theme="stars"] #chatWatchPartyVisualizerMenu,
@@ -9427,21 +9427,21 @@ html[data-chat-theme="paws"] .watch-party-visualizer-window {
     border-color: transparent !important;
 }
 
-/* Original-theme message input: move only the text/placeholder down 1px.
-   Box height and surrounding alignment remain unchanged. */
+
+
 #chatWindow[data-chat-theme="original"] .jami-original-message-input {
     padding-top: 8px !important;
     padding-bottom: 8px !important;
 }
 
 
-/* ============================================================
-   ORIGINAL + terminal Animal Crossing / Pixel Cat:
-   restore the old Watch Party NOW PLAYING font split only.
-   Cute chat themes remain fully isolated.
-   ============================================================ */
 
-/* "NOW PLAYING" follows the active terminal heading font. */
+
+
+
+
+
+
 html[data-chat-theme="original"][data-theme="Default"]
 #chatWatchPartyPanel [data-watch-party-now-playing-heading],
 html[data-chat-theme="original"][data-theme="Cat"]
@@ -9450,7 +9450,7 @@ html[data-chat-theme="original"][data-theme="Cat"]
         var(--heading-font, "Nunito", sans-serif) !important;
 }
 
-/* The time readout never inherits Fink / Pixel Cat heading fonts. */
+
 html[data-chat-theme="original"][data-theme="Default"]
 #chatWatchPartyPanel [data-watch-party-time],
 html[data-chat-theme="original"][data-theme="Cat"]
@@ -9459,9 +9459,9 @@ html[data-chat-theme="original"][data-theme="Cat"]
 }
 
 
-/* Original chat + Pixel Cat terminal theme only:
-   move the message input text/placeholder down one additional pixel
-   without changing the input's total vertical padding/height. */
+
+
+
 html[data-chat-theme="original"][data-theme="Cat"]
 #chatWindow[data-chat-theme="original"] .jami-original-message-input {
     padding-top: 9px !important;
@@ -9469,8 +9469,8 @@ html[data-chat-theme="original"][data-theme="Cat"]
 }
 
 
-/* Original chat + Pixel Cat terminal theme only:
-   move type-a-message text/placeholder up 1px from the prior 9px/7px state. */
+
+
 html[data-chat-theme="original"][data-theme="Cat"]
 #chatWindow[data-chat-theme="original"] .jami-original-message-input {
     padding-top: 8px !important;
@@ -9478,13 +9478,13 @@ html[data-chat-theme="original"][data-theme="Cat"]
 }
 
 
-/* ============================================================
-   Emoji reaction hover tooltip font ownership.
-   Detached tooltip follows the active CHAT theme:
-   - Original -> live terminal/site body font
-   - Stars -> Fredoka
-   - Animal Crossing -> nintendoh
-   ============================================================ */
+
+
+
+
+
+
+
 
 html[data-chat-theme="original"] .jami-reaction-tooltip {
     font-family:
@@ -9507,23 +9507,23 @@ html[data-chat-theme="paws"] .jami-reaction-tooltip {
 }
 
 
-/* ============================================================
-   Chat Theme button final per-theme alignment / size.
-   ============================================================ */
 
-/* Stars: align with Hide Members / Online row. */
+
+
+
+
 #chatWindow[data-chat-theme="stars"] #chatThemeButton {
     transform: translateY(-3px) !important;
     font-size: 10px !important;
 }
 
-/* Animal Crossing chat: preserve its existing transform, size text only. */
+
 #chatWindow[data-chat-theme="paws"] #chatThemeButton {
     font-size: 10px !important;
 }
 
-/* Original chat + terminal Animal Crossing / Pixel Cat only:
-   retain existing size/font inheritance and move Theme up 1px. */
+
+
 html[data-chat-theme="original"][data-theme="Default"]
 #chatWindow[data-chat-theme="original"] #chatThemeButton,
 html[data-chat-theme="original"][data-theme="Cat"]
@@ -9533,11 +9533,11 @@ html[data-chat-theme="original"][data-theme="Cat"]
 }
 
 
-/* ============================================================
-   Theme control structural alignment.
-   The dropdown wrapper, rather than font-specific translateY hacks,
-   now participates in the title-bar flex alignment.
-   ============================================================ */
+
+
+
+
+
 
 #chatWindow .jami-chat-theme-wrap {
     position: relative !important;
@@ -9567,7 +9567,7 @@ html[data-chat-theme="original"][data-theme="Cat"]
     transform: none !important;
 }
 
-/* Preserve the intended per-chat-theme text sizes, but not manual Y nudges. */
+
 #chatWindow[data-chat-theme="stars"] #chatThemeButton {
     font-size: 10px !important;
 }
@@ -9576,22 +9576,22 @@ html[data-chat-theme="original"][data-theme="Cat"]
     font-size: 9px !important;
 }
 
-/* Original keeps its existing inherited/terminal-controlled font sizing. */
 
-/* Original message text/placeholder: 1px higher, box dimensions unchanged. */
+
+
 #chatWindow[data-chat-theme="original"] .jami-original-message-input {
     padding-top: 7px !important;
     padding-bottom: 9px !important;
 }
 
 
-/* ============================================================
-   Theme control alignment correction.
-   Keep the dropdown wrapper as the positioned flex item, but do
-   NOT impose a synthetic 24px text box / line-height on Theme.
-   This lets its glyph baseline follow the same natural metrics
-   as the neighbouring title-bar buttons.
-   ============================================================ */
+
+
+
+
+
+
+
 
 #chatWindow .jami-chat-theme-wrap {
     position: relative !important;
@@ -9621,7 +9621,7 @@ html[data-chat-theme="original"][data-theme="Cat"]
     transform: none !important;
 }
 
-/* Preserve the requested per-chat-theme Theme text sizes. */
+
 #chatWindow[data-chat-theme="stars"] #chatThemeButton {
     font-size: 10px !important;
 }
@@ -9630,18 +9630,18 @@ html[data-chat-theme="original"][data-theme="Cat"]
     font-size: 9px !important;
 }
 
-/*
- * Intentionally DO NOT override .jami-original-message-input here.
- * The previous 1px-up type-a-message adjustment remains exactly as-is.
- */
 
 
-/* ============================================================
-   Stars / Animal Crossing polish pass.
-   Deliberately scoped away from Original and its terminal-theme bridge.
-   ============================================================ */
 
-/* Bring both cute chat themes down close to the Original widget footprint. */
+
+
+
+
+
+
+
+
+
 #chatWindow[data-chat-theme="stars"]:not(.h-10),
 #chatWindow[data-chat-theme="paws"]:not(.h-10) {
     width: 480px !important;
@@ -9649,7 +9649,7 @@ html[data-chat-theme="original"][data-theme="Cat"]
     max-width: calc(100vw - 2rem) !important;
 }
 
-/* Whole-shell decorations sit behind every title/MOTD/control surface. */
+
 #chatWindow[data-chat-pastel] .jami-chat-shell-decor {
     position: absolute !important;
     inset: 0 !important;
@@ -9677,9 +9677,9 @@ html[data-chat-theme="original"][data-theme="Cat"]
     z-index: 2 !important;
 }
 
-/* Animal Crossing text parity:
-   names stay pink, messages use the softer dark ink from the reference,
-   timestamps use the slightly deeper dusty pink. */
+
+
+
 #chatWindow[data-chat-theme="paws"] .chatMessageName {
     color: rgb(238, 157, 174) !important;
 }
@@ -9696,7 +9696,7 @@ html[data-chat-theme="original"][data-theme="Cat"]
     color: rgba(201, 118, 139, .78) !important;
 }
 
-/* Keep chain timestamps hover-only exactly as before. */
+
 #chatWindow[data-chat-theme="paws"] .chatContinuationTime {
     opacity: 0 !important;
 }
@@ -9706,7 +9706,7 @@ html[data-chat-theme="original"][data-theme="Cat"]
     opacity: 1 !important;
 }
 
-/* Small outside paws are intentionally softer than main-zone paws. */
+
 #chatWindow[data-chat-theme="paws"]
 .jami-chat-shell-paw {
     filter:
@@ -9717,14 +9717,14 @@ html[data-chat-theme="original"][data-theme="Cat"]
 }
 
 
-/* ============================================================
-   Cute-theme polish v2
-   - match Original's visible footprint without touching Original
-   - restore Theme menu interaction/stacking
-   - keep decoration layers behind controls without trapping the menu
-   ============================================================ */
 
-/* Stars/Paws use the same visual footprint as Original's 480x500 @ 0.9. */
+
+
+
+
+
+
+
 #chatWindow[data-chat-theme="stars"]:not(.h-10),
 #chatWindow[data-chat-theme="paws"]:not(.h-10) {
     width: 480px !important;
@@ -9734,7 +9734,7 @@ html[data-chat-theme="original"][data-theme="Cat"]
     transform-origin: bottom right !important;
 }
 
-/* Do not create new stacking contexts on the major chat sections. */
+
 #chatWindow[data-chat-pastel] > #chatTitleBar,
 #chatWindow[data-chat-pastel] > #chatMotd,
 #chatWindow[data-chat-pastel] > #chatMain,
@@ -9743,18 +9743,18 @@ html[data-chat-theme="original"][data-theme="Cat"]
     z-index: auto !important;
 }
 
-/* Keep shell decoration behind content without interfering with clicks. */
+
 #chatWindow[data-chat-pastel] .jami-chat-shell-decor {
     z-index: 0 !important;
     pointer-events: none !important;
 }
 
-/* Main decor remains behind messages/members and never catches the pointer. */
+
 #chatWindow[data-chat-pastel] .jami-chat-pastel-decor {
     pointer-events: none !important;
 }
 
-/* Restore the Theme menu as the top interactive layer. */
+
 #chatWindow #chatTitleBar {
     overflow: visible !important;
 }
@@ -9769,13 +9769,13 @@ html[data-chat-theme="original"][data-theme="Cat"]
     pointer-events: auto;
 }
 
-/* Closed state still obeys the existing invisible/pointer-events classes. */
+
 #chatWindow #chatThemeMenu.invisible,
 #chatWindow #chatThemeMenu.pointer-events-none {
     pointer-events: none !important;
 }
 
-/* Make outside paws read more clearly against the pale shell. */
+
 #chatWindow[data-chat-theme="paws"] .jami-chat-shell-paw {
     filter:
         drop-shadow(
@@ -9786,11 +9786,11 @@ html[data-chat-theme="original"][data-theme="Cat"]
 }
 
 
-/* ============================================================
-   Cute-theme polish v3
-   ============================================================ */
 
-/* Detached Theme menu keeps the owning chat theme's appearance. */
+
+
+
+
 body > .jami-chat-theme-menu[data-chat-theme-owner="stars"] {
     font-family:
         "JamiFredoka",
@@ -9839,19 +9839,19 @@ body > .jami-chat-theme-menu[data-chat-theme-owner="original"] {
         sans-serif !important;
 }
 
-/* Make detached menu interaction independent of collapsed chat overflow. */
+
 body > .jami-chat-theme-menu {
     overflow: visible !important;
     pointer-events: auto;
 }
 
-/* Closed state remains non-interactive. */
+
 body > .jami-chat-theme-menu.invisible,
 body > .jami-chat-theme-menu.pointer-events-none {
     pointer-events: none !important;
 }
 
-/* Paws outside the main message/member rectangle should read clearly. */
+
 #chatWindow[data-chat-theme="paws"] .jami-chat-shell-paw {
     filter:
         drop-shadow(
@@ -9862,12 +9862,12 @@ body > .jami-chat-theme-menu.pointer-events-none {
 }
 
 
-/* ============================================================
-   Cute-theme polish v4
-   Original theme is intentionally excluded from every rule here.
-   ============================================================ */
 
-/* Cute minimized bars must match the same scaled width as expanded cute chats. */
+
+
+
+
+
 #chatWindow[data-chat-theme="stars"].h-10,
 #chatWindow[data-chat-theme="paws"].h-10 {
     width: 480px !important;
@@ -9877,13 +9877,13 @@ body > .jami-chat-theme-menu.pointer-events-none {
     transform-origin: bottom right !important;
 }
 
-/* Online is pastel green only on the two cute chat themes. */
+
 #chatWindow[data-chat-theme="stars"] #chatConnectionStatus,
 #chatWindow[data-chat-theme="paws"] #chatConnectionStatus {
     color: rgb(137, 226, 181) !important;
 }
 
-/* Stars send arrow: darker lavender/purple like the original reference UI. */
+
 #chatWindow[data-chat-theme="stars"]
 #chatSend.jami-cute-send-arrow,
 #chatWindow[data-chat-theme="stars"]
@@ -9893,13 +9893,13 @@ body > .jami-chat-theme-menu.pointer-events-none {
     color: rgb(104, 88, 176) !important;
 }
 
-/* Stars timestamp palette: soft lavender, distinct from white message text. */
+
 #chatWindow[data-chat-theme="stars"] .chatTime,
 #chatWindow[data-chat-theme="stars"] .chatContinuationTime {
     color: rgba(218, 205, 255, .82) !important;
 }
 
-/* Preserve chain timestamp hover behavior. */
+
 #chatWindow[data-chat-theme="stars"] .chatContinuationTime {
     opacity: 0 !important;
 }
@@ -9909,12 +9909,12 @@ body > .jami-chat-theme-menu.pointer-events-none {
     opacity: 1 !important;
 }
 
-/* Paws reaction tooltip text follows the same pink used by names. */
+
 html[data-chat-theme="paws"] .jami-reaction-tooltip {
     color: rgb(238, 157, 174) !important;
 }
 
-/* Slightly strengthen shell decor visibility without affecting content. */
+
 #chatWindow[data-chat-theme="stars"] .jami-chat-shell-decor
 .jami-chat-star-tiny {
     opacity: .72;
@@ -9930,12 +9930,12 @@ html[data-chat-theme="paws"] .jami-reaction-tooltip {
 }
 
 
-/* ============================================================
-   Cute-theme polish v5
-   ============================================================ */
 
-/* Paws member heading + member names use the same darker pink
-   as Paw timestamps / chain timestamps. */
+
+
+
+
+
 #chatWindow[data-chat-theme="paws"]
 #chatMembersPanel .theme-heading,
 #chatWindow[data-chat-theme="paws"]
@@ -9945,8 +9945,8 @@ html[data-chat-theme="paws"] .jami-reaction-tooltip {
     color: rgba(201, 118, 139, .78) !important;
 }
 
-/* Stars send button: dark purple button, white arrow.
-   The button matches the darker non-input purple of the UI. */
+
+
 #chatWindow[data-chat-theme="stars"]
 #chatSend.jami-cute-send-arrow,
 #chatWindow[data-chat-theme="stars"]
@@ -9959,9 +9959,9 @@ html[data-chat-theme="paws"] .jami-reaction-tooltip {
 }
 
 
-/* ============================================================
-   Cute-theme polish v6 — pastel online status
-   ============================================================ */
+
+
+
 
 #chatWindow[data-chat-theme="stars"] #chatConnectionStatus,
 #chatWindow[data-chat-theme="paws"] #chatConnectionStatus {
@@ -9969,14 +9969,14 @@ html[data-chat-theme="paws"] .jami-reaction-tooltip {
 }
 
 
-/* ============================================================
-   Cute-theme polish v7
-   Final colour specificity + calmer Stars distribution.
-   Original theme is intentionally not targeted.
-   ============================================================ */
 
-/* The earlier Paw title-bar bundle was overriding Online with pink.
-   These selectors intentionally outrank it. */
+
+
+
+
+
+
+
 html[data-chat-theme="stars"]
 #chatWindow[data-chat-theme="stars"]
 #chatTitleBar #chatConnectionStatus,
@@ -9987,8 +9987,8 @@ html[data-chat-theme="paws"]
     text-shadow: none !important;
 }
 
-/* Paw member heading and actual rendered member-name spans:
-   same darker pink as Paw timestamps / chain timestamps. */
+
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatMembersPanel .theme-heading,
@@ -9998,7 +9998,7 @@ html[data-chat-theme="paws"]
     color: rgba(201, 118, 139, .78) !important;
 }
 
-/* Paw reaction tooltip: same darker timestamp pink, not bright name pink. */
+
 html[data-chat-theme="paws"] .jami-reaction-tooltip {
     color:
         rgba(
@@ -10007,14 +10007,14 @@ html[data-chat-theme="paws"] .jami-reaction-tooltip {
         ) !important;
 }
 
-/* Stars timestamps use a softer chat-panel periwinkle instead of
-   the darker lavender from the previous pass. */
+
+
 #chatWindow[data-chat-theme="stars"] .chatTime,
 #chatWindow[data-chat-theme="stars"] .chatContinuationTime {
     color: rgba(194, 190, 237, .94) !important;
 }
 
-/* Stars Members heading + member names follow that same timestamp lavender. */
+
 html[data-chat-theme="stars"]
 #chatWindow[data-chat-theme="stars"]
 #chatMembersPanel .theme-heading,
@@ -10025,14 +10025,14 @@ html[data-chat-theme="stars"]
 }
 
 
-/* ============================================================
-   Cute-theme polish v8 — final colour/control touchups
-   Original theme intentionally untouched.
-   ============================================================ */
 
-/* -------------------- STARS -------------------- */
 
-/* Members heading + member names match white chat text. */
+
+
+
+
+
+
 html[data-chat-theme="stars"]
 #chatWindow[data-chat-theme="stars"]
 #chatMembersPanel .theme-heading,
@@ -10042,7 +10042,7 @@ html[data-chat-theme="stars"]
     color: #ffffff !important;
 }
 
-/* Bans / Party / Hide Members / Theme: white. */
+
 html[data-chat-theme="stars"]
 #chatWindow[data-chat-theme="stars"]
 #chatBanManagerButton,
@@ -10058,7 +10058,7 @@ html[data-chat-theme="stars"]
     color: #ffffff !important;
 }
 
-/* Send button uses the UI purple; arrow stays white. */
+
 html[data-chat-theme="stars"]
 #chatWindow[data-chat-theme="stars"]
 #chatSend.jami-cute-send-arrow,
@@ -10073,8 +10073,8 @@ html[data-chat-theme="stars"]
     border-color: rgba(255,255,255,.22) !important;
 }
 
-/* Emoji + upload controls: transparent buttons, matching purple glyphs,
-   same slightly-larger size. */
+
+
 html[data-chat-theme="stars"]
 #chatWindow[data-chat-theme="stars"]
 #chatEmojiButton,
@@ -10087,9 +10087,9 @@ html[data-chat-theme="stars"]
     line-height: 1 !important;
 }
 
-/* -------------------- PAWS -------------------- */
 
-/* Chat title + heart. */
+
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatTitle,
@@ -10102,7 +10102,7 @@ html[data-chat-theme="paws"]
     color: #a04b63 !important;
 }
 
-/* Message text. */
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 .chatText,
@@ -10112,7 +10112,7 @@ html[data-chat-theme="paws"]
     color: #6f506c !important;
 }
 
-/* Timestamps + chain timestamps. */
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 .chatTime,
@@ -10122,7 +10122,7 @@ html[data-chat-theme="paws"]
     color: #a04b63 !important;
 }
 
-/* Members heading + member-list names. */
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatMembersPanel .theme-heading,
@@ -10132,14 +10132,14 @@ html[data-chat-theme="paws"]
     color: #d8667a !important;
 }
 
-/* Names inside actual chat messages. */
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 .chatMessageName {
     color: #ed6a7c !important;
 }
 
-/* Bans / Party / Hide Members / Theme + minimize/maximize. */
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatBanManagerButton,
@@ -10158,7 +10158,7 @@ html[data-chat-theme="paws"]
     color: #ed6a7c !important;
 }
 
-/* Paws send button: white arrow, pink button. */
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatSend.jami-cute-send-arrow,
@@ -10173,7 +10173,7 @@ html[data-chat-theme="paws"]
     border-color: rgba(255,255,255,.32) !important;
 }
 
-/* Message input text + placeholder. */
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatMessage {
@@ -10187,8 +10187,8 @@ html[data-chat-theme="paws"]
     opacity: 1 !important;
 }
 
-/* Emoji + upload controls: transparent buttons, same larger size,
-   matching Paw pink. */
+
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatEmojiButton,
@@ -10202,14 +10202,14 @@ html[data-chat-theme="paws"]
 }
 
 
-/* ============================================================
-   Cute-theme polish v9 — specificity cleanup / final touchups
-   Original theme intentionally untouched.
-   ============================================================ */
 
-/* -------------------- STARS -------------------- */
 
-/* Members + member names: white. */
+
+
+
+
+
+
 html[data-chat-theme="stars"]
 #chatWindow[data-chat-theme="stars"]
 #chatMembersPanel .theme-heading,
@@ -10219,8 +10219,8 @@ html[data-chat-theme="stars"]
     color: #ffffff !important;
 }
 
-/* Stronger than the older title-bar theme bundles:
-   bans / party / hide members / theme are all white. */
+
+
 html[data-chat-theme="stars"]
 #chatWindow[data-chat-theme="stars"]
 #chatTitleBar #chatBanManagerButton,
@@ -10237,7 +10237,7 @@ html[data-chat-theme="stars"]
     text-shadow: none !important;
 }
 
-/* Stars emoji + upload glyphs: transparent buttons, #8271bc glyphs. */
+
 html[data-chat-theme="stars"]
 #chatWindow[data-chat-theme="stars"]
 #chatEmojiButton,
@@ -10250,7 +10250,7 @@ html[data-chat-theme="stars"]
     line-height: 1 !important;
 }
 
-/* Stars message placeholder matches those glyphs. */
+
 html[data-chat-theme="stars"]
 #chatWindow[data-chat-theme="stars"]
 #chatMessage::placeholder {
@@ -10258,9 +10258,9 @@ html[data-chat-theme="stars"]
     opacity: 1 !important;
 }
 
-/* -------------------- PAWS / ANIMAL CROSSING -------------------- */
 
-/* CAT CHAT + heart. */
+
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatTitle,
@@ -10273,7 +10273,7 @@ html[data-chat-theme="paws"]
     color: #c1758a !important;
 }
 
-/* Timestamps + chain timestamps. */
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 .chatTime,
@@ -10283,7 +10283,7 @@ html[data-chat-theme="paws"]
     color: #c1758a !important;
 }
 
-/* MEMBERS + member list names. */
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatMembersPanel .theme-heading,
@@ -10293,8 +10293,8 @@ html[data-chat-theme="paws"]
     color: #d76e82 !important;
 }
 
-/* Stronger than the old Paw title-bar pink bundle:
-   minimize/maximize + bans + party + hide/show members + theme. */
+
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatTitleBar #chatBanManagerButton,
@@ -10314,7 +10314,7 @@ html[data-chat-theme="paws"]
     text-shadow: none !important;
 }
 
-/* Paw send: white arrow on #ee98ab button. */
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatSend.jami-cute-send-arrow,
@@ -10329,7 +10329,7 @@ html[data-chat-theme="paws"]
     border-color: rgba(255,255,255,.32) !important;
 }
 
-/* Paw emoji + upload glyphs: transparent buttons, #ee98ab glyphs. */
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatEmojiButton,
@@ -10342,7 +10342,7 @@ html[data-chat-theme="paws"]
     line-height: 1 !important;
 }
 
-/* Paw message placeholder. */
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatMessage::placeholder {
@@ -10351,12 +10351,12 @@ html[data-chat-theme="paws"]
 }
 
 
-/* ============================================================
-   Cute-theme polish v10 — Stars haze + Paw final corrections
-   Original theme intentionally untouched.
-   ============================================================ */
 
-/* -------------------- STARS RANDOM HAZE -------------------- */
+
+
+
+
+
 
 #chatWindow[data-chat-theme="stars"]
 .jami-chat-star-haze-main,
@@ -10400,7 +10400,7 @@ html[data-chat-theme="paws"]
         blur(18px) !important;
 }
 
-/* Ensure the existing Stars decor/content still sits above the haze. */
+
 #chatWindow[data-chat-theme="stars"]
 .jami-chat-pastel-decor,
 #chatWindow[data-chat-theme="stars"]
@@ -10414,9 +10414,9 @@ html[data-chat-theme="paws"]
     z-index: 2;
 }
 
-/* -------------------- PAWS FINAL CORRECTIONS -------------------- */
 
-/* MEMBERS + member names match chat-message names exactly. */
+
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatMembersPanel .theme-heading,
@@ -10426,8 +10426,8 @@ html[data-chat-theme="paws"]
     color: #ee9dad !important;
 }
 
-/* Paw send button — deliberately strongest selector in the file.
-   Keep the arrow white and the button #ee98ab through hover/active states. */
+
+
 html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"]
 #chatControls #chatSend.jami-cute-send-arrow,
