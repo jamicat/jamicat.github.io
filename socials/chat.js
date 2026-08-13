@@ -8669,20 +8669,6 @@ openModerationMenu(x, y, message) {
         if (clearCutoff) {
             buttons.push(
                 this.createModerationMenuButton(
-                    "clear chat after",
-                    () => {
-                        this.closeModerationMenu();
-
-                        this.clearChatFromMessage(
-                            clearCutoff,
-                            "after"
-                        );
-                    }
-                )
-            );
-
-            buttons.push(
-                this.createModerationMenuButton(
                     "clear chat before",
                     () => {
                         this.closeModerationMenu();
@@ -8690,6 +8676,20 @@ openModerationMenu(x, y, message) {
                         this.clearChatFromMessage(
                             clearCutoff,
                             "before"
+                        );
+                    }
+                )
+            );
+
+            buttons.push(
+                this.createModerationMenuButton(
+                    "clear chat after",
+                    () => {
+                        this.closeModerationMenu();
+
+                        this.clearChatFromMessage(
+                            clearCutoff,
+                            "after"
                         );
                     }
                 )
@@ -10831,22 +10831,34 @@ if (
     data.type ===
         "chat-cleared"
 ) {
-    if (data.cutoff) {
+    const cutoff =
+        data.cutoff ||
+        this.pendingChatClear?.cutoff ||
+        null;
+
+    const direction =
+        data.direction ||
+        this.pendingChatClear?.direction ||
+        "after";
+
+    if (cutoff) {
         if (
-            data.direction ===
+            direction ===
                 "before"
         ) {
             this.clearChatBefore(
-                data.cutoff
+                cutoff
             );
         } else {
             this.clearChatThrough(
-                data.cutoff
+                cutoff
             );
         }
     } else {
         this.clearChatInterface();
     }
+
+    this.pendingChatClear = null;
 
     return;
 }
@@ -12778,7 +12790,17 @@ async uploadTestImage(file) {
         cutoffDate.toISOString();
 
     const displayTime =
-        cutoffDate.toLocaleString();
+        cutoffDate.toLocaleString(
+            "en-GB",
+            {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false
+            }
+        );
 
     const confirmationText =
         clearDirection === "before"
@@ -12798,6 +12820,12 @@ async uploadTestImage(file) {
     ) {
         return;
     }
+
+    this.pendingChatClear = {
+        cutoff,
+        direction:
+            clearDirection
+    };
 
     try {
         const request =
@@ -12884,7 +12912,16 @@ async uploadTestImage(file) {
                 );
             }
         }
+
+        setTimeout(
+            () => {
+                this.pendingChatClear = null;
+            },
+            1500
+        );
     } catch (error) {
+        this.pendingChatClear = null;
+
         console.error(
             "could not clear chat:",
             error
