@@ -9635,3 +9635,47 @@ html[data-chat-theme="original"][data-theme="Cat"]
  * Intentionally DO NOT override .jami-original-message-input here.
  * The previous 1px-up type-a-message adjustment remains exactly as-is.
  */
+
+
+/* ============================================================
+   Theme button true title-row participation.
+   The wrapper becomes layout-transparent, so Theme itself is a
+   flex item beside bans / party / hide members / online.
+   The dropdown is viewport-positioned by chat.js when opened.
+   ============================================================ */
+
+#chatWindow .jami-chat-theme-wrap {
+    display: contents !important;
+}
+
+#chatWindow #chatThemeButton {
+    position: static !important;
+    display: block !important;
+    align-self: center !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit !important;
+    vertical-align: baseline !important;
+    transform: none !important;
+    top: auto !important;
+}
+
+#chatWindow #chatThemeMenu {
+    position: fixed !important;
+    right: auto !important;
+    margin: 0 !important;
+}
+
+/* Match the neighbouring title controls' explicit sizes. */
+#chatWindow[data-chat-theme="stars"] #chatThemeButton {
+    font-size: 10px !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatThemeButton {
+    font-size: 9px !important;
+}
+
+/* The existing type-a-message alignment is intentionally untouched. */
