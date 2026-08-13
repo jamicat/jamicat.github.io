@@ -13305,7 +13305,10 @@ async sendMessage() {
     }
 
     this.sendButton.disabled = true;
-    this.sendButton.textContent = "…";
+    this.sendButton.textContent =
+        this.window?.dataset.chatTheme === "original"
+            ? "sending..."
+            : "…";
 
     try {
         const response = await fetch(`${this.API}/api/chat`, {
