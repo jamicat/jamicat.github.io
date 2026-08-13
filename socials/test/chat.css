@@ -9253,8 +9253,8 @@ html[data-chat-theme="original"]
 
 /* Keep the message box itself unchanged; move only its text/placeholder up 1px. */
 #chatWindow[data-chat-theme="original"] .jami-original-message-input {
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
+    padding-top: 7px !important;
+    padding-bottom: 9px !important;
 }
 
 
@@ -9408,4 +9408,29 @@ html[data-chat-theme="paws"]
 html[data-chat-theme="original"][data-theme="Default"]
 #chatWindow[data-chat-theme="original"] {
     border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+
+/* ============================================================
+   FINAL CUTE-THEME DETACHED BORDER ISOLATION
+   The website/terminal selector must not resurrect the base
+   terminal2 border on these chat-owned panels while Stars or
+   Animal Crossing is the active CHAT theme.
+   ============================================================ */
+
+html[data-chat-theme="stars"] #chatWatchPartyPanel,
+html[data-chat-theme="stars"] #chatWatchPartyVisualizerMenu,
+html[data-chat-theme="stars"] .watch-party-visualizer-window,
+html[data-chat-theme="paws"] #chatWatchPartyPanel,
+html[data-chat-theme="paws"] #chatWatchPartyVisualizerMenu,
+html[data-chat-theme="paws"] .watch-party-visualizer-window {
+    border: 0 !important;
+    border-color: transparent !important;
+}
+
+/* Original-theme message input: move only the text/placeholder down 1px.
+   Box height and surrounding alignment remain unchanged. */
+#chatWindow[data-chat-theme="original"] .jami-original-message-input {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
 }
