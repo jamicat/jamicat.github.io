@@ -10853,13 +10853,11 @@ if (
     data.type ===
         "chat-cleared"
 ) {
-    if (data.cutoff) {
-        this.clearChatThrough(
-            data.cutoff
-        );
-    } else {
-        this.clearChatInterface();
-    }
+    this.applyChatClearResult(
+        data
+    );
+
+    this.pendingChatClear = null;
 
     return;
 }
@@ -12746,66 +12744,52 @@ async uploadTestImage(file) {
 }
 
 	async clearEntireChat() {
-    if (
-        !this.isAdmin ||
-        !this.adminKey
-    ) {
+    if (!this.isAdmin || !this.adminKey) {
         return;
     }
 
-    const todayExample =
-    new Date()
-        .toISOString()
-        .slice(0, 10);
+    const input =
+        window.prompt(
+            "clear chat\n\n" +
+            "leave empty to clear fully.\n\n" +
+            "or enter exactly:\n" +
+            "before dd/mm/yyyy hh:mm:ss\n" +
+            "after dd/mm/yyyy hh:mm:ss",
+            ""
+        );
 
-const cutoffInput =
-    window.prompt(
-        "enter a date and time to clear chat from that point onward:\n" +
-        "format: yyyy-mm-dd hh:mm\n" +
-        `example: ${todayExample} 13:30\n\n` +
-        "leave empty to clear the full chat.",
-        ""
-    );
-
-    if (cutoffInput === null) {
+    if (input === null) {
         return;
     }
 
-    const cleanedCutoff =
-        cutoffInput.trim();
-
+    const cleaned = input.trim();
     let cutoff = null;
-    let cutoffLabel =
-        "the entire chat";
+    let direction = null;
+    let displayLabel = "the entire chat";
 
-    if (cleanedCutoff) {
+    if (cleaned) {
         const match =
-            cleanedCutoff.match(
-                /^(\d{4})-(\d{2})-(\d{2})[ t](\d{2}):(\d{2})$/
+            cleaned.match(
+                /^(before|after) (\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})(?::(\d{2}))?$/
             );
 
         if (!match) {
             window.alert(
-                "invalid date and time.\n\n" +
-                "use: yyyy-mm-dd hh:mm"
+                "invalid format.\n\n" +
+                "use exactly:\n" +
+                "before dd/mm/yyyy hh:mm:ss\n" +
+                "after dd/mm/yyyy hh:mm:ss"
             );
             return;
         }
 
-        const [
-            ,
-            yearText,
-            monthText,
-            dayText,
-            hourText,
-            minuteText
-        ] = match;
-
-        const year = Number(yearText);
-        const month = Number(monthText);
-        const day = Number(dayText);
-        const hour = Number(hourText);
-        const minute = Number(minuteText);
+        const [, parsedDirection, d, m, y, h, min, s] = match;
+        const day = Number(d);
+        const month = Number(m);
+        const year = Number(y);
+        const hour = Number(h);
+        const minute = Number(min);
+        const second = Number(s || 0);
 
         const localDate =
             new Date(
@@ -12814,103 +12798,95 @@ const cutoffInput =
                 day,
                 hour,
                 minute,
-                0,
+                second,
                 0
             );
 
-        const valid =
-            localDate.getFullYear() === year &&
-            localDate.getMonth() === month - 1 &&
-            localDate.getDate() === day &&
-            localDate.getHours() === hour &&
-            localDate.getMinutes() === minute;
-
-        if (!valid) {
-            window.alert(
-                "invalid date and time.\n\n" +
-                "use: yyyy-mm-dd hh:mm"
-            );
+        if (
+            localDate.getFullYear() !== year ||
+            localDate.getMonth() !== month - 1 ||
+            localDate.getDate() !== day ||
+            localDate.getHours() !== hour ||
+            localDate.getMinutes() !== minute ||
+            localDate.getSeconds() !== second
+        ) {
+            window.alert("invalid date or time.");
             return;
         }
 
-        cutoff =
-            localDate.toISOString();
+        direction = parsedDirection;
+        cutoff = localDate.toISOString();
 
-        cutoffLabel =
-            `chat from ${cleanedCutoff} onward`;
+        const displayTime =
+            localDate.toLocaleString(
+                "en-GB",
+                {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: s ? "2-digit" : undefined,
+                    hour12: false
+                }
+            );
+
+        displayLabel =
+            direction === "before"
+                ? `all chat before ${displayTime}`
+                : `all chat after ${displayTime}`;
     }
 
-    const confirmed =
-        window.confirm(
-            `clear ${cutoffLabel}?`
-        );
-
-    if (!confirmed) {
+    if (
+        !window.confirm(
+            cutoff
+                ? (
+                    `clear ${displayLabel}?\n\n` +
+                    "messages at the exact specified time will be kept."
+                )
+                : "clear the entire chat?"
+        )
+    ) {
         return;
     }
 
-    const finalConfirmation =
-        window.confirm(
-            "final confirmation:\n\n" +
-            `delete ${cutoffLabel}?`
-        );
-
-    if (!finalConfirmation) {
-        return;
-    }
+    this.pendingChatClear = {
+        cutoff,
+        direction
+    };
 
     try {
         const request =
             await fetch(
                 `${this.API}/api/admin/chat/clear`,
                 {
-                    method:
-                        "POST",
-
+                    method: "POST",
                     headers: {
-                        "Content-Type":
-                            "application/json",
-
-                        "Authorization":
-                            `Bearer ${this.adminKey}`
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${this.adminKey}`
                     },
-
-                    body:
-                        JSON.stringify({
-                            cutoff
-                        })
+                    body: JSON.stringify({
+                        cutoff,
+                        direction
+                    })
                 }
             );
 
         let result = null;
-
         try {
-            result =
-                await request.json();
+            result = await request.json();
         } catch {}
 
-        if (
-            request.status === 401
-        ) {
+        if (request.status === 401) {
             this.disableAdminMode();
-
             throw new Error(
                 "admin authentication is no longer valid"
             );
         }
 
         if (!request.ok) {
-            if (
-                result?.chatCleared ===
-                    true
-            ) {
-                if (result?.cutoff) {
-                    this.clearChatThrough(
-                        result.cutoff
-                    );
-                } else {
-                    this.clearChatInterface();
-                }
+            if (result?.chatCleared === true) {
+                this.applyChatClearResult(result);
             }
 
             throw new Error(
@@ -12919,47 +12895,51 @@ const cutoffInput =
             );
         }
 
-        if (result?.cutoff) {
-            this.clearChatThrough(
-                result.cutoff
-            );
-        } else {
-            this.clearChatInterface();
-        }
-
-        console.log(
-            "chat cleared:",
-            {
-                cutoff:
-                    result?.cutoff ||
-                    null,
-
-                messages:
-                    result?.deletedMessages ||
-                    0,
-
-                imageRows:
-                    result?.deletedImageRows ||
-                    0,
-
-                reactions:
-                    result?.deletedReactions ||
-                    0,
-
-                r2Objects:
-                    result?.deletedR2Objects ||
-                    0
+        this.applyChatClearResult(
+            result || {
+                cutoff,
+                direction
             }
         );
-    } catch (error) {
-        console.error(
-            "could not clear chat:",
-            error
-        );
 
+        setTimeout(
+            () => {
+                this.pendingChatClear = null;
+            },
+            1500
+        );
+    } catch (error) {
+        this.pendingChatClear = null;
+        console.error("could not clear chat:", error);
         window.alert(
             `could not clear chat: ${error.message}`
         );
+    }
+}
+
+applyChatClearResult(result) {
+    const cutoff =
+        result?.cutoff ||
+        this.pendingChatClear?.cutoff ||
+        null;
+
+    const direction =
+        result?.direction ||
+        this.pendingChatClear?.direction ||
+        null;
+
+    if (!cutoff) {
+        this.clearChatInterface();
+        return;
+    }
+
+    if (direction === "before") {
+        this.clearChatBefore(cutoff);
+        return;
+    }
+
+    if (direction === "after") {
+        this.clearChatThrough(cutoff);
     }
 }
 
@@ -12984,7 +12964,7 @@ clearChatThrough(cutoff) {
 
         if (
             Number.isFinite(timestamp) &&
-            timestamp >= cutoffTime
+            timestamp > cutoffTime
         ) {
             const uploadId =
                 row.dataset.imageUploadId;
@@ -13009,11 +12989,64 @@ clearChatThrough(cutoff) {
         this.replyTarget?.createdAt &&
         new Date(
             this.replyTarget.createdAt
-        ).getTime() >= cutoffTime
+        ).getTime() > cutoffTime
     ) {
         this.clearReplyTarget();
     }
 }
+
+clearChatBefore(cutoff) {
+    const cutoffTime =
+        new Date(cutoff).getTime();
+
+    if (!Number.isFinite(cutoffTime)) {
+        return;
+    }
+
+    for (
+        const row
+        of this.messages.querySelectorAll(
+            ".chatMessage"
+        )
+    ) {
+        const timestamp =
+            Number(
+                row.dataset.timestamp
+            );
+
+        if (
+            Number.isFinite(timestamp) &&
+            timestamp < cutoffTime
+        ) {
+            const uploadId =
+                row.dataset.imageUploadId;
+
+            if (uploadId) {
+                this.imageUploadRows.delete(
+                    uploadId
+                );
+
+                this.activeImageUploads.delete(
+                    uploadId
+                );
+            }
+
+            row.remove();
+        }
+    }
+
+    this.closeModerationMenu();
+
+    if (
+        this.replyTarget?.createdAt &&
+        new Date(
+            this.replyTarget.createdAt
+        ).getTime() < cutoffTime
+    ) {
+        this.clearReplyTarget();
+    }
+}
+
 
 clearChatInterface() {
     for (
