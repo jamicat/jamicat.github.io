@@ -9272,3 +9272,67 @@ html[data-chat-theme="original"]
 #chatDiscordUsername {
     line-height: 10px !important;
 }
+
+
+/* ============================================================
+   ORIGINAL CHAT THEME — restore website/terminal font inheritance.
+   Only Original follows the current site --body-font / --heading-font.
+   Stars and Animal Crossing remain isolated by their existing rules.
+   ============================================================ */
+
+/* Do not pin Original to Nunito locally. Inherit the live terminal variables. */
+#chatWindow[data-chat-theme="original"] {
+    --body-font: inherit !important;
+    --heading-font: inherit !important;
+}
+
+/* Main Original chat: body text follows the current terminal body font. */
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"],
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] * {
+    font-family:
+        var(--body-font, "Nunito", sans-serif) !important;
+}
+
+/* Explicit headings follow the current terminal heading font. */
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .theme-heading,
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatTitle,
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMembersPanel .theme-heading {
+    font-family:
+        var(--heading-font, "Nunito", sans-serif) !important;
+}
+
+/* Detached chat-owned UI follows the terminal body font in Original mode. */
+html[data-chat-theme="original"] .jami-admin-glass-panel,
+html[data-chat-theme="original"] .jami-admin-glass-panel *,
+html[data-chat-theme="original"] #chatWatchPartyPanel,
+html[data-chat-theme="original"] #chatWatchPartyPanel *,
+html[data-chat-theme="original"] #chatWatchPartyVisualizerMenu,
+html[data-chat-theme="original"] #chatWatchPartyVisualizerMenu *,
+html[data-chat-theme="original"] .jami-chat-context-menu,
+html[data-chat-theme="original"] .jami-chat-context-menu *,
+html[data-chat-theme="original"] .jami-name-history-manager,
+html[data-chat-theme="original"] .jami-name-history-manager *,
+html[data-chat-theme="original"] .jami-saved-remix-manager,
+html[data-chat-theme="original"] .jami-saved-remix-manager *,
+html[data-chat-theme="original"] [class*="jami-remix-"],
+html[data-chat-theme="original"] [class*="jami-remix-"] * {
+    font-family:
+        var(--body-font, "Nunito", sans-serif) !important;
+}
+
+/* Detached headings retain the site theme's heading/body distinction. */
+html[data-chat-theme="original"] .jami-admin-glass-panel .theme-heading,
+html[data-chat-theme="original"] #chatWatchPartyPanel .theme-heading,
+html[data-chat-theme="original"] #chatWatchPartyVisualizerMenu .theme-heading,
+html[data-chat-theme="original"] .jami-chat-context-menu .theme-heading,
+html[data-chat-theme="original"] .jami-name-history-manager .theme-heading,
+html[data-chat-theme="original"] .jami-saved-remix-manager .theme-heading,
+html[data-chat-theme="original"] [class*="jami-remix-"] .theme-heading {
+    font-family:
+        var(--heading-font, "Nunito", sans-serif) !important;
+}
