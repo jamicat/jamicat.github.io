@@ -9520,7 +9520,7 @@ html[data-chat-theme="paws"] .jami-reaction-tooltip {
 
 /* Animal Crossing chat: preserve its existing transform, size text only. */
 #chatWindow[data-chat-theme="paws"] #chatThemeButton {
-    font-size: 9px !important;
+    font-size: 10px !important;
 }
 
 /* Original chat + terminal Animal Crossing / Pixel Cat only:
