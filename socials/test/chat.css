@@ -9468,3 +9468,12 @@ html[data-chat-theme="original"][data-theme="Cat"]
     padding-top: 9px !important;
     padding-bottom: 7px !important;
 }
+
+
+/* Original chat + Pixel Cat terminal theme only:
+   move type-a-message text/placeholder up 1px from the prior 9px/7px state. */
+html[data-chat-theme="original"][data-theme="Cat"]
+#chatWindow[data-chat-theme="original"] .jami-original-message-input {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}
