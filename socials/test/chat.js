@@ -17715,15 +17715,15 @@ keepTitleBarInViewport() {
         ];
 
         const largeCount =
-            32 +
+            42 +
             Math.floor(
-                Math.random() * 7
+                Math.random() * 9
             );
 
         const tinyCount =
-            98 +
+            128 +
             Math.floor(
-                Math.random() * 23
+                Math.random() * 25
             );
 
         for (
@@ -17892,9 +17892,9 @@ keepTitleBarInViewport() {
         ];
 
         const count =
-            27 +
+            34 +
             Math.floor(
-                Math.random() * 8
+                Math.random() * 9
             );
 
         for (
@@ -18077,9 +18077,9 @@ keepTitleBarInViewport() {
         ];
 
         const shellCount =
-            66 +
+            96 +
             Math.floor(
-                Math.random() * 18
+                Math.random() * 24
             );
 
         for (
@@ -18155,9 +18155,9 @@ keepTitleBarInViewport() {
         ];
 
         const shellCount =
-            20 +
+            30 +
             Math.floor(
-                Math.random() * 7
+                Math.random() * 9
             );
 
         for (
@@ -18166,8 +18166,8 @@ keepTitleBarInViewport() {
             index += 1
         ) {
             const size =
-                13 +
-                Math.random() * 7;
+                15 +
+                Math.random() * 8;
 
             const position =
                 findShellPosition({
@@ -18217,7 +18217,7 @@ keepTitleBarInViewport() {
                 ];
 
             paw.style.opacity =
-                `${.10 + Math.random() * .09}`;
+                `${.18 + Math.random() * .10}`;
 
             paw.style.transform =
                 `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
