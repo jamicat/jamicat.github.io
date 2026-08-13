@@ -9679,14 +9679,3 @@ html[data-chat-theme="original"][data-theme="Cat"]
 }
 
 /* The existing type-a-message alignment is intentionally untouched. */
-
-
-/* ============================================================
-   Theme title-bar alignment — measured final correction.
-   Match the neighbouring 9px / 13.5px title controls' line box.
-   Per-theme font-size rules remain unchanged.
-   ============================================================ */
-#chatWindow #chatThemeButton {
-    line-height: 1.5 !important;
-    transform: none !important;
-}
