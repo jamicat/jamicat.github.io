@@ -10508,3 +10508,16 @@ html[data-chat-theme="paws"]
     transform-origin: center center !important;
 }
 
+/* Rounded two-tone Animal Crossing paw artwork. */
+#chatWindow[data-chat-pastel="paws"] .jami-chat-paw svg {
+    fill: none !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] .jami-chat-paw-shell {
+    fill: currentColor !important;
+}
+
+#chatWindow[data-chat-pastel="paws"] .jami-chat-paw-pad {
+    fill: var(--jami-paw-pad, #ed7f96) !important;
+}
+
