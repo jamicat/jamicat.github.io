@@ -8693,7 +8693,7 @@ html[data-chat-theme="paws"][data-chat-pastel="paws"]
 }
 
 #chatWindow[data-chat-theme="original"] #chatThemeButton {
-    transform: translateY(-2px) !important;
+    transform: translateY(-3px) !important;
 }
 
 #chatWindow[data-chat-theme="stars"] #chatThemeButton {
