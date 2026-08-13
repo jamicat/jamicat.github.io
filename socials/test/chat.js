@@ -17966,15 +17966,15 @@ keepTitleBarInViewport() {
         ];
 
         const largeCount =
-            62 +
+            53 +
             Math.floor(
-                Math.random() * 13
+                Math.random() * 10
             );
 
         const tinyCount =
-            205 +
+            182 +
             Math.floor(
-                Math.random() * 36
+                Math.random() * 28
             );
 
         for (
@@ -18672,6 +18672,131 @@ keepTitleBarInViewport() {
                 }
             }
         }
+    }
+
+
+    /*
+     * Stars edge-balance pass.
+     * Keep the overall count calmer, but make sure the far-right,
+     * upper-left and lower-left do not read as empty. Uses the same
+     * occupied-radius checks, so it never deliberately overlaps.
+     */
+    if (theme === "stars") {
+        const colours = [
+            "#d8c9ff",
+            "#ace3ff",
+            "#ffc4e4",
+            "#ffe79e",
+            "#c2efff",
+            "#eee5ff"
+        ];
+
+        const edgeRegions = [
+            {
+                minLeft: 3,
+                maxLeft: 28,
+                minTop: 3,
+                maxTop: 33,
+                target: 6
+            },
+            {
+                minLeft: 3,
+                maxLeft: 30,
+                minTop: 66,
+                maxTop: 97,
+                target: 7
+            },
+            {
+                minLeft: 73,
+                maxLeft: 97,
+                minTop: 3,
+                maxTop: 97,
+                target: 12
+            }
+        ];
+
+        edgeRegions.forEach(region => {
+            const x0 =
+                width * region.minLeft / 100;
+            const x1 =
+                width * region.maxLeft / 100;
+            const y0 =
+                height * region.minTop / 100;
+            const y1 =
+                height * region.maxTop / 100;
+
+            let present =
+                occupied.filter(point =>
+                    point.radius >= 4 &&
+                    point.x >= x0 &&
+                    point.x <= x1 &&
+                    point.y >= y0 &&
+                    point.y <= y1
+                ).length;
+
+            while (present < region.target) {
+                const size =
+                    8.5 +
+                    Math.random() * 8;
+
+                const position =
+                    findPosition({
+                        size,
+                        gap: 6.5,
+                        minLeft:
+                            region.minLeft + .7,
+                        maxLeft:
+                            region.maxLeft - .7,
+                        minTop:
+                            region.minTop + .7,
+                        maxTop:
+                            region.maxTop - .7,
+                        attempts: 760
+                    });
+
+                if (!position) {
+                    break;
+                }
+
+                occupied.push({
+                    x: position.x,
+                    y: position.y,
+                    radius: position.radius
+                });
+
+                const star =
+                    document.createElement("i");
+
+                star.className =
+                    "jami-chat-star jami-chat-star-four";
+
+                star.style.left =
+                    `${position.left}%`;
+                star.style.top =
+                    `${position.top}%`;
+                star.style.width =
+                    `${size}px`;
+                star.style.height =
+                    `${size}px`;
+
+                star.style.background =
+                    colours[
+                        Math.floor(
+                            Math.random() *
+                            colours.length
+                        )
+                    ];
+
+                star.style.opacity =
+                    `${.70 + Math.random() * .20}`;
+
+                star.style.transform =
+                    `translate(-50%, -50%) rotate(${Math.random() * 20 - 10}deg)`;
+
+                layer.appendChild(star);
+                present += 1;
+            }
+        });
     }
 
     main.appendChild(layer);
