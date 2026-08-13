@@ -9234,3 +9234,9 @@ html[data-chat-theme="original"]
     width: 44px !important;
     height: 44px !important;
 }
+
+
+/* Original-theme name field final 1px adjustment. */
+#chatWindow[data-chat-theme="original"] .jami-original-name-input {
+    height: 44px !important;
+}
