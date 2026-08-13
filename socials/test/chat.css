@@ -8824,20 +8824,16 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPan
 
 
 
-/* ============================================================
-   ORIGINAL CHAT — parity with the supplied original files.
-   Original only. Stars / Animal Crossing are intentionally
-   outside this block.
-   ============================================================ */
-
 #chatWindow[data-chat-theme="original"] {
     width: 480px !important;
     height: 500px !important;
     max-width: calc(100vw - 2rem) !important;
-    border: 1px solid rgba(255,255,255,.15) !important;
-    border-radius: 24px !important;
-    background: rgba(0,0,0,.20) !important;
+    scale: .9 !important;
+    border: 0 !important;
+    border-color: transparent !important;
+    background: rgba(0, 0, 0, .20) !important;
     color: #fff !important;
+    box-shadow: var(--tw-shadow) !important;
     backdrop-filter: blur(16px) !important;
     -webkit-backdrop-filter: blur(16px) !important;
 }
@@ -8845,22 +8841,24 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPan
 #chatWindow[data-chat-theme="original"].h-10 {
     width: 480px !important;
     height: 40px !important;
+    max-width: calc(100vw - 2rem) !important;
+    scale: .9 !important;
 }
 
 #chatWindow[data-chat-theme="original"],
 #chatWindow[data-chat-theme="original"] * {
-    font-family: var(--body-font, Consolas, monospace) !important;
+    font-family: "nunito", "Nunito", sans-serif !important;
 }
 
 #chatWindow[data-chat-theme="original"] #chatTitleBar {
     min-height: 40px !important;
-    padding: 0 16px !important;
-    border-bottom: 1px solid rgba(255,255,255,.10) !important;
-    background: rgba(0,0,0,.10) !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, .10) !important;
+    background: rgba(0, 0, 0, .10) !important;
 }
 
 #chatWindow[data-chat-theme="original"] #chatTitle {
-    font-family: var(--heading-font, Consolas, monospace) !important;
     font-size: 12px !important;
     font-weight: 700 !important;
     letter-spacing: .1em !important;
@@ -8870,16 +8868,13 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPan
 #chatWindow[data-chat-theme="original"] #chatMembersToggle,
 #chatWindow[data-chat-theme="original"] #chatThemeButton,
 #chatWindow[data-chat-theme="original"] #chatBanManagerButton,
-#chatWindow[data-chat-theme="original"] #chatPartyManagerButton,
-#chatWindow[data-chat-theme="original"] #chatConnectionStatus {
+#chatWindow[data-chat-theme="original"] #chatPartyManagerButton {
     font-size: 9px !important;
+    color: rgba(255, 255, 255, .50) !important;
 }
 
-#chatWindow[data-chat-theme="original"] #chatMembersToggle,
-#chatWindow[data-chat-theme="original"] #chatThemeButton,
-#chatWindow[data-chat-theme="original"] #chatBanManagerButton,
-#chatWindow[data-chat-theme="original"] #chatPartyManagerButton {
-    color: rgba(255,255,255,.50) !important;
+#chatWindow[data-chat-theme="original"] #chatConnectionStatus {
+    font-size: 9px !important;
 }
 
 #chatWindow[data-chat-theme="original"] #chatMinimize {
@@ -8887,16 +8882,16 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPan
     height: 24px !important;
     font-size: 14px !important;
     line-height: 1 !important;
-    color: rgba(255,255,255,.55) !important;
+    color: rgba(255, 255, 255, .55) !important;
 }
 
 #chatWindow[data-chat-theme="original"] #chatMotd {
     padding: 6px 12px !important;
-    border-bottom: 1px solid rgba(255,255,255,.10) !important;
-    background: rgba(0,0,0,.05) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, .10) !important;
+    background: rgba(0, 0, 0, .05) !important;
     font-size: 9px !important;
     line-height: 1.625 !important;
-    color: rgba(255,255,255,.65) !important;
+    color: rgba(255, 255, 255, .65) !important;
 }
 
 #chatWindow[data-chat-theme="original"] #chatMotd * {
@@ -8929,21 +8924,17 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPan
     font-size: 9px !important;
 }
 
-#chatWindow[data-chat-theme="original"] .chatTime {
-    color: rgba(255,255,255,.42) !important;
-}
-
 #chatWindow[data-chat-theme="original"] #chatMembersPanel {
     width: 112px !important;
     padding: 12px 8px !important;
-    border-left: 1px solid rgba(255,255,255,.10) !important;
-    background: rgba(0,0,0,.05) !important;
+    border-left: 1px solid rgba(255, 255, 255, .10) !important;
+    background: rgba(0, 0, 0, .05) !important;
 }
 
 #chatWindow[data-chat-theme="original"] #chatMembersPanel .theme-heading {
     margin-bottom: 12px !important;
     font-size: 9px !important;
-    color: rgba(255,255,255,.50) !important;
+    color: rgba(255, 255, 255, .50) !important;
 }
 
 #chatWindow[data-chat-theme="original"] #chatMembers,
@@ -8954,23 +8945,32 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPan
 #chatWindow[data-chat-theme="original"] #chatTyping {
     padding: 4px 12px !important;
     font-size: 9px !important;
-    color: rgba(255,255,255,.45) !important;
+    color: rgba(255, 255, 255, .45) !important;
 }
 
 #chatWindow[data-chat-theme="original"] #chatControls {
     gap: 8px !important;
     padding: 12px !important;
-    border-top: 1px solid rgba(255,255,255,.10) !important;
-    background: rgba(0,0,0,.10) !important;
+    border-top: 1px solid rgba(255, 255, 255, .10) !important;
+    background: rgba(0, 0, 0, .10) !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-composer {
+    gap: 8px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-name-row,
+#chatWindow[data-chat-theme="original"] .jami-original-message-row {
+    gap: 8px !important;
 }
 
 #chatWindow[data-chat-theme="original"] .jami-cute-avatar-button {
     flex: 0 0 44px !important;
     width: 44px !important;
     height: 44px !important;
-    border: 1px solid rgba(255,255,255,.10) !important;
+    border: 1px solid rgba(255, 255, 255, .10) !important;
     border-radius: 12px !important;
-    background: rgba(0,0,0,.20) !important;
+    background: rgba(0, 0, 0, .20) !important;
     box-shadow: none !important;
 }
 
@@ -8980,11 +8980,12 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPan
 }
 
 #chatWindow[data-chat-theme="original"] .jami-original-name-input {
+    width: 100% !important;
     height: 44px !important;
     padding: 8px 12px !important;
-    border: 1px solid rgba(255,255,255,.10) !important;
+    border: 1px solid rgba(255, 255, 255, .10) !important;
     border-radius: 12px !important;
-    background: rgba(0,0,0,.30) !important;
+    background: rgba(0, 0, 0, .30) !important;
     color: #fff !important;
     font-size: 12px !important;
 }
@@ -8992,16 +8993,16 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPan
 #chatWindow[data-chat-theme="original"] .jami-original-message-input {
     height: 36px !important;
     padding: 8px 12px !important;
-    border: 1px solid rgba(255,255,255,.10) !important;
+    border: 1px solid rgba(255, 255, 255, .10) !important;
     border-radius: 12px !important;
-    background: rgba(0,0,0,.30) !important;
+    background: rgba(0, 0, 0, .30) !important;
     color: #fff !important;
     font-size: 12px !important;
 }
 
 #chatWindow[data-chat-theme="original"] .jami-original-name-input::placeholder,
 #chatWindow[data-chat-theme="original"] .jami-original-message-input::placeholder {
-    color: rgba(255,255,255,.35) !important;
+    color: rgba(255, 255, 255, .35) !important;
 }
 
 #chatWindow[data-chat-theme="original"] .jami-original-image-button,
@@ -9011,13 +9012,14 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPan
     width: 36px !important;
     height: 36px !important;
     padding: 0 !important;
-    border: 1px solid rgba(255,255,255,.10) !important;
+    border: 1px solid rgba(255, 255, 255, .10) !important;
     border-radius: 12px !important;
-    background: rgba(0,0,0,.20) !important;
+    background: rgba(0, 0, 0, .20) !important;
     color: #fff !important;
     font-size: 16px !important;
     line-height: 1 !important;
     box-shadow: none !important;
+    transform: none !important;
 }
 
 #chatWindow[data-chat-theme="original"] .jami-original-send-button,
@@ -9026,43 +9028,38 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPan
     width: 100% !important;
     height: auto !important;
     padding: 8px 12px !important;
-    border: 1px solid rgba(255,255,255,.10) !important;
+    border: 1px solid rgba(255, 255, 255, .10) !important;
     border-radius: 12px !important;
-    background: rgba(255,255,255,.05) !important;
+    background: rgba(255, 255, 255, .05) !important;
     color: #fff !important;
     font-size: 12px !important;
+    font-weight: inherit !important;
     box-shadow: none !important;
     transform: none !important;
 }
 
 #chatWindow[data-chat-theme="original"] .jami-original-send-button:hover {
-    background: rgba(255,255,255,.10) !important;
+    background: rgba(255, 255, 255, .10) !important;
 }
 
 html[data-chat-theme="original"] #chatAvatarPicker {
     width: 224px !important;
     padding: 12px !important;
-    border: 1px solid rgba(255,255,255,.10) !important;
+    border: 1px solid rgba(255, 255, 255, .10) !important;
     border-radius: 16px !important;
     background: #1f1f1f !important;
-    color: #fff !important;
 }
 
 html[data-chat-theme="original"] #chatAvatarPicker .jami-cute-profile-title {
-    margin-bottom: 12px !important;
+    margin: 0 0 12px !important;
     font-size: 10px !important;
     font-weight: 700 !important;
     letter-spacing: .1em !important;
-    color: rgba(255,255,255,.60) !important;
+    color: rgba(255, 255, 255, .60) !important;
     text-transform: uppercase !important;
 }
 
-html[data-chat-theme="original"] #chatAvatarPicker .jami-cute-profile-name-wrap {
-    display: none !important;
-}
-
 html[data-chat-theme="original"] #chatAvatarGrid {
-    grid-template-columns: repeat(5, minmax(0,1fr)) !important;
     gap: 8px !important;
 }
 
