@@ -9253,8 +9253,8 @@ html[data-chat-theme="original"]
 
 /* Keep the message box itself unchanged; move only its text/placeholder up 1px. */
 #chatWindow[data-chat-theme="original"] .jami-original-message-input {
-    padding-top: 7px !important;
-    padding-bottom: 9px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
 }
 
 
