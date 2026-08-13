@@ -9202,3 +9202,18 @@ html[data-chat-theme="original"]
     padding-top: 3px !important;
     padding-bottom: 3px !important;
 }
+
+
+/* Original-theme final 1px parity: avatar + Discord logout only. */
+#chatWindow[data-chat-theme="original"] .jami-cute-avatar-button {
+    flex-basis: 42px !important;
+    width: 42px !important;
+    height: 42px !important;
+}
+
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatDiscordLogout {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+}
