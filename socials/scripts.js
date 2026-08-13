@@ -107,7 +107,7 @@ function applyTheme(themeName) {
   if (!theme) return console.warn(`Theme not found: ${themeName}`);
 
   document.documentElement.setAttribute('data-theme', themeName);
-  document.documentElement.setAttribute('data-theme', themeName);
+
   document.documentElement.classList.toggle(
   'theme-stars',
   themeName === 'Stars'
@@ -301,16 +301,70 @@ if (toggleBtn) {
   '.text-blue-glow, .text-pink-glow, .text-red-glow, .text-aquag-glow, .text-cyan-glow, .text-darkblue-glow'
 ).forEach(el => {
   if (el.classList.contains('no-theme-glow')) return;
+  
+  if (
+    el.closest?.('#chatWindow') ||
+    el.id?.startsWith('chat')
+  ) {
+    return;
+  }
+
   el.classList.remove('text-blue-glow', 'text-pink-glow', 'text-red-glow', 'text-aquag-glow', 'text-cyan-glow', 'text-darkblue-glow');
   el.classList.add(theme.glowPrimary);
 });
   localStorage.setItem('theme', themeName);
 
+  window.dispatchEvent(
+    new CustomEvent(
+      'site-theme-change',
+      {
+        detail: {
+          themeName
+        }
+      }
+    )
+  );
+
   document.querySelectorAll('.terminal2').forEach(el => {
+  const chatOwned =
+    el.id?.startsWith('chat') ||
+    el.closest?.('#chatWindow') ||
+    el.classList.contains('jami-message-hover-actions') ||
+    el.classList.contains('jami-chat-context-menu') ||
+    el.classList.contains('jami-admin-glass-panel') ||
+    el.classList.contains('jami-saved-remix-manager') ||
+    el.classList.contains('jami-name-history-manager') ||
+    el.classList.contains('watch-party-visualizer-window') ||
+    el.classList.contains('jami-remix-overlay') ||
+    el.classList.contains('jami-image-remixer');
+
+  const chatTheme =
+    document.documentElement.getAttribute('data-chat-theme') ||
+    document.getElementById('chatWindow')?.dataset.chatTheme ||
+    'original';
+
+
+  if (chatOwned && chatTheme !== 'original') {
+    Object.values(themes).forEach(t => {
+      el.classList.remove(t.terminal2Bg);
+    });
+    el.style.removeProperty('border-color');
+    return;
+  }
+
   Object.values(themes).forEach(t => {
     el.classList.remove(t.terminal2Bg);
   });
   el.classList.add(theme.terminal2Bg);
+
+  if (chatOwned && chatTheme === 'original') {
+    if (el.id === 'chatWindow') {
+      el.style.borderColor = theme.borderColor;
+    } else {
+
+      el.style.removeProperty('border-color');
+    }
+  }
 });
 
 document.querySelectorAll('.gwterminal').forEach(el => {
@@ -2680,12 +2734,6 @@ const watchPartyVisualizers = (() => {
     const output = new Float32Array(safeCount);
 
     for (let i = 0; i < safeCount; i++) {
-      /*
-       * hyper mode keeps the same logarithmic frequency bands,
-       * then adds entertainment-style dynamics: some transient
-       * peak energy, extra perceptual lift, fast attack and a
-       * slower release. The normal mode above remains unchanged.
-       */
       const combined = Math.min(
         1,
         values[i] * 0.72 + peakValues[i] * 0.38
@@ -4711,4 +4759,16 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   applyTheme(savedTheme);
   initTyped(savedTheme);
+});
+
+
+window.addEventListener('chat-theme-change', () => {
+  const activeSiteTheme =
+    localStorage.getItem('theme') ||
+    document.documentElement.getAttribute('data-theme') ||
+    'Default';
+
+  if (themes[activeSiteTheme]) {
+    applyTheme(activeSiteTheme);
+  }
 });
