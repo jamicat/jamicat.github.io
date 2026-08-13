@@ -7236,7 +7236,7 @@ html[data-chat-pastel="paws"]
 
 #chatWindow[data-chat-pastel="paws"]
 #chatTitle::before {
-    content: "♡" !important;
+    content: none !important;
     color: #dc718f;
     text-shadow:
         0 0 6px rgba(220, 113, 143, .24);
