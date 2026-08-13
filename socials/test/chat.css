@@ -6052,8 +6052,7 @@ html[data-chat-pastel="paws"]
 }
 
 
-#chatWindow[data-chat-pastel] #chatConnectionStatus,
-#chatWindow[data-chat-pastel] #chatMembersToggle {
+#chatWindow[data-chat-pastel] #chatConnectionStatus {
     font-size: 10px !important;
 }
 
