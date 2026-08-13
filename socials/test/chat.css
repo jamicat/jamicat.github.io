@@ -9477,3 +9477,32 @@ html[data-chat-theme="original"][data-theme="Cat"]
     padding-top: 8px !important;
     padding-bottom: 8px !important;
 }
+
+
+/* ============================================================
+   Emoji reaction hover tooltip font ownership.
+   Detached tooltip follows the active CHAT theme:
+   - Original -> live terminal/site body font
+   - Stars -> Fredoka
+   - Animal Crossing -> nintendoh
+   ============================================================ */
+
+html[data-chat-theme="original"] .jami-reaction-tooltip {
+    font-family:
+        var(--body-font, "Nunito", sans-serif) !important;
+}
+
+html[data-chat-theme="stars"] .jami-reaction-tooltip {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="paws"] .jami-reaction-tooltip {
+    font-family:
+        "nintendoh",
+        "Nunito",
+        sans-serif !important;
+}
