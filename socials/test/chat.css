@@ -9928,3 +9928,42 @@ html[data-chat-theme="paws"] .jami-reaction-tooltip {
         )
         saturate(1.22) !important;
 }
+
+
+/* ============================================================
+   Cute-theme polish v5
+   ============================================================ */
+
+/* Paws member heading + member names use the same darker pink
+   as Paw timestamps / chain timestamps. */
+#chatWindow[data-chat-theme="paws"]
+#chatMembersPanel .theme-heading,
+#chatWindow[data-chat-theme="paws"]
+#chatMembers .chatMemberName,
+#chatWindow[data-chat-theme="paws"]
+#chatMembers [data-member-name] {
+    color: rgba(201, 118, 139, .78) !important;
+}
+
+/* Stars send button: dark purple button, white arrow.
+   The button matches the darker non-input purple of the UI. */
+#chatWindow[data-chat-theme="stars"]
+#chatSend.jami-cute-send-arrow,
+#chatWindow[data-chat-theme="stars"]
+#chatSend.jami-cute-send-arrow:hover,
+#chatWindow[data-chat-theme="stars"]
+#chatSend.jami-cute-send-arrow:active {
+    color: #ffffff !important;
+    background: rgb(112, 96, 184) !important;
+    border-color: rgba(255,255,255,.18) !important;
+}
+
+
+/* ============================================================
+   Cute-theme polish v6 — pastel online status
+   ============================================================ */
+
+#chatWindow[data-chat-theme="stars"] #chatConnectionStatus,
+#chatWindow[data-chat-theme="paws"] #chatConnectionStatus {
+    color: rgb(176, 239, 199) !important;
+}
