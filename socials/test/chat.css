@@ -9264,3 +9264,11 @@ html[data-chat-theme="original"]
 #chatDiscordUsername {
     bottom: 8px !important;
 }
+
+
+/* Original-theme Discord @name: preserve position, prevent 1px glyph clipping. */
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatDiscordUsername {
+    line-height: 10px !important;
+}
