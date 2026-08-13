@@ -12873,12 +12873,14 @@ async uploadTestImage(file) {
             );
 
         let result = null;
+
         try {
             result = await request.json();
         } catch {}
 
         if (request.status === 401) {
             this.disableAdminMode();
+
             throw new Error(
                 "admin authentication is no longer valid"
             );
@@ -12910,7 +12912,12 @@ async uploadTestImage(file) {
         );
     } catch (error) {
         this.pendingChatClear = null;
-        console.error("could not clear chat:", error);
+
+        console.error(
+            "could not clear chat:",
+            error
+        );
+
         window.alert(
             `could not clear chat: ${error.message}`
         );
