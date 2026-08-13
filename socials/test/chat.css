@@ -9256,3 +9256,11 @@ html[data-chat-theme="original"]
     padding-top: 7px !important;
     padding-bottom: 9px !important;
 }
+
+
+/* Original-theme Discord @name final alignment: 1px higher. */
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatDiscordUsername {
+    bottom: 8px !important;
+}
