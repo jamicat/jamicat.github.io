@@ -10254,7 +10254,7 @@ html[data-chat-theme="stars"]
 html[data-chat-theme="stars"]
 #chatWindow[data-chat-theme="stars"]
 #chatMessage::placeholder {
-    color: #8271bc !important;
+    color: #ffffff !important;
     opacity: 1 !important;
 }
 
