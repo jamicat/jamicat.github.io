@@ -343,11 +343,7 @@ if (toggleBtn) {
     document.getElementById('chatWindow')?.dataset.chatTheme ||
     'original';
 
-  /*
-   * Chat-owned terminal2 UI follows the website terminal theme only
-   * while the chat itself is using Original. Stars / Animal Crossing
-   * remain completely isolated from the terminal selector.
-   */
+
   if (chatOwned && chatTheme !== 'original') {
     Object.values(themes).forEach(t => {
       el.classList.remove(t.terminal2Bg);
@@ -365,11 +361,7 @@ if (toggleBtn) {
     if (el.id === 'chatWindow') {
       el.style.borderColor = theme.borderColor;
     } else {
-      /*
-       * Detached chat panels own their border colours through
-       * data-theme (blue, purple, rainbow, etc.). Do not replace
-       * those accent borders with the terminal theme border.
-       */
+
       el.style.removeProperty('border-color');
     }
   }
@@ -443,7 +435,7 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
   const strings = [
-    `<span class="text-white theme-body text-sm mr-2 ${glow}">⋆.˚ ☾⭒.˚⏾⋆.˚</span>`,
+    `<span class="text-white theme-body text-sm mr-2 ${glow}">°❀⋆.ೃ࿔*:･</span>`,
   ];
 
   typedInstance = new Typed('#typed', {
@@ -4770,7 +4762,6 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
-/* Keep terminal-theme effects scoped to Original chat mode. */
 window.addEventListener('chat-theme-change', () => {
   const activeSiteTheme =
     localStorage.getItem('theme') ||
