@@ -10508,7 +10508,6 @@ html[data-chat-theme="paws"]
     transform-origin: center center !important;
 }
 
-/* Rounded two-tone Animal Crossing paw artwork. */
 #chatWindow[data-chat-pastel="paws"] .jami-chat-paw svg {
     fill: none !important;
 }
@@ -10519,5 +10518,23 @@ html[data-chat-theme="paws"]
 
 #chatWindow[data-chat-pastel="paws"] .jami-chat-paw-pad {
     fill: var(--jami-paw-pad, #ed7f96) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .jami-chat-inline-editor {
+    color: #6f506c !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .jami-chat-reply-reference,
+#chatWindow[data-chat-theme="paws"] .jami-chat-reply-reference-name,
+#chatWindow[data-chat-theme="paws"] .jami-chat-reply-reference-preview {
+    color: rgba(238, 157, 174, 1) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .jami-chat-reply-reference-preview {
+    opacity: 1 !important;
+}
+
+html[data-chat-theme="paws"] .jami-reaction-tooltip {
+    color: #ed6a7c !important;
 }
 
