@@ -92,9 +92,8 @@
 }
 
 .pixel-avatar {
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
     image-rendering: pixelated;
+    image-rendering: crisp-edges;
 }
 
 #chatWatchPartyPanel {
@@ -10643,4 +10642,3 @@ html[data-chat-theme="paws"]
     opacity: 1;
     transform: translateX(0);
 }
-
