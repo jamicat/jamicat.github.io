@@ -10587,3 +10587,59 @@ html[data-chat-theme="paws"]
     color: #ee9dad !important;
 }
 
+.jami-chat-context-menu-with-submenu {
+    overflow: visible;
+}
+
+.jami-chat-context-submenu-wrap {
+    position: relative;
+}
+
+.jami-chat-context-submenu-trigger {
+    position: relative;
+}
+
+.jami-chat-context-submenu-arrow {
+    display: inline-flex;
+    width: 10px;
+    flex: 0 0 10px;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    font-size: 13px;
+    line-height: 1;
+    opacity: .72;
+}
+
+.jami-chat-context-submenu {
+    position: absolute;
+    top: 0;
+    left: calc(100% - 2px);
+    z-index: 100001;
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-2px);
+    transition:
+        opacity 100ms ease,
+        transform 100ms ease,
+        visibility 100ms linear;
+}
+
+.jami-chat-context-menu-with-submenu[data-submenu-side="left"]
+.jami-chat-context-submenu {
+    right: calc(100% - 2px);
+    left: auto;
+    transform: translateX(2px);
+}
+
+.jami-chat-context-submenu-wrap:hover
+.jami-chat-context-submenu,
+.jami-chat-context-submenu-wrap:focus-within
+.jami-chat-context-submenu {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateX(0);
+}
+
