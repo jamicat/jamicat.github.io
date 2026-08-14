@@ -127,6 +127,7 @@ this.adminKey =
 
 this.isAdmin = false;
 this.moderationMenu = null;
+this.lastRenderedMembers = [];
 this.banManager = null;
 this.banManagerButton = null;
 this.partyManager = null;
@@ -9817,41 +9818,23 @@ async openNameHistoryManager(
     }
 }
 
-openMemberModerationMenu(x, y, member) {
-    const menu = document.createElement("div");
+openMemberModerationMenu(
+    x,
+    y,
+    member
+) {
+    const menu =
+        document.createElement("div");
 
     menu.className =
-        "jami-chat-context-menu theme-body";
-
-    const menuWidth = 176;
-const menuHeight = 60;
-const viewportPadding = 8;
-
-const left = Math.min(
-    x,
-    window.innerWidth -
-        menuWidth -
-        viewportPadding
-);
-
-const top = Math.min(
-    y,
-    window.innerHeight -
-        menuHeight -
-        viewportPadding
-);
-
-menu.style.left =
-    `${Math.max(viewportPadding, left)}px`;
-
-menu.style.top =
-    `${Math.max(viewportPadding, top)}px`;
+        "jami-chat-context-menu theme-body jami-chat-context-menu-with-submenu";
 
     const historyButton =
         this.createModerationMenuButton(
             "name history",
             () => {
                 this.closeModerationMenu();
+
                 this.openNameHistoryManager(
                     member.clientId,
                     member.name
@@ -9859,22 +9842,196 @@ menu.style.top =
             }
         );
 
-    const banButton = this.createModerationMenuButton(
-        `ban ${member.name}`,
-        async () => {
-            this.closeModerationMenu();
-            await this.banClient(member.clientId, member.name);
-        }
+    const eggWrapper =
+        document.createElement("div");
+
+    eggWrapper.className =
+        "jami-chat-context-submenu-wrap";
+
+    const eggButton =
+        this.createModerationMenuButton(
+            "egg stage",
+            () => {}
+        );
+
+    eggButton.classList.add(
+        "jami-chat-context-submenu-trigger"
     );
+
+    eggButton.setAttribute(
+        "aria-haspopup",
+        "menu"
+    );
+
+    const arrow =
+        document.createElement("span");
+
+    arrow.className =
+        "jami-chat-context-submenu-arrow";
+
+    arrow.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    arrow.textContent = "›";
+
+    eggButton.appendChild(
+        arrow
+    );
+
+    const submenu =
+        document.createElement("div");
+
+    submenu.className =
+        "jami-chat-context-menu jami-chat-context-submenu theme-body";
+
+    submenu.setAttribute(
+        "role",
+        "menu"
+    );
+
+    for (
+        let stage = 1;
+        stage <= 8;
+        stage += 1
+    ) {
+        const stageButton =
+            this.createModerationMenuButton(
+                `egg hatch ${stage}`,
+                async () => {
+                    this.closeModerationMenu();
+
+                    try {
+                        await this.setMemberEggStage(
+                            member,
+                            stage
+                        );
+                    } catch (error) {
+                        console.error(
+                            "Could not set egg stage:",
+                            error
+                        );
+
+                        window.alert(
+                            error.message
+                        );
+                    }
+                }
+            );
+
+        stageButton.setAttribute(
+            "role",
+            "menuitem"
+        );
+
+        submenu.appendChild(
+            stageButton
+        );
+    }
+
+    eggWrapper.append(
+        eggButton,
+        submenu
+    );
+
+    const banButton =
+        this.createModerationMenuButton(
+            `ban ${member.name}`,
+            async () => {
+                this.closeModerationMenu();
+
+                await this.banClient(
+                    member.clientId,
+                    member.name
+                );
+            }
+        );
 
     menu.append(
         historyButton,
+        eggWrapper,
         banButton
     );
 
-    document.body.appendChild(menu);
-    this.moderationMenu = menu;
+    document.body.appendChild(
+        menu
+    );
+
+    const viewportPadding = 8;
+
+    const rect =
+        menu.getBoundingClientRect();
+
+    const left =
+        Math.max(
+            viewportPadding,
+            Math.min(
+                x,
+                window.innerWidth -
+                    rect.width -
+                    viewportPadding
+            )
+        );
+
+    const top =
+        Math.max(
+            viewportPadding,
+            Math.min(
+                y,
+                window.innerHeight -
+                    rect.height -
+                    viewportPadding
+            )
+        );
+
+    menu.style.left =
+        `${left}px`;
+
+    menu.style.top =
+        `${top}px`;
+
+    const submenuRect =
+        submenu.getBoundingClientRect();
+
+    if (
+        left +
+        rect.width +
+        submenuRect.width >
+        window.innerWidth -
+            viewportPadding
+    ) {
+        menu.dataset.submenuSide =
+            "left";
+    }
+
+    const wrapperTop =
+        top +
+        eggWrapper.offsetTop;
+
+    const minimumSubmenuTop =
+        viewportPadding -
+        wrapperTop;
+
+    const maximumSubmenuTop =
+        window.innerHeight -
+        viewportPadding -
+        submenuRect.height -
+        wrapperTop;
+
+    submenu.style.top =
+        `${Math.max(
+            minimumSubmenuTop,
+            Math.min(
+                0,
+                maximumSubmenuTop
+            )
+        )}px`;
+
+    this.moderationMenu =
+        menu;
 }
+
 
 	createModerationMenuButton(
     label,
@@ -10422,29 +10579,49 @@ setupMemberActivity() {
 }
 
 	renderMembers(members) {
+    this.lastRenderedMembers =
+        Array.isArray(members)
+            ? members
+            : [];
+
     this.membersElement.replaceChildren();
 
-    if (!Array.isArray(members) || members.length === 0) {
-        const empty = document.createElement("div");
+    if (
+        !Array.isArray(members) ||
+        members.length === 0
+    ) {
+        const empty =
+            document.createElement("div");
 
-        empty.className = "text-white/35";
-        empty.textContent = "nobody online";
+        empty.className =
+            "text-white/35";
 
-        this.membersElement.appendChild(empty);
+        empty.textContent =
+            "nobody online";
+
+        this.membersElement.appendChild(
+            empty
+        );
+
         return;
     }
 
     for (const member of members) {
-        const row = document.createElement("div");
+        const row =
+            document.createElement("div");
 
         row.className =
             "flex min-w-0 items-center gap-1";
 
-        const avatar = document.createElement("img");
+        const memberAvatar =
+            member.avatar;
+
+        const avatar =
+            document.createElement("img");
 
         avatar.src =
             this.resolveChatAvatarSource(
-                member.avatar
+                memberAvatar
             );
 
         avatar.alt = "";
@@ -10453,18 +10630,20 @@ setupMemberActivity() {
 
         this.applyChatAvatarStyle(
             avatar,
-            member.avatar
+            memberAvatar
         );
 
         avatar.addEventListener(
             "error",
             () => {
-                avatar.src = "/avatars/original.gif";
+                avatar.src =
+                    "/avatars/original.gif";
             },
             { once: true }
         );
 
-        const name = document.createElement("span");
+        const name =
+            document.createElement("span");
 
         name.className =
             member.afk === true
@@ -10472,33 +10651,164 @@ setupMemberActivity() {
                 : "min-w-0 truncate text-white/75";
 
         name.textContent =
-            member.name || "anonymous";
+            member.name ||
+            "anonymous";
 
-		name.title =
-    member.name || "anonymous";
+        name.title =
+            member.name ||
+            "anonymous";
 
-        row.append(avatar, name);
-        this.membersElement.appendChild(row);
+        row.append(
+            avatar,
+            name
+        );
 
-		
-		row.addEventListener("contextmenu", event => {
-    if (!this.isAdmin) {
+        this.membersElement.appendChild(
+            row
+        );
+
+        row.addEventListener(
+            "contextmenu",
+            event => {
+                if (!this.isAdmin) {
+                    return;
+                }
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                this.closeModerationMenu();
+
+                this.openMemberModerationMenu(
+                    event.clientX,
+                    event.clientY,
+                    member
+                );
+            }
+        );
+    }
+}
+
+getEffectiveOutgoingAvatar() {
+    return (
+        this.discordUser?.avatarUrl ||
+        this.avatar ||
+        "original.gif"
+    );
+}
+
+applyEggStageUpdate(data) {
+    const clientId =
+        typeof data?.clientId ===
+            "string"
+            ? data.clientId
+            : "";
+
+    const avatar =
+        typeof data?.avatar ===
+            "string"
+            ? data.avatar
+            : "";
+
+    if (
+        !clientId ||
+        !/^egghatch[1-8]\.png$/i.test(
+            avatar
+        )
+    ) {
         return;
     }
 
-    event.preventDefault();
-    event.stopPropagation();
+    if (clientId !== this.clientId) {
+        return;
+    }
 
-    this.closeModerationMenu();
+    if (this.discordUser) {
+        return;
+    }
 
-    this.openMemberModerationMenu(
-        event.clientX,
-        event.clientY,
-        member
+    this.avatar = avatar;
+
+    localStorage.setItem(
+        "chat_avatar",
+        avatar
     );
-});
+
+    if (this.avatarPreview) {
+        this.avatarPreview.src =
+            this.resolveChatAvatarSource(
+                avatar
+            );
+
+        this.applyChatAvatarStyle(
+            this.avatarPreview,
+            avatar
+        );
+    }
+
+    this.renderAvatarPicker();
+}
+
+async setMemberEggStage(
+    member,
+    stage
+) {
+    if (
+        !this.isAdmin ||
+        !this.adminKey
+    ) {
+        return;
+    }
+
+    const clientId =
+        member?.clientId;
+
+    if (
+        typeof clientId !== "string" ||
+        !clientId
+    ) {
+        return;
+    }
+
+    const response =
+        await fetch(
+            `${this.API}/api/admin/chat/egg-stage`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json",
+                    "Authorization":
+                        `Bearer ${this.adminKey}`
+                },
+                body:
+                    JSON.stringify({
+                        clientId,
+                        stage
+                    })
+            }
+        );
+
+    const result =
+        await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            result?.error ||
+            `egg stage update failed (${response.status})`
+        );
+    }
+
+    if (clientId === this.clientId) {
+        this.applyEggStageUpdate({
+            clientId,
+            stage,
+            avatar:
+                result.avatar
+        });
     }
 }
+
 
 	sendPresence() {
     if (
@@ -10512,8 +10822,7 @@ setupMemberActivity() {
         this.getEffectiveChatName();
 
     const avatar =
-        this.discordUser?.avatarUrl ||
-        this.avatar;
+        this.getEffectiveOutgoingAvatar();
 
     this.socket.send(JSON.stringify({
         type: "presence",
@@ -10713,6 +11022,17 @@ connect() {
             "text-red-300"
         );
     }
+
+    return;
+}
+
+if (
+    data.type ===
+        "egg-stage-updated"
+) {
+    this.applyEggStageUpdate(
+        data
+    );
 
     return;
 }
@@ -11329,10 +11649,7 @@ async uploadImageRemix(detail) {
 
     formData.append(
         "avatar",
-        this.discordUser
-            ?.avatarUrl ||
-        this.avatar ||
-        "original.gif"
+        this.getEffectiveOutgoingAvatar()
     );
 
     try {
@@ -12564,10 +12881,7 @@ async uploadTestImage(file) {
                                 this.getEffectiveChatName(),
 
                             avatar:
-                                this.discordUser
-                                    ?.avatarUrl ||
-                                this.avatar ||
-                                "original.gif",
+                                this.getEffectiveOutgoingAvatar(),
 
                             originalName:
                                 file.name,
@@ -13398,8 +13712,7 @@ async sendMessage() {
         this.getEffectiveChatName();
 
     const avatar =
-        this.discordUser?.avatarUrl ||
-        this.avatar;
+        this.getEffectiveOutgoingAvatar();
 
     const message = this.messageInput.value.trim();
 
@@ -14124,8 +14437,7 @@ setupNameSaving() {
             this.getEffectiveChatName();
 
         const avatar =
-            this.discordUser?.avatarUrl ||
-            this.avatar;
+            this.getEffectiveOutgoingAvatar();
 
         const primaryGuild =
             this.discordUser?.primaryGuild ||
@@ -16151,7 +16463,14 @@ selectAvatar(filename) {
     );
 
     this.avatarPreview.src =
-        `/avatars/${filename}`;
+        this.resolveChatAvatarSource(
+            filename
+        );
+
+    this.applyChatAvatarStyle(
+        this.avatarPreview,
+        filename
+    );
 
     this.renderAvatarPicker();
     this.closeAvatarPicker();
