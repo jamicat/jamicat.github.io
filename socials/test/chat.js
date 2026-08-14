@@ -9836,7 +9836,7 @@ openMemberModerationMenu(
         document.createElement("div");
 
     menu.className =
-        "jami-chat-context-menu theme-body jami-chat-context-menu-with-submenu";
+        "jami-chat-context-menu theme-body";
 
     const historyButton =
         this.createModerationMenuButton(
@@ -9850,99 +9850,6 @@ openMemberModerationMenu(
                 );
             }
         );
-
-    const eggWrapper =
-        document.createElement("div");
-
-    eggWrapper.className =
-        "jami-chat-context-submenu-wrap";
-
-    const eggButton =
-        this.createModerationMenuButton(
-            "egg stage",
-            () => {}
-        );
-
-    eggButton.classList.add(
-        "jami-chat-context-submenu-trigger"
-    );
-
-    eggButton.setAttribute(
-        "aria-haspopup",
-        "menu"
-    );
-
-    const arrow =
-        document.createElement("span");
-
-    arrow.className =
-        "jami-chat-context-submenu-arrow";
-
-    arrow.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-    arrow.textContent = "›";
-
-    eggButton.appendChild(
-        arrow
-    );
-
-    const submenu =
-        document.createElement("div");
-
-    submenu.className =
-        "jami-chat-context-menu jami-chat-context-submenu theme-body";
-
-    submenu.setAttribute(
-        "role",
-        "menu"
-    );
-
-    for (
-        let stage = 1;
-        stage <= 8;
-        stage += 1
-    ) {
-        const stageButton =
-            this.createModerationMenuButton(
-                `egg hatch ${stage}`,
-                async () => {
-                    this.closeModerationMenu();
-
-                    try {
-                        await this.setMemberEggStage(
-                            member,
-                            stage
-                        );
-                    } catch (error) {
-                        console.error(
-                            "Could not set egg stage:",
-                            error
-                        );
-
-                        window.alert(
-                            error.message
-                        );
-                    }
-                }
-            );
-
-        stageButton.setAttribute(
-            "role",
-            "menuitem"
-        );
-
-        submenu.appendChild(
-            stageButton
-        );
-    }
-
-    eggWrapper.append(
-        eggButton,
-        submenu
-    );
 
     const banButton =
         this.createModerationMenuButton(
@@ -9959,7 +9866,6 @@ openMemberModerationMenu(
 
     menu.append(
         historyButton,
-        eggWrapper,
         banButton
     );
 
@@ -10000,47 +9906,9 @@ openMemberModerationMenu(
     menu.style.top =
         `${top}px`;
 
-    const submenuRect =
-        submenu.getBoundingClientRect();
-
-    if (
-        left +
-        rect.width +
-        submenuRect.width >
-        window.innerWidth -
-            viewportPadding
-    ) {
-        menu.dataset.submenuSide =
-            "left";
-    }
-
-    const wrapperTop =
-        top +
-        eggWrapper.offsetTop;
-
-    const minimumSubmenuTop =
-        viewportPadding -
-        wrapperTop;
-
-    const maximumSubmenuTop =
-        window.innerHeight -
-        viewportPadding -
-        submenuRect.height -
-        wrapperTop;
-
-    submenu.style.top =
-        `${Math.max(
-            minimumSubmenuTop,
-            Math.min(
-                0,
-                maximumSubmenuTop
-            )
-        )}px`;
-
     this.moderationMenu =
         menu;
 }
-
 
 	createModerationMenuButton(
     label,
@@ -11101,134 +10969,6 @@ advanceEggHatch(stage) {
     }
 }
 
-applyEggStageUpdate(data) {
-    const clientId =
-        typeof data?.clientId ===
-            "string"
-            ? data.clientId
-            : "";
-
-    const avatar =
-        typeof data?.avatar ===
-            "string"
-            ? data.avatar
-            : "";
-
-    if (
-        !clientId ||
-        !/^egghatch[1-8]\.png$/i.test(
-            avatar
-        )
-    ) {
-        return;
-    }
-
-    if (clientId !== this.clientId) {
-        return;
-    }
-
-    if (this.discordUser) {
-        return;
-    }
-
-    this.avatar = avatar;
-
-    localStorage.setItem(
-        "chat_avatar",
-        avatar
-    );
-
-    const stage =
-        this.getEggHatchStage(
-            avatar
-        );
-
-    if (stage) {
-        this.writeEggHatchState(
-            stage,
-            0
-        );
-    }
-
-    this.eggHatchLastTickAt =
-        null;
-
-    if (this.avatarPreview) {
-        this.avatarPreview.src =
-            this.resolveChatAvatarSource(
-                avatar
-            );
-
-        this.applyChatAvatarStyle(
-            this.avatarPreview,
-            avatar
-        );
-    }
-
-    this.renderAvatarPicker();
-}
-
-async setMemberEggStage(
-    member,
-    stage
-) {
-    if (
-        !this.isAdmin ||
-        !this.adminKey
-    ) {
-        return;
-    }
-
-    const clientId =
-        member?.clientId;
-
-    if (
-        typeof clientId !== "string" ||
-        !clientId
-    ) {
-        return;
-    }
-
-    const response =
-        await fetch(
-            `${this.API}/api/admin/chat/egg-stage`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type":
-                        "application/json",
-                    "Authorization":
-                        `Bearer ${this.adminKey}`
-                },
-                body:
-                    JSON.stringify({
-                        clientId,
-                        stage
-                    })
-            }
-        );
-
-    const result =
-        await response.json();
-
-    if (!response.ok) {
-        throw new Error(
-            result?.error ||
-            `egg stage update failed (${response.status})`
-        );
-    }
-
-    if (clientId === this.clientId) {
-        this.applyEggStageUpdate({
-            clientId,
-            stage,
-            avatar:
-                result.avatar
-        });
-    }
-}
-
-
 	sendPresence() {
     if (
         !this.socket ||
@@ -11442,17 +11182,6 @@ connect() {
             "text-red-300"
         );
     }
-
-    return;
-}
-
-if (
-    data.type ===
-        "egg-stage-updated"
-) {
-    this.applyEggStageUpdate(
-        data
-    );
 
     return;
 }
