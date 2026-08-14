@@ -435,7 +435,7 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
   const strings = [
-    `<span class="text-white theme-body text-sm mr-2 ${glow}">⋆.˚ ☾⭒.˚⏾⋆.˚</span>`,
+    `<span class="text-white theme-body text-sm mr-2 ${glow}">°❀⋆.ೃ࿔*:･</span>`,
   ];
 
   typedInstance = new Typed('#typed', {
