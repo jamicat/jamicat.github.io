@@ -10508,6 +10508,7 @@ html[data-chat-theme="paws"]
     transform-origin: center center !important;
 }
 
+
 #chatWindow[data-chat-pastel="paws"] .jami-chat-paw svg {
     fill: none !important;
 }
@@ -10538,6 +10539,7 @@ html[data-chat-theme="paws"] .jami-reaction-tooltip {
     color: #ed6a7c !important;
 }
 
+
 html[data-chat-theme="paws"] .jami-chat-reply-composer,
 html[data-chat-theme="paws"] .jami-chat-reply-composer *,
 #chatWindow[data-chat-theme="paws"] .jami-chat-reply-composer,
@@ -10550,5 +10552,38 @@ html[data-chat-theme="paws"] .jami-chat-reply-dismiss,
 #chatWindow[data-chat-theme="paws"] .jami-chat-reply-cancel,
 #chatWindow[data-chat-theme="paws"] .jami-chat-reply-dismiss {
     color: rgba(238, 157, 174, 1) !important;
+}
+
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-chat-reply-reference,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-chat-reply-reference-name,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-chat-reply-reference-preview,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-chat-reply-composer,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-chat-reply-composer * {
+    color: #ee9dad !important;
+}
+
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-chat-reply-reference-preview {
+    opacity: 1 !important;
+}
+
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-chat-reply-cancel,
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+.jami-chat-reply-dismiss {
+    color: #ee9dad !important;
 }
 
