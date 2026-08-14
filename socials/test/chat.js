@@ -128,6 +128,14 @@ this.adminKey =
 this.isAdmin = false;
 this.moderationMenu = null;
 this.lastRenderedMembers = [];
+this.eggHatchIntervalMs = 450000;
+this.eggHatchTickTimer = null;
+this.eggHatchTabId = crypto.randomUUID();
+this.eggHatchLeaderKey =
+    "jamicat_egg_hatch_leader";
+this.eggHatchStateKey =
+    "jamicat_egg_hatch_state";
+this.eggHatchLastTickAt = null;
 this.banManager = null;
 this.banManagerButton = null;
 this.partyManager = null;
@@ -282,6 +290,7 @@ this.setupEmojiPicker();
 this.setupMembersToggle();
 this.setupNameSaving();
 this.setupMemberActivity();
+this.setupEggHatching();
 this.setupDragging();
 this.setupImageRemixing();
 window.addEventListener(
@@ -10697,6 +10706,401 @@ getEffectiveOutgoingAvatar() {
     );
 }
 
+getEggHatchStage(
+    avatar = this.avatar
+) {
+    const match =
+        typeof avatar === "string"
+            ? avatar.match(
+                /^egghatch([1-8])\.png$/i
+            )
+            : null;
+
+    if (!match) {
+        return null;
+    }
+
+    const stage =
+        Number(match[1]);
+
+    return Number.isInteger(stage)
+        ? stage
+        : null;
+}
+
+readEggHatchState() {
+    try {
+        const value =
+            JSON.parse(
+                localStorage.getItem(
+                    this.eggHatchStateKey
+                ) || "null"
+            );
+
+        if (
+            !value ||
+            value.clientId !== this.clientId ||
+            !Number.isInteger(value.stage) ||
+            value.stage < 1 ||
+            value.stage > 8
+        ) {
+            return null;
+        }
+
+        return {
+            clientId:
+                value.clientId,
+            stage:
+                value.stage,
+            accumulatedMs:
+                Math.max(
+                    0,
+                    Number(
+                        value.accumulatedMs
+                    ) || 0
+                )
+        };
+    } catch {
+        return null;
+    }
+}
+
+writeEggHatchState(
+    stage,
+    accumulatedMs = 0
+) {
+    localStorage.setItem(
+        this.eggHatchStateKey,
+        JSON.stringify({
+            clientId:
+                this.clientId,
+            stage,
+            accumulatedMs:
+                Math.max(
+                    0,
+                    accumulatedMs
+                )
+        })
+    );
+}
+
+clearEggHatchState() {
+    localStorage.removeItem(
+        this.eggHatchStateKey
+    );
+
+    this.eggHatchLastTickAt =
+        null;
+}
+
+claimEggHatchLeadership() {
+    const now = Date.now();
+    let current = null;
+
+    try {
+        current =
+            JSON.parse(
+                localStorage.getItem(
+                    this.eggHatchLeaderKey
+                ) || "null"
+            );
+    } catch {
+        current = null;
+    }
+
+    if (
+        current?.tabId &&
+        current.tabId !==
+            this.eggHatchTabId &&
+        Number(current.expiresAt) >
+            now
+    ) {
+        return false;
+    }
+
+    localStorage.setItem(
+        this.eggHatchLeaderKey,
+        JSON.stringify({
+            tabId:
+                this.eggHatchTabId,
+            expiresAt:
+                now + 5000
+        })
+    );
+
+    return true;
+}
+
+releaseEggHatchLeadership() {
+    let current = null;
+
+    try {
+        current =
+            JSON.parse(
+                localStorage.getItem(
+                    this.eggHatchLeaderKey
+                ) || "null"
+            );
+    } catch {
+        current = null;
+    }
+
+    if (
+        current?.tabId ===
+        this.eggHatchTabId
+    ) {
+        localStorage.removeItem(
+            this.eggHatchLeaderKey
+        );
+    }
+
+    this.eggHatchLastTickAt =
+        null;
+}
+
+syncEggAvatarFromStorage() {
+    const stored =
+        localStorage.getItem(
+            "chat_avatar"
+        ) || "";
+
+    if (
+        this.discordUser ||
+        stored === this.avatar
+    ) {
+        return;
+    }
+
+    const stage =
+        this.getEggHatchStage(
+            stored
+        );
+
+    if (!stage) {
+        return;
+    }
+
+    this.avatar = stored;
+
+    if (this.avatarPreview) {
+        this.avatarPreview.src =
+            this.resolveChatAvatarSource(
+                stored
+            );
+
+        this.applyChatAvatarStyle(
+            this.avatarPreview,
+            stored
+        );
+    }
+
+    this.renderAvatarPicker();
+}
+
+setupEggHatching() {
+    const currentStage =
+        this.getEggHatchStage();
+
+    if (currentStage) {
+        const state =
+            this.readEggHatchState();
+
+        if (
+            !state ||
+            state.stage !==
+                currentStage
+        ) {
+            this.writeEggHatchState(
+                currentStage,
+                0
+            );
+        }
+    } else {
+        this.clearEggHatchState();
+    }
+
+    window.addEventListener(
+        "storage",
+        event => {
+            if (
+                event.key ===
+                "chat_avatar"
+            ) {
+                this.syncEggAvatarFromStorage();
+            }
+
+            if (
+                event.key ===
+                this.eggHatchStateKey
+            ) {
+                this.eggHatchLastTickAt =
+                    null;
+            }
+        }
+    );
+
+    window.addEventListener(
+        "beforeunload",
+        () => {
+            this.releaseEggHatchLeadership();
+        }
+    );
+
+    this.eggHatchTickTimer =
+        window.setInterval(
+            () => {
+                this.tickEggHatching();
+            },
+            1000
+        );
+}
+
+tickEggHatching() {
+    if (this.discordUser) {
+        this.eggHatchLastTickAt =
+            null;
+        return;
+    }
+
+    const stage =
+        this.getEggHatchStage();
+
+    if (!stage || stage >= 8) {
+        if (!stage) {
+            this.clearEggHatchState();
+        }
+
+        this.eggHatchLastTickAt =
+            null;
+        return;
+    }
+
+    if (
+        !this.socket ||
+        this.socket.readyState !==
+            WebSocket.OPEN
+    ) {
+        this.eggHatchLastTickAt =
+            null;
+        return;
+    }
+
+    if (
+        !this.claimEggHatchLeadership()
+    ) {
+        this.eggHatchLastTickAt =
+            null;
+        return;
+    }
+
+    const now = Date.now();
+
+    if (
+        this.eggHatchLastTickAt ===
+        null
+    ) {
+        this.eggHatchLastTickAt =
+            now;
+        return;
+    }
+
+    const elapsed =
+        Math.max(
+            0,
+            now -
+            this.eggHatchLastTickAt
+        );
+
+    this.eggHatchLastTickAt =
+        now;
+
+    let state =
+        this.readEggHatchState();
+
+    if (
+        !state ||
+        state.stage !== stage
+    ) {
+        state = {
+            clientId:
+                this.clientId,
+            stage,
+            accumulatedMs: 0
+        };
+    }
+
+    const accumulatedMs =
+        state.accumulatedMs +
+        elapsed;
+
+    if (
+        accumulatedMs <
+        this.eggHatchIntervalMs
+    ) {
+        this.writeEggHatchState(
+            stage,
+            accumulatedMs
+        );
+        return;
+    }
+
+    this.advanceEggHatch(
+        stage
+    );
+}
+
+advanceEggHatch(stage) {
+    if (
+        !Number.isInteger(stage) ||
+        stage < 1 ||
+        stage >= 8 ||
+        this.getEggHatchStage() !==
+            stage
+    ) {
+        return;
+    }
+
+    const nextStage =
+        stage + 1;
+
+    const avatar =
+        `egghatch${nextStage}.png`;
+
+    this.avatar = avatar;
+
+    localStorage.setItem(
+        "chat_avatar",
+        avatar
+    );
+
+    this.writeEggHatchState(
+        nextStage,
+        0
+    );
+
+    this.eggHatchLastTickAt =
+        Date.now();
+
+    if (this.avatarPreview) {
+        this.avatarPreview.src =
+            this.resolveChatAvatarSource(
+                avatar
+            );
+
+        this.applyChatAvatarStyle(
+            this.avatarPreview,
+            avatar
+        );
+    }
+
+    this.renderAvatarPicker();
+    this.sendPresence();
+
+    if (nextStage >= 8) {
+        this.releaseEggHatchLeadership();
+    }
+}
+
 applyEggStageUpdate(data) {
     const clientId =
         typeof data?.clientId ===
@@ -10733,6 +11137,21 @@ applyEggStageUpdate(data) {
         "chat_avatar",
         avatar
     );
+
+    const stage =
+        this.getEggHatchStage(
+            avatar
+        );
+
+    if (stage) {
+        this.writeEggHatchState(
+            stage,
+            0
+        );
+    }
+
+    this.eggHatchLastTickAt =
+        null;
 
     if (this.avatarPreview) {
         this.avatarPreview.src =
@@ -10931,6 +11350,7 @@ connect() {
 
     this.socket.addEventListener("open", () => {
     console.log("chat websocket connected");
+    this.eggHatchLastTickAt = null;
 
     if (this.connectionStatus) {
         this.connectionStatus.textContent = "online";
@@ -11371,6 +11791,9 @@ if (data.name && data.message) {
 });
 
     this.socket.addEventListener("close", event => {
+        this.eggHatchLastTickAt = null;
+        this.releaseEggHatchLeadership();
+
         console.log(
             "chat websocket closed:",
             event.code,
@@ -16370,8 +16793,7 @@ renderDiscordAuthState() {
 		"black.gif",
 		"shark.gif",
 		"duck.gif",
-		"whitecat.png",
-		"egghatch1.png"
+		"whitecat.png"
     ];
 
     this.avatarPreview.src =
@@ -16456,12 +16878,26 @@ selectAvatar(filename) {
     }
 
     this.avatar = filename;
-	
 
     localStorage.setItem(
         "chat_avatar",
         filename
     );
+
+    const stage =
+        this.getEggHatchStage(
+            filename
+        );
+
+    if (stage) {
+        this.writeEggHatchState(
+            stage,
+            0
+        );
+    } else {
+        this.clearEggHatchState();
+        this.releaseEggHatchLeadership();
+    }
 
     this.avatarPreview.src =
         this.resolveChatAvatarSource(
@@ -16475,7 +16911,7 @@ selectAvatar(filename) {
 
     this.renderAvatarPicker();
     this.closeAvatarPicker();
-	this.sendPresence();
+    this.sendPresence();
 }
 
 openAvatarPicker() {
