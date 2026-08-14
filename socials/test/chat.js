@@ -127,7 +127,6 @@ this.adminKey =
 
 this.isAdmin = false;
 this.moderationMenu = null;
-this.eggStageAvatars = new Map();
 this.lastRenderedMembers = [];
 this.banManager = null;
 this.banManagerButton = null;
@@ -283,7 +282,6 @@ this.setupEmojiPicker();
 this.setupMembersToggle();
 this.setupNameSaving();
 this.setupMemberActivity();
-this.setupEggStageSync();
 this.setupDragging();
 this.setupImageRemixing();
 window.addEventListener(
@@ -10615,13 +10613,7 @@ setupMemberActivity() {
         row.className =
             "flex min-w-0 items-center gap-1";
 
-        const forcedAvatar =
-            this.eggStageAvatars.get(
-                member.clientId
-            ) || "";
-
         const memberAvatar =
-            forcedAvatar ||
             member.avatar;
 
         const avatar =
@@ -10697,117 +10689,12 @@ setupMemberActivity() {
     }
 }
 
-getEggStageAvatar(
-    clientId = this.clientId
-) {
-    return (
-        this.eggStageAvatars.get(
-            clientId
-        ) || ""
-    );
-}
-
 getEffectiveOutgoingAvatar() {
     return (
-        this.getEggStageAvatar(
-            this.clientId
-        ) ||
         this.discordUser?.avatarUrl ||
         this.avatar ||
         "original.gif"
     );
-}
-
-setupEggStageSync() {
-    this.refreshEggStages()
-        .catch(error => {
-            console.error(
-                "Could not load egg stages:",
-                error
-            );
-        });
-}
-
-async refreshEggStages() {
-    const response =
-        await fetch(
-            `${this.API}/api/chat/egg-stages`,
-            {
-                cache: "no-store"
-            }
-        );
-
-    if (!response.ok) {
-        throw new Error(
-            `egg stage refresh failed (${response.status})`
-        );
-    }
-
-    const result =
-        await response.json();
-
-    const next =
-        new Map();
-
-    for (
-        const item of
-        Array.isArray(result?.stages)
-            ? result.stages
-            : []
-    ) {
-        if (
-            typeof item?.clientId ===
-                "string" &&
-            /^egghatch[1-8]\.png$/i.test(
-                String(item.avatar || "")
-            )
-        ) {
-            next.set(
-                item.clientId,
-                item.avatar
-            );
-        }
-    }
-
-    const previousOwnAvatar =
-        this.getEggStageAvatar(
-            this.clientId
-        );
-
-    this.eggStageAvatars =
-        next;
-
-    const currentOwnAvatar =
-        this.getEggStageAvatar(
-            this.clientId
-        );
-
-    if (
-        this.avatarPreview &&
-        currentOwnAvatar
-    ) {
-        this.avatarPreview.src =
-            this.resolveChatAvatarSource(
-                currentOwnAvatar
-            );
-
-        this.applyChatAvatarStyle(
-            this.avatarPreview,
-            currentOwnAvatar
-        );
-    }
-
-    if (
-        this.membersElement &&
-        Array.isArray(
-            this.lastRenderedMembers
-        )
-    ) {
-        this.renderMembers(
-            this.lastRenderedMembers
-        );
-    }
-
 }
 
 applyEggStageUpdate(data) {
@@ -10832,15 +10719,22 @@ applyEggStageUpdate(data) {
         return;
     }
 
-    this.eggStageAvatars.set(
-        clientId,
+    if (clientId !== this.clientId) {
+        return;
+    }
+
+    if (this.discordUser) {
+        return;
+    }
+
+    this.avatar = avatar;
+
+    localStorage.setItem(
+        "chat_avatar",
         avatar
     );
 
-    if (
-        clientId === this.clientId &&
-        this.avatarPreview
-    ) {
+    if (this.avatarPreview) {
         this.avatarPreview.src =
             this.resolveChatAvatarSource(
                 avatar
@@ -10852,16 +10746,7 @@ applyEggStageUpdate(data) {
         );
     }
 
-    if (
-        this.membersElement &&
-        Array.isArray(
-            this.lastRenderedMembers
-        )
-    ) {
-        this.renderMembers(
-            this.lastRenderedMembers
-        );
-    }
+    this.renderAvatarPicker();
 }
 
 async setMemberEggStage(
@@ -10914,12 +10799,14 @@ async setMemberEggStage(
         );
     }
 
-    this.applyEggStageUpdate({
-        clientId,
-        stage,
-        avatar:
-            result.avatar
-    });
+    if (clientId === this.clientId) {
+        this.applyEggStageUpdate({
+            clientId,
+            stage,
+            avatar:
+                result.avatar
+        });
+    }
 }
 
 
@@ -16575,17 +16462,14 @@ selectAvatar(filename) {
         filename
     );
 
-    const visibleAvatar =
-        this.getEffectiveOutgoingAvatar();
-
     this.avatarPreview.src =
         this.resolveChatAvatarSource(
-            visibleAvatar
+            filename
         );
 
     this.applyChatAvatarStyle(
         this.avatarPreview,
-        visibleAvatar
+        filename
     );
 
     this.renderAvatarPicker();
