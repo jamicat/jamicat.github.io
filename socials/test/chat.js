@@ -19247,146 +19247,257 @@ keepTitleBarInViewport() {
 
 
     if (theme === "paws") {
-        const columns = 8;
-        const rows = 7;
+        const sampleStepX = 26;
+        const sampleStepY = 24;
+        const scanPasses = 3;
+
+        const nearestVisibleGap = (
+            x,
+            y
+        ) =>
+            occupied.reduce(
+                (distance, point) =>
+                    Math.min(
+                        distance,
+                        Math.max(
+                            0,
+                            Math.hypot(
+                                point.x - x,
+                                point.y - y
+                            ) -
+                            point.radius
+                        )
+                    ),
+                Infinity
+            );
+
+        const placeFillerNear = (
+            x,
+            y,
+            strict = false
+        ) => {
+            const size =
+                15.5 +
+                Math.random() * 5.5;
+
+            const halfWidthPercent =
+                Math.max(
+                    2.2,
+                    11 * 100 / width
+                );
+
+            const halfHeightPercent =
+                Math.max(
+                    2.2,
+                    11 * 100 / height
+                );
+
+            const centerLeft =
+                x * 100 / width;
+
+            const centerTop =
+                y * 100 / height;
+
+            const position =
+                findPosition({
+                    size,
+                    gap:
+                        strict
+                            ? 4
+                            : 4.5,
+                    minLeft:
+                        Math.max(
+                            1.8,
+                            centerLeft -
+                                halfWidthPercent
+                        ),
+                    maxLeft:
+                        Math.min(
+                            98.2,
+                            centerLeft +
+                                halfWidthPercent
+                        ),
+                    minTop:
+                        Math.max(
+                            1.8,
+                            centerTop -
+                                halfHeightPercent
+                        ),
+                    maxTop:
+                        Math.min(
+                            98.2,
+                            centerTop +
+                                halfHeightPercent
+                        ),
+                    attempts: 1100
+                });
+
+            if (!position) {
+                return false;
+            }
+
+            occupied.push({
+                x: position.x,
+                y: position.y,
+                radius: position.radius
+            });
+
+            const paw =
+                document.createElement("i");
+
+            paw.className =
+                "jami-chat-paw";
+
+            paw.style.left =
+                `${position.left}%`;
+
+            paw.style.top =
+                `${position.top}%`;
+
+            paw.style.width =
+                `${size}px`;
+
+            paw.style.height =
+                `${size}px`;
+
+            applyPawPalette(paw);
+
+            paw.style.opacity =
+                `${.18 + Math.random() * .13}`;
+
+            paw.style.transform =
+                `translate(-50%, -50%) rotate(${-16 + Math.random() * 32}deg)`;
+
+            paw.innerHTML =
+                makePawMarkup();
+
+            layer.appendChild(paw);
+
+            return true;
+        };
 
         for (
-            let row = 0;
-            row < rows;
-            row += 1
+            let pass = 0;
+            pass < scanPasses;
+            pass += 1
         ) {
+            const samples = [];
+
             for (
-                let column = 0;
-                column < columns;
-                column += 1
+                let y = 12;
+                y <= height - 12;
+                y += sampleStepY
             ) {
-                const left0 =
-                    2.5 +
-                    column *
-                    (95 / columns);
+                for (
+                    let x = 10;
+                    x <= width - 10;
+                    x += sampleStepX
+                ) {
+                    const leftRatio =
+                        x / width;
 
-                const left1 =
-                    2.5 +
-                    (column + 1) *
-                    (95 / columns);
+                    const topRatio =
+                        y / height;
 
-                const top0 =
-                    2.5 +
-                    row *
-                    (95 / rows);
+                    const allowedGap =
+                        leftRatio <= .16
+                            ? 13
+                            : leftRatio <= .28
+                                ? 16
+                                : topRatio <= .15
+                                    ? 17
+                                    : 19;
 
-                const top1 =
-                    2.5 +
-                    (row + 1) *
-                    (95 / rows);
+                    const gap =
+                        nearestVisibleGap(
+                            x,
+                            y
+                        );
 
-                const centerX =
-                    width *
-                    ((left0 + left1) / 2) /
-                    100;
+                    if (gap > allowedGap) {
+                        samples.push({
+                            x,
+                            y,
+                            gap,
+                            strict:
+                                leftRatio <= .28
+                        });
+                    }
+                }
+            }
 
-                const centerY =
-                    height *
-                    ((top0 + top1) / 2) /
-                    100;
+            samples.sort(
+                (a, b) =>
+                    b.gap - a.gap
+            );
 
-                const nearest =
-                    occupied.reduce(
-                        (distance, point) => {
-                            if (
-                                point.radius < 7
-                            ) {
-                                return distance;
-                            }
+            let placedThisPass = 0;
 
-                            return Math.min(
-                                distance,
-                                Math.hypot(
-                                    point.x -
-                                        centerX,
-                                    point.y -
-                                        centerY
-                                )
-                            );
-                        },
-                        Infinity
-                    );
-
-                const maximumDistance =
-                    column === 0
-                        ? 34
-                        : column === 1
-                            ? 40
-                            : row === 0
-                                ? 42
-                                : 47;
+            for (
+                const sample of samples
+            ) {
+                const allowedGap =
+                    sample.x / width <= .16
+                        ? 13
+                        : sample.x / width <= .28
+                            ? 16
+                            : sample.y / height <= .15
+                                ? 17
+                                : 19;
 
                 if (
-                    nearest <=
-                    maximumDistance
+                    nearestVisibleGap(
+                        sample.x,
+                        sample.y
+                    ) <= allowedGap
                 ) {
                     continue;
                 }
 
-                const size =
-                    16.5 +
-                    Math.random() * 5.5;
+                if (
+                    placeFillerNear(
+                        sample.x,
+                        sample.y,
+                        sample.strict
+                    )
+                ) {
+                    placedThisPass += 1;
+                }
+            }
 
-                const position =
-                    findPosition({
-                        size,
-                        gap: 5,
-                        minLeft:
-                            left0 + .7,
-                        maxLeft:
-                            left1 - .7,
-                        minTop:
-                            top0 + .7,
-                        maxTop:
-                            top1 - .7,
-                        attempts: 900
-                    });
+            if (placedThisPass === 0) {
+                break;
+            }
+        }
 
-                if (!position) {
+        const leftStripXs = [
+            width * .035,
+            width * .08,
+            width * .13
+        ];
+
+        for (
+            const x of leftStripXs
+        ) {
+            for (
+                let y = 14;
+                y <= height - 14;
+                y += 25
+            ) {
+                if (
+                    nearestVisibleGap(
+                        x,
+                        y
+                    ) <= 12
+                ) {
                     continue;
                 }
 
-                occupied.push({
-                    x: position.x,
-                    y: position.y,
-                    radius: position.radius
-                });
-
-                const paw =
-                    document.createElement("i");
-
-                paw.className =
-                    "jami-chat-paw";
-
-                paw.style.left =
-                    `${position.left}%`;
-
-                paw.style.top =
-                    `${position.top}%`;
-
-                paw.style.width =
-                    `${size}px`;
-
-                paw.style.height =
-                    `${size}px`;
-
-                applyPawPalette(paw);
-
-                paw.style.opacity =
-                    `${.18 + Math.random() * .13}`;
-
-                paw.style.transform =
-                    `translate(-50%, -50%) rotate(${-16 + Math.random() * 32}deg)`;
-
-                paw.innerHTML =
-                    makePawMarkup();
-
-                layer.appendChild(paw);
+                placeFillerNear(
+                    x,
+                    y,
+                    true
+                );
             }
         }
     }
@@ -20024,174 +20135,249 @@ keepTitleBarInViewport() {
     }
 
     if (theme === "paws") {
-        shellRegions.forEach(region => {
-            const columns = 9;
-            const rows =
-                region.maxTop -
-                region.minTop >= 12
-                    ? 2
-                    : 1;
+        const nearestShellVisibleGap = (
+            x,
+            y
+        ) =>
+            shellOccupied.reduce(
+                (distance, point) =>
+                    Math.min(
+                        distance,
+                        Math.max(
+                            0,
+                            Math.hypot(
+                                point.x - x,
+                                point.y - y
+                            ) -
+                            point.radius
+                        )
+                    ),
+                Infinity
+            );
+
+        const placeShellFillerNear = (
+            x,
+            y,
+            strict = false
+        ) => {
+            const size =
+                13 +
+                Math.random() * 5.5;
+
+            const halfWidthPercent =
+                Math.max(
+                    2,
+                    10 * 100 /
+                        shellWidth
+                );
+
+            const halfHeightPercent =
+                Math.max(
+                    2,
+                    10 * 100 /
+                        shellHeight
+                );
+
+            const centerLeft =
+                x * 100 /
+                shellWidth;
+
+            const centerTop =
+                y * 100 /
+                shellHeight;
+
+            const position =
+                findShellPosition({
+                    size,
+                    gap:
+                        strict
+                            ? 4
+                            : 4.5,
+                    minLeft:
+                        Math.max(
+                            1.5,
+                            centerLeft -
+                                halfWidthPercent
+                        ),
+                    maxLeft:
+                        Math.min(
+                            98.5,
+                            centerLeft +
+                                halfWidthPercent
+                        ),
+                    minTop:
+                        Math.max(
+                            1.5,
+                            centerTop -
+                                halfHeightPercent
+                        ),
+                    maxTop:
+                        Math.min(
+                            98.5,
+                            centerTop +
+                                halfHeightPercent
+                        ),
+                    attempts: 1100
+                });
+
+            if (!position) {
+                return false;
+            }
+
+            shellOccupied.push({
+                x: position.x,
+                y: position.y,
+                radius: position.radius
+            });
+
+            const paw =
+                document.createElement("i");
+
+            paw.className =
+                "jami-chat-paw jami-chat-shell-paw";
+
+            paw.style.left =
+                `${position.left}%`;
+
+            paw.style.top =
+                `${position.top}%`;
+
+            paw.style.width =
+                `${size}px`;
+
+            paw.style.height =
+                `${size}px`;
+
+            applyPawPalette(paw);
+
+            paw.style.opacity =
+                `${.25 + Math.random() * .11}`;
+
+            paw.style.transform =
+                `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
+
+            paw.innerHTML =
+                makePawMarkup();
+
+            shellLayer.appendChild(
+                paw
+            );
+
+            return true;
+        };
+
+        for (
+            const region of shellRegions
+        ) {
+            const minY =
+                shellHeight *
+                region.minTop /
+                100;
+
+            const maxY =
+                shellHeight *
+                region.maxTop /
+                100;
 
             for (
-                let row = 0;
-                row < rows;
-                row += 1
+                let pass = 0;
+                pass < 3;
+                pass += 1
             ) {
+                const samples = [];
+
                 for (
-                    let column = 0;
-                    column < columns;
-                    column += 1
+                    let y = minY + 8;
+                    y <= maxY - 8;
+                    y += 22
                 ) {
-                    const left0 =
-                        region.minLeft +
-                        column *
-                        (
-                            region.maxLeft -
-                            region.minLeft
-                        ) /
-                        columns;
+                    for (
+                        let x = 9;
+                        x <=
+                            shellWidth - 9;
+                        x += 24
+                    ) {
+                        const leftRatio =
+                            x /
+                            shellWidth;
 
-                    const left1 =
-                        region.minLeft +
-                        (column + 1) *
-                        (
-                            region.maxLeft -
-                            region.minLeft
-                        ) /
-                        columns;
+                        const allowedGap =
+                            leftRatio <= .16
+                                ? 11
+                                : leftRatio <= .28
+                                    ? 14
+                                    : 17;
 
-                    const top0 =
-                        region.minTop +
-                        row *
-                        (
-                            region.maxTop -
-                            region.minTop
-                        ) /
-                        rows;
+                        const gap =
+                            nearestShellVisibleGap(
+                                x,
+                                y
+                            );
 
-                    const top1 =
-                        region.minTop +
-                        (row + 1) *
-                        (
-                            region.maxTop -
-                            region.minTop
-                        ) /
-                        rows;
+                        if (
+                            gap >
+                            allowedGap
+                        ) {
+                            samples.push({
+                                x,
+                                y,
+                                gap,
+                                strict:
+                                    leftRatio <=
+                                    .28
+                            });
+                        }
+                    }
+                }
 
-                    const centerX =
-                        shellWidth *
-                        ((left0 + left1) / 2) /
-                        100;
+                samples.sort(
+                    (a, b) =>
+                        b.gap - a.gap
+                );
 
-                    const centerY =
-                        shellHeight *
-                        ((top0 + top1) / 2) /
-                        100;
+                let placedThisPass = 0;
 
-                    const nearest =
-                        shellOccupied.reduce(
-                            (
-                                distance,
-                                point
-                            ) => {
-                                if (
-                                    point.radius <
-                                    5
-                                ) {
-                                    return distance;
-                                }
-
-                                return Math.min(
-                                    distance,
-                                    Math.hypot(
-                                        point.x -
-                                            centerX,
-                                        point.y -
-                                            centerY
-                                    )
-                                );
-                            },
-                            Infinity
-                        );
-
-                    const maximumDistance =
-                        column === 0
-                            ? 30
-                            : column === 1
-                                ? 35
-                                : 42;
+                for (
+                    const sample of samples
+                ) {
+                    const allowedGap =
+                        sample.x /
+                            shellWidth <=
+                            .16
+                            ? 11
+                            : sample.x /
+                                shellWidth <=
+                                .28
+                                ? 14
+                                : 17;
 
                     if (
-                        nearest <=
-                        maximumDistance
+                        nearestShellVisibleGap(
+                            sample.x,
+                            sample.y
+                        ) <= allowedGap
                     ) {
                         continue;
                     }
 
-                    const size =
-                        13.5 +
-                        Math.random() * 5.5;
-
-                    const position =
-                        findShellPosition({
-                            size,
-                            gap: 5,
-                            minLeft:
-                                left0 + .5,
-                            maxLeft:
-                                left1 - .5,
-                            minTop:
-                                top0 + .5,
-                            maxTop:
-                                top1 - .5,
-                            attempts: 900
-                        });
-
-                    if (!position) {
-                        continue;
+                    if (
+                        placeShellFillerNear(
+                            sample.x,
+                            sample.y,
+                            sample.strict
+                        )
+                    ) {
+                        placedThisPass += 1;
                     }
+                }
 
-                    shellOccupied.push({
-                        x: position.x,
-                        y: position.y,
-                        radius: position.radius
-                    });
-
-                    const paw =
-                        document.createElement("i");
-
-                    paw.className =
-                        "jami-chat-paw jami-chat-shell-paw";
-
-                    paw.style.left =
-                        `${position.left}%`;
-
-                    paw.style.top =
-                        `${position.top}%`;
-
-                    paw.style.width =
-                        `${size}px`;
-
-                    paw.style.height =
-                        `${size}px`;
-
-                    applyPawPalette(paw);
-
-                    paw.style.opacity =
-                        `${.25 + Math.random() * .11}`;
-
-                    paw.style.transform =
-                        `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
-
-                    paw.innerHTML =
-                        makePawMarkup();
-
-                    shellLayer.appendChild(
-                        paw
-                    );
+                if (
+                    placedThisPass === 0
+                ) {
+                    break;
                 }
             }
-        });
+        }
     }
 
     this.window.appendChild(
