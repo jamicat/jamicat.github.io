@@ -10642,3 +10642,11 @@ html[data-chat-theme="paws"]
     opacity: 1;
     transform: translateX(0);
 }
+
+#chatWindow[data-chat-theme="paws"] #chatTyping {
+    color: #6f506c !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .jami-chat-edited-marker {
+    color: #ee9dad !important;
+}
