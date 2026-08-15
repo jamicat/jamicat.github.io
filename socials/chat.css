@@ -10642,3 +10642,7 @@ html[data-chat-theme="paws"]
     opacity: 1;
     transform: translateX(0);
 }
+
+#chatWindow[data-chat-theme="paws"] #chatTyping {
+    color: #ee9dad !important;
+}
