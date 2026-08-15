@@ -20418,3 +20418,7 @@ window.addEventListener("DOMContentLoaded", () => {
     window.chat = new ChatWidget();
 
 });
+
+#chatWindow[data-chat-theme="paws"] #chatTyping {
+    color: #ee9dad !important;
+}
