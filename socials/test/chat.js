@@ -18772,7 +18772,7 @@ keepTitleBarInViewport() {
             let position =
                 findPosition({
                     size,
-                    gap: 8,
+                    gap: 9,
                     minLeft: 4,
                     maxLeft: 96,
                     minTop: bandStart,
@@ -18787,7 +18787,7 @@ keepTitleBarInViewport() {
                 position =
                     findPosition({
                         size,
-                        gap: 7,
+                        gap: 8,
                         minLeft: 4,
                         maxLeft: 96,
                         minTop: 4,
@@ -18981,7 +18981,7 @@ keepTitleBarInViewport() {
                 const position =
                     findPosition({
                         size,
-                        gap: 5.5,
+                        gap: 6.2,
                         minLeft: left0 + 1,
                         maxLeft: left1 - 1,
                         minTop: top0 + 1,
@@ -19195,7 +19195,7 @@ keepTitleBarInViewport() {
                 const position =
                     findPosition({
                         size,
-                        gap: 5.5,
+                        gap: 6.2,
                         minLeft: 3.5,
                         maxLeft: 35,
                         minTop: top0 + .8,
@@ -19303,8 +19303,8 @@ keepTitleBarInViewport() {
                     size,
                     gap:
                         strict
-                            ? 4
-                            : 4.5,
+                            ? 4.5
+                            : 5.1,
                     minLeft:
                         Math.max(
                             1.8,
@@ -19401,12 +19401,12 @@ keepTitleBarInViewport() {
 
                     const allowedGap =
                         leftRatio <= .16
-                            ? 13
+                            ? 15
                             : leftRatio <= .28
-                                ? 16
+                                ? 18
                                 : topRatio <= .15
-                                    ? 17
-                                    : 19;
+                                    ? 19
+                                    : 21;
 
                     const gap =
                         nearestVisibleGap(
@@ -19438,12 +19438,12 @@ keepTitleBarInViewport() {
             ) {
                 const allowedGap =
                     sample.x / width <= .16
-                        ? 13
+                        ? 15
                         : sample.x / width <= .28
-                            ? 16
+                            ? 18
                             : sample.y / height <= .15
-                                ? 17
-                                : 19;
+                                ? 19
+                                : 21;
 
                 if (
                     nearestVisibleGap(
@@ -19488,7 +19488,7 @@ keepTitleBarInViewport() {
                     nearestVisibleGap(
                         x,
                         y
-                    ) <= 12
+                    ) <= 14
                 ) {
                     continue;
                 }
@@ -20081,7 +20081,7 @@ keepTitleBarInViewport() {
                     const position =
                         findShellPosition({
                             size,
-                            gap: 5.5,
+                            gap: 6.2,
                             minLeft: left0 + .6,
                             maxLeft: left1 - .6,
                             minTop: top0 + .6,
@@ -20191,8 +20191,8 @@ keepTitleBarInViewport() {
                     size,
                     gap:
                         strict
-                            ? 4
-                            : 4.5,
+                            ? 4.5
+                            : 5.1,
                     minLeft:
                         Math.max(
                             1.5,
@@ -20303,10 +20303,10 @@ keepTitleBarInViewport() {
 
                         const allowedGap =
                             leftRatio <= .16
-                                ? 11
+                                ? 13
                                 : leftRatio <= .28
-                                    ? 14
-                                    : 17;
+                                    ? 16
+                                    : 19;
 
                         const gap =
                             nearestShellVisibleGap(
@@ -20344,12 +20344,12 @@ keepTitleBarInViewport() {
                         sample.x /
                             shellWidth <=
                             .16
-                            ? 11
+                            ? 13
                             : sample.x /
                                 shellWidth <=
                                 .28
-                                ? 14
-                                : 17;
+                                ? 16
+                                : 19;
 
                     if (
                         nearestShellVisibleGap(
@@ -20418,7 +20418,3 @@ window.addEventListener("DOMContentLoaded", () => {
     window.chat = new ChatWidget();
 
 });
-
-#chatWindow[data-chat-theme="paws"] #chatTyping {
-    color: #ee9dad !important;
-}
