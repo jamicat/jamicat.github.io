@@ -18743,7 +18743,7 @@ keepTitleBarInViewport() {
         ];
 
         const count =
-            38 +
+            42 +
             Math.floor(
                 Math.random() * 9
             );
@@ -18946,8 +18946,8 @@ keepTitleBarInViewport() {
             "#c9b7ee"
         ];
 
-        const columns = 5;
-        const rows = 5;
+        const columns = 6;
+        const rows = 6;
 
         for (let row = 0; row < rows; row += 1) {
             for (let column = 0; column < columns; column += 1) {
@@ -18975,13 +18975,13 @@ keepTitleBarInViewport() {
                 }
 
                 const size =
-                    20 +
-                    Math.random() * 7;
+                    18.5 +
+                    Math.random() * 6.5;
 
                 const position =
                     findPosition({
                         size,
-                        gap: 6,
+                        gap: 5.5,
                         minLeft: left0 + 1,
                         maxLeft: left1 - 1,
                         minTop: top0 + 1,
@@ -19044,7 +19044,7 @@ keepTitleBarInViewport() {
             "#eee5ff"
         ];
 
-        const bands = 7;
+        const bands = 8;
 
         for (
             let band = 0;
@@ -19170,7 +19170,7 @@ keepTitleBarInViewport() {
                 width * .03;
 
             const x1 =
-                width * .31;
+                width * .36;
 
             const y0 =
                 height * top0 / 100;
@@ -19189,15 +19189,15 @@ keepTitleBarInViewport() {
 
             if (!hasPaw) {
                 const size =
-                    20 +
-                    Math.random() * 7;
+                    18.5 +
+                    Math.random() * 6.5;
 
                 const position =
                     findPosition({
                         size,
-                        gap: 7,
-                        minLeft: 4,
-                        maxLeft: 30,
+                        gap: 5.5,
+                        minLeft: 3.5,
+                        maxLeft: 35,
                         minTop: top0 + .8,
                         maxTop: top1 - .8,
                         attempts: 760
@@ -19523,9 +19523,9 @@ keepTitleBarInViewport() {
         ];
 
         const shellCount =
-            34 +
+            40 +
             Math.floor(
-                Math.random() * 9
+                Math.random() * 10
             );
 
         for (
@@ -19742,109 +19742,138 @@ keepTitleBarInViewport() {
         ];
 
         shellRegions.forEach(region => {
-            const columns = 7;
+            const columns = 8;
+            const rows =
+                region.maxTop -
+                region.minTop >= 14
+                    ? 2
+                    : 1;
 
             for (
-                let column = 0;
-                column < columns;
-                column += 1
+                let row = 0;
+                row < rows;
+                row += 1
             ) {
-                const left0 =
-                    region.minLeft +
-                    column *
+                const top0 =
+                    region.minTop +
+                    row *
                     (
-                        region.maxLeft -
-                        region.minLeft
+                        region.maxTop -
+                        region.minTop
                     ) /
-                    columns;
+                    rows;
 
-                const left1 =
-                    region.minLeft +
-                    (column + 1) *
+                const top1 =
+                    region.minTop +
+                    (row + 1) *
                     (
-                        region.maxLeft -
-                        region.minLeft
+                        region.maxTop -
+                        region.minTop
                     ) /
-                    columns;
+                    rows;
 
-                const hasPaw =
-                    shellOccupied.some(point => {
-                        const left =
-                            point.x * 100 /
-                            shellWidth;
+                for (
+                    let column = 0;
+                    column < columns;
+                    column += 1
+                ) {
+                    const left0 =
+                        region.minLeft +
+                        column *
+                        (
+                            region.maxLeft -
+                            region.minLeft
+                        ) /
+                        columns;
 
-                        const top =
-                            point.y * 100 /
-                            shellHeight;
+                    const left1 =
+                        region.minLeft +
+                        (column + 1) *
+                        (
+                            region.maxLeft -
+                            region.minLeft
+                        ) /
+                        columns;
 
-                        return (
-                            point.radius >= 6 &&
-                            left >= left0 &&
-                            left <= left1 &&
-                            top >= region.minTop &&
-                            top <= region.maxTop
-                        );
+                    const hasPaw =
+                        shellOccupied.some(point => {
+                            const left =
+                                point.x * 100 /
+                                shellWidth;
+
+                            const top =
+                                point.y * 100 /
+                                shellHeight;
+
+                            return (
+                                point.radius >= 5.5 &&
+                                left >= left0 &&
+                                left <= left1 &&
+                                top >= top0 &&
+                                top <= top1
+                            );
+                        });
+
+                    if (hasPaw) {
+                        continue;
+                    }
+
+                    const size =
+                        14.5 +
+                        Math.random() * 6;
+
+                    const position =
+                        findShellPosition({
+                            size,
+                            gap: 5.5,
+                            minLeft: left0 + .6,
+                            maxLeft: left1 - .6,
+                            minTop: top0 + .6,
+                            maxTop: top1 - .6,
+                            attempts: 760
+                        });
+
+                    if (!position) {
+                        continue;
+                    }
+
+                    shellOccupied.push({
+                        x: position.x,
+                        y: position.y,
+                        radius: position.radius
                     });
 
-                if (hasPaw) {
-                    continue;
+                    const paw =
+                        document.createElement("i");
+
+                    paw.className =
+                        "jami-chat-paw jami-chat-shell-paw";
+
+                    paw.style.left =
+                        `${position.left}%`;
+
+                    paw.style.top =
+                        `${position.top}%`;
+
+                    paw.style.width =
+                        `${size}px`;
+
+                    paw.style.height =
+                        `${size}px`;
+
+                    applyPawPalette(paw);
+
+                    paw.style.opacity =
+                        `${.27 + Math.random() * .12}`;
+
+                    paw.style.transform =
+                        `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
+
+                    paw.innerHTML =
+                        makePawMarkup();
+
+                    shellLayer.appendChild(paw);
                 }
-
-                const size =
-                    15 +
-                    Math.random() * 7;
-
-                const position =
-                    findShellPosition({
-                        size,
-                        gap: 6,
-                        minLeft: left0 + .7,
-                        maxLeft: left1 - .7,
-                        minTop: region.minTop + .8,
-                        maxTop: region.maxTop - .8,
-                        attempts: 620
-                    });
-
-                if (!position) {
-                    continue;
-                }
-
-                shellOccupied.push({
-                    x: position.x,
-                    y: position.y,
-                    radius: position.radius
-                });
-
-                const paw =
-                    document.createElement("i");
-
-                paw.className =
-                    "jami-chat-paw jami-chat-shell-paw";
-
-                paw.style.left =
-                    `${position.left}%`;
-
-                paw.style.top =
-                    `${position.top}%`;
-
-                paw.style.width =
-                    `${size}px`;
-
-                paw.style.height =
-                    `${size}px`;
-
-                applyPawPalette(paw);
-
-                paw.style.opacity =
-                    `${.27 + Math.random() * .12}`;
-
-                paw.style.transform =
-                    `translate(-50%, -50%) rotate(${-18 + Math.random() * 36}deg)`;
-
-                paw.innerHTML =
-                    makePawMarkup();
-
-                shellLayer.appendChild(paw);
             }
         });
     }
