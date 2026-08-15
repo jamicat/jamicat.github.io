@@ -18743,7 +18743,7 @@ keepTitleBarInViewport() {
         ];
 
         const count =
-            42 +
+            52 +
             Math.floor(
                 Math.random() * 9
             );
@@ -19668,7 +19668,7 @@ keepTitleBarInViewport() {
         ];
 
         const shellCount =
-            40 +
+            45 +
             Math.floor(
                 Math.random() * 10
             );
