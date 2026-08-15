@@ -10524,8 +10524,8 @@ setupMemberActivity() {
 
         name.className =
             member.afk === true
-                ? "min-w-0 truncate jami-member-afk"
-                : "min-w-0 truncate text-white/75";
+                ? "min-w-0 mt-0.5 truncate jami-member-afk"
+                : "min-w-0 mt-0.5 truncate text-white/75";
 
         name.textContent =
             member.name ||
