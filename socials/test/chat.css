@@ -8292,7 +8292,7 @@ html[data-chat-theme="paws"]
 
 #chatWindow[data-chat-pastel] .jami-chat-pastel-decor {
     display: block !important;
-    z-index: 1 !important;
+    z-index: 0 !important;
     opacity: 1 !important;
 }
 
