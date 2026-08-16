@@ -15137,6 +15137,296 @@ setupEmojiPicker() {
             src: "/emojis/catboba.gif"
         }
     ]
+},
+{
+    id: "hmphshork",
+    name: "hmph shork",
+    keywords: ["hmphshork", "shork"],
+    skins: [
+        {
+            src: "/emojis/hmphshork.png"
+        }
+    ]
+},
+{
+    id: "monstelemon",
+    name: "monste lemon",
+    keywords: ["monstelemon", "monster", "lemon"],
+    skins: [
+        {
+            src: "/emojis/monstelemon.png"
+        }
+    ]
+},
+{
+    id: "blahajspin",
+    name: "blahaj spin",
+    keywords: ["blahajspin", "blahaj", "spin"],
+    skins: [
+        {
+            src: "/emojis/blahajspin.gif"
+        }
+    ]
+},
+{
+    id: "sharkbongo",
+    name: "shark bongo",
+    keywords: ["sharkbongo", "shark", "bongo"],
+    skins: [
+        {
+            src: "/emojis/sharkbongo.gif"
+        }
+    ]
+},
+{
+    id: "mangoloco",
+    name: "mango loco",
+    keywords: ["mangoloco", "mango", "monster"],
+    skins: [
+        {
+            src: "/emojis/mangoloco.png"
+        }
+    ]
+},
+{
+    id: "bobasip",
+    name: "boba sip",
+    keywords: ["bobasip", "boba", "sip"],
+    skins: [
+        {
+            src: "/emojis/bobasip.png"
+        }
+    ]
+},
+{
+    id: "mew",
+    name: "mew",
+    keywords: ["mew", "pokemon"],
+    skins: [
+        {
+            src: "/emojis/mew.gif"
+        }
+    ]
+},
+{
+    id: "sharklove",
+    name: "shark love",
+    keywords: ["sharklove", "shark", "love"],
+    skins: [
+        {
+            src: "/emojis/sharklove.gif"
+        }
+    ]
+},
+{
+    id: "whitemonster",
+    name: "white monster",
+    keywords: ["whitemonster", "monster"],
+    skins: [
+        {
+            src: "/emojis/whitemonster.png"
+        }
+    ]
+},
+{
+    id: "staresatyou",
+    name: "stares at you",
+    keywords: ["staresatyou", "stare"],
+    skins: [
+        {
+            src: "/emojis/staresatyou.png"
+        }
+    ]
+},
+{
+    id: "cat preggers",
+    name: "catpregger",
+    keywords: ["preggers", "cat"],
+    skins: [
+        {
+            src: "/emojis/catpregger.png"
+        }
+    ]
+},
+{
+    id: "smushcat",
+    name: "smush cat",
+    keywords: ["smushcaw", "cat"],
+    skins: [
+        {
+            src: "/emojis/smushcat.gif"
+        }
+    ]
+},
+{
+    id: "catslide",
+    name: "cat slide",
+    keywords: ["catslide", "cat", "slide"],
+    skins: [
+        {
+            src: "/emojis/catslide.gif"
+        }
+    ]
+},
+{
+    id: "pinkdance",
+    name: "pink dance",
+    keywords: ["pinkdance", "pink", "dance"],
+    skins: [
+        {
+            src: "/emojis/pinkdance.gif"
+        }
+    ]
+},
+{
+    id: "pawpaw",
+    name: "paw paw",
+    keywords: ["pawpaw", "paw", "cat"],
+    skins: [
+        {
+            src: "/emojis/pawpaw.gif"
+        }
+    ]
+},
+{
+    id: "sharkburg",
+    name: "shark burg",
+    keywords: ["sharkburg", "shark", "burger"],
+    skins: [
+        {
+            src: "/emojis/sharkburg.gif"
+        }
+    ]
+},
+{
+    id: "monsternails",
+    name: "monster nails",
+    keywords: ["monsternails", "monster", "nails"],
+    skins: [
+        {
+            src: "/emojis/monsternails.png"
+        }
+    ]
+},
+{
+    id: "shorkAA",
+    name: "shork AA",
+    keywords: ["shorkAA", "shork"],
+    skins: [
+        {
+            src: "/emojis/shorkAA.png"
+        }
+    ]
+},
+{
+    id: "cutespin",
+    name: "cute spin",
+    keywords: ["cutespin", "cute", "spin"],
+    skins: [
+        {
+            src: "/emojis/cutespin.gif"
+        }
+    ]
+},
+{
+    id: "sharkspin",
+    name: "shark spin",
+    keywords: ["sharkspin", "shark", "spin"],
+    skins: [
+        {
+            src: "/emojis/sharkspin.gif"
+        }
+    ]
+},
+{
+    id: "shorkA",
+    name: "shork A",
+    keywords: ["shorkA", "shork"],
+    skins: [
+        {
+            src: "/emojis/shorkA.gif"
+        }
+    ]
+},
+{
+    id: "shorkhug",
+    name: "shork hug",
+    keywords: ["shorkhug", "shork", "hug"],
+    skins: [
+        {
+            src: "/emojis/shorkhug.png"
+        }
+    ]
+},
+{
+    id: "shorkspeen",
+    name: "shork speen",
+    keywords: ["shorkspeen", "shork", "spin"],
+    skins: [
+        {
+            src: "/emojis/shorkspeen.gif"
+        }
+    ]
+},
+{
+    id: "shorkboba",
+    name: "shork boba",
+    keywords: ["shorkboba", "shork", "boba"],
+    skins: [
+        {
+            src: "/emojis/shorkboba.png"
+        }
+    ]
+},
+{
+    id: "spinnyshork",
+    name: "spinny shork",
+    keywords: ["spinnyshork", "shork", "spin"],
+    skins: [
+        {
+            src: "/emojis/spinnyshork.gif"
+        }
+    ]
+},
+{
+    id: "shorkpuffed",
+    name: "shork puffed",
+    keywords: ["shorkpuffed", "shork", "puffed"],
+    skins: [
+        {
+            src: "/emojis/shorkpuffed.webp"
+        }
+    ]
+},
+{
+    id: "shorkwash",
+    name: "shork wash",
+    keywords: ["shorkwash", "shork", "wash"],
+    skins: [
+        {
+            src: "/emojis/shorkwash.gif"
+        }
+    ]
+},
+{
+    id: "shorkpat",
+    name: "shork pat",
+    keywords: ["shorkpat", "shork", "pat"],
+    skins: [
+        {
+            src: "/emojis/shorkpat.gif"
+        }
+    ]
+},
+{
+    id: "sharkdance",
+    name: "shark dance",
+    keywords: ["sharkdance", "shark", "dance"],
+    skins: [
+        {
+            src: "/emojis/sharkdance.gif"
+        }
+    ]
 }
         ]
     }
