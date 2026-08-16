@@ -14974,16 +14974,6 @@ setupEmojiPicker() {
     ]
 },
 {
-    id: "mew",
-    name: "mew",
-    keywords: ["mew", "pokemon"],
-    skins: [
-        {
-            src: "/emojis/mew.gif"
-        }
-    ]
-},
-{
     id: "floatpuff",
     name: "float puff",
     keywords: [
