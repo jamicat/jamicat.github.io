@@ -14802,16 +14802,6 @@ setupEmojiPicker() {
                 ]
             },
             {
-                id: "pointandlaugh",
-                name: "point and laugh",
-                keywords: ["point", "laugh", "funny"],
-                skins: [
-                    {
-                        src: "/emojis/pointandlaugh.png"
-                    }
-                ]
-            },
-            {
                 id: "tongue",
                 name: "tongue",
                 keywords: ["tongue", "silly", "tease", "cat"],
@@ -14872,6 +14862,16 @@ setupEmojiPicker() {
         }
     ]
 },
+ {
+                id: "pointandlaugh",
+                name: "point and laugh",
+                keywords: ["point", "laugh", "funny"],
+                skins: [
+                    {
+                        src: "/emojis/pointandlaugh.png"
+                    }
+                ]
+            },
 			{
     id: "pikagiggle",
     name: "pika giggle",
@@ -15194,7 +15194,7 @@ setupEmojiPicker() {
             src: "/emojis/sharkdance.gif"
         }
     ]
-}
+},
 {
     id: "blahajspin",
     name: "blahaj spin",
