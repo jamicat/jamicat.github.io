@@ -15356,22 +15356,22 @@ setupEmojiPicker() {
     ]
 },
 {
-    id: "shorkAA",
-    name: "shork AA",
-    keywords: ["shorkAA", "shork"],
-    skins: [
-        {
-            src: "/emojis/shorkAA.png"
-        }
-    ]
-},
-{
     id: "shorkA",
     name: "shork A",
     keywords: ["shorkA", "shork"],
     skins: [
         {
             src: "/emojis/shorkA.gif"
+        }
+    ]
+},
+{
+    id: "shorkAA",
+    name: "shork AA",
+    keywords: ["shorkAA", "shork"],
+    skins: [
+        {
+            src: "/emojis/shorkAA.png"
         }
     ]
 },
