@@ -14839,16 +14839,6 @@ setupEmojiPicker() {
             },
 
 {
-    id: "pikathink",
-    name: "pika thinking",
-    keywords: ["pikachu", "pokemon", "think", "hmm"],
-    skins: [
-        {
-            src: "/emojis/pikathink.png"
-        }
-    ]
-},
-{
     id: "pokecharge",
     name: "charge",
     keywords: ["pokemon", "charge", "energy", "power"],
@@ -14878,20 +14868,6 @@ setupEmojiPicker() {
                     }
                 ]
             },
-			{
-    id: "pikagiggle",
-    name: "pika giggle",
-    keywords: [
-        "pikachu",
-        "giggle",
-        "pokemon"
-    ],
-    skins: [
-        {
-            src: "/emojis/pikagiggle.png"
-        }
-    ]
-},
 {
     id: "cantlook",
     name: "can't look",
@@ -14921,17 +14897,7 @@ setupEmojiPicker() {
             src: "/emojis/huh.gif"
         }
     ]
-},
-{
-    id: "pikagrin",
-    name: "pika grin",
-    keywords: ["pikachu", "pokemon", "grin", "smug"],
-    skins: [
-        {
-            src: "/emojis/pikagrin.png"
-        }
-    ]
-},
+}
 {
     id: "floatpuff",
     name: "float puff",
@@ -15013,12 +14979,46 @@ setupEmojiPicker() {
     ]
 },
 {
+    id: "pikagiggle",
+    name: "pika giggle",
+    keywords: [
+        "pikachu",
+        "giggle",
+        "pokemon"
+    ],
+    skins: [
+        {
+            src: "/emojis/pikagiggle.png"
+        }
+    ]
+},
+{
+    id: "pikathink",
+    name: "pika thinking",
+    keywords: ["pikachu", "pokemon", "think", "hmm"],
+    skins: [
+        {
+            src: "/emojis/pikathink.png"
+        }
+    ]
+},
+{
     id: "pikasideeye",
     name: "pika sideeye",
     keywords: ["pikachu", "pokemon", "side eye", "sus", "judging"],
     skins: [
         {
             src: "/emojis/pikasideeye.png"
+        }
+    ]
+},
+{
+    id: "pikagrin",
+    name: "pika grin",
+    keywords: ["pikachu", "pokemon", "grin", "smug"],
+    skins: [
+        {
+            src: "/emojis/pikagrin.png"
         }
     ]
 },
