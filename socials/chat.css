@@ -10650,3 +10650,7 @@ html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"] .jami-chat-edited-marker {
     color: #ee9dad !important;
 }
+
+#chatWindow[data-chat-pastel="paws"] .jami-remix-attribution {
+    color: #ee9dad;
+}
