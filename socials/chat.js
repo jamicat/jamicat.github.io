@@ -15386,6 +15386,16 @@ setupEmojiPicker() {
     ]
 },
 {
+    id: "hmphshork",
+    name: "hmph shork",
+    keywords: ["hmphshork", "shork"],
+    skins: [
+        {
+            src: "/emojis/hmphshork.png"
+        }
+    ]
+},
+{
     id: "shorkpat",
     name: "shork pat",
     keywords: ["shorkpat", "shork", "pat"],
@@ -15406,32 +15416,22 @@ setupEmojiPicker() {
     ]
 },
 {
-    id: "shorkwash",
-    name: "shork wash",
-    keywords: ["shorkwash", "shork", "wash"],
-    skins: [
-        {
-            src: "/emojis/shorkwash.gif"
-        }
-    ]
-},
-{
-    id: "hmphshork",
-    name: "hmph shork",
-    keywords: ["hmphshork", "shork"],
-    skins: [
-        {
-            src: "/emojis/hmphshork.png"
-        }
-    ]
-},
-{
     id: "sharkbongo",
     name: "shark bongo",
     keywords: ["sharkbongo", "shark", "bongo"],
     skins: [
         {
             src: "/emojis/sharkbongo.gif"
+        }
+    ]
+},
+{
+    id: "shorkwash",
+    name: "shork wash",
+    keywords: ["shorkwash", "shork", "wash"],
+    skins: [
+        {
+            src: "/emojis/shorkwash.gif"
         }
     ]
 }
