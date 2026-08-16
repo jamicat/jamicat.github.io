@@ -15212,6 +15212,26 @@ setupEmojiPicker() {
     ]
 },
 {
+    id: "shorkspeen",
+    name: "shork speen",
+    keywords: ["shorkspeen", "shork", "spin"],
+    skins: [
+        {
+            src: "/emojis/shorkspeen.gif"
+        }
+    ]
+},
+{
+    id: "cutespin",
+    name: "cute spin",
+    keywords: ["cutespin", "cute", "spin"],
+    skins: [
+        {
+            src: "/emojis/cutespin.gif"
+        }
+    ]
+},
+{
     id: "blahajspin",
     name: "blahaj spin",
     keywords: ["blahajspin", "blahaj", "spin"],
@@ -15232,16 +15252,6 @@ setupEmojiPicker() {
     ]
 },
 {
-    id: "shorkspeen",
-    name: "shork speen",
-    keywords: ["shorkspeen", "shork", "spin"],
-    skins: [
-        {
-            src: "/emojis/shorkspeen.gif"
-        }
-    ]
-},
-{
     id: "spinnyshork",
     name: "spinny shork",
     keywords: ["spinnyshork", "shork", "spin"],
@@ -15258,16 +15268,6 @@ setupEmojiPicker() {
     skins: [
         {
             src: "/emojis/blahajspin.gif"
-        }
-    ]
-},
-{
-    id: "cutespin",
-    name: "cute spin",
-    keywords: ["cutespin", "cute", "spin"],
-    skins: [
-        {
-            src: "/emojis/cutespin.gif"
         }
     ]
 },
