@@ -25,42 +25,71 @@ this.sourceContext = null;
             { id: "gifify-32", label: "GIFify 32 colours" }
         ];
 
-        this.emojiFiles = [
-            "blueblob.gif",
-            "bulbasip.png",
-            "cantlook.png",
-            "catboba.gif",
-            "catcooking.gif",
-            "catdance.gif",
-            "catflip.gif",
-            "catpeace.gif",
-            "clefable.gif",
-            "drooling.gif",
-            "duckbop.gif",
-            "duckdance.gif",
-            "duckjump.gif",
-            "espeonconfetti.gif",
-            "floatpuff.gif",
-            "huh.gif",
-            "meowhappy.gif",
-            "pikagiggle.png",
-            "pikagrin.png",
-            "pikapuff.gif",
-            "pikasideeye.png",
-            "pikasway.gif",
-            "pikatea.png",
-            "pikathink.png",
-            "pinkblob.gif",
-            "pointandlaugh.png",
-            "pokecharge.gif",
-            "sharkgirl.png",
-            "shubadance.gif",
-            "sprigdance.gif",
-            "tongue.gif",
-            "widevapo.png",
-            "wooperyay.gif",
-            "yellowblob.gif"
-        ];
+     this.emojiFiles = [
+    "blahjspin.gif",
+    "blueblob.gif",
+    "bobasip.png",
+    "bulbasip.png",
+    "cantlook.png",
+    "catboba.gif",
+    "catcooking.gif",
+    "catdance.gif",
+    "catflip.gif",
+    "catpeace.gif",
+    "catpregger.png",
+    "catslide.gif",
+    "clefable.gif",
+    "cutespin.gif",
+    "drooling.gif",
+    "duckbop.gif",
+    "duckdance.gif",
+    "duckjump.gif",
+    "espeonconfetti.gif",
+    "floatpuff.gif",
+    "hmphshork.png",
+    "huh.gif",
+    "meowhappy.gif",
+    "mew.gif",
+    "monstermelon.png",
+    "monstermango.png",
+    "monsternails.png",
+    "monsterwhite.png",
+    "pawpaw.gif",
+    "pikagiggle.png",
+    "pikagrin.png",
+    "pikapuff.gif",
+    "pikasideeye.png",
+    "pikasway.gif",
+    "pikatea.png",
+    "pikathink.png",
+    "pinkblob.gif",
+    "pinkdance.gif",
+    "pointandlaugh.png",
+    "pokecharge.gif",
+    "sharkbongo.gif",
+    "sharkbug.gif",
+    "sharkgirl.png",
+    "sharklove.gif",
+    "sharkspin.gif",
+    "shorkA.gif",
+    "shorkAA.png",
+    "shorkboba.png",
+    "shorkdance.gif",
+    "shorkhug.png",
+    "shorkpat.gif",
+    "shorkpuffed.webp",
+    "shorkspeen.gif",
+    "shorkwash.gif",
+    "shubadance.gif",
+    "smushcat.gif",
+    "spinnyshork.gif",
+    "sprigdance.gif",
+    "staresatyou.png",
+    "tongue.gif",
+    "widevapo.png",
+    "wooperyay.gif",
+    "yellowblob.gif"
+];
 
         this.stage = null;
         this.overlayLayer = null;
@@ -69,11 +98,6 @@ this.sourceContext = null;
         this.selectedOverlayId = null;
         this.overlaySequence = 0;
         this.lastExportBlob = null;
-
-        /*
-         * Safety limits for browser-side animated remix rendering.
-         * These deliberately stay below the Worker's 8 MiB image limit.
-         */
         this.maximumOverlayCount = 24;
         this.maximumAnimatedEmojiCount = 8;
         this.maximumAnimatedOutputBytes =
@@ -172,10 +196,6 @@ this.sourceContext = null;
                             data-jami-remix-emoji-picker
                             hidden
                         ></div>
-
-                        <div class="jami-remix-overlay-hint">
-                            drag to move · corner to resize · top handle to rotate · flip buttons
-                        </div>
                     </aside>
                 </div>
 
@@ -459,10 +479,6 @@ button.dataset.effectLabel =
     const image =
         new Image();
 
-    /*
-     * Required when loading an image
-     * from the Worker or another origin.
-     */
     image.crossOrigin =
         "anonymous";
 
@@ -583,11 +599,6 @@ button.dataset.effectLabel =
         return;
     }
 
-    /*
-     * Always rebuild from the untouched
-     * source so effects do not repeatedly
-     * damage the previous preview.
-     */
     const workingCanvas =
         document.createElement(
             "canvas"
@@ -694,10 +705,6 @@ applyEffect(
             );
             break;
 
-        /*
-         * Emojis and ghost orbs are added
-         * in the interactive-overlay pass.
-         */
         default:
             break;
     }
@@ -742,10 +749,6 @@ applyEffect(
         height
     );
 
-    /*
-     * Slightly increased contrast and
-     * saturation for the monitor image.
-     */
     context.save();
 
     context.filter =
@@ -758,10 +761,6 @@ applyEffect(
     );
 
     context.restore();
-
-    /*
-     * Soft phosphor glow.
-     */
     context.save();
 
     context.globalCompositeOperation =
@@ -781,9 +780,6 @@ applyEffect(
 
     context.restore();
 
-    /*
-     * Horizontal CRT scanlines.
-     */
     context.save();
 
     context.globalAlpha =
@@ -807,9 +803,6 @@ applyEffect(
 
     context.restore();
 
-    /*
-     * Gentle vignette around the edges.
-     */
     const vignette =
         context.createRadialGradient(
             width / 2,
@@ -852,9 +845,6 @@ applyEffect(
         height
     );
 
-    /*
-     * Very faint cool monitor tint.
-     */
     context.save();
 
     context.globalCompositeOperation =
@@ -936,9 +926,6 @@ applyCctv(
         0
     );
 
-    /*
-     * Base monochrome security-camera look.
-     */
     context.clearRect(
         0,
         0,
@@ -962,10 +949,6 @@ applyCctv(
     );
 
     context.restore();
-
-    /*
-     * Slight green-grey monitor tint.
-     */
     context.save();
 
     context.globalCompositeOperation =
@@ -985,10 +968,7 @@ applyCctv(
     );
 
     context.restore();
-
-    /*
-     * Fine sensor noise.
-     */
+    
     const imageData =
         context.getImageData(
             0,
@@ -1048,9 +1028,6 @@ applyCctv(
         0
     );
 
-    /*
-     * Security monitor scanlines.
-     */
     context.save();
 
     context.globalAlpha =
@@ -1074,9 +1051,6 @@ applyCctv(
 
     context.restore();
 
-    /*
-     * Faint horizontal rolling band.
-     */
     const bandY =
         Math.floor(
             height * 0.62
@@ -1115,9 +1089,6 @@ applyCctv(
         48
     );
 
-    /*
-     * Dark camera housing vignette.
-     */
     const vignette =
         context.createRadialGradient(
             width / 2,
@@ -1160,9 +1131,6 @@ applyCctv(
         height
     );
 
-    /*
-     * Tiny CCTV-style corner marks.
-     */
     const cornerSize =
         Math.max(
             12,
@@ -1197,9 +1165,6 @@ applyCctv(
 
     context.beginPath();
 
-    /*
-     * Top-left.
-     */
     context.moveTo(
         inset,
         inset + cornerSize
@@ -1215,9 +1180,6 @@ applyCctv(
         inset
     );
 
-    /*
-     * Top-right.
-     */
     context.moveTo(
         width - inset - cornerSize,
         inset
@@ -1233,9 +1195,6 @@ applyCctv(
         inset + cornerSize
     );
 
-    /*
-     * Bottom-left.
-     */
     context.moveTo(
         inset,
         height - inset - cornerSize
@@ -1251,9 +1210,6 @@ applyCctv(
         height - inset
     );
 
-    /*
-     * Bottom-right.
-     */
     context.moveTo(
         width - inset - cornerSize,
         height - inset
@@ -2032,12 +1988,6 @@ applyJpeg100x(
         0
     );
 
-    /*
-     * Repeated shrinking and enlargement
-     * approximates many generations of
-     * low-quality JPEG recompression without
-     * making the render pipeline asynchronous.
-     */
     let current = source;
 
     const passes = 7;
@@ -2176,10 +2126,6 @@ applyJpeg100x(
             5 +
             pass * 2;
 
-        /*
-         * Quantise colour and partially share
-         * chroma inside JPEG-like blocks.
-         */
         for (
             let blockY = 0;
             blockY < height;
@@ -2389,10 +2335,6 @@ applyJpeg100x(
     );
     context.restore();
 
-    /*
-     * Faint block-grid seams complete the
-     * repeatedly-recompressed appearance.
-     */
     context.save();
     context.globalAlpha = 0.045;
     context.strokeStyle = "#111";
@@ -2460,12 +2402,6 @@ applyGifify32(
     const pixels =
         imageData.data;
 
-    /*
-     * A fixed 32-colour RGB palette:
-     * 4 red levels × 4 green levels ×
-     * 2 blue levels. Ordered dithering
-     * prevents broad flat bands.
-     */
     const bayer4 = [
         0, 8, 2, 10,
         12, 4, 14, 6,
@@ -2616,11 +2552,6 @@ applyGifify32(
         0
     );
 
-    /*
-     * Give it the slightly crunchy display
-     * quality of a small web GIF enlarged in
-     * the browser.
-     */
     const reduced =
         document.createElement(
             "canvas"
@@ -4376,17 +4307,6 @@ applyGifify32(
     }
 
     encodeGifLzw(indexedPixels) {
-        /*
-         * Valid low-complexity GIF LZW stream.
-         *
-         * The previous dictionary encoder could change
-         * code width at a point that disagreed with some
-         * browser decoders on large frames. This version
-         * deliberately clears the dictionary before the
-         * 9-bit code space can grow, then writes literal
-         * palette indexes. Compression is weaker, but the
-         * output is deterministic and robust for remix GIFs.
-         */
         const clearCode = 256;
         const endCode = 257;
         const codeSize = 9;
@@ -4627,12 +4547,7 @@ applyGifify32(
             await this.prepareAnimatedEmojiFrames();
 
         try {
-            /*
-             * Draw explicitly decoded GIF frames at each
-             * output timestamp. Relying on an HTMLImageElement
-             * during a timed capture can repeatedly expose the
-             * same composited frame in Chromium.
-             */
+
             for (
                 let index = 0;
                 index < frameCount;
@@ -4651,11 +4566,6 @@ applyGifify32(
                     (index + 1) / frameCount
                 );
 
-                /*
-                 * Yield so the UI remains responsive. The
-                 * animation timing itself is deterministic and
-                 * no longer depends on this delay.
-                 */
                 await this.wait(0);
             }
         } finally {
