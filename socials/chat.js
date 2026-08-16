@@ -14932,20 +14932,6 @@ setupEmojiPicker() {
     ]
 },
 {
-    id: "floatpuff",
-    name: "float puff",
-    keywords: [
-        "jigglypuff",
-        "pokemon",
-        "float"
-    ],
-    skins: [
-        {
-            src: "/emojis/floatpuff.gif"
-        }
-    ]
-},
-{
     id: "meowhappy",
     name: "meowth happy",
     keywords: [
@@ -14994,6 +14980,20 @@ setupEmojiPicker() {
     skins: [
         {
             src: "/emojis/mew.gif"
+        }
+    ]
+},
+{
+    id: "floatpuff",
+    name: "float puff",
+    keywords: [
+        "jigglypuff",
+        "pokemon",
+        "float"
+    ],
+    skins: [
+        {
+            src: "/emojis/floatpuff.gif"
         }
     ]
 },
