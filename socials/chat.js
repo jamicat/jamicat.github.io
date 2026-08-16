@@ -14838,6 +14838,40 @@ setupEmojiPicker() {
                 ]
             },
 {
+                id: "pinkdance",
+                name: "pink dancedance",
+                keywords: ["dance", "cat", "pink"],
+                skins: [
+                    {
+                        src: "/emojis/pinkdance.gif"
+                    }
+                ]
+            },
+{
+    id: "catpeace",
+    name: "cat peace",
+    keywords: [
+        "cat",
+        "peace",
+        "cute"
+    ],
+    skins: [
+        {
+            src: "/emojis/catpeace.gif"
+        }
+    ]
+},
+{
+    id: "catslide",
+    name: "cat slide",
+    keywords: ["catslide", "cat", "slide"],
+    skins: [
+        {
+            src: "/emojis/catslide.gif"
+        }
+    ]
+},
+{
     id: "pokecharge",
     name: "charge",
     keywords: ["pokemon", "charge", "energy", "power"],
@@ -15282,16 +15316,22 @@ setupEmojiPicker() {
     ]
 },
 {
-    id: "catpeace",
-    name: "cat peace",
-    keywords: [
-        "cat",
-        "peace",
-        "cute"
-    ],
+    id: "smushcat",
+    name: "smush cat",
+    keywords: ["smushcaw", "cat"],
     skins: [
         {
-            src: "/emojis/catpeace.gif"
+            src: "/emojis/smushcat.gif"
+        }
+    ]
+},
+{
+    id: "pawpaw",
+    name: "paw paw",
+    keywords: ["pawpaw", "paw", "cat"],
+    skins: [
+        {
+            src: "/emojis/pawpaw.gif"
         }
     ]
 },
@@ -15312,36 +15352,6 @@ setupEmojiPicker() {
     skins: [
         {
             src: "/emojis/catpregger.png"
-        }
-    ]
-},
-{
-    id: "smushcat",
-    name: "smush cat",
-    keywords: ["smushcaw", "cat"],
-    skins: [
-        {
-            src: "/emojis/smushcat.gif"
-        }
-    ]
-},
-{
-    id: "catslide",
-    name: "cat slide",
-    keywords: ["catslide", "cat", "slide"],
-    skins: [
-        {
-            src: "/emojis/catslide.gif"
-        }
-    ]
-},
-{
-    id: "pawpaw",
-    name: "paw paw",
-    keywords: ["pawpaw", "paw", "cat"],
-    skins: [
-        {
-            src: "/emojis/pawpaw.gif"
         }
     ]
 },
