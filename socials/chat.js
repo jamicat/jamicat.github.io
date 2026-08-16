@@ -14837,7 +14837,6 @@ setupEmojiPicker() {
                     }
                 ]
             },
-
 {
     id: "pokecharge",
     name: "charge",
@@ -14897,7 +14896,7 @@ setupEmojiPicker() {
             src: "/emojis/huh.gif"
         }
     ]
-}
+},
 {
     id: "floatpuff",
     name: "float puff",
@@ -14909,20 +14908,6 @@ setupEmojiPicker() {
     skins: [
         {
             src: "/emojis/floatpuff.gif"
-        }
-    ]
-},
-{
-    id: "pikapuff",
-    name: "pika puff",
-    keywords: [
-        "pikachu",
-        "jigglypuff",
-        "pokemon"
-    ],
-    skins: [
-        {
-            src: "/emojis/pikapuff.gif"
         }
     ]
 },
@@ -14979,6 +14964,20 @@ setupEmojiPicker() {
     ]
 },
 {
+    id: "pikapuff",
+    name: "pika puff",
+    keywords: [
+        "pikachu",
+        "jigglypuff",
+        "pokemon"
+    ],
+    skins: [
+        {
+            src: "/emojis/pikapuff.gif"
+        }
+    ]
+},
+{
     id: "pikagiggle",
     name: "pika giggle",
     keywords: [
@@ -14992,6 +14991,7 @@ setupEmojiPicker() {
         }
     ]
 },
+
 {
     id: "pikathink",
     name: "pika thinking",
@@ -15202,12 +15202,12 @@ setupEmojiPicker() {
     ]
 },
 {
-    id: "sharkdance",
-    name: "shark dance",
+    id: "shorkdance",
+    name: "shork dance",
     keywords: ["sharkdance", "shark", "dance"],
     skins: [
         {
-            src: "/emojis/sharkdance.gif"
+            src: "/emojis/shorkdance.gif"
         }
     ]
 },
@@ -16822,7 +16822,7 @@ renderDiscordAuthState() {
 		"blahajpinkspin.gif",
 		"blahajbluespin.gif",
 		"shark.gif",
-	   	"duck.gif",
+		"duck.gif",
 		"whitecat.png",
 		"egghatch1.png"
     ];
