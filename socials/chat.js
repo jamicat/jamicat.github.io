@@ -15072,6 +15072,36 @@ setupEmojiPicker() {
     ]
 },
 {
+    id: "monsterlemon",
+    name: "monster lemon",
+    keywords: ["monstelemon", "monster", "lemon"],
+    skins: [
+        {
+            src: "/emojis/monsterlemon.png"
+        }
+    ]
+},
+{
+    id: "monsterwhite",
+    name: "ultra white",
+    keywords: ["whitemonster", "monster"],
+    skins: [
+        {
+            src: "/emojis/monsterwhite.png"
+        }
+    ]
+},
+{
+    id: "monstermango",
+    name: "mango loco",
+    keywords: ["mangoloco", "mango", "monster"],
+    skins: [
+        {
+            src: "/emojis/monstermango.png"
+        }
+    ]
+},
+{
     id: "duckdance",
     name: "duck dance",
     keywords: [
@@ -15246,36 +15276,6 @@ setupEmojiPicker() {
     skins: [
         {
             src: "/emojis/catpeace.gif"
-        }
-    ]
-},
-{
-    id: "monsterlemon",
-    name: "monster lemon",
-    keywords: ["monstelemon", "monster", "lemon"],
-    skins: [
-        {
-            src: "/emojis/monsterlemon.png"
-        }
-    ]
-},
-{
-    id: "monsterwhite",
-    name: "ultra white",
-    keywords: ["whitemonster", "monster"],
-    skins: [
-        {
-            src: "/emojis/monsterwhite.png"
-        }
-    ]
-},
-{
-    id: "monstermango",
-    name: "mango loco",
-    keywords: ["mangoloco", "mango", "monster"],
-    skins: [
-        {
-            src: "/emojis/monstermango.png"
         }
     ]
 },
