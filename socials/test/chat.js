@@ -14837,17 +14837,6 @@ setupEmojiPicker() {
                     }
                 ]
             },
-
-{
-    id: "pikathink",
-    name: "pika thinking",
-    keywords: ["pikachu", "pokemon", "think", "hmm"],
-    skins: [
-        {
-            src: "/emojis/pikathink.png"
-        }
-    ]
-},
 {
     id: "pokecharge",
     name: "charge",
@@ -14878,20 +14867,6 @@ setupEmojiPicker() {
                     }
                 ]
             },
-			{
-    id: "pikagiggle",
-    name: "pika giggle",
-    keywords: [
-        "pikachu",
-        "giggle",
-        "pokemon"
-    ],
-    skins: [
-        {
-            src: "/emojis/pikagiggle.png"
-        }
-    ]
-},
 {
     id: "cantlook",
     name: "can't look",
@@ -14923,16 +14898,6 @@ setupEmojiPicker() {
     ]
 },
 {
-    id: "pikagrin",
-    name: "pika grin",
-    keywords: ["pikachu", "pokemon", "grin", "smug"],
-    skins: [
-        {
-            src: "/emojis/pikagrin.png"
-        }
-    ]
-},
-{
     id: "floatpuff",
     name: "float puff",
     keywords: [
@@ -14943,20 +14908,6 @@ setupEmojiPicker() {
     skins: [
         {
             src: "/emojis/floatpuff.gif"
-        }
-    ]
-},
-{
-    id: "pikapuff",
-    name: "pika puff",
-    keywords: [
-        "pikachu",
-        "jigglypuff",
-        "pokemon"
-    ],
-    skins: [
-        {
-            src: "/emojis/pikapuff.gif"
         }
     ]
 },
@@ -15013,12 +14964,61 @@ setupEmojiPicker() {
     ]
 },
 {
+    id: "pikapuff",
+    name: "pika puff",
+    keywords: [
+        "pikachu",
+        "jigglypuff",
+        "pokemon"
+    ],
+    skins: [
+        {
+            src: "/emojis/pikapuff.gif"
+        }
+    ]
+},
+{
+    id: "pikagiggle",
+    name: "pika giggle",
+    keywords: [
+        "pikachu",
+        "giggle",
+        "pokemon"
+    ],
+    skins: [
+        {
+            src: "/emojis/pikagiggle.png"
+        }
+    ]
+},
+
+{
+    id: "pikathink",
+    name: "pika thinking",
+    keywords: ["pikachu", "pokemon", "think", "hmm"],
+    skins: [
+        {
+            src: "/emojis/pikathink.png"
+        }
+    ]
+},
+{
     id: "pikasideeye",
     name: "pika sideeye",
     keywords: ["pikachu", "pokemon", "side eye", "sus", "judging"],
     skins: [
         {
             src: "/emojis/pikasideeye.png"
+        }
+    ]
+},
+{
+    id: "pikagrin",
+    name: "pika grin",
+    keywords: ["pikachu", "pokemon", "grin", "smug"],
+    skins: [
+        {
+            src: "/emojis/pikagrin.png"
         }
     ]
 },
@@ -15202,12 +15202,12 @@ setupEmojiPicker() {
     ]
 },
 {
-    id: "sharkdance",
-    name: "shark dance",
+    id: "shorkdance",
+    name: "shork dance",
     keywords: ["sharkdance", "shark", "dance"],
     skins: [
         {
-            src: "/emojis/sharkdance.gif"
+            src: "/emojis/shorkdance.gif"
         }
     ]
 },
@@ -16817,14 +16817,14 @@ renderDiscordAuthState() {
 		"blue.gif",
 		"pink.gif",
 		"black.gif",
-		"duck.gif",
-		"shark.gif",
 		"blahajpink.gif",
 		"blahajblue.gif",
 		"blahajpinkspin.gif",
 		"blahajbluespin.gif",
-		"egghatch1.png",
-		"whitecat.png"
+		"shark.gif",
+		"duck.gif",
+		"whitecat.png",
+		"egghatch1.png"
     ];
 
     this.avatarPreview.src =
