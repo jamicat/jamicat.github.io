@@ -15316,22 +15316,22 @@ setupEmojiPicker() {
     ]
 },
 {
-    id: "pawpaw",
-    name: "paw paw",
-    keywords: ["pawpaw", "paw", "cat"],
-    skins: [
-        {
-            src: "/emojis/pawpaw.gif"
-        }
-    ]
-},
-{
     id: "staresatyou",
     name: "stares at you",
     keywords: ["staresatyou", "stare"],
     skins: [
         {
             src: "/emojis/staresatyou.png"
+        }
+    ]
+},
+{
+    id: "pawpaw",
+    name: "paw paw",
+    keywords: ["pawpaw", "paw", "cat"],
+    skins: [
+        {
+            src: "/emojis/pawpaw.gif"
         }
     ]
 },
