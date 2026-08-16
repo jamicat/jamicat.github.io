@@ -9740,7 +9740,7 @@ html[data-chat-theme="original"][data-theme="Cat"]
 #chatWindow[data-chat-pastel] > #chatMain,
 #chatWindow[data-chat-pastel] > #chatTyping,
 #chatWindow[data-chat-pastel] > #chatControls {
-    z-index: auto !important;
+    z-index: 2 !important;
 }
 
 
