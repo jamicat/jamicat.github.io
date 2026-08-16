@@ -26,7 +26,7 @@ this.sourceContext = null;
         ];
 
      this.emojiFiles = [
-    "blahjspin.gif",
+    "blahajspin.gif",
     "blueblob.gif",
     "bobasip.png",
     "bulbasip.png",
@@ -67,7 +67,7 @@ this.sourceContext = null;
     "pointandlaugh.png",
     "pokecharge.gif",
     "sharkbongo.gif",
-    "sharkbug.gif",
+    "sharkburg.gif",
     "sharkgirl.png",
     "sharklove.gif",
     "sharkspin.gif",
