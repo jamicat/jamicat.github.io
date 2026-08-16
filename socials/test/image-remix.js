@@ -50,7 +50,7 @@ this.sourceContext = null;
     "huh.gif",
     "meowhappy.gif",
     "mew.gif",
-    "monstermelon.png",
+    "monsterlemon.png",
     "monstermango.png",
     "monsternails.png",
     "monsterwhite.png",
