@@ -15296,16 +15296,6 @@ setupEmojiPicker() {
     ]
 },
 {
-    id: "blahajspin",
-    name: "blahaj spin",
-    keywords: ["blahajspin", "blahaj", "spin"],
-    skins: [
-        {
-            src: "/emojis/blahajspin.gif"
-        }
-    ]
-},
-{
     id: "sharkburg",
     name: "shark burg",
     keywords: ["sharkburg", "shark", "burger"],
