@@ -2707,6 +2707,12 @@ if (cleanedMessage) {
     this.motdElement.classList.add("hidden");
 }
 
+requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+        this.renderChatPastelDecor();
+    });
+});
+
 if (wasAtBottom) {
     requestAnimationFrame(() => {
         this.scrollMessagesToBottom();
@@ -15388,7 +15394,7 @@ setupEmojiPicker() {
             src: "/emojis/shorkpat.gif"
         }
     ]
-}
+},
 {
     id: "shorkpuffed",
     name: "shork puffed",
@@ -16814,7 +16820,11 @@ renderDiscordAuthState() {
 		"shark.gif",
 		"duck.gif",
 		"whitecat.png",
-		"egghatch1.png"
+		"egghatch1.png",
+		"blahajpink.gif",
+		"blahajblue.gif",
+		"blahajpinkspin.gif",
+		"blahajbluespin.gif"
     ];
 
     this.avatarPreview.src =
@@ -19911,7 +19921,7 @@ keepTitleBarInViewport() {
         });
     }
 
-    main.appendChild(layer);
+    main.prepend(layer);
 
     const shellLayer =
         document.createElement("div");
