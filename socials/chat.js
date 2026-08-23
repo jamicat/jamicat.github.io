@@ -16814,9 +16814,7 @@ renderDiscordAuthState() {
 		"shark.gif",
 		"whitecat.png",
 	    "duck.gif",
-		"egghatch1.png",
-		"pm.png",
-		"hn.png"
+		"egghatch1.png"
     ];
 
     this.avatarPreview.src =
