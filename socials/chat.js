@@ -17035,6 +17035,7 @@ renderDiscordAuthState() {
 		"shark.gif",
 		"whitecat.png",
 	    "duck.gif",
+		"duckfeet.gif",
 		"egghatch1.png"
     ];
 
