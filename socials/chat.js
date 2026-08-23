@@ -15424,6 +15424,227 @@ setupEmojiPicker() {
             src: "/emojis/shorkwash.gif"
         }
     ]
+},
+{
+    id: "beanlaugh",
+    name: "duck laugh",
+    keywords: [
+        "bean",
+        "laugh",
+        "plush"
+    ],
+    skins: [
+        {
+            src: "/emojis/beanlaugh.gif"
+        }
+    ]
+},
+{
+    id: "catflowers",
+    name: "cat flowers",
+    keywords: [
+        "cat",
+        "flowers",
+        "foryou"
+    ],
+    skins: [
+        {
+            src: "/emojis/catflowers.png"
+        }
+    ]
+},
+{
+    id: "kittydance",
+    name: "kitty dance",
+    keywords: [
+        "kitty",
+        "cat",
+        "dance"
+    ],
+    skins: [
+        {
+            src: "/emojis/kittydance.gif"
+        }
+    ]
+},
+{
+    id: "kitdance",
+    name: "kit dance",
+    keywords: [
+        "kitten",
+        "dance"
+    ],
+    skins: [
+        {
+            src: "/emojis/kitdance.gif"
+        }
+    ]
+},
+{
+    id: "nonono",
+    name: "nonono",
+    keywords: [
+        "cat",
+        "nonono"
+    ],
+    skins: [
+        {
+            src: "/emojis/nonono.gif"
+        }
+    ]
+},
+{
+    id: "ayoblush",
+    name: "ayo blush",
+    keywords: [
+        "ayo",
+        "blush"
+    ],
+    skins: [
+        {
+            src: "/emojis/ayoblush.png"
+        }
+    ]
+},
+{
+    id: "duckthink",
+    name: "duck think",
+    keywords: [
+        "duck",
+        "think",
+        "bird"
+    ],
+    skins: [
+        {
+            src: "/emojis/duckthink.png"
+        }
+    ]
+},
+{
+    id: "duckswim",
+    name: "duck swim",
+    keywords: [
+        "duck",
+        "swim",
+        "bird"
+    ],
+    skins: [
+        {
+            src: "/emojis/duckswim.gif"
+        }
+    ]
+},
+{
+    id: "duckcrown",
+    name: "duck crown",
+    keywords: [
+        "duck",
+        "crown",
+        "bird"
+    ],
+    skins: [
+        {
+            src: "/emojis/duckcrown.gif"
+        }
+    ]
+},
+{
+    id: "duckeep",
+    name: "duck eep",
+    keywords: [
+        "duck",
+        "eep",
+        "bird"
+    ],
+    skins: [
+        {
+            src: "/emojis/duckeep.gif"
+        }
+    ]
+},
+{
+    id: "duckhug",
+    name: "duck hug",
+    keywords: [
+        "duck",
+        "hug",
+        "bird"
+    ],
+    skins: [
+        {
+            src: "/emojis/duckhug.png"
+        }
+    ]
+},
+{
+    id: "duckjumpy",
+    name: "duck jumpy",
+    keywords: [
+        "duck",
+        "jumpy",
+        "bird"
+    ],
+    skins: [
+        {
+            src: "/emojis/duckjumpy.gif"
+        }
+    ]
+},
+{
+    id: "duckrun",
+    name: "duck run",
+    keywords: [
+        "duck",
+        "run",
+        "bird"
+    ],
+    skins: [
+        {
+            src: "/emojis/duckrun.gif"
+        }
+    ]
+},
+{
+    id: "duckstroke",
+    name: "duck stroke",
+    keywords: [
+        "duck",
+        "stroke",
+        "bird"
+    ],
+    skins: [
+        {
+            src: "/emojis/duckstroke.gif"
+        }
+    ]
+},
+{
+    id: "duckswing",
+    name: "duck swing",
+    keywords: [
+        "duck",
+        "swing",
+        "bird"
+    ],
+    skins: [
+        {
+            src: "/emojis/duckswing.png"
+        }
+    ]
+},
+{
+    id: "duckuwu",
+    name: "duck uwu",
+    keywords: [
+        "duck",
+        "jump",
+        "bird"
+    ],
+    skins: [
+        {
+            src: "/emojis/duckuwu.png"
+        }
+    ]
 }
         ]
     }
