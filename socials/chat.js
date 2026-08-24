@@ -35,6 +35,10 @@ this.typingElement = null;
 this.notificationSoundEnabled = true;
 this.lastNotificationTime = 0;
 this.messages = null;
+this.chatArchives = [];
+this.expandedChatArchiveIds = new Set();
+this.pendingChatArchiveEnd = null;
+this.historyTimeline = [];
 this.watchParty = {
     enabled: false,
     currentVideoId: null,
@@ -5664,17 +5668,13 @@ escapeHtml(value) {
 async loadHistory() {
     const [
         chatResponse,
-        imageResponse
-    ] =
-        await Promise.all([
-            fetch(
-                `${this.API}/api/chat`
-            ),
-
-            fetch(
-                `${this.imageUploadConfig.apiBase}/history`
-            )
-        ]);
+        imageResponse,
+        archiveResponse
+    ] = await Promise.all([
+        fetch(`${this.API}/api/chat`),
+        fetch(`${this.imageUploadConfig.apiBase}/history`),
+        fetch(`${this.API}/api/chat/archives`)
+    ]);
 
     if (!chatResponse.ok) {
         throw new Error(
@@ -5688,24 +5688,23 @@ async loadHistory() {
         );
     }
 
-    const messages =
-        await chatResponse.json();
+    if (!archiveResponse.ok) {
+        throw new Error(
+            `Could not load chat archives (${archiveResponse.status})`
+        );
+    }
 
-    const uploads =
-        await imageResponse.json();
-
+    const messages = await chatResponse.json();
+    const uploads = await imageResponse.json();
+    const archives = await archiveResponse.json();
     const timeline = [];
 
     if (Array.isArray(messages)) {
         for (const message of messages) {
             timeline.push({
                 type: "message",
-
-                createdAt:
-                    message.created_at,
-
-                value:
-                    message
+                createdAt: message.created_at,
+                value: message
             });
         }
     }
@@ -5714,87 +5713,583 @@ async loadHistory() {
         for (const upload of uploads) {
             timeline.push({
                 type: "image-upload",
-
-                createdAt:
-                    upload.createdAt,
-
-                value:
-                    upload
+                createdAt: upload.createdAt,
+                value: upload
             });
         }
     }
 
     timeline.sort(
-        (first, second) => {
-            const firstTime =
-                new Date(
-                    first.createdAt
-                ).getTime();
-
-            const secondTime =
-                new Date(
-                    second.createdAt
-                ).getTime();
-
-            const safeFirst =
-                Number.isFinite(firstTime)
-                    ? firstTime
-                    : 0;
-
-            const safeSecond =
-                Number.isFinite(secondTime)
-                    ? secondTime
-                    : 0;
-
-            return (
-                safeFirst -
-                safeSecond
-            );
-        }
+        (first, second) =>
+            this.compareTimelineItems(
+                first,
+                second
+            )
     );
 
-    this.messages.innerHTML = "";
+    this.historyTimeline = timeline;
+    this.chatArchives =
+        Array.isArray(archives)
+            ? archives
+            : [];
 
-    this.imageUploadRows.clear();
+    const validIds = new Set(
+        this.chatArchives.map(archive =>
+            String(archive.id)
+        )
+    );
 
-    for (const item of timeline) {
-        if (
-            item.type ===
-                "image-upload"
-        ) {
-            this.addImageUpload(
-                item.value
+    for (const id of [...this.expandedChatArchiveIds]) {
+        if (!validIds.has(String(id))) {
+            this.expandedChatArchiveIds.delete(id);
+        }
+    }
+
+    this.renderHistoryTimeline();
+
+    this.scrollMessagesToBottomAfterLayout({
+        force: true
+    });
+
+    window.setTimeout(
+        () => {
+            this.scrollMessagesToBottomAfterLayout({
+                force: true
+            });
+        },
+        250
+    );
+
+    window.setTimeout(
+        () => {
+            this.scrollMessagesToBottomAfterLayout({
+                force: true
+            });
+        },
+        750
+    );
+}
+
+compareTimelineItems(first, second) {
+    const firstTime =
+        new Date(first?.createdAt).getTime();
+    const secondTime =
+        new Date(second?.createdAt).getTime();
+    const safeFirst =
+        Number.isFinite(firstTime)
+            ? firstTime
+            : 0;
+    const safeSecond =
+        Number.isFinite(secondTime)
+            ? secondTime
+            : 0;
+
+    if (safeFirst !== safeSecond) {
+        return safeFirst - safeSecond;
+    }
+
+    const firstType =
+        first?.type === "image-upload"
+            ? "image"
+            : "chat";
+    const secondType =
+        second?.type === "image-upload"
+            ? "image"
+            : "chat";
+
+    if (firstType !== secondType) {
+        return firstType.localeCompare(secondType);
+    }
+
+    const firstId =
+        firstType === "image"
+            ? String(first?.value?.uploadId || "")
+            : String(first?.value?.id || "");
+    const secondId =
+        secondType === "image"
+            ? String(second?.value?.uploadId || "")
+            : String(second?.value?.id || "");
+
+    return firstId.localeCompare(
+        secondId,
+        undefined,
+        { numeric: true }
+    );
+}
+
+timelineItemBoundary(item) {
+    if (!item) {
+        return null;
+    }
+
+    const type =
+        item.type === "image-upload"
+            ? "image"
+            : "chat";
+
+    const id =
+        type === "image"
+            ? String(
+                item.value?.uploadId || ""
+            )
+            : String(
+                item.value?.id || ""
             );
 
-            continue;
-        }
+    const time =
+        new Date(item.createdAt).getTime();
 
-        this.addMessage(
+    if (
+        !id ||
+        !Number.isFinite(time)
+    ) {
+        return null;
+    }
+
+    return {
+        type,
+        id,
+        createdAt:
+            new Date(time).toISOString()
+    };
+}
+
+compareArchiveBoundaries(first, second) {
+    const firstTime =
+        new Date(first?.createdAt).getTime();
+    const secondTime =
+        new Date(second?.createdAt).getTime();
+
+    if (firstTime !== secondTime) {
+        return firstTime - secondTime;
+    }
+
+    if (first?.type !== second?.type) {
+        return String(first?.type || "")
+            .localeCompare(
+                String(second?.type || "")
+            );
+    }
+
+    return String(first?.id || "")
+        .localeCompare(
+            String(second?.id || ""),
+            undefined,
+            { numeric: true }
+        );
+}
+
+archiveContainsTimelineItem(archive, item) {
+    const boundary =
+        this.timelineItemBoundary(item);
+
+    if (!boundary) {
+        return false;
+    }
+
+    const start = {
+        type: archive?.startType,
+        id: String(archive?.startId || ""),
+        createdAt: archive?.startAt
+    };
+
+    const end = {
+        type: archive?.endType,
+        id: String(archive?.endId || ""),
+        createdAt: archive?.endAt
+    };
+
+    return (
+        this.compareArchiveBoundaries(
+            boundary,
+            start
+        ) >= 0 &&
+        this.compareArchiveBoundaries(
+            boundary,
+            end
+        ) <= 0
+    );
+}
+
+renderTimelineItem(item) {
+    if (item?.type === "image-upload") {
+        return this.addImageUpload(
             item.value
         );
     }
 
-    this.scrollMessagesToBottomAfterLayout({
-    force: true
-});
+    return this.addMessage(
+        item.value
+    );
+}
 
-window.setTimeout(
-    () => {
-        this.scrollMessagesToBottomAfterLayout({
-            force: true
-        });
-    },
-    250
-);
+createChatArchiveToggle(archive, expanded) {
+    const wrapper =
+        document.createElement("div");
 
-window.setTimeout(
-    () => {
-        this.scrollMessagesToBottomAfterLayout({
-            force: true
-        });
-    },
-    750
-);
+    wrapper.className =
+        "theme-body px-3 py-2 text-[9px] text-white/45";
+    wrapper.dataset.chatArchiveId =
+        String(archive.id);
+
+    const button =
+        document.createElement("button");
+
+    button.type = "button";
+    button.className =
+        "theme-body block w-full text-left text-[9px] text-white/55 transition hover:text-white";
+    button.textContent =
+        `${expanded ? "hide" : "show"} “${archive.name}” messages`;
+
+    button.addEventListener(
+        "click",
+        () => {
+            const id = String(archive.id);
+
+            if (expanded) {
+                this.expandedChatArchiveIds.delete(id);
+            } else {
+                this.expandedChatArchiveIds.add(id);
+            }
+
+            this.renderHistoryTimeline({
+                preserveScroll: true,
+                anchorArchiveId: id
+            });
+        }
+    );
+
+    if (this.isAdmin) {
+        button.addEventListener(
+            "contextmenu",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (
+                    window.confirm(
+                        `remove the “${archive.name}” time capsule?\n\nThe messages themselves will stay in chat.`
+                    )
+                ) {
+                    this.deleteChatArchive(
+                        archive.id
+                    );
+                }
+            }
+        );
+    }
+
+    const divider =
+        document.createElement("div");
+
+    divider.className =
+        "mt-1.5 border-t border-white/10";
+
+    wrapper.append(
+        button,
+        divider
+    );
+
+    return wrapper;
+}
+
+renderHistoryTimeline(options = {}) {
+    if (!this.messages) {
+        return;
+    }
+
+    const preserveScroll =
+        options.preserveScroll === true;
+    const previousHeight =
+        this.messages.scrollHeight;
+    const previousTop =
+        this.messages.scrollTop;
+
+    this.messages.innerHTML = "";
+    this.imageUploadRows.clear();
+
+    const archives = [...this.chatArchives]
+        .sort((first, second) =>
+            new Date(first.startAt).getTime() -
+            new Date(second.startAt).getTime()
+        );
+
+    let index = 0;
+
+    while (index < this.historyTimeline.length) {
+        const item =
+            this.historyTimeline[index];
+        const archive =
+            archives.find(candidate =>
+                this.archiveContainsTimelineItem(
+                    candidate,
+                    item
+                )
+            );
+
+        if (!archive) {
+            this.renderTimelineItem(item);
+            index += 1;
+            continue;
+        }
+
+        const archiveItems = [];
+
+        while (
+            index < this.historyTimeline.length &&
+            this.archiveContainsTimelineItem(
+                archive,
+                this.historyTimeline[index]
+            )
+        ) {
+            archiveItems.push(
+                this.historyTimeline[index]
+            );
+            index += 1;
+        }
+
+        const archiveId =
+            String(archive.id);
+        const expanded =
+            this.expandedChatArchiveIds.has(
+                archiveId
+            );
+
+        if (!expanded) {
+            this.messages.appendChild(
+                this.createChatArchiveToggle(
+                    archive,
+                    false
+                )
+            );
+            continue;
+        }
+
+        for (const archiveItem of archiveItems) {
+            this.renderTimelineItem(
+                archiveItem
+            );
+        }
+
+        this.messages.appendChild(
+            this.createChatArchiveToggle(
+                archive,
+                true
+            )
+        );
+    }
+
+    if (preserveScroll) {
+        const nextHeight =
+            this.messages.scrollHeight;
+
+        this.messages.scrollTop =
+            Math.max(
+                0,
+                previousTop +
+                nextHeight -
+                previousHeight
+            );
+    }
+}
+
+archiveBoundaryFromMessage(message) {
+    const isImage =
+        Boolean(message?.imageUploadId);
+    const createdAt =
+        isImage
+            ? message?.imageUpload?.createdAt
+            : message?.created_at;
+    const id =
+        isImage
+            ? message?.imageUploadId
+            : message?.id;
+    const time =
+        new Date(createdAt).getTime();
+
+    if (
+        !id ||
+        !Number.isFinite(time)
+    ) {
+        return null;
+    }
+
+    return {
+        type:
+            isImage
+                ? "image"
+                : "chat",
+        id: String(id),
+        createdAt:
+            new Date(time).toISOString()
+    };
+}
+
+startChatArchiveRange(message) {
+    const boundary =
+        this.archiveBoundaryFromMessage(
+            message
+        );
+
+    if (!boundary) {
+        window.alert(
+            "this item cannot be used as a time capsule boundary"
+        );
+        return;
+    }
+
+    this.pendingChatArchiveEnd =
+        boundary;
+
+    window.alert(
+        "end of the time capsule selected. scroll up and right-click the first item you want to include, then choose “set time capsule start”."
+    );
+}
+
+async finishChatArchiveRange(message) {
+    if (
+        !this.pendingChatArchiveEnd ||
+        !this.isAdmin ||
+        !this.adminKey
+    ) {
+        return;
+    }
+
+    const startBoundary =
+        this.archiveBoundaryFromMessage(
+            message
+        );
+    const endBoundary =
+        this.pendingChatArchiveEnd;
+
+    if (!startBoundary) {
+        window.alert(
+            "this item cannot be used as a time capsule boundary"
+        );
+        return;
+    }
+
+    if (
+        new Date(startBoundary.createdAt).getTime() >
+        new Date(endBoundary.createdAt).getTime()
+    ) {
+        window.alert(
+            "the start must be older than the end you selected"
+        );
+        return;
+    }
+
+    const input = window.prompt(
+        "name this time capsule:",
+        ""
+    );
+
+    if (input === null) {
+        return;
+    }
+
+    const name = input.trim();
+
+    if (!name) {
+        window.alert(
+            "please give the time capsule a name"
+        );
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${this.API}/api/admin/chat/archive`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json",
+                    "Authorization":
+                        `Bearer ${this.adminKey}`
+                },
+                body: JSON.stringify({
+                    name,
+                    start: startBoundary,
+                    end: endBoundary
+                })
+            }
+        );
+
+        const result =
+            await response.json();
+
+        if (response.status === 401) {
+            this.disableAdminMode();
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `could not create time capsule (${response.status})`
+            );
+        }
+
+        this.pendingChatArchiveEnd = null;
+        await this.loadHistory();
+        await this.loadReactions();
+    } catch (error) {
+        console.error(
+            "could not create chat time capsule:",
+            error
+        );
+        window.alert(error.message);
+    }
+}
+
+async deleteChatArchive(archiveId) {
+    if (
+        !this.isAdmin ||
+        !this.adminKey
+    ) {
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${this.API}/api/admin/chat/archive/delete`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json",
+                    "Authorization":
+                        `Bearer ${this.adminKey}`
+                },
+                body: JSON.stringify({
+                    id: archiveId
+                })
+            }
+        );
+
+        const result =
+            await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                "could not remove time capsule"
+            );
+        }
+
+        this.expandedChatArchiveIds.delete(
+            String(archiveId)
+        );
+        await this.loadHistory();
+        await this.loadReactions();
+    } catch (error) {
+        console.error(
+            "could not remove chat time capsule:",
+            error
+        );
+        window.alert(error.message);
+    }
 }
 
 
@@ -6953,6 +7448,25 @@ applyDeletedUserContent(data) {
                 )
                 : []
         );
+
+    this.historyTimeline =
+        this.historyTimeline.filter(item => {
+            if (item.type === "message") {
+                return !messageIds.has(
+                    String(item.value?.id)
+                );
+            }
+
+            if (item.type === "image-upload") {
+                return !imageUploadIds.has(
+                    String(
+                        item.value?.uploadId
+                    )
+                );
+            }
+
+            return true;
+        });
 
     for (const messageId of messageIds) {
         this.findMessageElement(
@@ -8623,6 +9137,25 @@ async saveInlineEdit() {
 }
 
 applyEditedMessage(message) {
+    const timelineItem =
+        this.historyTimeline.find(item =>
+            item.type === "message" &&
+            String(item.value?.id) ===
+                String(message?.id)
+        );
+
+    if (timelineItem?.value) {
+        Object.assign(
+            timelineItem.value,
+            message
+        );
+
+        if (message?.created_at) {
+            timelineItem.createdAt =
+                message.created_at;
+        }
+    }
+
     const row = this.findMessageElement(message.id);
     if (!row) return;
     const stored = row.jamiChatMessage || {};
@@ -8788,6 +9321,42 @@ openModerationMenu(x, y, message) {
                 }
             )
         );
+
+        if (this.pendingChatArchiveEnd) {
+            buttons.push(
+                this.createModerationMenuButton(
+                    "set time capsule start",
+                    async () => {
+                        this.closeModerationMenu();
+                        await this.finishChatArchiveRange(
+                            message
+                        );
+                    }
+                )
+            );
+
+            buttons.push(
+                this.createModerationMenuButton(
+                    "cancel time capsule range",
+                    () => {
+                        this.pendingChatArchiveEnd = null;
+                        this.closeModerationMenu();
+                    }
+                )
+            );
+        } else {
+            buttons.push(
+                this.createModerationMenuButton(
+                    "hide message range…",
+                    () => {
+                        this.closeModerationMenu();
+                        this.startChatArchiveRange(
+                            message
+                        );
+                    }
+                )
+            );
+        }
 
         buttons.push(
             this.createModerationMenuButton(
@@ -9996,7 +10565,9 @@ openMemberModerationMenu(
         ban:
             '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="m6.5 6.5 11 11"/></svg>',
         clear:
-            '<svg viewBox="0 0 24 24"><path d="M4 7h16M8 7V4h8v3m-9 0 1 13h8l1-13"/></svg>'
+            '<svg viewBox="0 0 24 24"><path d="M4 7h16M8 7V4h8v3m-9 0 1 13h8l1-13"/></svg>',
+        archive:
+            '<svg viewBox="0 0 24 24"><path d="M4 5h16v4H4zM6 9v10h12V9M9 13h6"/></svg>'
     };
 
     let iconMarkup =
@@ -10048,6 +10619,11 @@ openMemberModerationMenu(
         "clear chat"
     ) {
         iconMarkup = icons.clear;
+    } else if (
+        normalized.includes("time capsule") ||
+        normalized === "hide message range…"
+    ) {
+        iconMarkup = icons.archive;
     }
 
     icon.innerHTML =
@@ -11304,6 +11880,24 @@ if (this.partyManager) {
     data.type ===
         "image-upload-created"
 ) {
+    if (data.upload) {
+        this.historyTimeline.push({
+            type: "image-upload",
+            createdAt:
+                data.upload.createdAt ||
+                new Date().toISOString(),
+            value: data.upload
+        });
+
+        this.historyTimeline.sort(
+            (first, second) =>
+                this.compareTimelineItems(
+                    first,
+                    second
+                )
+        );
+    }
+
     this.addImageUpload(
         data.upload
     );
@@ -11395,6 +11989,17 @@ if (
         data.uploadId
     );
 
+    this.historyTimeline =
+        this.historyTimeline.filter(item =>
+            !(
+                item.type === "image-upload" &&
+                String(
+                    item.value?.uploadId
+                ) ===
+                    String(data.uploadId)
+            )
+        );
+
     const row =
         this.imageUploadRows.get(
             data.uploadId
@@ -11461,6 +12066,21 @@ if (
     return;
 }
 
+if (
+    data.type ===
+        "chat-archives-updated"
+) {
+    this.loadHistory()
+        .then(() => this.loadReactions())
+        .catch(error => {
+            console.error(
+                "could not refresh chat time capsules:",
+                error
+            );
+        });
+    return;
+}
+
 	if (
     data.type ===
         "chat-cleared"
@@ -11487,6 +12107,15 @@ if (
 }
 
 if (data.type === "delete") {
+    this.historyTimeline =
+        this.historyTimeline.filter(item =>
+            !(
+                item.type === "message" &&
+                String(item.value?.id) ===
+                    String(data.id)
+            )
+        );
+
     const messageElement =
         this.findMessageElement(data.id);
 
@@ -11520,6 +12149,22 @@ if (data.type === "message") {
     const shouldCountUnread =
         this.isMinimized ||
         this.userHasScrolledUp;
+
+    this.historyTimeline.push({
+        type: "message",
+        createdAt:
+            data.message?.created_at ||
+            new Date().toISOString(),
+        value: data.message
+    });
+
+    this.historyTimeline.sort(
+        (first, second) =>
+            this.compareTimelineItems(
+                first,
+                second
+            )
+    );
 
     this.addMessage(data.message);
 
@@ -12356,6 +13001,10 @@ showCompletedImage(
 
                     client_id:
                         currentUpload.clientId ||
+                        "",
+
+                    created_at:
+                        currentUpload.createdAt ||
                         ""
                 }
             );
@@ -13579,6 +14228,18 @@ clearChatThrough(cutoff) {
         return;
     }
 
+    this.historyTimeline =
+        this.historyTimeline.filter(item => {
+            const time =
+                new Date(item.createdAt)
+                    .getTime();
+
+            return (
+                !Number.isFinite(time) ||
+                time <= cutoffTime
+            );
+        });
+
     for (
         const row
         of this.messages.querySelectorAll(
@@ -13631,6 +14292,18 @@ clearChatBefore(cutoff) {
         return;
     }
 
+    this.historyTimeline =
+        this.historyTimeline.filter(item => {
+            const time =
+                new Date(item.createdAt)
+                    .getTime();
+
+            return (
+                !Number.isFinite(time) ||
+                time >= cutoffTime
+            );
+        });
+
     for (
         const row
         of this.messages.querySelectorAll(
@@ -13677,6 +14350,11 @@ clearChatBefore(cutoff) {
 
 
 clearChatInterface() {
+    this.historyTimeline = [];
+    this.chatArchives = [];
+    this.expandedChatArchiveIds.clear();
+    this.pendingChatArchiveEnd = null;
+
     for (
         const activeUpload
         of this.activeImageUploads
