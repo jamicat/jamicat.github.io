@@ -15917,23 +15917,10 @@ requestAnimationFrame(
                     ? event.composedPath()
                     : [];
 
-           const pickerHostIndex =
-    path.indexOf(
+const insideVisiblePicker =
+    path.includes(
         this.emojiPicker
     );
-
-const insideVisiblePicker =
-    pickerHostIndex > 0 &&
-    path
-        .slice(
-            0,
-            pickerHostIndex
-        )
-        .some(node =>
-            node?.getRootNode?.() ===
-                this.emojiPicker
-                    ?.shadowRoot
-        );
 
 const clickedEmojiButton =
     path.includes(
