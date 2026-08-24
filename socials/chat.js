@@ -5981,7 +5981,7 @@ createChatArchiveToggle(archive, expanded) {
 
                 if (
                     window.confirm(
-                        `remove the “${archive.name}” time capsule?\n\nThe messages themselves will stay in chat.`
+                        `remove the “${archive.name}” time capsule?\n\nthe messages will stay in chat`
                     )
                 ) {
                     this.deleteChatArchive(
@@ -6211,7 +6211,7 @@ startChatArchiveRange(message) {
         boundary;
 
     window.alert(
-        "end of the time capsule selected. scroll up and right-click the first item you want to include, then choose “set time capsule start”."
+        "end of the time capsule selected. scroll up and right click the first message you want to include, then choose “set time capsule start”"
     );
 }
 
