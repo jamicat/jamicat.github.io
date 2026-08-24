@@ -5938,6 +5938,13 @@ createChatArchiveToggle(archive, expanded) {
     button.type = "button";
     button.className =
         "theme-body block w-full text-left text-[9px] text-white/55 transition hover:text-white";
+    button.dataset.chatArchiveToggle =
+        "true";
+    button.style.color =
+        this.window?.dataset?.chatTheme ===
+            "paws"
+            ? "#ee9dad"
+            : "";
     button.textContent =
         `${expanded ? "hide" : "show"} “${archive.name}” messages`;
 
@@ -8975,47 +8982,138 @@ appendReplyReference(container, message) {
 }
 
 jumpToReplyTarget(type, id) {
-    const selector = type === "image"
-        ? `[data-image-upload-id="${CSS.escape(String(id))}"]`
-        : `[data-message-id="${CSS.escape(String(id))}"]`;
-    const target =
-        this.messages.querySelector(selector);
+    const targetType =
+        type === "image"
+            ? "image"
+            : "chat";
 
-    if (!target) {
-        const references =
-            this.messages.querySelectorAll(
-                ".jami-chat-reply-reference"
+    const targetId =
+        String(id);
+
+    const selector =
+        targetType === "image"
+            ? `[data-image-upload-id="${CSS.escape(targetId)}"]`
+            : `[data-message-id="${CSS.escape(targetId)}"]`;
+
+    const jumpToRenderedTarget = () => {
+        const target =
+            this.messages.querySelector(
+                selector
             );
 
-        for (const reference of references) {
-            const preview =
-                reference.querySelector(
-                    ".jami-chat-reply-reference-preview"
-                );
-
-            if (
-                reference.dataset.replyTargetType ===
-                    String(type) &&
-                reference.dataset.replyTargetId ===
-                    String(id) &&
-                preview
-            ) {
-                preview.textContent =
-                    "original message unavailable";
-
-                reference.disabled = true;
-            }
+        if (!target) {
+            return false;
         }
 
+        target.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+        target.classList.remove(
+            "jami-chat-message-highlight"
+        );
+
+        void target.offsetWidth;
+
+        target.classList.add(
+            "jami-chat-message-highlight"
+        );
+
+        window.setTimeout(
+            () => target.classList.remove(
+                "jami-chat-message-highlight"
+            ),
+            1400
+        );
+
+        return true;
+    };
+
+    if (jumpToRenderedTarget()) {
         return;
     }
 
-    target.scrollIntoView({ behavior: "smooth", block: "center" });
-    target.classList.remove("jami-chat-message-highlight");
-    void target.offsetWidth;
-    target.classList.add("jami-chat-message-highlight");
-    window.setTimeout(() => target.classList.remove("jami-chat-message-highlight"), 1400);
+    const timelineItem =
+        this.historyTimeline.find(item => {
+            const boundary =
+                this.timelineItemBoundary(
+                    item
+                );
+
+            return (
+                boundary?.type === targetType &&
+                boundary.id === targetId
+            );
+        });
+
+    if (timelineItem) {
+        const archive =
+            this.chatArchives.find(candidate =>
+                this.archiveContainsTimelineItem(
+                    candidate,
+                    timelineItem
+                )
+            );
+
+        if (archive) {
+            const archiveId =
+                String(archive.id);
+
+            if (
+                !this.expandedChatArchiveIds.has(
+                    archiveId
+                )
+            ) {
+                this.expandedChatArchiveIds.add(
+                    archiveId
+                );
+
+                this.renderHistoryTimeline({
+                    preserveScroll: true
+                });
+            }
+
+            requestAnimationFrame(
+                () => {
+                    requestAnimationFrame(
+                        () => {
+                            jumpToRenderedTarget();
+                        }
+                    );
+                }
+            );
+
+            return;
+        }
+    }
+
+    const references =
+        this.messages.querySelectorAll(
+            ".jami-chat-reply-reference"
+        );
+
+    for (const reference of references) {
+        const preview =
+            reference.querySelector(
+                ".jami-chat-reply-reference-preview"
+            );
+
+        if (
+            reference.dataset.replyTargetType ===
+                String(type) &&
+            reference.dataset.replyTargetId ===
+                targetId &&
+            preview
+        ) {
+            preview.textContent =
+                "original message unavailable";
+
+            reference.disabled = true;
+        }
+    }
 }
+
 
 appendEditedMarker(container, message) {
     if (!message?.edited_at) return;
@@ -18865,6 +18963,17 @@ keepTitleBarInViewport() {
 
     this.window.dataset.chatTheme =
         cleaned;
+
+    this.window
+        .querySelectorAll(
+            "[data-chat-archive-toggle]"
+        )
+        .forEach(button => {
+            button.style.color =
+                cleaned === "paws"
+                    ? "#ee9dad"
+                    : "";
+        });
 
     document.documentElement
         .setAttribute(
