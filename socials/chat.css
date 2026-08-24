@@ -10659,7 +10659,7 @@ html[data-chat-theme="paws"]
 .jami-emoji-animation-picker {
     position: fixed;
     z-index: 100006;
-    width: 275px;
+    width: 280px;
     max-width: calc(100vw - 16px);
     max-height: min(460px, calc(100vh - 16px));
     overflow: hidden;
