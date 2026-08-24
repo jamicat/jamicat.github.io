@@ -12047,6 +12047,49 @@ if (this.partyManager) {
     data.type ===
         "image-remix-created"
 ) {
+    if (data.upload) {
+        const uploadId =
+            String(
+                data.upload.uploadId || ""
+            );
+
+        const existingTimelineItem =
+            this.historyTimeline.find(item =>
+                item.type ===
+                    "image-upload" &&
+                String(
+                    item.value?.uploadId ||
+                    ""
+                ) === uploadId
+            );
+
+        if (existingTimelineItem) {
+            existingTimelineItem.value =
+                data.upload;
+            existingTimelineItem.createdAt =
+                data.upload.createdAt ||
+                existingTimelineItem.createdAt;
+        } else {
+            this.historyTimeline.push({
+                type:
+                    "image-upload",
+                createdAt:
+                    data.upload.createdAt ||
+                    new Date().toISOString(),
+                value:
+                    data.upload
+            });
+        }
+
+        this.historyTimeline.sort(
+            (first, second) =>
+                this.compareTimelineItems(
+                    first,
+                    second
+                )
+        );
+    }
+
     this.addImageUpload(
         data.upload
     );
