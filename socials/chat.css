@@ -10654,3 +10654,187 @@ html[data-chat-theme="paws"]
 #chatWindow[data-chat-pastel="paws"] .jami-remix-attribution {
     color: #ee9dad;
 }
+
+
+.jami-emoji-animation-picker {
+    position: fixed;
+    z-index: 100006;
+    width: 320px;
+    max-width: calc(100vw - 16px);
+    max-height: min(460px, calc(100vh - 16px));
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 16px;
+    background: rgba(20,20,20,.97);
+    color: rgba(255,255,255,.88);
+    box-shadow: 0 18px 44px rgba(0,0,0,.38);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.jami-emoji-animation-picker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px 8px;
+    border-bottom: 1px solid rgba(255,255,255,.09);
+}
+
+.jami-emoji-animation-picker-heading {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.jami-emoji-animation-picker-hint {
+    margin-top: 2px;
+    font-size: 8px;
+    opacity: .55;
+}
+
+.jami-emoji-animation-picker-close {
+    appearance: none;
+    border: 0;
+    padding: 2px 5px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    opacity: .6;
+}
+
+.jami-emoji-animation-picker-close:hover {
+    opacity: 1;
+}
+
+html[data-chat-pastel="stars"] .jami-emoji-animation-picker {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(194,181,244,.97),
+            rgba(160,151,226,.95),
+            rgba(121,139,199,.92)
+        );
+    border-color: rgba(235,225,255,.80);
+    color: #fff;
+}
+
+html[data-chat-pastel="paws"] .jami-emoji-animation-picker {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,224,234,.98),
+            rgba(255,233,226,.97),
+            rgba(224,242,225,.95)
+        );
+    border-color: rgba(255,255,255,.90);
+    color: #5e4d53;
+}
+
+html[data-chat-pastel="paws"] .jami-emoji-animation-picker-header {
+    border-color: rgba(238,157,174,.28);
+}
+
+.jami-emoji-animation-message {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    appearance: none;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    opacity: .78;
+}
+
+.jami-emoji-animation-message:hover,
+.jami-emoji-animation-message:focus-visible {
+    opacity: 1;
+}
+
+.jami-emoji-animation-message-emoji {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+.jami-emoji-animation-visual-image {
+    object-fit: contain;
+}
+
+.jami-emoji-animation-visual-unicode {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.jami-emoji-animation-recording-layer,
+.jami-emoji-animation-playback-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 100010;
+}
+
+.jami-emoji-animation-recording-layer {
+    pointer-events: auto;
+    cursor: none;
+}
+
+.jami-emoji-animation-playback-layer {
+    pointer-events: none;
+}
+
+.jami-emoji-animation-recording-emoji,
+.jami-emoji-animation-playback-emoji {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: contain;
+    font-size: 34px;
+    line-height: 1;
+    will-change: transform;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,.24));
+}
+
+.jami-emoji-animation-recording-status {
+    position: fixed;
+    left: 50%;
+    top: 12px;
+    transform: translateX(-50%);
+    max-width: calc(100vw - 24px);
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 999px;
+    padding: 5px 10px;
+    background: rgba(15,15,15,.82);
+    color: rgba(255,255,255,.86);
+    font-size: 9px;
+    white-space: nowrap;
+    box-shadow: 0 6px 20px rgba(0,0,0,.22);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+html[data-chat-pastel="stars"] .jami-emoji-animation-recording-status {
+    background: rgba(121,139,199,.92);
+    border-color: rgba(235,225,255,.70);
+}
+
+html[data-chat-pastel="paws"] .jami-emoji-animation-recording-status {
+    background: rgba(255,233,226,.96);
+    border-color: rgba(238,157,174,.42);
+    color: #5e4d53;
+}
