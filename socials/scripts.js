@@ -3958,6 +3958,15 @@ function showArt() {
 $('#terminalContent').html(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
   <div id="artGallery" class="grid grid-cols-3 gap-4">
+   <a href="jamieteph.png" class="block rounded overflow-hidden">
+    <img src="jamieteph_thumb.jpg" alt="jamie & teph in happy burger - saproena" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
+       <a href="jamiefeara.png" class="block rounded overflow-hidden">
+    <img src="feara_thumb.jpg" alt="jamie & feara - haru" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
+   <a href="skp.png" class="block rounded overflow-hidden">
+    <img src="skp_thumb.jpg" alt="sketchpage - sofii" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
    <a href="party.jpg" class="block rounded overflow-hidden">
     <img src="party_thumb.jpg" alt="yaaaypartypopper" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
