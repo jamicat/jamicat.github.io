@@ -97,6 +97,12 @@ this.reactionEmojiPickerContainer = null;
 this.reactionEmojiPicker = null;
 this.customEmojiCategories = [];
 this.customEmojiLookup = new Map();
+this.emojiAnimationPickerContainer = null;
+this.emojiAnimationPicker = null;
+this.emojiAnimationRecordingLayer = null;
+this.emojiAnimationRecording = null;
+this.emojiAnimationMaximumMs = 15000;
+this.createSharedEmojiPicker = null;
 
 this.replyTarget = null;
 this.replyComposerPreview = null;
@@ -8940,6 +8946,20 @@ getReplyDescriptor(message) {
             preview: image.remixChain?.length ? "remixed image" : "image"
         };
     }
+    if (
+        message?.message_type ===
+            "emoji_animation"
+    ) {
+        return {
+            type: "chat",
+            id: String(message?.id || ""),
+            name:
+                message?.name ||
+                "anonymous",
+            preview: "emoji animation"
+        };
+    }
+
     return {
         type: "chat",
         id: String(message?.id || ""),
@@ -9344,7 +9364,13 @@ applyEditedMessage(message) {
     Object.assign(stored, message);
     row.jamiChatMessage = stored;
     const text = row.querySelector(".chatText");
-    if (text) this.renderMessageContent(text, stored.message || "");
+    if (text) {
+        text.replaceChildren();
+        this.renderChatMessageContent(
+            text,
+            stored
+        );
+    }
     row.querySelector(".jami-chat-edited-marker")?.remove();
     const body = row.querySelector(".messageBody");
     if (body) this.appendEditedMarker(body, stored);
@@ -9383,6 +9409,8 @@ openModerationMenu(x, y, message) {
         !isImage &&
         message.message_type !==
             "confetti" &&
+        message.message_type !==
+            "emoji_animation" &&
         Boolean(message.id) &&
         ownsMessage;
 
@@ -9442,6 +9470,19 @@ openModerationMenu(x, y, message) {
         );
 
     }
+
+    buttons.push(
+        this.createModerationMenuButton(
+            "record emoji",
+            () => {
+                this.closeModerationMenu();
+                this.openEmojiAnimationPicker(
+                    x,
+                    y
+                );
+            }
+        )
+    );
 
     if (canDelete) {
         addDivider();
@@ -9664,6 +9705,19 @@ openChatContextMenu(x, y) {
 
     menu.className =
         "jami-chat-context-menu theme-body";
+
+    menu.appendChild(
+        this.createModerationMenuButton(
+            "record emoji",
+            () => {
+                this.closeModerationMenu();
+                this.openEmojiAnimationPicker(
+                    x,
+                    y
+                );
+            }
+        )
+    );
 
     menu.appendChild(
         this.createModerationMenuButton(
@@ -15139,10 +15193,723 @@ setupNameSaving() {
             return;
         }
 
+        if (
+            message?.message_type ===
+                "emoji_animation"
+        ) {
+            this.renderEmojiAnimationMessage(
+                container,
+                message
+            );
+            return;
+        }
+
         this.renderMessageContent(
             container,
             message?.message || ""
         );
+    }
+
+    parseEmojiAnimationPayload(message) {
+        try {
+            const payload =
+                typeof message === "string"
+                    ? JSON.parse(message)
+                    : message;
+
+            if (
+                !payload ||
+                typeof payload !== "object" ||
+                !payload.emoji ||
+                !Array.isArray(payload.points) ||
+                payload.points.length < 2
+            ) {
+                return null;
+            }
+
+            return payload;
+        } catch {
+            return null;
+        }
+    }
+
+    createEmojiAnimationVisual(emoji) {
+        if (
+            emoji?.kind === "custom" &&
+            typeof emoji.src === "string" &&
+            /^\/emojis\/[a-zA-Z0-9_.-]+$/.test(
+                emoji.src
+            )
+        ) {
+            const image =
+                document.createElement("img");
+
+            image.src = emoji.src;
+            image.alt =
+                emoji.label ||
+                emoji.value ||
+                "emoji";
+            image.className =
+                "jami-emoji-animation-visual-image";
+
+            return image;
+        }
+
+        const span =
+            document.createElement("span");
+
+        span.className =
+            "jami-emoji-animation-visual-unicode";
+        span.textContent =
+            emoji?.value || "✨";
+
+        return span;
+    }
+
+    renderEmojiAnimationMessage(
+        container,
+        message
+    ) {
+        const payload =
+            this.parseEmojiAnimationPayload(
+                message?.message
+            );
+
+        if (!payload) {
+            container.textContent =
+                "emoji animation unavailable";
+            return;
+        }
+
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+        button.className =
+            "jami-emoji-animation-message theme-body";
+        button.title =
+            "play emoji animation";
+
+        const label =
+            document.createElement("span");
+
+        label.textContent =
+            "play emoji";
+
+        const visual =
+            this.createEmojiAnimationVisual(
+                payload.emoji
+            );
+
+        visual.classList.add(
+            "jami-emoji-animation-message-emoji"
+        );
+
+        button.append(
+            label,
+            visual
+        );
+
+        button.addEventListener(
+            "click",
+            () => {
+                this.playEmojiAnimation(
+                    payload
+                );
+            }
+        );
+
+        container.appendChild(button);
+    }
+
+    playEmojiAnimation(payload) {
+        const parsed =
+            this.parseEmojiAnimationPayload(
+                payload
+            );
+
+        if (!parsed) {
+            return;
+        }
+
+        const layer =
+            document.createElement("div");
+        const visual =
+            this.createEmojiAnimationVisual(
+                parsed.emoji
+            );
+
+        layer.className =
+            "jami-emoji-animation-playback-layer";
+        visual.classList.add(
+            "jami-emoji-animation-playback-emoji"
+        );
+        layer.appendChild(visual);
+        document.body.appendChild(layer);
+
+        const points = parsed.points;
+        const duration =
+            Math.min(
+                this.emojiAnimationMaximumMs,
+                Math.max(
+                    1,
+                    Number(parsed.duration) ||
+                    Number(
+                        points[
+                            points.length - 1
+                        ]?.t
+                    ) ||
+                    1
+                )
+            );
+        const startedAt =
+            performance.now();
+        let pointIndex = 0;
+
+        const draw = now => {
+            const elapsed =
+                Math.min(
+                    duration,
+                    now - startedAt
+                );
+
+            while (
+                pointIndex <
+                    points.length - 2 &&
+                Number(
+                    points[pointIndex + 1].t
+                ) <= elapsed
+            ) {
+                pointIndex += 1;
+            }
+
+            const first =
+                points[pointIndex];
+            const second =
+                points[
+                    Math.min(
+                        pointIndex + 1,
+                        points.length - 1
+                    )
+                ];
+            const firstTime =
+                Number(first.t) || 0;
+            const secondTime =
+                Number(second.t) ||
+                firstTime;
+            const span =
+                Math.max(
+                    1,
+                    secondTime - firstTime
+                );
+            const mix =
+                Math.max(
+                    0,
+                    Math.min(
+                        1,
+                        (elapsed - firstTime) /
+                            span
+                    )
+                );
+            const x =
+                Number(first.x) +
+                (
+                    Number(second.x) -
+                    Number(first.x)
+                ) * mix;
+            const y =
+                Number(first.y) +
+                (
+                    Number(second.y) -
+                    Number(first.y)
+                ) * mix;
+
+            visual.style.transform =
+                `translate3d(${x * window.innerWidth}px, ${y * window.innerHeight}px, 0) translate(-50%, -50%)`;
+
+            if (elapsed < duration) {
+                requestAnimationFrame(draw);
+                return;
+            }
+
+            layer.remove();
+        };
+
+        requestAnimationFrame(draw);
+    }
+
+    closeEmojiAnimationPicker() {
+        if (!this.emojiAnimationPickerContainer) {
+            return;
+        }
+
+        this.emojiAnimationPickerContainer.remove();
+        this.emojiAnimationPickerContainer = null;
+        this.emojiAnimationPicker = null;
+    }
+
+    openEmojiAnimationPicker(x, y) {
+        if (
+            this.isBanned ||
+            !this.createSharedEmojiPicker
+        ) {
+            return;
+        }
+
+        this.closeEmojiAnimationPicker();
+        this.closeEmojiPicker();
+
+        const host =
+            document.createElement("div");
+
+        host.className =
+            "jami-emoji-animation-picker theme-body";
+        host.dataset.chatThemeOwner =
+            this.window?.dataset?.chatTheme ||
+            "original";
+
+        const heading =
+            document.createElement("div");
+        const hint =
+            document.createElement("div");
+        const close =
+            document.createElement("button");
+
+        heading.className =
+            "jami-emoji-animation-picker-heading theme-heading";
+        heading.textContent =
+            "record emoji";
+        hint.className =
+            "jami-emoji-animation-picker-hint theme-body";
+        hint.textContent =
+            "choose an emoji";
+        close.type = "button";
+        close.className =
+            "jami-emoji-animation-picker-close";
+        close.textContent = "×";
+        close.setAttribute(
+            "aria-label",
+            "close emoji recorder"
+        );
+        close.addEventListener(
+            "click",
+            () => this.closeEmojiAnimationPicker()
+        );
+
+        const header =
+            document.createElement("div");
+        header.className =
+            "jami-emoji-animation-picker-header";
+        const copy =
+            document.createElement("div");
+        copy.append(heading, hint);
+        header.append(copy, close);
+        host.appendChild(header);
+
+        this.emojiAnimationPicker =
+            this.createSharedEmojiPicker(
+                emoji => {
+                    const selection =
+                        this.reactionFromEmojiMartSelection(
+                            emoji
+                        );
+
+                    if (!selection) {
+                        return;
+                    }
+
+                    this.startEmojiAnimationRecorder({
+                        kind: selection.kind,
+                        value: selection.value,
+                        src: selection.src || "",
+                        label: selection.label ||
+                            selection.value
+                    });
+                }
+            );
+
+        this.emojiAnimationPicker.style.width =
+            "100%";
+        this.emojiAnimationPicker.style.maxWidth =
+            "100%";
+        this.emojiAnimationPicker.style.height =
+            "380px";
+
+        host.appendChild(
+            this.emojiAnimationPicker
+        );
+        document.body.appendChild(host);
+
+        this.emojiAnimationPickerContainer =
+            host;
+
+        const injectCustom = () => {
+            if (
+                !this.emojiAnimationPicker ||
+                !this.emojiAnimationPickerContainer
+            ) {
+                return;
+            }
+
+            if (
+                this.injectCustomEmojisIntoPicker(
+                    this.emojiAnimationPicker,
+                    "animation"
+                )
+            ) {
+                return;
+            }
+
+            requestAnimationFrame(
+                injectCustom
+            );
+        };
+
+        requestAnimationFrame(
+            injectCustom
+        );
+
+        const rect =
+            host.getBoundingClientRect();
+        const pad = 8;
+        const left =
+            Math.max(
+                pad,
+                Math.min(
+                    Number(x) || pad,
+                    window.innerWidth -
+                        rect.width -
+                        pad
+                )
+            );
+        const top =
+            Math.max(
+                pad,
+                Math.min(
+                    Number(y) || pad,
+                    window.innerHeight -
+                        rect.height -
+                        pad
+                )
+            );
+
+        host.style.left = `${left}px`;
+        host.style.top = `${top}px`;
+    }
+
+    startEmojiAnimationRecorder(emoji) {
+        if (
+            this.isBanned ||
+            !emoji ||
+            (
+                emoji.kind !== "unicode" &&
+                emoji.kind !== "custom"
+            )
+        ) {
+            return;
+        }
+
+        this.closeEmojiAnimationPicker();
+        this.cancelEmojiAnimationRecording();
+
+        const layer =
+            document.createElement("div");
+        const visual =
+            this.createEmojiAnimationVisual(
+                emoji
+            );
+        const status =
+            document.createElement("div");
+
+        layer.className =
+            "jami-emoji-animation-recording-layer";
+        visual.classList.add(
+            "jami-emoji-animation-recording-emoji"
+        );
+        status.className =
+            "jami-emoji-animation-recording-status theme-body";
+        status.textContent =
+            "click to start · esc to cancel";
+        layer.append(visual, status);
+        document.body.appendChild(layer);
+
+        const state = {
+            layer,
+            visual,
+            status,
+            emoji: {
+                kind: emoji.kind,
+                value:
+                    String(emoji.value || ""),
+                src:
+                    emoji.kind === "custom"
+                        ? String(emoji.src || "")
+                        : "",
+                label:
+                    String(
+                        emoji.label ||
+                        emoji.value ||
+                        "emoji"
+                    ).slice(0, 80)
+            },
+            recording: false,
+            startedAt: 0,
+            lastSampleAt: 0,
+            x: 0.5,
+            y: 0.5,
+            points: [],
+            timeout: null,
+            keyHandler: null
+        };
+
+        const move = event => {
+            state.x =
+                Math.max(
+                    0,
+                    Math.min(
+                        1,
+                        event.clientX /
+                            Math.max(
+                                1,
+                                window.innerWidth
+                            )
+                    )
+                );
+            state.y =
+                Math.max(
+                    0,
+                    Math.min(
+                        1,
+                        event.clientY /
+                            Math.max(
+                                1,
+                                window.innerHeight
+                            )
+                    )
+                );
+
+            visual.style.transform =
+                `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
+
+            if (!state.recording) {
+                return;
+            }
+
+            const elapsed =
+                performance.now() -
+                state.startedAt;
+
+            if (
+                elapsed - state.lastSampleAt < 30
+            ) {
+                return;
+            }
+
+            state.lastSampleAt = elapsed;
+            state.points.push({
+                t: Math.round(elapsed),
+                x: Number(state.x.toFixed(5)),
+                y: Number(state.y.toFixed(5))
+            });
+        };
+
+        const click = event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (!state.recording) {
+                state.recording = true;
+                state.startedAt =
+                    performance.now();
+                state.lastSampleAt = 0;
+                state.points = [{
+                    t: 0,
+                    x: Number(
+                        state.x.toFixed(5)
+                    ),
+                    y: Number(
+                        state.y.toFixed(5)
+                    )
+                }];
+                status.textContent =
+                    "● recording · click to finish · esc to cancel";
+                state.timeout =
+                    window.setTimeout(
+                        () => {
+                            this.finishEmojiAnimationRecording();
+                        },
+                        this.emojiAnimationMaximumMs
+                    );
+                return;
+            }
+
+            this.finishEmojiAnimationRecording();
+        };
+
+        state.keyHandler = event => {
+            if (event.key === "Escape") {
+                event.preventDefault();
+                this.cancelEmojiAnimationRecording();
+            }
+        };
+
+        layer.addEventListener(
+            "pointermove",
+            move
+        );
+        layer.addEventListener(
+            "click",
+            click
+        );
+        document.addEventListener(
+            "keydown",
+            state.keyHandler,
+            true
+        );
+
+        this.emojiAnimationRecording =
+            state;
+        this.emojiAnimationRecordingLayer =
+            layer;
+    }
+
+    cancelEmojiAnimationRecording() {
+        const state =
+            this.emojiAnimationRecording;
+
+        if (!state) {
+            return;
+        }
+
+        window.clearTimeout(
+            state.timeout
+        );
+
+        if (state.keyHandler) {
+            document.removeEventListener(
+                "keydown",
+                state.keyHandler,
+                true
+            );
+        }
+
+        state.layer?.remove();
+        this.emojiAnimationRecording = null;
+        this.emojiAnimationRecordingLayer = null;
+    }
+
+    async finishEmojiAnimationRecording() {
+        const state =
+            this.emojiAnimationRecording;
+
+        if (
+            !state ||
+            !state.recording
+        ) {
+            return;
+        }
+
+        const duration =
+            Math.min(
+                this.emojiAnimationMaximumMs,
+                Math.round(
+                    performance.now() -
+                    state.startedAt
+                )
+            );
+
+        state.points.push({
+            t: duration,
+            x: Number(
+                state.x.toFixed(5)
+            ),
+            y: Number(
+                state.y.toFixed(5)
+            )
+        });
+
+        const emoji = state.emoji;
+        const points = state.points.slice(0, 500);
+
+        this.cancelEmojiAnimationRecording();
+
+        if (
+            duration < 100 ||
+            points.length < 2
+        ) {
+            window.alert(
+                "record a little movement before finishing"
+            );
+            return;
+        }
+
+        await this.postEmojiAnimation({
+            emoji,
+            duration,
+            points
+        });
+    }
+
+    async postEmojiAnimation(payload) {
+        if (this.isBanned) {
+            return;
+        }
+
+        const name =
+            this.getEffectiveChatName();
+        const avatar =
+            this.getEffectiveOutgoingAvatar();
+
+        try {
+            const response = await fetch(
+                `${this.API}/api/chat/emoji-animation`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                        ...(this.discordAuthToken
+                            ? {
+                                "Authorization":
+                                    `Bearer ${this.discordAuthToken}`
+                            }
+                            : {})
+                    },
+                    body: JSON.stringify({
+                        clientId:
+                            this.clientId,
+                        name,
+                        avatar,
+                        animation:
+                            payload
+                    })
+                }
+            );
+
+            const result =
+                await response.json();
+
+            if (
+                response.status === 403 &&
+                result?.error === "banned"
+            ) {
+                this.isBanned = true;
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    result?.error ||
+                    `could not post emoji animation (${response.status})`
+                );
+            }
+        } catch (error) {
+            console.error(
+                "could not post emoji animation:",
+                error
+            );
+            window.alert(error.message);
+        }
     }
 
     createConfettiSpoilerOverlay(seedValue = "") {
@@ -16666,6 +17433,9 @@ const createPicker = onEmojiSelect =>
         onEmojiSelect
     });
 
+this.createSharedEmojiPicker =
+    createPicker;
+
 this.emojiPicker = null;
 
 this.ensureComposerEmojiPicker = () => {
@@ -17142,6 +17912,17 @@ Object.assign(
                                 emoji.id,
                             count: 0,
                             clientIds: []
+                        });
+                    } else if (
+                        mode === "animation"
+                    ) {
+                        this.startEmojiAnimationRecorder({
+                            kind: "custom",
+                            value: emoji.id,
+                            src: source,
+                            label:
+                                emoji.name ||
+                                emoji.id
                         });
                     } else {
                         this.insertIntoMessageInput(
