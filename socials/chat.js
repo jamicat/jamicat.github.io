@@ -15811,6 +15811,10 @@ this.emojiPickerContainer.append(
     this.emojiPicker
 );
 
+document.body.appendChild(
+    this.emojiPickerContainer
+);
+
 this.reactionEmojiPickerContainer =
     document.createElement("div");
 
@@ -16475,15 +16479,6 @@ openEmojiPicker({
         this.reactionEmojiPickerContainer.classList.remove(
             "opacity-100"
         );
-
-        if (
-            this.emojiPickerContainer.parentNode !==
-            document.body
-        ) {
-            document.body.appendChild(
-                this.emojiPickerContainer
-            );
-        }
 
         this.emojiPickerContainer.classList.remove(
             "invisible",
