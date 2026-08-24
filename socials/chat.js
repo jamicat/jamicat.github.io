@@ -15763,10 +15763,52 @@ const createPicker = onEmojiSelect =>
         onEmojiSelect
     });
 
-this.emojiPicker =
-    createPicker(emoji => {
-        this.insertSelectedEmoji(emoji);
-    });
+this.emojiPicker = null;
+
+this.ensureComposerEmojiPicker = () => {
+    if (this.emojiPicker) {
+        return this.emojiPicker;
+    }
+
+    this.emojiPicker =
+        createPicker(emoji => {
+            this.insertSelectedEmoji(emoji);
+        });
+
+    this.emojiPicker.style.width =
+        "100%";
+
+    this.emojiPicker.style.maxWidth =
+        "100%";
+
+    this.emojiPicker.style.height =
+        "380px";
+
+    this.emojiPickerContainer.append(
+        this.emojiPicker
+    );
+
+    const injectComposerCustomSection = () => {
+        if (
+            this.injectCustomEmojisIntoPicker(
+                this.emojiPicker,
+                "message"
+            )
+        ) {
+            return;
+        }
+
+        requestAnimationFrame(
+            injectComposerCustomSection
+        );
+    };
+
+    requestAnimationFrame(
+        injectComposerCustomSection
+    );
+
+    return this.emojiPicker;
+};
 
 this.reactionEmojiPicker =
     createPicker(emoji => {
@@ -15797,19 +15839,6 @@ this.emojiPickerContainer.style.maxHeight =
 
 this.emojiPickerContainer.style.overflow =
     "hidden";
-
-this.emojiPicker.style.width =
-    "100%";
-
-this.emojiPicker.style.maxWidth =
-    "100%";
-
-this.emojiPicker.style.height =
-    "380px";
-
-this.emojiPickerContainer.append(
-    this.emojiPicker
-);
 
 this.reactionEmojiPickerContainer =
     document.createElement("div");
@@ -15850,21 +15879,6 @@ document.body.appendChild(
     this.reactionEmojiPickerContainer
 );
 
-const injectComposerCustomSection = () => {
-    if (
-        this.injectCustomEmojisIntoPicker(
-            this.emojiPicker,
-            "message"
-        )
-    ) {
-        return;
-    }
-
-    requestAnimationFrame(
-        injectComposerCustomSection
-    );
-};
-
 const injectReactionCustomSection = () => {
     if (
         this.injectCustomEmojisIntoPicker(
@@ -15879,10 +15893,6 @@ const injectReactionCustomSection = () => {
         injectReactionCustomSection
     );
 };
-
-requestAnimationFrame(
-    injectComposerCustomSection
-);
 
 requestAnimationFrame(
     injectReactionCustomSection
@@ -16394,7 +16404,6 @@ openEmojiPicker({
 } = {}) {
     if (
         !this.emojiPickerContainer ||
-        !this.emojiPicker ||
         !this.reactionEmojiPickerContainer ||
         !this.reactionEmojiPicker
     ) {
@@ -16484,6 +16493,8 @@ openEmojiPicker({
                 this.emojiPickerContainer
             );
         }
+
+        this.ensureComposerEmojiPicker?.();
 
         this.emojiPickerContainer.classList.remove(
             "invisible",
