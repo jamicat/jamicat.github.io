@@ -15811,10 +15811,6 @@ this.emojiPickerContainer.append(
     this.emojiPicker
 );
 
-document.body.appendChild(
-    this.emojiPickerContainer
-);
-
 this.reactionEmojiPickerContainer =
     document.createElement("div");
 
@@ -15917,10 +15913,23 @@ requestAnimationFrame(
                     ? event.composedPath()
                     : [];
 
-const insideVisiblePicker =
-    path.includes(
+           const pickerHostIndex =
+    path.indexOf(
         this.emojiPicker
     );
+
+const insideVisiblePicker =
+    pickerHostIndex > 0 &&
+    path
+        .slice(
+            0,
+            pickerHostIndex
+        )
+        .some(node =>
+            node?.getRootNode?.() ===
+                this.emojiPicker
+                    ?.shadowRoot
+        );
 
 const clickedEmojiButton =
     path.includes(
@@ -16466,6 +16475,15 @@ openEmojiPicker({
         this.reactionEmojiPickerContainer.classList.remove(
             "opacity-100"
         );
+
+        if (
+            this.emojiPickerContainer.parentNode !==
+            document.body
+        ) {
+            document.body.appendChild(
+                this.emojiPickerContainer
+            );
+        }
 
         this.emojiPickerContainer.classList.remove(
             "invisible",
