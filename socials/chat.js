@@ -5992,6 +5992,12 @@ createChatArchiveToggle(archive, expanded) {
     divider.className =
         "mt-1.5 border-t border-white/10";
 
+	divider.style.borderColor =
+    this.window?.dataset?.chatTheme ===
+        "paws"
+        ? "#ee9dad"
+        : "";
+
     wrapper.append(
         button,
         divider
