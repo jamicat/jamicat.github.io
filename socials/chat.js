@@ -5991,12 +5991,14 @@ createChatArchiveToggle(archive, expanded) {
 
     divider.className =
         "mt-1.5 border-t border-white/10";
+    divider.dataset.chatArchiveDivider =
+        "true";
 
-	divider.style.borderColor =
-    this.window?.dataset?.chatTheme ===
-        "paws"
-        ? "#ee9dad"
-        : "";
+    divider.style.borderColor =
+        this.window?.dataset?.chatTheme ===
+            "paws"
+            ? "#ee9dad"
+            : "";
 
     wrapper.append(
         button,
@@ -9080,15 +9082,91 @@ jumpToReplyTarget(type, id) {
                 });
             }
 
-            requestAnimationFrame(
-                () => {
-                    requestAnimationFrame(
-                        () => {
-                            jumpToRenderedTarget();
+            const finishArchiveJump = () => {
+                const startedAt =
+                    performance.now();
+
+                const waitForTarget = () => {
+                    const target =
+                        this.messages.querySelector(
+                            selector
+                        );
+
+                    if (!target) {
+                        if (
+                            performance.now() -
+                                startedAt <
+                                1500
+                        ) {
+                            requestAnimationFrame(
+                                waitForTarget
+                            );
                         }
+
+                        return;
+                    }
+
+                    let settleTimer = null;
+                    let observer = null;
+
+                    const finish = () => {
+                        if (settleTimer) {
+                            clearTimeout(
+                                settleTimer
+                            );
+                        }
+
+                        observer?.disconnect();
+
+                        requestAnimationFrame(
+                            () => {
+                                jumpToRenderedTarget();
+                            }
+                        );
+                    };
+
+                    const scheduleFinish = () => {
+                        if (settleTimer) {
+                            clearTimeout(
+                                settleTimer
+                            );
+                        }
+
+                        settleTimer =
+                            window.setTimeout(
+                                finish,
+                                120
+                            );
+                    };
+
+                    if (
+                        typeof ResizeObserver ===
+                            "function"
+                    ) {
+                        observer =
+                            new ResizeObserver(
+                                scheduleFinish
+                            );
+
+                        observer.observe(
+                            this.messages
+                        );
+                    }
+
+                    scheduleFinish();
+
+                    window.setTimeout(
+                        finish,
+                        1000
                     );
-                }
-            );
+                };
+
+                requestAnimationFrame(
+                    waitForTarget
+                );
+            };
+
+            finishArchiveJump();
 
             return;
         }
@@ -18980,6 +19058,18 @@ keepTitleBarInViewport() {
                     ? "#ee9dad"
                     : "";
         });
+
+    this.window
+        .querySelectorAll(
+            "[data-chat-archive-divider]"
+        )
+        .forEach(divider => {
+            divider.style.borderColor =
+                cleaned === "paws"
+                    ? "#ee9dad"
+                    : "";
+        });
+
 
     document.documentElement
         .setAttribute(
