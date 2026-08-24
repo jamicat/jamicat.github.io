@@ -6114,6 +6114,54 @@ renderHistoryTimeline(options = {}) {
     }
 }
 
+pruneEmptyChatArchives() {
+    const remainingArchives =
+        this.chatArchives.filter(archive =>
+            this.historyTimeline.some(item =>
+                this.archiveContainsTimelineItem(
+                    archive,
+                    item
+                )
+            )
+        );
+
+    if (
+        remainingArchives.length ===
+        this.chatArchives.length
+    ) {
+        return false;
+    }
+
+    const remainingIds =
+        new Set(
+            remainingArchives.map(archive =>
+                String(archive.id)
+            )
+        );
+
+    this.chatArchives =
+        remainingArchives;
+
+    for (
+        const id
+        of [...this.expandedChatArchiveIds]
+    ) {
+        if (!remainingIds.has(String(id))) {
+            this.expandedChatArchiveIds.delete(id);
+        }
+    }
+
+    return true;
+}
+
+refreshHistoryAfterRemoval() {
+    this.pruneEmptyChatArchives();
+
+    this.renderHistoryTimeline({
+        preserveScroll: true
+    });
+}
+
 archiveBoundaryFromMessage(message) {
     const isImage =
         Boolean(message?.imageUploadId);
@@ -7604,6 +7652,8 @@ applyDeletedUserContent(data) {
     }
 
     this.closeModerationMenu();
+
+    this.refreshHistoryAfterRemoval();
 }
 
 
@@ -9471,19 +9521,6 @@ openModerationMenu(x, y, message) {
 
     }
 
-    buttons.push(
-        this.createModerationMenuButton(
-            "record emoji",
-            () => {
-                this.closeModerationMenu();
-                this.openEmojiAnimationPicker(
-                    x,
-                    y
-                );
-            }
-        )
-    );
-
     if (canDelete) {
         addDivider();
 
@@ -9513,6 +9550,19 @@ openModerationMenu(x, y, message) {
     if (!canDelete) {
         addDivider();
     }
+
+    buttons.push(
+        this.createModerationMenuButton(
+            "record emoji",
+            () => {
+                this.closeModerationMenu();
+                this.openEmojiAnimationPicker(
+                    x,
+                    y
+                );
+            }
+        )
+    );
 
     buttons.push(
         this.createModerationMenuButton(
@@ -10146,7 +10196,8 @@ createSavedRemixCard(item) {
 async saveRemix(upload, button = null) {
     if (
         !this.isAdmin ||
-        !upload?.uploadId
+        !upload?.uploadId ||
+        upload.savedRemix === true
     ) {
         return;
     }
@@ -10191,14 +10242,30 @@ async saveRemix(upload, button = null) {
             );
         }
 
+        upload.savedRemix = true;
+
+        const timelineItem =
+            this.historyTimeline.find(item =>
+                item.type ===
+                    "image-upload" &&
+                String(
+                    item.value?.uploadId
+                ) ===
+                    String(upload.uploadId)
+            );
+
+        if (timelineItem?.value) {
+            timelineItem.value.savedRemix =
+                true;
+        }
+
         if (button) {
             button.textContent =
-                result.alreadySaved
-                    ? "saved"
-                    : "saved";
+                "saved";
             button.classList.add(
                 "is-saved"
             );
+            button.disabled = true;
         }
     } catch (error) {
         console.error(
@@ -10215,7 +10282,10 @@ async saveRemix(upload, button = null) {
                 "save remix";
         }
     } finally {
-        if (button) {
+        if (
+            button &&
+            upload.savedRemix !== true
+        ) {
             button.disabled = false;
         }
     }
@@ -12290,6 +12360,8 @@ if (
         data.uploadId
     );
 
+
+    this.refreshHistoryAfterRemoval();
     return;
 }
 		
@@ -12406,6 +12478,7 @@ if (data.type === "delete") {
         this.clearReplyTarget();
     }
     this.closeModerationMenu();
+    this.refreshHistoryAfterRemoval();
     return;
 }
 
@@ -12904,8 +12977,19 @@ createCompletedImageElement(
             "theme-body"
         ].join(" ");
 
+        const alreadySaved =
+            upload.savedRemix === true;
+
         saveButton.textContent =
-            "save remix";
+            alreadySaved
+                ? "saved"
+                : "save remix";
+        saveButton.disabled =
+            alreadySaved;
+        saveButton.classList.toggle(
+            "is-saved",
+            alreadySaved
+        );
 
         saveButton.addEventListener(
             "click",
@@ -14561,6 +14645,8 @@ clearChatThrough(cutoff) {
     ) {
         this.clearReplyTarget();
     }
+
+    this.refreshHistoryAfterRemoval();
 }
 
 clearChatBefore(cutoff) {
@@ -14625,6 +14711,8 @@ clearChatBefore(cutoff) {
     ) {
         this.clearReplyTarget();
     }
+
+    this.refreshHistoryAfterRemoval();
 }
 
 
@@ -15463,10 +15551,7 @@ setupNameSaving() {
             document.createElement("div");
 
         host.className =
-            "jami-emoji-animation-picker theme-body";
-        host.dataset.chatThemeOwner =
-            this.window?.dataset?.chatTheme ||
-            "original";
+            "jami-emoji-animation-picker";
 
         const heading =
             document.createElement("div");
@@ -15476,11 +15561,11 @@ setupNameSaving() {
             document.createElement("button");
 
         heading.className =
-            "jami-emoji-animation-picker-heading theme-heading";
+            "jami-emoji-animation-picker-heading";
         heading.textContent =
             "record emoji";
         hint.className =
-            "jami-emoji-animation-picker-hint theme-body";
+            "jami-emoji-animation-picker-hint";
         hint.textContent =
             "choose an emoji";
         close.type = "button";
