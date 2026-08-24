@@ -9574,6 +9574,16 @@ openModerationMenu(x, y, message) {
         )
     );
 
+    buttons.push(
+        this.createModerationMenuButton(
+            "post confetti message",
+            () => {
+                this.closeModerationMenu();
+                this.postConfettiMessage();
+            }
+        )
+    );
+
     if (this.isAdmin) {
         buttons.push(
             this.createModerationMenuButton(
@@ -9581,16 +9591,6 @@ openModerationMenu(x, y, message) {
                 () => {
                     this.closeModerationMenu();
                     this.editMotd();
-                }
-            )
-        );
-
-        buttons.push(
-            this.createModerationMenuButton(
-                "post confetti message",
-                () => {
-                    this.closeModerationMenu();
-                    this.postConfettiMessage();
                 }
             )
         );
@@ -9779,25 +9779,15 @@ openChatContextMenu(x, y) {
         )
     );
 
-    if (this.isAdmin) {
-        const divider =
-            document.createElement("div");
-
-        divider.className =
-            "jami-chat-context-divider";
-
-        menu.appendChild(divider);
-
-        menu.appendChild(
-            this.createModerationMenuButton(
-                "post confetti message",
-                () => {
-                    this.closeModerationMenu();
-                    this.postConfettiMessage();
-                }
-            )
-        );
-    }
+    menu.appendChild(
+        this.createModerationMenuButton(
+            "post confetti message",
+            () => {
+                this.closeModerationMenu();
+                this.postConfettiMessage();
+            }
+        )
+    );
 
     document.body.appendChild(menu);
 
@@ -16374,7 +16364,7 @@ setupNameSaving() {
     }
 
     async postConfettiMessage() {
-        if (!this.isAdmin || !this.adminKey) {
+        if (this.isBanned) {
             return;
         }
 
@@ -16402,39 +16392,41 @@ setupNameSaving() {
         const avatar =
             this.getEffectiveOutgoingAvatar();
 
-        const primaryGuild =
-            this.discordUser?.primaryGuild ||
-            null;
-
         try {
             const response = await fetch(
-                `${this.API}/api/admin/chat/confetti`,
+                `${this.API}/api/chat/confetti`,
                 {
                     method: "POST",
                     headers: {
                         "Content-Type":
                             "application/json",
-                        "Authorization":
-                            `Bearer ${this.adminKey}`
+                        ...(this.discordAuthToken
+                            ? {
+                                "Authorization":
+                                    `Bearer ${this.discordAuthToken}`
+                            }
+                            : {})
                     },
                     body: JSON.stringify({
                         clientId:
                             this.clientId,
                         name,
                         avatar,
-                        message: cleaned,
-                        discordServerTag:
-                            primaryGuild?.tag ||
-                            null,
-                        discordServerBadgeUrl:
-                            primaryGuild?.badgeUrl ||
-                            null
+                        message: cleaned
                     })
                 }
             );
 
             const result =
                 await response.json();
+
+            if (
+                response.status === 403 &&
+                result?.error === "banned"
+            ) {
+                this.isBanned = true;
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error(
