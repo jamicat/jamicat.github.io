@@ -6731,6 +6731,10 @@ openReactionPicker(
     target,
     anchor
 ) {
+    if (this.isBanned) {
+        return;
+    }
+
     this.openEmojiPicker({
         mode: "reaction",
         target,
@@ -6743,6 +6747,10 @@ async setReactionActive(
     reaction,
     active
 ) {
+    if (this.isBanned) {
+        return;
+    }
+
     const busyKey = [
         target.targetType,
         target.targetId,
@@ -8412,6 +8420,10 @@ getReplyDescriptor(message) {
 }
 
 setReplyTarget(message) {
+    if (this.isBanned) {
+        return;
+    }
+
     const target = this.getReplyDescriptor(message);
     if (!target.id) return;
     this.replyTarget = target;
@@ -8501,6 +8513,10 @@ appendEditedMarker(container, message) {
 }
 
 beginInlineEdit(message) {
+    if (this.isBanned) {
+        return;
+    }
+
     const row = this.findMessageElement(message.id);
     if (!row || this.activeInlineEdit) return;
     const currentMessage =
@@ -8550,6 +8566,11 @@ cancelInlineEdit() {
 }
 
 async saveInlineEdit() {
+    if (this.isBanned) {
+        this.cancelInlineEdit();
+        return;
+    }
+
     const active = this.activeInlineEdit;
     if (!active) return;
     const message = active.editor.value.trim();
@@ -9430,6 +9451,10 @@ async deleteSavedRemix(savedId) {
 }
 
 async repostSavedRemix(savedId) {
+    if (this.isBanned) {
+        return null;
+    }
+
     try {
         const request =
             await fetch(
@@ -11175,6 +11200,15 @@ connect() {
     this.messageInput.disabled = true;
     this.sendButton.disabled = true;
 
+    if (this.imageUploadButton) {
+        this.imageUploadButton.disabled = true;
+    }
+
+    this.closeReactionPicker();
+    this.clearReplyTarget();
+    this.cancelInlineEdit();
+    window.jamiImageRemixEditor?.close();
+
     if (this.connectionStatus) {
         this.connectionStatus.textContent =
             "banned";
@@ -11743,6 +11777,10 @@ setupImageRemixing() {
 }
 
 startImageRemix(upload) {
+    if (this.isBanned) {
+        return;
+    }
+
     if (
         !upload?.uploadId ||
         !upload?.imageUrl ||
@@ -11770,6 +11808,10 @@ startImageRemix(upload) {
 }
 
 async uploadImageRemix(detail) {
+    if (this.isBanned) {
+        return;
+    }
+
     const blob = detail?.blob;
     const source = detail?.source;
 
@@ -12977,6 +13019,10 @@ async flushImageProgressReport(
 }	
 	
 async uploadTestImage(file) {
+    if (this.isBanned) {
+        return;
+    }
+
     const allowedTypes =
         new Set([
             "image/png",
@@ -13866,6 +13912,10 @@ getEffectiveChatName() {
 }
 
 async sendMessage() {
+    if (this.isBanned) {
+        return;
+    }
+
     const name =
         this.getEffectiveChatName();
 
