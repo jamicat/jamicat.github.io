@@ -9602,7 +9602,7 @@ openModerationMenu(x, y, message) {
 
     if (
         combinableEmojiAnimations.length > 0 &&
-        combinableEmojiAnimations.length < 5
+        combinableEmojiAnimations.length < 10
     ) {
         buttons.push(
             this.createModerationMenuButton(
@@ -15650,7 +15650,7 @@ setupNameSaving() {
 
             if (
                 animations.length < 2 ||
-                animations.length > 5
+                animations.length > 10
             ) {
                 return null;
             }
@@ -15806,7 +15806,7 @@ setupNameSaving() {
 
         if (
             baseAnimations.length < 1 ||
-            baseAnimations.length >= 5
+            baseAnimations.length >= 10
         ) {
             return;
         }
@@ -15857,7 +15857,7 @@ setupNameSaving() {
         heading.className =
             "jami-emoji-combine-heading theme-heading";
         heading.textContent =
-            `combine emoji record · ${baseAnimations.length}/5`;
+            `combine emoji record · ${baseAnimations.length}/10`;
 
         const tiles =
             document.createElement("div");
@@ -15912,11 +15912,11 @@ setupNameSaving() {
             }
 
             heading.textContent =
-                `combine emoji record · ${count}/5`;
+                `combine emoji record · ${count}/10`;
             combine.disabled =
                 count <=
                     baseAnimations.length ||
-                count > 5;
+                count > 10;
 
             for (
                 const tile
@@ -15953,7 +15953,7 @@ setupNameSaving() {
                     !isSelected &&
                     count +
                         candidate.animations.length >
-                        5;
+                        10;
             }
         };
 
@@ -16041,7 +16041,7 @@ setupNameSaving() {
 
                 if (
                     animations.length < 2 ||
-                    animations.length > 5
+                    animations.length > 10
                 ) {
                     return;
                 }
@@ -16104,7 +16104,7 @@ setupNameSaving() {
             this.isBanned ||
             !Array.isArray(animations) ||
             animations.length < 2 ||
-            animations.length > 5
+            animations.length > 10
         ) {
             return;
         }
