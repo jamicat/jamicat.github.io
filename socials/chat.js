@@ -174,6 +174,8 @@ this.banManagerButton = null;
 this.partyManager = null;
 this.partyManagerButton = null;
 this.partyManagerBusy = false;
+this.chatTreeState = { active: false, sessionId: null, startedAt: null };
+this.chatTreeReveal = null;
 this.savedRemixManager = null;
 this.savedRemixManagerBusy = false;
 this.nameHistoryManager = null;
@@ -342,6 +344,7 @@ window.visualViewport?.addEventListener(
 );
 this.loadMotd();
 this.loadWatchParty();
+this.loadChatTreeState();
 this.loadHistory()
     .then(() => this.loadReactions())
     .catch(error => {
@@ -1630,6 +1633,8 @@ createBanManagerButton() {
         this.watchParty?.enabled === true;
     const emojiEnabled =
         this.emojiPartyGlobalEnabled === true;
+    const treeActive =
+        this.chatTreeState?.active === true;
     const busy =
         this.partyManagerBusy === true;
 
@@ -1641,7 +1646,7 @@ createBanManagerButton() {
                     data-party-action="toggle"
                     class="
                         w-full rounded-xl border
-                        px-3 py-2.5 text-left transition
+                        px-3 py-2 text-left transition
                         ${
                             enabled
                                 ? `
@@ -1687,7 +1692,7 @@ createBanManagerButton() {
                         w-full rounded-xl
                         border border-amber-300/20
                         bg-amber-500/10
-                        px-3 py-2.5 text-left
+                        px-3 py-2 text-left
                         text-amber-100 transition
                         hover:border-amber-300/40
                         hover:bg-amber-500/20
@@ -1741,6 +1746,12 @@ createBanManagerButton() {
                             ? "emoji party enabled"
                             : "emoji party disabled"
                     }
+                    ·
+                    ${
+                        treeActive
+                            ? "tree planted"
+                            : "tree idle"
+                    }
                 </div>
             </div>
 
@@ -1771,7 +1782,7 @@ createBanManagerButton() {
                 data-party-action="emoji"
                 class="
                     w-full rounded-xl border
-                    px-3 py-2.5 text-left transition
+                    px-3 py-2 text-left transition
                     ${
                         emojiEnabled
                             ? `
@@ -1801,6 +1812,40 @@ createBanManagerButton() {
                             ? "disable emoji party"
                             : "enable emoji party"
                     }
+                </span>
+            </button>
+
+            <button
+                type="button"
+                data-party-action="tree"
+                class="
+                    w-full rounded-xl border
+                    px-3 py-2 text-left transition
+                    ${
+                        treeActive
+                            ? `
+                                border-red-300/20
+                                bg-red-500/10
+                                text-red-200
+                                hover:border-red-300/40
+                                hover:bg-red-500/20
+                            `
+                            : `
+                                border-white/10
+                                bg-white/5
+                                text-white/85
+                                hover:border-emerald-300/30
+                                hover:bg-emerald-500/10
+                                hover:text-emerald-200
+                            `
+                    }
+                    disabled:cursor-not-allowed
+                    disabled:opacity-50
+                "
+                ${busy ? "disabled" : ""}
+            >
+                <span class="font-bold">
+                    ${treeActive ? "finish tree" : "plant tree"}
                 </span>
             </button>
 
@@ -1878,6 +1923,31 @@ createBanManagerButton() {
         }
     );
 
+    const treeButton =
+        this.partyManager.querySelector(
+            '[data-party-action="tree"]'
+        );
+
+    treeButton?.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (
+                !this.isAdmin ||
+                !this.adminKey ||
+                this.partyManagerBusy
+            ) {
+                return;
+            }
+
+            this.setChatTreeActive(
+                !this.chatTreeState?.active
+            );
+        }
+    );
+
     const clearButton =
         this.partyManager.querySelector(
             '[data-party-action="clear"]'
@@ -1897,6 +1967,228 @@ createBanManagerButton() {
         }
     );
 }
+
+
+    async loadChatTreeState() {
+        try {
+            const response = await fetch(
+                `${this.API}/api/chat/tree`
+            );
+            if (!response.ok) return;
+            const result = await response.json();
+            this.chatTreeState = {
+                active: result.active === true,
+                sessionId: result.sessionId || null,
+                startedAt: result.startedAt || null
+            };
+            if (this.partyManager) {
+                this.renderPartyManager();
+            }
+        } catch (error) {
+            console.error(
+                "could not load chat tree state:",
+                error
+            );
+        }
+    }
+
+    async setChatTreeActive(enabled) {
+        if (
+            !this.isAdmin ||
+            !this.adminKey ||
+            this.partyManagerBusy
+        ) return;
+
+        this.partyManagerBusy = true;
+        this.renderPartyManager();
+
+        try {
+            const response = await fetch(
+                `${this.API}/api/admin/chat/tree/${
+                    enabled ? "start" : "finish"
+                }`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Authorization":
+                            `Bearer ${this.adminKey}`
+                    }
+                }
+            );
+            const result = await response.json();
+            if (!response.ok) {
+                throw new Error(
+                    result.error ||
+                    "could not update tree session"
+                );
+            }
+            this.chatTreeState = {
+                active: result.active === true,
+                sessionId: result.sessionId || null,
+                startedAt: result.startedAt || null
+            };
+            this.setPartyManagerMessage(
+                enabled
+                    ? "tree planted"
+                    : "tree finished"
+            );
+        } catch (error) {
+            console.error("tree session error:", error);
+            this.setPartyManagerMessage(
+                error.message ||
+                    "could not update tree session",
+                true
+            );
+        } finally {
+            this.partyManagerBusy = false;
+            if (this.partyManager) {
+                this.renderPartyManager();
+            }
+        }
+    }
+
+    closeChatTreeReveal() {
+        this.chatTreeReveal?.remove();
+        this.chatTreeReveal = null;
+    }
+
+    showChatTreeReveal(tree) {
+        if (!tree || typeof tree !== "object") return;
+        this.closeChatTreeReveal();
+
+        const panel = document.createElement("section");
+        panel.className = "jami-chat-tree-reveal";
+        panel.setAttribute("role", "dialog");
+        panel.setAttribute("aria-label", "finished chat tree");
+
+        const close = document.createElement("button");
+        close.type = "button";
+        close.className = "jami-chat-tree-close";
+        close.textContent = "×";
+        close.setAttribute("aria-label", "close tree");
+        close.addEventListener("click", () =>
+            this.closeChatTreeReveal()
+        );
+
+        const heading = document.createElement("div");
+        heading.className = "jami-chat-tree-heading";
+        heading.textContent = "chat tree";
+
+        const art = document.createElement("div");
+        art.className = "jami-chat-tree-art";
+        art.appendChild(this.createChatTreeSvg(tree));
+
+        const harvest = document.createElement("div");
+        harvest.className = "jami-chat-tree-harvest";
+        harvest.textContent =
+            `harvest · ${Number(tree.harvestApples) || 0} 🍎`;
+
+        const people = document.createElement("div");
+        people.className = "jami-chat-tree-people";
+        for (const person of tree.participants || []) {
+            const item = document.createElement("span");
+            item.className = "jami-chat-tree-person";
+            item.textContent =
+                `${person.name || "guest"} 🍎 ${
+                    Number(person.totalApples) || 0
+                }`;
+            people.appendChild(item);
+        }
+
+        panel.append(close, heading, art, harvest, people);
+        document.body.appendChild(panel);
+        this.chatTreeReveal = panel;
+    }
+
+    createChatTreeSvg(tree) {
+        const NS = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(NS, "svg");
+        svg.setAttribute("viewBox", "0 0 520 360");
+        svg.setAttribute("aria-hidden", "true");
+
+        const branches = Array.isArray(tree.branches)
+            ? tree.branches
+            : [];
+        const apples = Math.max(
+            0,
+            Number(tree.harvestApples) || 0
+        );
+        const seed = Number(tree.seed) || 1;
+        const rand = index => {
+            const x = Math.sin(
+                seed * 12.9898 + index * 78.233
+            ) * 43758.5453;
+            return x - Math.floor(x);
+        };
+
+        const ground = document.createElementNS(NS, "path");
+        ground.setAttribute("d", "M150 326 Q260 310 370 326");
+        ground.setAttribute("class", "jami-tree-ground");
+        svg.appendChild(ground);
+
+        const trunk = document.createElementNS(NS, "path");
+        trunk.setAttribute(
+            "d",
+            "M260 322 C252 270 268 226 258 178 C252 146 260 116 260 82"
+        );
+        trunk.setAttribute("class", "jami-tree-trunk");
+        svg.appendChild(trunk);
+
+        const points = [];
+        const total = Math.max(1, branches.length);
+        branches.forEach((branch, i) => {
+            const level = i / total;
+            const side = i % 2 === 0 ? -1 : 1;
+            const bucket = Math.max(
+                1,
+                Math.min(5, Number(branch.bucket) || 3)
+            );
+            const baseY = 282 - level * 205;
+            const baseX = 260 + (rand(i) - .5) * 20;
+            const reach = 34 + bucket * 10 + rand(i + 40) * 20;
+            const endX = baseX + side * reach;
+            const endY = baseY - 16 - rand(i + 80) * 38;
+            const path = document.createElementNS(NS, "path");
+            path.setAttribute(
+                "d",
+                `M${baseX.toFixed(1)} ${baseY.toFixed(1)} Q${(
+                    baseX + side * reach * .45
+                ).toFixed(1)} ${(baseY - 8).toFixed(1)} ${
+                    endX.toFixed(1)
+                } ${endY.toFixed(1)}`
+            );
+            path.setAttribute("class", "jami-tree-branch");
+            svg.appendChild(path);
+
+            const leaf = document.createElementNS(NS, "ellipse");
+            leaf.setAttribute("cx", endX.toFixed(1));
+            leaf.setAttribute("cy", endY.toFixed(1));
+            leaf.setAttribute("rx", "8");
+            leaf.setAttribute("ry", "5");
+            leaf.setAttribute(
+                "transform",
+                `rotate(${side * (18 + rand(i + 120) * 30)} ${
+                    endX.toFixed(1)
+                } ${endY.toFixed(1)})`
+            );
+            leaf.setAttribute("class", "jami-tree-leaf");
+            svg.appendChild(leaf);
+            points.push([endX, endY]);
+        });
+
+        for (let i = 0; i < apples && points.length; i++) {
+            const point = points[
+                Math.floor(rand(i + 300) * points.length)
+            ];
+            const apple = document.createElementNS(NS, "circle");
+            apple.setAttribute("cx", (point[0] + (rand(i+500)-.5)*15).toFixed(1));
+            apple.setAttribute("cy", (point[1] + 8 + rand(i+600)*10).toFixed(1));
+            apple.setAttribute("r", "4.5");
+            apple.setAttribute("class", "jami-tree-apple");
+            svg.appendChild(apple);
+        }
+        return svg;
+    }
 
 	setPartyManagerMessage(
     message,
@@ -12571,6 +12863,33 @@ if (data.type === "delete") {
     }
     this.closeModerationMenu();
     this.refreshHistoryAfterRemoval();
+    return;
+}
+
+if (data.type === "chat-tree-state") {
+    this.chatTreeState = {
+        active: data.active === true,
+        sessionId: data.sessionId || null,
+        startedAt: data.startedAt || null
+    };
+    if (this.partyManager) {
+        this.partyManagerBusy = false;
+        this.renderPartyManager();
+    }
+    return;
+}
+
+if (data.type === "chat-tree-finished") {
+    this.chatTreeState = {
+        active: false,
+        sessionId: null,
+        startedAt: null
+    };
+    if (this.partyManager) {
+        this.partyManagerBusy = false;
+        this.renderPartyManager();
+    }
+    this.showChatTreeReveal(data.tree);
     return;
 }
 
