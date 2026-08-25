@@ -103,6 +103,24 @@ this.emojiAnimationRecordingLayer = null;
 this.emojiAnimationRecording = null;
 this.emojiAnimationMaximumMs = 15000;
 this.emojiAnimationCombineMenu = null;
+this.emojiPartyEnabled = false;
+this.emojiPartyEmoji = {
+    kind: "unicode",
+    value: "🐈",
+    src: "",
+    label: "cat"
+};
+this.emojiPartySessionId = crypto.randomUUID();
+this.emojiPartyPickerContainer = null;
+this.emojiPartyPicker = null;
+this.emojiPartyRemote = new Map();
+this.emojiPartyLastSentAt = 0;
+this.emojiPartyPointer = {
+    x: 0.5,
+    y: 0.5
+};
+this.emojiPartyPointerHandler = null;
+this.emojiPartyUnloadHandler = null;
 this.createSharedEmojiPicker = null;
 
 this.replyTarget = null;
@@ -296,6 +314,7 @@ if (
 }
 
 this.setupAdminAuthentication();
+this.createPartyManagerButton();
 this.setupAvatarPicker();
 this.setupEmojiPicker();
 this.setupMembersToggle();
@@ -1395,7 +1414,6 @@ setupAdminAuthentication() {
 
     this.loadHistory();
 		this.createBanManagerButton();
-		this.createPartyManagerButton();
 		this.renderWatchParty();
 }
 
@@ -1413,7 +1431,6 @@ setupAdminAuthentication() {
 	this.closeBanManager();
 this.removeBanManagerButton();
 		this.closePartyManager();
-    this.removePartyManagerButton();
     this.partyManagerBusy = false;
     this.loadHistory();
 	this.renderWatchParty();
@@ -1547,17 +1564,6 @@ createBanManagerButton() {
 }
 
 	openPartyManager() {
-    if (
-        !this.isAdmin ||
-        !this.adminKey
-    ) {
-        window.alert(
-            "admin authentication is required"
-        );
-
-        return;
-    }
-
     this.closeAdminManagers();
 
     const panel =
@@ -1617,9 +1623,80 @@ createBanManagerButton() {
 
     const enabled =
         this.watchParty?.enabled === true;
-
+    const emojiEnabled =
+        this.emojiPartyEnabled === true;
     const busy =
         this.partyManagerBusy === true;
+
+    const watchControls =
+        this.isAdmin
+            ? `
+                <button
+                    type="button"
+                    data-party-action="toggle"
+                    class="
+                        w-full rounded-xl border
+                        px-3 py-2.5 text-left transition
+                        ${
+                            enabled
+                                ? `
+                                    border-red-300/20
+                                    bg-red-500/10
+                                    text-red-200
+                                    hover:border-red-300/40
+                                    hover:bg-red-500/20
+                                `
+                                : `
+                                    border-white/10
+                                    bg-white/5
+                                    text-white/85
+                                    hover:border-emerald-300/30
+                                    hover:bg-emerald-500/10
+                                    hover:text-emerald-200
+                                `
+                        }
+                        disabled:cursor-not-allowed
+                        disabled:opacity-50
+                    "
+                    ${busy ? "disabled" : ""}
+                >
+                    <span class="font-bold">
+                        ${
+                            enabled
+                                ? "disable watch party"
+                                : "enable watch party"
+                        }
+                    </span>
+                </button>
+            `
+            : "";
+
+    const clearControl =
+        this.isAdmin
+            ? `
+                <div class="my-3 border-t border-white/10"></div>
+                <button
+                    type="button"
+                    data-party-action="clear"
+                    class="
+                        w-full rounded-xl
+                        border border-amber-300/20
+                        bg-amber-500/10
+                        px-3 py-2.5 text-left
+                        text-amber-100 transition
+                        hover:border-amber-300/40
+                        hover:bg-amber-500/20
+                        disabled:cursor-not-allowed
+                        disabled:opacity-50
+                    "
+                    ${busy ? "disabled" : ""}
+                >
+                    <span class="font-bold">
+                        clear queue
+                    </span>
+                </button>
+            `
+            : "";
 
     this.partyManager.innerHTML = `
         <div
@@ -1638,26 +1715,26 @@ createBanManagerButton() {
                         tracking-widest
                     "
                 >
-                    watch party
+                    party
                 </div>
 
                 <div
                     class="
-                        mt-1
-                        theme-body
-                        text-[9px]
-                        ${
-                            enabled
-                                ? "text-emerald-300"
-                                : "text-white/40"
-                        }
+                        mt-1 theme-body text-[9px]
+                        text-white/40
                     "
                     data-party-status
                 >
                     ${
                         enabled
-                            ? "currently enabled"
-                            : "currently disabled"
+                            ? "watch party enabled"
+                            : "watch party disabled"
+                    }
+                    ·
+                    ${
+                        emojiEnabled
+                            ? "emoji party enabled"
+                            : "emoji party disabled"
                     }
                 </div>
             </div>
@@ -1667,12 +1744,10 @@ createBanManagerButton() {
                 data-close-party-manager
                 class="
                     rounded px-2 py-1
-                    text-white/50
-                    transition
-                    hover:bg-white/10
-                    hover:text-white
+                    text-white/50 transition
+                    hover:bg-white/10 hover:text-white
                 "
-                aria-label="close watch party manager"
+                aria-label="close party manager"
             >
                 ×
             </button>
@@ -1680,24 +1755,20 @@ createBanManagerButton() {
 
         <div
             class="
-                space-y-2
-                p-3
-                theme-body
-                text-[11px]
+                space-y-2 p-3
+                theme-body text-[11px]
             "
         >
+            ${watchControls}
+
             <button
                 type="button"
-                data-party-action="toggle"
+                data-party-action="emoji"
                 class="
-                    w-full
-                    rounded-xl
-                    border
-                    px-3 py-2.5
-                    text-left
-                    transition
+                    w-full rounded-xl border
+                    px-3 py-2.5 text-left transition
                     ${
-                        enabled
+                        emojiEnabled
                             ? `
                                 border-red-300/20
                                 bg-red-500/10
@@ -1709,66 +1780,34 @@ createBanManagerButton() {
                                 border-white/10
                                 bg-white/5
                                 text-white/85
-                                hover:border-emerald-300/30
-                                hover:bg-emerald-500/10
-                                hover:text-emerald-200
+                                hover:border-pink-300/30
+                                hover:bg-pink-500/10
+                                hover:text-pink-200
                             `
                     }
                     disabled:cursor-not-allowed
                     disabled:opacity-50
                 "
-                ${busy ? "disabled" : ""}
+                ${this.isBanned ? "disabled" : ""}
             >
                 <span class="font-bold">
                     ${
-                        enabled
-                            ? "disable watch party"
-                            : "enable watch party"
+                        emojiEnabled
+                            ? "disable emoji party"
+                            : "enable emoji party"
                     }
                 </span>
             </button>
 
-            <div
-                class="
-                    my-3
-                    border-t border-white/10
-                "
-            ></div>
-
-        <button
-    type="button"
-    data-party-action="clear"
-    class="
-        w-full
-        rounded-xl
-        border border-amber-300/20
-        bg-amber-500/10
-        px-3 py-2.5
-        text-left
-        text-amber-100
-        transition
-        hover:border-amber-300/40
-        hover:bg-amber-500/20
-        disabled:cursor-not-allowed
-        disabled:opacity-50
-    "
-    ${busy ? "disabled" : ""}
->
-    <span class="font-bold">
-        clear queue
-    </span>
-</button>
+            ${clearControl}
 
             <div
                 data-party-message
                 class="
-                    hidden
-                    rounded-xl
+                    hidden rounded-xl
                     border border-white/10
-                    bg-white/5
-                    px-3 py-2
-                    text-[9px]
-                    text-white/60
+                    bg-white/5 px-3 py-2
+                    text-[9px] text-white/60
                 "
                 aria-live="polite"
             ></div>
@@ -1780,54 +1819,83 @@ createBanManagerButton() {
             "[data-close-party-manager]"
         );
 
-		
-    if (closeButton) {
-        closeButton.addEventListener(
-            "click",
-            event => {
-                event.preventDefault();
-                event.stopPropagation();
-
-                this.closePartyManager();
-            }
-        );
-    }
+    closeButton?.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+            this.closePartyManager();
+        }
+    );
 
     const toggleButton =
         this.partyManager.querySelector(
             '[data-party-action="toggle"]'
         );
 
-    if (toggleButton) {
-        toggleButton.addEventListener(
-            "click",
-            event => {
-                event.preventDefault();
-                event.stopPropagation();
-
-                this.setWatchPartyEnabled(
-                    !enabled
-                );
-            }
-        );
-    }
-
-		const clearButton =
-    this.partyManager.querySelector(
-        '[data-party-action="clear"]'
-    );
-
-if (clearButton) {
-    clearButton.addEventListener(
+    toggleButton?.addEventListener(
         "click",
         event => {
             event.preventDefault();
             event.stopPropagation();
 
+            if (!this.isAdmin) {
+                return;
+            }
+
+            this.setWatchPartyEnabled(
+                !enabled
+            );
+        }
+    );
+
+    const emojiButton =
+        this.partyManager.querySelector(
+            '[data-party-action="emoji"]'
+        );
+
+    emojiButton?.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (this.isBanned) {
+                return;
+            }
+
+            if (this.emojiPartyEnabled) {
+                this.disableEmojiParty();
+            } else {
+                const rect =
+                    emojiButton.getBoundingClientRect();
+
+                this.openEmojiPartyPicker(
+                    rect.left,
+                    rect.bottom + 8
+                );
+            }
+        }
+    );
+
+    const clearButton =
+        this.partyManager.querySelector(
+            '[data-party-action="clear"]'
+        );
+
+    clearButton?.addEventListener(
+        "click",
+        event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (!this.isAdmin) {
+                return;
+            }
+
             this.clearWatchPartyQueue();
         }
     );
-}
 }
 
 	setPartyManagerMessage(
@@ -11976,6 +12044,13 @@ connect() {
         );
     }
 		this.sendPresence();
+
+    if (this.emojiPartyEnabled) {
+        this.sendEmojiPartyState(
+            true,
+            true
+        );
+    }
 });
 
     this.socket.addEventListener("message", event => {
@@ -12014,6 +12089,36 @@ connect() {
     return;
 }
 
+if (data.type === "emoji-party") {
+    const sessionId =
+        String(data.sessionId || "");
+
+    if (
+        !sessionId ||
+        sessionId ===
+            this.emojiPartySessionId
+    ) {
+        return;
+    }
+
+    if (data.enabled !== true) {
+        this.removeEmojiPartyVisual(
+            sessionId
+        );
+        return;
+    }
+
+    this.updateEmojiPartyVisual(
+        sessionId,
+        data.emoji,
+        data.x,
+        data.y,
+        false
+    );
+
+    return;
+}
+
       if (data.type === "ban") {
     this.isBanned = true;
 
@@ -12045,6 +12150,8 @@ connect() {
         this.imageUploadButton.disabled = true;
     }
 
+    this.disableEmojiParty(false);
+    this.closeEmojiPartyPicker();
     this.closeReactionPicker();
     this.clearReplyTarget();
     this.cancelInlineEdit();
@@ -16031,6 +16138,618 @@ setupNameSaving() {
                 error
             );
             window.alert(error.message);
+        }
+    }
+
+
+    closeEmojiPartyPicker() {
+        this.emojiPartyPickerContainer?.remove();
+        this.emojiPartyPickerContainer = null;
+        this.emojiPartyPicker = null;
+    }
+
+    openEmojiPartyPicker(x, y) {
+        if (
+            this.isBanned ||
+            !this.createSharedEmojiPicker
+        ) {
+            return;
+        }
+
+        this.closeEmojiPartyPicker();
+        this.closeEmojiAnimationPicker();
+        this.closeEmojiPicker();
+
+        const host =
+            document.createElement("div");
+        host.className =
+            "jami-emoji-party-picker";
+
+        const header =
+            document.createElement("div");
+        header.className =
+            "jami-emoji-party-picker-header theme-body";
+
+        const copy =
+            document.createElement("div");
+        const heading =
+            document.createElement("div");
+        const hint =
+            document.createElement("div");
+        const close =
+            document.createElement("button");
+
+        heading.className =
+            "jami-emoji-party-picker-heading theme-heading";
+        heading.textContent =
+            "emoji party";
+        hint.className =
+            "jami-emoji-party-picker-hint";
+        hint.textContent =
+            "choose an emoji · default 🐈";
+
+        close.type = "button";
+        close.className =
+            "jami-emoji-party-picker-close";
+        close.textContent = "×";
+        close.setAttribute(
+            "aria-label",
+            "close emoji party picker"
+        );
+        close.addEventListener(
+            "click",
+            () => this.closeEmojiPartyPicker()
+        );
+
+        copy.append(heading, hint);
+        header.append(copy, close);
+
+        const defaultButton =
+            document.createElement("button");
+        defaultButton.type = "button";
+        defaultButton.className =
+            "jami-emoji-party-default theme-body";
+        defaultButton.textContent =
+            "start with 🐈";
+        defaultButton.addEventListener(
+            "click",
+            () => {
+                this.enableEmojiParty({
+                    kind: "unicode",
+                    value: "🐈",
+                    src: "",
+                    label: "cat"
+                });
+            }
+        );
+
+        this.emojiPartyPicker =
+            this.createSharedEmojiPicker(
+                emoji => {
+                    const selection =
+                        this.reactionFromEmojiMartSelection(
+                            emoji
+                        );
+
+                    if (!selection) {
+                        return;
+                    }
+
+                    this.enableEmojiParty({
+                        kind: selection.kind,
+                        value: selection.value,
+                        src: selection.src || "",
+                        label:
+                            selection.label ||
+                            selection.value
+                    });
+                }
+            );
+
+        this.emojiPartyPicker.style.width =
+            "100%";
+        this.emojiPartyPicker.style.maxWidth =
+            "100%";
+        this.emojiPartyPicker.style.height =
+            "380px";
+
+        host.append(
+            header,
+            defaultButton,
+            this.emojiPartyPicker
+        );
+        document.body.appendChild(host);
+
+        this.emojiPartyPickerContainer =
+            host;
+
+        const injectCustom = () => {
+            if (
+                !this.emojiPartyPicker ||
+                !this.emojiPartyPickerContainer
+            ) {
+                return;
+            }
+
+            if (
+                this.injectCustomEmojisIntoPicker(
+                    this.emojiPartyPicker,
+                    "emoji-party"
+                )
+            ) {
+                return;
+            }
+
+            requestAnimationFrame(
+                injectCustom
+            );
+        };
+
+        requestAnimationFrame(injectCustom);
+
+        const rect =
+            host.getBoundingClientRect();
+        const pad = 8;
+
+        host.style.left =
+            `${Math.max(
+                pad,
+                Math.min(
+                    Number(x) || pad,
+                    window.innerWidth -
+                        rect.width -
+                        pad
+                )
+            )}px`;
+
+        host.style.top =
+            `${Math.max(
+                pad,
+                Math.min(
+                    Number(y) || pad,
+                    window.innerHeight -
+                        rect.height -
+                        pad
+                )
+            )}px`;
+    }
+
+    normaliseEmojiPartyEmoji(emoji) {
+        if (
+            !emoji ||
+            (
+                emoji.kind !== "unicode" &&
+                emoji.kind !== "custom"
+            )
+        ) {
+            return null;
+        }
+
+        if (
+            emoji.kind === "custom" &&
+            !/^\/emojis\/[a-zA-Z0-9_.-]+$/.test(
+                String(emoji.src || "")
+            )
+        ) {
+            return null;
+        }
+
+        const value =
+            String(emoji.value || "")
+                .slice(0, 32);
+        const src =
+            emoji.kind === "custom"
+                ? String(emoji.src || "")
+                : "";
+
+        if (
+            emoji.kind === "unicode" &&
+            !value
+        ) {
+            return null;
+        }
+
+        return {
+            kind: emoji.kind,
+            value,
+            src,
+            label:
+                String(
+                    emoji.label ||
+                    value ||
+                    "emoji"
+                ).slice(0, 80)
+        };
+    }
+
+    enableEmojiParty(emoji) {
+        if (this.isBanned) {
+            return;
+        }
+
+        const clean =
+            this.normaliseEmojiPartyEmoji(
+                emoji
+            );
+
+        if (!clean) {
+            return;
+        }
+
+        this.emojiPartyEmoji = clean;
+        this.emojiPartyEnabled = true;
+        this.closeEmojiPartyPicker();
+        this.ensureLocalEmojiPartyVisual();
+        this.bindEmojiPartyPointer();
+        this.sendEmojiPartyState(true, true);
+
+        if (this.partyManager) {
+            this.renderPartyManager();
+        }
+    }
+
+    disableEmojiParty(send = true) {
+        const wasEnabled =
+            this.emojiPartyEnabled;
+
+        this.emojiPartyEnabled = false;
+        this.unbindEmojiPartyPointer();
+        this.removeEmojiPartyVisual(
+            this.emojiPartySessionId
+        );
+
+        if (send && wasEnabled) {
+            this.sendEmojiPartyState(
+                false,
+                true
+            );
+        }
+
+        if (this.partyManager) {
+            this.renderPartyManager();
+        }
+    }
+
+    bindEmojiPartyPointer() {
+        if (this.emojiPartyPointerHandler) {
+            return;
+        }
+
+        this.emojiPartyPointerHandler =
+            event => {
+                if (
+                    !this.emojiPartyEnabled ||
+                    this.isBanned
+                ) {
+                    return;
+                }
+
+                this.emojiPartyPointer = {
+                    x: Math.max(
+                        0,
+                        Math.min(
+                            1,
+                            event.clientX /
+                                Math.max(
+                                    1,
+                                    window.innerWidth
+                                )
+                        )
+                    ),
+                    y: Math.max(
+                        0,
+                        Math.min(
+                            1,
+                            event.clientY /
+                                Math.max(
+                                    1,
+                                    window.innerHeight
+                                )
+                        )
+                    )
+                };
+
+                this.updateEmojiPartyVisual(
+                    this.emojiPartySessionId,
+                    this.emojiPartyEmoji,
+                    this.emojiPartyPointer.x,
+                    this.emojiPartyPointer.y,
+                    true
+                );
+
+                this.sendEmojiPartyState(
+                    true,
+                    false
+                );
+            };
+
+        window.addEventListener(
+            "pointermove",
+            this.emojiPartyPointerHandler,
+            { passive: true }
+        );
+
+        if (!this.emojiPartyUnloadHandler) {
+            this.emojiPartyUnloadHandler =
+                () => {
+                    if (
+                        this.emojiPartyEnabled &&
+                        this.socket?.readyState ===
+                            WebSocket.OPEN
+                    ) {
+                        this.sendEmojiPartyState(
+                            false,
+                            true
+                        );
+                    }
+                };
+
+            window.addEventListener(
+                "pagehide",
+                this.emojiPartyUnloadHandler
+            );
+        }
+    }
+
+    unbindEmojiPartyPointer() {
+        if (!this.emojiPartyPointerHandler) {
+            return;
+        }
+
+        window.removeEventListener(
+            "pointermove",
+            this.emojiPartyPointerHandler
+        );
+        this.emojiPartyPointerHandler = null;
+    }
+
+    sendEmojiPartyState(
+        enabled,
+        force = false
+    ) {
+        if (
+            !this.socket ||
+            this.socket.readyState !==
+                WebSocket.OPEN ||
+            this.isBanned
+        ) {
+            return;
+        }
+
+        const now =
+            performance.now();
+
+        if (
+            !force &&
+            now - this.emojiPartyLastSentAt <
+                50
+        ) {
+            return;
+        }
+
+        this.emojiPartyLastSentAt = now;
+
+        this.socket.send(
+            JSON.stringify({
+                type: "emoji-party",
+                sessionId:
+                    this.emojiPartySessionId,
+                enabled:
+                    enabled === true,
+                emoji:
+                    enabled
+                        ? this.emojiPartyEmoji
+                        : null,
+                x:
+                    this.emojiPartyPointer.x,
+                y:
+                    this.emojiPartyPointer.y
+            })
+        );
+    }
+
+    ensureLocalEmojiPartyVisual() {
+        this.updateEmojiPartyVisual(
+            this.emojiPartySessionId,
+            this.emojiPartyEmoji,
+            this.emojiPartyPointer.x,
+            this.emojiPartyPointer.y,
+            true
+        );
+    }
+
+    updateEmojiPartyVisual(
+        sessionId,
+        emoji,
+        x,
+        y,
+        local = false
+    ) {
+        const clean =
+            this.normaliseEmojiPartyEmoji(
+                emoji
+            );
+
+        if (
+            !sessionId ||
+            !clean
+        ) {
+            return;
+        }
+
+        let state =
+            this.emojiPartyRemote.get(
+                sessionId
+            );
+
+        if (!state) {
+            const visual =
+                this.createEmojiAnimationVisual(
+                    clean
+                );
+
+            visual.classList.add(
+                "jami-emoji-party-cursor"
+            );
+
+            if (local) {
+                visual.classList.add(
+                    "is-local"
+                );
+            }
+
+            document.body.appendChild(visual);
+
+            state = {
+                visual,
+                emojiKey: "",
+                targetX: 0.5,
+                targetY: 0.5,
+                currentX: 0.5,
+                currentY: 0.5,
+                raf: 0
+            };
+
+            this.emojiPartyRemote.set(
+                sessionId,
+                state
+            );
+        }
+
+        const emojiKey =
+            `${clean.kind}|${clean.value}|${clean.src}`;
+
+        if (
+            state.emojiKey !== emojiKey
+        ) {
+            const replacement =
+                this.createEmojiAnimationVisual(
+                    clean
+                );
+
+            replacement.classList.add(
+                "jami-emoji-party-cursor"
+            );
+
+            if (local) {
+                replacement.classList.add(
+                    "is-local"
+                );
+            }
+
+            state.visual.replaceWith(
+                replacement
+            );
+            state.visual = replacement;
+            state.emojiKey = emojiKey;
+        }
+
+        state.targetX =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    Number(x) || 0
+                )
+            );
+        state.targetY =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    Number(y) || 0
+                )
+            );
+
+        if (local) {
+            state.currentX =
+                state.targetX;
+            state.currentY =
+                state.targetY;
+            state.visual.style.transform =
+                `translate3d(${state.currentX * window.innerWidth}px, ${state.currentY * window.innerHeight}px, 0) translate(-50%, -50%)`;
+            return;
+        }
+
+        if (state.raf) {
+            return;
+        }
+
+        const animate = () => {
+            const dx =
+                state.targetX -
+                state.currentX;
+            const dy =
+                state.targetY -
+                state.currentY;
+
+            state.currentX += dx * 0.42;
+            state.currentY += dy * 0.42;
+
+            state.visual.style.transform =
+                `translate3d(${state.currentX * window.innerWidth}px, ${state.currentY * window.innerHeight}px, 0) translate(-50%, -50%)`;
+
+            if (
+                Math.abs(dx) > 0.0005 ||
+                Math.abs(dy) > 0.0005
+            ) {
+                state.raf =
+                    requestAnimationFrame(
+                        animate
+                    );
+            } else {
+                state.currentX =
+                    state.targetX;
+                state.currentY =
+                    state.targetY;
+                state.raf = 0;
+            }
+        };
+
+        state.raf =
+            requestAnimationFrame(
+                animate
+            );
+    }
+
+    removeEmojiPartyVisual(sessionId) {
+        const state =
+            this.emojiPartyRemote.get(
+                sessionId
+            );
+
+        if (!state) {
+            return;
+        }
+
+        if (state.raf) {
+            cancelAnimationFrame(
+                state.raf
+            );
+        }
+
+        state.visual.remove();
+        this.emojiPartyRemote.delete(
+            sessionId
+        );
+    }
+
+    clearRemoteEmojiPartyVisuals() {
+        for (
+            const sessionId
+            of [...this.emojiPartyRemote.keys()]
+        ) {
+            if (
+                sessionId ===
+                this.emojiPartySessionId &&
+                this.emojiPartyEnabled
+            ) {
+                continue;
+            }
+
+            this.removeEmojiPartyVisual(
+                sessionId
+            );
         }
     }
 
