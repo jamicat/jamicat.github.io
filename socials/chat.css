@@ -11357,3 +11357,129 @@ html[data-chat-theme="paws"] #chatEmojiPartyButton {
     font-size: 7px;
     letter-spacing: .12em;
 }
+
+.chatMessage.jami-disintegrating {
+    isolation: isolate;
+}
+
+.chatMessage.jami-disintegrating
+> :not(.jami-disintegration-rescue) {
+    animation:
+        jami-message-disintegrate
+        var(--jami-disintegration-remaining, 12000ms)
+        steps(12, end)
+        forwards;
+}
+
+@keyframes jami-message-disintegrate {
+    0%   { opacity: 1; filter: none; }
+    25%  { opacity: .88; }
+    42%  { opacity: .72; }
+    58%  { opacity: .56; }
+    72%  { opacity: .40; }
+    84%  { opacity: .27; }
+    92%  { opacity: .16; }
+    100% { opacity: .07; filter: contrast(1.12); }
+}
+
+.jami-disintegration-rescue {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.jami-disintegration-rescue-button {
+    pointer-events: auto;
+    min-width: 62px;
+    padding: 5px 10px;
+    border: 1px solid rgba(255,255,255,.20);
+    border-radius: 999px;
+    background: rgba(12,12,12,.76);
+    color: rgba(255,255,255,.92);
+    box-shadow: 0 5px 18px rgba(0,0,0,.24);
+    font-family:
+        var(--body-font, "Nunito", sans-serif);
+    font-size: 9px;
+    line-height: 1.1;
+    cursor: pointer;
+}
+
+.jami-disintegration-rescue-button:hover {
+    border-color: rgba(255,255,255,.38);
+    background: rgba(22,22,22,.88);
+}
+
+.jami-disintegration-alert {
+    position: fixed;
+    left: 50%;
+    top: 72px;
+    z-index: 100030;
+    max-width: min(390px, calc(100vw - 28px));
+    transform: translateX(-50%);
+    padding: 9px 12px;
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 12px;
+    background: rgba(18,18,18,.90);
+    color: rgba(255,255,255,.90);
+    box-shadow: 0 12px 30px rgba(0,0,0,.30);
+    font-family:
+        var(--body-font, "Nunito", sans-serif);
+    font-size: 10px;
+    line-height: 1.35;
+    text-align: center;
+    cursor: pointer;
+}
+
+.jami-disintegration-alert:hover {
+    border-color: rgba(255,255,255,.32);
+    background: rgba(28,28,28,.94);
+}
+
+html[data-chat-theme="stars"]
+.jami-disintegration-rescue-button,
+.jami-disintegration-alert[data-chat-theme="stars"] {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="paws"]
+.jami-disintegration-rescue-button,
+.jami-disintegration-alert[data-chat-theme="paws"] {
+    font-family:
+        "nintendoh",
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="stars"]
+.jami-disintegration-rescue-button {
+    border-color: rgba(255,255,255,.32);
+    background: rgba(105,96,183,.92);
+    color: #fff;
+}
+
+html[data-chat-theme="paws"]
+.jami-disintegration-rescue-button {
+    border-color: rgba(238,157,173,.44);
+    background: rgba(255,244,242,.96);
+    color: #d76e82;
+}
+
+.jami-disintegration-alert[data-chat-theme="stars"] {
+    border-color: rgba(230,224,255,.48);
+    background: rgba(105,96,183,.96);
+    color: #fff;
+}
+
+.jami-disintegration-alert[data-chat-theme="paws"] {
+    border-color: rgba(238,157,173,.48);
+    background: rgba(255,244,242,.98);
+    color: #d76e82;
+}
