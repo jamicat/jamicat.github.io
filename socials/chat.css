@@ -11213,8 +11213,10 @@ html[data-chat-theme="paws"] #chatEmojiPartyButton {
     padding: 18px 18px 16px;
     border: 1px solid rgba(119, 255, 181, .28);
     border-radius: 18px;
-    background: rgba(7, 14, 12, .96);
+    background: rgba(0, 0, 0, .20);
     color: rgba(232, 255, 242, .92);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     box-shadow: 0 24px 70px rgba(0,0,0,.46);
     font-family: var(--body-font, Consolas, monospace) !important;
 }
@@ -11319,4 +11321,39 @@ html[data-chat-theme="paws"] #chatEmojiPartyButton {
     color: rgba(238,255,245,.78);
     font-size: 9px;
     white-space: nowrap;
+}
+
+
+.jami-chat-tree-growth {
+    margin-top: 2px;
+    font-size: 8px;
+    letter-spacing: .14em;
+    color: rgba(142, 255, 191, .46);
+    text-transform: uppercase;
+}
+
+.jami-palm-lattice {
+    pointer-events: none;
+}
+
+.jami-palm-lattice-line {
+    fill: none;
+    stroke: rgba(124, 255, 182, .055);
+    stroke-width: 1;
+}
+
+.jami-palm-lattice-node {
+    fill: rgba(124, 255, 182, .10);
+}
+
+.jami-palm-coordinate-ticks text {
+    fill: rgba(124, 255, 182, .20);
+    font-size: 7px;
+    letter-spacing: .08em;
+}
+
+.jami-palm-status-label {
+    fill: rgba(124, 255, 182, .28);
+    font-size: 7px;
+    letter-spacing: .12em;
 }
