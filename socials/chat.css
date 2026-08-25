@@ -11200,3 +11200,11 @@ html[data-chat-theme="paws"] .jami-emoji-party-menu {
 html[data-chat-theme="paws"] .jami-emoji-party-menu * {
     font-family: "nintendoh", "Nunito", sans-serif !important;
 }
+
+html[data-chat-theme="stars"] #chatEmojiPartyButton {
+    color: #fff !important;
+}
+
+html[data-chat-theme="paws"] #chatEmojiPartyButton {
+    color: #d76e82 !important;
+}
