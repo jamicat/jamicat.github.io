@@ -12049,7 +12049,7 @@ openMemberModerationMenu(
             "someone";
 
         alert.textContent =
-            `${name}'s message is disintegrating, click and save it!`;
+            `${name}'s message is fading, click and save it!`;
 
         alert.addEventListener(
             "click",
