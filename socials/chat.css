@@ -11007,3 +11007,107 @@ html[data-chat-theme="paws"] .jami-emoji-combine-action:hover:not(:disabled) {
     border-color: #ee9dad;
     background: rgba(238,157,173,.18);
 }
+
+
+/* Live Emoji Party */
+.jami-emoji-party-picker {
+    position: fixed;
+    z-index: 100006;
+    width: 300px;
+    max-width: calc(100vw - 16px);
+    max-height: min(500px, calc(100vh - 16px));
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 16px;
+    background: #111;
+    color: #fff;
+    box-shadow: 0 18px 42px rgba(0,0,0,.38);
+}
+
+.jami-emoji-party-picker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px 8px;
+    border-bottom: 1px solid rgba(255,255,255,.09);
+}
+
+.jami-emoji-party-picker-heading {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+}
+
+.jami-emoji-party-picker-hint {
+    margin-top: 2px;
+    font-size: 9px;
+    opacity: .55;
+}
+
+.jami-emoji-party-picker-close {
+    padding: 3px 6px;
+    border: 0;
+    background: transparent;
+    color: rgba(255,255,255,.58);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.jami-emoji-party-default {
+    width: calc(100% - 20px);
+    margin: 8px 10px 0;
+    padding: 7px 9px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 10px;
+    background: rgba(255,255,255,.06);
+    color: rgba(255,255,255,.88);
+    text-align: left;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.jami-emoji-party-default:hover {
+    background: rgba(255,255,255,.11);
+}
+
+.jami-emoji-party-cursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 2147483000;
+    width: 34px;
+    height: 34px;
+    pointer-events: none;
+    user-select: none;
+    object-fit: contain;
+    font-size: 30px;
+    line-height: 34px;
+    text-align: center;
+    will-change: transform;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,.28));
+}
+
+.jami-emoji-party-cursor.is-local {
+    z-index: 2147483001;
+}
+
+/* The picker itself intentionally stays Emoji Mart's normal dark UI.
+   Only its small shell/header follows the surrounding chat theme. */
+html[data-chat-theme="stars"] .jami-emoji-party-picker-header,
+html[data-chat-theme="stars"] .jami-emoji-party-default {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="paws"] .jami-emoji-party-picker-header,
+html[data-chat-theme="paws"] .jami-emoji-party-default {
+    font-family:
+        "nintendoh",
+        "Nunito",
+        sans-serif !important;
+}
