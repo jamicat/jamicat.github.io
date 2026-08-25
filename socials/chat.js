@@ -134,6 +134,9 @@ this.messageReactions = new Map();
 this.revealedConfettiMessages = new Set();
 this.reactionPicker = null;
 this.reactionRequestBusy = new Set();
+this.disintegrations = new Map();
+this.disintegrationObserver = null;
+this.disintegrationAlerts = new Map();
 this.recentReactionStorageKey =
     "jamicat_recent_reactions";
 this.recentReactions =
@@ -328,6 +331,8 @@ this.setupMemberActivity();
 this.setupEggHatching();
 this.setupDragging();
 this.setupImageRemixing();
+this.setupDisintegrationObserver();
+this.loadActiveDisintegrations();
 window.addEventListener(
     "resize",
     () => this.keepTitleBarInViewport()
@@ -10072,6 +10077,25 @@ openModerationMenu(x, y, message) {
                 }
             )
         );
+
+        if (
+            !this.isBanned &&
+            !this.isMessageDisintegrating(
+                message
+            )
+        ) {
+            buttons.push(
+                this.createModerationMenuButton(
+                    "disintegrate message",
+                    () => {
+                        this.closeModerationMenu();
+                        this.startMessageDisintegration(
+                            message
+                        );
+                    }
+                )
+            );
+        }
     }
 
     if (!canDelete) {
@@ -11501,6 +11525,570 @@ openMemberModerationMenu(
     return button;
 }
 
+
+    disintegrationKey(
+        targetType,
+        targetId
+    ) {
+        const type =
+            targetType === "image"
+                ? "image"
+                : "chat";
+
+        return `${type}:${String(targetId)}`;
+    }
+
+    getMessageDisintegrationTarget(
+        message
+    ) {
+        if (message?.imageUploadId) {
+            return {
+                type: "image",
+                id: String(
+                    message.imageUploadId
+                )
+            };
+        }
+
+        const id =
+            Number(message?.id);
+
+        if (
+            Number.isInteger(id) &&
+            id > 0
+        ) {
+            return {
+                type: "chat",
+                id: String(id)
+            };
+        }
+
+        return null;
+    }
+
+    isMessageDisintegrating(
+        message
+    ) {
+        const target =
+            this.getMessageDisintegrationTarget(
+                message
+            );
+
+        if (!target) {
+            return false;
+        }
+
+        return this.disintegrations.has(
+            this.disintegrationKey(
+                target.type,
+                target.id
+            )
+        );
+    }
+
+    async startMessageDisintegration(
+        message
+    ) {
+        if (this.isBanned) {
+            return;
+        }
+
+        const target =
+            this.getMessageDisintegrationTarget(
+                message
+            );
+
+        if (!target) {
+            return;
+        }
+
+        try {
+            const headers = {
+                "Content-Type":
+                    "application/json",
+                "X-Chat-Client-Id":
+                    this.clientId
+            };
+
+            if (
+                this.isAdmin &&
+                this.adminKey
+            ) {
+                headers.Authorization =
+                    `Bearer ${this.adminKey}`;
+            }
+
+            const response =
+                await fetch(
+                    `${this.API}/api/chat/disintegrate`,
+                    {
+                        method: "POST",
+                        headers,
+                        body: JSON.stringify({
+                            targetType:
+                                target.type,
+                            targetId:
+                                target.id
+                        })
+                    }
+                );
+
+            const result =
+                await response.json()
+                    .catch(() => ({}));
+
+            if (
+                response.status === 403 &&
+                result?.error === "banned"
+            ) {
+                this.isBanned = true;
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    result?.error ||
+                    "could not disintegrate message"
+                );
+            }
+        } catch (error) {
+            console.error(
+                "could not start message disintegration:",
+                error
+            );
+
+            window.alert(
+                error.message ||
+                "could not disintegrate message"
+            );
+        }
+    }
+
+    async rescueDisintegration(
+        targetType,
+        targetId
+    ) {
+        if (this.isBanned) {
+            return;
+        }
+
+        const key =
+            this.disintegrationKey(
+                targetType,
+                targetId
+            );
+        const state =
+            this.disintegrations.get(
+                key
+            );
+
+        if (!state) {
+            return;
+        }
+
+        try {
+            const response =
+                await fetch(
+                    `${this.API}/api/chat/disintegrate/rescue`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+                            "X-Chat-Client-Id":
+                                this.clientId
+                        },
+                        body: JSON.stringify({
+                            targetType,
+                            targetId
+                        })
+                    }
+                );
+
+            const result =
+                await response.json()
+                    .catch(() => ({}));
+
+            if (
+                response.status === 403 &&
+                result?.error === "banned"
+            ) {
+                this.isBanned = true;
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    result?.error ||
+                    "too late to save it"
+                );
+            }
+        } catch (error) {
+            console.error(
+                "could not rescue disintegrating message:",
+                error
+            );
+        }
+    }
+
+    async loadActiveDisintegrations() {
+        try {
+            const response =
+                await fetch(
+                    `${this.API}/api/chat/disintegrations`,
+                    {
+                        cache: "no-store"
+                    }
+                );
+
+            if (!response.ok) {
+                return;
+            }
+
+            const result =
+                await response.json();
+
+            for (
+                const item
+                of result.items || []
+            ) {
+                this.applyDisintegrationStarted(
+                    item,
+                    false
+                );
+            }
+        } catch (error) {
+            console.error(
+                "could not load active disintegrations:",
+                error
+            );
+        }
+    }
+
+    setupDisintegrationObserver() {
+        if (
+            this.disintegrationObserver ||
+            !this.messages
+        ) {
+            return;
+        }
+
+        this.disintegrationObserver =
+            new MutationObserver(
+                mutations => {
+                    if (
+                        !mutations.some(
+                            mutation =>
+                                mutation.addedNodes
+                                    .length > 0
+                        )
+                    ) {
+                        return;
+                    }
+
+                    requestAnimationFrame(
+                        () =>
+                            this.refreshDisintegrationVisuals()
+                    );
+                }
+            );
+
+        this.disintegrationObserver.observe(
+            this.messages,
+            {
+                childList: true,
+                subtree: true
+            }
+        );
+    }
+
+    getDisintegrationElement(
+        targetType,
+        targetId
+    ) {
+        if (
+            targetType === "image"
+        ) {
+            return (
+                this.imageUploadRows.get(
+                    String(targetId)
+                ) ||
+                this.messages?.querySelector(
+                    `[data-image-upload-id="${CSS.escape(
+                        String(targetId)
+                    )}"]`
+                ) ||
+                null
+            );
+        }
+
+        return this.findMessageElement(
+            targetId
+        );
+    }
+
+    refreshDisintegrationVisuals() {
+        for (
+            const state
+            of this.disintegrations.values()
+        ) {
+            this.applyDisintegrationVisual(
+                state
+            );
+        }
+    }
+
+    applyDisintegrationStarted(
+        data,
+        showAlert = true
+    ) {
+        const targetType =
+            data?.targetType === "image"
+                ? "image"
+                : "chat";
+        const targetId =
+            String(
+                data?.targetId || ""
+            );
+
+        if (!targetId) {
+            return;
+        }
+
+        const key =
+            this.disintegrationKey(
+                targetType,
+                targetId
+            );
+
+        const expiresAt =
+            typeof data?.expiresAt ===
+                "string"
+                ? data.expiresAt
+                : new Date(
+                    Date.now() + 12000
+                ).toISOString();
+
+        const state = {
+            targetType,
+            targetId,
+            targetName:
+                String(
+                    data?.targetName ||
+                    "someone"
+                ).slice(0, 40),
+            expiresAt
+        };
+
+        this.disintegrations.set(
+            key,
+            state
+        );
+
+        this.applyDisintegrationVisual(
+            state
+        );
+
+        if (showAlert) {
+            this.showDisintegrationAlert(
+                state
+            );
+        }
+    }
+
+    applyDisintegrationVisual(
+        state
+    ) {
+        const element =
+            this.getDisintegrationElement(
+                state.targetType,
+                state.targetId
+            );
+
+        if (!element) {
+            return;
+        }
+
+        element.classList.add(
+            "jami-disintegrating"
+        );
+
+        const expires =
+            Date.parse(
+                state.expiresAt
+            );
+        const remaining =
+            Number.isFinite(expires)
+                ? Math.max(
+                    0,
+                    expires - Date.now()
+                )
+                : 12000;
+
+        element.style.setProperty(
+            "--jami-disintegration-remaining",
+            `${remaining}ms`
+        );
+
+        let rescue =
+            element.querySelector(
+                ":scope > .jami-disintegration-rescue"
+            );
+
+        if (!rescue) {
+            rescue =
+                document.createElement(
+                    "div"
+                );
+            rescue.className =
+                "jami-disintegration-rescue";
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+            button.type = "button";
+            button.className =
+                "jami-disintegration-rescue-button theme-body";
+            button.textContent =
+                "save it";
+
+            button.addEventListener(
+                "click",
+                event => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    this.rescueDisintegration(
+                        state.targetType,
+                        state.targetId
+                    );
+                }
+            );
+
+            rescue.appendChild(
+                button
+            );
+            element.appendChild(
+                rescue
+            );
+        }
+    }
+
+    clearDisintegration(
+        targetType,
+        targetId
+    ) {
+        const key =
+            this.disintegrationKey(
+                targetType,
+                targetId
+            );
+
+        this.disintegrations.delete(
+            key
+        );
+
+        const element =
+            this.getDisintegrationElement(
+                targetType,
+                targetId
+            );
+
+        if (element) {
+            element.classList.remove(
+                "jami-disintegrating"
+            );
+            element.style.removeProperty(
+                "--jami-disintegration-remaining"
+            );
+            element
+                .querySelector(
+                    ":scope > .jami-disintegration-rescue"
+                )
+                ?.remove();
+        }
+
+        this.disintegrationAlerts
+            .get(key)
+            ?.remove();
+
+        this.disintegrationAlerts.delete(
+            key
+        );
+    }
+
+    showDisintegrationAlert(
+        state
+    ) {
+        const key =
+            this.disintegrationKey(
+                state.targetType,
+                state.targetId
+            );
+
+        this.disintegrationAlerts
+            .get(key)
+            ?.remove();
+
+        const alert =
+            document.createElement(
+                "button"
+            );
+
+        alert.type = "button";
+        alert.className =
+            "jami-disintegration-alert theme-body";
+        alert.dataset.chatTheme =
+            this.window?.dataset
+                ?.chatTheme ||
+            "original";
+
+        const name =
+            state.targetName ||
+            "someone";
+
+        alert.textContent =
+            `${name}'s message is disintegrating, click and save it!`;
+
+        alert.addEventListener(
+            "click",
+            event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                this.rescueDisintegration(
+                    state.targetType,
+                    state.targetId
+                );
+            }
+        );
+
+        document.body.appendChild(
+            alert
+        );
+
+        this.disintegrationAlerts.set(
+            key,
+            alert
+        );
+
+        window.setTimeout(
+            () => {
+                if (
+                    this.disintegrationAlerts
+                        .get(key) === alert
+                ) {
+                    alert.remove();
+                    this.disintegrationAlerts
+                        .delete(key);
+                }
+            },
+            5200
+        );
+    }
+
+
 	async deleteMessage(messageId) {
     const id =
         Number(messageId);
@@ -12908,6 +13496,10 @@ if (
     data.type ===
         "image-upload-deleted"
 ) {
+    this.clearDisintegration(
+        "image",
+        data.uploadId
+    );
     const active =
         this.activeImageUploads.get(
             data.uploadId
@@ -13046,6 +13638,11 @@ if (
 }
 
 if (data.type === "delete") {
+    this.clearDisintegration(
+        "chat",
+        data.id
+    );
+
     this.historyTimeline =
         this.historyTimeline.filter(item =>
             !(
@@ -13067,6 +13664,30 @@ if (data.type === "delete") {
     }
     this.closeModerationMenu();
     this.refreshHistoryAfterRemoval();
+    return;
+}
+
+if (data.type === "disintegration-started") {
+    this.applyDisintegrationStarted(
+        data,
+        true
+    );
+    return;
+}
+
+if (data.type === "disintegration-saved") {
+    this.clearDisintegration(
+        data.targetType,
+        data.targetId
+    );
+    return;
+}
+
+if (data.type === "disintegration-finalized") {
+    this.clearDisintegration(
+        data.targetType,
+        data.targetId
+    );
     return;
 }
 
