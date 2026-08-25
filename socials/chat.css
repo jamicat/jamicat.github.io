@@ -10811,9 +10811,6 @@ html[data-chat-pastel="paws"] .jami-emoji-animation-recording-status {
     color: #5e4d53;
 }
 
-
-/* Combined emoji-record chooser. The shell follows chat/terminal theming;
-   the emoji visuals themselves remain untouched. */
 .jami-emoji-combine-menu {
     position: fixed;
     z-index: 100004;
