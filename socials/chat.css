@@ -11254,23 +11254,51 @@ html[data-chat-theme="paws"] #chatEmojiPartyButton {
     max-width: 520px;
     height: auto;
 }
-.jami-tree-ground,
-.jami-tree-trunk,
-.jami-tree-branch {
+.jami-palm-ground,
+.jami-palm-trunk-segment,
+.jami-palm-frond,
+.jami-palm-leaflet,
+.jami-palm-spear,
+.jami-palm-coconut-stem {
     fill: none;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
-.jami-tree-ground { stroke: rgba(115,255,177,.16); stroke-width: 2; }
-.jami-tree-trunk { stroke: #76a98b; stroke-width: 9; }
-.jami-tree-branch { stroke: #83b899; stroke-width: 3; }
-.jami-tree-leaf { fill: #82e6aa; }
-.jami-tree-apple { fill: #ff6678; stroke: rgba(255,255,255,.35); stroke-width: 1; }
+.jami-palm-ground {
+    stroke: rgba(101,255,180,.14);
+    stroke-width: 2;
+}
+.jami-palm-trunk-segment {
+    stroke: #70a985;
+    stroke-width: 8;
+}
+.jami-palm-frond {
+    stroke: #72d69c;
+    stroke-width: 3.2;
+}
+.jami-palm-leaflet {
+    stroke: #86efad;
+    stroke-width: 2.35;
+}
+.jami-palm-spear {
+    stroke: #91f2b5;
+    stroke-width: 3;
+}
+.jami-palm-coconut-stem {
+    stroke: #82b98d;
+    stroke-width: 1.6;
+}
+.jami-palm-coconut {
+    fill: #a86f43;
+    stroke: rgba(239,206,159,.55);
+    stroke-width: 1.2;
+}
+
 .jami-chat-tree-harvest {
     text-align: center;
     font-size: 12px;
     font-weight: 800;
-    color: #ff9aa7;
+    color: #e9c58b;
 }
 .jami-chat-tree-people {
     display: flex;
