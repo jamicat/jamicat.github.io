@@ -2182,7 +2182,7 @@ createBanManagerButton() {
                 (rand(1000 + i) - .5) * 14;
             const radians = angle * Math.PI / 180;
             const length = 72 + averageBucket * 9 +
-                maturity * 23 + rand(1100+i) * 12;
+                maturity * 30 + rand(1100+i) * 12;
             const endX = crownX + Math.cos(radians) * length;
             const endY = crownY +
                 Math.sin(radians) * length * .38 +
@@ -2225,9 +2225,11 @@ createBanManagerButton() {
                 const bucket = Math.max(
                     1, Math.min(5, Number(source?.bucket) || 3)
                 );
-                const leafLength = 10 + bucket * 2.15 + maturity * 2;
+                const leafLength =
+                    10 + bucket * 2.15 + maturity * 2 +
+                    (rand(1450+i*37+j) - .5) * 3.2;
                 const leafAngle = tangent + side * (
-                    .78 + rand(1300+i*31+j) * .24
+                    .74 + rand(1300+i*31+j) * .34
                 );
 
                 svg.appendChild(path(
@@ -2245,7 +2247,7 @@ createBanManagerButton() {
             svg.appendChild(path(
                 `M${crownX.toFixed(1)} ${crownY.toFixed(1)} ` +
                 `Q${(crownX+dx*.35).toFixed(1)} ${(crownY-37).toFixed(1)} ` +
-                `${(crownX+dx).toFixed(1)} ${(crownY-62-i*3).toFixed(1)}`,
+                `${(crownX+dx).toFixed(1)} ${(crownY-51-i*2.5).toFixed(1)}`,
                 "jami-palm-spear"
             ));
         }
