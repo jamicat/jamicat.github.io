@@ -1749,7 +1749,7 @@ createBanManagerButton() {
                     ·
                     ${
                         treeActive
-                            ? "tree planted"
+                            ? "tree live"
                             : "tree idle"
                     }
                 </div>
@@ -1824,11 +1824,11 @@ createBanManagerButton() {
                     ${
                         treeActive
                             ? `
-                                border-red-300/20
-                                bg-red-500/10
-                                text-red-200
-                                hover:border-red-300/40
-                                hover:bg-red-500/20
+                                border-emerald-300/25
+                                bg-emerald-500/10
+                                text-emerald-200
+                                hover:border-emerald-300/45
+                                hover:bg-emerald-500/20
                             `
                             : `
                                 border-white/10
@@ -2081,7 +2081,7 @@ createBanManagerButton() {
         const harvest = document.createElement("div");
         harvest.className = "jami-chat-tree-harvest";
         harvest.textContent =
-            `harvest · ${Number(tree.harvestApples) || 0} 🍎`;
+            `harvest · ${Number(tree.harvestCoconuts ?? tree.harvestApples) || 0} 🥥`;
 
         const people = document.createElement("div");
         people.className = "jami-chat-tree-people";
@@ -2089,8 +2089,8 @@ createBanManagerButton() {
             const item = document.createElement("span");
             item.className = "jami-chat-tree-person";
             item.textContent =
-                `${person.name || "guest"} 🍎 ${
-                    Number(person.totalApples) || 0
+                `${person.name || "guest"} 🥥 ${
+                    Number(person.totalCoconuts ?? person.totalApples) || 0
                 }`;
             people.appendChild(item);
         }
@@ -2105,13 +2105,14 @@ createBanManagerButton() {
         const svg = document.createElementNS(NS, "svg");
         svg.setAttribute("viewBox", "0 0 520 360");
         svg.setAttribute("aria-hidden", "true");
+        svg.classList.add("jami-coconut-tree");
 
-        const branches = Array.isArray(tree.branches)
+        const messages = Array.isArray(tree.branches)
             ? tree.branches
             : [];
-        const apples = Math.max(
+        const harvest = Math.max(
             0,
-            Number(tree.harvestApples) || 0
+            Number(tree.harvestCoconuts ?? tree.harvestApples) || 0
         );
         const seed = Number(tree.seed) || 1;
         const rand = index => {
@@ -2120,73 +2121,167 @@ createBanManagerButton() {
             ) * 43758.5453;
             return x - Math.floor(x);
         };
+        const path = (d, className) => {
+            const node = document.createElementNS(NS, "path");
+            node.setAttribute("d", d);
+            node.setAttribute("class", className);
+            return node;
+        };
 
-        const ground = document.createElementNS(NS, "path");
-        ground.setAttribute("d", "M150 326 Q260 310 370 326");
-        ground.setAttribute("class", "jami-tree-ground");
-        svg.appendChild(ground);
+        const count = messages.length;
+        const maturity = Math.min(1, count / 120);
+        const crownY = 116 - maturity * 8;
+        const lean = (rand(900) - .5) * 24;
+        const crownX = 260 + lean;
 
-        const trunk = document.createElementNS(NS, "path");
-        trunk.setAttribute(
-            "d",
-            "M260 322 C252 270 268 226 258 178 C252 146 260 116 260 82"
-        );
-        trunk.setAttribute("class", "jami-tree-trunk");
-        svg.appendChild(trunk);
+        svg.appendChild(path(
+            "M132 326 Q260 315 388 326",
+            "jami-palm-ground"
+        ));
 
-        const points = [];
-        const total = Math.max(1, branches.length);
-        branches.forEach((branch, i) => {
-            const level = i / total;
-            const side = i % 2 === 0 ? -1 : 1;
-            const bucket = Math.max(
-                1,
-                Math.min(5, Number(branch.bucket) || 3)
-            );
-            const baseY = 282 - level * 205;
-            const baseX = 260 + (rand(i) - .5) * 20;
-            const reach = 34 + bucket * 10 + rand(i + 40) * 20;
-            const endX = baseX + side * reach;
-            const endY = baseY - 16 - rand(i + 80) * 38;
-            const path = document.createElementNS(NS, "path");
-            path.setAttribute(
-                "d",
-                `M${baseX.toFixed(1)} ${baseY.toFixed(1)} Q${(
-                    baseX + side * reach * .45
-                ).toFixed(1)} ${(baseY - 8).toFixed(1)} ${
-                    endX.toFixed(1)
-                } ${endY.toFixed(1)}`
-            );
-            path.setAttribute("class", "jami-tree-branch");
-            svg.appendChild(path);
-
-            const leaf = document.createElementNS(NS, "ellipse");
-            leaf.setAttribute("cx", endX.toFixed(1));
-            leaf.setAttribute("cy", endY.toFixed(1));
-            leaf.setAttribute("rx", "8");
-            leaf.setAttribute("ry", "5");
-            leaf.setAttribute(
-                "transform",
-                `rotate(${side * (18 + rand(i + 120) * 30)} ${
-                    endX.toFixed(1)
-                } ${endY.toFixed(1)})`
-            );
-            leaf.setAttribute("class", "jami-tree-leaf");
-            svg.appendChild(leaf);
-            points.push([endX, endY]);
-        });
-
-        for (let i = 0; i < apples && points.length; i++) {
-            const point = points[
-                Math.floor(rand(i + 300) * points.length)
-            ];
-            const apple = document.createElementNS(NS, "circle");
-            apple.setAttribute("cx", (point[0] + (rand(i+500)-.5)*15).toFixed(1));
-            apple.setAttribute("cy", (point[1] + 8 + rand(i+600)*10).toFixed(1));
-            apple.setAttribute("r", "4.5");
-            apple.setAttribute("class", "jami-tree-apple");
-            svg.appendChild(apple);
+        // Segmented digital trunk.
+        for (let i = 0; i < 9; i++) {
+            const a = i / 9;
+            const b = (i + 1) / 9;
+            const y0 = 318 + (crownY - 318) * a;
+            const y1 = 318 + (crownY - 318) * b;
+            const x0 = 260 + lean * a +
+                Math.sin(a * Math.PI * 1.25) * 5;
+            const x1 = 260 + lean * b +
+                Math.sin(b * Math.PI * 1.25) * 5;
+            svg.appendChild(path(
+                `M${x0.toFixed(1)} ${y0.toFixed(1)} ` +
+                `Q${((x0+x1)/2).toFixed(1)} ${((y0+y1)/2).toFixed(1)} ` +
+                `${x1.toFixed(1)} ${y1.toFixed(1)}`,
+                "jami-palm-trunk-segment"
+            ));
         }
+
+        // Messages are distributed into a bounded palm crown rather than
+        // becoming one literal branch each.
+        const frondCount = Math.max(
+            5,
+            Math.min(14, 5 + Math.floor(Math.sqrt(count) * .75))
+        );
+
+        for (let i = 0; i < frondCount; i++) {
+            const assigned = messages.filter(
+                (_, index) => index % frondCount === i
+            );
+            const averageBucket = assigned.length
+                ? assigned.reduce(
+                    (sum, item) => sum + Math.max(
+                        1, Math.min(5, Number(item.bucket) || 3)
+                    ),
+                    0
+                ) / assigned.length
+                : 3;
+
+            const spread = frondCount === 1 ? 0 : i / (frondCount - 1);
+            const angle = -166 + spread * 332 +
+                (rand(1000 + i) - .5) * 14;
+            const radians = angle * Math.PI / 180;
+            const length = 72 + averageBucket * 9 +
+                maturity * 23 + rand(1100+i) * 12;
+            const endX = crownX + Math.cos(radians) * length;
+            const endY = crownY +
+                Math.sin(radians) * length * .38 +
+                17 + Math.abs(Math.cos(radians)) * 15;
+            const controlX = crownX +
+                Math.cos(radians) * length * .55;
+            const controlY = crownY - 24 +
+                Math.sin(radians) * length * .10;
+
+            svg.appendChild(path(
+                `M${crownX.toFixed(1)} ${crownY.toFixed(1)} ` +
+                `Q${controlX.toFixed(1)} ${controlY.toFixed(1)} ` +
+                `${endX.toFixed(1)} ${endY.toFixed(1)}`,
+                "jami-palm-frond"
+            ));
+
+            const leafletCount = Math.max(
+                5,
+                Math.min(20, 5 + assigned.length)
+            );
+
+            for (let j = 1; j <= leafletCount; j++) {
+                const t = j / (leafletCount + 1);
+                const omt = 1 - t;
+                const x = omt*omt*crownX +
+                    2*omt*t*controlX + t*t*endX;
+                const y = omt*omt*crownY +
+                    2*omt*t*controlY + t*t*endY;
+                const nt = Math.min(1, t + .025);
+                const nomt = 1 - nt;
+                const nx = nomt*nomt*crownX +
+                    2*nomt*nt*controlX + nt*nt*endX;
+                const ny = nomt*nomt*crownY +
+                    2*nomt*nt*controlY + nt*nt*endY;
+                const tangent = Math.atan2(ny-y, nx-x);
+                const side = j % 2 ? -1 : 1;
+                const source = assigned[
+                    (j - 1) % Math.max(1, assigned.length)
+                ];
+                const bucket = Math.max(
+                    1, Math.min(5, Number(source?.bucket) || 3)
+                );
+                const leafLength = 10 + bucket * 2.15 + maturity * 2;
+                const leafAngle = tangent + side * (
+                    .78 + rand(1300+i*31+j) * .24
+                );
+
+                svg.appendChild(path(
+                    `M${x.toFixed(1)} ${y.toFixed(1)} ` +
+                    `L${(x + Math.cos(leafAngle)*leafLength).toFixed(1)} ` +
+                    `${(y + Math.sin(leafAngle)*leafLength).toFixed(1)}`,
+                    "jami-palm-leaflet"
+                ));
+            }
+        }
+
+        // Upright new growth helps even a tiny session read as a palm.
+        for (let i = 0; i < 3; i++) {
+            const dx = (i - 1) * 17;
+            svg.appendChild(path(
+                `M${crownX.toFixed(1)} ${crownY.toFixed(1)} ` +
+                `Q${(crownX+dx*.35).toFixed(1)} ${(crownY-37).toFixed(1)} ` +
+                `${(crownX+dx).toFixed(1)} ${(crownY-62-i*3).toFixed(1)}`,
+                "jami-palm-spear"
+            ));
+        }
+
+        // Coconuts visibly hang from stems under the crown. Visual count
+        // is capped; the numeric harvest below remains exact.
+        const visible = Math.min(16, harvest);
+        const slots = [
+            [-25,16],[-11,21],[8,20],[24,15],
+            [-18,34],[1,35],[18,32],[-2,48]
+        ];
+
+        for (let i = 0; i < visible; i++) {
+            const slot = slots[i % slots.length];
+            const layer = Math.floor(i / slots.length);
+            const cx = crownX + slot[0] +
+                (rand(1600+i)-.5)*5;
+            const cy = crownY + slot[1] +
+                layer*8 + (rand(1700+i)-.5)*4;
+
+            svg.appendChild(path(
+                `M${(crownX+slot[0]*.3).toFixed(1)} ${(crownY+5).toFixed(1)} ` +
+                `Q${cx.toFixed(1)} ${(cy-10).toFixed(1)} ` +
+                `${cx.toFixed(1)} ${(cy-3).toFixed(1)}`,
+                "jami-palm-coconut-stem"
+            ));
+
+            const coconut = document.createElementNS(NS, "ellipse");
+            coconut.setAttribute("cx", cx.toFixed(1));
+            coconut.setAttribute("cy", cy.toFixed(1));
+            coconut.setAttribute("rx", "6.2");
+            coconut.setAttribute("ry", "7.2");
+            coconut.setAttribute("class", "jami-palm-coconut");
+            svg.appendChild(coconut);
+        }
+
         return svg;
     }
 
