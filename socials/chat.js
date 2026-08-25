@@ -1780,9 +1780,9 @@ createBanManagerButton() {
                                 border-white/10
                                 bg-white/5
                                 text-white/85
-                                hover:border-pink-300/30
-                                hover:bg-pink-500/10
-                                hover:text-pink-200
+                                hover:border-emerald-300/30
+                                hover:bg-emerald-500/10
+                                hover:text-emerald-200
                             `
                     }
                     disabled:cursor-not-allowed
@@ -19231,6 +19231,17 @@ Object.assign(
                         mode === "animation"
                     ) {
                         this.startEmojiAnimationRecorder({
+                            kind: "custom",
+                            value: emoji.id,
+                            src: source,
+                            label:
+                                emoji.name ||
+                                emoji.id
+                        });
+                    } else if (
+                        mode === "emoji-party"
+                    ) {
+                        this.enableEmojiParty({
                             kind: "custom",
                             value: emoji.id,
                             src: source,
