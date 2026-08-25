@@ -10811,9 +10811,6 @@ html[data-chat-pastel="paws"] .jami-emoji-animation-recording-status {
     color: #5e4d53;
 }
 
-
-/* Combined emoji-record chooser. The shell follows chat/terminal theming;
-   the emoji visuals themselves remain untouched. */
 .jami-emoji-combine-menu {
     position: fixed;
     z-index: 100004;
@@ -11008,8 +11005,6 @@ html[data-chat-theme="paws"] .jami-emoji-combine-action:hover:not(:disabled) {
     background: rgba(238,157,173,.18);
 }
 
-
-/* Live Emoji Party */
 .jami-emoji-party-picker {
     position: fixed;
     z-index: 100006;
@@ -11093,8 +11088,6 @@ html[data-chat-theme="paws"] .jami-emoji-combine-action:hover:not(:disabled) {
     z-index: 2147483001;
 }
 
-/* The picker itself intentionally stays Emoji Mart's normal dark UI.
-   Only its small shell/header follows the surrounding chat theme. */
 html[data-chat-theme="stars"] .jami-emoji-party-picker-header,
 html[data-chat-theme="stars"] .jami-emoji-party-default {
     font-family:
@@ -11112,8 +11105,6 @@ html[data-chat-theme="paws"] .jami-emoji-party-default {
         sans-serif !important;
 }
 
-
-/* Global Emoji Party top-level control menu */
 .jami-emoji-party-menu {
     position: fixed;
     z-index: 100005;
@@ -11207,4 +11198,94 @@ html[data-chat-theme="stars"] #chatEmojiPartyButton {
 
 html[data-chat-theme="paws"] #chatEmojiPartyButton {
     color: #d76e82 !important;
+}
+
+.jami-chat-tree-reveal {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 100020;
+    width: min(560px, calc(100vw - 28px));
+    max-height: calc(100vh - 28px);
+    overflow: auto;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    padding: 18px 18px 16px;
+    border: 1px solid rgba(119, 255, 181, .28);
+    border-radius: 18px;
+    background: rgba(7, 14, 12, .96);
+    color: rgba(232, 255, 242, .92);
+    box-shadow: 0 24px 70px rgba(0,0,0,.46);
+    font-family: var(--body-font, Consolas, monospace) !important;
+}
+.jami-chat-tree-reveal * {
+    font-family: var(--body-font, Consolas, monospace) !important;
+}
+.jami-chat-tree-close {
+    position: absolute;
+    right: 11px;
+    top: 9px;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    background: transparent;
+    color: rgba(232,255,242,.58);
+    font-size: 20px;
+    cursor: pointer;
+}
+.jami-chat-tree-close:hover { color: #fff; }
+.jami-chat-tree-heading {
+    padding-right: 34px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: rgba(155,255,198,.86);
+}
+.jami-chat-tree-art {
+    display: grid;
+    place-items: center;
+    min-height: 300px;
+    margin-top: 4px;
+}
+.jami-chat-tree-art svg {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+}
+.jami-tree-ground,
+.jami-tree-trunk,
+.jami-tree-branch {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.jami-tree-ground { stroke: rgba(115,255,177,.16); stroke-width: 2; }
+.jami-tree-trunk { stroke: #76a98b; stroke-width: 9; }
+.jami-tree-branch { stroke: #83b899; stroke-width: 3; }
+.jami-tree-leaf { fill: #82e6aa; }
+.jami-tree-apple { fill: #ff6678; stroke: rgba(255,255,255,.35); stroke-width: 1; }
+.jami-chat-tree-harvest {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: #ff9aa7;
+}
+.jami-chat-tree-people {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 10px;
+    margin-top: 10px;
+}
+.jami-chat-tree-person {
+    display: inline-flex;
+    padding: 4px 7px;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 999px;
+    background: rgba(255,255,255,.045);
+    color: rgba(238,255,245,.78);
+    font-size: 9px;
+    white-space: nowrap;
 }
