@@ -10810,3 +10810,124 @@ html[data-chat-pastel="paws"] .jami-emoji-animation-recording-status {
     border-color: rgba(238,157,174,.42);
     color: #5e4d53;
 }
+
+
+/* Combined emoji-record chooser. The shell follows chat/terminal theming;
+   the emoji visuals themselves remain untouched. */
+.jami-emoji-combine-menu {
+    position: fixed;
+    z-index: 100004;
+    width: 248px;
+    max-width: calc(100vw - 16px);
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 14px;
+    background: rgba(18,18,18,.97);
+    box-shadow: 0 14px 34px rgba(0,0,0,.35);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.jami-emoji-combine-heading {
+    margin-bottom: 8px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: lowercase;
+    opacity: .82;
+}
+
+.jami-emoji-combine-tiles {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    max-height: 190px;
+    overflow-y: auto;
+}
+
+.jami-emoji-combine-tile {
+    display: flex;
+    min-width: 0;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 6px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 10px;
+    background: rgba(255,255,255,.05);
+    color: inherit;
+    cursor: pointer;
+}
+
+.jami-emoji-combine-tile:hover,
+.jami-emoji-combine-tile.is-selected {
+    border-color: rgba(255,255,255,.32);
+    background: rgba(255,255,255,.11);
+}
+
+.jami-emoji-combine-tile:disabled {
+    cursor: not-allowed;
+    opacity: .28;
+}
+
+.jami-emoji-combine-tile-emoji {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+    object-fit: contain;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.jami-emoji-combine-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 9px;
+}
+
+.jami-emoji-combine-action {
+    flex: 1;
+    padding: 6px 8px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 9px;
+    background: rgba(255,255,255,.05);
+    color: inherit;
+    font: inherit;
+    font-size: 9px;
+    cursor: pointer;
+}
+
+.jami-emoji-combine-action:hover:not(:disabled) {
+    background: rgba(255,255,255,.10);
+}
+
+.jami-emoji-combine-action:disabled {
+    cursor: not-allowed;
+    opacity: .35;
+}
+
+html[data-chat-pastel="stars"] .jami-emoji-combine-menu {
+    border-color: rgba(255,255,255,.30);
+    background: rgba(105,96,183,.94);
+}
+
+html[data-chat-pastel="paws"] .jami-emoji-combine-menu {
+    border-color: rgba(238,157,173,.34);
+    background: rgba(255,244,242,.97);
+    color: #6a5058;
+}
+
+html[data-chat-pastel="paws"] .jami-emoji-combine-tile,
+html[data-chat-pastel="paws"] .jami-emoji-combine-action {
+    border-color: rgba(238,157,173,.28);
+    background: rgba(238,157,173,.08);
+}
+
+html[data-chat-pastel="paws"] .jami-emoji-combine-tile:hover,
+html[data-chat-pastel="paws"] .jami-emoji-combine-tile.is-selected,
+html[data-chat-pastel="paws"] .jami-emoji-combine-action:hover:not(:disabled) {
+    border-color: #ee9dad;
+    background: rgba(238,157,173,.16);
+}
