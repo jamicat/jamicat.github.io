@@ -10811,6 +10811,9 @@ html[data-chat-pastel="paws"] .jami-emoji-animation-recording-status {
     color: #5e4d53;
 }
 
+
+/* Combined emoji-record chooser. The shell follows chat/terminal theming;
+   the emoji visuals themselves remain untouched. */
 .jami-emoji-combine-menu {
     position: fixed;
     z-index: 100004;
@@ -10905,26 +10908,102 @@ html[data-chat-pastel="paws"] .jami-emoji-animation-recording-status {
     opacity: .35;
 }
 
-html[data-chat-pastel="stars"] .jami-emoji-combine-menu {
-    border-color: rgba(255,255,255,.30);
-    background: rgba(105,96,183,.94);
+html[data-chat-theme="original"] .jami-emoji-combine-menu {
+    border-color: rgba(255,255,255,.18);
+    background: rgba(20,20,20,.34);
+    color: rgba(255,255,255,.88);
+    box-shadow: 0 14px 34px rgba(0,0,0,.24);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    font-family:
+        var(--body-font, "Nunito", sans-serif) !important;
 }
 
-html[data-chat-pastel="paws"] .jami-emoji-combine-menu {
+html[data-chat-theme="original"] .jami-emoji-combine-menu .theme-body,
+html[data-chat-theme="original"] .jami-emoji-combine-menu button {
+    font-family:
+        var(--body-font, "Nunito", sans-serif) !important;
+    color: rgba(255,255,255,.88);
+}
+
+html[data-chat-theme="original"] .jami-emoji-combine-menu .theme-heading {
+    font-family:
+        var(--heading-font, "Nunito", sans-serif) !important;
+    color: rgba(255,255,255,.88);
+}
+
+html[data-chat-theme="stars"] .jami-emoji-combine-menu {
+    border-color: rgba(230,224,255,.58);
+    background: rgba(105,96,183,.97);
+    color: #ffffff;
+    box-shadow: 0 14px 32px rgba(38,31,100,.28);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="stars"] .jami-emoji-combine-menu *,
+html[data-chat-theme="stars"] .jami-emoji-combine-menu .theme-body,
+html[data-chat-theme="stars"] .jami-emoji-combine-menu .theme-heading,
+html[data-chat-theme="stars"] .jami-emoji-combine-menu button {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="stars"] .jami-emoji-combine-tile,
+html[data-chat-theme="stars"] .jami-emoji-combine-action {
+    border-color: rgba(240,236,255,.34);
+    background: rgba(255,255,255,.10);
+    color: #ffffff;
+}
+
+html[data-chat-theme="stars"] .jami-emoji-combine-tile:hover,
+html[data-chat-theme="stars"] .jami-emoji-combine-tile.is-selected,
+html[data-chat-theme="stars"] .jami-emoji-combine-action:hover:not(:disabled) {
+    border-color: rgba(255,255,255,.72);
+    background: rgba(255,255,255,.18);
+}
+
+html[data-chat-theme="paws"] .jami-emoji-combine-menu {
+    border-color: rgba(238,157,173,.48);
+    background: rgba(255,244,242,.98);
+    color: #ee9dad;
+    box-shadow: 0 14px 30px rgba(127,83,94,.16);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    font-family:
+        "nintendoh",
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="paws"] .jami-emoji-combine-menu *,
+html[data-chat-theme="paws"] .jami-emoji-combine-menu .theme-body,
+html[data-chat-theme="paws"] .jami-emoji-combine-menu .theme-heading,
+html[data-chat-theme="paws"] .jami-emoji-combine-menu button {
+    font-family:
+        "nintendoh",
+        "Nunito",
+        sans-serif !important;
+}
+
+html[data-chat-theme="paws"] .jami-emoji-combine-tile,
+html[data-chat-theme="paws"] .jami-emoji-combine-action {
     border-color: rgba(238,157,173,.34);
-    background: rgba(255,244,242,.97);
-    color: #6a5058;
+    background: rgba(238,157,173,.09);
+    color: #ee9dad;
 }
 
-html[data-chat-pastel="paws"] .jami-emoji-combine-tile,
-html[data-chat-pastel="paws"] .jami-emoji-combine-action {
-    border-color: rgba(238,157,173,.28);
-    background: rgba(238,157,173,.08);
-}
-
-html[data-chat-pastel="paws"] .jami-emoji-combine-tile:hover,
-html[data-chat-pastel="paws"] .jami-emoji-combine-tile.is-selected,
-html[data-chat-pastel="paws"] .jami-emoji-combine-action:hover:not(:disabled) {
+html[data-chat-theme="paws"] .jami-emoji-combine-tile:hover,
+html[data-chat-theme="paws"] .jami-emoji-combine-tile.is-selected,
+html[data-chat-theme="paws"] .jami-emoji-combine-action:hover:not(:disabled) {
     border-color: #ee9dad;
-    background: rgba(238,157,173,.16);
+    background: rgba(238,157,173,.18);
 }
