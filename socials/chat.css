@@ -11111,3 +11111,92 @@ html[data-chat-theme="paws"] .jami-emoji-party-default {
         "Nunito",
         sans-serif !important;
 }
+
+
+/* Global Emoji Party top-level control menu */
+.jami-emoji-party-menu {
+    position: fixed;
+    z-index: 100005;
+    width: 190px;
+    max-width: calc(100vw - 16px);
+    padding: 8px;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 14px;
+    background: rgba(20,20,20,.48);
+    color: rgba(255,255,255,.9);
+    box-shadow: 0 14px 34px rgba(0,0,0,.28);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    font-family: var(--body-font, "Nunito", sans-serif);
+}
+
+.jami-emoji-party-change {
+    display: flex;
+    width: 100%;
+    min-height: 38px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 7px 9px;
+    border: 1px solid rgba(255,255,255,.11);
+    border-radius: 10px;
+    background: rgba(255,255,255,.06);
+    color: inherit;
+    font: inherit;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.jami-emoji-party-change:hover {
+    background: rgba(255,255,255,.11);
+}
+
+.jami-emoji-party-menu-preview {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.jami-emoji-party-menu-emoji,
+.jami-emoji-party-menu-preview img,
+.jami-emoji-party-menu-preview span {
+    width: 22px !important;
+    height: 22px !important;
+    max-width: 22px !important;
+    max-height: 22px !important;
+    object-fit: contain !important;
+    font-size: 20px !important;
+    line-height: 22px !important;
+}
+
+html[data-chat-theme="stars"] .jami-emoji-party-menu {
+    border-color: rgba(230,224,255,.58);
+    background: rgba(105,96,183,.97);
+    color: #fff;
+    box-shadow: 0 14px 32px rgba(38,31,100,.28);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    font-family: "JamiFredoka", "Fredoka", "Nunito", sans-serif !important;
+}
+
+html[data-chat-theme="stars"] .jami-emoji-party-menu * {
+    font-family: "JamiFredoka", "Fredoka", "Nunito", sans-serif !important;
+}
+
+html[data-chat-theme="paws"] .jami-emoji-party-menu {
+    border-color: rgba(238,157,173,.48);
+    background: rgba(255,244,242,.98);
+    color: #ee9dad;
+    box-shadow: 0 14px 30px rgba(127,83,94,.16);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    font-family: "nintendoh", "Nunito", sans-serif !important;
+}
+
+html[data-chat-theme="paws"] .jami-emoji-party-menu * {
+    font-family: "nintendoh", "Nunito", sans-serif !important;
+}
