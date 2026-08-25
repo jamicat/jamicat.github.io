@@ -2074,6 +2074,13 @@ createBanManagerButton() {
         heading.className = "jami-chat-tree-heading";
         heading.textContent = "chat tree";
 
+        const growth = document.createElement("div");
+        growth.className = "jami-chat-tree-growth";
+        growth.textContent =
+            `GROWTH://${String(
+                Number(tree.sessionId) || 0
+            ).padStart(4, "0")}`;
+
         const art = document.createElement("div");
         art.className = "jami-chat-tree-art";
         art.appendChild(this.createChatTreeSvg(tree));
@@ -2095,7 +2102,14 @@ createBanManagerButton() {
             people.appendChild(item);
         }
 
-        panel.append(close, heading, art, harvest, people);
+        panel.append(
+            close,
+            heading,
+            growth,
+            art,
+            harvest,
+            people
+        );
         document.body.appendChild(panel);
         this.chatTreeReveal = panel;
     }
@@ -2133,6 +2147,56 @@ createBanManagerButton() {
         const crownY = 116 - maturity * 8;
         const lean = (rand(900) - .5) * 24;
         const crownX = 260 + lean;
+
+        // Sparse static technical viewport lattice.
+        const lattice = document.createElementNS(NS, "g");
+        lattice.setAttribute("class", "jami-palm-lattice");
+
+        const verticals = [88, 156, 224, 296, 364, 432];
+        const horizontals = [78, 138, 198, 258, 318];
+
+        for (const x of verticals) {
+            lattice.appendChild(
+                path(
+                    `M${x} 54 L${x} 326`,
+                    "jami-palm-lattice-line"
+                )
+            );
+        }
+
+        for (const y of horizontals) {
+            lattice.appendChild(
+                path(
+                    `M72 ${y} L448 ${y}`,
+                    "jami-palm-lattice-line"
+                )
+            );
+        }
+
+        const nodes = [
+            [156, 138],
+            [296, 198],
+            [364, 258],
+            [224, 78]
+        ];
+
+        for (const [x, y] of nodes) {
+            const node = document.createElementNS(
+                NS,
+                "rect"
+            );
+            node.setAttribute("x", String(x - 1.5));
+            node.setAttribute("y", String(y - 1.5));
+            node.setAttribute("width", "3");
+            node.setAttribute("height", "3");
+            node.setAttribute(
+                "class",
+                "jami-palm-lattice-node"
+            );
+            lattice.appendChild(node);
+        }
+
+        svg.appendChild(lattice);
 
         svg.appendChild(path(
             "M132 326 Q260 315 388 326",
@@ -2283,6 +2347,49 @@ createBanManagerButton() {
             coconut.setAttribute("class", "jami-palm-coconut");
             svg.appendChild(coconut);
         }
+
+        const tickGroup = document.createElementNS(NS, "g");
+        tickGroup.setAttribute(
+            "class",
+            "jami-palm-coordinate-ticks"
+        );
+
+        const tickValues = ["016", "032", "048", "064"];
+        tickValues.forEach((value, index) => {
+            const text = document.createElementNS(
+                NS,
+                "text"
+            );
+            text.setAttribute(
+                "x",
+                String(150 + index * 74)
+            );
+            text.setAttribute("y", "344");
+            text.textContent = value;
+            tickGroup.appendChild(text);
+        });
+
+        const status = document.createElementNS(
+            NS,
+            "text"
+        );
+        status.setAttribute("x", "260");
+        status.setAttribute("y", "331");
+        status.setAttribute(
+            "text-anchor",
+            "middle"
+        );
+        status.setAttribute(
+            "class",
+            "jami-palm-status-label"
+        );
+        status.textContent =
+            `TREE_${String(
+                Number(tree.sessionId) || 0
+            ).padStart(4, "0")} // HARVEST_COMPLETE`;
+
+        svg.appendChild(status);
+        svg.appendChild(tickGroup);
 
         return svg;
     }
