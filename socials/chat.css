@@ -11269,8 +11269,11 @@ html[data-chat-theme="paws"] #chatEmojiPartyButton {
     stroke-width: 2;
 }
 .jami-palm-trunk-segment {
-    stroke: #70a985;
+    stroke: #9a704d;
     stroke-width: 8;
+}
+.jami-palm-trunk-segment:nth-of-type(2n) {
+    stroke: #a87b55;
 }
 .jami-palm-frond {
     stroke: #72d69c;
