@@ -102,6 +102,7 @@ this.emojiAnimationPicker = null;
 this.emojiAnimationRecordingLayer = null;
 this.emojiAnimationRecording = null;
 this.emojiAnimationMaximumMs = 15000;
+this.emojiAnimationCombineMenu = null;
 this.createSharedEmojiPicker = null;
 
 this.replyTarget = null;
@@ -1687,7 +1688,7 @@ createBanManagerButton() {
         >
             <button
                 type="button"
-                data-party-action="enable"
+                data-party-action="toggle"
                 class="
                     w-full
                     rounded-xl
@@ -1698,10 +1699,11 @@ createBanManagerButton() {
                     ${
                         enabled
                             ? `
-                                cursor-default
-                                border-emerald-300/20
-                                bg-emerald-500/10
-                                text-emerald-200/60
+                                border-red-300/20
+                                bg-red-500/10
+                                text-red-200
+                                hover:border-red-300/40
+                                hover:bg-red-500/20
                             `
                             : `
                                 border-white/10
@@ -1715,54 +1717,14 @@ createBanManagerButton() {
                     disabled:cursor-not-allowed
                     disabled:opacity-50
                 "
-                ${
-                    enabled || busy
-                        ? "disabled"
-                        : ""
-                }
+                ${busy ? "disabled" : ""}
             >
                 <span class="font-bold">
-                    enable watch party
-                </span>
-            </button>
-
-            <button
-                type="button"
-                data-party-action="disable"
-                class="
-                    w-full
-                    rounded-xl
-                    border
-                    px-3 py-2.5
-                    text-left
-                    transition
                     ${
-                        !enabled
-                            ? `
-                                cursor-default
-                                border-white/10
-                                bg-white/5
-                                text-white/30
-                            `
-                            : `
-                                border-red-300/20
-                                bg-red-500/10
-                                text-red-200
-                                hover:border-red-300/40
-                                hover:bg-red-500/20
-                            `
+                        enabled
+                            ? "disable watch party"
+                            : "enable watch party"
                     }
-                    disabled:cursor-not-allowed
-                    disabled:opacity-50
-                "
-                ${
-                    !enabled || busy
-                        ? "disabled"
-                        : ""
-                }
-            >
-                <span class="font-bold">
-                    disable watch party
                 </span>
             </button>
 
@@ -1831,39 +1793,20 @@ createBanManagerButton() {
         );
     }
 
-    const enableButton =
+    const toggleButton =
         this.partyManager.querySelector(
-            '[data-party-action="enable"]'
+            '[data-party-action="toggle"]'
         );
 
-    if (enableButton) {
-        enableButton.addEventListener(
+    if (toggleButton) {
+        toggleButton.addEventListener(
             "click",
             event => {
                 event.preventDefault();
                 event.stopPropagation();
 
                 this.setWatchPartyEnabled(
-                    true
-                );
-            }
-        );
-    }
-
-    const disableButton =
-        this.partyManager.querySelector(
-            '[data-party-action="disable"]'
-        );
-
-    if (disableButton) {
-        disableButton.addEventListener(
-            "click",
-            event => {
-                event.preventDefault();
-                event.stopPropagation();
-
-                this.setWatchPartyEnabled(
-                    false
+                    !enabled
                 );
             }
         );
@@ -9461,6 +9404,8 @@ openModerationMenu(x, y, message) {
             "confetti" &&
         message.message_type !==
             "emoji_animation" &&
+        message.message_type !==
+            "emoji_animation_combo" &&
         Boolean(message.id) &&
         ownsMessage;
 
@@ -9563,6 +9508,30 @@ openModerationMenu(x, y, message) {
             }
         )
     );
+
+    const combinableEmojiAnimations =
+        this.getEmojiAnimationsFromMessage(
+            message
+        );
+
+    if (
+        combinableEmojiAnimations.length > 0 &&
+        combinableEmojiAnimations.length < 5
+    ) {
+        buttons.push(
+            this.createModerationMenuButton(
+                "combine emoji record",
+                () => {
+                    this.closeModerationMenu();
+                    this.openEmojiAnimationCombineMenu(
+                        x,
+                        y,
+                        message
+                    );
+                }
+            )
+        );
+    }
 
     buttons.push(
         this.createModerationMenuButton(
@@ -15282,6 +15251,17 @@ setupNameSaving() {
             return;
         }
 
+        if (
+            message?.message_type ===
+                "emoji_animation_combo"
+        ) {
+            this.renderEmojiAnimationComboMessage(
+                container,
+                message
+            );
+            return;
+        }
+
         this.renderMessageContent(
             container,
             message?.message || ""
@@ -15514,6 +15494,544 @@ setupNameSaving() {
         };
 
         requestAnimationFrame(draw);
+    }
+
+
+    parseEmojiAnimationComboPayload(message) {
+        try {
+            const payload =
+                typeof message === "string"
+                    ? JSON.parse(message)
+                    : message;
+
+            const animations =
+                Array.isArray(payload?.animations)
+                    ? payload.animations
+                        .map(animation =>
+                            this.parseEmojiAnimationPayload(
+                                animation
+                            )
+                        )
+                        .filter(Boolean)
+                    : [];
+
+            if (
+                animations.length < 2 ||
+                animations.length > 5
+            ) {
+                return null;
+            }
+
+            return {
+                animations
+            };
+        } catch {
+            return null;
+        }
+    }
+
+    getEmojiAnimationsFromMessage(message) {
+        if (
+            message?.message_type ===
+                "emoji_animation"
+        ) {
+            const animation =
+                this.parseEmojiAnimationPayload(
+                    message.message
+                );
+
+            return animation
+                ? [animation]
+                : [];
+        }
+
+        if (
+            message?.message_type ===
+                "emoji_animation_combo"
+        ) {
+            return (
+                this.parseEmojiAnimationComboPayload(
+                    message.message
+                )?.animations || []
+            );
+        }
+
+        return [];
+    }
+
+    emojiAnimationDayKey(value) {
+        const date =
+            new Date(value || 0);
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+            return "";
+        }
+
+        return [
+            date.getFullYear(),
+            String(
+                date.getMonth() + 1
+            ).padStart(2, "0"),
+            String(
+                date.getDate()
+            ).padStart(2, "0")
+        ].join("-");
+    }
+
+    renderEmojiAnimationComboMessage(
+        container,
+        message
+    ) {
+        const payload =
+            this.parseEmojiAnimationComboPayload(
+                message?.message
+            );
+
+        if (!payload) {
+            container.textContent =
+                "emoji animation unavailable";
+            return;
+        }
+
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+        button.className =
+            "jami-emoji-animation-message theme-body";
+        button.title =
+            "play combined emoji animation";
+
+        const label =
+            document.createElement("span");
+
+        label.textContent =
+            "play emoji";
+
+        button.appendChild(label);
+
+        for (
+            const animation
+            of payload.animations
+        ) {
+            const visual =
+                this.createEmojiAnimationVisual(
+                    animation.emoji
+                );
+
+            visual.classList.add(
+                "jami-emoji-animation-message-emoji"
+            );
+
+            button.appendChild(visual);
+        }
+
+        button.addEventListener(
+            "click",
+            () => {
+                for (
+                    const animation
+                    of payload.animations
+                ) {
+                    this.playEmojiAnimation(
+                        animation
+                    );
+                }
+            }
+        );
+
+        container.appendChild(button);
+    }
+
+    closeEmojiAnimationCombineMenu() {
+        this.emojiAnimationCombineMenu
+            ?.remove();
+
+        this.emojiAnimationCombineMenu =
+            null;
+    }
+
+    openEmojiAnimationCombineMenu(
+        x,
+        y,
+        baseMessage
+    ) {
+        this.closeEmojiAnimationCombineMenu();
+
+        if (this.isBanned) {
+            return;
+        }
+
+        const baseAnimations =
+            this.getEmojiAnimationsFromMessage(
+                baseMessage
+            );
+
+        if (
+            baseAnimations.length < 1 ||
+            baseAnimations.length >= 5
+        ) {
+            return;
+        }
+
+        const dayKey =
+            this.emojiAnimationDayKey(
+                baseMessage?.created_at
+            );
+
+        const candidates =
+            this.historyTimeline
+                .filter(item =>
+                    item?.type === "message" &&
+                    item.value?.id != null &&
+                    String(item.value.id) !==
+                        String(baseMessage?.id) &&
+                    this.emojiAnimationDayKey(
+                        item.value.created_at
+                    ) === dayKey &&
+                    this.getEmojiAnimationsFromMessage(
+                        item.value
+                    ).length > 0
+                )
+                .map(item => ({
+                    message: item.value,
+                    animations:
+                        this.getEmojiAnimationsFromMessage(
+                            item.value
+                        )
+                }));
+
+        if (!candidates.length) {
+            window.alert(
+                "there are no other emoji records from this day to combine"
+            );
+            return;
+        }
+
+        const panel =
+            document.createElement("div");
+
+        panel.className =
+            "jami-emoji-combine-menu theme-body terminal2";
+
+        const heading =
+            document.createElement("div");
+
+        heading.className =
+            "jami-emoji-combine-heading theme-heading";
+        heading.textContent =
+            `combine emoji record · ${baseAnimations.length}/5`;
+
+        const tiles =
+            document.createElement("div");
+
+        tiles.className =
+            "jami-emoji-combine-tiles";
+
+        const actions =
+            document.createElement("div");
+
+        actions.className =
+            "jami-emoji-combine-actions";
+
+        const cancel =
+            document.createElement("button");
+
+        cancel.type = "button";
+        cancel.className =
+            "jami-emoji-combine-action";
+        cancel.textContent = "cancel";
+
+        const combine =
+            document.createElement("button");
+
+        combine.type = "button";
+        combine.className =
+            "jami-emoji-combine-action jami-emoji-combine-submit";
+        combine.textContent = "combine";
+        combine.disabled = true;
+
+        const selected =
+            new Set();
+
+        const update = () => {
+            let count =
+                baseAnimations.length;
+
+            for (
+                const candidate
+                of candidates
+            ) {
+                if (
+                    selected.has(
+                        String(
+                            candidate.message.id
+                        )
+                    )
+                ) {
+                    count +=
+                        candidate.animations.length;
+                }
+            }
+
+            heading.textContent =
+                `combine emoji record · ${count}/5`;
+            combine.disabled =
+                count <=
+                    baseAnimations.length ||
+                count > 5;
+
+            for (
+                const tile
+                of tiles.querySelectorAll(
+                    "[data-combine-message-id]"
+                )
+            ) {
+                const candidate =
+                    candidates.find(item =>
+                        String(
+                            item.message.id
+                        ) ===
+                            tile.dataset
+                                .combineMessageId
+                    );
+
+                if (!candidate) {
+                    continue;
+                }
+
+                const isSelected =
+                    selected.has(
+                        String(
+                            candidate.message.id
+                        )
+                    );
+
+                tile.classList.toggle(
+                    "is-selected",
+                    isSelected
+                );
+
+                tile.disabled =
+                    !isSelected &&
+                    count +
+                        candidate.animations.length >
+                        5;
+            }
+        };
+
+        for (
+            const candidate
+            of candidates
+        ) {
+            const tile =
+                document.createElement("button");
+
+            tile.type = "button";
+            tile.className =
+                "jami-emoji-combine-tile";
+            tile.dataset.combineMessageId =
+                String(candidate.message.id);
+            tile.title =
+                candidate.animations.length === 1
+                    ? "add this emoji record"
+                    : `add these ${candidate.animations.length} emoji records`;
+
+            for (
+                const animation
+                of candidate.animations
+            ) {
+                const visual =
+                    this.createEmojiAnimationVisual(
+                        animation.emoji
+                    );
+
+                visual.classList.add(
+                    "jami-emoji-combine-tile-emoji"
+                );
+                tile.appendChild(visual);
+            }
+
+            tile.addEventListener(
+                "click",
+                () => {
+                    const id =
+                        String(
+                            candidate.message.id
+                        );
+
+                    if (selected.has(id)) {
+                        selected.delete(id);
+                    } else {
+                        selected.add(id);
+                    }
+
+                    update();
+                }
+            );
+
+            tiles.appendChild(tile);
+        }
+
+        cancel.addEventListener(
+            "click",
+            () =>
+                this.closeEmojiAnimationCombineMenu()
+        );
+
+        combine.addEventListener(
+            "click",
+            async () => {
+                const animations =
+                    [...baseAnimations];
+
+                for (
+                    const candidate
+                    of candidates
+                ) {
+                    if (
+                        selected.has(
+                            String(
+                                candidate.message.id
+                            )
+                        )
+                    ) {
+                        animations.push(
+                            ...candidate.animations
+                        );
+                    }
+                }
+
+                if (
+                    animations.length < 2 ||
+                    animations.length > 5
+                ) {
+                    return;
+                }
+
+                this.closeEmojiAnimationCombineMenu();
+
+                await this.postEmojiAnimationCombo(
+                    animations
+                );
+            }
+        );
+
+        actions.append(
+            cancel,
+            combine
+        );
+
+        panel.append(
+            heading,
+            tiles,
+            actions
+        );
+
+        document.body.appendChild(panel);
+        this.emojiAnimationCombineMenu =
+            panel;
+
+        const rect =
+            panel.getBoundingClientRect();
+
+        panel.style.left =
+            `${Math.max(
+                8,
+                Math.min(
+                    x,
+                    window.innerWidth -
+                        rect.width -
+                        8
+                )
+            )}px`;
+
+        panel.style.top =
+            `${Math.max(
+                8,
+                Math.min(
+                    y,
+                    window.innerHeight -
+                        rect.height -
+                        8
+                )
+            )}px`;
+
+        update();
+    }
+
+    async postEmojiAnimationCombo(
+        animations
+    ) {
+        if (
+            this.isBanned ||
+            !Array.isArray(animations) ||
+            animations.length < 2 ||
+            animations.length > 5
+        ) {
+            return;
+        }
+
+        const name =
+            this.getEffectiveChatName();
+        const avatar =
+            this.getEffectiveOutgoingAvatar();
+
+        try {
+            const response =
+                await fetch(
+                    `${this.API}/api/chat/emoji-animation-combo`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+                            ...(this.discordAuthToken
+                                ? {
+                                    "Authorization":
+                                        `Bearer ${this.discordAuthToken}`
+                                }
+                                : {})
+                        },
+                        body:
+                            JSON.stringify({
+                                clientId:
+                                    this.clientId,
+                                name,
+                                avatar,
+                                animations
+                            })
+                    }
+                );
+
+            const result =
+                await response.json();
+
+            if (
+                response.status === 403 &&
+                result?.error === "banned"
+            ) {
+                this.isBanned = true;
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    result?.error ||
+                    `could not combine emoji records (${response.status})`
+                );
+            }
+        } catch (error) {
+            console.error(
+                "could not combine emoji records:",
+                error
+            );
+            window.alert(error.message);
+        }
     }
 
     closeEmojiAnimationPicker() {
