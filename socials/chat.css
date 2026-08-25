@@ -11213,7 +11213,7 @@ html[data-chat-theme="paws"] #chatEmojiPartyButton {
     padding: 18px 18px 16px;
     border: 1px solid rgba(119, 255, 181, .28);
     border-radius: 18px;
-    background: rgba(0, 0, 0, .20);
+    background: rgba(0, 0, 0, .60);
     color: rgba(232, 255, 242, .92);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
