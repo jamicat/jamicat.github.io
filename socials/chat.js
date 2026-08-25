@@ -104,7 +104,9 @@ this.emojiAnimationRecording = null;
 this.emojiAnimationMaximumMs = 15000;
 this.emojiAnimationCombineMenu = null;
 this.emojiPartyEnabled = false;
-this.emojiPartyEmoji = {
+this.emojiPartyGlobalEnabled = false;
+this.emojiPartyStorageKey = "jamicat_emoji_party_choice";
+this.emojiPartyEmoji = this.loadEmojiPartyChoice() || {
     kind: "unicode",
     value: "🐈",
     src: "",
@@ -121,6 +123,8 @@ this.emojiPartyPointer = {
 };
 this.emojiPartyPointerHandler = null;
 this.emojiPartyUnloadHandler = null;
+this.emojiPartyMenuButton = null;
+this.emojiPartyMenu = null;
 this.createSharedEmojiPicker = null;
 
 this.replyTarget = null;
@@ -314,7 +318,6 @@ if (
 }
 
 this.setupAdminAuthentication();
-this.createPartyManagerButton();
 this.setupAvatarPicker();
 this.setupEmojiPicker();
 this.setupMembersToggle();
@@ -1414,6 +1417,7 @@ setupAdminAuthentication() {
 
     this.loadHistory();
 		this.createBanManagerButton();
+        this.createPartyManagerButton();
 		this.renderWatchParty();
 }
 
@@ -1430,6 +1434,7 @@ setupAdminAuthentication() {
     this.closeModerationMenu();
 	this.closeBanManager();
 this.removeBanManagerButton();
+        this.removePartyManagerButton();
 		this.closePartyManager();
     this.partyManagerBusy = false;
     this.loadHistory();
@@ -1624,7 +1629,7 @@ createBanManagerButton() {
     const enabled =
         this.watchParty?.enabled === true;
     const emojiEnabled =
-        this.emojiPartyEnabled === true;
+        this.emojiPartyGlobalEnabled === true;
     const busy =
         this.partyManagerBusy === true;
 
@@ -1799,38 +1804,6 @@ createBanManagerButton() {
                 </span>
             </button>
 
-            ${
-                emojiEnabled
-                    ? `
-                        <button
-                            type="button"
-                            data-party-action="change-emoji"
-                            class="
-                                w-full rounded-xl
-                                border border-white/10
-                                bg-white/5
-                                px-3 py-2.5
-                                text-left text-white/85
-                                transition
-                                hover:border-white/20
-                                hover:bg-white/10
-                                disabled:cursor-not-allowed
-                                disabled:opacity-50
-                            "
-                            ${this.isBanned ? "disabled" : ""}
-                        >
-                            <span class="font-bold">
-                                change emoji
-                            </span>
-                            <span
-                                data-party-current-emoji
-                                class="ml-1 inline-flex align-middle"
-                            ></span>
-                        </button>
-                    `
-                    : ""
-            }
-
             ${clearControl}
 
             <div
@@ -1892,65 +1865,15 @@ createBanManagerButton() {
             event.preventDefault();
             event.stopPropagation();
 
-            if (this.isBanned) {
-                return;
-            }
-
-            if (this.emojiPartyEnabled) {
-                this.disableEmojiParty();
-            } else {
-                const rect =
-                    emojiButton.getBoundingClientRect();
-
-                this.openEmojiPartyPicker(
-                    rect.left,
-                    rect.bottom + 8
-                );
-            }
-        }
-    );
-
-    const changeEmojiButton =
-        this.partyManager.querySelector(
-            '[data-party-action="change-emoji"]'
-        );
-
-    const currentEmojiHost =
-        this.partyManager.querySelector(
-            "[data-party-current-emoji]"
-        );
-
-    if (
-        currentEmojiHost &&
-        this.emojiPartyEnabled
-    ) {
-        currentEmojiHost.appendChild(
-            this.createEmojiAnimationVisual(
-                this.emojiPartyEmoji
-            )
-        );
-    }
-
-    changeEmojiButton?.addEventListener(
-        "click",
-        event => {
-            event.preventDefault();
-            event.stopPropagation();
-
             if (
-                this.isBanned ||
-                !this.emojiPartyEnabled
+                !this.isAdmin ||
+                !this.adminKey
             ) {
                 return;
             }
 
-            const rect =
-                changeEmojiButton
-                    .getBoundingClientRect();
-
-            this.openEmojiPartyPicker(
-                rect.left,
-                rect.bottom + 8
+            this.setEmojiPartyGlobalEnabled(
+                !this.emojiPartyGlobalEnabled
             );
         }
     );
@@ -2158,6 +2081,24 @@ createBanManagerButton() {
         );
     }
 }
+
+    setEmojiPartyGlobalEnabled(enabled) {
+        if (
+            !this.isAdmin ||
+            !this.adminKey ||
+            !this.socket ||
+            this.socket.readyState !== WebSocket.OPEN
+        ) {
+            return;
+        }
+
+        this.socket.send(
+            JSON.stringify({
+                type: "emoji-party-global",
+                enabled: enabled === true
+            })
+        );
+    }
 
 	async clearWatchPartyQueue() {
     if (
@@ -12122,11 +12063,11 @@ connect() {
     }
 		this.sendPresence();
 
-    if (this.emojiPartyEnabled) {
-        this.sendEmojiPartyState(
-            true,
-            true
-        );
+    if (
+        this.emojiPartyGlobalEnabled &&
+        this.emojiPartyEnabled
+    ) {
+        this.sendEmojiPartyState(true, true);
     }
 });
 
@@ -12163,6 +12104,13 @@ connect() {
 
     this.renderTypingUsers();
 
+    return;
+}
+
+if (data.type === "emoji-party-global") {
+    this.applyEmojiPartyGlobalState(
+        data.enabled === true
+    );
     return;
 }
 
@@ -12228,6 +12176,7 @@ if (data.type === "emoji-party") {
     }
 
     this.disableEmojiParty(false);
+    this.removeEmojiPartyMenuButton();
     this.closeEmojiPartyPicker();
     this.closeReactionPicker();
     this.clearReplyTarget();
@@ -16219,6 +16168,183 @@ setupNameSaving() {
     }
 
 
+    loadEmojiPartyChoice() {
+        try {
+            const parsed = JSON.parse(
+                localStorage.getItem(
+                    "jamicat_emoji_party_choice"
+                ) || "null"
+            );
+
+            return this.normaliseEmojiPartyEmoji(
+                parsed
+            );
+        } catch {
+            return null;
+        }
+    }
+
+    saveEmojiPartyChoice(emoji) {
+        try {
+            localStorage.setItem(
+                this.emojiPartyStorageKey,
+                JSON.stringify(emoji)
+            );
+        } catch {
+        }
+    }
+
+    createEmojiPartyMenuButton() {
+        if (
+            this.emojiPartyMenuButton ||
+            !this.membersToggle ||
+            !this.emojiPartyGlobalEnabled
+        ) {
+            return;
+        }
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.id = "chatEmojiPartyButton";
+        button.textContent = "party emoji";
+        button.className = [
+            "theme-body",
+            "text-[9px]",
+            "text-white/50",
+            "transition",
+            "hover:text-white"
+        ].join(" ");
+        button.title = "change party emoji";
+        button.setAttribute("aria-expanded", "false");
+
+        button.addEventListener("click", event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (this.emojiPartyMenu) {
+                this.closeEmojiPartyMenu();
+            } else {
+                this.openEmojiPartyMenu();
+            }
+        });
+
+        this.membersToggle.insertAdjacentElement(
+            "beforebegin",
+            button
+        );
+        this.emojiPartyMenuButton = button;
+    }
+
+    removeEmojiPartyMenuButton() {
+        this.closeEmojiPartyMenu();
+        this.emojiPartyMenuButton?.remove();
+        this.emojiPartyMenuButton = null;
+    }
+
+    openEmojiPartyMenu() {
+        if (
+            !this.emojiPartyGlobalEnabled ||
+            this.isBanned ||
+            !this.emojiPartyMenuButton
+        ) {
+            return;
+        }
+
+        this.closeEmojiPartyMenu();
+
+        const panel = document.createElement("div");
+        panel.className = "jami-emoji-party-menu theme-body";
+
+        const change = document.createElement("button");
+        change.type = "button";
+        change.className = "jami-emoji-party-change";
+
+        const label = document.createElement("span");
+        label.textContent = "change emoji";
+
+        const preview = document.createElement("span");
+        preview.className = "jami-emoji-party-menu-preview";
+        const visual = this.createEmojiAnimationVisual(
+            this.emojiPartyEmoji
+        );
+        visual.classList.add("jami-emoji-party-menu-emoji");
+        preview.appendChild(visual);
+        change.append(label, preview);
+
+        change.addEventListener("click", event => {
+            event.preventDefault();
+            event.stopPropagation();
+            const rect = change.getBoundingClientRect();
+            this.closeEmojiPartyMenu();
+            this.openEmojiPartyPicker(
+                rect.left,
+                rect.bottom + 8
+            );
+        });
+
+        panel.appendChild(change);
+        document.body.appendChild(panel);
+        this.emojiPartyMenu = panel;
+        this.emojiPartyMenuButton.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+        const buttonRect =
+            this.emojiPartyMenuButton.getBoundingClientRect();
+        const panelRect = panel.getBoundingClientRect();
+        const pad = 8;
+
+        panel.style.left = `${Math.max(
+            pad,
+            Math.min(
+                buttonRect.left,
+                window.innerWidth - panelRect.width - pad
+            )
+        )}px`;
+        panel.style.top = `${Math.max(
+            pad,
+            Math.min(
+                buttonRect.bottom + 8,
+                window.innerHeight - panelRect.height - pad
+            )
+        )}px`;
+    }
+
+    closeEmojiPartyMenu() {
+        this.emojiPartyMenu?.remove();
+        this.emojiPartyMenu = null;
+        this.emojiPartyMenuButton?.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
+
+    applyEmojiPartyGlobalState(enabled) {
+        const next = enabled === true;
+        this.emojiPartyGlobalEnabled = next;
+
+        if (next) {
+            this.createEmojiPartyMenuButton();
+            if (!this.isBanned) {
+                this.enableEmojiParty(
+                    this.emojiPartyEmoji,
+                    false
+                );
+            }
+        } else {
+            this.removeEmojiPartyMenuButton();
+            this.closeEmojiPartyPicker();
+            this.disableEmojiParty(false);
+            this.clearRemoteEmojiPartyVisuals();
+        }
+
+        if (this.partyManager) {
+            this.partyManagerBusy = false;
+            this.renderPartyManager();
+        }
+    }
+
     closeEmojiPartyPicker() {
         this.emojiPartyPickerContainer?.remove();
         this.emojiPartyPickerContainer = null;
@@ -16439,8 +16565,11 @@ setupNameSaving() {
         };
     }
 
-    enableEmojiParty(emoji) {
-        if (this.isBanned) {
+    enableEmojiParty(emoji, persist = true) {
+        if (
+            this.isBanned ||
+            !this.emojiPartyGlobalEnabled
+        ) {
             return;
         }
 
@@ -16457,6 +16586,9 @@ setupNameSaving() {
             this.emojiPartyEnabled === true;
 
         this.emojiPartyEmoji = clean;
+        if (persist) {
+            this.saveEmojiPartyChoice(clean);
+        }
         this.emojiPartyEnabled = true;
         this.closeEmojiPartyPicker();
         this.ensureLocalEmojiPartyVisual();
@@ -16470,8 +16602,9 @@ setupNameSaving() {
             this.emojiPartyLastSentAt = 0;
         }
 
-        if (this.partyManager) {
-            this.renderPartyManager();
+        if (this.emojiPartyMenu) {
+            this.closeEmojiPartyMenu();
+            this.openEmojiPartyMenu();
         }
     }
 
@@ -16492,9 +16625,6 @@ setupNameSaving() {
             );
         }
 
-        if (this.partyManager) {
-            this.renderPartyManager();
-        }
     }
 
     bindEmojiPartyPointer() {
