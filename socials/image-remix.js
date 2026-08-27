@@ -206,7 +206,7 @@ this.sourceContext = null;
                         type="button"
                         data-jami-remix-cancel
                     >
-                        cancel
+                        Cancel
                     </button>
 
                     <button
@@ -325,13 +325,13 @@ button.dataset.effectLabel =
 
         const emojiButton =
             this.createToolButton(
-                "custom emoji picker",
+                "Custom emoji picker",
                 () => this.toggleEmojiPicker()
             );
 
         const orbButton =
             this.createToolButton(
-                "add ghost orb",
+                "Add ghost orb",
                 () => this.addGhostOrb()
             );
 
