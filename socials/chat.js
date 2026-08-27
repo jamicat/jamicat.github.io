@@ -10559,7 +10559,7 @@ createSavedRemixCard(item) {
         item.imageUrl;
     image.alt =
         item.originalName ||
-        "saved remix";
+        "Saved remix";
     image.loading = "lazy";
 
     const meta =
@@ -10575,9 +10575,9 @@ createSavedRemixCard(item) {
         "jami-saved-remix-creator";
 
     creator.textContent =
-        `created by ${
+        `Created by ${
             item.creatorName ||
-            "anonymous"
+            "Anonymous"
         }`;
 
     const created =
@@ -10658,7 +10658,7 @@ createSavedRemixCard(item) {
     repost.className =
         "jami-saved-remix-action";
     repost.textContent =
-        "repost";
+        "Repost";
 
     repost.addEventListener(
         "click",
