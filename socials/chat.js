@@ -410,7 +410,7 @@ transition-[height] duration-200
         aria-controls="chatMembersPanel"
         aria-expanded="true"
     >
-        Hide Members
+        Hide members
     </button>
 
     <div class="relative jami-chat-theme-wrap">
@@ -1470,7 +1470,7 @@ createBanManagerButton() {
 
     button.type = "button";
     button.id = "chatBanManagerButton";
-    button.textContent = "bans";
+    button.textContent = "Bans";
 
     button.className = [
         "theme-body",
@@ -1527,7 +1527,7 @@ createBanManagerButton() {
 
     button.type = "button";
     button.id = "chatPartyManagerButton";
-    button.textContent = "party";
+    button.textContent = "Party";
 
     button.className = [
         "theme-body",
