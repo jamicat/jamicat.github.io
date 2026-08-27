@@ -21621,8 +21621,8 @@ closeAvatarPicker() {
 
         this.membersToggle.textContent =
             this.membersVisible
-                ? "hide members"
-                : "show members";
+                ? "Hide members"
+                : "Show members";
 
         this.membersToggle.setAttribute(
             "aria-expanded",
