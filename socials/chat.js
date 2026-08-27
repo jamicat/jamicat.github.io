@@ -219,26 +219,26 @@ this.clientId
 );
 
 this.guestNames = [
-    "tuna",
-    "pixelpaws",
-    "stardust",
-    "meowmix",
-    "luna",
-    "mochi",
-    "cosmicat",
-    "nyanbean",
-    "peachy",
-    "whiskers",
-    "pixelcat",
-    "boba",
-    "miso",
-    "tofu",
-    "maple",
-    "flora",
-    "isabelle",
-    "lolly",
-    "poppy",
-    "merry"
+    "Tuna",
+    "Pixelpaws",
+    "Stardust",
+    "Meowmix",
+    "Luna",
+    "Mochi",
+    "Cosmicat",
+    "Nyanbean",
+    "Peachy",
+    "Whiskers",
+    "Pixelcat",
+    "Boba",
+    "Miso",
+    "Tofu",
+    "Maple",
+    "Flora",
+    "Isabelle",
+    "Lolly",
+    "Poppy",
+    "Merry"
 ];
 
 this.guestName =
@@ -395,7 +395,7 @@ transition-[height] duration-200
                     text-white text-pink-glow
                 "
             >
-                CAT CHAT
+                Cat Chat
             </span>
 
            <div class="flex items-center gap-3">
@@ -410,7 +410,7 @@ transition-[height] duration-200
         aria-controls="chatMembersPanel"
         aria-expanded="true"
     >
-        hide members
+        Hide Members
     </button>
 
     <div class="relative jami-chat-theme-wrap">
@@ -428,7 +428,7 @@ transition-[height] duration-200
             aria-controls="chatThemeMenu"
             title="change chat theme"
         >
-            theme
+            Theme
         </button>
 
         <div
@@ -437,13 +437,13 @@ transition-[height] duration-200
             role="menu"
         >
             <button type="button" data-chat-theme-choice="original" role="menuitem">
-                original
+                Original
             </button>
             <button type="button" data-chat-theme-choice="stars" role="menuitem">
-                stars
+                Stars
             </button>
             <button type="button" data-chat-theme-choice="paws" role="menuitem">
-                animal crossing
+                Animal Crossing
             </button>
         </div>
     </div>
@@ -454,7 +454,7 @@ transition-[height] duration-200
         class="text-[9px] text-white/40"
         aria-live="polite"
     >
-        connecting
+        Connecting
     </span>
 
     <button
@@ -470,7 +470,7 @@ transition-[height] duration-200
         "
         aria-label="minimize live chat"
         aria-expanded="true"
-        title="minimize chat"
+        title="Minimize Chat"
     >
         −
     </button>
@@ -492,10 +492,10 @@ transition-[height] duration-200
         text-white/65
         select-none
     "
-    title="message of the day"
+    title="Message of the day"
 >
     <span class="font-semibold text-white/85">
-        message of the day:
+        Message of the day:
     </span>
 
     <span
@@ -540,7 +540,7 @@ transition-[height] duration-200
                 text-white/50
             "
         >
-            members
+            Members
         </div>
 
         <div
@@ -556,7 +556,7 @@ transition-[height] duration-200
     "
 >
             <div class="text-white/35">
-                loading...
+                Loading...
             </div>
         </div>
     </aside>
@@ -639,7 +639,7 @@ transition-[height] duration-200
             </div>
 
             <div class="theme-heading jami-cute-avatar-label">
-                choose avatar
+                Choose avatar
             </div>
 
             <div
@@ -663,7 +663,7 @@ transition-[height] duration-200
                     disabled:opacity-50
                 "
             >
-                log in with discord
+                Log in with discord
             </button>
 
             <button
@@ -682,7 +682,7 @@ transition-[height] duration-200
                     disabled:opacity-50
                 "
             >
-                log out
+                Log out
             </button>
         </div>
     </div>
@@ -700,7 +700,7 @@ transition-[height] duration-200
             type="text"
             maxlength="250"
             autocomplete="off"
-            placeholder="type a message..."
+            placeholder="Type a message..."
             class="theme-body jami-cute-message-input"
         >
 
@@ -711,7 +711,7 @@ transition-[height] duration-200
             aria-label="choose emoji"
             aria-expanded="false"
             aria-controls="chatEmojiPicker"
-            title="choose emoji"
+            title="Choose emoji"
         >
             ☺
         </button>
@@ -721,7 +721,7 @@ transition-[height] duration-200
             type="button"
             class="jami-cute-message-plus"
             aria-label="upload image"
-            title="upload image"
+            title="Upload image"
         >
             +
         </button>
@@ -731,7 +731,7 @@ transition-[height] duration-200
             type="button"
             class="theme-body jami-cute-send-arrow"
             aria-label="send message"
-            title="send message"
+            title="Send Message"
         >
             ➜
         </button>
@@ -744,7 +744,7 @@ transition-[height] duration-200
         aria-expanded="false"
         aria-controls="chatWatchPartyPanel"
         aria-label="watch party"
-        title="watch party"
+        title="Watch Party"
     >
         📺
     </button>
@@ -1356,7 +1356,7 @@ setupAdminAuthentication() {
 }
 	async promptForAdminLogin() {
     const key = window.prompt(
-        "enter the chat admin key:"
+        "Enter the chat admin key:"
     );
 
     if (key === null) {
@@ -1368,7 +1368,7 @@ setupAdminAuthentication() {
 
     if (!cleanedKey) {
         window.alert(
-            "admin key cannot be empty"
+            "Admin key cannot be empty"
         );
         return;
     }
@@ -1380,7 +1380,7 @@ setupAdminAuthentication() {
 
     if (!isValid) {
         window.alert(
-            "incorrect admin key"
+            "Incorrect admin key"
         );
         return;
     }
@@ -1388,7 +1388,7 @@ setupAdminAuthentication() {
     this.enableAdminMode(cleanedKey);
 
     window.alert(
-        "chat moderation enabled"
+        "Chat moderation enabled"
     );
 }
 	async verifyAdminKey(key) {
@@ -1407,7 +1407,7 @@ setupAdminAuthentication() {
         return response.ok;
     } catch (error) {
         console.error(
-            "could not verify admin key:",
+            "Could not verify admin key:",
             error
         );
 
@@ -1453,7 +1453,7 @@ this.removeBanManagerButton();
     this.disableAdminMode();
 
     window.alert(
-        "chat moderation disabled"
+        "Chat moderation disabled"
     );
 }
 
@@ -1538,7 +1538,7 @@ createBanManagerButton() {
     ].join(" ");
 
     button.title =
-        "manage watch party";
+        "Manage watch party";
 
     button.setAttribute(
         "aria-expanded",
@@ -1678,8 +1678,8 @@ createBanManagerButton() {
                     <span class="font-bold">
                         ${
                             enabled
-                                ? "disable watch party"
-                                : "enable watch party"
+                                ? "Eisable watch party"
+                                : "Enable watch party"
                         }
                     </span>
                 </button>
@@ -1707,7 +1707,7 @@ createBanManagerButton() {
                     ${busy ? "disabled" : ""}
                 >
                     <span class="font-bold">
-                        clear queue
+                        Clear queue
                     </span>
                 </button>
             `
@@ -1730,7 +1730,7 @@ createBanManagerButton() {
                         tracking-widest
                     "
                 >
-                    party
+                    Party
                 </div>
 
                 <div
@@ -1742,20 +1742,20 @@ createBanManagerButton() {
                 >
                     ${
                         enabled
-                            ? "watch party enabled"
-                            : "watch party disabled"
+                            ? "Watch party enabled"
+                            : "Watch party disabled"
                     }
                     ·
                     ${
                         emojiEnabled
-                            ? "emoji party enabled"
-                            : "emoji party disabled"
+                            ? "Emoji party enabled"
+                            : "Emoji party disabled"
                     }
                     ·
                     ${
                         treeActive
-                            ? "tree live"
-                            : "tree idle"
+                            ? "Tree live"
+                            : "Tree idle"
                     }
                 </div>
             </div>
@@ -1768,7 +1768,7 @@ createBanManagerButton() {
                     text-white/50 transition
                     hover:bg-white/10 hover:text-white
                 "
-                aria-label="close party manager"
+                aria-label="Close party manager"
             >
                 ×
             </button>
@@ -1814,8 +1814,8 @@ createBanManagerButton() {
                 <span class="font-bold">
                     ${
                         emojiEnabled
-                            ? "disable emoji party"
-                            : "enable emoji party"
+                            ? "Disable emoji party"
+                            : "Enable emoji party"
                     }
                 </span>
             </button>
@@ -1991,7 +1991,7 @@ createBanManagerButton() {
             }
         } catch (error) {
             console.error(
-                "could not load chat tree state:",
+                "Could not load chat tree state:",
                 error
             );
         }
@@ -2024,7 +2024,7 @@ createBanManagerButton() {
             if (!response.ok) {
                 throw new Error(
                     result.error ||
-                    "could not update tree session"
+                    "Could not update tree session"
                 );
             }
             this.chatTreeState = {
@@ -2034,14 +2034,14 @@ createBanManagerButton() {
             };
             this.setPartyManagerMessage(
                 enabled
-                    ? "tree planted"
-                    : "tree finished"
+                    ? "Tree planted"
+                    : "Tree finished"
             );
         } catch (error) {
             console.error("tree session error:", error);
             this.setPartyManagerMessage(
                 error.message ||
-                    "could not update tree session",
+                    "Could not update tree session",
                 true
             );
         } finally {
@@ -2153,7 +2153,6 @@ createBanManagerButton() {
         const lean = (rand(900) - .5) * 24;
         const crownX = 260 + lean;
 
-        // Sparse static technical viewport lattice.
         const lattice = document.createElementNS(NS, "g");
         lattice.setAttribute("class", "jami-palm-lattice");
 
@@ -2208,7 +2207,6 @@ createBanManagerButton() {
             "jami-palm-ground"
         ));
 
-        // Segmented digital trunk.
         for (let i = 0; i < 9; i++) {
             const a = i / 9;
             const b = (i + 1) / 9;
@@ -2226,8 +2224,6 @@ createBanManagerButton() {
             ));
         }
 
-        // Messages are distributed into a bounded palm crown rather than
-        // becoming one literal branch each.
         const frondCount = Math.max(
             5,
             Math.min(14, 5 + Math.floor(Math.sqrt(count) * .75))
@@ -2310,7 +2306,6 @@ createBanManagerButton() {
             }
         }
 
-        // Upright new growth helps even a tiny session read as a palm.
         for (let i = 0; i < 3; i++) {
             const dx = (i - 1) * 17;
             svg.appendChild(path(
@@ -2321,8 +2316,6 @@ createBanManagerButton() {
             ));
         }
 
-        // Coconuts visibly hang from stems under the crown. Visual count
-        // is capped; the numeric harvest below remains exact.
         const visible = Math.min(16, harvest);
         const slots = [
             [-25,16],[-11,21],[8,20],[24,15],
@@ -2452,7 +2445,7 @@ createBanManagerButton() {
         !this.adminKey
     ) {
         window.alert(
-            "admin authentication is required"
+            "Admin authentication is required"
         );
 
         return;
@@ -2471,9 +2464,9 @@ createBanManagerButton() {
     ) {
         const confirmed =
             window.confirm(
-                "disable watch party?\n\n" +
-                "this will end the party and clear " +
-                "the watch party queue."
+                "Disable watch party?\n\n" +
+                "This will end the party and clear " +
+                "The watch party queue."
             );
 
         if (!confirmed) {
@@ -2486,8 +2479,8 @@ createBanManagerButton() {
 
     this.setPartyManagerMessage(
         shouldEnable
-            ? "enabling watch party..."
-            : "disabling watch party..."
+            ? "Enabling watch party..."
+            : "Disabling watch party..."
     );
 
     try {
@@ -2522,7 +2515,7 @@ createBanManagerButton() {
             this.disableAdminMode();
 
             window.alert(
-                "your admin session is no longer valid"
+                "Your admin session is no longer valid"
             );
 
             return;
@@ -2535,7 +2528,7 @@ createBanManagerButton() {
                     shouldEnable
                         ? "enable"
                         : "disable"
-                } watch party (${response.status})`
+                } Watch party (${response.status})`
             );
         }
 
@@ -2564,12 +2557,12 @@ createBanManagerButton() {
 
         this.setPartyManagerMessage(
             shouldEnable
-                ? "watch party enabled."
-                : "watch party disabled."
+                ? "Watch party enabled."
+                : "Watch party disabled."
         );
     } catch (error) {
         console.error(
-            "could not update watch party:",
+            "Could not update watch party:",
             error
         );
 
@@ -2607,7 +2600,7 @@ createBanManagerButton() {
         !this.adminKey
     ) {
         window.alert(
-            "admin authentication is required"
+            "Admin authentication is required"
         );
 
         return;
@@ -2624,7 +2617,7 @@ createBanManagerButton() {
 
     if (queue.length === 0) {
         this.setPartyManagerMessage(
-            "the watch party queue is already empty."
+            "The watch party queue is already empty."
         );
 
         return;
@@ -2632,10 +2625,10 @@ createBanManagerButton() {
 
     const confirmed =
         window.confirm(
-            "clear the entire watch party queue?\n\n" +
-            "every queued video will be removed. " +
-            "the watch party will remain enabled.\n\n" +
-            "this cannot be undone."
+            "Clear the entire watch party queue?\n\n" +
+            "Every queued video will be removed. " +
+            "The watch party will remain enabled.\n\n" +
+            "This cannot be undone."
         );
 
     if (!confirmed) {
@@ -2646,7 +2639,7 @@ createBanManagerButton() {
     this.renderPartyManager();
 
     this.setPartyManagerMessage(
-        "clearing Watch Party queue..."
+        "Clearing Watch Party queue..."
     );
 
     try {
@@ -2673,7 +2666,7 @@ createBanManagerButton() {
             this.disableAdminMode();
 
             window.alert(
-                "your admin session is no longer valid"
+                "Your admin session is no longer valid"
             );
 
             return;
@@ -2682,7 +2675,7 @@ createBanManagerButton() {
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `could not clear watch party queue (${response.status})`
+                `Could not clear watch party queue (${response.status})`
             );
         }
 
@@ -2690,11 +2683,11 @@ createBanManagerButton() {
         this.renderPartyManager();
 
         this.setPartyManagerMessage(
-            "watch party queue cleared."
+            "Watch party queue cleared."
         );
     } catch (error) {
         console.error(
-            "could not clear watch party queue:",
+            "Could not clear watch party queue:",
             error
         );
 
@@ -2742,7 +2735,7 @@ createBanManagerButton() {
         !this.adminKey
     ) {
         window.alert(
-            "admin authentication is required"
+            "Admin authentication is required"
         );
 
         return;
@@ -2801,7 +2794,7 @@ createBanManagerButton() {
                     font-bold uppercase tracking-widest
                 "
             >
-                banned users
+                Banned users
             </div>
 
             <button
@@ -2814,7 +2807,7 @@ createBanManagerButton() {
                     hover:bg-white/10
                     hover:text-white
                 "
-                aria-label="close banned users panel"
+                aria-label="Close banned users panel"
             >
                 ×
             </button>
@@ -2829,7 +2822,7 @@ createBanManagerButton() {
             "
         >
             <div class="text-white/40">
-                loading...
+                Loading...
             </div>
         </div>
     `;
@@ -2875,7 +2868,7 @@ createBanManagerButton() {
 
     list.innerHTML = `
         <div class="text-white/40">
-            loading...
+            Loading...
         </div>
     `;
 
@@ -2898,7 +2891,7 @@ createBanManagerButton() {
             this.disableAdminMode();
 
             window.alert(
-                "your admin session is no longer valid"
+                "Your admin session is no longer valid"
             );
 
             return;
@@ -2907,7 +2900,7 @@ createBanManagerButton() {
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `could not load bans (${response.status})`
+                `Could not load bans (${response.status})`
             );
         }
 
@@ -2916,7 +2909,7 @@ createBanManagerButton() {
         );
     } catch (error) {
         console.error(
-            "could not load banned users:",
+            "Could not load banned users:",
             error
         );
 
@@ -2989,7 +2982,7 @@ createBanManagerButton() {
             "font-bold text-white";
 
         name.textContent =
-            ban.name || "unknown user";
+            ban.name || "Unknown user";
 
         const reason =
             document.createElement("div");
@@ -3000,7 +2993,7 @@ createBanManagerButton() {
         reason.textContent =
             `Reason: ${
                 ban.reason ||
-                "no reason provided"
+                "No reason provided"
             }`;
 
        const clientId =
@@ -3034,8 +3027,8 @@ ipAddress.textContent =
 copyIpButton.type = "button";
 copyIpButton.textContent =
     cleanedIpAddress
-        ? "copy IP"
-        : "no IP";
+        ? "Copy IP"
+        : "No IP";
 
 copyIpButton.disabled =
     !cleanedIpAddress;
@@ -3078,12 +3071,12 @@ copyIpButton.addEventListener(
             }, 1200);
         } catch (error) {
             console.error(
-                "could not copy IP address:",
+                "Could not copy IP address:",
                 error
             );
 
             window.alert(
-                "could not copy the IP address"
+                "Could not copy the IP address"
             );
         }
     }
@@ -3142,7 +3135,7 @@ const unbanButton =
 ) {
     const confirmed =
         window.confirm(
-            `unban ${
+            `Unban ${
                 name || "this user"
             }?`
         );
@@ -3152,7 +3145,7 @@ const unbanButton =
     }
 
     button.disabled = true;
-    button.textContent = "unbanning...";
+    button.textContent = "Unbanning...";
 
     try {
         const response = await fetch(
@@ -3179,7 +3172,7 @@ const unbanButton =
             this.disableAdminMode();
 
             window.alert(
-                "your admin session is no longer valid"
+                "Your admin session is no longer valid"
             );
 
             return;
@@ -3194,7 +3187,7 @@ const unbanButton =
 
         if (!result.removed) {
             window.alert(
-                "that client was not currently banned"
+                "That client was not currently banned"
             );
         } else {
             window.alert(
@@ -3207,12 +3200,12 @@ const unbanButton =
         await this.loadBannedUsers();
     } catch (error) {
         console.error(
-            "could not unban client:",
+            "Could not unban client:",
             error
         );
 
         window.alert(
-            `could not unban user: ${
+            `Could not unban user: ${
                 error.message
             }`
         );
@@ -3268,7 +3261,7 @@ if (wasAtBottom) {
 
         if (!response.ok) {
             throw new Error(
-                `could not load MOTD (${response.status})`
+                `Could not load MOTD (${response.status})`
             );
         }
 
@@ -3280,7 +3273,7 @@ if (wasAtBottom) {
         );
     } catch (error) {
         console.error(
-            "could not load chat MOTD:",
+            "Could not load chat MOTD:",
             error
         );
 
@@ -3296,7 +3289,7 @@ async loadWatchParty() {
 
         if (!response.ok) {
             throw new Error(
-                `could not load watch party (${response.status})`
+                `Could not load watch party (${response.status})`
             );
         }
 
@@ -3306,7 +3299,7 @@ async loadWatchParty() {
         if (!result.success) {
             throw new Error(
                 result.error ||
-                "watch party request failed"
+                "Watch party request failed"
             );
         }
 		
@@ -3347,7 +3340,7 @@ async loadWatchParty() {
 		
     } catch (error) {
         console.error(
-            "could not load watch party:",
+            "Could not load watch party:",
             error
         );
 
@@ -3667,7 +3660,7 @@ window.setDiscordStatusVisible?.(
                                         : "Remove from queue"
                                 }"
                             >
-                                remove
+                                Remove
                             </button>
                         `
                         : "";
@@ -3729,7 +3722,7 @@ window.setDiscordStatusVisible?.(
     added by
 	 ${this.escapeHtml(
                                     item.requestedByName ||
-                                    "anonymous"
+                                    "Anonymous"
                                 )}
 </span>
                                
@@ -3860,8 +3853,8 @@ const hasWatchPartyVideo =
     aria-label="toggle fit video"
     title="${
         this.watchPartyVideoMode === "fit"
-            ? "toggle cinematic cover"
-            : "toggle fit cover"
+            ? "Toggle cinematic cover"
+            : "Toggle fit cover"
 }"
 >
     ${this.getWatchPartyVideoModeEmoji(
@@ -3916,7 +3909,7 @@ const hasWatchPartyVideo =
             hover:bg-white/10
             hover:text-white
         "
-        aria-label="close watch party"
+        aria-label="Close watch party"
     >
         ×
     </button>
@@ -3942,7 +3935,7 @@ const hasWatchPartyVideo =
                 text-white/40
             "
         >
-            add youtube video or playlist
+            Add youtube video or playlist
         </label>
 
         <div
@@ -4057,7 +4050,7 @@ const hasWatchPartyVideo =
             <span
 			data-watch-party-playlist-text
 			>
-                add playlist
+                Add playlist
             </span>
         </label>
 
@@ -4099,7 +4092,7 @@ const hasWatchPartyVideo =
     >
         <span
 		data-watch-party-now-playing-heading
-		>now playing</span>
+		>Now playing</span>
 
         <span
             id="watchPartyTime"
@@ -4202,7 +4195,7 @@ const hasWatchPartyVideo =
             requested by
             ${this.escapeHtml(
                 currentVideo.requestedByName ||
-                "anonymous"
+                "Anonymous"
             )}
         </span>
 
@@ -4216,8 +4209,8 @@ const hasWatchPartyVideo =
             }"
             title="${
                 englishSubtitlesEnabled
-                    ? "use automatic subtitle behaviour"
-                    : "prefer english subtitles"
+                    ? "Use automatic subtitle behaviour"
+                    : "Prefer english subtitles"
             }"
             class="
                 watch-party-subtitles
@@ -4886,12 +4879,12 @@ if (playButton) {
                 }
             } catch (error) {
                 console.error(
-                    "watch party playback failed:",
+                    "Watch party playback failed:",
                     error
                 );
 
                 window.alert(
-                    `watch party playback failed: ${error.message}`
+                    `Watch party playback failed: ${error.message}`
                 );
             }
         }
@@ -4960,12 +4953,12 @@ try {
     null;
 
     console.error(
-                    "watch party previous failed:",
+                    "Watch party previous failed:",
                     error
                 );
 
                 window.alert(
-                    `watch party previous failed: ${error.message}`
+                    `Watch party previous failed: ${error.message}`
                 );
             }
         }
@@ -5064,7 +5057,7 @@ if (nextButton) {
                 );
 
                 window.alert(
-                    `watch party next failed: ${error.message}`
+                    `Watch party next failed: ${error.message}`
                 );
             } finally {
                 nextButton.disabled =
@@ -5380,12 +5373,12 @@ window.watchPartyPlayer
             }
         } catch (error) {
             console.error(
-                "watch party seek failed:",
+                "Watch party seek failed:",
                 error
             );
 
             window.alert(
-                `watch party seek failed: ${error.message}`
+                `Watch party seek failed: ${error.message}`
             );
 
             progressInput.disabled = false;
@@ -5518,7 +5511,7 @@ if (
 
             } catch (error) {
                 console.error(
-                    "could not switch watch party video:",
+                    "Could not switch watch party video:",
                     error
                 );
             }
@@ -5706,7 +5699,7 @@ toggleWatchParty() {
 	async addWatchPartyVideo() {
     if (!this.watchParty.enabled) {
         this.watchPartyAddMessage =
-            "the watch party is no longer active.";
+            "The watch party is no longer active.";
 
         this.watchPartyAddError = true;
         this.renderWatchParty();
@@ -5766,7 +5759,7 @@ toggleWatchParty() {
 
     if (!isYouTubeHost) {
         this.watchPartyAddMessage =
-            "only youtube links can be added.";
+            "Only youtube links can be added.";
 
         this.watchPartyAddError = true;
         this.renderWatchParty();
@@ -5830,7 +5823,7 @@ this.renderWatchParty();
                 "INVALID_YOUTUBE_URL"
             ) {
                 message =
-                    "that youtube URL is not valid.";
+                    "That youtube URL is not valid.";
             }
 
             if (
@@ -5838,7 +5831,7 @@ this.renderWatchParty();
                 "VIDEO_ALREADY_QUEUED"
             ) {
                 message =
-                    "that video is already in the queue.";
+                    "That video is already in the queue.";
             }
 
             if (
@@ -5846,7 +5839,7 @@ this.renderWatchParty();
                 "USER_QUEUE_LIMIT"
             ) {
                 message =
-                    "you already have 5 videos in the queue.";
+                    "You already have 5 videos in the queue.";
             }
 
 			if (
@@ -5854,7 +5847,7 @@ this.renderWatchParty();
     "QUEUE_FULL"
 ) {
     message =
-        "the watch party queue is full.";
+        "The watch party queue is full.";
 }
 
 			if (
@@ -5862,7 +5855,7 @@ this.renderWatchParty();
     "VIDEO_LINK_REQUIRED"
 ) {
     message =
-        "that link does not contain an individual video. check the playlist option to import it.";
+        "That link does not contain an individual video. Check the playlist option to import it.";
 }
 			
 if (
@@ -5870,7 +5863,7 @@ if (
     "PLAYLIST_API_NOT_CONFIGURED"
 ) {
     message =
-        "playlist imports are not available yet.";
+        "Playlist imports are not available yet.";
 }
 
 if (
@@ -5878,7 +5871,7 @@ if (
     "PLAYLIST_FETCH_FAILED"
 ) {
     message =
-        "could not read that playlist. it may be private or unavailable.";
+        "Could not read that playlist. It may be private or unavailable.";
 }
 
 if (
@@ -5886,7 +5879,7 @@ if (
     "PLAYLIST_HAS_NO_VIDEOS"
 ) {
     message =
-        "that playlist has no available videos.";
+        "That playlist has no available videos.";
 }
 
 if (
@@ -5894,7 +5887,7 @@ if (
     "PLAYLIST_ALREADY_QUEUED"
 ) {
     message =
-        "all videos from that playlist are already queued.";
+        "All videos from that playlist are already queued.";
 }
 
             if (
@@ -5967,7 +5960,7 @@ async removeWatchPartyItem(
         queueId <= 0
     ) {
         window.alert(
-            "invalid watch party queue item"
+            "Invalid watch party queue item"
         );
 
         return;
@@ -5984,7 +5977,7 @@ async removeWatchPartyItem(
 
     if (!item) {
         window.alert(
-            "that video is no longer in the queue"
+            "That video is no longer in the queue"
         );
 
         await this.loadWatchParty();
@@ -6008,7 +6001,7 @@ async removeWatchPartyItem(
 
     if (button) {
         button.disabled = true;
-        button.textContent = "removing...";
+        button.textContent = "Removing...";
     }
 
     const headers = {
@@ -6050,14 +6043,14 @@ async removeWatchPartyItem(
             this.disableAdminMode();
 
             throw new Error(
-                "your admin session is no longer valid"
+                "Your admin session is no longer valid"
             );
         }
 
         if (response.status === 403) {
             throw new Error(
                 result?.error ||
-                "you can only remove videos you added"
+                "You can only remove videos you added"
             );
         }
 
@@ -6066,25 +6059,25 @@ async removeWatchPartyItem(
 
             throw new Error(
                 result?.error ||
-                "that video is no longer in the queue"
+                "That video is no longer in the queue"
             );
         }
 
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `could not remove video (${response.status})`
+                `Could not remove video (${response.status})`
             );
         }
 
     } catch (error) {
         console.error(
-            "could not remove watch party video:",
+            "Could not remove watch party video:",
             error
         );
 
         window.alert(
-            `could not remove video: ${
+            `Could not remove video: ${
                 error.message
             }`
         );
@@ -6114,7 +6107,7 @@ escapeHtml(value) {
         !this.adminKey
     ) {
         window.alert(
-            "admin authentication is required"
+            "Admin authentication is required"
         );
 
         return;
@@ -6122,7 +6115,7 @@ escapeHtml(value) {
 
     const input =
         window.prompt(
-            "message of the day:\n\nleave it empty to hide the bar",
+            "Message of the day:\n\nLeave it empty to hide the bar",
             this.currentMotd
         );
 
@@ -6135,7 +6128,7 @@ escapeHtml(value) {
 
     if (message.length > 200) {
         window.alert(
-            "the message of the day must be 200 characters or fewer"
+            "The message of the day must be 200 characters or fewer"
         );
 
         return;
@@ -6171,7 +6164,7 @@ escapeHtml(value) {
             this.disableAdminMode();
 
             window.alert(
-                "your admin session is no longer valid"
+                "Your admin session is no longer valid"
             );
 
             return;
@@ -6180,7 +6173,7 @@ escapeHtml(value) {
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `could not update MOTD (${response.status})`
+                `Could not update MOTD (${response.status})`
             );
         }
 
@@ -6189,12 +6182,12 @@ escapeHtml(value) {
         );
     } catch (error) {
         console.error(
-            "could not update chat MOTD:",
+            "Could not update chat MOTD:",
             error
         );
 
         window.alert(
-            `could not update message of the day: ${error.message}`
+            `Could not update message of the day: ${error.message}`
         );
     }
 }
@@ -6511,7 +6504,7 @@ createChatArchiveToggle(archive, expanded) {
 
                 if (
                     window.confirm(
-                        `remove the “${archive.name}” time capsule?\n\nthe messages will stay in chat`
+                        `Remove the “${archive.name}” time capsule?\n\nThe messages will stay in chat`
                     )
                 ) {
                     this.deleteChatArchive(
@@ -6732,7 +6725,7 @@ startChatArchiveRange(message) {
 
     if (!boundary) {
         window.alert(
-            "this item cannot be used as a time capsule boundary"
+            "This item cannot be used as a time capsule boundary"
         );
         return;
     }
@@ -6741,7 +6734,7 @@ startChatArchiveRange(message) {
         boundary;
 
     window.alert(
-        "end of the time capsule selected. scroll up and right click the first message you want to include, then choose “set time capsule start”"
+        "End of the time capsule selected. Scroll up and right click the first message you want to include, then choose “set time capsule start”"
     );
 }
 
@@ -6763,7 +6756,7 @@ async finishChatArchiveRange(message) {
 
     if (!startBoundary) {
         window.alert(
-            "this item cannot be used as a time capsule boundary"
+            "This item cannot be used as a time capsule boundary"
         );
         return;
     }
@@ -6773,13 +6766,13 @@ async finishChatArchiveRange(message) {
         new Date(endBoundary.createdAt).getTime()
     ) {
         window.alert(
-            "the start must be older than the end you selected"
+            "The start must be older than the end you selected"
         );
         return;
     }
 
     const input = window.prompt(
-        "name this time capsule:",
+        "Name this time capsule:",
         ""
     );
 
@@ -6791,7 +6784,7 @@ async finishChatArchiveRange(message) {
 
     if (!name) {
         window.alert(
-            "please give the time capsule a name"
+            "Please give the time capsule a name"
         );
         return;
     }
@@ -6826,7 +6819,7 @@ async finishChatArchiveRange(message) {
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `could not create time capsule (${response.status})`
+                `Could not create time capsule (${response.status})`
             );
         }
 
@@ -6835,7 +6828,7 @@ async finishChatArchiveRange(message) {
         await this.loadReactions();
     } catch (error) {
         console.error(
-            "could not create chat time capsule:",
+            "Could not create chat time capsule:",
             error
         );
         window.alert(error.message);
@@ -6873,7 +6866,7 @@ async deleteChatArchive(archiveId) {
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                "could not remove time capsule"
+                "Could not remove time capsule"
             );
         }
 
@@ -6884,7 +6877,7 @@ async deleteChatArchive(archiveId) {
         await this.loadReactions();
     } catch (error) {
         console.error(
-            "could not remove chat time capsule:",
+            "Could not remove chat time capsule:",
             error
         );
         window.alert(error.message);
@@ -6985,7 +6978,7 @@ async loadReactions() {
     );
     if (!response.ok) {
         throw new Error(
-            `could not load reactions (${response.status})`
+            `Could not load reactions (${response.status})`
         );
     }
 
@@ -7206,7 +7199,7 @@ createReactionVisual(
         image.src = reaction.src;
         image.alt =
             reaction.label ||
-            "custom emoji";
+            "Custom emoji";
         image.className = className;
 
         return image;
@@ -7903,7 +7896,7 @@ async setReactionActive(
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `reaction update failed (${response.status})`
+                `Reaction update failed (${response.status})`
             );
         }
 
@@ -7919,7 +7912,7 @@ async setReactionActive(
         );
         window.alert(
             error.message ||
-            "could not update reaction"
+            "Could not update reaction"
         );
     } finally {
         this.reactionRequestBusy.delete(
@@ -8969,12 +8962,12 @@ renderWatchPartyVisualizerMenu() {
     };
 
     const modes = [
-        ["wave", "waveform"],
-        ["bars", "equalizer"],
-        ["decay", "spectrum"],
-        ["line", "frequency line"],
-        ["peaks", "peaks"],
-        ["mountain", "filled spectrum"]
+        ["Wave", "Waveform"],
+        ["Bars", "Equalizer"],
+        ["Decay", "Spectrum"],
+        ["Line", "Frequency line"],
+        ["Peaks", "Peaks"],
+        ["Mountain", "Filled spectrum"]
     ];
 
     if (!modes.some(([mode]) => mode === this.watchPartyVisualizerMode)) {
@@ -9000,8 +8993,8 @@ renderWatchPartyVisualizerMenu() {
                 type="button"
                 data-close-watch-party-visualizer-menu
                 class="rounded-md px-2 py-1 text-sm text-white/50 transition hover:bg-white/10 hover:text-white"
-                aria-label="close visualizer menu"
-                title="close visualizer menu"
+                aria-label="Close visualizer menu"
+                title="Close visualizer menu"
             >×</button>
         </div>
 
@@ -9018,7 +9011,7 @@ renderWatchPartyVisualizerMenu() {
                 data-watch-party-visualizer-add
                 class="watch-party-visualizer-action theme-body flex-1 rounded-lg border px-2 py-1.5 text-[8px] transition disabled:cursor-not-allowed disabled:opacity-35"
                 ${state.active && state.panelCount < state.maxPanels ? "" : "disabled"}
-            >add panel</button>
+            >Add panel</button>
         </div>
 
         ${state.active ? `
@@ -9031,7 +9024,7 @@ renderWatchPartyVisualizerMenu() {
                     class="watch-party-playlist-checkbox"
                     ${state.hyperMode ? "checked" : ""}
                 >
-                <span>hyper mode</span>
+                <span>Hyper mode</span>
             </label>
         ` : ""}
 
@@ -9064,8 +9057,8 @@ renderWatchPartyVisualizerMenu() {
         >${this.escapeHtml(
             this.watchPartyVisualizerMessage ||
             (state.supported
-                ? "select this browser tab and enable audio sharing"
-                : "tab audio capture is not available in this browser")
+                ? "Select this browser tab and enable audio sharing"
+                : "Tab audio capture is not available in this browser")
         )}</div>
     `;
 
@@ -9131,7 +9124,7 @@ renderWatchPartyVisualizerMenu() {
 
         toggleButton.disabled = true;
         this.watchPartyVisualizerMessage =
-            "select this browser tab and enable audio sharing";
+            "Select this browser tab and enable audio sharing";
 
         const messageElement = menu.querySelector(
             "[data-watch-party-visualizer-message]"
@@ -9152,7 +9145,7 @@ renderWatchPartyVisualizerMenu() {
             ) {
                 window.alert(
                     error?.message ||
-                    "could not start the visualizer"
+                    "Could not start the visualizer"
                 );
             }
         } finally {
@@ -9509,7 +9502,7 @@ createReplyComposerPreview() {
             <span class="jami-chat-reply-composer-label theme-heading"></span>
             <span class="jami-chat-reply-composer-text"></span>
         </div>
-        <button type="button" class="jami-chat-reply-cancel" aria-label="cancel reply">×</button>
+        <button type="button" class="jami-chat-reply-cancel" aria-label="Cancel reply">×</button>
     `;
     preview.querySelector(".jami-chat-reply-cancel").addEventListener("click", () => this.clearReplyTarget());
     this.controlsElement.prepend(preview);
@@ -9535,7 +9528,7 @@ getReplyDescriptor(message) {
             id: String(message?.id || ""),
             name:
                 message?.name ||
-                "anonymous",
+                "Anonymous",
             preview: "emoji animation"
         };
     }
@@ -9885,7 +9878,7 @@ async saveInlineEdit() {
             })
         });
         const result = await response.json();
-        if (response.status === 409) throw new Error("this message changed before your edit was saved. reload and try again.");
+        if (response.status === 409) throw new Error("This message changed before your edit was saved. Reload and try again.");
         if (!response.ok) throw new Error(result?.error || `edit failed (${response.status})`);
 
         if (result?.message) {
@@ -10016,7 +10009,7 @@ openModerationMenu(x, y, message) {
         if (canEdit) {
             buttons.push(
                 this.createModerationMenuButton(
-                    "edit",
+                    "Edit",
                     () => {
                         this.closeModerationMenu();
                         this.beginInlineEdit(
@@ -10041,7 +10034,7 @@ openModerationMenu(x, y, message) {
     } else {
         buttons.push(
             this.createModerationMenuButton(
-                "reply",
+                "Reply",
                 () => {
                     this.closeModerationMenu();
                     this.setReplyTarget(
@@ -10058,7 +10051,7 @@ openModerationMenu(x, y, message) {
 
         buttons.push(
             this.createModerationMenuButton(
-                "delete message",
+                "Delete message",
                 () => {
                     this.closeModerationMenu();
 
@@ -10086,7 +10079,7 @@ openModerationMenu(x, y, message) {
         ) {
             buttons.push(
                 this.createModerationMenuButton(
-                    "disintegrate message",
+                    "Disintegrate message",
                     () => {
                         this.closeModerationMenu();
                         this.startMessageDisintegration(
@@ -10104,7 +10097,7 @@ openModerationMenu(x, y, message) {
 
     buttons.push(
         this.createModerationMenuButton(
-            "record emoji",
+            "Record emoji",
             () => {
                 this.closeModerationMenu();
                 this.openEmojiAnimationPicker(
@@ -10126,7 +10119,7 @@ openModerationMenu(x, y, message) {
     ) {
         buttons.push(
             this.createModerationMenuButton(
-                "combine emoji record",
+                "Combine emoji record",
                 () => {
                     this.closeModerationMenu();
                     this.openEmojiAnimationCombineMenu(
@@ -10141,7 +10134,7 @@ openModerationMenu(x, y, message) {
 
     buttons.push(
         this.createModerationMenuButton(
-            "saved remixes",
+            "Saved remixes",
             () => {
                 this.closeModerationMenu();
                 this.openSavedRemixManager();
@@ -10151,7 +10144,7 @@ openModerationMenu(x, y, message) {
 
     buttons.push(
         this.createModerationMenuButton(
-            "post confetti message",
+            "Post confetti message",
             () => {
                 this.closeModerationMenu();
                 this.postConfettiMessage();
@@ -10162,7 +10155,7 @@ openModerationMenu(x, y, message) {
     if (this.isAdmin) {
         buttons.push(
             this.createModerationMenuButton(
-                "edit message of the day",
+                "Edit message of the day",
                 () => {
                     this.closeModerationMenu();
                     this.editMotd();
@@ -10173,7 +10166,7 @@ openModerationMenu(x, y, message) {
         if (this.pendingChatArchiveEnd) {
             buttons.push(
                 this.createModerationMenuButton(
-                    "set time capsule start",
+                    "Set time capsule start",
                     async () => {
                         this.closeModerationMenu();
                         await this.finishChatArchiveRange(
@@ -10185,7 +10178,7 @@ openModerationMenu(x, y, message) {
 
             buttons.push(
                 this.createModerationMenuButton(
-                    "cancel time capsule range",
+                    "Cancel time capsule range",
                     () => {
                         this.pendingChatArchiveEnd = null;
                         this.closeModerationMenu();
@@ -10195,7 +10188,7 @@ openModerationMenu(x, y, message) {
         } else {
             buttons.push(
                 this.createModerationMenuButton(
-                    "hide message range…",
+                    "Hide message range…",
                     () => {
                         this.closeModerationMenu();
                         this.startChatArchiveRange(
@@ -10208,7 +10201,7 @@ openModerationMenu(x, y, message) {
 
         buttons.push(
             this.createModerationMenuButton(
-                "copy message ID",
+                "Copy message ID",
                 async () => {
                     const identifier =
                         message.imageUploadId ||
@@ -10235,7 +10228,7 @@ openModerationMenu(x, y, message) {
 
         buttons.push(
             this.createModerationMenuButton(
-                "name history",
+                "Name history",
                 () => {
                     this.closeModerationMenu();
                     this.openNameHistoryManager(
@@ -10249,7 +10242,7 @@ openModerationMenu(x, y, message) {
 
         buttons.push(
             this.createModerationMenuButton(
-                `ban ${
+                `Ban ${
                     message.name ||
                     "user"
                 }`,
@@ -10266,7 +10259,7 @@ openModerationMenu(x, y, message) {
 
         buttons.push(
             this.createModerationMenuButton(
-                "delete user's messages",
+                "Delete user's messages",
                 async () => {
                     this.closeModerationMenu();
 
@@ -10280,7 +10273,7 @@ openModerationMenu(x, y, message) {
 
         buttons.push(
             this.createModerationMenuButton(
-                "clear chat",
+                "Clear chat",
                 () => {
                     this.closeModerationMenu();
                     this.clearEntireChat();
@@ -10346,7 +10339,7 @@ openChatContextMenu(x, y) {
 
     menu.appendChild(
         this.createModerationMenuButton(
-            "saved remixes",
+            "Saved remixes",
             () => {
                 this.closeModerationMenu();
                 this.openSavedRemixManager();
@@ -10356,7 +10349,7 @@ openChatContextMenu(x, y) {
 
     menu.appendChild(
         this.createModerationMenuButton(
-            "post confetti message",
+            "Post confetti message",
             () => {
                 this.closeModerationMenu();
                 this.postConfettiMessage();
@@ -10466,7 +10459,7 @@ async openSavedRemixManager() {
     status.className =
         "jami-saved-remix-status";
     status.textContent =
-        "loading saved remixes...";
+        "Loading saved remixes...";
 
     const grid =
         document.createElement("div");
@@ -10510,7 +10503,7 @@ async openSavedRemixManager() {
         if (!request.ok) {
             throw new Error(
                 items?.error ||
-                "could not load saved remixes"
+                "Could not load saved remixes"
             );
         }
 
@@ -10521,7 +10514,7 @@ async openSavedRemixManager() {
             items.length === 0
         ) {
             status.textContent =
-                "no saved remixes yet";
+                "No saved remixes yet";
             return;
         }
 
@@ -10546,7 +10539,7 @@ async openSavedRemixManager() {
         );
 
         status.textContent =
-            "could not load saved remixes";
+            "Could not load saved remixes";
     }
 }
 
@@ -10625,7 +10618,7 @@ createSavedRemixCard(item) {
         new Date(item.savedAt);
 
     saved.textContent =
-        `saved by ${
+        `Saved by ${
             item.savedByName ||
             "admin"
         }${
@@ -10696,7 +10689,7 @@ createSavedRemixCard(item) {
         remove.className =
             "jami-saved-remix-action jami-saved-remix-delete";
         remove.textContent =
-            "delete";
+            "Delete";
 
         remove.addEventListener(
             "click",
@@ -10737,7 +10730,7 @@ createSavedRemixCard(item) {
 
                         if (status) {
                             status.textContent =
-                                "no saved remixes yet";
+                                "No saved remixes yet";
                         }
                     }
                 } finally {
@@ -10770,7 +10763,7 @@ async saveRemix(upload, button = null) {
     if (button) {
         button.disabled = true;
         button.textContent =
-            "saving...";
+            "Saving...";
     }
 
     try {
@@ -10803,7 +10796,7 @@ async saveRemix(upload, button = null) {
         if (!request.ok) {
             throw new Error(
                 result?.error ||
-                "could not save remix"
+                "Could not save remix"
             );
         }
 
@@ -10839,12 +10832,12 @@ async saveRemix(upload, button = null) {
         );
 
         window.alert(
-            `could not save remix: ${error.message}`
+            `Could not save remix: ${error.message}`
         );
 
         if (button) {
             button.textContent =
-                "save remix";
+                "Save remix";
         }
     } finally {
         if (
@@ -10881,7 +10874,7 @@ async deleteSavedRemix(savedId) {
     if (!request.ok) {
         window.alert(
             result?.error ||
-            "could not delete saved remix"
+            "Could not delete saved remix"
         );
 
         return false;
@@ -10930,7 +10923,7 @@ async repostSavedRemix(savedId) {
         if (!request.ok) {
             throw new Error(
                 result?.error ||
-                "could not repost saved remix"
+                "Could not repost saved remix"
             );
         }
 
@@ -10942,7 +10935,7 @@ async repostSavedRemix(savedId) {
         );
 
         window.alert(
-            `could not repost saved remix: ${error.message}`
+            `Could not repost saved remix: ${error.message}`
         );
 
         throw error;
@@ -11002,7 +10995,7 @@ async openNameHistoryManager(
         "theme-heading jami-name-history-title";
 
     heading.textContent =
-        "name history";
+        "Name history";
 
     const close =
         document.createElement("button");
@@ -11012,7 +11005,7 @@ async openNameHistoryManager(
         "jami-name-history-close";
     close.textContent = "×";
     close.title =
-        "close name history";
+        "Close name history";
 
     close.addEventListener(
         "click",
@@ -11041,7 +11034,7 @@ async openNameHistoryManager(
         "jami-name-history-body";
 
     body.textContent =
-        "loading name history...";
+        "Loading name history...";
 
     const footer =
         document.createElement("div");
@@ -11095,7 +11088,7 @@ async openNameHistoryManager(
         if (!request.ok) {
             throw new Error(
                 result?.error ||
-                "could not load name history"
+                "Could not load name history"
             );
         }
 
@@ -11116,7 +11109,7 @@ async openNameHistoryManager(
             empty.className =
                 "jami-name-history-empty";
             empty.textContent =
-                "no changes made";
+                "No changes made";
 
             body.appendChild(empty);
             return;
@@ -11147,11 +11140,11 @@ async openNameHistoryManager(
 
             const previousName =
                 entry.previousName ||
-                "anonymous";
+                "Anonymous";
 
             const newName =
                 entry.newName ||
-                "anonymous";
+                "Anonymous";
 
             name.textContent =
                 `${previousName} - ${newName}`;
@@ -11206,7 +11199,7 @@ async openNameHistoryManager(
         clear.className =
             "jami-name-history-delete";
         clear.textContent =
-            "delete history";
+            "Delete history";
 
         clear.addEventListener(
             "click",
@@ -11264,7 +11257,7 @@ async openNameHistoryManager(
                     empty.className =
                         "jami-name-history-empty";
                     empty.textContent =
-                        "no changes made";
+                        "No changes made";
 
                     body.appendChild(
                         empty
@@ -11278,7 +11271,7 @@ async openNameHistoryManager(
                     );
 
                     window.alert(
-                        `could not delete name history: ${error.message}`
+                        `Could not delete name history: ${error.message}`
                     );
 
                     clear.disabled = false;
@@ -11294,7 +11287,7 @@ async openNameHistoryManager(
         );
 
         body.textContent =
-            "could not load name history";
+            "Could not load name history";
     }
 }
 
@@ -11448,37 +11441,37 @@ openMemberModerationMenu(
         iconMarkup = icons.reply;
     } else if (
         normalized ===
-        "delete message"
+        "Delete message"
     ) {
         iconMarkup = icons.delete;
     } else if (
         normalized ===
-        "saved remixes"
+        "Saved remixes"
     ) {
         iconMarkup = icons.remixes;
     } else if (
         normalized ===
-        "edit message of the day"
+        "Edit message of the day"
     ) {
         iconMarkup = icons.motd;
     } else if (
         normalized ===
-        "post confetti message"
+        "Post confetti message"
     ) {
         iconMarkup = icons.confetti;
     } else if (
         normalized ===
-        "copy message id"
+        "Copy message id"
     ) {
         iconMarkup = icons.copy;
     } else if (
         normalized ===
-        "name history"
+        "Name history"
     ) {
         iconMarkup = icons.history;
     } else if (
         normalized ===
-        "delete user's messages"
+        "Delete user's messages"
     ) {
         iconMarkup = icons.userDelete;
     } else if (
@@ -11487,7 +11480,7 @@ openMemberModerationMenu(
         iconMarkup = icons.ban;
     } else if (
         normalized ===
-        "clear chat"
+        "Clear chat"
     ) {
         iconMarkup = icons.clear;
     } else if (
@@ -11648,18 +11641,18 @@ openMemberModerationMenu(
             if (!response.ok) {
                 throw new Error(
                     result?.error ||
-                    "could not disintegrate message"
+                    "Could not disintegrate message"
                 );
             }
         } catch (error) {
             console.error(
-                "could not start message disintegration:",
+                "Could not start message disintegration:",
                 error
             );
 
             window.alert(
                 error.message ||
-                "could not disintegrate message"
+                "Could not disintegrate message"
             );
         }
     }
@@ -11720,12 +11713,12 @@ openMemberModerationMenu(
             if (!response.ok) {
                 throw new Error(
                     result?.error ||
-                    "too late to save it"
+                    "Too late to save it"
                 );
             }
         } catch (error) {
             console.error(
-                "could not rescue disintegrating message:",
+                "Could not rescue disintegrating message:",
                 error
             );
         }
@@ -11759,7 +11752,7 @@ openMemberModerationMenu(
             }
         } catch (error) {
             console.error(
-                "could not load active disintegrations:",
+                "Could not load active disintegrations:",
                 error
             );
         }
@@ -11951,7 +11944,7 @@ openMemberModerationMenu(
             button.className =
                 "jami-disintegration-rescue-button theme-body";
             button.textContent =
-                "save it";
+                "Save it";
 
             button.addEventListener(
                 "click",
@@ -12098,7 +12091,7 @@ openMemberModerationMenu(
         id <= 0
     ) {
         console.error(
-            "cannot delete invalid message ID:",
+            "Cannot delete invalid message ID:",
             messageId
         );
 
@@ -12108,8 +12101,8 @@ openMemberModerationMenu(
    const confirmed =
     window.confirm(
         this.isAdmin
-            ? `delete message #${id}?`
-            : "delete message?"
+            ? `Delete message #${id}?`
+            : "Delete message?"
     );
 
     if (!confirmed) {
@@ -12157,7 +12150,7 @@ openMemberModerationMenu(
             this.disableAdminMode();
 
             window.alert(
-                "your admin session is no longer valid"
+                "Your admin session is no longer valid"
             );
 
             return;
@@ -12166,22 +12159,22 @@ openMemberModerationMenu(
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `delete failed (${response.status})`
+                `Delete failed (${response.status})`
             );
         }
 
         console.log(
-            "deleted message",
+            "Deleted message",
             id
         );
     } catch (error) {
         console.error(
-            "could not delete message:",
+            "Could not delete message:",
             error
         );
 
         window.alert(
-            `could not delete message: ${error.message}`
+            `Could not delete message: ${error.message}`
         );
     }
 }
@@ -12192,7 +12185,7 @@ openMemberModerationMenu(
 ) {
     if (!clientId) {
         window.alert(
-            "this message has no client id"
+            "This message has no client id"
         );
 
         return;
@@ -12203,7 +12196,7 @@ openMemberModerationMenu(
         !this.adminKey
     ) {
         window.alert(
-            "admin authentication is required"
+            "Admin authentication is required"
         );
 
         this.disableAdminMode();
@@ -12215,8 +12208,8 @@ openMemberModerationMenu(
 
     const confirmed =
         window.confirm(
-            `delete all messages, replies and uploaded images from ${displayName}?\n\n` +
-            "this cannot be undone."
+            `Delete all messages, replies and uploaded images from ${displayName}?\n\n` +
+            "This cannot be undone."
         );
 
     if (!confirmed) {
@@ -12256,7 +12249,7 @@ openMemberModerationMenu(
             this.disableAdminMode();
 
             window.alert(
-                "your admin session is no longer valid"
+                "Your admin session is no longer valid"
             );
 
             return;
@@ -12265,7 +12258,7 @@ openMemberModerationMenu(
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `delete failed (${response.status})`
+                `Delete failed (${response.status})`
             );
         }
 
@@ -12275,12 +12268,12 @@ openMemberModerationMenu(
         );
     } catch (error) {
         console.error(
-            "could not delete user content:",
+            "Could not delete user content:",
             error
         );
 
         window.alert(
-            `could not delete user's messages: ${error.message}`
+            `Could not delete user's messages: ${error.message}`
         );
     }
 }
@@ -12288,7 +12281,7 @@ openMemberModerationMenu(
 	async banClient(clientId, name) {
     if (!clientId) {
         window.alert(
-            "this message has no client ID and cannot be banned"
+            "This message has no client ID and cannot be banned"
         );
 
         return;
@@ -12299,7 +12292,7 @@ openMemberModerationMenu(
         !this.adminKey
     ) {
         window.alert(
-            "admin authentication is required"
+            "Admin authentication is required"
         );
 
         this.disableAdminMode();
@@ -12318,11 +12311,11 @@ openMemberModerationMenu(
 
     const reason =
         reasonInput.trim() ||
-        "no reason provided";
+        "No reason provided";
 
     const confirmed =
         window.confirm(
-            `permanently ban ${name || "this user"}?\n\nreason: ${reason}`
+            `Permanently ban ${name || "this user"}?\n\nreason: ${reason}`
         );
 
     if (!confirmed) {
@@ -12356,7 +12349,7 @@ openMemberModerationMenu(
             this.disableAdminMode();
 
             window.alert(
-                "your admin session is no longer valid"
+                "Your admin session is no longer valid"
             );
 
             return;
@@ -12365,7 +12358,7 @@ openMemberModerationMenu(
         if (!response.ok) {
             throw new Error(
                 result?.error ||
-                `ban failed (${response.status})`
+                `Ban failed (${response.status})`
             );
         }
 
@@ -12374,12 +12367,12 @@ openMemberModerationMenu(
         );
     } catch (error) {
         console.error(
-            "could not ban client:",
+            "Could not ban client:",
             error
         );
 
         window.alert(
-            `could not ban user: ${error.message}`
+            `Could not ban user: ${error.message}`
         );
     }
 }
@@ -12516,7 +12509,7 @@ setupMemberActivity() {
             "text-white/35";
 
         empty.textContent =
-            "nobody online";
+            "Nobody online";
 
         this.membersElement.appendChild(
             empty
@@ -12571,11 +12564,11 @@ setupMemberActivity() {
 
         name.textContent =
             member.name ||
-            "anonymous";
+            "Anonymous";
 
         name.title =
             member.name ||
-            "anonymous";
+            "Anonymous";
 
         row.append(
             avatar,
@@ -13126,12 +13119,12 @@ connect() {
     const socketUrl =
         "wss://jamicat.ahrly.workers.dev/api/chat/socket";
 
-    console.log("connecting chat websocket...");
+    console.log("Connecting chat websocket...");
 
     this.socket = new WebSocket(socketUrl);
 
     this.socket.addEventListener("open", () => {
-    console.log("chat websocket connected");
+    console.log("Chat websocket connected");
     this.eggHatchLastTickAt = null;
 
     if (this.connectionStatus) {
@@ -13163,7 +13156,7 @@ connect() {
     try {
         const data = JSON.parse(event.data);
 
-        console.log("chat websocket data:", data);
+        console.log("Chat websocket data:", data);
 
 		
 
@@ -13178,7 +13171,7 @@ connect() {
     if (data.isTyping) {
         this.typingUsers.set(
             data.clientId,
-            data.name || "anonymous"
+            data.name || "Anonymous"
         );
     } else {
         this.typingUsers.delete(
@@ -13235,7 +13228,7 @@ if (data.type === "emoji-party") {
 
     const reason =
         data.reason ||
-        "no reason provided";
+        "No reason provided";
 
     const durationText =
         data.expires_at
@@ -13247,7 +13240,7 @@ if (data.type === "emoji-party") {
             : "this ban is permanent";
 
     window.alert(
-        `you have been banned\n\n` +
+        `You have been banned\n\n` +
         `Reason: ${reason}\n\n` +
         durationText
     );
@@ -13605,7 +13598,7 @@ if (
         .then(() => this.loadReactions())
         .catch(error => {
             console.error(
-                "could not refresh chat time capsules:",
+                "Could not refresh chat time capsules:",
                 error
             );
         });
@@ -13785,7 +13778,7 @@ if (data.name && data.message) {
 }
 	} catch (error) {
         console.error(
-            "could not parse chat WebSocket message:",
+            "Could not parse chat WebSocket message:",
             error,
             event.data
         );
@@ -13797,7 +13790,7 @@ if (data.name && data.message) {
         this.releaseEggHatchLeadership();
 
         console.log(
-            "chat websocket closed:",
+            "Chat websocket closed:",
             event.code,
             event.reason
         );
@@ -14027,7 +14020,7 @@ startImageRemix(upload) {
 
     if (!editor) {
         window.alert(
-            "the remix editor is unavailable"
+            "The remix editor is unavailable"
         );
 
         return;
@@ -14112,7 +14105,7 @@ async uploadImageRemix(detail) {
         if (!request.ok) {
             throw new Error(
                 result?.error ||
-                `could not upload remix (${request.status})`
+                `Could not upload remix (${request.status})`
             );
         }
 
@@ -14124,7 +14117,7 @@ async uploadImageRemix(detail) {
         );
 
         window.alert(
-            `could not upload remix: ${error.message}`
+            `Could not upload remix: ${error.message}`
         );
     }
 }
@@ -14218,8 +14211,8 @@ createCompletedImageElement(
 
         saveButton.textContent =
             alreadySaved
-                ? "saved"
-                : "save remix";
+                ? "Saved"
+                : "Save remix";
         saveButton.disabled =
             alreadySaved;
         saveButton.classList.toggle(
@@ -14667,7 +14660,7 @@ showCompletedImage(
 
     name.textContent =
         upload.name ||
-        "anonymous";
+        "Anonymous";
 
     const serverTag =
         typeof upload.discordServerTag === "string"
@@ -15298,7 +15291,7 @@ async uploadTestImage(file) {
                 .maximumBytes
     ) {
         window.alert(
-            "images must be less than 8 MB."
+            "Images must be less than 8 MB."
         );
 
         return;
@@ -15619,9 +15612,9 @@ async uploadTestImage(file) {
 
     const input =
         window.prompt(
-            "clear chat\n\n" +
-            "leave empty to clear fully.\n\n" +
-            "or enter exactly:\n" +
+            "Clear chat\n\n" +
+            "Leave empty to clear fully.\n\n" +
+            "Or enter exactly:\n" +
             "before dd/mm/yyyy hh:mm:ss\n" +
             "after dd/mm/yyyy hh:mm:ss",
             ""
@@ -15644,8 +15637,8 @@ async uploadTestImage(file) {
 
         if (!match) {
             window.alert(
-                "invalid format.\n\n" +
-                "use exactly:\n" +
+                "Invalid format.\n\n" +
+                "Use exactly:\n" +
                 "before dd/mm/yyyy hh:mm:ss\n" +
                 "after dd/mm/yyyy hh:mm:ss"
             );
@@ -15702,18 +15695,18 @@ async uploadTestImage(file) {
 
         displayLabel =
             direction === "before"
-                ? `all chat before ${displayTime}`
-                : `all chat after ${displayTime}`;
+                ? `All chat before ${displayTime}`
+                : `All chat after ${displayTime}`;
     }
 
     if (
         !window.confirm(
             cutoff
                 ? (
-                    `clear ${displayLabel}?\n\n` +
-                    "messages at the exact specified time will be kept."
+                    `Clear ${displayLabel}?\n\n` +
+                    "Messages at the exact specified time will be kept."
                 )
-                : "clear the entire chat?"
+                : "Clear the entire chat?"
         )
     ) {
         return;
@@ -15751,7 +15744,7 @@ async uploadTestImage(file) {
             this.disableAdminMode();
 
             throw new Error(
-                "admin authentication is no longer valid"
+                "Admin authentication is no longer valid"
             );
         }
 
@@ -15783,12 +15776,12 @@ async uploadTestImage(file) {
         this.pendingChatClear = null;
 
         console.error(
-            "could not clear chat:",
+            "Could not clear chat:",
             error
         );
 
         window.alert(
-            `could not clear chat: ${error.message}`
+            `Could not clear chat: ${error.message}`
         );
     }
 }
@@ -16242,7 +16235,7 @@ async sendMessage() {
 
 if (
     response.status === 403 &&
-    result.error === "banned"
+    result.error === "Banned"
 ) {
     this.isBanned = true;
 
@@ -16256,8 +16249,8 @@ if (
             : "this ban is permanent";
 
     window.alert(
-        `you have been banned.\n\n` +
-        `reason: ${
+        `You have been banned.\n\n` +
+        `Reason: ${
             result.reason ||
             "no reason provided"
         }\n\n` +
@@ -16283,7 +16276,7 @@ if (
 if (!response.ok) {
     throw new Error(
         result?.error ||
-        `chat request failed (${response.status})`
+        `Chat request failed (${response.status})`
     );
 }
 clearTimeout(this.typingTimer);
@@ -16293,7 +16286,7 @@ this.messageInput.value = "";
 this.clearReplyTarget();
 this.messageInput.focus();
     } catch (error) {
-        console.error("could not send chat message:", error);
+        console.error("Could not send chat message:", error);
     } finally {
     this.sendButton.disabled =
         this.isBanned;
@@ -16612,7 +16605,7 @@ setupNameSaving() {
 
         if (!payload) {
             container.textContent =
-                "emoji animation unavailable";
+                "Emoji animation unavailable";
             return;
         }
 
@@ -16623,13 +16616,13 @@ setupNameSaving() {
         button.className =
             "jami-emoji-animation-message theme-body";
         button.title =
-            "play emoji animation";
+            "Play emoji animation";
 
         const label =
             document.createElement("span");
 
         label.textContent =
-            "play emoji";
+            "Play emoji";
 
         const visual =
             this.createEmojiAnimationVisual(
@@ -16870,7 +16863,7 @@ setupNameSaving() {
 
         if (!payload) {
             container.textContent =
-                "emoji animation unavailable";
+                "Emoji animation unavailable";
             return;
         }
 
@@ -16881,13 +16874,13 @@ setupNameSaving() {
         button.className =
             "jami-emoji-animation-message theme-body";
         button.title =
-            "play combined emoji animation";
+            "Play combined emoji animation";
 
         const label =
             document.createElement("span");
 
         label.textContent =
-            "play emoji";
+            "Play emoji";
 
         button.appendChild(label);
 
@@ -16984,7 +16977,7 @@ setupNameSaving() {
 
         if (!candidates.length) {
             window.alert(
-                "there are no other emoji records from this day to combine"
+                "There are no other emoji records from this day to combine"
             );
             return;
         }
@@ -17001,7 +16994,7 @@ setupNameSaving() {
         heading.className =
             "jami-emoji-combine-heading theme-heading";
         heading.textContent =
-            `combine emoji record · ${baseAnimations.length}/10`;
+            `Combine emoji record · ${baseAnimations.length}/10`;
 
         const tiles =
             document.createElement("div");
@@ -17056,7 +17049,7 @@ setupNameSaving() {
             }
 
             heading.textContent =
-                `combine emoji record · ${count}/10`;
+                `Combine emoji record · ${count}/10`;
             combine.disabled =
                 count <=
                     baseAnimations.length ||
@@ -17115,8 +17108,8 @@ setupNameSaving() {
                 String(candidate.message.id);
             tile.title =
                 candidate.animations.length === 1
-                    ? "add this emoji record"
-                    : `add these ${candidate.animations.length} emoji records`;
+                    ? "Add this emoji record"
+                    : `Add these ${candidate.animations.length} emoji records`;
 
             for (
                 const animation
@@ -17299,12 +17292,12 @@ setupNameSaving() {
             if (!response.ok) {
                 throw new Error(
                     result?.error ||
-                    `could not combine emoji records (${response.status})`
+                    `Could not combine emoji records (${response.status})`
                 );
             }
         } catch (error) {
             console.error(
-                "could not combine emoji records:",
+                "Could not combine emoji records:",
                 error
             );
             window.alert(error.message);
@@ -17533,7 +17526,7 @@ setupNameSaving() {
         hint.className =
             "jami-emoji-party-picker-hint";
         hint.textContent =
-            "choose an emoji · default 🐈";
+            "Choose an emoji";
 
         close.type = "button";
         close.className =
@@ -17557,7 +17550,7 @@ setupNameSaving() {
         defaultButton.className =
             "jami-emoji-party-default theme-body";
         defaultButton.textContent =
-            "start with 🐈";
+            "Use 🐈";
         defaultButton.addEventListener(
             "click",
             () => {
@@ -18302,7 +18295,7 @@ setupNameSaving() {
         status.className =
             "jami-emoji-animation-recording-status theme-body";
         status.textContent =
-            "click to start · esc to cancel";
+            "Click to start · Esc to cancel";
         layer.append(visual, status);
         document.body.appendChild(layer);
 
@@ -18405,7 +18398,7 @@ setupNameSaving() {
                     )
                 }];
                 status.textContent =
-                    "● recording · click to finish · esc to cancel";
+                    "● Recording · Click to finish · Esc to cancel";
                 state.timeout =
                     window.setTimeout(
                         () => {
@@ -18511,7 +18504,7 @@ setupNameSaving() {
             points.length < 2
         ) {
             window.alert(
-                "record a little movement before finishing"
+                "Record a little movement before finishing"
             );
             return;
         }
@@ -18573,12 +18566,12 @@ setupNameSaving() {
             if (!response.ok) {
                 throw new Error(
                     result?.error ||
-                    `could not post emoji animation (${response.status})`
+                    `Could not post emoji animation (${response.status})`
                 );
             }
         } catch (error) {
             console.error(
-                "could not post emoji animation:",
+                "Could not post emoji animation:",
                 error
             );
             window.alert(error.message);
@@ -18967,7 +18960,7 @@ setupNameSaving() {
         }
 
         const message = window.prompt(
-            "confetti message:"
+            "Confetti message:"
         );
 
         if (message === null) {
@@ -19029,18 +19022,18 @@ setupNameSaving() {
             if (!response.ok) {
                 throw new Error(
                     result?.error ||
-                    "could not post confetti message"
+                    "Could not post confetti message"
                 );
             }
         } catch (error) {
             console.error(
-                "could not post confetti message:",
+                "Could not post confetti message:",
                 error
             );
 
             window.alert(
                 error.message ||
-                "could not post confetti message"
+                "Could not post confetti message"
             );
         }
     }
@@ -21141,7 +21134,7 @@ setupDiscordAuthentication() {
                 this.discordAuthButton.disabled =
                     false;
                 this.discordAuthButton.textContent =
-                    "log in with discord";
+                    "Log in with discord";
                 return;
             }
 
@@ -21227,7 +21220,7 @@ async loginWithDiscord() {
                         .disabled = false;
                     this.discordAuthButton
                         .textContent =
-                            "log in with discord";
+                            "Log in with discord";
                 }
             },
             500
@@ -21261,7 +21254,7 @@ async restoreDiscordSession() {
         ) {
             throw new Error(
                 result?.error ||
-                "discord session expired"
+                "Discord session expired"
             );
         }
 
@@ -21390,7 +21383,7 @@ async logoutDiscord() {
         this.discordLogoutButton.disabled =
             true;
         this.discordLogoutButton.textContent =
-            "logging out...";
+            "Logging out...";
     }
 
     if (token) {
@@ -21448,7 +21441,7 @@ renderDiscordAuthState() {
         this.discordAuthButton.disabled =
             false;
         this.discordAuthButton.textContent =
-            "log in with discord";
+            "Log in with discord";
     }
 }
 
@@ -22362,14 +22355,14 @@ if (minimized) {
     this.minimizeButton.setAttribute(
         "aria-label",
         minimized
-            ? "restore live chat"
-            : "minimize live chat"
+            ? "Restore live chat"
+            : "Minimize live chat"
     );
 
     this.minimizeButton.title =
         minimized
-            ? "restore chat"
-            : "minimize chat";
+            ? "Restore chat"
+            : "Minimize chat";
 
     if (minimized) {
         this.closeAvatarPicker();
@@ -22469,7 +22462,7 @@ keepTitleBarInViewport() {
 
     let nextTheme =
         [
-            "original",
+            "riginal",
             "stars",
             "paws"
         ].includes(
@@ -23101,7 +23094,7 @@ keepTitleBarInViewport() {
 
         if (profileTitle) {
             profileTitle.textContent =
-                "select avatar";
+                "Select avatar";
         }
 
         if (avatarLabel) {
