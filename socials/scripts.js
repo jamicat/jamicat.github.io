@@ -2,8 +2,8 @@ const themes = {
   Default: {
     glowPrimary: 'text-blue-glow',      
     glowSecondary: 'text-pink-glow',   
-    typed2Text: 'guestbook!',
-    typed3Text: 'jamie',
+    typed2Text: 'Guestbook!',
+    typed3Text: 'Jamie',
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
     headingFont: 'Fink',
@@ -54,8 +54,8 @@ const themes = {
   Stars: {
    glowPrimary: 'text-pink-glow',     
     glowSecondary: 'text-red-glow',   
-    typed2Text: 'guestbook!',
-    typed3Text: 'jamie',
+    typed2Text: 'Guestbook!',
+    typed3Text: 'Jamie',
     avatar: 'g1.gif',
     gbAvatar: 'pbcat.gif',
     headingFont: 'nunito',
@@ -4291,8 +4291,8 @@ guestBookWindow.id = 'guestBookWindow';
  <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> 
  <p id="welcomeMessage" class="text-blue-glow text-white theme-body text-sm"> /ᐠ > ˕ <マ </p> </div>
  <form id="guestbookForm" class="space-y-4 text-blue-100"> 
- <input id="name" type="text" name="name" placeholder="name" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
- <textarea id="message" name="message" placeholder="message" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
+ <input id="name" type="text" name="name" placeholder="Name" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
+ <textarea id="message" name="message" placeholder="Message" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
  <div class="text-center"> 
  <button type="submit" class="theme-body text-xs terminal-button text-white guestbook-submit" > submit </button> 
  </div> 
@@ -4744,10 +4744,10 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
- <button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">about! ᗢ</button>
-<button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">art</button>
-<button class="terminal-button theme-body text-xs" onclick="showList()">playlist</button>
-<button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">guestbook</button>
+ <button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">About!</button>
+<button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">Art</button>
+<button class="terminal-button theme-body text-xs" onclick="showList()">Playlist</button>
+<button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">Guestbook</button>
   </div>
 `);
 const currentTheme = localStorage.getItem('theme') || 'Default';
