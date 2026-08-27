@@ -11483,3 +11483,7 @@ html[data-chat-theme="paws"]
     background: rgba(255,244,242,.98);
     color: #d76e82;
 }
+
+#chatTitle {
+    text-transform: none !important;
+}
