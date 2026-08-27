@@ -14162,7 +14162,7 @@ createCompletedImageElement(
     ].join(" ");
 
     remixButton.textContent =
-        "remix image";
+        "Remix image";
 
     remixButton.addEventListener(
         "click",
