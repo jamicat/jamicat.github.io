@@ -316,7 +316,7 @@ this.setupChatPastelThemeSync();
 this.restoreSettings();
 this.setupDiscordAuthentication();
 
-this.setMinimized(true);
+this.setMinimized(true, false);
 
 this.setupAdminAuthentication();
 this.setupAvatarPicker();
@@ -22289,8 +22289,11 @@ toggleMinimized() {
     this.setMinimized(!this.isMinimized);
 }
 
-setMinimized(minimized) {
-	this.preserveTitleBarDuringResize();
+setMinimized(minimized, preservePosition = true) {
+    if (preservePosition) {
+        this.preserveTitleBarDuringResize();
+    }
+
     this.isMinimized = minimized;
 
 	if (!minimized) {
