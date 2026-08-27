@@ -7452,10 +7452,10 @@ ensureMessageHoverActions(row) {
     replyButton.className =
         "jami-message-hover-action jami-message-hover-reply";
     replyButton.textContent = "↩";
-    replyButton.title = "reply";
+    replyButton.title = "Reply";
     replyButton.setAttribute(
         "aria-label",
-        "reply"
+        "Reply"
     );
 
     replyButton.addEventListener(
@@ -10022,7 +10022,7 @@ openModerationMenu(x, y, message) {
 
         buttons.push(
             this.createModerationMenuButton(
-                "reply",
+                "Reply",
                 () => {
                     this.closeModerationMenu();
                     this.setReplyTarget(
@@ -10326,7 +10326,7 @@ openChatContextMenu(x, y) {
 
     menu.appendChild(
         this.createModerationMenuButton(
-            "record emoji",
+            "Record emoji",
             () => {
                 this.closeModerationMenu();
                 this.openEmojiAnimationPicker(
@@ -18144,7 +18144,7 @@ setupNameSaving() {
         heading.className =
             "jami-emoji-animation-picker-heading";
         heading.textContent =
-            "record emoji";
+            "Record emoji";
         hint.className =
             "jami-emoji-animation-picker-hint";
         hint.textContent =
