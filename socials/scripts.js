@@ -176,7 +176,7 @@ if (typed2El) {
 }
 
 document.querySelectorAll(
-  '.terminal-button:not(.guestbook-submit):not(#aboutButton)'
+  '.terminal-button:not(.guestbook-):not(#aboutButton)'
 ).forEach(btn => {
   btn.classList.add('theme-body');
   Object.values(themes).forEach(t => {
@@ -3893,7 +3893,7 @@ function showList() {
 
   html += `
     <div class="mt-6 flex justify-center">
-      <button class="terminal-button" onclick="resetTerminal()">back</button>
+      <button class="terminal-button" onclick="resetTerminal()">Back</button>
     </div>
   `;
 
@@ -3978,7 +3978,7 @@ $('#terminalContent').html(`
       </a>
     </div>
   <div class="mt-4 flex justify-center">
-  <button class="terminal-button" onclick="resetTerminal()">back</button>
+  <button class="terminal-button" onclick="resetTerminal()">Back</button>
     </div>
   `);
 
@@ -4165,7 +4165,7 @@ function siteFAQ() {
           class="terminal-button theme-body text-xs"
           onclick="resetTerminal()"
         >
-          back
+          Back
         </button>
       </div>
 
@@ -4294,7 +4294,7 @@ guestBookWindow.id = 'guestBookWindow';
  <input id="name" type="text" name="name" placeholder="Name" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
  <textarea id="message" name="message" placeholder="Message" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
  <div class="text-center"> 
- <button type="submit" class="theme-body text-xs terminal-button text-white guestbook-submit" > submit </button> 
+ <button type="submit" class="theme-body text-xs terminal-button text-white guestbook-submit" > Submit </button> 
  </div> 
  </form> 
  </div> 
@@ -4686,7 +4686,7 @@ document.getElementById('terminalContent').innerHTML = `
       <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-50" required></textarea>
       <div class="flex justify-center space-x-4 flex-wrap">
       <button type="submit" class="terminal-button">submit</button>
-      <button type="button" class="terminal-button" onclick="resetTerminal()">back</button>
+      <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
       </div>
       <div id="formResponse" class="text-pink-100 text-md mt-2 mb-4 text-center"></div>
     </form>
