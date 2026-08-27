@@ -9224,8 +9224,8 @@ updateUnreadDisplay() {
 
     this.chatTitle.textContent =
         this.unreadCount > 0
-            ? `CAT CHAT (${this.unreadCount})`
-            : "CAT CHAT";
+            ? `Cat Chat (${this.unreadCount})`
+            : "Cat Chat";
 }
 	
 
