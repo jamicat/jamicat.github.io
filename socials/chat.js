@@ -23086,7 +23086,7 @@ keepTitleBarInViewport() {
         );
 
         this.sendButton.textContent =
-            "send";
+            "Send";
 
         this.sendButton.classList.add(
             "jami-original-send-button"
