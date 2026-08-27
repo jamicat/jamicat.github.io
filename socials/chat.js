@@ -316,11 +316,7 @@ this.setupChatPastelThemeSync();
 this.restoreSettings();
 this.setupDiscordAuthentication();
 
-if (
-    window.matchMedia("(max-width:640px)").matches
-) {
-    this.toggleMinimized();
-}
+this.setMinimized(true);
 
 this.setupAdminAuthentication();
 this.setupAvatarPicker();
