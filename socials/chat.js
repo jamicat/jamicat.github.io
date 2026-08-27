@@ -1850,7 +1850,7 @@ createBanManagerButton() {
                 ${busy ? "disabled" : ""}
             >
                 <span class="font-bold">
-                    ${treeActive ? "finish tree" : "plant tree"}
+                    ${treeActive ? "Finish tree" : "Plant tree"}
                 </span>
             </button>
 
