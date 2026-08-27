@@ -22343,6 +22343,14 @@ if (minimized) {
         minimized
     );
 
+	if (minimized) {
+    this.window.style.top = "45%";
+    this.window.style.bottom = "auto";
+} else {
+    this.window.style.top = "";
+    this.window.style.bottom = "";
+}
+
     this.minimizeButton.textContent =
         minimized ? "+" : "−";
 
