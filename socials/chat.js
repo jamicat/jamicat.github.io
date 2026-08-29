@@ -1674,7 +1674,7 @@ createBanManagerButton() {
                     <span class="font-bold">
                         ${
                             enabled
-                                ? "Eisable watch party"
+                                ? "Disable watch party"
                                 : "Enable watch party"
                         }
                     </span>
