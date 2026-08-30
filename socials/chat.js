@@ -17339,7 +17339,7 @@ setupNameSaving() {
         const button = document.createElement("button");
         button.type = "button";
         button.id = "chatEmojiPartyButton";
-        button.textContent = "party emoji";
+        button.textContent = "Party emoji";
         button.className = [
             "theme-body",
             "text-[9px]",
@@ -17347,7 +17347,7 @@ setupNameSaving() {
             "transition",
             "hover:text-white"
         ].join(" ");
-        button.title = "change party emoji";
+        button.title = "Change party emoji";
         button.setAttribute("aria-expanded", "false");
 
         button.addEventListener("click", event => {
@@ -17393,7 +17393,7 @@ setupNameSaving() {
         change.className = "jami-emoji-party-change";
 
         const label = document.createElement("span");
-        label.textContent = "change emoji";
+        label.textContent = "Change emoji";
 
         const preview = document.createElement("span");
         preview.className = "jami-emoji-party-menu-preview";
