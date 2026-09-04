@@ -4744,7 +4744,7 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
- <button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">About!</button>
+<!--button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">About!</button-->
 <button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">Art</button>
 <button class="terminal-button theme-body text-xs" onclick="showList()">Playlist</button>
 <button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">Guestbook</button>
