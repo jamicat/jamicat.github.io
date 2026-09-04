@@ -203,6 +203,9 @@ this.WATCH_PARTY_COLOURS = [
     "default"
 ];
 this.isMinimized = false;
+this.chatGloballyVisible = false;
+this.chatVisibilityLoaded = false;
+this.chatVisibilityToggleBusy = false;
 this.membersPanel = null;
 this.membersVisible = true;
 
@@ -262,6 +265,7 @@ if (!this.guestName) {
 }
 
 this.createWindow();
+this.window?.classList.add("hidden");
 
 	window.addEventListener(
     "site-player-state",
@@ -319,6 +323,8 @@ this.setupDiscordAuthentication();
 this.setMinimized(true, false);
 
 this.setupAdminAuthentication();
+this.setupChatVisibilityShortcut();
+this.loadChatVisibility();
 this.setupAvatarPicker();
 this.setupEmojiPicker();
 this.setupMembersToggle();
@@ -364,7 +370,7 @@ this.loadHistory()
     windowElement.id = "chatWindow";
     windowElement.className = `
     fixed right-4 bottom-4 sm:right-8 sm:bottom-8 z-[99999]
-    flex h-[500px] w-[480px] max-w-[calc(100vw-2rem)]
+    hidden flex h-[500px] w-[480px] max-w-[calc(100vw-2rem)]
     flex-col overflow-hidden
     rounded-3xl border border-white/15
     bg-black/20 text-white
@@ -1315,6 +1321,193 @@ document.addEventListener(
 	   
 	
 }
+setupChatVisibilityShortcut() {
+    document.addEventListener(
+        "keydown",
+        event => {
+            if (
+                !event.ctrlKey ||
+                !event.shiftKey ||
+                event.metaKey ||
+                event.key.toLowerCase() !== "j"
+            ) {
+                return;
+            }
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (this.chatVisibilityToggleBusy) {
+                return;
+            }
+
+            this.promptForChatVisibilityToggle();
+        }
+    );
+}
+
+async loadChatVisibility() {
+    try {
+        const response = await fetch(
+            `${this.API}/api/chat/visibility`,
+            {
+                cache: "no-store"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                `visibility request failed (${response.status})`
+            );
+        }
+
+        const result = await response.json();
+
+        this.applyChatVisibility(
+            result?.visible === true
+        );
+    } catch (error) {
+        console.error(
+            "Could not load chat visibility:",
+            error
+        );
+
+        // Fail closed: Cat Chat stays hidden if the
+        // authoritative visibility state cannot be loaded.
+        this.applyChatVisibility(false);
+    } finally {
+        this.chatVisibilityLoaded = true;
+    }
+}
+
+applyChatVisibility(visible) {
+    const shouldShow = visible === true;
+    const wasVisible =
+        this.chatGloballyVisible === true;
+
+    this.chatGloballyVisible = shouldShow;
+
+    if (!this.window) {
+        return;
+    }
+
+    if (shouldShow && !wasVisible) {
+        // Every global opening starts from the compact bar.
+        this.setMinimized(true, false);
+    }
+
+    this.window.classList.toggle(
+        "hidden",
+        !shouldShow
+    );
+
+    if (!shouldShow) {
+        this.closeAvatarPicker();
+        this.closeEmojiPicker();
+        this.closeEmojiPartyPicker();
+        this.closeEmojiPartyMenu();
+        this.disableEmojiParty(false);
+        this.closeModerationMenu();
+        this.closeBanManager();
+        this.closePartyManager();
+        this.closeSavedRemixManager();
+        this.closeNameHistoryManager();
+        this.closeChatTreeReveal();
+        this.closeWatchPartyVisualizerMenu();
+
+        this.watchPartyOpen = false;
+
+        if (this.watchPartyPanel) {
+            this.watchPartyPanel.classList.add(
+                "invisible",
+                "pointer-events-none",
+                "opacity-0"
+            );
+        }
+
+        if (this.watchPartyButton) {
+            this.watchPartyButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+    }
+}
+
+async promptForChatVisibilityToggle() {
+    if (this.chatVisibilityToggleBusy) {
+        return;
+    }
+
+    const key = window.prompt(
+        "Enter the chat admin key:"
+    );
+
+    if (key === null) {
+        return;
+    }
+
+    const cleanedKey = key.trim();
+
+    if (!cleanedKey) {
+        window.alert(
+            "Admin key cannot be empty"
+        );
+        return;
+    }
+
+    this.chatVisibilityToggleBusy = true;
+
+    try {
+        const response = await fetch(
+            `${this.API}/api/admin/chat/visibility/toggle`,
+            {
+                method: "POST",
+                headers: {
+                    "Authorization":
+                        `Bearer ${cleanedKey}`
+                }
+            }
+        );
+
+        let result = null;
+
+        try {
+            result = await response.json();
+        } catch {
+        }
+
+        if (response.status === 401) {
+            window.alert(
+                "Incorrect admin key"
+            );
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result?.error ||
+                `visibility toggle failed (${response.status})`
+            );
+        }
+
+        this.applyChatVisibility(
+            result?.visible === true
+        );
+    } catch (error) {
+        console.error(
+            "Could not toggle chat visibility:",
+            error
+        );
+
+        window.alert(
+            `Could not toggle Cat Chat: ${error.message}`
+        );
+    } finally {
+        this.chatVisibilityToggleBusy = false;
+    }
+}
+
 setupAdminAuthentication() {
     const title =
         this.window.querySelector(
@@ -13177,6 +13370,14 @@ connect() {
 
     this.renderTypingUsers();
 
+    return;
+}
+
+if (data.type === "chat-visibility") {
+    this.chatVisibilityLoaded = true;
+    this.applyChatVisibility(
+        data.visible === true
+    );
     return;
 }
 
