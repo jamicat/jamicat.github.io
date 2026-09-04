@@ -2,8 +2,8 @@ const themes = {
   Default: {
     glowPrimary: 'text-blue-glow',      
     glowSecondary: 'text-pink-glow',   
-    typed2Text: 'guestbook!',
-    typed3Text: 'jamie',
+    typed2Text: 'Guestbook!',
+    typed3Text: 'Jamie',
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
     headingFont: 'Fink',
@@ -54,8 +54,8 @@ const themes = {
   Stars: {
    glowPrimary: 'text-pink-glow',     
     glowSecondary: 'text-red-glow',   
-    typed2Text: 'guestbook!',
-    typed3Text: 'jamie',
+    typed2Text: 'Guestbook!',
+    typed3Text: 'Jamie',
     avatar: 'g1.gif',
     gbAvatar: 'pbcat.gif',
     headingFont: 'nunito',
@@ -107,24 +107,6 @@ function applyTheme(themeName) {
   if (!theme) return console.warn(`Theme not found: ${themeName}`);
 
   document.documentElement.setAttribute('data-theme', themeName);
-
-  const chatPastelTheme =
-    themeName === 'Stars'
-      ? 'stars'
-      : themeName === 'Default'
-        ? 'paws'
-        : '';
-
-  if (chatPastelTheme) {
-    document.documentElement.setAttribute(
-      'data-chat-pastel',
-      chatPastelTheme
-    );
-  } else {
-    document.documentElement.removeAttribute(
-      'data-chat-pastel'
-    );
-  }
 
   document.documentElement.classList.toggle(
   'theme-stars',
@@ -194,7 +176,7 @@ if (typed2El) {
 }
 
 document.querySelectorAll(
-  '.terminal-button:not(.guestbook-submit):not(#aboutButton)'
+  '.terminal-button:not(.guestbook-):not(#aboutButton)'
 ).forEach(btn => {
   btn.classList.add('theme-body');
   Object.values(themes).forEach(t => {
@@ -319,6 +301,14 @@ if (toggleBtn) {
   '.text-blue-glow, .text-pink-glow, .text-red-glow, .text-aquag-glow, .text-cyan-glow, .text-darkblue-glow'
 ).forEach(el => {
   if (el.classList.contains('no-theme-glow')) return;
+  
+  if (
+    el.closest?.('#chatWindow') ||
+    el.id?.startsWith('chat')
+  ) {
+    return;
+  }
+
   el.classList.remove('text-blue-glow', 'text-pink-glow', 'text-red-glow', 'text-aquag-glow', 'text-cyan-glow', 'text-darkblue-glow');
   el.classList.add(theme.glowPrimary);
 });
@@ -329,18 +319,52 @@ if (toggleBtn) {
       'site-theme-change',
       {
         detail: {
-          themeName,
-          chatPastelTheme
+          themeName
         }
       }
     )
   );
 
   document.querySelectorAll('.terminal2').forEach(el => {
+  const chatOwned =
+    el.id?.startsWith('chat') ||
+    el.closest?.('#chatWindow') ||
+    el.classList.contains('jami-message-hover-actions') ||
+    el.classList.contains('jami-chat-context-menu') ||
+    el.classList.contains('jami-admin-glass-panel') ||
+    el.classList.contains('jami-saved-remix-manager') ||
+    el.classList.contains('jami-name-history-manager') ||
+    el.classList.contains('watch-party-visualizer-window') ||
+    el.classList.contains('jami-remix-overlay') ||
+    el.classList.contains('jami-image-remixer');
+
+  const chatTheme =
+    document.documentElement.getAttribute('data-chat-theme') ||
+    document.getElementById('chatWindow')?.dataset.chatTheme ||
+    'original';
+
+
+  if (chatOwned && chatTheme !== 'original') {
+    Object.values(themes).forEach(t => {
+      el.classList.remove(t.terminal2Bg);
+    });
+    el.style.removeProperty('border-color');
+    return;
+  }
+
   Object.values(themes).forEach(t => {
     el.classList.remove(t.terminal2Bg);
   });
   el.classList.add(theme.terminal2Bg);
+
+  if (chatOwned && chatTheme === 'original') {
+    if (el.id === 'chatWindow') {
+      el.style.borderColor = theme.borderColor;
+    } else {
+
+      el.style.removeProperty('border-color');
+    }
+  }
 });
 
 document.querySelectorAll('.gwterminal').forEach(el => {
@@ -411,7 +435,7 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
   const strings = [
-    `<span class="text-white theme-body text-sm mr-2 ${glow}">⋆.˚ ☾⭒.˚⏾⋆.˚</span>`,
+    `<span class="text-white theme-body text-sm mr-2 ${glow}">ᓚᘏᗢ</span>`,
   ];
 
   typedInstance = new Typed('#typed', {
@@ -3869,7 +3893,7 @@ function showList() {
 
   html += `
     <div class="mt-6 flex justify-center">
-      <button class="terminal-button" onclick="resetTerminal()">back</button>
+      <button class="terminal-button" onclick="resetTerminal()">Back</button>
     </div>
   `;
 
@@ -3934,6 +3958,15 @@ function showArt() {
 $('#terminalContent').html(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
   <div id="artGallery" class="grid grid-cols-3 gap-4">
+   <a href="jamieteph.png" class="block rounded overflow-hidden">
+    <img src="jamieteph_thumb.jpg" alt="jamie & teph in happy burger - saproena" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
+       <a href="jamiefeara.png" class="block rounded overflow-hidden">
+    <img src="feara_thumb.jpg" alt="jamie & feara - haru" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
+   <a href="skp.png" class="block rounded overflow-hidden">
+    <img src="skp_thumb.jpg" alt="sketchpage - sofii" class="rounded hover:scale-105 transition transform duration-200" />
+      </a>
    <a href="party.jpg" class="block rounded overflow-hidden">
     <img src="party_thumb.jpg" alt="yaaaypartypopper" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
@@ -3945,7 +3978,7 @@ $('#terminalContent').html(`
       </a>
     </div>
   <div class="mt-4 flex justify-center">
-  <button class="terminal-button" onclick="resetTerminal()">back</button>
+  <button class="terminal-button" onclick="resetTerminal()">Back</button>
     </div>
   `);
 
@@ -4132,7 +4165,7 @@ function siteFAQ() {
           class="terminal-button theme-body text-xs"
           onclick="resetTerminal()"
         >
-          back
+          Back
         </button>
       </div>
 
@@ -4258,10 +4291,10 @@ guestBookWindow.id = 'guestBookWindow';
  <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> 
  <p id="welcomeMessage" class="text-blue-glow text-white theme-body text-sm"> /ᐠ > ˕ <マ </p> </div>
  <form id="guestbookForm" class="space-y-4 text-blue-100"> 
- <input id="name" type="text" name="name" placeholder="name" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
- <textarea id="message" name="message" placeholder="message" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
+ <input id="name" type="text" name="name" placeholder="Name" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
+ <textarea id="message" name="message" placeholder="Message" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
  <div class="text-center"> 
- <button type="submit" class="theme-body text-xs terminal-button text-white guestbook-submit" > submit </button> 
+ <button type="submit" class="theme-body text-xs terminal-button text-white guestbook-submit" > Submit </button> 
  </div> 
  </form> 
  </div> 
@@ -4653,7 +4686,7 @@ document.getElementById('terminalContent').innerHTML = `
       <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-50" required></textarea>
       <div class="flex justify-center space-x-4 flex-wrap">
       <button type="submit" class="terminal-button">submit</button>
-      <button type="button" class="terminal-button" onclick="resetTerminal()">back</button>
+      <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
       </div>
       <div id="formResponse" class="text-pink-100 text-md mt-2 mb-4 text-center"></div>
     </form>
@@ -4711,10 +4744,10 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
- <button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">about!</button>
-<button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">art</button>
-<button class="terminal-button theme-body text-xs" onclick="showList()">playlist</button>
-<button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">guestbook</button>
+<!--button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">About!</button-->
+<button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">Art</button>
+<button class="terminal-button theme-body text-xs" onclick="showList()">Playlist</button>
+<button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">Guestbook</button>
   </div>
 `);
 const currentTheme = localStorage.getItem('theme') || 'Default';
@@ -4730,9 +4763,21 @@ document.head.appendChild(tag);
 window.addEventListener('DOMContentLoaded', () => {
   let savedTheme = localStorage.getItem('theme');
   if (!savedTheme) {
-    savedTheme = 'Stars';
+    savedTheme = 'Default';
     localStorage.setItem('theme', savedTheme);
   }
   applyTheme(savedTheme);
   initTyped(savedTheme);
+});
+
+
+window.addEventListener('chat-theme-change', () => {
+  const activeSiteTheme =
+    localStorage.getItem('theme') ||
+    document.documentElement.getAttribute('data-theme') ||
+    'Default';
+
+  if (themes[activeSiteTheme]) {
+    applyTheme(activeSiteTheme);
+  }
 });
