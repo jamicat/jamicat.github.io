@@ -5159,7 +5159,7 @@ html[data-chat-pastel]
 
 @font-face {
     font-family: "JamiFredoka";
-    src: url("/socials/fredoka.ttf") format("truetype");
+    src: url("/fredoka.ttf") format("truetype");
     font-style: normal;
     font-weight: 100 900;
     font-display: swap;
