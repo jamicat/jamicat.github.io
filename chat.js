@@ -8956,13 +8956,17 @@ renderWatchPartyVisualizerMenu() {
     };
 
     const modes = [
-        ["Wave", "Waveform"],
-        ["Bars", "Equalizer"],
-        ["Decay", "Spectrum"],
-        ["Line", "Frequency line"],
-        ["Peaks", "Peaks"],
-        ["Mountain", "Filled spectrum"]
+        ["wave", "Waveform"],
+        ["bars", "Equalizer"],
+        ["decay", "Spectrum"],
+        ["line", "Frequency line"],
+        ["peaks", "Peaks"],
+        ["mountain", "Filled spectrum"]
     ];
+
+    this.watchPartyVisualizerMode =
+        String(this.watchPartyVisualizerMode || "bars")
+            .toLowerCase();
 
     if (!modes.some(([mode]) => mode === this.watchPartyVisualizerMode)) {
         this.watchPartyVisualizerMode = "bars";
@@ -9079,7 +9083,8 @@ renderWatchPartyVisualizerMenu() {
             event.stopPropagation();
 
             const selectedMode =
-                button.dataset.watchPartyVisualizerMode;
+                button.dataset.watchPartyVisualizerMode
+                    ?.toLowerCase();
 
             if (!selectedMode) {
                 return;
