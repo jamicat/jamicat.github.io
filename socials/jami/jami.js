@@ -49,6 +49,14 @@
             this.siteChatPreviousDisplay = null;
             this.systemEvents = [];
             this.monitorTimer = null;
+            this.radioTimer = null;
+            this.radioMode = null;
+            this.radioWatchParty = null;
+            this.radioPlaylist = [];
+            this.radioStationIndex = Math.max(0, Number(localStorage.getItem("jami_radio_station_index")) || 0);
+            this.radioStationPlaying = true;
+            this.radioCurrentVideoId = null;
+            this.radioSiteVolume = null;
 
             this.clientId =
                 localStorage.getItem("chat_client_id") ||
@@ -87,8 +95,9 @@
                         <div class="jami-icons">
                             <button class="jami-icon" type="button" data-jami-open="explorer"><span class="jami-icon-glyph">📁</span><span class="jami-icon-label">files</span></button>
                             <button class="jami-icon" type="button" data-jami-open="terminal"><span class="jami-icon-glyph">▣</span><span class="jami-icon-label">terminal</span></button>
+                            <button class="jami-icon" type="button" data-jami-open-chat><span class="jami-icon-glyph">💬</span><span class="jami-icon-label">chat</span></button>
                             <button class="jami-icon" type="button" data-jami-open="monitor"><span class="jami-icon-glyph">⌁</span><span class="jami-icon-label">system</span></button>
-                            <button class="jami-icon" type="button" data-jami-placeholder="radio"><span class="jami-icon-glyph">📻</span><span class="jami-icon-label">radio</span></button>
+                            <button class="jami-icon" type="button" data-jami-open="radio"><span class="jami-icon-glyph">📻</span><span class="jami-icon-label">radio</span></button>
                             <button class="jami-icon" type="button" data-jami-open-trash><span class="jami-icon-glyph">🗑</span><span class="jami-icon-label">trash</span></button>
                         </div>
 
@@ -102,13 +111,13 @@
                             </div>
                         `, "jami-terminal-window")}
 
-                        ${this.windowMarkup("chat", "cat chat", `
+                        ${this.windowMarkup("chat", "live chat", `
                             <div class="jami-chat-client jami-window-body">
                                 <div class="jami-chat-status" data-jami-chat-status>disconnected</div>
                                 <div class="jami-chat-output" data-jami-chat-output></div>
                                 <form class="jami-chat-form" data-jami-chat-form>
                                     <span class="jami-chat-prompt">cat@chat&gt;</span>
-                                    <input class="jami-chat-input" data-jami-chat-input autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Cat Chat terminal message">
+                                    <input class="jami-chat-input" data-jami-chat-input autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Live chat message">
                                 </form>
                             </div>
                         `, "jami-chat-window")}
@@ -142,6 +151,28 @@
                             </div>
                         `, "jami-notepad-window")}
 
+                        ${this.windowMarkup("radio", "radio", `
+                            <div class="jami-window-body jami-radio-body">
+                                <div class="jami-radio-modes" role="group" aria-label="Radio source">
+                                    <button type="button" data-jami-radio-mode="watchparty">watch party</button>
+                                    <button type="button" data-jami-radio-mode="station">radio station</button>
+                                </div>
+                                <div class="jami-radio-state" data-jami-radio-state>checking…</div>
+                                <div class="jami-radio-title" data-jami-radio-title>nothing playing</div>
+                                <div class="jami-radio-meta" data-jami-radio-meta></div>
+                                <div class="jami-radio-player-wrap">
+                                    <iframe data-jami-radio-player title="Jami radio player" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                                </div>
+                                <div class="jami-radio-actions">
+                                    <button type="button" data-jami-radio-play>play</button>
+                                    <button type="button" data-jami-radio-pause>pause</button>
+                                    <button type="button" data-jami-radio-next>next</button>
+                                    <button type="button" data-jami-radio-refresh>refresh</button>
+                                </div>
+                                <div class="jami-radio-note" data-jami-radio-note>Watch Party follows the live shared queue. Radio station uses the site's real playlist.</div>
+                            </div>
+                        `, "jami-radio-window")}
+
                         ${this.windowMarkup("monitor", "system monitor", `
                             <div class="jami-window-body jami-monitor-body">
                                 <div class="jami-monitor-toolbar">
@@ -162,6 +193,8 @@
                     <div class="jami-taskbar">
                         <button class="jami-task-button" type="button" data-jami-open="terminal">terminal</button>
                         <button class="jami-task-button" type="button" data-jami-open="explorer">files</button>
+                        <button class="jami-task-button" type="button" data-jami-open-chat>chat</button>
+                        <button class="jami-task-button" type="button" data-jami-open="radio">radio</button>
                         <button class="jami-task-button" type="button" data-jami-open="monitor">system</button>
                         <div class="jami-task-spacer"></div>
                         <span class="jami-network-status" data-jami-network>offline</span>
@@ -178,6 +211,13 @@
             this.chatOutput = this.root.querySelector("[data-jami-chat-output]");
             this.chatInput = this.root.querySelector("[data-jami-chat-input]");
             this.chatStatus = this.root.querySelector("[data-jami-chat-status]");
+            this.radioState = this.root.querySelector("[data-jami-radio-state]");
+            this.radioTitle = this.root.querySelector("[data-jami-radio-title]");
+            this.radioMeta = this.root.querySelector("[data-jami-radio-meta]");
+            this.radioPlayer = this.root.querySelector("[data-jami-radio-player]");
+            this.radioNote = this.root.querySelector("[data-jami-radio-note]");
+            this.radioModeButtons = [...this.root.querySelectorAll("[data-jami-radio-mode]")];
+            this.radioNextButton = this.root.querySelector("[data-jami-radio-next]");
             this.networkLabel = this.root.querySelector("[data-jami-network]");
             this.clockLabel = this.root.querySelector("[data-jami-clock]");
             this.explorerGrid = this.root.querySelector("[data-jami-explorer-grid]");
@@ -201,6 +241,14 @@
                 button.addEventListener("dblclick", () => this.openWindow(button.dataset.jamiOpen));
                 button.addEventListener("click", () => {
                     if (button.classList.contains("jami-task-button")) this.openWindow(button.dataset.jamiOpen);
+                });
+            });
+
+            this.root.querySelectorAll("[data-jami-open-chat]").forEach(button => {
+                const openChat = () => this.enterChatClient();
+                button.addEventListener("dblclick", openChat);
+                button.addEventListener("click", () => {
+                    if (button.classList.contains("jami-task-button")) openChat();
                 });
             });
 
@@ -264,6 +312,11 @@
             this.root.querySelector("[data-jami-new-folder]")?.addEventListener("click", () => this.promptCreate("folder"));
             this.root.querySelector("[data-jami-notepad-save]")?.addEventListener("click", () => this.saveNotepad());
             this.root.querySelector("[data-jami-monitor-refresh]")?.addEventListener("click", () => this.refreshSystemMonitor());
+            this.root.querySelector("[data-jami-radio-refresh]")?.addEventListener("click", () => this.refreshRadio(true));
+            this.root.querySelector("[data-jami-radio-play]")?.addEventListener("click", () => this.radioPlay());
+            this.root.querySelector("[data-jami-radio-pause]")?.addEventListener("click", () => this.radioPause());
+            this.root.querySelector("[data-jami-radio-next]")?.addEventListener("click", () => this.radioNext());
+            this.radioModeButtons.forEach(button => button.addEventListener("click", () => this.setRadioMode(button.dataset.jamiRadioMode, true)));
 
             this.notepadEditor?.addEventListener("input", () => {
                 if (!this.notepadNodeId || this.notepadEditor.readOnly) return;
@@ -308,6 +361,7 @@
             this.sendFilePresence("close");
             if (this.chatMode) this.leaveChatClient();
             this.stopSystemMonitor();
+            this.stopRadio();
             this.isOpen = false;
             this.root.classList.remove("jami-open");
             this.root.setAttribute("aria-hidden", "true");
@@ -330,7 +384,7 @@
             for (const line of lines) { text.textContent += `${line}\n`; await new Promise(resolve => setTimeout(resolve, 75)); }
             await new Promise(resolve => setTimeout(resolve, 200));
             boot.hidden = true;
-            this.write("Jami 0.6 // live telemetry online", "ok");
+            this.write("Jami", "ok");
             this.write("type 'help' for available commands", "muted");
             this.write("");
         }
@@ -423,6 +477,7 @@
             if (id === "explorer") { this.setActivity(this.explorerPath, "explorer"); this.loadExplorer(this.explorerPath); }
             if (id === "notepad") this.setActivity(this.notepadPath || this.currentPath, "notepad");
             if (id === "monitor") { this.setActivity(this.currentPath, "system-monitor"); this.startSystemMonitor(); }
+            if (id === "radio") { this.setActivity(this.currentPath, "radio"); this.startRadio(); }
         }
 
         closeWindow(id) {
@@ -433,13 +488,15 @@
             if (id === "notepad") this.sendFilePresence("close");
             if (id === "chat") this.leaveChatClient(false);
             if (id === "monitor") this.stopSystemMonitor();
+            if (id === "radio") this.stopRadio();
 
-            const visible = ["chat", "notepad", "explorer", "terminal", "monitor"].find(name => this.isWindowOpen(name));
+            const visible = ["chat", "notepad", "explorer", "terminal", "monitor", "radio"].find(name => this.isWindowOpen(name));
             if (visible === "chat") this.setActivity(this.currentPath, "cat-chat");
             else if (visible === "notepad") this.setActivity(this.notepadPath || this.currentPath, "notepad");
             else if (visible === "explorer") this.setActivity(this.explorerPath, "explorer");
             else if (visible === "terminal") this.setActivity(this.currentPath, "terminal");
             else if (visible === "monitor") this.setActivity(this.currentPath, "system-monitor");
+            else if (visible === "radio") this.setActivity(this.currentPath, "radio");
             else this.setActivity("/", "desktop");
         }
 
@@ -556,7 +613,7 @@
                     `terminal         ${this.isWindowOpen("terminal") ? "open" : "closed"}`,
                     `explorer         ${this.isWindowOpen("explorer") ? "open" : "closed"}`,
                     `notepad          ${this.isWindowOpen("notepad") ? "open" : "closed"}`,
-                    `cat chat         ${this.chatSocket?.readyState === WebSocket.OPEN ? "connected" : this.chatMode ? "connecting" : "idle"}`,
+                    `live chat        ${this.chatSocket?.readyState === WebSocket.OPEN ? "connected" : this.chatMode ? "connecting" : "idle"}`,
                     `watch party      ${wpActive ? "active" : "inactive"}`
                 ].join("\n");
             }
@@ -1177,10 +1234,8 @@
                         else await this.openTextFile(this.resolveClientPath(args[0]));
                         break;
                     case "jami":
-                        this.write("jami 0.6-test");
-                        this.write("filesystem protocol 4"); this.write("telemetry protocol 1");
-                        this.write("terminal protocol 3");
-                        this.write(`session ${this.sessionId}`);
+                        this.write("Jami", "ok");
+                        this.write("shared files · live chat · radio · system");
                         break;
                     case "chat":
                         await this.enterChatClient();
@@ -1189,7 +1244,7 @@
                         this.openWindow("monitor");
                         break;
                     case "radio":
-                        this.write("radio: not installed in this build", "warn");
+                        this.openWindow("radio");
                         break;
                     case "exit":
                     case "logout":
@@ -1205,7 +1260,7 @@
         }
 
         commandHelp() {
-            this.write("JAMI TERMINAL", "ok");
+            this.write("JAMI", "ok");
             this.write("filesystem   pwd cd ls cat stat tree find touch mkdir mv rename trash restore quota");
             this.write("programs     open edit chat monitor nowplaying");
             this.write("system       who users ps netstat uptime date which history clear jami");
@@ -1230,10 +1285,10 @@
                 tree: "tree [path]\n  recursively show a directory tree",
                 who: "who\n  show live Jami sessions and their current activity",
                 netstat: "netstat\n  show Jami transport state, RTT and connected peers",
-                nowplaying: "nowplaying\n  query the real Cat Chat Watch Party state",
-                chat: "chat\n  open the live Cat Chat terminal client\n  plain text sends a message; /help lists chat commands",
+                nowplaying: "nowplaying\n  query the real Watch Party state",
+                chat: "chat\n  open live chat\n  plain text sends a message; /reply replies; /users lists people; /exit closes it",
                 monitor: "monitor\n  open the live system monitor\n  values are read from the current browser, JamiRoom status, and existing site services",
-                radio: "radio\n  not installed in this build"
+                radio: "radio\n  open radio; defaults to Watch Party when active, otherwise the site radio station"
             };
             if (!command) {
                 this.write("usage: man <command>", "warn");
@@ -1266,13 +1321,10 @@
             }
 
             const name = String(command).toLowerCase();
-            if (name === "radio") {
-                this.write("radio: not installed", "warn");
-                return;
-            }
             if (this.terminalCommands().includes(name)) {
                 if (name === "chat") this.write("/programs/chat");
                 else if (name === "monitor") this.write("built-in: system monitor");
+                else if (name === "radio") this.write("built-in: radio");
                 else this.write(`${name}: Jami terminal builtin`);
             } else {
                 this.write(`${command}: not found`, "warn");
@@ -1327,6 +1379,193 @@
             this.write(`watch-party      ${watch?.enabled ? "active" : "inactive"}      /api/watchparty`);
         }
         commandNetstat() { const state = this.socket?.readyState === WebSocket.OPEN ? "ESTABLISHED" : "CLOSED"; this.write("PROTO  ENDPOINT                              STATE"); this.write(`wss    /api/test/jami/socket                 ${state}`); const chatState = this.chatSocket?.readyState === WebSocket.OPEN ? "ESTABLISHED" : "CLOSED"; this.write(`wss    /api/chat/socket                      ${chatState}`); this.write(`rtt    ${this.latencyMs == null ? "unknown" : `${this.latencyMs} ms`}`); this.write(`peers  ${this.users.length}`); }
+        startRadio() {
+            this.stopRadio(false);
+            this.radioMode = null;
+            this.radioWatchParty = null;
+            this.radioStationPlaying = true;
+            this.muteSitePlayerForRadio();
+            this.refreshRadio(true);
+            this.radioTimer = setInterval(() => this.refreshRadio(false), 3000);
+        }
+
+        stopRadio(restoreVolume = true) {
+            clearInterval(this.radioTimer);
+            this.radioTimer = null;
+            this.radioCurrentVideoId = null;
+            if (this.radioPlayer) this.radioPlayer.src = "about:blank";
+            if (restoreVolume) this.restoreSitePlayerAfterRadio();
+        }
+
+        muteSitePlayerForRadio() {
+            if (this.radioSiteVolume !== null) return;
+            const slider = document.getElementById("volumeSlider");
+            if (!slider) return;
+            this.radioSiteVolume = slider.value;
+            slider.value = "0";
+            slider.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+
+        restoreSitePlayerAfterRadio() {
+            if (this.radioSiteVolume === null) return;
+            const slider = document.getElementById("volumeSlider");
+            if (slider) {
+                slider.value = String(this.radioSiteVolume);
+                slider.dispatchEvent(new Event("input", { bubbles: true }));
+            }
+            this.radioSiteVolume = null;
+        }
+
+        radioPostMessage(func, args = []) {
+            this.radioPlayer?.contentWindow?.postMessage(JSON.stringify({
+                event: "command",
+                func,
+                args
+            }), "*");
+        }
+
+        radioPlay() {
+            this.radioStationPlaying = true;
+            this.radioPostMessage("playVideo");
+        }
+
+        radioPause() {
+            this.radioStationPlaying = false;
+            this.radioPostMessage("pauseVideo");
+        }
+
+        async radioNext() {
+            if (this.radioMode !== "station") return;
+            if (!this.radioPlaylist.length) await this.loadRadioPlaylist();
+            if (!this.radioPlaylist.length) return;
+            this.radioStationIndex = (this.radioStationIndex + 1) % this.radioPlaylist.length;
+            localStorage.setItem("jami_radio_station_index", String(this.radioStationIndex));
+            this.radioStationPlaying = true;
+            this.renderRadioStation(true);
+        }
+
+        async setRadioMode(mode, userInitiated = false) {
+            if (mode === "watchparty" && !this.radioWatchParty?.enabled) return;
+            if (!['watchparty', 'station'].includes(mode)) return;
+            this.radioMode = mode;
+            this.radioCurrentVideoId = null;
+            this.updateRadioModeButtons();
+            if (mode === "station") {
+                await this.loadRadioPlaylist();
+                this.renderRadioStation(true);
+            } else {
+                this.renderRadioWatchParty(true);
+            }
+            if (userInitiated) this.addSystemEvent(`radio source: ${mode === "watchparty" ? "watch party" : "radio station"}`);
+        }
+
+        updateRadioModeButtons() {
+            this.radioModeButtons?.forEach(button => {
+                const mode = button.dataset.jamiRadioMode;
+                button.classList.toggle("active", mode === this.radioMode);
+                if (mode === "watchparty") {
+                    button.disabled = !this.radioWatchParty?.enabled;
+                    button.title = this.radioWatchParty?.enabled ? "Listen to the active Watch Party" : "Watch Party is not active";
+                }
+            });
+            if (this.radioNextButton) this.radioNextButton.disabled = this.radioMode !== "station";
+        }
+
+        radioEmbed(videoId, startSeconds = 0, autoplay = true) {
+            if (!this.radioPlayer || !videoId) return;
+            const start = Math.max(0, Math.floor(Number(startSeconds) || 0));
+            const src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?enablejsapi=1&autoplay=${autoplay ? 1 : 0}&playsinline=1&rel=0&start=${start}`;
+            this.radioPlayer.src = src;
+            this.radioCurrentVideoId = videoId;
+        }
+
+        async loadRadioPlaylist() {
+            if (this.radioPlaylist.length) return;
+            try {
+                const response = await fetch(`${API}/api/playlist`, { cache: "no-store" });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const result = await response.json();
+                this.radioPlaylist = Array.isArray(result) ? result.filter(item => item?.videoId) : [];
+                if (this.radioPlaylist.length) this.radioStationIndex %= this.radioPlaylist.length;
+            } catch (error) {
+                this.radioPlaylist = [];
+                if (this.radioState) this.radioState.textContent = "unavailable";
+                if (this.radioTitle) this.radioTitle.textContent = "radio station unavailable";
+                if (this.radioMeta) this.radioMeta.textContent = error.message;
+            }
+        }
+
+        renderRadioStation(forceLoad = false) {
+            const item = this.radioPlaylist[this.radioStationIndex];
+            if (!item) {
+                if (this.radioState) this.radioState.textContent = "off air";
+                if (this.radioTitle) this.radioTitle.textContent = "no station tracks available";
+                if (this.radioMeta) this.radioMeta.textContent = "The site playlist is empty.";
+                return;
+            }
+            if (this.radioState) this.radioState.textContent = this.radioStationPlaying ? "radio station" : "paused";
+            if (this.radioTitle) this.radioTitle.textContent = item.title || item.videoId;
+            if (this.radioMeta) this.radioMeta.textContent = `${this.radioStationIndex + 1} / ${this.radioPlaylist.length}`;
+            if (this.radioNote) this.radioNote.textContent = "Radio station uses the site's real playlist.";
+            if (forceLoad || this.radioCurrentVideoId !== item.videoId) this.radioEmbed(item.videoId, 0, this.radioStationPlaying);
+        }
+
+        renderRadioWatchParty(forceLoad = false) {
+            const state = this.radioWatchParty || {};
+            const queue = Array.isArray(state.queue) ? state.queue : [];
+            const item = queue[state.currentIndex] || queue.find(entry => entry.videoId === state.currentVideoId);
+            if (!state.enabled || !state.currentVideoId) {
+                if (this.radioMode === "watchparty") this.radioMode = "station";
+                this.updateRadioModeButtons();
+                this.loadRadioPlaylist().then(() => this.renderRadioStation(true));
+                return;
+            }
+            const seconds = state.paused && state.pausedAt
+                ? Math.max(0, (Number(state.pausedAt) - Number(state.startedAt || state.pausedAt)) / 1000)
+                : state.startedAt ? Math.max(0, (Date.now() - Number(state.startedAt)) / 1000) : 0;
+            if (this.radioState) this.radioState.textContent = state.paused ? "watch party · paused" : "watch party · live";
+            if (this.radioTitle) this.radioTitle.textContent = item?.title || state.currentVideoId;
+            const parts = [];
+            if (item?.requestedByName) parts.push(`requested by ${item.requestedByName}`);
+            parts.push(this.formatTime(seconds));
+            if (this.radioMeta) this.radioMeta.textContent = parts.join(" · ");
+            if (this.radioNote) this.radioNote.textContent = "This player follows the site's live Watch Party.";
+            if (forceLoad || this.radioCurrentVideoId !== state.currentVideoId) {
+                this.radioEmbed(state.currentVideoId, seconds, !state.paused);
+            } else {
+                this.radioPostMessage(state.paused ? "pauseVideo" : "playVideo");
+            }
+        }
+
+        async refreshRadio(forceLoad = false) {
+            if (!this.isWindowOpen("radio")) return;
+            try {
+                const response = await fetch(`${API}/api/watchparty`, { cache: "no-store" });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                const raw = data?.state || {};
+                this.radioWatchParty = {
+                    ...raw,
+                    queue: Array.isArray(data?.queue) ? data.queue : (Array.isArray(raw.queue) ? raw.queue : [])
+                };
+
+                if (!this.radioMode) this.radioMode = this.radioWatchParty.enabled ? "watchparty" : "station";
+                if (this.radioMode === "watchparty" && !this.radioWatchParty.enabled) this.radioMode = "station";
+                this.updateRadioModeButtons();
+
+                if (this.radioMode === "watchparty") {
+                    this.renderRadioWatchParty(forceLoad);
+                } else {
+                    await this.loadRadioPlaylist();
+                    this.renderRadioStation(forceLoad);
+                }
+            } catch (error) {
+                if (this.radioState) this.radioState.textContent = "unavailable";
+                if (this.radioTitle) this.radioTitle.textContent = "radio unavailable";
+                if (this.radioMeta) this.radioMeta.textContent = error.message;
+            }
+        }
+
         async commandNowPlaying() { this.write("querying watch party…", "muted"); const response = await fetch(`${API}/api/watchparty`); if (!response.ok) throw new Error(`HTTP ${response.status}`); const data = await response.json(); const state = data?.state || {}; const queue = Array.isArray(data?.queue) ? data.queue : []; const item = queue[state.currentIndex] || queue.find(entry => entry.videoId === state.currentVideoId); if (!state.enabled || !state.currentVideoId) { this.write("watch party: inactive"); return; } this.write("WATCH PARTY", "ok"); this.write(`title       ${item?.title || state.currentVideoId}`); this.write(`requested   ${item?.requestedByName || "unknown"}`); this.write(`state       ${state.paused ? "paused" : "playing"}`); if (state.startedAt) { const seconds = state.paused && state.pausedAt ? Math.max(0, (Number(state.pausedAt) - Number(state.startedAt)) / 1000) : Math.max(0, (Date.now() - Number(state.startedAt)) / 1000); this.write(`position    ${this.formatTime(seconds)}`); } }
 
         getChatIdentity() {
@@ -1389,9 +1628,9 @@
             if (this.chatOutput) this.chatOutput.textContent = "";
             this.openWindow("chat");
             this.setChatStatus("connecting…");
-            this.writeChat("Cat Chat", "ok");
-            this.writeChat("live terminal client · same messages as the site chat", "muted");
-            this.writeChat("users or /users lists members · /quit or /exit closes this window", "muted");
+            this.writeChat("live chat", "ok");
+            this.writeChat("same live messages as the site chat", "muted");
+            this.writeChat("/reply <id> <message> · /users · /exit", "muted");
             try {
                 const response = await fetch(`${API}/api/chat`);
                 if (!response.ok) throw new Error(`history HTTP ${response.status}`);
@@ -1412,7 +1651,7 @@
             this.chatReconnectTimer = null;
             this.chatTypingTimer = null;
             if (this.chatSocket) {
-                try { this.chatSocket.close(1000, "left terminal chat"); } catch {}
+                try { this.chatSocket.close(1000, "left live chat"); } catch {}
             }
             this.chatSocket = null;
             this.chatTypingUsers.clear();
@@ -1421,7 +1660,7 @@
             const chatWindow = this.root.querySelector('[data-jami-window="chat"]');
             if (chatWindow) chatWindow.hidden = true;
             this.restoreSiteChat();
-            if (wasActive && announce) this.write("cat chat closed", "muted");
+            if (wasActive && announce) this.write("live chat closed", "muted");
             if (this.isWindowOpen("terminal")) {
                 this.setActivity(this.currentPath, "terminal");
                 setTimeout(() => this.input?.focus(), 0);
@@ -1436,7 +1675,7 @@
             this.chatSocket = socket;
             socket.addEventListener("open", () => {
                 if (this.chatSocket !== socket || !this.chatMode) return;
-                this.addSystemEvent("Cat Chat transport connected");
+                this.addSystemEvent("live chat connected");
                 const identity = this.getChatIdentity();
                 socket.send(JSON.stringify({
                     type: "presence",
@@ -1477,7 +1716,7 @@
             });
             socket.addEventListener("close", event => {
                 if (this.chatSocket === socket) this.chatSocket = null;
-                this.addSystemEvent(`Cat Chat transport closed (${event.code})`);
+                this.addSystemEvent(`live chat disconnected (${event.code})`);
                 if (!this.chatMode) return;
                 this.setChatStatus(`disconnected (${event.code})`);
                 this.writeChat(`chat connection closed (${event.code})`, "warn");
@@ -1533,18 +1772,11 @@
             if (!commandLine) return;
             this.writeChat(`${this.name}@chat> ${commandLine}`);
             const normalized = commandLine.toLowerCase();
-            if (normalized === "/quit" || normalized === "/exit" || normalized === "quit" || normalized === "exit") {
+            if (normalized === "/exit") {
                 this.leaveChatClient();
                 return;
             }
-            if (normalized === "/help" || normalized === "help") {
-                this.writeChat("users / /users          list connected Cat Chat members");
-                this.writeChat("/reply <id> <message>  reply to a chat message");
-                this.writeChat("/quit or /exit         close Cat Chat");
-                this.writeChat("plain text sends directly to Cat Chat", "muted");
-                return;
-            }
-            if (normalized === "/users" || normalized === "users" || normalized === "who") {
+            if (normalized === "/users") {
                 if (!this.chatMembers.length) {
                     this.writeChat("no member snapshot received yet", "muted");
                     return;
@@ -1553,22 +1785,25 @@
                 this.chatMembers.forEach(member => this.writeChat(`${member.name}${member.afk ? " (afk)" : ""}`));
                 return;
             }
-            if (commandLine.startsWith("/reply ")) {
-                const match = commandLine.match(/^\/reply\s+(\d+)\s+([\s\S]+)$/);
+            if (normalized.startsWith("/reply ")) {
+                const match = commandLine.match(/^\/reply\s+#?(\d+)\s+([\s\S]+)$/i);
                 if (!match) {
                     this.writeChat("usage: /reply <message-id> <message>", "warn");
                     return;
                 }
-                try { await this.sendChatMessage(match[2], match[1]); }
-                catch (error) { this.writeChat(`send failed: ${error.message}`, "warn"); }
+                try {
+                    await this.sendChatMessage(match[2], Number(match[1]));
+                } catch (error) {
+                    this.writeChat(`send failed: ${error.message}`, "warn");
+                }
                 return;
             }
             if (commandLine.startsWith("/")) {
-                this.writeChat("unknown chat command; use /help", "warn");
+                this.writeChat("available commands: /reply  /users  /exit", "warn");
                 return;
             }
             try {
-                await this.sendChatMessage(commandLine, this.chatReplyTargetId);
+                await this.sendChatMessage(commandLine, null);
             } catch (error) {
                 this.writeChat(`send failed: ${error.message}`, "warn");
             }
@@ -1579,7 +1814,7 @@
             if (["terminal", "term"].includes(value.toLowerCase())) return this.openWindow("terminal");
             if (["files", "explorer"].includes(value.toLowerCase())) return this.openWindow("explorer");
             if (value.toLowerCase() === "chat") { await this.enterChatClient(); return; }
-            if (value.toLowerCase() === "radio") { this.write("radio: not installed in this build", "warn"); return; }
+            if (value.toLowerCase() === "radio") { this.openWindow("radio"); return; }
             if (!value) { this.write("usage: open <app|path>"); return; }
             const path = this.resolveClientPath(value);
             try { const data = await this.api(`/api/test/jami/fs/stat?path=${encodeURIComponent(path)}`); if (data.node.kind === "folder") { this.openWindow("explorer"); await this.loadExplorer(path); } else await this.openTextFile(path); } catch { this.write(`${target}: application or file not found`, "warn"); }
