@@ -688,3 +688,72 @@
         transform: none !important;
     }
 }
+
+
+/* Pass 7: live Watch Party radio */
+.jami-radio-window {
+    width: min(390px, calc(100vw - 32px));
+    height: auto;
+}
+.jami-radio-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+}
+.jami-radio-state {
+    color: var(--jami-ok);
+    font-size: 11px;
+    text-transform: lowercase;
+}
+.jami-radio-title {
+    font-size: 18px;
+    line-height: 1.25;
+    color: var(--jami-text);
+}
+.jami-radio-meta, .jami-radio-note {
+    color: var(--jami-muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+.jami-radio-note {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 10px;
+}
+.jami-radio-actions button {
+    font: inherit;
+}
+
+/* Pass 7 corrected: two-source working radio */
+.jami-radio-modes {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.jami-radio-modes button.active {
+    text-decoration: underline;
+    font-weight: 700;
+}
+.jami-radio-modes button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+.jami-radio-player-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    min-height: 135px;
+    background: #000;
+    border: 1px solid currentColor;
+    overflow: hidden;
+}
+.jami-radio-player-wrap iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+.jami-radio-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
