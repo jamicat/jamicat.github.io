@@ -146,8 +146,11 @@
                                 <textarea class="jami-notepad-editor" data-jami-notepad-editor spellcheck="false"></textarea>
                                 <div class="jami-notepad-actions">
                                     <span data-jami-notepad-status></span>
+                                    <button type="button" data-jami-notepad-history>history</button>
+                                    <button type="button" data-jami-notepad-reload>reload</button>
                                     <button type="button" data-jami-notepad-save>save</button>
                                 </div>
+                                <div class="jami-notepad-history" data-jami-notepad-history-panel hidden></div>
                             </div>
                         `, "jami-notepad-window")}
 
@@ -176,18 +179,39 @@
                         ${this.windowMarkup("monitor", "system monitor", `
                             <div class="jami-window-body jami-monitor-body">
                                 <div class="jami-monitor-toolbar">
-                                    <span>live telemetry</span>
+                                    <span>live status</span>
                                     <button type="button" data-jami-monitor-refresh>refresh</button>
                                 </div>
                                 <div class="jami-monitor-grid">
-                                    <section><h3>network</h3><pre data-jami-monitor-network>loading…</pre></section>
-                                    <section><h3>filesystem</h3><pre data-jami-monitor-filesystem>loading…</pre></section>
-                                    <section><h3>browser</h3><pre data-jami-monitor-browser>loading…</pre></section>
-                                    <section><h3>services</h3><pre data-jami-monitor-services>loading…</pre></section>
+                                    <section><h3>connection</h3><pre data-jami-monitor-network>loading…</pre></section>
+                                    <section><h3>shared files</h3><pre data-jami-monitor-filesystem>loading…</pre></section>
+                                    <section><h3>this browser</h3><pre data-jami-monitor-browser>loading…</pre></section>
+                                    <section><h3>open things</h3><pre data-jami-monitor-services>loading…</pre></section>
                                 </div>
                                 <section class="jami-monitor-events"><h3>session journal</h3><div data-jami-monitor-events></div></section>
                             </div>
                         `, "jami-monitor-window")}
+                    </div>
+
+                    <div class="jami-context-menu" data-jami-context-menu hidden>
+                        <button type="button" data-jami-context-action="rename">rename</button>
+                        <button type="button" data-jami-context-action="move">move</button>
+                        <button type="button" data-jami-context-action="trash">trash</button>
+                    </div>
+
+                    <div class="jami-dialog-backdrop" data-jami-dialog hidden>
+                        <form class="jami-dialog" data-jami-dialog-form>
+                            <div class="jami-dialog-title" data-jami-dialog-title></div>
+                            <div class="jami-dialog-message" data-jami-dialog-message></div>
+                            <label class="jami-dialog-field" data-jami-dialog-field>
+                                <span data-jami-dialog-label></span>
+                                <input data-jami-dialog-input autocomplete="off">
+                            </label>
+                            <div class="jami-dialog-actions">
+                                <button type="button" data-jami-dialog-cancel>cancel</button>
+                                <button type="submit" data-jami-dialog-confirm>confirm</button>
+                            </div>
+                        </form>
                     </div>
 
                     <div class="jami-taskbar">
@@ -215,6 +239,7 @@
             this.radioTitle = this.root.querySelector("[data-jami-radio-title]");
             this.radioMeta = this.root.querySelector("[data-jami-radio-meta]");
             this.radioPlayer = this.root.querySelector("[data-jami-radio-player]");
+            this.radioPlayerWrap = this.root.querySelector(".jami-radio-player-wrap");
             this.radioNote = this.root.querySelector("[data-jami-radio-note]");
             this.radioModeButtons = [...this.root.querySelectorAll("[data-jami-radio-mode]")];
             this.radioNextButton = this.root.querySelector("[data-jami-radio-next]");
@@ -229,6 +254,18 @@
             this.notepadPresence = this.root.querySelector("[data-jami-notepad-presence]");
             this.notepadMeta = this.root.querySelector("[data-jami-notepad-meta]");
             this.notepadStatus = this.root.querySelector("[data-jami-notepad-status]");
+            this.notepadHistoryPanel = this.root.querySelector("[data-jami-notepad-history-panel]");
+            this.contextMenu = this.root.querySelector("[data-jami-context-menu]");
+            this.contextMenuItem = null;
+            this.dialogBackdrop = this.root.querySelector("[data-jami-dialog]");
+            this.dialogForm = this.root.querySelector("[data-jami-dialog-form]");
+            this.dialogTitle = this.root.querySelector("[data-jami-dialog-title]");
+            this.dialogMessage = this.root.querySelector("[data-jami-dialog-message]");
+            this.dialogField = this.root.querySelector("[data-jami-dialog-field]");
+            this.dialogLabel = this.root.querySelector("[data-jami-dialog-label]");
+            this.dialogInput = this.root.querySelector("[data-jami-dialog-input]");
+            this.dialogConfirm = this.root.querySelector("[data-jami-dialog-confirm]");
+            this.dialogResolve = null;
             this.monitorNetwork = this.root.querySelector("[data-jami-monitor-network]");
             this.monitorFilesystem = this.root.querySelector("[data-jami-monitor-filesystem]");
             this.monitorBrowser = this.root.querySelector("[data-jami-monitor-browser]");
@@ -272,6 +309,26 @@
                     this.closeWindow(button.dataset.jamiClose);
                 });
             });
+            this.root.querySelectorAll("[data-jami-minimize]").forEach(button => {
+                button.addEventListener("pointerdown", event => event.stopPropagation());
+                button.addEventListener("click", event => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    this.minimizeWindow(button.dataset.jamiMinimize);
+                });
+            });
+            this.root.querySelectorAll("[data-jami-window]").forEach(win => {
+                win.addEventListener("pointerdown", () => this.focusWindow(win.dataset.jamiWindow));
+            });
+            this.dialogForm?.addEventListener("submit", event => {
+                event.preventDefault();
+                const value = this.dialogInput?.value || "";
+                this.finishDialog({ confirmed: true, value });
+            });
+            this.root.querySelector("[data-jami-dialog-cancel]")?.addEventListener("click", () => this.finishDialog({ confirmed: false, value: "" }));
+            this.dialogBackdrop?.addEventListener("pointerdown", event => {
+                if (event.target === this.dialogBackdrop) this.finishDialog({ confirmed: false, value: "" });
+            });
 
             this.root.querySelector("[data-jami-exit]")?.addEventListener("click", () => this.close());
             this.root.querySelector("[data-jami-terminal-form]")?.addEventListener("submit", event => {
@@ -311,12 +368,34 @@
             this.root.querySelector("[data-jami-new-text]")?.addEventListener("click", () => this.promptCreate("text"));
             this.root.querySelector("[data-jami-new-folder]")?.addEventListener("click", () => this.promptCreate("folder"));
             this.root.querySelector("[data-jami-notepad-save]")?.addEventListener("click", () => this.saveNotepad());
+            this.root.querySelector("[data-jami-notepad-history]")?.addEventListener("click", () => this.toggleNotepadHistory());
+            this.root.querySelector("[data-jami-notepad-reload]")?.addEventListener("click", async () => {
+                if (!this.notepadPath) return;
+                if (this.notepadDirty) {
+                    const choice = await this.openDialog({
+                        title: "reload shared copy",
+                        message: "Your unsaved draft will be replaced by the latest saved version.",
+                        confirmText: "reload",
+                        input: false,
+                        danger: true
+                    });
+                    if (!choice.confirmed) return;
+                }
+                this.notepadDirty = false;
+                await this.reloadOpenFileFromServer(true);
+            });
             this.root.querySelector("[data-jami-monitor-refresh]")?.addEventListener("click", () => this.refreshSystemMonitor());
             this.root.querySelector("[data-jami-radio-refresh]")?.addEventListener("click", () => this.refreshRadio(true));
             this.root.querySelector("[data-jami-radio-play]")?.addEventListener("click", () => this.radioPlay());
             this.root.querySelector("[data-jami-radio-pause]")?.addEventListener("click", () => this.radioPause());
             this.root.querySelector("[data-jami-radio-next]")?.addEventListener("click", () => this.radioNext());
             this.radioModeButtons.forEach(button => button.addEventListener("click", () => this.setRadioMode(button.dataset.jamiRadioMode, true)));
+            this.root.querySelectorAll("[data-jami-context-action]").forEach(button => {
+                button.addEventListener("click", () => this.runContextAction(button.dataset.jamiContextAction));
+            });
+            this.root.addEventListener("pointerdown", event => {
+                if (!event.target.closest("[data-jami-context-menu]")) this.hideContextMenu();
+            });
 
             this.notepadEditor?.addEventListener("input", () => {
                 if (!this.notepadNodeId || this.notepadEditor.readOnly) return;
@@ -345,7 +424,7 @@
         }
 
         windowMarkup(id, title, body, extraClass = "") {
-            return `<section class="jami-window ${extraClass}" data-jami-window="${id}" hidden><div class="jami-window-titlebar" data-jami-drag-handle><span class="jami-window-title" data-jami-title="${id}">${title}</span><button class="jami-window-close" type="button" data-jami-close="${id}" aria-label="Close ${title}">×</button></div>${body}</section>`;
+            return `<section class="jami-window ${extraClass}" data-jami-window="${id}" hidden><div class="jami-window-titlebar" data-jami-drag-handle><span class="jami-window-title" data-jami-title="${id}">${title}</span><div class="jami-window-controls"><button class="jami-window-minimize" type="button" data-jami-minimize="${id}" aria-label="Minimize ${title}">–</button><button class="jami-window-close" type="button" data-jami-close="${id}" aria-label="Close ${title}">×</button></div></div>${body}</section>`;
         }
 
         async open() {
@@ -430,7 +509,7 @@
                     if (this.isWindowOpen("explorer")) this.loadExplorer(this.explorerPath, false);
                     if (this.notepadPath && packet.node?.path === this.notepadPath && packet.action === "write") {
                         if (Number(packet.node?.revision) > Number(this.notepadRevision) && this.notepadDirty) {
-                            this.notepadStatus.textContent = "saved by another visitor — your local draft now has a revision conflict";
+                            this.notepadStatus.textContent = "another save arrived first · your draft is still here · open history or reload before saving";
                             this.notepadStatus.classList.add("jami-warning");
                         } else if (Number(packet.node?.revision) > Number(this.notepadRevision)) {
                             this.reloadOpenFileFromServer();
@@ -457,20 +536,85 @@
             this.socket.addEventListener("error", () => this.setNetworkLabel("network error"));
         }
 
-        sendIdentify() { this.send({ type: "jami-identify", clientId: this.clientId, sessionId: this.sessionId, name: this.name, path: this.currentPath, app: this.currentApp }); }
-        setActivity(path, app) { this.currentPath = path || "/"; this.currentApp = app || "desktop"; this.updatePrompt(); this.send({ type: "jami-activity", path: this.currentPath, app: this.currentApp }); }
+        currentSharedState() {
+            const watch = this.getLiveWatchPartyState?.();
+            return {
+                watchPartyActive: watch?.enabled === true,
+                radioMode: this.isWindowOpen?.("radio") ? this.radioMode || null : null
+            };
+        }
+        sendIdentify() {
+            this.send({ type: "jami-identify", clientId: this.clientId, sessionId: this.sessionId, name: this.name, path: this.currentPath, app: this.currentApp, ...this.currentSharedState() });
+        }
+        setActivity(path, app) {
+            this.currentPath = path || "/";
+            this.currentApp = app || "desktop";
+            this.updatePrompt();
+            this.send({ type: "jami-activity", path: this.currentPath, app: this.currentApp, ...this.currentSharedState() });
+        }
         send(packet) { if (this.socket?.readyState === WebSocket.OPEN) this.socket.send(JSON.stringify(packet)); }
-        startPings() { this.stopPings(); this.pingTimer = setInterval(() => { const sentAt = Date.now(); this.send({ type: "ping", sentAt }); }, 5000); }
+        startPings() { this.stopPings(); this.pingTimer = setInterval(() => { const sentAt = Date.now(); this.send({ type: "ping", sentAt, ...this.currentSharedState() }); }, 5000); }
         stopPings() { clearInterval(this.pingTimer); this.pingTimer = null; }
         setNetworkLabel(text) { if (this.networkLabel) this.networkLabel.textContent = text; }
         updateClock() { if (this.clockLabel) this.clockLabel.textContent = new Intl.DateTimeFormat(undefined, { hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(new Date()); }
         isWindowOpen(id) { return !this.root.querySelector(`[data-jami-window="${id}"]`)?.hidden; }
 
+        focusWindow(id) {
+            const win = this.root.querySelector(`[data-jami-window="${id}"]`);
+            if (!win || win.hidden) return;
+            win.style.zIndex = String(++this.zCounter);
+            this.root.querySelectorAll(".jami-task-button").forEach(button => {
+                const target = button.dataset.jamiOpen || (button.hasAttribute("data-jami-open-chat") ? "chat" : "");
+                button.classList.toggle("active", target === id);
+            });
+        }
+
+        minimizeWindow(id) {
+            const win = this.root.querySelector(`[data-jami-window="${id}"]`);
+            if (!win || win.hidden) return;
+            win.dataset.minimized = "1";
+            win.hidden = true;
+            this.addSystemEvent(`minimized ${id}`);
+            this.root.querySelectorAll(".jami-task-button").forEach(button => {
+                const target = button.dataset.jamiOpen || (button.hasAttribute("data-jami-open-chat") ? "chat" : "");
+                if (target === id) button.classList.add("minimized");
+            });
+        }
+
+        openDialog({ title = "", message = "", label = "", value = "", confirmText = "confirm", input = true, danger = false } = {}) {
+            if (!this.dialogBackdrop) return Promise.resolve({ confirmed: false, value: "" });
+            if (this.dialogResolve) this.finishDialog({ confirmed: false, value: "" });
+            this.dialogTitle.textContent = title;
+            this.dialogMessage.textContent = message;
+            this.dialogMessage.hidden = !message;
+            this.dialogField.hidden = !input;
+            this.dialogLabel.textContent = label;
+            this.dialogInput.value = value;
+            this.dialogConfirm.textContent = confirmText;
+            this.dialogConfirm.classList.toggle("danger", danger);
+            this.dialogBackdrop.hidden = false;
+            if (input) setTimeout(() => { this.dialogInput.focus(); this.dialogInput.select(); }, 0);
+            else setTimeout(() => this.dialogConfirm.focus(), 0);
+            return new Promise(resolve => { this.dialogResolve = resolve; });
+        }
+
+        finishDialog(result) {
+            if (this.dialogBackdrop) this.dialogBackdrop.hidden = true;
+            const resolve = this.dialogResolve;
+            this.dialogResolve = null;
+            if (resolve) resolve(result);
+        }
+
         openWindow(id) {
             const win = this.root.querySelector(`[data-jami-window="${id}"]`);
             if (!win) return;
             win.hidden = false;
-            win.style.zIndex = String(++this.zCounter);
+            win.dataset.minimized = "0";
+            this.root.querySelectorAll(".jami-task-button").forEach(button => {
+                const target = button.dataset.jamiOpen || (button.hasAttribute("data-jami-open-chat") ? "chat" : "");
+                if (target === id) button.classList.remove("minimized");
+            });
+            this.focusWindow(id);
             this.addSystemEvent(`opened ${id}`);
             if (id === "terminal") { this.setActivity(this.currentPath, "terminal"); setTimeout(() => this.input?.focus(), 0); }
             if (id === "chat") { this.setActivity(this.currentPath, "cat-chat"); setTimeout(() => this.chatInput?.focus(), 0); }
@@ -484,6 +628,11 @@
             const win = this.root.querySelector(`[data-jami-window="${id}"]`);
             if (!win || win.hidden) return;
             win.hidden = true;
+            win.dataset.minimized = "0";
+            this.root.querySelectorAll(".jami-task-button").forEach(button => {
+                const target = button.dataset.jamiOpen || (button.hasAttribute("data-jami-open-chat") ? "chat" : "");
+                if (target === id) button.classList.remove("minimized", "active");
+            });
             this.addSystemEvent(`closed ${id}`);
             if (id === "notepad") this.sendFilePresence("close");
             if (id === "chat") this.leaveChatClient(false);
@@ -579,10 +728,10 @@
             const networkAge = status?.networkCreatedAt ? Math.max(0, Math.floor((Date.now() - status.networkCreatedAt) / 1000)) : null;
             if (this.monitorNetwork) {
                 this.monitorNetwork.textContent = [
-                    `jami websocket   ${socketState}`,
-                    `round trip       ${this.latencyMs == null ? "unknown" : `${this.latencyMs} ms`}`,
-                    `sessions         ${status?.users?.length ?? this.users.length}`,
-                    `network uptime   ${networkAge == null ? "unknown" : this.formatDuration(networkAge)}`,
+                    `Jami connection  ${socketState}`,
+                    `measured RTT     ${this.latencyMs == null ? "unavailable" : `${this.latencyMs} ms`}`,
+                    `people in Jami   ${status?.users?.length ?? this.users.length}`,
+                    `shared session   ${networkAge == null ? "unavailable" : this.formatDuration(networkAge)}`,
                     `browser online   ${navigator.onLine ? "yes" : "no"}`
                 ].join("\n");
             }
@@ -599,21 +748,21 @@
             const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
             if (this.monitorBrowser) {
                 this.monitorBrowser.textContent = [
-                    `visibility       ${document.visibilityState}`,
-                    `language         ${navigator.language || "unknown"}`,
-                    `logical cores    ${navigator.hardwareConcurrency || "unavailable"}`,
-                    `connection type  ${connection?.effectiveType || "unavailable"}`,
-                    `reported rtt     ${Number.isFinite(connection?.rtt) ? `${connection.rtt} ms` : "unavailable"}`
+                    `page visibility  ${document.visibilityState}`,
+                    `language         ${navigator.language || "unavailable"}`,
+                    `connection class ${connection?.effectiveType || "unavailable"}`,
+                    `browser RTT est. ${Number.isFinite(connection?.rtt) ? `${connection.rtt} ms` : "unavailable"}`
                 ].join("\n");
             }
             const wpState = watchParty?.state || watchParty;
             const wpActive = Boolean(wpState?.enabled || wpState?.active || wpState?.videoId || wpState?.currentVideoId);
             if (this.monitorServices) {
                 this.monitorServices.textContent = [
-                    `terminal         ${this.isWindowOpen("terminal") ? "open" : "closed"}`,
-                    `explorer         ${this.isWindowOpen("explorer") ? "open" : "closed"}`,
+                    `Jami             ${this.isOpen ? "open" : "closed"}`,
+                    `files            ${this.isWindowOpen("explorer") ? "open" : "closed"}`,
                     `notepad          ${this.isWindowOpen("notepad") ? "open" : "closed"}`,
                     `live chat        ${this.chatSocket?.readyState === WebSocket.OPEN ? "connected" : this.chatMode ? "connecting" : "idle"}`,
+                    `radio            ${this.isWindowOpen("radio") ? this.radioMode || "open" : "closed"}`,
                     `watch party      ${wpActive ? "active" : "inactive"}`
                 ].join("\n");
             }
@@ -815,7 +964,7 @@
 
                 card.addEventListener("contextmenu", event => {
                     event.preventDefault();
-                    this.fileContextAction(item);
+                    this.fileContextAction(item, event);
                 });
 
                 if (!item.system && item.owner === "public" && this.explorerPath.startsWith("/public")) {
@@ -880,10 +1029,11 @@
                 ? ` ${editors.map(editor => editor.name).join(", ")} ${editors.length === 1 ? "is" : "are"} editing too.`
                 : "";
             const cursorText = editors.length === 1 && Number.isFinite(Number(editors[0].cursorStart))
-                ? ` cursor @ ${editors[0].cursorStart}`
+                ? ` · ${editors[0].name}'s cursor is at character ${editors[0].cursorStart}`
                 : "";
+            const mismatchText = presence?.ambientMismatch ? " · reader count briefly disagrees with the session list" : "";
 
-            this.notepadPresence.textContent = `${readerText}${editorText}${cursorText}`;
+            this.notepadPresence.textContent = `${readerText}${editorText}${cursorText}${mismatchText}`;
         }
 
         sendFilePresence(mode = "read") {
@@ -917,7 +1067,7 @@
             if (!this.notepadNodeId || packet.fileId !== this.notepadNodeId || packet.sessionId === this.sessionId) return;
 
             const cursor = Number(packet.cursorStart) || 0;
-            this.notepadStatus.textContent = `${packet.name || "another cat"} is typing… cursor @ ${cursor}`;
+            this.notepadStatus.textContent = `${packet.name || "another cat"} is typing · cursor at character ${cursor}`;
             this.notepadStatus.classList.remove("jami-warning");
 
             if (!this.notepadDirty && typeof packet.content === "string") {
@@ -933,8 +1083,8 @@
             }
         }
 
-        async reloadOpenFileFromServer() {
-            if (!this.notepadPath || this.notepadDirty) return;
+        async reloadOpenFileFromServer(force = false) {
+            if (!this.notepadPath || (this.notepadDirty && !force)) return;
             try {
                 const data = await this.api(`/api/test/jami/fs/read?path=${encodeURIComponent(this.notepadPath)}`);
                 if (data.node?.id !== this.notepadNodeId) return;
@@ -993,6 +1143,12 @@
                 event.preventDefault();
                 event.stopPropagation();
                 try {
+                    const snap = value => Math.max(-120, Math.min(120, Math.round((Number(value) || 0) / 16) * 16));
+                    const snappedX = snap(card.dataset.iconX);
+                    const snappedY = snap(card.dataset.iconY);
+                    card.dataset.iconX = String(snappedX);
+                    card.dataset.iconY = String(snappedY);
+                    card.style.transform = `translate(${snappedX}px, ${snappedY}px)`;
                     const data = await this.api("/api/test/jami/fs/position", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -1000,8 +1156,8 @@
                             sessionId: this.sessionId,
                             name: this.name,
                             id: item.id,
-                            x: Number(card.dataset.iconX) || 0,
-                            y: Number(card.dataset.iconY) || 0
+                            x: snappedX,
+                            y: snappedY
                         })
                     });
                     item.iconPosition = data.node.iconPosition;
@@ -1040,8 +1196,15 @@
                 return;
             }
             const suggested = kind === "folder" ? "new-folder" : "note.txt";
-            const nodeName = window.prompt(`Create ${kind} in ${this.explorerPath}:`, suggested);
-            if (!nodeName) return;
+            const choice = await this.openDialog({
+                title: kind === "folder" ? "new folder" : "new text file",
+                message: this.explorerPath,
+                label: "name",
+                value: suggested,
+                confirmText: "create"
+            });
+            if (!choice.confirmed || !choice.value.trim()) return;
+            const nodeName = choice.value.trim();
             try {
                 await this.api("/api/test/jami/fs/create", {
                     method: "POST", headers: { "Content-Type": "application/json" },
@@ -1051,23 +1214,69 @@
             } catch (error) { this.explorerStatus.textContent = error.message; }
         }
 
-        async fileContextAction(item) {
-            if (item.system) { this.explorerStatus.textContent = "permission denied: owner is jami"; return; }
-            const action = window.prompt(`Action for ${item.name}: rename / move / trash`, "rename");
-            if (!action) return;
+        fileContextAction(item, event) {
+            if (item.system) {
+                this.explorerStatus.textContent = "permission denied: owner is jami";
+                this.hideContextMenu();
+                return;
+            }
+            this.contextMenuItem = item;
+            if (!this.contextMenu) return;
+            const shell = this.root.querySelector(".jami-shell")?.getBoundingClientRect();
+            const left = Math.max(8, Math.min((shell?.width || innerWidth) - 150, event.clientX - (shell?.left || 0)));
+            const top = Math.max(8, Math.min((shell?.height || innerHeight) - 120, event.clientY - (shell?.top || 0)));
+            this.contextMenu.style.left = `${left}px`;
+            this.contextMenu.style.top = `${top}px`;
+            this.contextMenu.hidden = false;
+        }
+
+        hideContextMenu() {
+            if (this.contextMenu) this.contextMenu.hidden = true;
+            this.contextMenuItem = null;
+        }
+
+        async runContextAction(action) {
+            const item = this.contextMenuItem;
+            this.hideContextMenu();
+            if (!item) return;
             try {
-                if (action.toLowerCase() === "trash") {
-                    await this.trashPath(item.path);
-                } else if (action.toLowerCase() === "rename") {
-                    const newName = window.prompt("New name:", item.name);
-                    if (!newName) return;
-                    await this.movePath(item.path, this.explorerPath, newName);
-                } else if (action.toLowerCase() === "move") {
-                    const destinationPath = window.prompt("Destination folder:", "/public");
-                    if (!destinationPath) return;
-                    await this.movePath(item.path, destinationPath, item.name);
+                if (action === "trash") {
+                    const choice = await this.openDialog({
+                        title: "move to trash",
+                        message: item.path,
+                        confirmText: "trash",
+                        input: false,
+                        danger: true
+                    });
+                    if (choice.confirmed) await this.trashPath(item.path);
+                    return;
                 }
-            } catch (error) { this.explorerStatus.textContent = error.message; }
+                if (action === "rename") {
+                    const choice = await this.openDialog({
+                        title: "rename",
+                        message: item.path,
+                        label: "new name",
+                        value: item.name,
+                        confirmText: "rename"
+                    });
+                    if (!choice.confirmed || !choice.value.trim()) return;
+                    await this.movePath(item.path, this.explorerPath, choice.value.trim());
+                    return;
+                }
+                if (action === "move") {
+                    const choice = await this.openDialog({
+                        title: "move",
+                        message: item.path,
+                        label: "destination folder",
+                        value: "/public",
+                        confirmText: "move"
+                    });
+                    if (!choice.confirmed || !choice.value.trim()) return;
+                    await this.movePath(item.path, choice.value.trim(), item.name);
+                }
+            } catch (error) {
+                this.explorerStatus.textContent = error.message;
+            }
         }
 
         async openTextFile(path) {
@@ -1082,12 +1291,53 @@
                 this.notepadEditor.readOnly = data.node.system === true;
                 this.notepadMeta.textContent = `${data.node.path} · owner ${data.node.owner} · revision ${data.node.revision} · ${data.node.size} bytes${data.node.system ? " · read-only" : ""}`;
                 this.notepadStatus.textContent = data.node.system ? "system file" : "ready";
+                if (this.notepadHistoryPanel) this.notepadHistoryPanel.hidden = true;
                 this.notepadStatus.classList.remove("jami-warning");
                 this.root.querySelector('[data-jami-title="notepad"]').textContent = `notepad // ${data.node.name}`;
                 this.openWindow("notepad");
                 this.sendFilePresence("read");
                 this.updateNotepadPresence();
             } catch (error) { this.write(`${path}: ${error.message}`, "warn"); }
+        }
+
+        async toggleNotepadHistory() {
+            if (!this.notepadNodeId || !this.notepadPath || !this.notepadHistoryPanel) return;
+            if (!this.notepadHistoryPanel.hidden) {
+                this.notepadHistoryPanel.hidden = true;
+                return;
+            }
+            this.notepadHistoryPanel.hidden = false;
+            this.notepadHistoryPanel.textContent = "loading history…";
+            try {
+                const data = await this.api(`/api/test/jami/fs/revisions?path=${encodeURIComponent(this.notepadPath)}`);
+                const rows = Array.isArray(data.revisions) ? data.revisions : [];
+                this.notepadHistoryPanel.textContent = "";
+                if (!rows.length) {
+                    this.notepadHistoryPanel.textContent = "no earlier revisions";
+                    return;
+                }
+                const heading = document.createElement("div");
+                heading.className = "jami-history-heading";
+                heading.textContent = "saved revisions";
+                this.notepadHistoryPanel.appendChild(heading);
+                rows.slice().reverse().forEach(entry => {
+                    const row = document.createElement("button");
+                    row.type = "button";
+                    row.className = "jami-history-row";
+                    const when = Number(entry.modifiedAt) ? new Date(entry.modifiedAt).toLocaleString() : "unknown time";
+                    row.textContent = `r${entry.revision} · ${when}${entry.modifiedByName ? ` · ${entry.modifiedByName}` : ""}`;
+                    row.addEventListener("click", () => {
+                        const preview = document.createElement("pre");
+                        preview.className = "jami-history-preview";
+                        preview.textContent = entry.content || "";
+                        this.notepadHistoryPanel.querySelector(".jami-history-preview")?.remove();
+                        this.notepadHistoryPanel.appendChild(preview);
+                    });
+                    this.notepadHistoryPanel.appendChild(row);
+                });
+            } catch (error) {
+                this.notepadHistoryPanel.textContent = error.message;
+            }
         }
 
         async saveNotepad() {
@@ -1325,7 +1575,7 @@
                 if (name === "chat") this.write("/programs/chat");
                 else if (name === "monitor") this.write("built-in: system monitor");
                 else if (name === "radio") this.write("built-in: radio");
-                else this.write(`${name}: Jami terminal builtin`);
+                else this.write(`${name}: built in to Jami`);
             } else {
                 this.write(`${command}: not found`, "warn");
             }
@@ -1384,16 +1634,21 @@
             this.radioMode = null;
             this.radioWatchParty = null;
             this.radioStationPlaying = true;
-            this.muteSitePlayerForRadio();
+            this.radioServerPollAt = 0;
             this.refreshRadio(true);
-            this.radioTimer = setInterval(() => this.refreshRadio(false), 3000);
+            this.radioTimer = setInterval(() => this.refreshRadio(false), 500);
         }
 
         stopRadio(restoreVolume = true) {
             clearInterval(this.radioTimer);
             this.radioTimer = null;
             this.radioCurrentVideoId = null;
-            if (this.radioPlayer) this.radioPlayer.src = "about:blank";
+            this.radioServerPollAt = 0;
+            if (this.radioPlayer) {
+                this.radioPlayer.src = "about:blank";
+                this.radioPlayer.hidden = false;
+            }
+            if (this.radioPlayerWrap) this.radioPlayerWrap.hidden = false;
             if (restoreVolume) this.restoreSitePlayerAfterRadio();
         }
 
@@ -1424,18 +1679,76 @@
             }), "*");
         }
 
-        radioPlay() {
-            this.radioStationPlaying = true;
-            this.radioPostMessage("playVideo");
+        getLiveWatchPartyState() {
+            const chatState = window.chat?.watchParty;
+            if (chatState && typeof chatState === "object") {
+                return {
+                    enabled: chatState.enabled === true,
+                    currentVideoId: chatState.currentVideoId || null,
+                    currentIndex: Number.isInteger(chatState.currentIndex) ? chatState.currentIndex : 0,
+                    startedAt: Number.isFinite(Number(chatState.startedAt)) ? Number(chatState.startedAt) : null,
+                    paused: chatState.paused === true,
+                    pausedAt: Number.isFinite(Number(chatState.pausedAt)) ? Number(chatState.pausedAt) : null,
+                    queue: Array.isArray(chatState.queue) ? chatState.queue : []
+                };
+            }
+            return this.radioWatchParty || null;
         }
 
-        radioPause() {
+        async watchPartyAction(endpoint, extraBody = {}) {
+            const state = this.getLiveWatchPartyState();
+            if (!state?.enabled) return;
+            const playerState = window.watchPartyPlayer?.getState?.() || {};
+            const body = { clientId: this.clientId, ...extraBody };
+            if (Number.isFinite(playerState.currentTime)) body.currentTime = playerState.currentTime;
+
+            const response = await fetch(`${API}/api/watchparty/${endpoint}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+            let result = null;
+            try { result = await response.json(); } catch {}
+            if (!response.ok) throw new Error(result?.error || `Watch Party request failed (${response.status})`);
+            return result;
+        }
+
+        async radioPlay() {
+            if (this.radioMode === "watchparty") {
+                try { await this.watchPartyAction("play"); }
+                catch (error) { if (this.radioMeta) this.radioMeta.textContent = error.message; }
+                return;
+            }
+            this.radioStationPlaying = true;
+            this.radioPostMessage("playVideo");
+            this.renderRadioStation(false);
+        }
+
+        async radioPause() {
+            if (this.radioMode === "watchparty") {
+                try { await this.watchPartyAction("pause"); }
+                catch (error) { if (this.radioMeta) this.radioMeta.textContent = error.message; }
+                return;
+            }
             this.radioStationPlaying = false;
             this.radioPostMessage("pauseVideo");
+            this.renderRadioStation(false);
         }
 
         async radioNext() {
-            if (this.radioMode !== "station") return;
+            if (this.radioMode === "watchparty") {
+                const state = this.getLiveWatchPartyState();
+                if (!state?.enabled || !state.currentVideoId) return;
+                try {
+                    await this.watchPartyAction("next", {
+                        expectedVideoId: state.currentVideoId,
+                        expectedIndex: state.currentIndex
+                    });
+                } catch (error) {
+                    if (this.radioMeta) this.radioMeta.textContent = error.message;
+                }
+                return;
+            }
             if (!this.radioPlaylist.length) await this.loadRadioPlaylist();
             if (!this.radioPlaylist.length) return;
             this.radioStationIndex = (this.radioStationIndex + 1) % this.radioPlaylist.length;
@@ -1445,30 +1758,47 @@
         }
 
         async setRadioMode(mode, userInitiated = false) {
-            if (mode === "watchparty" && !this.radioWatchParty?.enabled) return;
-            if (!['watchparty', 'station'].includes(mode)) return;
+            const currentWatch = this.getLiveWatchPartyState();
+            if (mode === "watchparty" && !currentWatch?.enabled) return;
+            if (!["watchparty", "station"].includes(mode)) return;
+
             this.radioMode = mode;
             this.radioCurrentVideoId = null;
-            this.updateRadioModeButtons();
-            if (mode === "station") {
+
+            if (mode === "watchparty") {
+                this.restoreSitePlayerAfterRadio();
+                if (this.radioPlayerWrap) this.radioPlayerWrap.hidden = true;
+                if (this.radioPlayer) this.radioPlayer.src = "about:blank";
+                const state = this.getLiveWatchPartyState();
+                if (state?.enabled) window.watchPartyPlayer?.applyState?.(state);
+                this.renderRadioWatchParty();
+            } else {
+                this.muteSitePlayerForRadio();
+                if (this.radioPlayerWrap) this.radioPlayerWrap.hidden = false;
                 await this.loadRadioPlaylist();
                 this.renderRadioStation(true);
-            } else {
-                this.renderRadioWatchParty(true);
             }
-            if (userInitiated) this.addSystemEvent(`radio source: ${mode === "watchparty" ? "watch party" : "radio station"}`);
+
+            this.updateRadioModeButtons();
+            if (this.isWindowOpen("radio")) this.setActivity(this.currentPath, "radio");
+            if (userInitiated) {
+                this.addSystemEvent(`radio source: ${mode === "watchparty" ? "watch party" : "radio station"}`);
+            }
         }
 
         updateRadioModeButtons() {
+            const watchState = this.getLiveWatchPartyState();
             this.radioModeButtons?.forEach(button => {
                 const mode = button.dataset.jamiRadioMode;
                 button.classList.toggle("active", mode === this.radioMode);
                 if (mode === "watchparty") {
-                    button.disabled = !this.radioWatchParty?.enabled;
-                    button.title = this.radioWatchParty?.enabled ? "Listen to the active Watch Party" : "Watch Party is not active";
+                    button.disabled = !watchState?.enabled;
+                    button.title = watchState?.enabled
+                        ? "Listen through the site's synchronized Watch Party player"
+                        : "Watch Party is not active";
                 }
             });
-            if (this.radioNextButton) this.radioNextButton.disabled = this.radioMode !== "station";
+            if (this.radioNextButton) this.radioNextButton.disabled = false;
         }
 
         radioEmbed(videoId, startSeconds = 0, autoplay = true) {
@@ -1496,6 +1826,7 @@
         }
 
         renderRadioStation(forceLoad = false) {
+            if (this.radioPlayerWrap) this.radioPlayerWrap.hidden = false;
             const item = this.radioPlaylist[this.radioStationIndex];
             if (!item) {
                 if (this.radioState) this.radioState.textContent = "off air";
@@ -1507,63 +1838,92 @@
             if (this.radioTitle) this.radioTitle.textContent = item.title || item.videoId;
             if (this.radioMeta) this.radioMeta.textContent = `${this.radioStationIndex + 1} / ${this.radioPlaylist.length}`;
             if (this.radioNote) this.radioNote.textContent = "Radio station uses the site's real playlist.";
-            if (forceLoad || this.radioCurrentVideoId !== item.videoId) this.radioEmbed(item.videoId, 0, this.radioStationPlaying);
+            if (forceLoad || this.radioCurrentVideoId !== item.videoId) {
+                this.radioEmbed(item.videoId, 0, this.radioStationPlaying);
+            }
         }
 
-        renderRadioWatchParty(forceLoad = false) {
-            const state = this.radioWatchParty || {};
-            const queue = Array.isArray(state.queue) ? state.queue : [];
-            const item = queue[state.currentIndex] || queue.find(entry => entry.videoId === state.currentVideoId);
+        renderRadioWatchParty() {
+            const state = this.getLiveWatchPartyState() || {};
+            if (this.radioPlayerWrap) this.radioPlayerWrap.hidden = true;
+
             if (!state.enabled || !state.currentVideoId) {
-                if (this.radioMode === "watchparty") this.radioMode = "station";
+                this.radioMode = "station";
                 this.updateRadioModeButtons();
+                this.muteSitePlayerForRadio();
+                if (this.radioPlayerWrap) this.radioPlayerWrap.hidden = false;
                 this.loadRadioPlaylist().then(() => this.renderRadioStation(true));
                 return;
             }
-            const seconds = state.paused && state.pausedAt
-                ? Math.max(0, (Number(state.pausedAt) - Number(state.startedAt || state.pausedAt)) / 1000)
-                : state.startedAt ? Math.max(0, (Date.now() - Number(state.startedAt)) / 1000) : 0;
+
+            const queue = Array.isArray(state.queue) ? state.queue : [];
+            const item = queue[state.currentIndex] || queue.find(entry => entry.videoId === state.currentVideoId);
+            const playerState = window.watchPartyPlayer?.getState?.() || {};
+            let seconds = Number.isFinite(playerState.currentTime) ? playerState.currentTime : null;
+            if (!Number.isFinite(seconds)) {
+                seconds = state.paused && Number.isFinite(state.pausedAt) && Number.isFinite(state.startedAt)
+                    ? Math.max(0, (state.pausedAt - state.startedAt) / 1000)
+                    : Number.isFinite(state.startedAt)
+                        ? Math.max(0, (Date.now() - state.startedAt) / 1000)
+                        : 0;
+            }
+
             if (this.radioState) this.radioState.textContent = state.paused ? "watch party · paused" : "watch party · live";
             if (this.radioTitle) this.radioTitle.textContent = item?.title || state.currentVideoId;
             const parts = [];
             if (item?.requestedByName) parts.push(`requested by ${item.requestedByName}`);
             parts.push(this.formatTime(seconds));
+            if (Number.isFinite(playerState.duration) && playerState.duration > 0) parts.push(`of ${this.formatTime(playerState.duration)}`);
             if (this.radioMeta) this.radioMeta.textContent = parts.join(" · ");
-            if (this.radioNote) this.radioNote.textContent = "This player follows the site's live Watch Party.";
-            if (forceLoad || this.radioCurrentVideoId !== state.currentVideoId) {
-                this.radioEmbed(state.currentVideoId, seconds, !state.paused);
-            } else {
-                this.radioPostMessage(state.paused ? "pauseVideo" : "playVideo");
-            }
+            if (this.radioNote) this.radioNote.textContent = "Using the same synchronized player and state as the site's Watch Party panel.";
         }
 
         async refreshRadio(forceLoad = false) {
             if (!this.isWindowOpen("radio")) return;
-            try {
-                const response = await fetch(`${API}/api/watchparty`, { cache: "no-store" });
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const data = await response.json();
-                const raw = data?.state || {};
-                this.radioWatchParty = {
-                    ...raw,
-                    queue: Array.isArray(data?.queue) ? data.queue : (Array.isArray(raw.queue) ? raw.queue : [])
-                };
-
-                if (!this.radioMode) this.radioMode = this.radioWatchParty.enabled ? "watchparty" : "station";
-                if (this.radioMode === "watchparty" && !this.radioWatchParty.enabled) this.radioMode = "station";
-                this.updateRadioModeButtons();
-
-                if (this.radioMode === "watchparty") {
-                    this.renderRadioWatchParty(forceLoad);
-                } else {
-                    await this.loadRadioPlaylist();
-                    this.renderRadioStation(forceLoad);
-                }
-            } catch (error) {
-                if (this.radioState) this.radioState.textContent = "unavailable";
-                if (this.radioTitle) this.radioTitle.textContent = "radio unavailable";
-                if (this.radioMeta) this.radioMeta.textContent = error.message;
+            if (!this.lastRadioPresenceAt || Date.now() - this.lastRadioPresenceAt > 5000) {
+                this.lastRadioPresenceAt = Date.now();
+                this.setActivity(this.currentPath, "radio");
             }
+
+            const nowMs = Date.now();
+            const localState = window.chat?.watchParty;
+
+            if (!localState || forceLoad || nowMs - (this.radioServerPollAt || 0) > 3000) {
+                this.radioServerPollAt = nowMs;
+                try {
+                    const response = await fetch(`${API}/api/watchparty`, { cache: "no-store" });
+                    if (response.ok) {
+                        const data = await response.json();
+                        const raw = data?.state || {};
+                        this.radioWatchParty = {
+                            enabled: raw.enabled === true,
+                            currentVideoId: raw.currentVideoId || null,
+                            currentIndex: Number.isInteger(raw.currentIndex) ? raw.currentIndex : 0,
+                            startedAt: Number.isFinite(Number(raw.startedAt)) ? Number(raw.startedAt) : null,
+                            paused: raw.paused === true,
+                            pausedAt: Number.isFinite(Number(raw.pausedAt)) ? Number(raw.pausedAt) : null,
+                            queue: Array.isArray(data?.queue) ? data.queue : (Array.isArray(raw.queue) ? raw.queue : [])
+                        };
+                        if (!localState && this.radioWatchParty.enabled) {
+                            window.watchPartyPlayer?.applyState?.(this.radioWatchParty);
+                        }
+                    }
+                } catch {}
+            }
+
+            const current = this.getLiveWatchPartyState();
+            if (!this.radioMode) this.radioMode = current?.enabled ? "watchparty" : "station";
+            if (this.radioMode === "watchparty" && !current?.enabled) this.radioMode = "station";
+
+            if (this.radioMode === "watchparty") {
+                this.restoreSitePlayerAfterRadio();
+                this.renderRadioWatchParty();
+            } else {
+                this.muteSitePlayerForRadio();
+                await this.loadRadioPlaylist();
+                this.renderRadioStation(forceLoad);
+            }
+            this.updateRadioModeButtons();
         }
 
         async commandNowPlaying() { this.write("querying watch party…", "muted"); const response = await fetch(`${API}/api/watchparty`); if (!response.ok) throw new Error(`HTTP ${response.status}`); const data = await response.json(); const state = data?.state || {}; const queue = Array.isArray(data?.queue) ? data.queue : []; const item = queue[state.currentIndex] || queue.find(entry => entry.videoId === state.currentVideoId); if (!state.enabled || !state.currentVideoId) { this.write("watch party: inactive"); return; } this.write("WATCH PARTY", "ok"); this.write(`title       ${item?.title || state.currentVideoId}`); this.write(`requested   ${item?.requestedByName || "unknown"}`); this.write(`state       ${state.paused ? "paused" : "playing"}`); if (state.startedAt) { const seconds = state.paused && state.pausedAt ? Math.max(0, (Number(state.pausedAt) - Number(state.startedAt)) / 1000) : Math.max(0, (Date.now() - Number(state.startedAt)) / 1000); this.write(`position    ${this.formatTime(seconds)}`); } }
@@ -1601,19 +1961,42 @@
         }
 
         hideSiteChat() {
-            if (this.siteChatElement) return;
+            if (!this.siteChatHiddenElements) this.siteChatHiddenElements = new Map();
+            const candidates = new Set([
+                this.getSiteChatWindow(),
+                ...document.querySelectorAll("#chatWindow, #chat-window, [data-chat-window]")
+            ]);
+            for (const element of candidates) {
+                if (!(element instanceof Element)) continue;
+                if (!this.siteChatHiddenElements.has(element)) {
+                    this.siteChatHiddenElements.set(element, element.style.display);
+                }
+                element.style.display = "none";
+            }
+            clearInterval(this.siteChatHideTimer);
+            if (this.chatMode) {
+                this.siteChatHideTimer = setInterval(() => {
+                    if (this.chatMode) this.hideSiteChatOnce();
+                }, 600);
+            }
+        }
+
+        hideSiteChatOnce() {
+            if (!this.siteChatHiddenElements) this.siteChatHiddenElements = new Map();
             const element = this.getSiteChatWindow();
-            if (!element) return;
-            this.siteChatElement = element;
-            this.siteChatPreviousDisplay = element.style.display;
+            if (!(element instanceof Element)) return;
+            if (!this.siteChatHiddenElements.has(element)) this.siteChatHiddenElements.set(element, element.style.display);
             element.style.display = "none";
         }
 
         restoreSiteChat() {
-            if (!this.siteChatElement) return;
-            this.siteChatElement.style.display = this.siteChatPreviousDisplay ?? "";
-            this.siteChatElement = null;
-            this.siteChatPreviousDisplay = null;
+            clearInterval(this.siteChatHideTimer);
+            this.siteChatHideTimer = null;
+            if (!this.siteChatHiddenElements) return;
+            for (const [element, display] of this.siteChatHiddenElements) {
+                if (element?.isConnected) element.style.display = display ?? "";
+            }
+            this.siteChatHiddenElements.clear();
         }
 
         async enterChatClient() {
@@ -1687,6 +2070,7 @@
                 }));
                 this.setChatStatus(`connected as ${identity.name}`);
                 this.writeChat(`connected as ${identity.name}`, "ok");
+                this.setActivity(this.currentPath, "cat-chat");
             });
             socket.addEventListener("message", event => {
                 if (event.data === "pong") return;
