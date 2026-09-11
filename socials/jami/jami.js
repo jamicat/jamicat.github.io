@@ -16,8 +16,14 @@
             this.isOpen = false;
             this.booted = false;
             this.zCounter = 20;
-            this.history = [];
-            this.historyIndex = 0;
+            try {
+                this.history = JSON.parse(sessionStorage.getItem("jami_terminal_history") || "[]");
+                if (!Array.isArray(this.history)) this.history = [];
+            } catch {
+                this.history = [];
+            }
+            this.history = this.history.slice(-100);
+            this.historyIndex = this.history.length;
             this.currentPath = "/";
             this.currentApp = "desktop";
             this.explorerPath = "/";
@@ -174,6 +180,10 @@
             this.input?.addEventListener("keydown", event => {
                 if (event.key === "ArrowUp") { event.preventDefault(); this.navigateHistory(-1); }
                 if (event.key === "ArrowDown") { event.preventDefault(); this.navigateHistory(1); }
+                if (event.key === "Tab") {
+                    event.preventDefault();
+                    this.completeInput();
+                }
             });
 
             this.root.querySelector("[data-jami-explorer-up]")?.addEventListener("click", () => this.loadExplorer(this.parentPath(this.explorerPath)));
@@ -368,11 +378,114 @@
         write(text = "", type = "") { if (!this.output) return; const line = document.createElement("div"); if (type) line.className = `jami-terminal-line-${type}`; line.textContent = text; this.output.appendChild(line); this.output.scrollTop = this.output.scrollHeight; }
         navigateHistory(direction) { if (!this.history.length) return; this.historyIndex = Math.min(this.history.length, Math.max(0, this.historyIndex + direction)); this.input.value = this.historyIndex >= this.history.length ? "" : this.history[this.historyIndex]; }
 
+        terminalCommands() {
+            return [
+                "help", "man", "clear", "history", "who", "users", "uptime", "date",
+                "ps", "netstat", "nowplaying", "which", "find", "open", "pwd", "cd",
+                "ls", "cat", "stat", "tree", "touch", "mkdir", "mv", "rename", "trash",
+                "restore", "quota", "edit", "jami", "chat", "radio", "exit", "logout"
+            ];
+        }
+
+        parseCommandLine(line) {
+            const tokens = [];
+            let token = "";
+            let quote = null;
+            let escaping = false;
+
+            for (const char of String(line || "")) {
+                if (escaping) {
+                    token += char;
+                    escaping = false;
+                    continue;
+                }
+
+                if (char === "\\") {
+                    escaping = true;
+                    continue;
+                }
+
+                if (quote) {
+                    if (char === quote) quote = null;
+                    else token += char;
+                    continue;
+                }
+
+                if (char === "'" || char === '"') {
+                    quote = char;
+                    continue;
+                }
+
+                if (/\s/.test(char)) {
+                    if (token) {
+                        tokens.push(token);
+                        token = "";
+                    }
+                    continue;
+                }
+
+                token += char;
+            }
+
+            if (escaping) token += "\\";
+            if (token) tokens.push(token);
+            return tokens;
+        }
+
+        async completeInput() {
+            if (!this.input) return;
+            const line = this.input.value;
+            const cursor = this.input.selectionStart ?? line.length;
+            if (cursor !== line.length) return;
+
+            const tokens = this.parseCommandLine(line);
+            const endsWithSpace = /\s$/.test(line);
+
+            if (tokens.length <= 1 && !endsWithSpace) {
+                const prefix = (tokens[0] || "").toLowerCase();
+                const matches = this.terminalCommands().filter(command => command.startsWith(prefix));
+                if (matches.length === 1) {
+                    this.input.value = `${matches[0]} `;
+                } else if (matches.length > 1) {
+                    this.write(matches.join("  "), "muted");
+                }
+                return;
+            }
+
+            const fragment = endsWithSpace ? "" : (tokens[tokens.length - 1] || "");
+            const full = this.resolveClientPath(fragment || ".", this.currentPath);
+            const parent = fragment.endsWith("/") ? full : this.parentPath(full);
+            const partial = fragment.endsWith("/") ? "" : this.baseName(full);
+
+            try {
+                const data = await this.api(`/api/test/jami/fs/list?path=${encodeURIComponent(parent)}&all=1`);
+                const matches = (data.items || []).filter(item => item.name.startsWith(partial));
+                if (!matches.length) return;
+
+                if (matches.length > 1) {
+                    this.write(matches.map(item => `${item.name}${item.kind === "folder" ? "/" : ""}`).join("  "), "muted");
+                    return;
+                }
+
+                const match = matches[0];
+                const before = endsWithSpace ? line : line.slice(0, Math.max(0, line.lastIndexOf(fragment)));
+                let completed = fragment.includes("/")
+                    ? `${fragment.slice(0, fragment.lastIndexOf("/") + 1)}${match.name}`
+                    : match.name;
+                if (match.kind === "folder") completed += "/";
+                this.input.value = `${before}${completed}`;
+                this.input.setSelectionRange(this.input.value.length, this.input.value.length);
+            } catch {}
+        }
+
         async api(path, options = {}) {
             const response = await fetch(`${API}${path}`, options);
             let data = null;
             try { data = await response.json(); } catch {}
-            if (!response.ok) throw new Error(data?.error || `HTTP ${response.status}`);
+            if (!response.ok) {
+                const message = [data?.error || `HTTP ${response.status}`, data?.detail].filter(Boolean).join("\n");
+                throw new Error(message);
+            }
             return data;
         }
 
@@ -763,46 +876,222 @@
         }
 
         async runCommand(raw) {
-            const commandLine = String(raw || "").trim(); if (!commandLine) return;
+            const commandLine = String(raw || "").trim();
+            if (!commandLine) return;
+
             this.write(`${this.name}@jami:${this.currentPath}$ ${commandLine}`);
-            this.history.push(commandLine); this.history = this.history.slice(-80); this.historyIndex = this.history.length;
-            const [commandRaw, ...args] = commandLine.match(/(?:[^\s"]+|"[^"]*")+/g)?.map(value => value.replace(/^"|"$/g, "")) || [];
+            this.history.push(commandLine);
+            this.history = this.history.slice(-100);
+            this.historyIndex = this.history.length;
+            sessionStorage.setItem("jami_terminal_history", JSON.stringify(this.history));
+
+            const [commandRaw, ...args] = this.parseCommandLine(commandLine);
             const command = String(commandRaw || "").toLowerCase();
 
             try {
                 switch (command) {
                     case "help":
-                        this.write("help clear who users uptime date ps netstat nowplaying open pwd cd ls ls -a cat stat tree touch mkdir mv rename trash restore quota edit jami exit");
-                        this.write("tip: right-click a visitor file in Explorer for rename / move / trash", "muted"); break;
-                    case "clear": this.output.textContent = ""; break;
-                    case "who": case "users": this.commandWho(); break;
-                    case "uptime": this.commandUptime(); break;
-                    case "date": this.write(new Date().toString()); break;
-                    case "ps": await this.commandPs(); break;
-                    case "netstat": this.commandNetstat(); break;
-                    case "nowplaying": await this.commandNowPlaying(); break;
-                    case "open": await this.commandOpen(args[0]); break;
-                    case "pwd": this.write(this.currentPath); break;
-                    case "cd": await this.commandCd(args[0] || "/"); break;
-                    case "ls": await this.commandLs(args); break;
-                    case "cat": await this.commandCat(args[0]); break;
-                    case "stat": await this.commandStat(args[0] || "."); break;
-                    case "tree": await this.commandTree(args[0] || "."); break;
-                    case "touch": await this.commandCreate("text", args[0]); break;
-                    case "mkdir": await this.commandCreate("folder", args[0]); break;
-                    case "mv": await this.commandMv(args[0], args[1]); break;
-                    case "rename": await this.commandRename(args[0], args.slice(1).join(" ")); break;
-                    case "trash": await this.commandTrash(args[0]); break;
-                    case "restore": await this.commandRestore(args[0]); break;
-                    case "quota": await this.commandQuota(); break;
-                    case "edit": if (!args[0]) this.write("usage: edit <file>", "warn"); else await this.openTextFile(this.resolveClientPath(args[0])); break;
-                    case "jami": this.write("jami 0.3-test"); this.write("shared filesystem protocol 2"); this.write(`session ${this.sessionId}`); break;
-                    case "exit": case "logout": this.close(); break;
-                    case "chat": this.write("chat: package reserved for a later pass", "warn"); break;
-                    case "radio": this.write("radio: no signal (application arrives later)", "warn"); break;
-                    default: this.write(`${command}: command not found`, "warn");
+                        this.commandHelp();
+                        break;
+                    case "man":
+                        this.commandMan(args[0]);
+                        break;
+                    case "clear":
+                        this.output.textContent = "";
+                        break;
+                    case "history":
+                        this.commandHistory(args);
+                        break;
+                    case "who":
+                    case "users":
+                        this.commandWho();
+                        break;
+                    case "uptime":
+                        this.commandUptime();
+                        break;
+                    case "date":
+                        this.write(new Date().toString());
+                        break;
+                    case "ps":
+                        await this.commandPs();
+                        break;
+                    case "netstat":
+                        this.commandNetstat();
+                        break;
+                    case "nowplaying":
+                        await this.commandNowPlaying();
+                        break;
+                    case "which":
+                        this.commandWhich(args[0]);
+                        break;
+                    case "find":
+                        await this.commandFind(args[0] || ".", args[1] || "");
+                        break;
+                    case "open":
+                        await this.commandOpen(args[0]);
+                        break;
+                    case "pwd":
+                        this.write(this.currentPath);
+                        break;
+                    case "cd":
+                        await this.commandCd(args[0] || "/");
+                        break;
+                    case "ls":
+                        await this.commandLs(args);
+                        break;
+                    case "cat":
+                        await this.commandCat(args[0]);
+                        break;
+                    case "stat":
+                        await this.commandStat(args[0] || ".");
+                        break;
+                    case "tree":
+                        await this.commandTree(args[0] || ".");
+                        break;
+                    case "touch":
+                        await this.commandCreate("text", args[0]);
+                        break;
+                    case "mkdir":
+                        await this.commandCreate("folder", args[0]);
+                        break;
+                    case "mv":
+                        await this.commandMv(args[0], args[1]);
+                        break;
+                    case "rename":
+                        await this.commandRename(args[0], args.slice(1).join(" "));
+                        break;
+                    case "trash":
+                        await this.commandTrash(args[0]);
+                        break;
+                    case "restore":
+                        await this.commandRestore(args[0]);
+                        break;
+                    case "quota":
+                        await this.commandQuota();
+                        break;
+                    case "edit":
+                        if (!args[0]) this.write("usage: edit <file>", "warn");
+                        else await this.openTextFile(this.resolveClientPath(args[0]));
+                        break;
+                    case "jami":
+                        this.write("jami 0.4-test");
+                        this.write("filesystem protocol 3");
+                        this.write("terminal protocol 2");
+                        this.write(`session ${this.sessionId}`);
+                        break;
+                    case "chat":
+                        this.write("Cat Chat terminal bridge", "ok");
+                        this.write("package staged in /programs/chat");
+                        this.write("interactive client arrives in pass 5", "muted");
+                        break;
+                    case "radio":
+                        this.write("Jami Radio", "ok");
+                        this.write("tuner hardware unavailable");
+                        this.write("see /programs/radio", "muted");
+                        break;
+                    case "exit":
+                    case "logout":
+                        this.close();
+                        break;
+                    default:
+                        this.write(`${command}: command not found`, "warn");
+                        this.write(`try 'help' or 'man ${command}'`, "muted");
                 }
-            } catch (error) { this.write(error.message, "warn"); }
+            } catch (error) {
+                String(error.message || error).split("\n").forEach((line, index) => this.write(line, index ? "muted" : "warn"));
+            }
+        }
+
+        commandHelp() {
+            this.write("JAMI TERMINAL", "ok");
+            this.write("filesystem   pwd cd ls cat stat tree find touch mkdir mv rename trash restore quota");
+            this.write("programs     open edit chat radio nowplaying");
+            this.write("system       who users ps netstat uptime date which history clear jami");
+            this.write("");
+            this.write("quotes, relative paths, .. and escaped spaces are supported.", "muted");
+            this.write("Tab completes commands and filesystem paths. ↑/↓ browses history.", "muted");
+            this.write("use 'man <command>' for command help.", "muted");
+        }
+
+        commandMan(command) {
+            const docs = {
+                ls: "ls [-a] [-l] [path]\n  -a include hidden entries\n  -l show owner/type/revision/size",
+                find: "find [path] [name]\n  recursively search up to 8 levels; name is a case-insensitive substring",
+                open: "open <app|path>\n  folders open in Files; text files open in Notepad",
+                edit: "edit <file>\n  open a text file in Notepad",
+                history: "history [-c]\n  show terminal commands from this browser tab; -c clears them",
+                mv: "mv <source> <folder>\n  move a visitor-owned object",
+                rename: "rename <path> <new name>\n  rename a visitor-owned object; quotes are supported",
+                trash: "trash <path>\n  move a visitor-owned object into /trash",
+                restore: "restore <name-or-id>\n  restore an object from /trash",
+                stat: "stat <path>\n  display persistent metadata plus live readers/editors",
+                tree: "tree [path]\n  recursively show a directory tree",
+                who: "who\n  show live Jami sessions and their current activity",
+                netstat: "netstat\n  show Jami transport state, RTT and connected peers",
+                nowplaying: "nowplaying\n  query the real Cat Chat Watch Party state",
+                chat: "chat\n  terminal Cat Chat package is staged for pass 5",
+                radio: "radio\n  Jami Radio package is staged for a later pass"
+            };
+            if (!command) {
+                this.write("usage: man <command>", "warn");
+                return;
+            }
+            const text = docs[String(command).toLowerCase()];
+            if (!text) {
+                this.write(`no manual entry for ${command}`, "warn");
+                return;
+            }
+            text.split("\n").forEach(line => this.write(line));
+        }
+
+        commandHistory(args = []) {
+            if (args.includes("-c")) {
+                this.history = [];
+                this.historyIndex = 0;
+                sessionStorage.removeItem("jami_terminal_history");
+                this.write("history cleared", "ok");
+                return;
+            }
+
+            this.history.forEach((entry, index) => this.write(`${String(index + 1).padStart(3)}  ${entry}`));
+        }
+
+        commandWhich(command) {
+            if (!command) {
+                this.write("usage: which <command>", "warn");
+                return;
+            }
+
+            const name = String(command).toLowerCase();
+            if (this.terminalCommands().includes(name)) {
+                const packagePath = ["chat", "radio"].includes(name) ? `/programs/${name}` : `/system/bin/${name}`;
+                this.write(packagePath);
+            } else {
+                this.write(`${command}: not found`, "warn");
+            }
+        }
+
+        async commandFind(target, query) {
+            const rootPath = this.resolveClientPath(target || ".");
+            const needle = String(query || "").toLowerCase();
+            let found = 0;
+
+            const walk = async (path, depth = 0) => {
+                if (depth > 8) return;
+                const data = await this.api(`/api/test/jami/fs/list?path=${encodeURIComponent(path)}&all=1`);
+                for (const item of data.items || []) {
+                    if (!needle || item.name.toLowerCase().includes(needle)) {
+                        this.write(item.path);
+                        found += 1;
+                    }
+                    if (item.kind === "folder") {
+                        try { await walk(item.path, depth + 1); } catch {}
+                    }
+                }
+            };
+
+            await walk(rootPath);
+            if (!found) this.write("no matches", "muted");
         }
 
         commandWho() {
@@ -827,12 +1116,34 @@
             const value = String(target || "");
             if (["terminal", "term"].includes(value.toLowerCase())) return this.openWindow("terminal");
             if (["files", "explorer"].includes(value.toLowerCase())) return this.openWindow("explorer");
+            if (value.toLowerCase() === "chat") { this.commandWhich("chat"); this.write("run 'chat' to inspect package status", "muted"); return; }
+            if (value.toLowerCase() === "radio") { this.commandWhich("radio"); this.write("run 'radio' to inspect package status", "muted"); return; }
             if (!value) { this.write("usage: open <app|path>"); return; }
             const path = this.resolveClientPath(value);
             try { const data = await this.api(`/api/test/jami/fs/stat?path=${encodeURIComponent(path)}`); if (data.node.kind === "folder") { this.openWindow("explorer"); await this.loadExplorer(path); } else await this.openTextFile(path); } catch { this.write(`${target}: application or file not found`, "warn"); }
         }
         async commandCd(target) { const path = this.resolveClientPath(target); const data = await this.api(`/api/test/jami/fs/stat?path=${encodeURIComponent(path)}`); if (data.node.kind !== "folder") throw new Error(`${target}: not a directory`); this.setActivity(path, "terminal"); }
-        async commandLs(args) { const all = args.includes("-a"); const target = args.find(arg => arg !== "-a") || "."; const path = this.resolveClientPath(target); const data = await this.api(`/api/test/jami/fs/list?path=${encodeURIComponent(path)}&all=${all ? "1" : "0"}`); const names = data.items.map(item => `${item.name}${item.kind === "folder" ? "/" : ""}${item.system ? "*" : ""}`); this.write((all ? ["./", "../", ...names] : names).join("  ") || "(empty)"); }
+        async commandLs(args) {
+            const all = args.includes("-a") || args.includes("-la") || args.includes("-al");
+            const long = args.includes("-l") || args.includes("-la") || args.includes("-al");
+            const target = args.find(arg => !["-a", "-l", "-la", "-al"].includes(arg)) || ".";
+            const path = this.resolveClientPath(target);
+            const data = await this.api(`/api/test/jami/fs/list?path=${encodeURIComponent(path)}&all=${all ? "1" : "0"}`);
+
+            if (!long) {
+                const names = data.items.map(item => `${item.name}${item.kind === "folder" ? "/" : ""}${item.system ? "*" : ""}`);
+                this.write((all ? ["./", "../", ...names] : names).join("  ") || "(empty)");
+                return;
+            }
+
+            this.write("TYPE   OWNER      REV    SIZE     NAME", "muted");
+            for (const item of data.items) {
+                const type = item.kind === "folder" ? "dir" : "text";
+                const size = item.kind === "folder" ? "-" : String(item.size);
+                const flags = `${item.hidden ? "h" : "-"}${item.system ? "s" : "-"}`;
+                this.write(`${type.padEnd(6)} ${String(item.owner).padEnd(10)} ${String(item.revision).padEnd(6)} ${size.padEnd(8)} ${flags} ${item.name}${item.kind === "folder" ? "/" : ""}`);
+            }
+        }
         async commandCat(target) { if (!target) { this.write("usage: cat <file>", "warn"); return; } const path = this.resolveClientPath(target); const data = await this.api(`/api/test/jami/fs/read?path=${encodeURIComponent(path)}`); data.content.split("\n").forEach(line => this.write(line)); }
         async commandStat(target) { const path = this.resolveClientPath(target); const data = await this.api(`/api/test/jami/fs/stat?path=${encodeURIComponent(path)}`); const n = data.node; this.write(n.path, "ok"); this.write(`id:          ${n.id}`); this.write(`type:        ${n.kind}`); this.write(`owner:       ${n.owner}${n.system ? " (system)" : ""}`); this.write(`created by:  ${n.createdByName}`); this.write(`created:     ${new Date(n.createdAt).toLocaleString()}`); this.write(`modified:    ${new Date(n.modifiedAt).toLocaleString()}`); this.write(`revision:    ${n.revision} (${data.revisionCount} stored states)`); if (n.kind === "text") { const presence = this.filePresence[n.id]; this.write(`size:        ${n.size} bytes`); this.write(`readers:     ${presence?.readerCount || 0} online`); this.write(`editors:     ${presence?.editorCount || 0} online`); } if (Array.isArray(n.previousLocations) && n.previousLocations.length) { this.write("previous locations:"); n.previousLocations.forEach(p => this.write(`  ${p}`)); } }
         async commandTree(target) { const rootPath = this.resolveClientPath(target); const walk = async (path, prefix = "", depth = 0) => { if (depth > 5) return; const data = await this.api(`/api/test/jami/fs/list?path=${encodeURIComponent(path)}&all=1`); for (let i = 0; i < data.items.length; i++) { const item = data.items[i], last = i === data.items.length - 1, mark = last ? "└── " : "├── "; this.write(`${prefix}${mark}${item.name}${item.kind === "folder" ? "/" : ""}`); if (item.kind === "folder") await walk(item.path, `${prefix}${last ? "    " : "│   "}`, depth + 1); } }; this.write(rootPath); await walk(rootPath); }
