@@ -172,7 +172,6 @@
                                     <button type="button" data-jami-radio-next>next</button>
                                     <button type="button" data-jami-radio-refresh>refresh</button>
                                 </div>
-                                <div class="jami-radio-note" data-jami-radio-note>Watch Party follows the live shared queue. Radio station uses the site's real playlist.</div>
                             </div>
                         `, "jami-radio-window")}
 
@@ -197,6 +196,8 @@
                         <button type="button" data-jami-context-action="rename">rename</button>
                         <button type="button" data-jami-context-action="move">move</button>
                         <button type="button" data-jami-context-action="trash">trash</button>
+                        <button type="button" data-jami-context-action="restore" hidden>restore</button>
+                        <button type="button" data-jami-context-action="delete" class="jami-danger-action" hidden>delete forever</button>
                     </div>
 
                     <div class="jami-dialog-backdrop" data-jami-dialog hidden>
@@ -217,6 +218,7 @@
                     <div class="jami-taskbar">
                         <button class="jami-task-button" type="button" data-jami-open="terminal">terminal</button>
                         <button class="jami-task-button" type="button" data-jami-open="explorer">files</button>
+                        <button class="jami-task-button" type="button" data-jami-open="notepad" data-jami-notepad-task hidden>notepad</button>
                         <button class="jami-task-button" type="button" data-jami-open-chat>chat</button>
                         <button class="jami-task-button" type="button" data-jami-open="radio">radio</button>
                         <button class="jami-task-button" type="button" data-jami-open="monitor">system</button>
@@ -634,7 +636,11 @@
                 if (target === id) button.classList.remove("minimized", "active");
             });
             this.addSystemEvent(`closed ${id}`);
-            if (id === "notepad") this.sendFilePresence("close");
+            if (id === "notepad") {
+                this.sendFilePresence("close");
+                const notepadTask = this.root.querySelector("[data-jami-notepad-task]");
+                if (notepadTask) notepadTask.hidden = true;
+            }
             if (id === "chat") this.leaveChatClient(false);
             if (id === "monitor") this.stopSystemMonitor();
             if (id === "radio") this.stopRadio();
@@ -792,7 +798,7 @@
                 "help", "man", "clear", "history", "who", "users", "uptime", "date",
                 "ps", "netstat", "nowplaying", "which", "find", "open", "pwd", "cd",
                 "ls", "cat", "stat", "tree", "touch", "mkdir", "mv", "rename", "trash",
-                "restore", "quota", "edit", "jami", "chat", "monitor", "radio", "exit", "logout"
+                "restore", "delete", "quota", "edit", "jami", "chat", "monitor", "radio", "exit", "logout"
             ];
         }
 
@@ -1222,6 +1228,13 @@
             }
             this.contextMenuItem = item;
             if (!this.contextMenu) return;
+            const inTrash = this.explorerPath === "/trash" && item.trashed;
+            for (const button of this.contextMenu.querySelectorAll("[data-jami-context-action]")) {
+                const action = button.dataset.jamiContextAction;
+                button.hidden = inTrash
+                    ? !["restore", "delete"].includes(action)
+                    : ["restore", "delete"].includes(action);
+            }
             const shell = this.root.querySelector(".jami-shell")?.getBoundingClientRect();
             const left = Math.max(8, Math.min((shell?.width || innerWidth) - 150, event.clientX - (shell?.left || 0)));
             const top = Math.max(8, Math.min((shell?.height || innerHeight) - 120, event.clientY - (shell?.top || 0)));
@@ -1240,6 +1253,21 @@
             this.hideContextMenu();
             if (!item) return;
             try {
+                if (action === "restore") {
+                    await this.restoreById(item.id);
+                    return;
+                }
+                if (action === "delete") {
+                    const choice = await this.openDialog({
+                        title: "delete forever",
+                        message: `${item.path}\n\nThis cannot be undone.`,
+                        confirmText: "delete forever",
+                        input: false,
+                        danger: true
+                    });
+                    if (choice.confirmed) await this.deleteForeverById(item.id);
+                    return;
+                }
                 if (action === "trash") {
                     const choice = await this.openDialog({
                         title: "move to trash",
@@ -1294,6 +1322,8 @@
                 if (this.notepadHistoryPanel) this.notepadHistoryPanel.hidden = true;
                 this.notepadStatus.classList.remove("jami-warning");
                 this.root.querySelector('[data-jami-title="notepad"]').textContent = `notepad // ${data.node.name}`;
+                const notepadTask = this.root.querySelector("[data-jami-notepad-task]");
+                if (notepadTask) notepadTask.hidden = false;
                 this.openWindow("notepad");
                 this.sendFilePresence("read");
                 this.updateNotepadPresence();
@@ -1378,6 +1408,16 @@
         async restoreById(id) {
             try {
                 await this.api("/api/test/jami/fs/restore", {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ sessionId: this.sessionId, name: this.name, id })
+                });
+                await this.loadExplorer("/trash");
+            } catch (error) { this.explorerStatus.textContent = error.message; }
+        }
+
+        async deleteForeverById(id) {
+            try {
+                await this.api("/api/test/jami/fs/delete", {
                     method: "POST", headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ sessionId: this.sessionId, name: this.name, id })
                 });
@@ -1476,6 +1516,9 @@
                     case "restore":
                         await this.commandRestore(args[0]);
                         break;
+                    case "delete":
+                        await this.commandDelete(args[0]);
+                        break;
                     case "quota":
                         await this.commandQuota();
                         break;
@@ -1511,7 +1554,7 @@
 
         commandHelp() {
             this.write("JAMI", "ok");
-            this.write("filesystem   pwd cd ls cat stat tree find touch mkdir mv rename trash restore quota");
+            this.write("filesystem   pwd cd ls cat stat tree find touch mkdir mv rename trash restore delete quota");
             this.write("programs     open edit chat monitor nowplaying");
             this.write("system       who users ps netstat uptime date which history clear jami");
             this.write("");
@@ -1531,6 +1574,7 @@
                 rename: "rename <path> <new name>\n  rename a visitor-owned object; quotes are supported",
                 trash: "trash <path>\n  move a visitor-owned object into /trash",
                 restore: "restore <name-or-id>\n  restore an object from /trash",
+                delete: "delete <name-or-id>\n  permanently delete an object from /trash; this cannot be undone",
                 stat: "stat <path>\n  display persistent metadata plus live readers/editors",
                 tree: "tree [path]\n  recursively show a directory tree",
                 who: "who\n  show live Jami sessions and their current activity",
@@ -1837,7 +1881,6 @@
             if (this.radioState) this.radioState.textContent = this.radioStationPlaying ? "radio station" : "paused";
             if (this.radioTitle) this.radioTitle.textContent = item.title || item.videoId;
             if (this.radioMeta) this.radioMeta.textContent = `${this.radioStationIndex + 1} / ${this.radioPlaylist.length}`;
-            if (this.radioNote) this.radioNote.textContent = "Radio station uses the site's real playlist.";
             if (forceLoad || this.radioCurrentVideoId !== item.videoId) {
                 this.radioEmbed(item.videoId, 0, this.radioStationPlaying);
             }
@@ -1875,7 +1918,6 @@
             parts.push(this.formatTime(seconds));
             if (Number.isFinite(playerState.duration) && playerState.duration > 0) parts.push(`of ${this.formatTime(playerState.duration)}`);
             if (this.radioMeta) this.radioMeta.textContent = parts.join(" · ");
-            if (this.radioNote) this.radioNote.textContent = "Using the same synchronized player and state as the site's Watch Party panel.";
         }
 
         async refreshRadio(forceLoad = false) {
@@ -2233,6 +2275,8 @@
         async commandRename(source, newName) { if (!source || !newName) { this.write("usage: rename <path> <new-name>", "warn"); return; } const sourcePath = this.resolveClientPath(source); const data = await this.movePath(sourcePath, this.parentPath(sourcePath), newName); this.write(`renamed to ${data.node.path}`, "ok"); }
         async commandTrash(target) { if (!target) { this.write("usage: trash <path>", "warn"); return; } const data = await this.trashPath(this.resolveClientPath(target)); this.write(`${data.node.name} moved to trash`, "ok"); }
         async commandRestore(target) { if (!target) { this.write("usage: restore <name-or-id>", "warn"); return; } const data = await this.api(`/api/test/jami/fs/list?path=${encodeURIComponent("/trash")}&all=1`); const item = data.items.find(entry => entry.id === target || entry.name === target); if (!item) throw new Error("trashed item not found"); const restored = await this.api("/api/test/jami/fs/restore", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sessionId: this.sessionId, name: this.name, id: item.id }) }); this.write(`restored ${restored.node.path}`, "ok"); }
+
+        async commandDelete(target) { if (!target) { this.write("usage: delete <name-or-id>", "warn"); return; } const data = await this.api(`/api/test/jami/fs/list?path=${encodeURIComponent("/trash")}&all=1`); const item = data.items.find(entry => entry.id === target || entry.name === target); if (!item) throw new Error("trashed item not found"); await this.api("/api/test/jami/fs/delete", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sessionId: this.sessionId, name: this.name, id: item.id }) }); this.write(`deleted ${item.name} forever`, "ok"); }
         async commandQuota() { const data = await this.api(`/api/test/jami/fs/quota?sessionId=${encodeURIComponent(this.sessionId)}`); const q = data.quota; this.write("SESSION ALLOWANCE", "ok"); this.write(`documents     ${q.files} / ${q.limits.files} created`); this.write(`folders       ${q.folders} / ${q.limits.folders} created`); this.write(`storage       ${q.storageBytes} / ${q.limits.storageBytes} bytes`); this.write("creation allowance resets with a new Jami visit/session", "muted"); }
         formatTime(seconds) { const total = Math.max(0, Math.floor(Number(seconds) || 0)); const minutes = Math.floor(total / 60); const remainder = total % 60; return `${minutes}:${String(remainder).padStart(2, "0")}`; }
     }
