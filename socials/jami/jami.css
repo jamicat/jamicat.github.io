@@ -521,3 +521,170 @@
         touch-action: auto;
     }
 }
+
+/* Pass 6: live system monitor */
+.jami-monitor-window {
+    width: min(760px, calc(100vw - 50px));
+    height: min(560px, calc(100vh - 90px));
+}
+
+.jami-monitor-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    overflow: auto;
+}
+
+.jami-monitor-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 11px;
+    opacity: 0.9;
+}
+
+.jami-monitor-toolbar button {
+    font: inherit;
+}
+
+.jami-monitor-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.jami-monitor-grid section,
+.jami-monitor-events {
+    border: 1px solid rgba(255,255,255,0.09);
+    background: rgba(0,0,0,0.2);
+    padding: 9px;
+    min-width: 0;
+}
+
+.jami-monitor-grid h3,
+.jami-monitor-events h3 {
+    margin: 0 0 7px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.jami-monitor-grid pre {
+    margin: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font: inherit;
+    line-height: 1.55;
+}
+
+.jami-monitor-events {
+    flex: 1;
+    min-height: 130px;
+    overflow: auto;
+}
+
+.jami-monitor-event,
+.jami-monitor-event-muted {
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 10px;
+    line-height: 1.45;
+}
+
+.jami-monitor-event-muted {
+    opacity: 0.55;
+}
+
+/* Close controls must never start a window drag. */
+.jami-window-close {
+    position: relative;
+    z-index: 3;
+    touch-action: manipulation;
+}
+
+@media (max-width: 640px) {
+    .jami-monitor-window {
+        width: 100%;
+        height: calc(100% - 40px);
+    }
+
+    .jami-monitor-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Pass 6 update: separate terminal Cat Chat window */
+.jami-chat-window {
+    left: calc(50% - 250px);
+    top: calc(50% - 190px);
+    width: min(500px, calc(100vw - 46px));
+    height: min(380px, calc(100vh - 100px));
+}
+
+.jami-chat-client {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 10px;
+    background: rgba(1, 4, 7, 0.9);
+}
+
+.jami-chat-status {
+    flex: none;
+    padding: 0 0 7px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: var(--jami-muted);
+    font-size: 10px;
+}
+
+.jami-chat-output {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: 8px 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: #d8f3ff;
+    font-size: 12px;
+    line-height: 1.5;
+    scrollbar-width: thin;
+}
+
+.jami-chat-form {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex: none;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 8px;
+}
+
+.jami-chat-prompt {
+    flex: none;
+    color: var(--jami-ok);
+    font-size: 11px;
+}
+
+.jami-chat-input {
+    min-width: 0;
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--jami-text);
+    font: 12px/1.4 Consolas, "Courier New", monospace;
+}
+
+@media (max-width: 640px) {
+    .jami-chat-window {
+        left: 8px !important;
+        top: 8px !important;
+        width: calc(100vw - 16px) !important;
+        height: calc(100vh - 50px) !important;
+        transform: none !important;
+    }
+}
