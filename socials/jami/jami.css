@@ -334,3 +334,116 @@
         transform: none !important;
     }
 }
+
+/* Pass 2: persistent shared filesystem */
+.jami-explorer-window {
+    left: calc(50% - 360px);
+    top: calc(50% - 235px);
+    width: min(760px, calc(100vw - 42px));
+    height: min(500px, calc(100vh - 84px));
+}
+
+.jami-explorer-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    background: rgba(8, 12, 17, 0.9);
+}
+
+.jami-explorer-toolbar {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 11px;
+}
+
+.jami-explorer-toolbar button,
+.jami-notepad-actions button {
+    border: 1px solid rgba(155,231,255,0.25);
+    border-radius: 4px;
+    background: rgba(155,231,255,0.05);
+    color: var(--jami-text);
+    font: inherit;
+    padding: 4px 7px;
+    cursor: pointer;
+}
+
+.jami-explorer-toolbar [data-jami-explorer-path] {
+    margin-left: 6px;
+    color: var(--jami-accent);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.jami-quota {
+    padding: 5px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: var(--jami-muted);
+    font-size: 10px;
+}
+
+.jami-explorer-grid {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    align-content: start;
+    gap: 9px;
+    padding: 12px;
+}
+
+.jami-file-card {
+    min-height: 92px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 9px;
+    background: rgba(255,255,255,0.025);
+    color: var(--jami-text);
+    font: inherit;
+    text-align: left;
+    cursor: default;
+}
+
+.jami-file-card:hover {
+    border-color: rgba(155,231,255,0.3);
+    background: rgba(155,231,255,0.06);
+}
+
+.jami-file-glyph { display: block; font-size: 25px; margin-bottom: 7px; }
+.jami-file-name { display: block; font-size: 11px; overflow-wrap: anywhere; }
+.jami-file-card small { display: block; margin-top: 5px; color: var(--jami-muted); font-size: 9px; }
+.jami-system-file { border-style: dashed; }
+.jami-hidden-file { opacity: 0.72; }
+.jami-empty-folder { color: var(--jami-muted); font-size: 11px; padding: 18px; }
+.jami-explorer-status { min-height: 16px; padding: 5px 9px; border-top: 1px solid rgba(255,255,255,0.07); color: var(--jami-muted); font-size: 10px; }
+
+.jami-notepad-window {
+    left: calc(50% - 260px);
+    top: calc(50% - 190px);
+    width: min(620px, calc(100vw - 44px));
+    height: min(430px, calc(100vh - 90px));
+}
+
+.jami-notepad-body { display: flex; flex-direction: column; background: rgba(8,12,17,0.96); }
+.jami-notepad-meta { padding: 7px 9px; border-bottom: 1px solid rgba(255,255,255,0.08); color: var(--jami-muted); font-size: 10px; }
+.jami-notepad-editor { flex: 1; min-height: 0; resize: none; border: 0; outline: 0; padding: 12px; background: rgba(0,0,0,0.28); color: var(--jami-text); font: 12px/1.55 Consolas, "Courier New", monospace; }
+.jami-notepad-editor[readonly] { color: #b7c9d3; background: rgba(255,255,255,0.015); }
+.jami-notepad-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 9px; border-top: 1px solid rgba(255,255,255,0.08); color: var(--jami-muted); font-size: 10px; }
+.jami-warning { color: var(--jami-warn) !important; }
+
+@media (max-width: 640px) {
+    .jami-explorer-window,
+    .jami-notepad-window {
+        left: 8px !important;
+        top: 8px !important;
+        width: calc(100vw - 16px) !important;
+        height: calc(100vh - 54px) !important;
+        transform: none !important;
+    }
+    .jami-explorer-toolbar { flex-wrap: wrap; }
+    .jami-explorer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
