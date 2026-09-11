@@ -79,12 +79,13 @@
 }
 
 .jami-boot pre {
-    width: min(680px, 92vw);
-    min-height: 260px;
+    width: min(460px, 88vw);
+    min-height: 210px;
     margin: 0;
-    color: #bdefff;
+    color: #d7eef5;
     white-space: pre-wrap;
-    font: 13px/1.75 Consolas, monospace;
+    font: 500 15px/1.85 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    letter-spacing: 0.01em;
 }
 
 .jami-desktop {
