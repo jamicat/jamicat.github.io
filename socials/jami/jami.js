@@ -433,9 +433,11 @@
             this.root.classList.add("jami-open");
             this.root.setAttribute("aria-hidden", "false");
             this.isOpen = true;
-            if (!this.booted) { await this.boot(); this.booted = true; }
             this.connect();
-            this.openWindow("terminal");
+            if (!this.booted) {
+                await this.boot();
+                this.booted = true;
+            }
         }
 
         close() {
@@ -453,21 +455,97 @@
             const boot = this.root.querySelector("[data-jami-boot]");
             const text = this.root.querySelector("[data-jami-boot-text]");
             boot.hidden = false;
-            const lines = [
-                "JAMI", "",
-                `session ............ ${this.sessionId.slice(0, 8)}`,
-                `client ............. ${this.name}`,
-                "filesystem ......... shared / persistent",
-                "presence ........... connecting",
-                "", "opening terminal"
-            ];
             text.textContent = "";
-            for (const line of lines) { text.textContent += `${line}\n`; await new Promise(resolve => setTimeout(resolve, 75)); }
-            await new Promise(resolve => setTimeout(resolve, 200));
+
+            const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+            const add = async (line = "", delay = 170) => {
+                text.textContent += `${line}\n`;
+                await sleep(delay);
+            };
+
+            const previousVisit = Number(localStorage.getItem("jami_last_visit_at")) || 0;
+            const openedAt = Date.now();
+            localStorage.setItem("jami_last_visit_at", String(openedAt));
+
+            await add("JAMI", 260);
+            await add("", 80);
+            await add("connecting…", 240);
+
+            let status = null;
+            let watchPartyActive = false;
+
+            try {
+                const [statusResponse, watchResponse] = await Promise.all([
+                    fetch(`${API}/api/test/jami/status`, { cache: "no-store" }),
+                    fetch(`${API}/api/watchparty`, { cache: "no-store" })
+                ]);
+
+                if (statusResponse.ok) status = await statusResponse.json();
+                if (watchResponse.ok) {
+                    const payload = await watchResponse.json();
+                    const state = payload?.state || payload;
+                    watchPartyActive = state?.enabled === true;
+                }
+            } catch {
+                // The live socket below is the source of truth if these lightweight
+                // boot-time requests are temporarily unavailable.
+            }
+
+            const connected = Array.isArray(status?.users)
+                ? status.users.length
+                : null;
+
+            if (connected === 0) {
+                await add("shared space found", 150);
+                await add("nobody else here", 170);
+            } else if (Number.isFinite(connected)) {
+                await add("shared space found", 150);
+                await add(`${connected} ${connected === 1 ? "person" : "people"} here now`, 170);
+            } else {
+                await add("shared space found", 170);
+            }
+
+            if (watchPartyActive) {
+                await add("watch party is active", 170);
+            }
+
+            if (previousVisit > 0 && previousVisit < openedAt) {
+                await add("", 70);
+                await add(`welcome back, ${this.name}`, 150);
+                await add(`last here ${this.formatRelativeVisit(openedAt - previousVisit)}`, 190);
+            } else {
+                await add("", 70);
+                await add(`hello, ${this.name}`, 190);
+            }
+
+            const waitStarted = Date.now();
+            while (
+                this.socket &&
+                this.socket.readyState === WebSocket.CONNECTING &&
+                Date.now() - waitStarted < 1600
+            ) {
+                await sleep(80);
+            }
+
+            if (this.socket?.readyState === WebSocket.OPEN) {
+                await add("ready", 260);
+            } else {
+                await add("opening offline", 260);
+            }
+
+            await sleep(180);
             boot.hidden = true;
-            this.write("Jami", "ok");
-            this.write("type 'help' for available commands", "muted");
-            this.write("");
+        }
+
+        formatRelativeVisit(ms) {
+            const seconds = Math.max(1, Math.floor(ms / 1000));
+            if (seconds < 60) return "less than a minute ago";
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+            const days = Math.floor(hours / 24);
+            return `${days} ${days === 1 ? "day" : "days"} ago`;
         }
 
         connect() {
