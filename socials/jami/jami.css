@@ -1,0 +1,336 @@
+:root {
+    --jami-bg: #090b10;
+    --jami-panel: rgba(12, 16, 23, 0.94);
+    --jami-panel-2: rgba(18, 24, 34, 0.94);
+    --jami-border: rgba(174, 226, 255, 0.28);
+    --jami-text: #e6f7ff;
+    --jami-muted: #89a6b6;
+    --jami-accent: #9be7ff;
+    --jami-ok: #9df7bd;
+    --jami-warn: #ffd88a;
+}
+
+#jamiLauncher {
+    position: fixed;
+    left: 14px;
+    bottom: 14px;
+    z-index: 180;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 999px;
+    padding: 7px 12px;
+    background: rgba(0,0,0,0.58);
+    color: rgba(255,255,255,0.72);
+    font: 11px/1.2 Consolas, "Courier New", monospace;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+}
+
+#jamiLauncher:hover {
+    color: #fff;
+    border-color: rgba(155,231,255,0.7);
+}
+
+#jamiRoot {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none;
+    color: var(--jami-text);
+    font-family: Consolas, "Courier New", monospace;
+}
+
+#jamiRoot.jami-open {
+    display: block;
+}
+
+.jami-shell {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 60% 20%, rgba(71, 135, 166, 0.17), transparent 34%),
+        linear-gradient(180deg, #07090d, #0d1117 65%, #080a0e);
+}
+
+.jami-shell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.11;
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent 0,
+        transparent 2px,
+        rgba(255,255,255,0.08) 3px
+    );
+}
+
+.jami-boot {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background: #050609;
+}
+
+.jami-boot pre {
+    width: min(680px, 92vw);
+    min-height: 260px;
+    margin: 0;
+    color: #bdefff;
+    white-space: pre-wrap;
+    font: 13px/1.75 Consolas, monospace;
+}
+
+.jami-desktop {
+    position: absolute;
+    inset: 0 0 34px 0;
+    user-select: none;
+}
+
+.jami-icons {
+    position: absolute;
+    inset: 22px auto auto 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 92px);
+    gap: 18px 12px;
+}
+
+.jami-icon {
+    border: 1px solid transparent;
+    border-radius: 7px;
+    padding: 8px 5px;
+    background: transparent;
+    color: var(--jami-text);
+    font: inherit;
+    text-align: center;
+    cursor: default;
+}
+
+.jami-icon:hover,
+.jami-icon:focus-visible {
+    border-color: rgba(155,231,255,0.22);
+    background: rgba(155,231,255,0.07);
+    outline: none;
+}
+
+.jami-icon-glyph {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 31px;
+    filter: saturate(0.72);
+}
+
+.jami-icon-label {
+    display: block;
+    font-size: 11px;
+    text-shadow: 0 1px 3px #000;
+}
+
+.jami-window {
+    position: absolute;
+    min-width: 280px;
+    min-height: 180px;
+    border: 1px solid var(--jami-border);
+    border-radius: 7px;
+    overflow: hidden;
+    background: var(--jami-panel);
+    box-shadow: 0 20px 70px rgba(0,0,0,0.55);
+    backdrop-filter: blur(16px);
+}
+
+.jami-window[hidden] {
+    display: none;
+}
+
+.jami-window-titlebar {
+    height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 8px 0 11px;
+    border-bottom: 1px solid rgba(255,255,255,0.09);
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015));
+    cursor: move;
+    touch-action: none;
+}
+
+.jami-window-title {
+    overflow: hidden;
+    font-size: 11px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.jami-window-close {
+    width: 24px;
+    height: 22px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: rgba(255,255,255,0.65);
+    cursor: pointer;
+}
+
+.jami-window-close:hover {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+}
+
+.jami-window-body {
+    height: calc(100% - 31px);
+    box-sizing: border-box;
+}
+
+.jami-terminal-window {
+    left: 50%;
+    top: 50%;
+    width: min(720px, calc(100vw - 36px));
+    height: min(460px, calc(100vh - 80px));
+    transform: translate(-50%, -50%);
+}
+
+.jami-terminal {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    background: rgba(1, 4, 7, 0.88);
+}
+
+.jami-terminal-output {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: #d8f3ff;
+    font-size: 12px;
+    line-height: 1.55;
+    scrollbar-width: thin;
+}
+
+.jami-terminal-line-muted { color: var(--jami-muted); }
+.jami-terminal-line-ok { color: var(--jami-ok); }
+.jami-terminal-line-warn { color: var(--jami-warn); }
+
+.jami-terminal-form {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 8px;
+}
+
+.jami-terminal-prompt {
+    color: var(--jami-accent);
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+.jami-terminal-input {
+    min-width: 0;
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #fff;
+    font: 12px/1.4 Consolas, monospace;
+}
+
+.jami-explorer-window {
+    left: 16%;
+    top: 14%;
+    width: min(600px, calc(100vw - 40px));
+    height: min(390px, calc(100vh - 86px));
+}
+
+.jami-explorer-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    color: var(--jami-muted);
+    font-size: 11px;
+}
+
+.jami-explorer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px;
+    padding: 12px;
+}
+
+.jami-file-card {
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 5px;
+    background: rgba(255,255,255,0.025);
+    font-size: 11px;
+}
+
+.jami-file-card small {
+    display: block;
+    margin-top: 5px;
+    color: var(--jami-muted);
+    font-size: 9px;
+}
+
+.jami-taskbar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 34px;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 9px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    background: rgba(3,5,8,0.9);
+    backdrop-filter: blur(16px);
+}
+
+.jami-task-button {
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 4px;
+    padding: 4px 8px;
+    background: rgba(255,255,255,0.035);
+    color: var(--jami-text);
+    font: 10px/1.2 Consolas, monospace;
+    cursor: pointer;
+}
+
+.jami-task-spacer { flex: 1; }
+
+.jami-network-status,
+.jami-clock {
+    font-size: 10px;
+    color: var(--jami-muted);
+    white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+    .jami-icons {
+        grid-template-columns: repeat(2, 82px);
+        gap: 10px;
+        inset: 12px auto auto 8px;
+    }
+
+    .jami-terminal-window,
+    .jami-explorer-window {
+        left: 8px !important;
+        top: 8px !important;
+        width: calc(100vw - 16px) !important;
+        height: calc(100vh - 50px) !important;
+        transform: none !important;
+    }
+}
