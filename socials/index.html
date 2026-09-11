@@ -13,7 +13,8 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
 <link rel="stylesheet" href="./image-remix.css?v=1">
 <link rel="stylesheet" href="stylesheet.css"/>
 <link rel="stylesheet" href="chat.css?v=v1">
-<link rel="canonical" href="https://jamicat.github.io/socials/">
+<link rel="stylesheet" href="jami/jami.css?v=1">
+<link rel="canonical" href="https://jamicat.github.io/">
 <meta name="google-site-verification" content="NNLXarhWU52jJxwgu3PZ6VL_HREQ5Vu8jZcjt8MO4-E" />
 <title>Jamie</title>
  <meta property="og:title" content="jamie - art, chat & music">
@@ -23,12 +24,12 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
   >
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="jamie">
- <meta property="og:image" content="https://jamicat.github.io/socials/og-image.png">
-  <meta property="og:url" content="https://jamicat.github.io/socials/">
+ <meta property="og:image" content="https://jamicat.github.io/og-image.png">
+  <meta property="og:url" content="https://jamicat.github.io/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="jamie - art, chat & music">
 <meta name="twitter:description" content="live chat, guest wall, furry art, music and interactive themes.">
-<meta name="twitter:image" content="https://jamicat.github.io/socials/og-image.png">
+<meta name="twitter:image" content="https://jamicat.github.io/og-image.png">
 <canvas id="canvas"></canvas>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -44,7 +45,7 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "jamie",
-  "url": "https://jamicat.github.io/socials/",
+  "url": "https://jamicat.github.io/",
   "description": "jamie's personal website with live chat, guest wall, furry art, music and interactive themes."
 }
 </script>
@@ -160,8 +161,8 @@ addComponents({
       id="tooltip"
       class="absolute left-1/2 top-full mt-2 -translate-x-1/2 rounded-3xl bg-transparent text-sm text-white transition-all duration-300 py-2 px-3 flex flex-col gap-1 z-50 shadow-lg backdrop-blur-sm border border-white/5 min-w-[8rem] opacity-0 pointer-events-none invisible"
     >
-      <button id="themeDefault" class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">Animal Crossing</button>
       <button id="themeStars" class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">Pixel Cat</button>
+      <button id="themeDefault" class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">Animal Crossing</button>
       <button id="themeCat" class="hidden theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">Starcat</button>
       <button id="themeAero" class="hidden theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">Sky</button>
     </div>
@@ -214,7 +215,7 @@ addComponents({
 <div id="terminalContent" class="terminal-expanded-only">
 <div class="font-medium text-pink-600 mt-5 mb-4 text-center" id="typed"></div>
 <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-<!--button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">About!</button-->
+<button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">About!</button>
 <button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">Art</button>
 <button class="terminal-button theme-body text-xs" onclick="showList()">Playlist</button>
 <button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">Guestbook</button>
@@ -319,6 +320,14 @@ addComponents({
 </div>
 </div>
 
+<button
+    id="jamiLauncher"
+    type="button"
+    aria-label="Open Jami test operating system"
+>
+    jami
+</button>
+
 <script src="scripts.js?v=1"></script>
 <script src="discscripts.js?v=1"></script>
 <script
@@ -331,6 +340,10 @@ addComponents({
 ></script>
 <script
     src="chat.js?v=v2"
+    defer
+></script>
+<script
+    src="jami/jami.js?v=1"
     defer
 ></script>
 </body>
