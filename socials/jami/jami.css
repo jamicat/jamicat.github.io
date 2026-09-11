@@ -447,3 +447,77 @@
     .jami-explorer-toolbar { flex-wrap: wrap; }
     .jami-explorer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Pass 3: live presence, collaborative drafts and shared icon movement */
+.jami-directory-presence {
+    margin-left: auto;
+    color: var(--jami-ok);
+    font-size: 9px;
+    white-space: nowrap;
+}
+
+.jami-file-card {
+    position: relative;
+    touch-action: none;
+    transition:
+        transform 90ms linear,
+        border-color 120ms ease,
+        background 120ms ease,
+        box-shadow 120ms ease;
+}
+
+.jami-file-card.jami-file-dragging {
+    z-index: 8;
+    transition: none;
+    border-color: rgba(155,231,255,0.72);
+    background: rgba(155,231,255,0.12);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.42);
+}
+
+.jami-file-card.jami-file-remote-moving {
+    transition: transform 55ms linear;
+    border-color: rgba(157,247,189,0.48);
+}
+
+.jami-file-being-read::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border: 1px solid rgba(155,231,255,0.13);
+    border-radius: 5px;
+    pointer-events: none;
+}
+
+.jami-file-being-edited {
+    background: rgba(255,216,138,0.055);
+}
+
+.jami-file-presence {
+    display: block;
+    min-height: 14px;
+    margin-top: 4px;
+    color: var(--jami-ok);
+    font-size: 10px;
+    line-height: 1.2;
+}
+
+.jami-notepad-presence {
+    min-height: 18px;
+    padding: 5px 9px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    background: rgba(155,231,255,0.035);
+    color: var(--jami-ok);
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+@media (max-width: 640px) {
+    .jami-directory-presence {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .jami-file-card {
+        touch-action: auto;
+    }
+}
