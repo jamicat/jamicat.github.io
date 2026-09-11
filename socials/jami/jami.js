@@ -24,7 +24,12 @@
             this.explorerShowHidden = false;
             this.explorerItems = [];
             this.notepadPath = null;
+            this.notepadNodeId = null;
             this.notepadRevision = null;
+            this.notepadDirty = false;
+            this.filePresence = {};
+            this.liveEditTimer = null;
+            this.iconDragSendAt = 0;
 
             this.clientId =
                 localStorage.getItem("chat_client_id") ||
@@ -41,6 +46,11 @@
                 localStorage.getItem("chat_guest_name") ||
                 localStorage.getItem("jami_guest_name") ||
                 `guest-${this.clientId.slice(0, 5)}`;
+
+            if (/^whiskers$/i.test(this.name)) {
+                this.name = "cat";
+            }
+
             localStorage.setItem("jami_guest_name", this.name);
 
             this.mount();
@@ -81,6 +91,7 @@
                                     <button type="button" data-jami-new-folder>+ folder</button>
                                     <button type="button" data-jami-toggle-hidden>ls -a</button>
                                     <span data-jami-explorer-path>/</span>
+                                    <span class="jami-directory-presence" data-jami-directory-presence></span>
                                 </div>
                                 <div class="jami-quota" data-jami-quota></div>
                                 <div class="jami-explorer-grid" data-jami-explorer-grid></div>
@@ -91,6 +102,7 @@
                         ${this.windowMarkup("notepad", "notepad", `
                             <div class="jami-window-body jami-notepad-body">
                                 <div class="jami-notepad-meta" data-jami-notepad-meta>no file open</div>
+                                <div class="jami-notepad-presence" data-jami-notepad-presence>nobody else is reading this file</div>
                                 <textarea class="jami-notepad-editor" data-jami-notepad-editor spellcheck="false"></textarea>
                                 <div class="jami-notepad-actions">
                                     <span data-jami-notepad-status></span>
@@ -121,7 +133,9 @@
             this.explorerPathLabel = this.root.querySelector("[data-jami-explorer-path]");
             this.explorerStatus = this.root.querySelector("[data-jami-explorer-status]");
             this.quotaLabel = this.root.querySelector("[data-jami-quota]");
+            this.directoryPresence = this.root.querySelector("[data-jami-directory-presence]");
             this.notepadEditor = this.root.querySelector("[data-jami-notepad-editor]");
+            this.notepadPresence = this.root.querySelector("[data-jami-notepad-presence]");
             this.notepadMeta = this.root.querySelector("[data-jami-notepad-meta]");
             this.notepadStatus = this.root.querySelector("[data-jami-notepad-status]");
 
@@ -172,6 +186,20 @@
             this.root.querySelector("[data-jami-new-folder]")?.addEventListener("click", () => this.promptCreate("folder"));
             this.root.querySelector("[data-jami-notepad-save]")?.addEventListener("click", () => this.saveNotepad());
 
+            this.notepadEditor?.addEventListener("input", () => {
+                if (!this.notepadNodeId || this.notepadEditor.readOnly) return;
+                this.notepadDirty = true;
+                this.sendFilePresence("edit");
+                this.queueLiveEdit();
+            });
+
+            ["keyup", "click", "select"].forEach(type => {
+                this.notepadEditor?.addEventListener(type, () => {
+                    if (!this.notepadNodeId || this.notepadEditor.readOnly) return;
+                    this.sendFilePresence(this.notepadDirty ? "edit" : "read");
+                });
+            });
+
             this.setupDragging();
             this.updatePrompt();
             this.updateClock();
@@ -195,6 +223,7 @@
         }
 
         close() {
+            this.sendFilePresence("close");
             this.isOpen = false;
             this.root.classList.remove("jami-open");
             this.root.setAttribute("aria-hidden", "true");
@@ -215,7 +244,7 @@
             for (const line of lines) { text.textContent += `${line}\n`; await new Promise(resolve => setTimeout(resolve, 75)); }
             await new Promise(resolve => setTimeout(resolve, 200));
             boot.hidden = true;
-            this.write("Jami 0.2 // shared filesystem online", "ok");
+            this.write("Jami 0.3 // live filesystem online", "ok");
             this.write("type 'help' for available commands", "muted");
             this.write("");
         }
@@ -226,15 +255,26 @@
             this.setNetworkLabel("connecting…");
             this.socket = new WebSocket(WS);
 
-            this.socket.addEventListener("open", () => { this.setNetworkLabel("online"); this.sendIdentify(); this.startPings(); });
+            this.socket.addEventListener("open", () => {
+                this.setNetworkLabel("online");
+                this.sendIdentify();
+                if (this.notepadNodeId && this.isWindowOpen("notepad")) {
+                    setTimeout(() => this.sendFilePresence(this.notepadDirty ? "edit" : "read"), 0);
+                }
+                this.startPings();
+            });
             this.socket.addEventListener("message", event => {
                 let packet;
                 try { packet = JSON.parse(event.data); } catch { return; }
                 if (packet.type === "jami-connected") { this.networkCreatedAt = Number(packet.networkCreatedAt) || null; return; }
                 if (packet.type === "jami-presence") {
                     this.users = Array.isArray(packet.users) ? packet.users : [];
+                    this.filePresence = packet.filePresence && typeof packet.filePresence === "object"
+                        ? packet.filePresence
+                        : {};
                     this.networkCreatedAt = Number(packet.networkCreatedAt) || this.networkCreatedAt;
                     this.setNetworkLabel(`${this.users.length} connected`);
+                    this.refreshPresenceDecorations();
                     return;
                 }
                 if (packet.type === "pong") {
@@ -247,9 +287,24 @@
                 if (packet.type === "jami-filesystem-changed") {
                     if (this.isWindowOpen("explorer")) this.loadExplorer(this.explorerPath, false);
                     if (this.notepadPath && packet.node?.path === this.notepadPath && packet.action === "write") {
-                        this.notepadStatus.textContent = "changed by another visitor — reopen before saving";
-                        this.notepadStatus.classList.add("jami-warning");
+                        if (Number(packet.node?.revision) > Number(this.notepadRevision) && this.notepadDirty) {
+                            this.notepadStatus.textContent = "saved by another visitor — your local draft now has a revision conflict";
+                            this.notepadStatus.classList.add("jami-warning");
+                        } else if (Number(packet.node?.revision) > Number(this.notepadRevision)) {
+                            this.reloadOpenFileFromServer();
+                        }
                     }
+                    return;
+                }
+                if (packet.type === "jami-live-edit") {
+                    this.receiveLiveEdit(packet);
+                    return;
+                }
+                if (packet.type === "jami-icon-drag") {
+                    if (packet.sessionId !== this.sessionId && packet.parentPath === this.explorerPath) {
+                        this.applyRemoteIconPosition(packet.id, packet.x, packet.y, true);
+                    }
+                    return;
                 }
             });
 
@@ -282,6 +337,7 @@
         closeWindow(id) {
             const win = this.root.querySelector(`[data-jami-window="${id}"]`);
             if (win) win.hidden = true;
+            if (id === "notepad") this.sendFilePresence("close");
             this.setActivity("/", "desktop");
         }
 
@@ -363,9 +419,14 @@
                 card.className = "jami-file-card";
                 card.dataset.id = item.id;
                 const glyph = item.kind === "folder" ? (item.path === "/trash" ? "🗑" : "📁") : "📄";
-                card.innerHTML = `<span class="jami-file-glyph">${glyph}</span><span class="jami-file-name"></span><small></small>`;
+                card.innerHTML = `<span class="jami-file-glyph">${glyph}</span><span class="jami-file-name"></span><span class="jami-file-presence"></span><small></small>`;
                 card.querySelector(".jami-file-name").textContent = item.name;
                 card.querySelector("small").textContent = item.system ? "owner: jami" : `${item.size || 0} bytes · r${item.revision}`;
+                const x = Number(item.iconPosition?.x) || 0;
+                const y = Number(item.iconPosition?.y) || 0;
+                card.dataset.iconX = String(x);
+                card.dataset.iconY = String(y);
+                card.style.transform = `translate(${x}px, ${y}px)`;
                 if (item.hidden) card.classList.add("jami-hidden-file");
                 if (item.system) card.classList.add("jami-system-file");
 
@@ -384,8 +445,212 @@
                     this.fileContextAction(item);
                 });
 
+                if (!item.system && item.owner === "public" && this.explorerPath.startsWith("/public")) {
+                    this.setupFileCardDragging(card, item);
+                }
+
                 this.explorerGrid.appendChild(card);
             }
+            this.refreshPresenceDecorations();
+        }
+
+        refreshPresenceDecorations() {
+            if (this.explorerGrid) {
+                for (const card of this.explorerGrid.querySelectorAll(".jami-file-card")) {
+                    const presence = this.filePresence[card.dataset.id];
+                    const label = card.querySelector(".jami-file-presence");
+                    if (!label) continue;
+                    const readers = Number(presence?.readerCount) || 0;
+                    const editors = Number(presence?.editorCount) || 0;
+                    label.textContent = [
+                        readers ? `👀 ${readers}` : "",
+                        editors ? `✎ ${editors}` : ""
+                    ].filter(Boolean).join("  ");
+                    card.classList.toggle("jami-file-being-read", readers > 0);
+                    card.classList.toggle("jami-file-being-edited", editors > 0);
+                }
+            }
+
+            if (this.directoryPresence) {
+                const here = this.users.filter(user =>
+                    user.sessionId !== this.sessionId &&
+                    user.app === "explorer" &&
+                    user.path === this.explorerPath
+                );
+                this.directoryPresence.textContent = here.length
+                    ? `${here.length} other cat${here.length === 1 ? "" : "s"} here`
+                    : "";
+            }
+
+            this.updateNotepadPresence();
+        }
+
+        updateNotepadPresence() {
+            if (!this.notepadPresence || !this.notepadNodeId) return;
+            const presence = this.filePresence[this.notepadNodeId];
+            const readers = Array.isArray(presence?.readers)
+                ? presence.readers.filter(reader => reader.sessionId !== this.sessionId)
+                : [];
+            const editors = Array.isArray(presence?.editors)
+                ? presence.editors.filter(editor => editor.sessionId !== this.sessionId)
+                : [];
+
+            if (!readers.length) {
+                this.notepadPresence.textContent = "nobody else is reading this file";
+                return;
+            }
+
+            const readerText = readers.length === 1
+                ? `${readers[0].name} is reading this file.`
+                : `${readers.length} other cats are reading this file.`;
+            const editorText = editors.length
+                ? ` ${editors.map(editor => editor.name).join(", ")} ${editors.length === 1 ? "is" : "are"} editing too.`
+                : "";
+            const cursorText = editors.length === 1 && Number.isFinite(Number(editors[0].cursorStart))
+                ? ` cursor @ ${editors[0].cursorStart}`
+                : "";
+
+            this.notepadPresence.textContent = `${readerText}${editorText}${cursorText}`;
+        }
+
+        sendFilePresence(mode = "read") {
+            if (!this.notepadNodeId && mode !== "close") return;
+            this.send({
+                type: "jami-file-presence",
+                mode,
+                fileId: this.notepadNodeId,
+                path: this.notepadPath,
+                cursorStart: this.notepadEditor?.selectionStart ?? 0,
+                cursorEnd: this.notepadEditor?.selectionEnd ?? 0
+            });
+        }
+
+        queueLiveEdit() {
+            clearTimeout(this.liveEditTimer);
+            this.liveEditTimer = setTimeout(() => {
+                if (!this.notepadNodeId || this.notepadEditor?.readOnly) return;
+                this.send({
+                    type: "jami-live-edit",
+                    fileId: this.notepadNodeId,
+                    path: this.notepadPath,
+                    content: this.notepadEditor.value,
+                    cursorStart: this.notepadEditor.selectionStart,
+                    cursorEnd: this.notepadEditor.selectionEnd
+                });
+            }, 90);
+        }
+
+        receiveLiveEdit(packet) {
+            if (!this.notepadNodeId || packet.fileId !== this.notepadNodeId || packet.sessionId === this.sessionId) return;
+
+            const cursor = Number(packet.cursorStart) || 0;
+            this.notepadStatus.textContent = `${packet.name || "another cat"} is typing… cursor @ ${cursor}`;
+            this.notepadStatus.classList.remove("jami-warning");
+
+            if (!this.notepadDirty && typeof packet.content === "string") {
+                const start = this.notepadEditor.selectionStart;
+                const end = this.notepadEditor.selectionEnd;
+                this.notepadEditor.value = packet.content;
+                if (document.activeElement === this.notepadEditor) {
+                    this.notepadEditor.setSelectionRange(
+                        Math.min(start, packet.content.length),
+                        Math.min(end, packet.content.length)
+                    );
+                }
+            }
+        }
+
+        async reloadOpenFileFromServer() {
+            if (!this.notepadPath || this.notepadDirty) return;
+            try {
+                const data = await this.api(`/api/test/jami/fs/read?path=${encodeURIComponent(this.notepadPath)}`);
+                if (data.node?.id !== this.notepadNodeId) return;
+                this.notepadRevision = data.node.revision;
+                this.notepadEditor.value = data.content || "";
+                this.notepadMeta.textContent = `${data.node.path} · owner ${data.node.owner} · revision ${data.node.revision} · ${data.node.size} bytes${data.node.system ? " · read-only" : ""}`;
+                this.notepadStatus.textContent = "updated from shared filesystem";
+            } catch {}
+        }
+
+        setupFileCardDragging(card, item) {
+            let pointerId = null;
+            let startClientX = 0;
+            let startClientY = 0;
+            let startX = Number(item.iconPosition?.x) || 0;
+            let startY = Number(item.iconPosition?.y) || 0;
+            let moved = false;
+
+            card.addEventListener("pointerdown", event => {
+                if (event.button !== 0 || window.matchMedia("(max-width: 640px)").matches) return;
+                pointerId = event.pointerId;
+                startClientX = event.clientX;
+                startClientY = event.clientY;
+                startX = Number(card.dataset.iconX) || 0;
+                startY = Number(card.dataset.iconY) || 0;
+                moved = false;
+                card.setPointerCapture(pointerId);
+            });
+
+            card.addEventListener("pointermove", event => {
+                if (event.pointerId !== pointerId) return;
+                const dx = event.clientX - startClientX;
+                const dy = event.clientY - startClientY;
+                if (!moved && Math.hypot(dx, dy) < 5) return;
+                moved = true;
+                event.preventDefault();
+                const x = Math.max(-120, Math.min(120, Math.round(startX + dx)));
+                const y = Math.max(-120, Math.min(120, Math.round(startY + dy)));
+                card.dataset.iconX = String(x);
+                card.dataset.iconY = String(y);
+                card.style.transform = `translate(${x}px, ${y}px)`;
+                card.classList.add("jami-file-dragging");
+
+                const time = performance.now();
+                if (time - this.iconDragSendAt > 45) {
+                    this.iconDragSendAt = time;
+                    this.send({ type: "jami-icon-drag", id: item.id, parentPath: this.explorerPath, x, y });
+                }
+            });
+
+            const stop = async event => {
+                if (event.pointerId !== pointerId) return;
+                pointerId = null;
+                card.classList.remove("jami-file-dragging");
+                if (!moved) return;
+                event.preventDefault();
+                event.stopPropagation();
+                try {
+                    const data = await this.api("/api/test/jami/fs/position", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            sessionId: this.sessionId,
+                            name: this.name,
+                            id: item.id,
+                            x: Number(card.dataset.iconX) || 0,
+                            y: Number(card.dataset.iconY) || 0
+                        })
+                    });
+                    item.iconPosition = data.node.iconPosition;
+                } catch (error) {
+                    this.explorerStatus.textContent = error.message;
+                }
+            };
+
+            card.addEventListener("pointerup", stop);
+            card.addEventListener("pointercancel", stop);
+        }
+
+        applyRemoteIconPosition(id, x, y, live = false) {
+            const card = this.explorerGrid?.querySelector(`.jami-file-card[data-id="${CSS.escape(String(id))}"]`);
+            if (!card || card.classList.contains("jami-file-dragging")) return;
+            const safeX = Math.max(-120, Math.min(120, Number(x) || 0));
+            const safeY = Math.max(-120, Math.min(120, Number(y) || 0));
+            card.dataset.iconX = String(safeX);
+            card.dataset.iconY = String(safeY);
+            card.style.transform = `translate(${safeX}px, ${safeY}px)`;
+            card.classList.toggle("jami-file-remote-moving", live);
+            if (live) setTimeout(() => card.classList.remove("jami-file-remote-moving"), 120);
         }
 
         async loadQuota() {
@@ -434,9 +699,12 @@
 
         async openTextFile(path) {
             try {
+                if (this.notepadNodeId) this.sendFilePresence("close");
                 const data = await this.api(`/api/test/jami/fs/read?path=${encodeURIComponent(path)}`);
                 this.notepadPath = data.node.path;
+                this.notepadNodeId = data.node.id;
                 this.notepadRevision = data.node.revision;
+                this.notepadDirty = false;
                 this.notepadEditor.value = data.content || "";
                 this.notepadEditor.readOnly = data.node.system === true;
                 this.notepadMeta.textContent = `${data.node.path} · owner ${data.node.owner} · revision ${data.node.revision} · ${data.node.size} bytes${data.node.system ? " · read-only" : ""}`;
@@ -444,6 +712,8 @@
                 this.notepadStatus.classList.remove("jami-warning");
                 this.root.querySelector('[data-jami-title="notepad"]').textContent = `notepad // ${data.node.name}`;
                 this.openWindow("notepad");
+                this.sendFilePresence("read");
+                this.updateNotepadPresence();
             } catch (error) { this.write(`${path}: ${error.message}`, "warn"); }
         }
 
@@ -456,8 +726,10 @@
                     body: JSON.stringify({ sessionId: this.sessionId, name: this.name, path: this.notepadPath, content: this.notepadEditor.value, expectedRevision: this.notepadRevision })
                 });
                 this.notepadRevision = data.node.revision;
+                this.notepadDirty = false;
                 this.notepadMeta.textContent = `${data.node.path} · owner ${data.node.owner} · revision ${data.node.revision} · ${data.node.size} bytes`;
                 this.notepadStatus.textContent = "saved";
+                this.sendFilePresence("read");
                 this.notepadStatus.classList.remove("jami-warning");
             } catch (error) { this.notepadStatus.textContent = error.message; this.notepadStatus.classList.add("jami-warning"); }
         }
@@ -524,7 +796,7 @@
                     case "restore": await this.commandRestore(args[0]); break;
                     case "quota": await this.commandQuota(); break;
                     case "edit": if (!args[0]) this.write("usage: edit <file>", "warn"); else await this.openTextFile(this.resolveClientPath(args[0])); break;
-                    case "jami": this.write("jami 0.2-test"); this.write("shared filesystem protocol 1"); this.write(`session ${this.sessionId}`); break;
+                    case "jami": this.write("jami 0.3-test"); this.write("shared filesystem protocol 2"); this.write(`session ${this.sessionId}`); break;
                     case "exit": case "logout": this.close(); break;
                     case "chat": this.write("chat: package reserved for a later pass", "warn"); break;
                     case "radio": this.write("radio: no signal (application arrives later)", "warn"); break;
@@ -536,7 +808,15 @@
         commandWho() {
             if (!this.users.length) { this.write("no identified jami sessions"); return; }
             this.write(`${this.users.length} user${this.users.length === 1 ? "" : "s"} connected`, "ok"); this.write("");
-            for (const user of this.users) { const you = user.sessionId === this.sessionId ? " (you)" : ""; this.write(`${String(user.name).padEnd(18)} ${String(user.path || "/").padEnd(22)} ${user.app || "desktop"}${you}`); }
+            for (const user of this.users) {
+                const you = user.sessionId === this.sessionId ? " (you)" : "";
+                const activity = user.editingFilePath
+                    ? `editing ${user.editingFilePath}`
+                    : user.readingFilePath
+                        ? `reading ${user.readingFilePath}`
+                        : user.app || "desktop";
+                this.write(`${String(user.name).padEnd(18)} ${String(user.path || "/").padEnd(22)} ${activity}${you}`);
+            }
         }
         commandUptime() { if (!this.networkCreatedAt) { this.write("network epoch unavailable", "warn"); return; } const elapsed = Math.max(0, Date.now() - this.networkCreatedAt); const days = Math.floor(elapsed / 86400000); const hours = Math.floor((elapsed % 86400000) / 3600000); const minutes = Math.floor((elapsed % 3600000) / 60000); this.write(`jami network: ${days}d ${hours}h ${minutes}m`); }
         async commandPs() { let watch = null, status = null; try { watch = (await (await fetch(`${API}/api/watchparty`)).json())?.state; } catch {} try { status = await this.api("/api/test/jami/status"); } catch {} this.write("PID   PROCESS          STATE"); this.write("001   jami.kernel      running"); this.write("014   jami.network     connected"); this.write(`027   jami.sessions    ${this.users.length} online`); this.write(`031   watch-party      ${watch?.enabled ? "running" : "sleeping"}`); this.write(`038   filesystem       ${status?.filesystem?.nodes ?? "?"} nodes`); this.write("044   radio            not installed"); }
@@ -554,7 +834,7 @@
         async commandCd(target) { const path = this.resolveClientPath(target); const data = await this.api(`/api/test/jami/fs/stat?path=${encodeURIComponent(path)}`); if (data.node.kind !== "folder") throw new Error(`${target}: not a directory`); this.setActivity(path, "terminal"); }
         async commandLs(args) { const all = args.includes("-a"); const target = args.find(arg => arg !== "-a") || "."; const path = this.resolveClientPath(target); const data = await this.api(`/api/test/jami/fs/list?path=${encodeURIComponent(path)}&all=${all ? "1" : "0"}`); const names = data.items.map(item => `${item.name}${item.kind === "folder" ? "/" : ""}${item.system ? "*" : ""}`); this.write((all ? ["./", "../", ...names] : names).join("  ") || "(empty)"); }
         async commandCat(target) { if (!target) { this.write("usage: cat <file>", "warn"); return; } const path = this.resolveClientPath(target); const data = await this.api(`/api/test/jami/fs/read?path=${encodeURIComponent(path)}`); data.content.split("\n").forEach(line => this.write(line)); }
-        async commandStat(target) { const path = this.resolveClientPath(target); const data = await this.api(`/api/test/jami/fs/stat?path=${encodeURIComponent(path)}`); const n = data.node; this.write(n.path, "ok"); this.write(`id:          ${n.id}`); this.write(`type:        ${n.kind}`); this.write(`owner:       ${n.owner}${n.system ? " (system)" : ""}`); this.write(`created by:  ${n.createdByName}`); this.write(`created:     ${new Date(n.createdAt).toLocaleString()}`); this.write(`modified:    ${new Date(n.modifiedAt).toLocaleString()}`); this.write(`revision:    ${n.revision} (${data.revisionCount} stored states)`); if (n.kind === "text") this.write(`size:        ${n.size} bytes`); if (Array.isArray(n.previousLocations) && n.previousLocations.length) { this.write("previous locations:"); n.previousLocations.forEach(p => this.write(`  ${p}`)); } }
+        async commandStat(target) { const path = this.resolveClientPath(target); const data = await this.api(`/api/test/jami/fs/stat?path=${encodeURIComponent(path)}`); const n = data.node; this.write(n.path, "ok"); this.write(`id:          ${n.id}`); this.write(`type:        ${n.kind}`); this.write(`owner:       ${n.owner}${n.system ? " (system)" : ""}`); this.write(`created by:  ${n.createdByName}`); this.write(`created:     ${new Date(n.createdAt).toLocaleString()}`); this.write(`modified:    ${new Date(n.modifiedAt).toLocaleString()}`); this.write(`revision:    ${n.revision} (${data.revisionCount} stored states)`); if (n.kind === "text") { const presence = this.filePresence[n.id]; this.write(`size:        ${n.size} bytes`); this.write(`readers:     ${presence?.readerCount || 0} online`); this.write(`editors:     ${presence?.editorCount || 0} online`); } if (Array.isArray(n.previousLocations) && n.previousLocations.length) { this.write("previous locations:"); n.previousLocations.forEach(p => this.write(`  ${p}`)); } }
         async commandTree(target) { const rootPath = this.resolveClientPath(target); const walk = async (path, prefix = "", depth = 0) => { if (depth > 5) return; const data = await this.api(`/api/test/jami/fs/list?path=${encodeURIComponent(path)}&all=1`); for (let i = 0; i < data.items.length; i++) { const item = data.items[i], last = i === data.items.length - 1, mark = last ? "└── " : "├── "; this.write(`${prefix}${mark}${item.name}${item.kind === "folder" ? "/" : ""}`); if (item.kind === "folder") await walk(item.path, `${prefix}${last ? "    " : "│   "}`, depth + 1); } }; this.write(rootPath); await walk(rootPath); }
         async commandCreate(kind, target) { if (!target) { this.write(`usage: ${kind === "folder" ? "mkdir" : "touch"} <name>`, "warn"); return; } const full = this.resolveClientPath(target); const parentPath = this.parentPath(full); const nodeName = this.baseName(full); const data = await this.api("/api/test/jami/fs/create", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sessionId: this.sessionId, name: this.name, parentPath, nodeName, kind }) }); this.write(`created ${data.node.path}`, "ok"); }
         async commandMv(source, destination) { if (!source || !destination) { this.write("usage: mv <source> <destination-folder>", "warn"); return; } const sourcePath = this.resolveClientPath(source); const destinationPath = this.resolveClientPath(destination); const data = await this.movePath(sourcePath, destinationPath, this.baseName(sourcePath)); this.write(`moved to ${data.node.path}`, "ok"); }
