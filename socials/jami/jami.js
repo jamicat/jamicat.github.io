@@ -3,6 +3,7 @@
 
     const API = "https://jamicat.ahrly.workers.dev";
     const WS = "wss://jamicat.ahrly.workers.dev/api/test/jami/socket";
+    const CHAT_WS = "wss://jamicat.ahrly.workers.dev/api/chat/socket";
 
     class JamiOS {
         constructor() {
@@ -36,6 +37,14 @@
             this.filePresence = {};
             this.liveEditTimer = null;
             this.iconDragSendAt = 0;
+            this.chatMode = false;
+            this.chatSocket = null;
+            this.chatReconnectTimer = null;
+            this.chatSeenMessageIds = new Set();
+            this.chatMembers = [];
+            this.chatTypingUsers = new Map();
+            this.chatTypingTimer = null;
+            this.chatReplyTargetId = null;
 
             this.clientId =
                 localStorage.getItem("chat_client_id") ||
@@ -178,12 +187,18 @@
             });
 
             this.input?.addEventListener("keydown", event => {
-                if (event.key === "ArrowUp") { event.preventDefault(); this.navigateHistory(-1); }
-                if (event.key === "ArrowDown") { event.preventDefault(); this.navigateHistory(1); }
-                if (event.key === "Tab") {
+                if (!this.chatMode && event.key === "ArrowUp") { event.preventDefault(); this.navigateHistory(-1); }
+                if (!this.chatMode && event.key === "ArrowDown") { event.preventDefault(); this.navigateHistory(1); }
+                if (!this.chatMode && event.key === "Tab") {
                     event.preventDefault();
                     this.completeInput();
                 }
+            });
+            this.input?.addEventListener("input", () => {
+                if (!this.chatMode) return;
+                this.sendChatTyping(this.input.value.trim().length > 0);
+                clearTimeout(this.chatTypingTimer);
+                this.chatTypingTimer = setTimeout(() => this.sendChatTyping(false), 1200);
             });
 
             this.root.querySelector("[data-jami-explorer-up]")?.addEventListener("click", () => this.loadExplorer(this.parentPath(this.explorerPath)));
@@ -215,7 +230,7 @@
             this.updateClock();
             setInterval(() => this.updateClock(), 1000);
 
-            window.addEventListener("beforeunload", () => this.socket?.close(1000, "page closing"));
+            window.addEventListener("beforeunload", () => { this.socket?.close(1000, "page closing"); this.chatSocket?.close(1000, "page closing"); });
             window.jami = { open: () => this.open(), close: () => this.close(), terminal: () => { this.open(); this.openWindow("terminal"); } };
         }
 
@@ -234,6 +249,7 @@
 
         close() {
             this.sendFilePresence("close");
+            if (this.chatMode) this.leaveChatClient();
             this.isOpen = false;
             this.root.classList.remove("jami-open");
             this.root.setAttribute("aria-hidden", "true");
@@ -245,16 +261,18 @@
             const text = this.root.querySelector("[data-jami-boot-text]");
             boot.hidden = false;
             const lines = [
-                "JAMI NETWORK SYSTEM", "", "memory test ........ ok", "display ............ ok",
+                "JAMI", "",
                 `session ............ ${this.sessionId.slice(0, 8)}`,
-                "network ............ connecting", "mounting /public ... ok", "filesystem ......... shared", "",
-                `welcome, ${this.name}.`
+                `client ............. ${this.name}`,
+                "filesystem ......... shared / persistent",
+                "presence ........... connecting",
+                "", "opening terminal"
             ];
             text.textContent = "";
             for (const line of lines) { text.textContent += `${line}\n`; await new Promise(resolve => setTimeout(resolve, 75)); }
             await new Promise(resolve => setTimeout(resolve, 200));
             boot.hidden = true;
-            this.write("Jami 0.3 // live filesystem online", "ok");
+            this.write("Jami 0.5 // live filesystem online", "ok");
             this.write("type 'help' for available commands", "muted");
             this.write("");
         }
@@ -374,7 +392,12 @@
             });
         }
 
-        updatePrompt() { if (this.prompt) this.prompt.textContent = `${this.name}@jami:${this.currentPath}$`; }
+        updatePrompt() {
+            if (!this.prompt) return;
+            this.prompt.textContent = this.chatMode
+                ? `${this.name}@chat>`
+                : `${this.name}@jami:${this.currentPath}$`;
+        }
         write(text = "", type = "") { if (!this.output) return; const line = document.createElement("div"); if (type) line.className = `jami-terminal-line-${type}`; line.textContent = text; this.output.appendChild(line); this.output.scrollTop = this.output.scrollHeight; }
         navigateHistory(direction) { if (!this.history.length) return; this.historyIndex = Math.min(this.history.length, Math.max(0, this.historyIndex + direction)); this.input.value = this.historyIndex >= this.history.length ? "" : this.history[this.historyIndex]; }
 
@@ -879,6 +902,11 @@
             const commandLine = String(raw || "").trim();
             if (!commandLine) return;
 
+            if (this.chatMode) {
+                await this.handleChatInput(commandLine);
+                return;
+            }
+
             this.write(`${this.name}@jami:${this.currentPath}$ ${commandLine}`);
             this.history.push(commandLine);
             this.history = this.history.slice(-100);
@@ -974,20 +1002,16 @@
                         else await this.openTextFile(this.resolveClientPath(args[0]));
                         break;
                     case "jami":
-                        this.write("jami 0.4-test");
-                        this.write("filesystem protocol 3");
-                        this.write("terminal protocol 2");
+                        this.write("jami 0.5-test");
+                        this.write("filesystem protocol 4");
+                        this.write("terminal protocol 3");
                         this.write(`session ${this.sessionId}`);
                         break;
                     case "chat":
-                        this.write("Cat Chat terminal bridge", "ok");
-                        this.write("package staged in /programs/chat");
-                        this.write("interactive client arrives in pass 5", "muted");
+                        await this.enterChatClient();
                         break;
                     case "radio":
-                        this.write("Jami Radio", "ok");
-                        this.write("tuner hardware unavailable");
-                        this.write("see /programs/radio", "muted");
+                        this.write("radio: not installed in this build", "warn");
                         break;
                     case "exit":
                     case "logout":
@@ -1005,7 +1029,7 @@
         commandHelp() {
             this.write("JAMI TERMINAL", "ok");
             this.write("filesystem   pwd cd ls cat stat tree find touch mkdir mv rename trash restore quota");
-            this.write("programs     open edit chat radio nowplaying");
+            this.write("programs     open edit chat nowplaying");
             this.write("system       who users ps netstat uptime date which history clear jami");
             this.write("");
             this.write("quotes, relative paths, .. and escaped spaces are supported.", "muted");
@@ -1029,8 +1053,8 @@
                 who: "who\n  show live Jami sessions and their current activity",
                 netstat: "netstat\n  show Jami transport state, RTT and connected peers",
                 nowplaying: "nowplaying\n  query the real Cat Chat Watch Party state",
-                chat: "chat\n  terminal Cat Chat package is staged for pass 5",
-                radio: "radio\n  Jami Radio package is staged for a later pass"
+                chat: "chat\n  open the live Cat Chat terminal client\n  plain text sends a message; /help lists chat commands",
+                radio: "radio\n  not installed in this build"
             };
             if (!command) {
                 this.write("usage: man <command>", "warn");
@@ -1063,9 +1087,13 @@
             }
 
             const name = String(command).toLowerCase();
+            if (name === "radio") {
+                this.write("radio: not installed", "warn");
+                return;
+            }
             if (this.terminalCommands().includes(name)) {
-                const packagePath = ["chat", "radio"].includes(name) ? `/programs/${name}` : `/system/bin/${name}`;
-                this.write(packagePath);
+                if (name === "chat") this.write("/programs/chat");
+                else this.write(`${name}: Jami terminal builtin`);
             } else {
                 this.write(`${command}: not found`, "warn");
             }
@@ -1108,16 +1136,227 @@
             }
         }
         commandUptime() { if (!this.networkCreatedAt) { this.write("network epoch unavailable", "warn"); return; } const elapsed = Math.max(0, Date.now() - this.networkCreatedAt); const days = Math.floor(elapsed / 86400000); const hours = Math.floor((elapsed % 86400000) / 3600000); const minutes = Math.floor((elapsed % 3600000) / 60000); this.write(`jami network: ${days}d ${hours}h ${minutes}m`); }
-        async commandPs() { let watch = null, status = null; try { watch = (await (await fetch(`${API}/api/watchparty`)).json())?.state; } catch {} try { status = await this.api("/api/test/jami/status"); } catch {} this.write("PID   PROCESS          STATE"); this.write("001   jami.kernel      running"); this.write("014   jami.network     connected"); this.write(`027   jami.sessions    ${this.users.length} online`); this.write(`031   watch-party      ${watch?.enabled ? "running" : "sleeping"}`); this.write(`038   filesystem       ${status?.filesystem?.nodes ?? "?"} nodes`); this.write("044   radio            not installed"); }
-        commandNetstat() { const state = this.socket?.readyState === WebSocket.OPEN ? "ESTABLISHED" : "CLOSED"; this.write("PROTO  ENDPOINT                              STATE"); this.write(`wss    /api/test/jami/socket                 ${state}`); this.write(`rtt    ${this.latencyMs == null ? "unknown" : `${this.latencyMs} ms`}`); this.write(`peers  ${this.users.length}`); }
+        async commandPs() {
+            let watch = null, status = null;
+            try { watch = (await (await fetch(`${API}/api/watchparty`)).json())?.state; } catch {}
+            try { status = await this.api("/api/test/jami/status"); } catch {}
+            this.write("SERVICE          STATE        SOURCE", "muted");
+            this.write(`jami-presence    ${this.socket?.readyState === WebSocket.OPEN ? "connected" : "offline"}    /api/test/jami/socket`);
+            this.write(`filesystem       ${status?.filesystem?.nodes ?? "?"} nodes      JamiRoom storage`);
+            this.write(`cat-chat         ${this.chatSocket?.readyState === WebSocket.OPEN ? "connected" : "available"}    /api/chat/socket`);
+            this.write(`watch-party      ${watch?.enabled ? "active" : "inactive"}      /api/watchparty`);
+        }
+        commandNetstat() { const state = this.socket?.readyState === WebSocket.OPEN ? "ESTABLISHED" : "CLOSED"; this.write("PROTO  ENDPOINT                              STATE"); this.write(`wss    /api/test/jami/socket                 ${state}`); const chatState = this.chatSocket?.readyState === WebSocket.OPEN ? "ESTABLISHED" : "CLOSED"; this.write(`wss    /api/chat/socket                      ${chatState}`); this.write(`rtt    ${this.latencyMs == null ? "unknown" : `${this.latencyMs} ms`}`); this.write(`peers  ${this.users.length}`); }
         async commandNowPlaying() { this.write("querying watch party…", "muted"); const response = await fetch(`${API}/api/watchparty`); if (!response.ok) throw new Error(`HTTP ${response.status}`); const data = await response.json(); const state = data?.state || {}; const queue = Array.isArray(data?.queue) ? data.queue : []; const item = queue[state.currentIndex] || queue.find(entry => entry.videoId === state.currentVideoId); if (!state.enabled || !state.currentVideoId) { this.write("watch party: inactive"); return; } this.write("WATCH PARTY", "ok"); this.write(`title       ${item?.title || state.currentVideoId}`); this.write(`requested   ${item?.requestedByName || "unknown"}`); this.write(`state       ${state.paused ? "paused" : "playing"}`); if (state.startedAt) { const seconds = state.paused && state.pausedAt ? Math.max(0, (Number(state.pausedAt) - Number(state.startedAt)) / 1000) : Math.max(0, (Date.now() - Number(state.startedAt)) / 1000); this.write(`position    ${this.formatTime(seconds)}`); } }
+
+        getChatIdentity() {
+            const widget = window.chat;
+            let name = this.name;
+            let avatar = "original.gif";
+            let discordToken = "";
+            try { name = widget?.getEffectiveChatName?.() || name; } catch {}
+            try { avatar = widget?.getEffectiveOutgoingAvatar?.() || avatar; } catch {}
+            if (typeof widget?.discordAuthToken === "string") discordToken = widget.discordAuthToken;
+            return { name, avatar, discordToken };
+        }
+
+        formatChatMessage(message) {
+            if (!message || !message.message) return;
+            const id = Number(message.id) || message.id || "?";
+            if (id !== "?" && this.chatSeenMessageIds.has(String(id))) return;
+            if (id !== "?") this.chatSeenMessageIds.add(String(id));
+            const stamp = message.created_at ? new Date(message.created_at) : null;
+            const time = stamp && !Number.isNaN(stamp.getTime())
+                ? stamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+                : "--:--";
+            if (message.reply_target_type && message.reply_target_id) {
+                this.write(`  ↳ reply to #${message.reply_target_id} ${message.reply_name ? `(${message.reply_name})` : ""}`, "muted");
+            }
+            this.write(`[${time}] #${id} <${message.name || "guest"}> ${message.message}`);
+        }
+
+        async enterChatClient() {
+            if (this.chatMode) return;
+            this.chatMode = true;
+            this.setActivity(this.currentPath, "cat-chat");
+            this.updatePrompt();
+            this.write("Cat Chat", "ok");
+            this.write("live terminal client · same messages as the site chat", "muted");
+            this.write("/help for commands · /quit to return to Jami", "muted");
+            try {
+                const response = await fetch(`${API}/api/chat`);
+                if (!response.ok) throw new Error(`history HTTP ${response.status}`);
+                const messages = await response.json();
+                const recent = Array.isArray(messages) ? messages.slice(-30) : [];
+                recent.forEach(message => this.formatChatMessage(message));
+            } catch (error) {
+                this.write(`history unavailable: ${error.message}`, "warn");
+            }
+            this.connectChatSocket();
+        }
+
+        leaveChatClient() {
+            this.chatMode = false;
+            clearTimeout(this.chatReconnectTimer);
+            clearTimeout(this.chatTypingTimer);
+            this.chatReconnectTimer = null;
+            this.chatTypingTimer = null;
+            if (this.chatSocket) {
+                try { this.chatSocket.close(1000, "left terminal chat"); } catch {}
+            }
+            this.chatSocket = null;
+            this.chatTypingUsers.clear();
+            this.chatReplyTargetId = null;
+            this.setActivity(this.currentPath, "terminal");
+            this.updatePrompt();
+            this.write("returned to jami terminal", "muted");
+        }
+
+        connectChatSocket() {
+            if (!this.chatMode) return;
+            if (this.chatSocket && [WebSocket.OPEN, WebSocket.CONNECTING].includes(this.chatSocket.readyState)) return;
+            clearTimeout(this.chatReconnectTimer);
+            const socket = new WebSocket(CHAT_WS);
+            this.chatSocket = socket;
+            socket.addEventListener("open", () => {
+                if (this.chatSocket !== socket || !this.chatMode) return;
+                const identity = this.getChatIdentity();
+                socket.send(JSON.stringify({
+                    type: "presence",
+                    clientId: this.clientId,
+                    name: identity.name,
+                    avatar: identity.avatar,
+                    afk: false,
+                    discordToken: identity.discordToken || ""
+                }));
+                this.write(`connected as ${identity.name}`, "ok");
+            });
+            socket.addEventListener("message", event => {
+                if (event.data === "pong") return;
+                let data;
+                try { data = JSON.parse(event.data); } catch { return; }
+                if (data.type === "message" && data.message) {
+                    this.formatChatMessage(data.message);
+                    return;
+                }
+                if (data.type === "message-edited" && data.message) {
+                    this.write(`[edited #${data.message.id}] <${data.message.name || "guest"}> ${data.message.message}`, "muted");
+                    return;
+                }
+                if (data.type === "members") {
+                    this.chatMembers = Array.isArray(data.members) ? data.members : [];
+                    return;
+                }
+                if (data.type === "typing") {
+                    if (data.clientId === this.clientId) return;
+                    if (data.isTyping) this.chatTypingUsers.set(data.clientId, data.name || "guest");
+                    else this.chatTypingUsers.delete(data.clientId);
+                    return;
+                }
+                if (data.type === "ban") {
+                    this.write(`chat access denied${data.reason ? `: ${data.reason}` : ""}`, "warn");
+                }
+            });
+            socket.addEventListener("close", event => {
+                if (this.chatSocket === socket) this.chatSocket = null;
+                if (!this.chatMode) return;
+                this.write(`chat connection closed (${event.code})`, "warn");
+                this.chatReconnectTimer = setTimeout(() => this.connectChatSocket(), 1800);
+            });
+            socket.addEventListener("error", () => {
+                if (this.chatMode) this.write("chat transport error", "warn");
+            });
+        }
+
+        sendChatTyping(isTyping) {
+            const socket = this.chatSocket;
+            if (!socket || socket.readyState !== WebSocket.OPEN) return;
+            const identity = this.getChatIdentity();
+            socket.send(JSON.stringify({
+                type: "typing",
+                clientId: this.clientId,
+                name: identity.name,
+                isTyping: isTyping === true
+            }));
+        }
+
+        async sendChatMessage(message, replyTargetId = null) {
+            const text = String(message || "").trim();
+            if (!text) return;
+            const identity = this.getChatIdentity();
+            this.sendChatTyping(false);
+            const headers = { "Content-Type": "application/json" };
+            if (identity.discordToken) headers.Authorization = `Bearer ${identity.discordToken}`;
+            const response = await fetch(`${API}/api/chat`, {
+                method: "POST",
+                headers,
+                body: JSON.stringify({
+                    clientId: this.clientId,
+                    name: identity.name,
+                    message: text,
+                    avatar: identity.avatar,
+                    replyTargetType: replyTargetId ? "chat" : null,
+                    replyTargetId: replyTargetId || null
+                })
+            });
+            let result = null;
+            try { result = await response.json(); } catch {}
+            if (!response.ok) {
+                const detail = result?.error || `HTTP ${response.status}`;
+                const retry = result?.retryAfterMs ? ` (${Math.ceil(result.retryAfterMs / 1000)}s)` : "";
+                throw new Error(`${detail}${retry}`);
+            }
+            this.chatReplyTargetId = null;
+        }
+
+        async handleChatInput(commandLine) {
+            this.write(`${this.name}@chat> ${commandLine}`);
+            if (commandLine === "/quit" || commandLine === "/exit") {
+                this.leaveChatClient();
+                return;
+            }
+            if (commandLine === "/help") {
+                this.write("/users                 list connected Cat Chat members");
+                this.write("/reply <id> <message>  reply to a chat message");
+                this.write("/quit                  return to the Jami terminal");
+                this.write("plain text sends directly to Cat Chat", "muted");
+                return;
+            }
+            if (commandLine === "/users") {
+                if (!this.chatMembers.length) {
+                    this.write("no member snapshot received yet", "muted");
+                    return;
+                }
+                this.chatMembers.forEach(member => this.write(`${member.name}${member.afk ? " (afk)" : ""}`));
+                return;
+            }
+            if (commandLine.startsWith("/reply ")) {
+                const match = commandLine.match(/^\/reply\s+(\d+)\s+([\s\S]+)$/);
+                if (!match) {
+                    this.write("usage: /reply <message-id> <message>", "warn");
+                    return;
+                }
+                try { await this.sendChatMessage(match[2], match[1]); }
+                catch (error) { this.write(`send failed: ${error.message}`, "warn"); }
+                return;
+            }
+            if (commandLine.startsWith("/")) {
+                this.write("unknown chat command; use /help", "warn");
+                return;
+            }
+            try {
+                await this.sendChatMessage(commandLine, this.chatReplyTargetId);
+            } catch (error) {
+                this.write(`send failed: ${error.message}`, "warn");
+            }
+        }
 
         async commandOpen(target) {
             const value = String(target || "");
             if (["terminal", "term"].includes(value.toLowerCase())) return this.openWindow("terminal");
             if (["files", "explorer"].includes(value.toLowerCase())) return this.openWindow("explorer");
-            if (value.toLowerCase() === "chat") { this.commandWhich("chat"); this.write("run 'chat' to inspect package status", "muted"); return; }
-            if (value.toLowerCase() === "radio") { this.commandWhich("radio"); this.write("run 'radio' to inspect package status", "muted"); return; }
+            if (value.toLowerCase() === "chat") { await this.enterChatClient(); return; }
+            if (value.toLowerCase() === "radio") { this.write("radio: not installed in this build", "warn"); return; }
             if (!value) { this.write("usage: open <app|path>"); return; }
             const path = this.resolveClientPath(value);
             try { const data = await this.api(`/api/test/jami/fs/stat?path=${encodeURIComponent(path)}`); if (data.node.kind === "folder") { this.openWindow("explorer"); await this.loadExplorer(path); } else await this.openTextFile(path); } catch { this.write(`${target}: application or file not found`, "warn"); }
