@@ -45,6 +45,10 @@
             this.chatTypingUsers = new Map();
             this.chatTypingTimer = null;
             this.chatReplyTargetId = null;
+            this.siteChatElement = null;
+            this.siteChatPreviousDisplay = null;
+            this.systemEvents = [];
+            this.monitorTimer = null;
 
             this.clientId =
                 localStorage.getItem("chat_client_id") ||
@@ -83,6 +87,7 @@
                         <div class="jami-icons">
                             <button class="jami-icon" type="button" data-jami-open="explorer"><span class="jami-icon-glyph">📁</span><span class="jami-icon-label">files</span></button>
                             <button class="jami-icon" type="button" data-jami-open="terminal"><span class="jami-icon-glyph">▣</span><span class="jami-icon-label">terminal</span></button>
+                            <button class="jami-icon" type="button" data-jami-open="monitor"><span class="jami-icon-glyph">⌁</span><span class="jami-icon-label">system</span></button>
                             <button class="jami-icon" type="button" data-jami-placeholder="radio"><span class="jami-icon-glyph">📻</span><span class="jami-icon-label">radio</span></button>
                             <button class="jami-icon" type="button" data-jami-open-trash><span class="jami-icon-glyph">🗑</span><span class="jami-icon-label">trash</span></button>
                         </div>
@@ -96,6 +101,17 @@
                                 </form>
                             </div>
                         `, "jami-terminal-window")}
+
+                        ${this.windowMarkup("chat", "cat chat", `
+                            <div class="jami-chat-client jami-window-body">
+                                <div class="jami-chat-status" data-jami-chat-status>disconnected</div>
+                                <div class="jami-chat-output" data-jami-chat-output></div>
+                                <form class="jami-chat-form" data-jami-chat-form>
+                                    <span class="jami-chat-prompt">cat@chat&gt;</span>
+                                    <input class="jami-chat-input" data-jami-chat-input autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Cat Chat terminal message">
+                                </form>
+                            </div>
+                        `, "jami-chat-window")}
 
                         ${this.windowMarkup("explorer", "files", `
                             <div class="jami-window-body jami-explorer-body">
@@ -125,11 +141,28 @@
                                 </div>
                             </div>
                         `, "jami-notepad-window")}
+
+                        ${this.windowMarkup("monitor", "system monitor", `
+                            <div class="jami-window-body jami-monitor-body">
+                                <div class="jami-monitor-toolbar">
+                                    <span>live telemetry</span>
+                                    <button type="button" data-jami-monitor-refresh>refresh</button>
+                                </div>
+                                <div class="jami-monitor-grid">
+                                    <section><h3>network</h3><pre data-jami-monitor-network>loading…</pre></section>
+                                    <section><h3>filesystem</h3><pre data-jami-monitor-filesystem>loading…</pre></section>
+                                    <section><h3>browser</h3><pre data-jami-monitor-browser>loading…</pre></section>
+                                    <section><h3>services</h3><pre data-jami-monitor-services>loading…</pre></section>
+                                </div>
+                                <section class="jami-monitor-events"><h3>session journal</h3><div data-jami-monitor-events></div></section>
+                            </div>
+                        `, "jami-monitor-window")}
                     </div>
 
                     <div class="jami-taskbar">
                         <button class="jami-task-button" type="button" data-jami-open="terminal">terminal</button>
                         <button class="jami-task-button" type="button" data-jami-open="explorer">files</button>
+                        <button class="jami-task-button" type="button" data-jami-open="monitor">system</button>
                         <div class="jami-task-spacer"></div>
                         <span class="jami-network-status" data-jami-network>offline</span>
                         <span class="jami-clock" data-jami-clock>--:--</span>
@@ -142,6 +175,9 @@
             this.output = this.root.querySelector("[data-jami-terminal-output]");
             this.input = this.root.querySelector("[data-jami-terminal-input]");
             this.prompt = this.root.querySelector("[data-jami-terminal-prompt]");
+            this.chatOutput = this.root.querySelector("[data-jami-chat-output]");
+            this.chatInput = this.root.querySelector("[data-jami-chat-input]");
+            this.chatStatus = this.root.querySelector("[data-jami-chat-status]");
             this.networkLabel = this.root.querySelector("[data-jami-network]");
             this.clockLabel = this.root.querySelector("[data-jami-clock]");
             this.explorerGrid = this.root.querySelector("[data-jami-explorer-grid]");
@@ -153,6 +189,11 @@
             this.notepadPresence = this.root.querySelector("[data-jami-notepad-presence]");
             this.notepadMeta = this.root.querySelector("[data-jami-notepad-meta]");
             this.notepadStatus = this.root.querySelector("[data-jami-notepad-status]");
+            this.monitorNetwork = this.root.querySelector("[data-jami-monitor-network]");
+            this.monitorFilesystem = this.root.querySelector("[data-jami-monitor-filesystem]");
+            this.monitorBrowser = this.root.querySelector("[data-jami-monitor-browser]");
+            this.monitorServices = this.root.querySelector("[data-jami-monitor-services]");
+            this.monitorEvents = this.root.querySelector("[data-jami-monitor-events]");
 
             document.getElementById("jamiLauncher")?.addEventListener("click", () => this.open());
 
@@ -176,7 +217,12 @@
             });
 
             this.root.querySelectorAll("[data-jami-close]").forEach(button => {
-                button.addEventListener("click", () => this.closeWindow(button.dataset.jamiClose));
+                button.addEventListener("pointerdown", event => event.stopPropagation());
+                button.addEventListener("click", event => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    this.closeWindow(button.dataset.jamiClose);
+                });
             });
 
             this.root.querySelector("[data-jami-exit]")?.addEventListener("click", () => this.close());
@@ -187,16 +233,23 @@
             });
 
             this.input?.addEventListener("keydown", event => {
-                if (!this.chatMode && event.key === "ArrowUp") { event.preventDefault(); this.navigateHistory(-1); }
-                if (!this.chatMode && event.key === "ArrowDown") { event.preventDefault(); this.navigateHistory(1); }
-                if (!this.chatMode && event.key === "Tab") {
+                if (event.key === "ArrowUp") { event.preventDefault(); this.navigateHistory(-1); }
+                if (event.key === "ArrowDown") { event.preventDefault(); this.navigateHistory(1); }
+                if (event.key === "Tab") {
                     event.preventDefault();
                     this.completeInput();
                 }
             });
-            this.input?.addEventListener("input", () => {
+
+            this.root.querySelector("[data-jami-chat-form]")?.addEventListener("submit", event => {
+                event.preventDefault();
+                const value = this.chatInput?.value || "";
+                if (this.chatInput) this.chatInput.value = "";
+                this.handleChatInput(value.trim());
+            });
+            this.chatInput?.addEventListener("input", () => {
                 if (!this.chatMode) return;
-                this.sendChatTyping(this.input.value.trim().length > 0);
+                this.sendChatTyping(this.chatInput.value.trim().length > 0);
                 clearTimeout(this.chatTypingTimer);
                 this.chatTypingTimer = setTimeout(() => this.sendChatTyping(false), 1200);
             });
@@ -210,6 +263,7 @@
             this.root.querySelector("[data-jami-new-text]")?.addEventListener("click", () => this.promptCreate("text"));
             this.root.querySelector("[data-jami-new-folder]")?.addEventListener("click", () => this.promptCreate("folder"));
             this.root.querySelector("[data-jami-notepad-save]")?.addEventListener("click", () => this.saveNotepad());
+            this.root.querySelector("[data-jami-monitor-refresh]")?.addEventListener("click", () => this.refreshSystemMonitor());
 
             this.notepadEditor?.addEventListener("input", () => {
                 if (!this.notepadNodeId || this.notepadEditor.readOnly) return;
@@ -230,6 +284,9 @@
             this.updateClock();
             setInterval(() => this.updateClock(), 1000);
 
+            window.addEventListener("online", () => { this.addSystemEvent("browser online"); this.refreshSystemMonitor(); });
+            window.addEventListener("offline", () => { this.addSystemEvent("browser offline"); this.refreshSystemMonitor(); });
+            document.addEventListener("visibilitychange", () => { this.addSystemEvent(`page ${document.visibilityState}`); this.refreshSystemMonitor(); });
             window.addEventListener("beforeunload", () => { this.socket?.close(1000, "page closing"); this.chatSocket?.close(1000, "page closing"); });
             window.jami = { open: () => this.open(), close: () => this.close(), terminal: () => { this.open(); this.openWindow("terminal"); } };
         }
@@ -250,6 +307,7 @@
         close() {
             this.sendFilePresence("close");
             if (this.chatMode) this.leaveChatClient();
+            this.stopSystemMonitor();
             this.isOpen = false;
             this.root.classList.remove("jami-open");
             this.root.setAttribute("aria-hidden", "true");
@@ -272,7 +330,7 @@
             for (const line of lines) { text.textContent += `${line}\n`; await new Promise(resolve => setTimeout(resolve, 75)); }
             await new Promise(resolve => setTimeout(resolve, 200));
             boot.hidden = true;
-            this.write("Jami 0.5 // live filesystem online", "ok");
+            this.write("Jami 0.6 // live telemetry online", "ok");
             this.write("type 'help' for available commands", "muted");
             this.write("");
         }
@@ -284,6 +342,7 @@
             this.socket = new WebSocket(WS);
 
             this.socket.addEventListener("open", () => {
+                this.addSystemEvent("Jami websocket connected");
                 this.setNetworkLabel("online");
                 this.sendIdentify();
                 if (this.notepadNodeId && this.isWindowOpen("notepad")) {
@@ -313,6 +372,7 @@
                     return;
                 }
                 if (packet.type === "jami-filesystem-changed") {
+                    this.addSystemEvent(`filesystem ${packet.action || "changed"}`);
                     if (this.isWindowOpen("explorer")) this.loadExplorer(this.explorerPath, false);
                     if (this.notepadPath && packet.node?.path === this.notepadPath && packet.action === "write") {
                         if (Number(packet.node?.revision) > Number(this.notepadRevision) && this.notepadDirty) {
@@ -357,16 +417,30 @@
             if (!win) return;
             win.hidden = false;
             win.style.zIndex = String(++this.zCounter);
+            this.addSystemEvent(`opened ${id}`);
             if (id === "terminal") { this.setActivity(this.currentPath, "terminal"); setTimeout(() => this.input?.focus(), 0); }
+            if (id === "chat") { this.setActivity(this.currentPath, "cat-chat"); setTimeout(() => this.chatInput?.focus(), 0); }
             if (id === "explorer") { this.setActivity(this.explorerPath, "explorer"); this.loadExplorer(this.explorerPath); }
             if (id === "notepad") this.setActivity(this.notepadPath || this.currentPath, "notepad");
+            if (id === "monitor") { this.setActivity(this.currentPath, "system-monitor"); this.startSystemMonitor(); }
         }
 
         closeWindow(id) {
             const win = this.root.querySelector(`[data-jami-window="${id}"]`);
-            if (win) win.hidden = true;
+            if (!win || win.hidden) return;
+            win.hidden = true;
+            this.addSystemEvent(`closed ${id}`);
             if (id === "notepad") this.sendFilePresence("close");
-            this.setActivity("/", "desktop");
+            if (id === "chat") this.leaveChatClient(false);
+            if (id === "monitor") this.stopSystemMonitor();
+
+            const visible = ["chat", "notepad", "explorer", "terminal", "monitor"].find(name => this.isWindowOpen(name));
+            if (visible === "chat") this.setActivity(this.currentPath, "cat-chat");
+            else if (visible === "notepad") this.setActivity(this.notepadPath || this.currentPath, "notepad");
+            else if (visible === "explorer") this.setActivity(this.explorerPath, "explorer");
+            else if (visible === "terminal") this.setActivity(this.currentPath, "terminal");
+            else if (visible === "monitor") this.setActivity(this.currentPath, "system-monitor");
+            else this.setActivity("/", "desktop");
         }
 
         setupDragging() {
@@ -375,6 +449,7 @@
                 if (!handle) return;
                 let dragging = false, pointerId = null, startX = 0, startY = 0, startLeft = 0, startTop = 0;
                 handle.addEventListener("pointerdown", event => {
+                    if (event.target.closest("button, input, textarea, select, a")) return;
                     if (window.matchMedia("(max-width: 640px)").matches) return;
                     dragging = true; pointerId = event.pointerId; handle.setPointerCapture(pointerId);
                     const rect = win.getBoundingClientRect();
@@ -392,13 +467,118 @@
             });
         }
 
+        addSystemEvent(message) {
+            const entry = { at: Date.now(), message: String(message || "event") };
+            this.systemEvents.push(entry);
+            this.systemEvents = this.systemEvents.slice(-80);
+            this.renderSystemEvents();
+        }
+
+        renderSystemEvents() {
+            if (!this.monitorEvents) return;
+            this.monitorEvents.replaceChildren();
+            const rows = this.systemEvents.slice(-30).reverse();
+            if (!rows.length) {
+                const empty = document.createElement("div");
+                empty.className = "jami-monitor-event-muted";
+                empty.textContent = "no session events recorded yet";
+                this.monitorEvents.appendChild(empty);
+                return;
+            }
+            rows.forEach(entry => {
+                const row = document.createElement("div");
+                row.className = "jami-monitor-event";
+                const time = new Date(entry.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+                row.textContent = `${time}  ${entry.message}`;
+                this.monitorEvents.appendChild(row);
+            });
+        }
+
+        startSystemMonitor() {
+            this.stopSystemMonitor();
+            this.refreshSystemMonitor();
+            this.monitorTimer = setInterval(() => this.refreshSystemMonitor(), 2000);
+        }
+
+        stopSystemMonitor() {
+            clearInterval(this.monitorTimer);
+            this.monitorTimer = null;
+        }
+
+        async refreshSystemMonitor() {
+            if (!this.isWindowOpen("monitor")) return;
+            let status = null;
+            let watchParty = null;
+            try {
+                const response = await fetch(`${API}/api/test/jami/status`, { cache: "no-store" });
+                if (response.ok) status = await response.json();
+            } catch {}
+            try {
+                const response = await fetch(`${API}/api/watchparty`, { cache: "no-store" });
+                if (response.ok) watchParty = await response.json();
+            } catch {}
+
+            const socketState = this.socket?.readyState === WebSocket.OPEN ? "connected" : this.socket?.readyState === WebSocket.CONNECTING ? "connecting" : "closed";
+            const networkAge = status?.networkCreatedAt ? Math.max(0, Math.floor((Date.now() - status.networkCreatedAt) / 1000)) : null;
+            if (this.monitorNetwork) {
+                this.monitorNetwork.textContent = [
+                    `jami websocket   ${socketState}`,
+                    `round trip       ${this.latencyMs == null ? "unknown" : `${this.latencyMs} ms`}`,
+                    `sessions         ${status?.users?.length ?? this.users.length}`,
+                    `network uptime   ${networkAge == null ? "unknown" : this.formatDuration(networkAge)}`,
+                    `browser online   ${navigator.onLine ? "yes" : "no"}`
+                ].join("\n");
+            }
+            if (this.monitorFilesystem) {
+                const fs = status?.filesystem;
+                this.monitorFilesystem.textContent = [
+                    `nodes            ${fs?.nodes ?? "unknown"}`,
+                    `documents        ${fs?.documents ?? "unknown"}`,
+                    `directories      ${fs?.directories ?? "unknown"}`,
+                    `revisions        ${fs?.revisions ?? "unknown"}`,
+                    `current path     ${this.currentPath}`
+                ].join("\n");
+            }
+            const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            if (this.monitorBrowser) {
+                this.monitorBrowser.textContent = [
+                    `visibility       ${document.visibilityState}`,
+                    `language         ${navigator.language || "unknown"}`,
+                    `logical cores    ${navigator.hardwareConcurrency || "unavailable"}`,
+                    `connection type  ${connection?.effectiveType || "unavailable"}`,
+                    `reported rtt     ${Number.isFinite(connection?.rtt) ? `${connection.rtt} ms` : "unavailable"}`
+                ].join("\n");
+            }
+            const wpState = watchParty?.state || watchParty;
+            const wpActive = Boolean(wpState?.enabled || wpState?.active || wpState?.videoId || wpState?.currentVideoId);
+            if (this.monitorServices) {
+                this.monitorServices.textContent = [
+                    `terminal         ${this.isWindowOpen("terminal") ? "open" : "closed"}`,
+                    `explorer         ${this.isWindowOpen("explorer") ? "open" : "closed"}`,
+                    `notepad          ${this.isWindowOpen("notepad") ? "open" : "closed"}`,
+                    `cat chat         ${this.chatSocket?.readyState === WebSocket.OPEN ? "connected" : this.chatMode ? "connecting" : "idle"}`,
+                    `watch party      ${wpActive ? "active" : "inactive"}`
+                ].join("\n");
+            }
+            this.renderSystemEvents();
+        }
+
+        formatDuration(seconds) {
+            const total = Math.max(0, Math.floor(Number(seconds) || 0));
+            const days = Math.floor(total / 86400);
+            const hours = Math.floor((total % 86400) / 3600);
+            const minutes = Math.floor((total % 3600) / 60);
+            const secs = total % 60;
+            return [days ? `${days}d` : "", hours || days ? `${hours}h` : "", minutes || hours || days ? `${minutes}m` : "", `${secs}s`].filter(Boolean).join(" ");
+        }
+
         updatePrompt() {
             if (!this.prompt) return;
-            this.prompt.textContent = this.chatMode
-                ? `${this.name}@chat>`
-                : `${this.name}@jami:${this.currentPath}$`;
+            this.prompt.textContent = `${this.name}@jami:${this.currentPath}$`;
         }
         write(text = "", type = "") { if (!this.output) return; const line = document.createElement("div"); if (type) line.className = `jami-terminal-line-${type}`; line.textContent = text; this.output.appendChild(line); this.output.scrollTop = this.output.scrollHeight; }
+        writeChat(text = "", type = "") { if (!this.chatOutput) return; const line = document.createElement("div"); if (type) line.className = `jami-terminal-line-${type}`; line.textContent = text; this.chatOutput.appendChild(line); this.chatOutput.scrollTop = this.chatOutput.scrollHeight; }
+        setChatStatus(text) { if (this.chatStatus) this.chatStatus.textContent = text; }
         navigateHistory(direction) { if (!this.history.length) return; this.historyIndex = Math.min(this.history.length, Math.max(0, this.historyIndex + direction)); this.input.value = this.historyIndex >= this.history.length ? "" : this.history[this.historyIndex]; }
 
         terminalCommands() {
@@ -406,7 +586,7 @@
                 "help", "man", "clear", "history", "who", "users", "uptime", "date",
                 "ps", "netstat", "nowplaying", "which", "find", "open", "pwd", "cd",
                 "ls", "cat", "stat", "tree", "touch", "mkdir", "mv", "rename", "trash",
-                "restore", "quota", "edit", "jami", "chat", "radio", "exit", "logout"
+                "restore", "quota", "edit", "jami", "chat", "monitor", "radio", "exit", "logout"
             ];
         }
 
@@ -902,11 +1082,6 @@
             const commandLine = String(raw || "").trim();
             if (!commandLine) return;
 
-            if (this.chatMode) {
-                await this.handleChatInput(commandLine);
-                return;
-            }
-
             this.write(`${this.name}@jami:${this.currentPath}$ ${commandLine}`);
             this.history.push(commandLine);
             this.history = this.history.slice(-100);
@@ -1002,13 +1177,16 @@
                         else await this.openTextFile(this.resolveClientPath(args[0]));
                         break;
                     case "jami":
-                        this.write("jami 0.5-test");
-                        this.write("filesystem protocol 4");
+                        this.write("jami 0.6-test");
+                        this.write("filesystem protocol 4"); this.write("telemetry protocol 1");
                         this.write("terminal protocol 3");
                         this.write(`session ${this.sessionId}`);
                         break;
                     case "chat":
                         await this.enterChatClient();
+                        break;
+                    case "monitor":
+                        this.openWindow("monitor");
                         break;
                     case "radio":
                         this.write("radio: not installed in this build", "warn");
@@ -1029,7 +1207,7 @@
         commandHelp() {
             this.write("JAMI TERMINAL", "ok");
             this.write("filesystem   pwd cd ls cat stat tree find touch mkdir mv rename trash restore quota");
-            this.write("programs     open edit chat nowplaying");
+            this.write("programs     open edit chat monitor nowplaying");
             this.write("system       who users ps netstat uptime date which history clear jami");
             this.write("");
             this.write("quotes, relative paths, .. and escaped spaces are supported.", "muted");
@@ -1054,6 +1232,7 @@
                 netstat: "netstat\n  show Jami transport state, RTT and connected peers",
                 nowplaying: "nowplaying\n  query the real Cat Chat Watch Party state",
                 chat: "chat\n  open the live Cat Chat terminal client\n  plain text sends a message; /help lists chat commands",
+                monitor: "monitor\n  open the live system monitor\n  values are read from the current browser, JamiRoom status, and existing site services",
                 radio: "radio\n  not installed in this build"
             };
             if (!command) {
@@ -1093,6 +1272,7 @@
             }
             if (this.terminalCommands().includes(name)) {
                 if (name === "chat") this.write("/programs/chat");
+                else if (name === "monitor") this.write("built-in: system monitor");
                 else this.write(`${name}: Jami terminal builtin`);
             } else {
                 this.write(`${command}: not found`, "warn");
@@ -1170,19 +1350,48 @@
                 ? stamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
                 : "--:--";
             if (message.reply_target_type && message.reply_target_id) {
-                this.write(`  ↳ reply to #${message.reply_target_id} ${message.reply_name ? `(${message.reply_name})` : ""}`, "muted");
+                this.writeChat(`  ↳ reply to #${message.reply_target_id} ${message.reply_name ? `(${message.reply_name})` : ""}`, "muted");
             }
-            this.write(`[${time}] #${id} <${message.name || "guest"}> ${message.message}`);
+            this.writeChat(`[${time}] #${id} <${message.name || "guest"}> ${message.message}`);
+        }
+
+        getSiteChatWindow() {
+            const widget = window.chat;
+            if (widget?.window instanceof Element) return widget.window;
+            return document.querySelector("#chatWindow, #chat-window, [data-chat-window]");
+        }
+
+        hideSiteChat() {
+            if (this.siteChatElement) return;
+            const element = this.getSiteChatWindow();
+            if (!element) return;
+            this.siteChatElement = element;
+            this.siteChatPreviousDisplay = element.style.display;
+            element.style.display = "none";
+        }
+
+        restoreSiteChat() {
+            if (!this.siteChatElement) return;
+            this.siteChatElement.style.display = this.siteChatPreviousDisplay ?? "";
+            this.siteChatElement = null;
+            this.siteChatPreviousDisplay = null;
         }
 
         async enterChatClient() {
-            if (this.chatMode) return;
+            if (this.chatMode) {
+                this.openWindow("chat");
+                this.hideSiteChat();
+                return;
+            }
             this.chatMode = true;
-            this.setActivity(this.currentPath, "cat-chat");
-            this.updatePrompt();
-            this.write("Cat Chat", "ok");
-            this.write("live terminal client · same messages as the site chat", "muted");
-            this.write("/help for commands · /quit to return to Jami", "muted");
+            this.hideSiteChat();
+            this.chatSeenMessageIds.clear();
+            if (this.chatOutput) this.chatOutput.textContent = "";
+            this.openWindow("chat");
+            this.setChatStatus("connecting…");
+            this.writeChat("Cat Chat", "ok");
+            this.writeChat("live terminal client · same messages as the site chat", "muted");
+            this.writeChat("users or /users lists members · /quit or /exit closes this window", "muted");
             try {
                 const response = await fetch(`${API}/api/chat`);
                 if (!response.ok) throw new Error(`history HTTP ${response.status}`);
@@ -1190,12 +1399,13 @@
                 const recent = Array.isArray(messages) ? messages.slice(-30) : [];
                 recent.forEach(message => this.formatChatMessage(message));
             } catch (error) {
-                this.write(`history unavailable: ${error.message}`, "warn");
+                this.writeChat(`history unavailable: ${error.message}`, "warn");
             }
             this.connectChatSocket();
         }
 
-        leaveChatClient() {
+        leaveChatClient(announce = true) {
+            const wasActive = this.chatMode;
             this.chatMode = false;
             clearTimeout(this.chatReconnectTimer);
             clearTimeout(this.chatTypingTimer);
@@ -1207,9 +1417,15 @@
             this.chatSocket = null;
             this.chatTypingUsers.clear();
             this.chatReplyTargetId = null;
-            this.setActivity(this.currentPath, "terminal");
-            this.updatePrompt();
-            this.write("returned to jami terminal", "muted");
+            this.setChatStatus("disconnected");
+            const chatWindow = this.root.querySelector('[data-jami-window="chat"]');
+            if (chatWindow) chatWindow.hidden = true;
+            this.restoreSiteChat();
+            if (wasActive && announce) this.write("cat chat closed", "muted");
+            if (this.isWindowOpen("terminal")) {
+                this.setActivity(this.currentPath, "terminal");
+                setTimeout(() => this.input?.focus(), 0);
+            }
         }
 
         connectChatSocket() {
@@ -1220,6 +1436,7 @@
             this.chatSocket = socket;
             socket.addEventListener("open", () => {
                 if (this.chatSocket !== socket || !this.chatMode) return;
+                this.addSystemEvent("Cat Chat transport connected");
                 const identity = this.getChatIdentity();
                 socket.send(JSON.stringify({
                     type: "presence",
@@ -1229,7 +1446,8 @@
                     afk: false,
                     discordToken: identity.discordToken || ""
                 }));
-                this.write(`connected as ${identity.name}`, "ok");
+                this.setChatStatus(`connected as ${identity.name}`);
+                this.writeChat(`connected as ${identity.name}`, "ok");
             });
             socket.addEventListener("message", event => {
                 if (event.data === "pong") return;
@@ -1240,7 +1458,7 @@
                     return;
                 }
                 if (data.type === "message-edited" && data.message) {
-                    this.write(`[edited #${data.message.id}] <${data.message.name || "guest"}> ${data.message.message}`, "muted");
+                    this.writeChat(`[edited #${data.message.id}] <${data.message.name || "guest"}> ${data.message.message}`, "muted");
                     return;
                 }
                 if (data.type === "members") {
@@ -1254,17 +1472,19 @@
                     return;
                 }
                 if (data.type === "ban") {
-                    this.write(`chat access denied${data.reason ? `: ${data.reason}` : ""}`, "warn");
+                    this.writeChat(`chat access denied${data.reason ? `: ${data.reason}` : ""}`, "warn");
                 }
             });
             socket.addEventListener("close", event => {
                 if (this.chatSocket === socket) this.chatSocket = null;
+                this.addSystemEvent(`Cat Chat transport closed (${event.code})`);
                 if (!this.chatMode) return;
-                this.write(`chat connection closed (${event.code})`, "warn");
+                this.setChatStatus(`disconnected (${event.code})`);
+                this.writeChat(`chat connection closed (${event.code})`, "warn");
                 this.chatReconnectTimer = setTimeout(() => this.connectChatSocket(), 1800);
             });
             socket.addEventListener("error", () => {
-                if (this.chatMode) this.write("chat transport error", "warn");
+                if (this.chatMode) this.writeChat("chat transport error", "warn");
             });
         }
 
@@ -1310,44 +1530,47 @@
         }
 
         async handleChatInput(commandLine) {
-            this.write(`${this.name}@chat> ${commandLine}`);
-            if (commandLine === "/quit" || commandLine === "/exit") {
+            if (!commandLine) return;
+            this.writeChat(`${this.name}@chat> ${commandLine}`);
+            const normalized = commandLine.toLowerCase();
+            if (normalized === "/quit" || normalized === "/exit" || normalized === "quit" || normalized === "exit") {
                 this.leaveChatClient();
                 return;
             }
-            if (commandLine === "/help") {
-                this.write("/users                 list connected Cat Chat members");
-                this.write("/reply <id> <message>  reply to a chat message");
-                this.write("/quit                  return to the Jami terminal");
-                this.write("plain text sends directly to Cat Chat", "muted");
+            if (normalized === "/help" || normalized === "help") {
+                this.writeChat("users / /users          list connected Cat Chat members");
+                this.writeChat("/reply <id> <message>  reply to a chat message");
+                this.writeChat("/quit or /exit         close Cat Chat");
+                this.writeChat("plain text sends directly to Cat Chat", "muted");
                 return;
             }
-            if (commandLine === "/users") {
+            if (normalized === "/users" || normalized === "users" || normalized === "who") {
                 if (!this.chatMembers.length) {
-                    this.write("no member snapshot received yet", "muted");
+                    this.writeChat("no member snapshot received yet", "muted");
                     return;
                 }
-                this.chatMembers.forEach(member => this.write(`${member.name}${member.afk ? " (afk)" : ""}`));
+                this.writeChat(`${this.chatMembers.length} connected`);
+                this.chatMembers.forEach(member => this.writeChat(`${member.name}${member.afk ? " (afk)" : ""}`));
                 return;
             }
             if (commandLine.startsWith("/reply ")) {
                 const match = commandLine.match(/^\/reply\s+(\d+)\s+([\s\S]+)$/);
                 if (!match) {
-                    this.write("usage: /reply <message-id> <message>", "warn");
+                    this.writeChat("usage: /reply <message-id> <message>", "warn");
                     return;
                 }
                 try { await this.sendChatMessage(match[2], match[1]); }
-                catch (error) { this.write(`send failed: ${error.message}`, "warn"); }
+                catch (error) { this.writeChat(`send failed: ${error.message}`, "warn"); }
                 return;
             }
             if (commandLine.startsWith("/")) {
-                this.write("unknown chat command; use /help", "warn");
+                this.writeChat("unknown chat command; use /help", "warn");
                 return;
             }
             try {
                 await this.sendChatMessage(commandLine, this.chatReplyTargetId);
             } catch (error) {
-                this.write(`send failed: ${error.message}`, "warn");
+                this.writeChat(`send failed: ${error.message}`, "warn");
             }
         }
 
