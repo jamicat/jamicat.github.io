@@ -93,12 +93,12 @@
 
                     <div class="jami-desktop" data-jami-desktop>
                         <div class="jami-icons">
-                            <button class="jami-icon" type="button" data-jami-open="explorer"><span class="jami-icon-glyph">📁</span><span class="jami-icon-label">files</span></button>
+                            <button class="jami-icon" type="button" data-jami-open="explorer"><span class="jami-icon-glyph jami-cat-folder" aria-hidden="true"></span><span class="jami-icon-label">files</span></button>
                             <button class="jami-icon" type="button" data-jami-open="terminal"><span class="jami-icon-glyph">▣</span><span class="jami-icon-label">terminal</span></button>
-                            <button class="jami-icon" type="button" data-jami-open-chat><span class="jami-icon-glyph">💬</span><span class="jami-icon-label">chat</span></button>
+                            <button class="jami-icon" type="button" data-jami-open-chat><span class="jami-icon-glyph jami-cat-chat" aria-hidden="true"></span><span class="jami-icon-label">chat</span></button>
                             <button class="jami-icon" type="button" data-jami-open="monitor"><span class="jami-icon-glyph">⌁</span><span class="jami-icon-label">system</span></button>
                             <button class="jami-icon" type="button" data-jami-open="radio"><span class="jami-icon-glyph">📻</span><span class="jami-icon-label">radio</span></button>
-                            <button class="jami-icon" type="button" data-jami-open-trash><span class="jami-icon-glyph">🗑</span><span class="jami-icon-label">trash</span></button>
+                            <button class="jami-icon" type="button" data-jami-open-trash><span class="jami-icon-glyph jami-cat-trash" aria-hidden="true"></span><span class="jami-icon-label">trash</span></button>
                         </div>
 
                         ${this.windowMarkup("terminal", "terminal", `
@@ -157,8 +157,8 @@
                         ${this.windowMarkup("radio", "radio", `
                             <div class="jami-window-body jami-radio-body">
                                 <div class="jami-radio-modes" role="group" aria-label="Radio source">
-                                    <button type="button" data-jami-radio-mode="watchparty">watch party</button>
-                                    <button type="button" data-jami-radio-mode="station">radio station</button>
+                                    <button type="button" data-jami-radio-mode="watchparty"><span>watch party</span><small>shared video</small></button>
+                                    <button type="button" data-jami-radio-mode="station"><span>radio station</span><small>playlist</small></button>
                                 </div>
                                 <div class="jami-radio-state" data-jami-radio-state>checking…</div>
                                 <div class="jami-radio-title" data-jami-radio-title>nothing playing</div>
@@ -167,10 +167,10 @@
                                     <iframe data-jami-radio-player title="Jami radio player" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"></iframe>
                                 </div>
                                 <div class="jami-radio-actions">
-                                    <button type="button" data-jami-radio-play>play</button>
-                                    <button type="button" data-jami-radio-pause>pause</button>
-                                    <button type="button" data-jami-radio-next>next</button>
-                                    <button type="button" data-jami-radio-refresh>refresh</button>
+                                    <button type="button" data-jami-radio-play><span aria-hidden="true">▶</span> play</button>
+                                    <button type="button" data-jami-radio-pause><span aria-hidden="true">Ⅱ</span> pause</button>
+                                    <button type="button" data-jami-radio-next><span aria-hidden="true">»</span> next</button>
+                                    <button type="button" data-jami-radio-refresh><span aria-hidden="true">↻</span> refresh</button>
                                 </div>
                             </div>
                         `, "jami-radio-window")}
@@ -433,6 +433,8 @@
             this.root.classList.add("jami-open");
             this.root.setAttribute("aria-hidden", "false");
             this.isOpen = true;
+            document.body.classList.add("jami-os-visible");
+            this.suppressSiteWatchPartyVisual();
             this.connect();
             if (!this.booted) {
                 await this.boot();
@@ -446,6 +448,8 @@
             this.stopSystemMonitor();
             this.stopRadio();
             this.isOpen = false;
+            document.body.classList.remove("jami-os-visible");
+            this.restoreSiteWatchPartyVisual();
             this.root.classList.remove("jami-open");
             this.root.setAttribute("aria-hidden", "true");
             this.setActivity("/", "desktop");
@@ -1024,8 +1028,8 @@
                 card.type = "button";
                 card.className = "jami-file-card";
                 card.dataset.id = item.id;
-                const glyph = item.kind === "folder" ? (item.path === "/trash" ? "🗑" : "📁") : "📄";
-                card.innerHTML = `<span class="jami-file-glyph">${glyph}</span><span class="jami-file-name"></span><span class="jami-file-presence"></span><small></small>`;
+                const glyph = item.kind === "folder" ? (item.path === "/trash" ? "trash" : "folder") : "text";
+                card.innerHTML = `<span class="jami-file-glyph jami-file-glyph-${glyph}" aria-hidden="true"></span><span class="jami-file-name"></span><span class="jami-file-presence"></span><small></small>`;
                 card.querySelector(".jami-file-name").textContent = item.name;
                 card.querySelector("small").textContent = item.system ? "owner: jami" : `${item.size || 0} bytes · r${item.revision}`;
                 const x = Number(item.iconPosition?.x) || 0;
@@ -1793,6 +1797,35 @@
             this.radioSiteVolume = null;
         }
 
+        suppressSiteWatchPartyVisual() {
+            if (!this.siteWatchPartyVisuals) this.siteWatchPartyVisuals = new Map();
+            const selectors = [
+                "#watchPartyPlayer", "#watchPartyIframe", "#youtubePlayer",
+                "[data-watch-party-player]", ".watch-party-player", ".watchparty-player"
+            ];
+            document.querySelectorAll(selectors.join(",")).forEach(el => {
+                if (this.root.contains(el) || this.siteWatchPartyVisuals.has(el)) return;
+                this.siteWatchPartyVisuals.set(el, { visibility: el.style.visibility, opacity: el.style.opacity, pointerEvents: el.style.pointerEvents });
+                el.style.visibility = "hidden";
+                el.style.opacity = "0";
+                el.style.pointerEvents = "none";
+                const frame = el.tagName === "IFRAME" ? el : el.querySelector?.("iframe");
+                frame?.contentWindow?.postMessage(JSON.stringify({ event: "command", func: "mute", args: [] }), "*");
+            });
+        }
+
+        restoreSiteWatchPartyVisual() {
+            this.siteWatchPartyVisuals?.forEach((old, el) => {
+                if (!el?.isConnected) return;
+                el.style.visibility = old.visibility;
+                el.style.opacity = old.opacity;
+                el.style.pointerEvents = old.pointerEvents;
+                const frame = el.tagName === "IFRAME" ? el : el.querySelector?.("iframe");
+                frame?.contentWindow?.postMessage(JSON.stringify({ event: "command", func: "unMute", args: [] }), "*");
+            });
+            this.siteWatchPartyVisuals?.clear();
+        }
+
         radioPostMessage(func, args = []) {
             this.radioPlayer?.contentWindow?.postMessage(JSON.stringify({
                 event: "command",
@@ -1889,11 +1922,10 @@
 
             if (mode === "watchparty") {
                 this.restoreSitePlayerAfterRadio();
-                if (this.radioPlayerWrap) this.radioPlayerWrap.hidden = true;
-                if (this.radioPlayer) this.radioPlayer.src = "about:blank";
+                if (this.radioPlayerWrap) this.radioPlayerWrap.hidden = false;
                 const state = this.getLiveWatchPartyState();
                 if (state?.enabled) window.watchPartyPlayer?.applyState?.(state);
-                this.renderRadioWatchParty();
+                this.renderRadioWatchParty(true);
             } else {
                 this.muteSitePlayerForRadio();
                 if (this.radioPlayerWrap) this.radioPlayerWrap.hidden = false;
@@ -1964,9 +1996,9 @@
             }
         }
 
-        renderRadioWatchParty() {
+        renderRadioWatchParty(forceLoad = false) {
             const state = this.getLiveWatchPartyState() || {};
-            if (this.radioPlayerWrap) this.radioPlayerWrap.hidden = true;
+            if (this.radioPlayerWrap) this.radioPlayerWrap.hidden = false;
 
             if (!state.enabled || !state.currentVideoId) {
                 this.radioMode = "station";
@@ -1987,6 +2019,18 @@
                     : Number.isFinite(state.startedAt)
                         ? Math.max(0, (Date.now() - state.startedAt) / 1000)
                         : 0;
+            }
+
+            const shouldLoad = forceLoad || this.radioCurrentVideoId !== state.currentVideoId;
+            if (shouldLoad) {
+                this.radioEmbed(state.currentVideoId, seconds, !state.paused);
+                this.lastRadioWatchSyncAt = Date.now();
+            } else {
+                this.radioPostMessage(state.paused ? "pauseVideo" : "playVideo");
+                if (!state.paused && (!this.lastRadioWatchSyncAt || Date.now() - this.lastRadioWatchSyncAt > 5000)) {
+                    this.radioPostMessage("seekTo", [Math.max(0, seconds), true]);
+                    this.lastRadioWatchSyncAt = Date.now();
+                }
             }
 
             if (this.radioState) this.radioState.textContent = state.paused ? "watch party · paused" : "watch party · live";
@@ -2037,7 +2081,7 @@
 
             if (this.radioMode === "watchparty") {
                 this.restoreSitePlayerAfterRadio();
-                this.renderRadioWatchParty();
+                this.renderRadioWatchParty(forceLoad);
             } else {
                 this.muteSitePlayerForRadio();
                 await this.loadRadioPlaylist();
