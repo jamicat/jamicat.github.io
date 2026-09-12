@@ -85,17 +85,21 @@
 
 
         iconSvg(kind, extraClass = "") {
-            const icons = {
-                files: `<svg viewBox="0 0 64 56" aria-hidden="true"><path class="i-shadow" d="M7 17.5c0-4.5 3.7-8.2 8.2-8.2h12.1c2.1 0 4.1.9 5.5 2.5l2.7 3h13.2c4.6 0 8.3 3.7 8.3 8.3v21.1c0 4.8-3.9 8.7-8.7 8.7H15.5C10.8 52.9 7 49.1 7 44.4Z"/><path class="i-main" d="M7.8 18.1c0-4 3.2-7.2 7.2-7.2h12c2 0 3.9.9 5.2 2.4l2.5 2.8h14c4.1 0 7.5 3.4 7.5 7.5v19.8c0 4.3-3.5 7.8-7.8 7.8H15.6c-4.3 0-7.8-3.5-7.8-7.8Z"/><path class="i-accent" d="M8.8 18.6h46.4v6.8H8.8Z"/><path class="i-highlight" d="M13 27.4c9.7-1.7 27.9-1.7 38 0"/><path class="i-ink" d="M21.8 35.6c1.5-1 3.2-1 4.7 0m11 0c1.5-1 3.2-1 4.7 0m-13.6 5.8c2.3 1.7 4.9 1.7 7.2 0"/><path class="i-soft" d="M14.8 46.1c8.6 1.2 25.8 1.2 34.4 0"/></svg>`,
-                terminal: `<svg viewBox="0 0 64 56" aria-hidden="true"><path class="i-shadow" d="M6.8 9.5c0-4.3 3.5-7.8 7.8-7.8h34.8c4.3 0 7.8 3.5 7.8 7.8v32.9c0 4.3-3.5 7.8-7.8 7.8H14.6c-4.3 0-7.8-3.5-7.8-7.8Z"/><path class="i-main" d="M7.7 8.8c0-3.7 3-6.7 6.7-6.7h35.2c3.7 0 6.7 3 6.7 6.7v32.7c0 3.7-3 6.7-6.7 6.7H14.4c-3.7 0-6.7-3-6.7-6.7Z"/><path class="i-accent" d="M7.7 8.8c0-3.7 3-6.7 6.7-6.7h35.2c3.7 0 6.7 3 6.7 6.7v7.1H7.7Z"/><circle class="i-cut" cx="14.2" cy="9.2" r="1.55"/><path class="i-ink" d="M17.7 26.2 23 30.4l-5.3 4.2m12.2 2.1h15.2"/><path class="i-soft" d="M12.6 43.2h38.8"/></svg>`,
-                chat: `<svg viewBox="0 0 64 56" aria-hidden="true"><path class="i-shadow" d="M7.5 11.8c0-4.8 3.9-8.7 8.7-8.7h31.6c4.8 0 8.7 3.9 8.7 8.7v23.6c0 4.8-3.9 8.7-8.7 8.7H33.4l-9.6 7.1c-1.5 1.1-3.6 0-3.6-1.8v-5.3h-4c-4.8 0-8.7-3.9-8.7-8.7Z"/><path class="i-main" d="M8.5 11.7c0-4.1 3.3-7.4 7.4-7.4h32.2c4.1 0 7.4 3.3 7.4 7.4v23c0 4.1-3.3 7.4-7.4 7.4H33l-8.1 6c-1 .7-2.4 0-2.4-1.2v-4.8h-6.6c-4.1 0-7.4-3.3-7.4-7.4Z"/><path class="i-accent" d="M8.5 11.7c0-4.1 3.3-7.4 7.4-7.4h32.2c4.1 0 7.4 3.3 7.4 7.4v6H8.5Z"/><path class="i-ink" d="M20.5 27.2c1.4-1 3-1 4.4 0m14.2 0c1.4-1 3-1 4.4 0m-14.8 6.1c2.1 1.7 4.5 1.7 6.6 0"/><path class="i-soft" d="M15.6 20.9h32.8"/><path class="i-detail" d="M17.4 31.5h-3.1m35.4 0h-3.1M18.2 35.1l-2.8 1.3m33.2-1.3 2.8 1.3"/></svg>`,
-                system: `<svg viewBox="0 0 64 56" aria-hidden="true"><path class="i-shadow" d="M7.5 10.8c0-4.8 3.9-8.7 8.7-8.7h31.6c4.8 0 8.7 3.9 8.7 8.7v31.6c0 4.8-3.9 8.7-8.7 8.7H16.2c-4.8 0-8.7-3.9-8.7-8.7Z"/><path class="i-main" d="M8.5 10.2c0-4.2 3.4-7.6 7.6-7.6h31.8c4.2 0 7.6 3.4 7.6 7.6v31c0 4.2-3.4 7.6-7.6 7.6H16.1c-4.2 0-7.6-3.4-7.6-7.6Z"/><path class="i-accent" d="M13.6 10.6h36.8v7.2H13.6Z"/><path class="i-ink" d="M14.8 34h7.8l4.3-10.7 6.5 16.3 4.9-9.1h10.9"/><path class="i-soft" d="M14.8 43.3h34.4"/><circle class="i-detail-fill" cx="18.2" cy="14.2" r="1.7"/><circle class="i-detail-fill" cx="23.3" cy="14.2" r="1.7"/><path class="i-highlight" d="M41.1 11.9h6.4"/></svg>`,
-                radio: `<svg viewBox="0 0 64 56" aria-hidden="true"><path class="i-shadow" d="M7.6 16.3c0-4.6 3.7-8.3 8.3-8.3h32.2c4.6 0 8.3 3.7 8.3 8.3v27.1c0 4.6-3.7 8.3-8.3 8.3H15.9c-4.6 0-8.3-3.7-8.3-8.3Z"/><path class="i-main" d="M8.5 16c0-4 3.2-7.2 7.2-7.2h32.6c4 0 7.2 3.2 7.2 7.2v26.6c0 4-3.2 7.2-7.2 7.2H15.7c-4 0-7.2-3.2-7.2-7.2Z"/><path class="i-accent" d="M8.5 16c0-4 3.2-7.2 7.2-7.2h32.6c4 0 7.2 3.2 7.2 7.2v5.8h-47Z"/><path class="i-antenna" d="M17 9.1 45.8 3.5"/><path class="i-soft" d="M14.4 25h20.2"/><path class="i-ink" d="M16.6 31.1h13.8m-13.8 5.9h10.2m-10.2 5.9h6.8"/><circle class="i-accent-fill" cx="43.2" cy="34.8" r="9.2"/><circle class="i-cut" cx="43.2" cy="34.8" r="4.3"/><path class="i-highlight" d="M39.8 29.1c2.5-1.4 5.5-1.3 7.9.3"/><path class="i-detail" d="M12.8 18.9h4.2"/></svg>`,
-                trash: `<svg viewBox="0 0 64 56" aria-hidden="true"><path class="i-shadow" d="M15.5 17h33l-3.4 31.6c-.4 3.1-3 5.4-6.1 5.4H25c-3.1 0-5.7-2.3-6.1-5.4Z"/><path class="i-main" d="M16.6 16.7h30.8L44 47.1c-.3 2.6-2.5 4.5-5.1 4.5H25.1c-2.6 0-4.8-1.9-5.1-4.5Z"/><path class="i-accent" d="M14.5 13.3c0-1.8 1.5-3.3 3.3-3.3h4.8l1.2-3.1c.5-1.3 1.8-2.2 3.2-2.2h10c1.4 0 2.7.9 3.2 2.2l1.2 3.1h4.8c1.8 0 3.3 1.5 3.3 3.3v2.2h-35Z"/><path class="i-soft" d="M24.2 21.5 26 43m14-21.5L38 43"/><path class="i-ink" d="M27.5 31.1c1.2-.8 2.4-.8 3.6 0m2.8 0c1.2-.8 2.4-.8 3.6 0m-7.1 5.3c1 .8 2.2 1.1 3.4.7"/></svg>`,
-                text: `<svg viewBox="0 0 56 64" aria-hidden="true"><path class="i-shadow" d="M9 3h27.5L49 15.5V57c0 2.8-2.2 5-5 5H9c-2.8 0-5-2.2-5-5V8c0-2.8 2.2-5 5-5Z"/><path class="i-main" d="M8 2h27.7L48 14.3V56c0 2.8-2.2 5-5 5H8c-2.8 0-5-2.2-5-5V7c0-2.8 2.2-5 5-5Z"/><path class="i-accent" d="M35.7 2v9.7c0 1.5 1.2 2.7 2.7 2.7H48Z"/><path class="i-soft" d="M11.8 19.5h25.7"/><path class="i-ink" d="M16.1 27c1.2-.9 2.5-.9 3.7 0m11 0c1.2-.9 2.5-.9 3.7 0m-12.2 5.5c2.1 1.6 4.5 1.6 6.6 0"/><path class="i-detail" d="M12.5 41h28m-28 6h23m-23 6h18"/></svg>`,
-                mark: `<svg viewBox="0 0 56 56" aria-hidden="true"><path class="i-shadow" d="M6.5 12.5C6.5 7.3 10.8 3 16 3h24c5.2 0 9.5 4.3 9.5 9.5v31c0 5.2-4.3 9.5-9.5 9.5H16c-5.2 0-9.5-4.3-9.5-9.5Z"/><path class="i-main" d="M7.7 12.5c0-4.6 3.7-8.3 8.3-8.3h24c4.6 0 8.3 3.7 8.3 8.3v30.8c0 4.6-3.7 8.3-8.3 8.3H16c-4.6 0-8.3-3.7-8.3-8.3Z"/><path class="i-accent" d="M7.7 12.5c0-4.6 3.7-8.3 8.3-8.3h24c4.6 0 8.3 3.7 8.3 8.3v6.2H7.7Z"/><circle class="i-cut" cx="15.2" cy="11.4" r="1.4"/><circle class="i-cut" cx="20.1" cy="11.4" r="1.4"/><path class="i-soft" d="M13.8 23.2h28.4"/><path class="i-ink" d="M18.1 31.2c1.2-.9 2.7-.9 3.9 0m12 0c1.2-.9 2.7-.9 3.9 0m-12.4 5.7c1.7 1.3 3.3 1.3 5 0"/><path class="i-detail" d="M15.7 34.4h-3m30.6 0h-3"/></svg>`
+            const assets = {
+                files: "files.ico",
+                folder: "folders.ico",
+                terminal: "terminal.png",
+                chat: "chat.ico",
+                system: "system.ico",
+                radio: "music.ico",
+                trash: "trash.ico",
+                text: "textfiles.ico"
             };
-            return `<span class="jami-vector-icon jami-vector-${kind} ${extraClass}" aria-hidden="true">${icons[kind] || icons.text}</span>`;
+            if (assets[kind]) {
+                return `<img class="jami-vector-icon jami-vector-${kind} ${extraClass}" src="jami/${assets[kind]}" alt="" aria-hidden="true" draggable="false">`;
+            }
+            const mark = `<svg viewBox="0 0 56 56" aria-hidden="true"><path class="i-shadow" d="M6.5 12.5C6.5 7.3 10.8 3 16 3h24c5.2 0 9.5 4.3 9.5 9.5v31c0 5.2-4.3 9.5-9.5 9.5H16c-5.2 0-9.5-4.3-9.5-9.5Z"/><path class="i-main" d="M7.7 12.5c0-4.6 3.7-8.3 8.3-8.3h24c4.6 0 8.3 3.7 8.3 8.3v30.8c0 4.6-3.7 8.3-8.3 8.3H16c-4.6 0-8.3-3.7-8.3-8.3Z"/><path class="i-accent" d="M7.7 12.5c0-4.6 3.7-8.3 8.3-8.3h24c4.6 0 8.3 3.7 8.3 8.3v6.2H7.7Z"/><path class="i-ink" d="M18 29h5v8h-5m12-8v8m0-4h7"/></svg>`;
+            return `<span class="jami-vector-icon jami-vector-mark ${extraClass}" aria-hidden="true">${mark}</span>`;
         }
 
         mount() {
@@ -112,7 +116,7 @@
                             <button class="jami-icon jami-app-terminal" type="button" data-jami-open="terminal">${this.iconSvg("terminal")}<span class="jami-icon-label">terminal</span></button>
                             <button class="jami-icon jami-app-chat" type="button" data-jami-open-chat>${this.iconSvg("chat")}<span class="jami-icon-label">chat</span></button>
                             <button class="jami-icon jami-app-system" type="button" data-jami-open="monitor">${this.iconSvg("system")}<span class="jami-icon-label">system</span></button>
-                            <button class="jami-icon jami-app-radio" type="button" data-jami-open="radio">${this.iconSvg("radio")}<span class="jami-icon-label">radio</span></button>
+                            <button class="jami-icon jami-app-radio" type="button" data-jami-open="radio">${this.iconSvg("radio")}<span class="jami-icon-label">music</span></button>
                             <button class="jami-icon jami-app-trash" type="button" data-jami-open-trash>${this.iconSvg("trash")}<span class="jami-icon-label">trash</span></button>
                         </div>
 
@@ -169,17 +173,17 @@
                             </div>
                         `, "jami-notepad-window")}
 
-                        ${this.windowMarkup("radio", "radio", `
+                        ${this.windowMarkup("radio", "music player", `
                             <div class="jami-window-body jami-radio-body">
-                                <div class="jami-radio-modes" role="group" aria-label="Radio source">
+                                <div class="jami-radio-modes" role="group" aria-label="Music source">
                                     <button type="button" data-jami-radio-mode="watchparty"><span>watch party</span><small>shared video</small></button>
-                                    <button type="button" data-jami-radio-mode="station"><span>radio station</span><small>playlist</small></button>
+                                    <button type="button" data-jami-radio-mode="station"><span>music</span><small>playlist</small></button>
                                 </div>
                                 <div class="jami-radio-state" data-jami-radio-state>checking…</div>
                                 <div class="jami-radio-title" data-jami-radio-title>nothing playing</div>
                                 <div class="jami-radio-meta" data-jami-radio-meta></div>
                                 <div class="jami-radio-player-wrap">
-                                    <iframe data-jami-radio-player title="Jami radio player" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                                    <iframe data-jami-radio-player title="Jami music player" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"></iframe>
                                 </div>
                                 <div class="jami-radio-actions">
                                     <button type="button" data-jami-radio-play><span aria-hidden="true">▶</span> play</button>
@@ -235,7 +239,7 @@
                         <button class="jami-task-button" type="button" data-jami-open="explorer">files</button>
                         <button class="jami-task-button" type="button" data-jami-open="notepad" data-jami-notepad-task hidden>notepad</button>
                         <button class="jami-task-button" type="button" data-jami-open-chat>chat</button>
-                        <button class="jami-task-button" type="button" data-jami-open="radio">radio</button>
+                        <button class="jami-task-button" type="button" data-jami-open="radio">music</button>
                         <button class="jami-task-button" type="button" data-jami-open="monitor">system</button>
                         <div class="jami-task-spacer"></div>
                         <span class="jami-network-status" data-jami-network>offline</span>
@@ -871,7 +875,7 @@
                     `files            ${this.isWindowOpen("explorer") ? "open" : "closed"}`,
                     `notepad          ${this.isWindowOpen("notepad") ? "open" : "closed"}`,
                     `live chat        ${this.chatSocket?.readyState === WebSocket.OPEN ? "connected" : this.chatMode ? "connecting" : "idle"}`,
-                    `radio            ${this.isWindowOpen("radio") ? this.radioMode || "open" : "closed"}`,
+                    `music            ${this.isWindowOpen("radio") ? this.radioMode || "open" : "closed"}`,
                     `watch party      ${wpActive ? "active" : "inactive"}`
                 ].join("\n");
             }
@@ -901,7 +905,7 @@
                 "help", "man", "clear", "history", "who", "users", "uptime", "date",
                 "ps", "netstat", "nowplaying", "which", "find", "open", "pwd", "cd",
                 "ls", "cat", "stat", "tree", "touch", "mkdir", "mv", "rename", "trash",
-                "restore", "delete", "quota", "edit", "jami", "chat", "monitor", "radio", "exit", "logout"
+                "restore", "delete", "quota", "edit", "jami", "chat", "monitor", "music", "radio", "exit", "logout"
             ];
         }
 
@@ -1049,7 +1053,7 @@
                 card.type = "button";
                 card.className = "jami-file-card";
                 card.dataset.id = item.id;
-                const glyph = item.kind === "folder" ? (item.path === "/trash" ? "trash" : "files") : "text";
+                const glyph = item.kind === "folder" ? (item.path === "/trash" ? "trash" : "folder") : "text";
                 card.dataset.kind = glyph;
                 card.innerHTML = `${this.iconSvg(glyph, "jami-file-glyph")}<span class="jami-file-name"></span><span class="jami-file-presence"></span><small></small>`;
                 card.querySelector(".jami-file-name").textContent = item.name;
@@ -1632,7 +1636,7 @@
                         break;
                     case "jami":
                         this.write("Jami", "ok");
-                        this.write("shared files · live chat · radio · system");
+                        this.write("shared files · live chat · music · system");
                         break;
                     case "chat":
                         await this.enterChatClient();
@@ -1640,6 +1644,7 @@
                     case "monitor":
                         this.openWindow("monitor");
                         break;
+                    case "music":
                     case "radio":
                         this.openWindow("radio");
                         break;
@@ -1686,7 +1691,8 @@
                 nowplaying: "nowplaying\n  query the real Watch Party state",
                 chat: "chat\n  open live chat\n  plain text sends a message; /reply replies; /users lists people; /exit closes it",
                 monitor: "monitor\n  open the live system monitor\n  values are read from the current browser, JamiRoom status, and existing site services",
-                radio: "radio\n  open radio; defaults to Watch Party when active, otherwise the site radio station"
+                music: "music\n  open music player; defaults to Watch Party when active, otherwise the site playlist",
+                radio: "radio\n  alias for music"
             };
             if (!command) {
                 this.write("usage: man <command>", "warn");
@@ -1722,7 +1728,7 @@
             if (this.terminalCommands().includes(name)) {
                 if (name === "chat") this.write("/programs/chat");
                 else if (name === "monitor") this.write("built-in: system monitor");
-                else if (name === "radio") this.write("built-in: radio");
+                else if (name === "radio" || name === "music") this.write(`built-in: ${name}`);
                 else this.write(`${name}: built in to Jami`);
             } else {
                 this.write(`${command}: not found`, "warn");
@@ -1958,7 +1964,7 @@
             this.updateRadioModeButtons();
             if (this.isWindowOpen("radio")) this.setActivity(this.currentPath, "radio");
             if (userInitiated) {
-                this.addSystemEvent(`radio source: ${mode === "watchparty" ? "watch party" : "radio station"}`);
+                this.addSystemEvent(`music source: ${mode === "watchparty" ? "watch party" : "playlist"}`);
             }
         }
 
@@ -1996,7 +2002,7 @@
             } catch (error) {
                 this.radioPlaylist = [];
                 if (this.radioState) this.radioState.textContent = "unavailable";
-                if (this.radioTitle) this.radioTitle.textContent = "radio station unavailable";
+                if (this.radioTitle) this.radioTitle.textContent = "music unavailable";
                 if (this.radioMeta) this.radioMeta.textContent = error.message;
             }
         }
@@ -2010,7 +2016,7 @@
                 if (this.radioMeta) this.radioMeta.textContent = "The site playlist is empty.";
                 return;
             }
-            if (this.radioState) this.radioState.textContent = this.radioStationPlaying ? "radio station" : "paused";
+            if (this.radioState) this.radioState.textContent = this.radioStationPlaying ? "music" : "paused";
             if (this.radioTitle) this.radioTitle.textContent = item.title || item.videoId;
             if (this.radioMeta) this.radioMeta.textContent = `${this.radioStationIndex + 1} / ${this.radioPlaylist.length}`;
             if (forceLoad || this.radioCurrentVideoId !== item.videoId) {
@@ -2384,7 +2390,7 @@
             if (["terminal", "term"].includes(value.toLowerCase())) return this.openWindow("terminal");
             if (["files", "explorer"].includes(value.toLowerCase())) return this.openWindow("explorer");
             if (value.toLowerCase() === "chat") { await this.enterChatClient(); return; }
-            if (value.toLowerCase() === "radio") { this.openWindow("radio"); return; }
+            if (["music", "radio"].includes(value.toLowerCase())) { this.openWindow("radio"); return; }
             if (!value) { this.write("usage: open <app|path>"); return; }
             const path = this.resolveClientPath(value);
             try { const data = await this.api(`/api/test/jami/fs/stat?path=${encodeURIComponent(path)}`); if (data.node.kind === "folder") { this.openWindow("explorer"); await this.loadExplorer(path); } else await this.openTextFile(path); } catch { this.write(`${target}: application or file not found`, "warn"); }
