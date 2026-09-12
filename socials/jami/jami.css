@@ -419,7 +419,7 @@
 .jami-file-card small { display: block; margin-top: 5px; color: var(--jami-muted); font-size: 9px; }
 .jami-system-file { border-style: dashed; }
 .jami-hidden-file { opacity: 0.72; }
-.jami-empty-folder { color: var(--jami-muted); font-size: 11px; padding: 18px; }
+.jami-empty-folder { color: var(--jami-muted); font-size: 11px; padding: 18px; white-space: nowrap; width: max-content; max-width: none; }
 .jami-explorer-status { min-height: 16px; padding: 5px 9px; border-top: 1px solid rgba(255,255,255,0.07); color: var(--jami-muted); font-size: 10px; }
 
 .jami-notepad-window {
@@ -1185,14 +1185,20 @@
     filter: drop-shadow(0 5px 9px rgba(0,0,0,.34));
 }
 .jami-vector-icon svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.jami-vector-icon .i-shadow { fill: rgba(4,6,12,.68); transform: translate(1px,2px); }
-.jami-vector-icon .i-main { fill: var(--icon-main); stroke: rgba(255,255,255,.86); stroke-width: 1.3; stroke-linejoin: round; }
-.jami-vector-icon .i-accent { fill: var(--icon-accent); stroke: rgba(255,255,255,.78); stroke-width: .8; stroke-linejoin: round; }
-.jami-vector-icon .i-face,
+.jami-vector-icon .i-shadow { fill: rgba(4,6,12,.66); transform: translate(1px,2px); }
+.jami-vector-icon .i-main { fill: var(--icon-main); stroke: rgba(255,255,255,.88); stroke-width: 1.15; stroke-linejoin: round; }
+.jami-vector-icon .i-accent { fill: var(--icon-accent); stroke: rgba(255,255,255,.72); stroke-width: .72; stroke-linejoin: round; }
+.jami-vector-icon .i-ink,
 .jami-vector-icon .i-detail,
-.jami-vector-icon .i-ear { fill: none; stroke: #242337; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.jami-vector-icon .i-detail-fill { fill: var(--icon-accent); stroke: #242337; stroke-width: 1.2; }
-.jami-vector-icon .i-cut { fill: #171725; }
+.jami-vector-icon .i-accent-stroke,
+.jami-vector-icon .i-cut-stroke { fill: none; stroke: #28263a; stroke-width: 1.85; stroke-linecap: round; stroke-linejoin: round; }
+.jami-vector-icon .i-accent-stroke { stroke: var(--icon-accent); stroke-width: 1.7; }
+.jami-vector-icon .i-cut-stroke { stroke: #29273b; stroke-width: 1.35; }
+.jami-vector-icon .i-detail-fill,
+.jami-vector-icon .i-accent-fill { fill: var(--icon-accent); stroke: #29273b; stroke-width: 1.05; }
+.jami-vector-icon .i-cut { fill: #252337; }
+.jami-vector-icon .i-highlight { fill: none; stroke: rgba(255,255,255,.58); stroke-width: 1.35; stroke-linecap: round; }
+.jami-vector-icon .i-soft { fill: none; stroke: rgba(45,42,62,.34); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
 
 .jami-vector-files { --icon-main: var(--jami-blue); --icon-accent: var(--jami-pink); }
 .jami-vector-terminal { --icon-main: var(--jami-lilac); --icon-accent: var(--jami-mint); }
@@ -1201,6 +1207,7 @@
 .jami-vector-radio { --icon-main: var(--jami-rose); --icon-accent: var(--jami-peach); }
 .jami-vector-trash { --icon-main: var(--jami-peach); --icon-accent: var(--jami-lilac); }
 .jami-vector-text { --icon-main: var(--jami-lilac); --icon-accent: var(--jami-pink); }
+.jami-vector-mark { --icon-main: var(--jami-mint); --icon-accent: var(--jami-pink); }
 
 .jami-icons { gap: 15px 13px; }
 .jami-icon {
