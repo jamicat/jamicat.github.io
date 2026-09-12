@@ -1198,6 +1198,13 @@
     margin: 0 auto 7px;
     filter: drop-shadow(0 5px 9px rgba(0,0,0,.34));
 }
+img.jami-vector-icon {
+    object-fit: contain;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    user-select: none;
+    pointer-events: none;
+}
 .jami-vector-icon svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .jami-vector-icon .i-shadow { fill: rgba(4,6,12,.66); transform: translate(1px,2px); }
 .jami-vector-icon .i-main { fill: var(--icon-main); stroke: rgba(255,255,255,.88); stroke-width: 1.15; stroke-linejoin: round; }
@@ -1222,6 +1229,7 @@
     stroke-linejoin: round;
 }
 
+.jami-vector-folder { --icon-main: var(--jami-blue); --icon-accent: var(--jami-pink); }
 .jami-vector-files { --icon-main: var(--jami-blue); --icon-accent: var(--jami-pink); }
 .jami-vector-terminal { --icon-main: var(--jami-lilac); --icon-accent: var(--jami-mint); }
 .jami-vector-chat { --icon-main: var(--jami-mint); --icon-accent: var(--jami-pink); }
