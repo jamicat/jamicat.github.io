@@ -83,6 +83,20 @@
             this.mount();
         }
 
+
+        iconSvg(kind, extraClass = "") {
+            const icons = {
+                files: `<svg viewBox="0 0 64 56" aria-hidden="true"><path class="i-shadow" d="M7 14h18l5-7h20c5 0 8 3 8 8v30c0 5-3 8-8 8H12c-5 0-8-3-8-8V22c0-5 1-8 3-8Z"/><path class="i-main" d="M8 18h18l5-7h18c3 0 5 2 5 5v29c0 3-2 5-5 5H12c-3 0-5-2-5-5V22c0-2 0-3 1-4Z"/><path class="i-accent" d="m13 18 5-8 7 8h14l6-8 6 8Z"/><path class="i-face" d="M20 34h4m16 0h4M28 39c3 2 7 2 10 0"/></svg>`,
+                terminal: `<svg viewBox="0 0 64 56" aria-hidden="true"><rect class="i-shadow" x="5" y="7" width="54" height="42" rx="8"/><rect class="i-main" x="7" y="5" width="50" height="40" rx="7"/><path class="i-accent" d="m13 8 7-6 6 6h12l6-6 7 6Z"/><path class="i-face" d="m18 22 7 6-7 6M30 35h15"/><path class="i-detail" d="M7 14h50"/></svg>`,
+                chat: `<svg viewBox="0 0 64 56" aria-hidden="true"><path class="i-shadow" d="M7 12c0-5 4-8 9-8h32c5 0 9 3 9 8v25c0 5-4 8-9 8H31L19 54v-9h-3c-5 0-9-3-9-8Z"/><path class="i-main" d="M9 14c0-4 3-7 7-7h32c4 0 7 3 7 7v22c0 4-3 7-7 7H29l-8 7v-7h-5c-4 0-7-3-7-7Z"/><path class="i-accent" d="m15 9 6-7 7 7h9l6-7 6 7Z"/><path class="i-face" d="M20 26h4m16 0h4M27 32c3 3 7 3 10 0"/></svg>`,
+                system: `<svg viewBox="0 0 64 56" aria-hidden="true"><rect class="i-shadow" x="7" y="6" width="50" height="44" rx="10"/><rect class="i-main" x="9" y="4" width="46" height="42" rx="9"/><path class="i-accent" d="m15 8 6-6 6 6h10l6-6 6 6Z"/><path class="i-face" d="M17 32h8l4-12 7 19 5-10h8"/><circle class="i-detail-fill" cx="47" cy="17" r="3"/></svg>`,
+                radio: `<svg viewBox="0 0 64 56" aria-hidden="true"><path class="i-shadow" d="M7 16h50v34H7z" rx="8"/><rect class="i-main" x="8" y="14" width="48" height="34" rx="8"/><path class="i-accent" d="m14 16 6-9 7 9h10l7-9 6 9Z"/><circle class="i-detail-fill" cx="42" cy="31" r="9"/><circle class="i-cut" cx="42" cy="31" r="4"/><path class="i-face" d="M16 27h15M16 33h11M16 39h8"/><path class="i-detail" d="m23 10 24-7"/></svg>`,
+                trash: `<svg viewBox="0 0 64 56" aria-hidden="true"><path class="i-shadow" d="M13 15h38l-4 37H17Z"/><path class="i-main" d="M15 14h34l-4 35H19Z"/><path class="i-accent" d="M12 13h40v7H12zM23 7h18v6H23z"/><path class="i-ear" d="m18 13 5-8 6 8m6 0 6-8 5 8"/><path class="i-face" d="M25 31h3m8 0h3M29 36c2 2 4 2 6 0"/></svg>`,
+                text: `<svg viewBox="0 0 56 64" aria-hidden="true"><path class="i-shadow" d="M8 3h28l14 14v41H8Z"/><path class="i-main" d="M6 2h29l13 13v41H6Z"/><path class="i-accent" d="M35 2v14h13Z"/><path class="i-ear" d="m13 15 5-7 6 7m8 0 6-7 5 7"/><path class="i-face" d="M18 27h3m12 0h3M23 32c2 2 5 2 8 0"/><path class="i-detail" d="M14 40h26M14 46h22"/></svg>`
+            };
+            return `<span class="jami-vector-icon jami-vector-${kind} ${extraClass}" aria-hidden="true">${icons[kind] || icons.text}</span>`;
+        }
+
         mount() {
             this.root = document.createElement("div");
             this.root.id = "jamiRoot";
@@ -93,12 +107,12 @@
 
                     <div class="jami-desktop" data-jami-desktop>
                         <div class="jami-icons">
-                            <button class="jami-icon" type="button" data-jami-open="explorer"><span class="jami-icon-glyph jami-cat-folder" aria-hidden="true"></span><span class="jami-icon-label">files</span></button>
-                            <button class="jami-icon" type="button" data-jami-open="terminal"><span class="jami-icon-glyph">▣</span><span class="jami-icon-label">terminal</span></button>
-                            <button class="jami-icon" type="button" data-jami-open-chat><span class="jami-icon-glyph jami-cat-chat" aria-hidden="true"></span><span class="jami-icon-label">chat</span></button>
-                            <button class="jami-icon" type="button" data-jami-open="monitor"><span class="jami-icon-glyph">⌁</span><span class="jami-icon-label">system</span></button>
-                            <button class="jami-icon" type="button" data-jami-open="radio"><span class="jami-icon-glyph">📻</span><span class="jami-icon-label">radio</span></button>
-                            <button class="jami-icon" type="button" data-jami-open-trash><span class="jami-icon-glyph jami-cat-trash" aria-hidden="true"></span><span class="jami-icon-label">trash</span></button>
+                            <button class="jami-icon jami-app-files" type="button" data-jami-open="explorer">${this.iconSvg("files")}<span class="jami-icon-label">files</span></button>
+                            <button class="jami-icon jami-app-terminal" type="button" data-jami-open="terminal">${this.iconSvg("terminal")}<span class="jami-icon-label">terminal</span></button>
+                            <button class="jami-icon jami-app-chat" type="button" data-jami-open-chat>${this.iconSvg("chat")}<span class="jami-icon-label">chat</span></button>
+                            <button class="jami-icon jami-app-system" type="button" data-jami-open="monitor">${this.iconSvg("system")}<span class="jami-icon-label">system</span></button>
+                            <button class="jami-icon jami-app-radio" type="button" data-jami-open="radio">${this.iconSvg("radio")}<span class="jami-icon-label">radio</span></button>
+                            <button class="jami-icon jami-app-trash" type="button" data-jami-open-trash>${this.iconSvg("trash")}<span class="jami-icon-label">trash</span></button>
                         </div>
 
                         ${this.windowMarkup("terminal", "terminal", `
@@ -274,7 +288,13 @@
             this.monitorServices = this.root.querySelector("[data-jami-monitor-services]");
             this.monitorEvents = this.root.querySelector("[data-jami-monitor-events]");
 
-            document.getElementById("jamiLauncher")?.addEventListener("click", () => this.open());
+            const launcher = document.getElementById("jamiLauncher");
+            if (launcher) {
+                launcher.innerHTML = this.iconSvg("chat", "jami-launcher-mark");
+                launcher.setAttribute("aria-label", "Open Jami");
+                launcher.title = "Jami";
+                launcher.addEventListener("click", () => this.open());
+            }
 
             this.root.querySelectorAll("[data-jami-open]").forEach(button => {
                 button.addEventListener("dblclick", () => this.openWindow(button.dataset.jamiOpen));
@@ -1028,8 +1048,9 @@
                 card.type = "button";
                 card.className = "jami-file-card";
                 card.dataset.id = item.id;
-                const glyph = item.kind === "folder" ? (item.path === "/trash" ? "trash" : "folder") : "text";
-                card.innerHTML = `<span class="jami-file-glyph jami-file-glyph-${glyph}" aria-hidden="true"></span><span class="jami-file-name"></span><span class="jami-file-presence"></span><small></small>`;
+                const glyph = item.kind === "folder" ? (item.path === "/trash" ? "trash" : "files") : "text";
+                card.dataset.kind = glyph;
+                card.innerHTML = `${this.iconSvg(glyph, "jami-file-glyph")}<span class="jami-file-name"></span><span class="jami-file-presence"></span><small></small>`;
                 card.querySelector(".jami-file-name").textContent = item.name;
                 card.querySelector("small").textContent = item.system ? "owner: jami" : `${item.size || 0} bytes · r${item.revision}`;
                 const x = Number(item.iconPosition?.x) || 0;
