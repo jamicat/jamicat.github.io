@@ -94,6 +94,20 @@
     user-select: none;
 }
 
+/* Pass 8H wallpaper: catwp.png lives beside jami.css.
+   The image is always aspect-ratio preserved and centered, never stretched. */
+.jami-desktop::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(58vw, 760px);
+    height: min(72vh, 700px);
+    transform: translate(-50%, -50%);
+    background: url("catwp.png") center / contain no-repeat;
+    pointer-events: none;
+}
+
 .jami-icons {
     position: absolute;
     inset: 22px auto auto 20px;
@@ -1200,6 +1214,14 @@
 .jami-vector-icon .i-highlight { fill: none; stroke: rgba(255,255,255,.58); stroke-width: 1.35; stroke-linecap: round; }
 .jami-vector-icon .i-soft { fill: none; stroke: rgba(45,42,62,.34); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
 
+.jami-vector-icon .i-antenna {
+    fill: none;
+    stroke: rgba(188, 192, 205, .9);
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
 .jami-vector-files { --icon-main: var(--jami-blue); --icon-accent: var(--jami-pink); }
 .jami-vector-terminal { --icon-main: var(--jami-lilac); --icon-accent: var(--jami-mint); }
 .jami-vector-chat { --icon-main: var(--jami-mint); --icon-accent: var(--jami-pink); }
@@ -1248,7 +1270,20 @@
     box-shadow: 0 9px 28px rgba(0,0,0,.38), 0 0 0 1px rgba(255,184,210,.07) inset;
 }
 #jamiLauncher::before, #jamiLauncher::after { content: none !important; display: none !important; }
-#jamiLauncher .jami-launcher-mark { width: 35px; height: 32px; margin: 1px auto 0; --icon-main: var(--jami-mint); --icon-accent: var(--jami-pink); }
+#jamiLauncher .jami-launcher-mark { display: none; }
+#jamiLauncher .jami-launcher-letter {
+    display: grid;
+    place-items: center;
+    width: 31px;
+    height: 31px;
+    margin: 2px auto 0;
+    border-radius: 9px;
+    background: linear-gradient(145deg, var(--jami-lilac), var(--jami-blue));
+    color: #171826;
+    font: 800 18px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    border: 1px solid rgba(255,255,255,.82);
+    box-shadow: 0 4px 12px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.35);
+}
 #jamiLauncher:hover { border-color: var(--jami-pink); box-shadow: 0 10px 30px rgba(0,0,0,.4), 0 0 18px rgba(255,184,210,.14); }
 
 /* Each app keeps the terminal structure but gets its own pastel identity. */
