@@ -89,7 +89,23 @@ this.sourceContext = null;
     "tongue.gif",
     "widevapo.png",
     "wooperyay.gif",
-    "yellowblob.gif"
+    "yellowblob.gif",
+    "beanlaugh.gif",
+"catflowers.png",
+"kittydance.gif",
+"kitdance.gif",
+"nonono.gif",
+"ayoblush.png",
+"duckthink.png",
+"duckswim.gif",
+"duckcrown.gif",
+"duckeep.gif",
+"duckhug.png",
+"duckjumpy.gif",
+"duckrun.gif",
+"duckstroke.gif",
+"duckswing.png",
+"duckuwu.png"
 ];
 
         this.stage = null;
