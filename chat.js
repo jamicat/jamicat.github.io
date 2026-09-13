@@ -19946,6 +19946,19 @@ setupEmojiPicker() {
     ]
 },
 {
+    id: "pinguflap",
+    name: "pingu flap",
+    keywords: [
+        "kitten",
+        "dance"
+    ],
+    skins: [
+        {
+            src: "/emojis/pinguflap.gif"
+        }
+    ]
+},
+{
     id: "nonono",
     name: "nonono",
     keywords: [
