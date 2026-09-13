@@ -84,6 +84,7 @@ this.sourceContext = null;
     "smushcat.gif",
     "spinnyshork.gif",
     "sprigdance.gif",
+    "pinguflap.gif",
     "staresatyou.png",
     "tongue.gif",
     "widevapo.png",
