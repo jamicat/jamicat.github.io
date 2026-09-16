@@ -1547,3 +1547,30 @@ img.jami-vector-icon {
 .jami-birthday-shark-confetti { --x:0px;--y:-180px;--r:360deg;--delay:0s;--dur:1.5s;--scale:1;position:absolute;left:0;top:0;display:block;font-size:24px;line-height:1;opacity:0;filter:drop-shadow(0 2px 3px rgba(0,0,0,.24));animation:jamiBirthdaySharkConfetti var(--dur) var(--delay) cubic-bezier(.12,.7,.25,1) forwards; }
 @keyframes jamiBirthdaySharkConfetti { 0%{opacity:0;transform:translate(0,0) rotate(0) scale(.2)} 8%{opacity:1} 60%{opacity:1} 100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(var(--scale))} }
 @media (prefers-reduced-motion:reduce) { .jami-birthday-shark-confetti{animation-duration:.01ms!important;} }
+
+
+/* Pass 8O: shark artwork is the cake body itself; console cake gets its own pastel treatment. */
+.jami-birthday-layer.layer-one {
+    overflow:hidden;
+    background-image:linear-gradient(rgba(255,184,210,.08),rgba(169,239,211,.06)),url("sharkbday.png");
+    background-size:cover;
+    background-position:50% 35%;
+    background-repeat:no-repeat;
+}
+.jami-birthday-layer.layer-one::after { display:none; }
+.jami-birthday-cake-photo { display:none!important; }
+.jami-birthday-ascii-cake {
+    display:block;
+    width:max-content;
+    max-width:none;
+    margin:0;
+    padding:0;
+    white-space:pre;
+    font:inherit;
+    line-height:1.45;
+    color:transparent;
+    background:linear-gradient(90deg,#ff9fc8 0%,#9fddff 24%,#9ff0cf 48%,#d3bdff 72%,#ffe08f 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    text-shadow:none;
+}
