@@ -1480,79 +1480,53 @@ img.jami-vector-icon {
     .jami-file-card { min-height: 106px; }
 }
 
-/* Birthday pass: a cheerful local-only cake event using sharkbday.png. */
+/* Birthday pass: pastel party cake with an edible sharkbday.png print. */
 .jami-app-birthday { --icon-app: var(--jami-peach); }
-.jami-birthday-desktop-icon {
-    position: relative;
-    display: block;
-    width: 50px;
-    height: 45px;
-    margin: 0 auto 5px;
-    filter: drop-shadow(0 5px 7px rgba(0,0,0,.28));
-}
-.jami-birthday-icon-cake {
-    position: absolute; left: 7px; right: 7px; bottom: 3px; height: 22px;
-    border: 2px solid #554c70; border-radius: 5px 5px 8px 8px;
-    background: linear-gradient(90deg, #ffb8d2 0 33%, #a9d9ff 33% 66%, #a9efd3 66%);
-}
-.jami-birthday-icon-frosting {
-    position: absolute; left: 5px; right: 5px; bottom: 21px; height: 9px; z-index: 2;
-    border: 2px solid #554c70; border-radius: 9px 9px 5px 5px;
-    background: #fff1fa;
-}
-.jami-birthday-candle {
-    position: absolute; left: 23px; top: 3px; width: 5px; height: 15px; z-index: 3;
-    border: 1px solid #554c70; background: #cdbdff;
-}
-.jami-birthday-candle::before {
-    content:""; position:absolute; left:0; top:-7px; width:5px; height:7px;
-    border-radius: 60% 40% 60% 40%; background:#ffd77e; box-shadow:0 0 8px rgba(255,215,126,.7);
-}
+.jami-birthday-desktop-icon { position:relative;display:block;width:50px;height:45px;margin:0 auto 5px;filter:drop-shadow(0 5px 7px rgba(0,0,0,.28)); }
+.jami-birthday-icon-cake { position:absolute;left:7px;right:7px;bottom:3px;height:22px;border:2px solid #554c70;border-radius:5px 5px 8px 8px;background:linear-gradient(90deg,#ffb8d2 0 33%,#a9d9ff 33% 66%,#a9efd3 66%); }
+.jami-birthday-icon-frosting { position:absolute;left:5px;right:5px;bottom:21px;height:9px;z-index:2;border:2px solid #554c70;border-radius:9px 9px 5px 5px;background:#fff1fa; }
+.jami-birthday-candle { position:absolute;left:23px;top:3px;width:5px;height:15px;z-index:3;border:1px solid #554c70;background:#cdbdff; }
+.jami-birthday-candle::before { content:"";position:absolute;left:0;top:-7px;width:5px;height:7px;border-radius:60% 40% 60% 40%;background:#ffd77e;box-shadow:0 0 8px rgba(255,215,126,.7); }
+.jami-birthday-window { left:50%;top:50%;width:min(500px,calc(100vw - 34px));height:min(590px,calc(100vh - 72px));transform:translate(-50%,-50%);border-color:rgba(255,184,210,.52);box-shadow:0 24px 90px rgba(0,0,0,.55),0 0 36px rgba(205,189,255,.12); }
+.jami-birthday-body { position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;overflow:hidden;padding:22px;background:radial-gradient(circle at 18% 20%,rgba(255,184,210,.17),transparent 25%),radial-gradient(circle at 82% 24%,rgba(169,239,211,.14),transparent 24%),radial-gradient(circle at 50% 85%,rgba(169,217,255,.14),transparent 30%),linear-gradient(155deg,rgba(25,17,32,.97),rgba(9,15,24,.97)); }
+.jami-birthday-copy { color:var(--jami-pink);font-size:12px;letter-spacing:.03em;text-align:center; }
+.jami-birthday-cake-stage { position:relative;width:340px;height:330px;max-width:82vw; }
+.jami-birthday-cake { position:absolute;inset:0; }
+.jami-birthday-layer.layer-one { position:absolute;z-index:2;left:43px;right:43px;bottom:56px;height:142px;border:2px solid #5b5276;border-radius:8px 8px 32px 32px;background:linear-gradient(90deg,#9fead1,#a9d9ff 45%,#d3bdff 72%,#ffb8d2);box-shadow:inset 0 0 0 4px rgba(255,255,255,.10),0 14px 24px rgba(0,0,0,.22); }
+.jami-birthday-layer.layer-one::before { content:"";position:absolute;left:-2px;right:-2px;top:-25px;height:50px;border:2px solid #5b5276;border-radius:50%;background:linear-gradient(100deg,#fff2fa,#b9efff 44%,#ffd1e3); }
+.jami-birthday-layer.layer-one::after { content:"";position:absolute;left:12px;right:12px;top:18px;height:31px;background:radial-gradient(ellipse at 12% 0,#fff5fb 0 9px,transparent 10px),radial-gradient(ellipse at 32% 0,#ffb8d2 0 11px,transparent 12px),radial-gradient(ellipse at 55% 0,#fff5fb 0 8px,transparent 9px),radial-gradient(ellipse at 76% 0,#cdbdff 0 12px,transparent 13px),radial-gradient(ellipse at 94% 0,#fff5fb 0 9px,transparent 10px);opacity:.9; }
+.jami-birthday-frosting { position:absolute;z-index:4;left:48px;right:48px;bottom:178px;height:38px;border:2px solid #5b5276;border-radius:50%;background:linear-gradient(90deg,#fff4fb,#b9efff,#ffd4e5);box-shadow:inset 0 -8px 0 rgba(255,184,210,.55); }
+.jami-birthday-plate { position:absolute;z-index:1;left:20px;right:20px;bottom:40px;height:22px;border:2px solid #5b5276;border-radius:50%;background:linear-gradient(90deg,#ffb8d2,#cdbdff,#a9d9ff);box-shadow:0 8px 15px rgba(0,0,0,.2); }
+/* The uploaded art is treated like an edible printed icing disc, laid flat in perspective. */
+.jami-birthday-topper { position:absolute;z-index:6;left:50%;bottom:183px;width:178px;height:122px;transform:translateX(-50%) rotate(-2deg);border:5px solid #fff4fb;border-radius:50%;overflow:hidden;background:#a9d9ff;box-shadow:0 0 0 2px #5b5276,0 9px 16px rgba(0,0,0,.22); }
+.jami-birthday-topper img { width:100%;height:100%;display:block;object-fit:cover;object-position:50% 31%;transform:scale(1.04); }
+.jami-birthday-candles { position:absolute;inset:0;z-index:8; }
+.jami-bday-candle { position:absolute;bottom:200px;width:8px;height:39px;border:1px solid #5b5276;border-radius:3px 3px 1px 1px;background:repeating-linear-gradient(135deg,#a9d9ff 0 5px,#ffb8d2 5px 10px);transform-origin:bottom center; }
+/* All candles sit on the actual cake top, tucked around the printed icing disc. */
+.jami-bday-candle.c1 { left:69px;height:34px;transform:rotate(-4deg); }
+.jami-bday-candle.c2 { left:91px;height:43px;transform:rotate(-2deg); }
+.jami-bday-candle.c3 { right:69px;height:35px;transform:rotate(4deg); }
+.jami-bday-candle.c4 { right:91px;height:44px;transform:rotate(2deg); }
+.jami-bday-candle.c5 { left:166px;bottom:229px;height:39px;background:repeating-linear-gradient(135deg,#a9efd3 0 5px,#cdbdff 5px 10px); }
+.jami-bday-candle i { position:absolute;left:50%;top:-16px;width:11px;height:17px;transform:translateX(-50%) rotate(5deg);border-radius:55% 45% 58% 42%;background:#fff17d;box-shadow:0 0 8px #ffb86c,0 0 19px rgba(255,184,108,.72);animation:jamiBirthdayFlame .55s ease-in-out infinite alternate; }
+.jami-bday-candle i::after { content:"";position:absolute;inset:5px 3px 2px;border-radius:50%;background:#ff72ae; }
+@keyframes jamiBirthdayFlame { from{transform:translateX(-50%) rotate(-6deg) scale(.9)} to{transform:translateX(-50%) rotate(8deg) scale(1.1)} }
+.jami-birthday-stage.is-blown-out .jami-bday-candle i { animation:jamiBirthdayFlameOut .48s cubic-bezier(.2,.8,.3,1) forwards; }
+.jami-birthday-stage.is-blown-out .jami-bday-candle:nth-child(2) i { animation-delay:.04s; }.jami-birthday-stage.is-blown-out .jami-bday-candle:nth-child(3) i { animation-delay:.08s; }.jami-birthday-stage.is-blown-out .jami-bday-candle:nth-child(4) i { animation-delay:.12s; }.jami-birthday-stage.is-blown-out .jami-bday-candle:nth-child(5) i { animation-delay:.16s; }
+.jami-birthday-stage.is-blown-out .jami-bday-candle::after { content:"";position:absolute;left:50%;top:-9px;width:9px;height:9px;border:2px solid rgba(226,235,248,.7);border-color:rgba(226,235,248,.72) transparent transparent rgba(226,235,248,.38);border-radius:50%;opacity:0;animation:jamiBirthdaySmoke 1.8s .4s ease-out forwards; }
+@keyframes jamiBirthdayFlameOut { 0%{opacity:1;filter:blur(0);transform:translateX(-50%) scale(1)} 35%{opacity:1;transform:translate(-80%,2px) scale(.75,.45) rotate(-28deg)} 75%{opacity:.35;transform:translate(-135%,7px) scale(.3,.15) rotate(-55deg)} 100%{opacity:0;filter:blur(2px);transform:translate(-170%,9px) scale(0)} }
+@keyframes jamiBirthdaySmoke { 0%{opacity:0;transform:translate(-50%,2px) scale(.25)} 15%{opacity:.8} 50%{opacity:.5;transform:translate(-12px,-28px) scale(1.4) rotate(24deg)} 100%{opacity:0;transform:translate(13px,-66px) scale(2.8) rotate(70deg)} }
+.jami-birthday-stage.is-celebrating .jami-birthday-cake { animation:jamiBirthdayCakePop .62s cubic-bezier(.2,.9,.25,1); }
+@keyframes jamiBirthdayCakePop { 0%{transform:scale(1)} 28%{transform:scale(.96) translateY(4px)} 62%{transform:scale(1.045) translateY(-7px)} 100%{transform:scale(1)} }
+.jami-birthday-blow { min-width:140px;padding:10px 20px;border:1px solid rgba(169,239,211,.62);border-radius:8px;background:linear-gradient(135deg,rgba(169,239,211,.20),rgba(169,217,255,.17),rgba(255,184,210,.15));color:#effff8;font:inherit;cursor:pointer;box-shadow:0 7px 20px rgba(0,0,0,.2); }
+.jami-birthday-blow:hover { border-color:var(--jami-mint);transform:translateY(-1px);box-shadow:0 9px 24px rgba(0,0,0,.26),0 0 15px rgba(169,239,211,.12); }
+.jami-birthday-message { position:relative;z-index:15;color:#fff2f8;font-size:22px;font-weight:700;text-align:center;text-shadow:0 0 15px rgba(255,184,210,.6),0 0 28px rgba(169,217,255,.3);animation:jamiBirthdayMessage .7s cubic-bezier(.15,.9,.2,1) both; }
+@keyframes jamiBirthdayMessage { 0%{opacity:0;transform:scale(.65) translateY(14px)} 55%{opacity:1;transform:scale(1.12) translateY(-3px)} 100%{opacity:1;transform:none} }
+.jami-birthday-sprinkles { position:absolute;inset:0;pointer-events:none;opacity:.65;background-image:radial-gradient(circle,#ffb8d2 0 2px,transparent 2.5px),radial-gradient(circle,#a9efd3 0 2px,transparent 2.5px),radial-gradient(circle,#cdbdff 0 2px,transparent 2.5px),radial-gradient(circle,#ffd0a8 0 2px,transparent 2.5px);background-size:73px 79px,91px 67px,83px 101px,109px 89px;background-position:7px 11px,31px 19px,53px 3px,17px 47px;mask-image:linear-gradient(to bottom,#000,transparent 72%); }
+.jami-birthday-confetti { position:absolute;z-index:14;left:50%;top:51%;width:1px;height:1px;pointer-events:none;overflow:visible; }
+.jami-birthday-confetti i { --x:0px;--y:-180px;--r:360deg;--delay:0s;--dur:1.4s;--confetti:#ff8fbd;position:absolute;left:0;top:0;width:7px;height:13px;border-radius:1px;background:var(--confetti);opacity:0;box-shadow:0 0 5px rgba(255,255,255,.18);animation:jamiBirthdayConfetti var(--dur) var(--delay) cubic-bezier(.12,.7,.25,1) forwards; }
+.jami-birthday-confetti i.is-round { width:8px;height:8px;border-radius:50%; }.jami-birthday-confetti i.is-star { width:10px;height:10px;clip-path:polygon(50% 0,61% 36%,100% 38%,69% 59%,80% 100%,50% 75%,20% 100%,31% 59%,0 38%,39% 36%); }
+@keyframes jamiBirthdayConfetti { 0%{opacity:0;transform:translate(0,0) rotate(0) scale(.3)} 8%{opacity:1} 58%{opacity:1} 100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(1)} }
+@media (prefers-reduced-motion:reduce) { .jami-bday-candle i,.jami-birthday-confetti i,.jami-birthday-message,.jami-birthday-stage.is-celebrating .jami-birthday-cake{animation-duration:.01ms!important;animation-iteration-count:1!important;} }
+@media (max-width:640px) { .jami-birthday-window{left:8px!important;top:8px!important;width:calc(100vw - 16px)!important;height:calc(100vh - 50px)!important;transform:none!important}.jami-birthday-cake-stage{transform:scale(.82);margin:-24px 0} }
 
-.jami-birthday-window {
-    left: 50%; top: 50%; width: min(470px, calc(100vw - 34px)); height: min(570px, calc(100vh - 72px));
-    transform: translate(-50%, -50%);
-    border-color: rgba(255,184,210,.52);
-    box-shadow: 0 24px 90px rgba(0,0,0,.55), 0 0 36px rgba(205,189,255,.12);
-}
-.jami-birthday-body {
-    position: relative; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap: 13px; overflow:hidden; padding: 22px;
-    background:
-      radial-gradient(circle at 18% 20%, rgba(255,184,210,.17), transparent 25%),
-      radial-gradient(circle at 82% 24%, rgba(169,239,211,.14), transparent 24%),
-      radial-gradient(circle at 50% 85%, rgba(169,217,255,.14), transparent 30%),
-      linear-gradient(155deg, rgba(25,17,32,.97), rgba(9,15,24,.97));
-}
-.jami-birthday-copy { color: var(--jami-pink); font-size: 12px; letter-spacing:.03em; text-align:center; }
-.jami-birthday-cake-stage { position:relative; width:300px; height:330px; max-width:80vw; }
-.jami-birthday-cake { position:absolute; inset:0; }
-.jami-birthday-layer { position:absolute; left:45px; right:45px; border:2px solid #5b5276; box-shadow: inset 0 0 0 3px rgba(255,255,255,.08); }
-.jami-birthday-layer.layer-one { bottom:50px; height:85px; border-radius:9px 9px 16px 16px; background:linear-gradient(90deg,#ffb8d2,#cdbdff 48%,#a9d9ff); }
-.jami-birthday-layer.layer-two { left:66px; right:66px; bottom:129px; height:68px; border-radius:10px 10px 5px 5px; background:linear-gradient(90deg,#a9efd3,#a9d9ff 48%,#ffd0a8); }
-.jami-birthday-frosting { position:absolute; left:61px; right:61px; bottom:184px; height:25px; z-index:3; border:2px solid #5b5276; border-radius:50%; background:#fff0f8; box-shadow:inset 0 -7px 0 #ffb8d2; }
-.jami-birthday-plate { position:absolute; left:25px; right:25px; bottom:37px; height:17px; border:2px solid #5b5276; border-radius:50%; background:#a9d9ff; }
-.jami-birthday-topper { position:absolute; z-index:6; left:50%; bottom:184px; width:112px; height:112px; transform:translateX(-50%); border:4px solid #fff0f8; border-radius:50%; overflow:hidden; background:#a9d9ff; box-shadow:0 0 0 2px #5b5276, 0 8px 22px rgba(0,0,0,.25); }
-.jami-birthday-topper img { width:100%; height:100%; display:block; object-fit:cover; object-position:50% 31%; }
-.jami-birthday-candles { position:absolute; inset:0; z-index:8; }
-.jami-bday-candle { position:absolute; bottom:198px; width:8px; height:45px; border:1px solid #5b5276; border-radius:3px 3px 1px 1px; background:repeating-linear-gradient(135deg,#a9d9ff 0 5px,#ffb8d2 5px 10px); }
-.jami-bday-candle.c1 { left:52px; height:38px; } .jami-bday-candle.c2 { left:82px; height:50px; }
-.jami-bday-candle.c3 { right:52px; height:40px; } .jami-bday-candle.c4 { right:82px; height:52px; }
-.jami-bday-candle.c5 { left:146px; bottom:288px; height:32px; background:repeating-linear-gradient(135deg,#a9efd3 0 5px,#cdbdff 5px 10px); }
-.jami-bday-candle i { position:absolute; left:50%; top:-15px; width:10px; height:16px; transform:translateX(-50%) rotate(5deg); border-radius:55% 45% 58% 42%; background:#ffe07e; box-shadow:0 0 8px #ffb86c,0 0 16px rgba(255,184,108,.55); animation:jamiBirthdayFlame .7s ease-in-out infinite alternate; }
-.jami-bday-candle i::after { content:""; position:absolute; inset:5px 3px 2px; border-radius:50%; background:#ff9abf; }
-@keyframes jamiBirthdayFlame { from { transform:translateX(-50%) rotate(-4deg) scale(.92); } to { transform:translateX(-50%) rotate(7deg) scale(1.08); } }
-.jami-birthday-stage.is-blown-out .jami-bday-candle i { animation:jamiBirthdayFlameOut .45s forwards; }
-.jami-birthday-stage.is-blown-out .jami-bday-candle::after { content:""; position:absolute; left:50%; top:-12px; width:8px; height:8px; border:2px solid rgba(220,230,245,.62); border-color:rgba(220,230,245,.62) transparent transparent rgba(220,230,245,.35); border-radius:50%; opacity:0; animation:jamiBirthdaySmoke 1.55s .32s ease-out forwards; }
-@keyframes jamiBirthdayFlameOut { 0%{opacity:1;transform:translateX(-50%) scale(1)} 60%{opacity:.8;transform:translate(-70%,4px) scale(.55)} 100%{opacity:0;transform:translate(-90%,8px) scale(.1)} }
-@keyframes jamiBirthdaySmoke { 0%{opacity:0;transform:translate(-50%,0) scale(.4)} 18%{opacity:.72} 100%{opacity:0;transform:translate(-10px,-43px) scale(2.2) rotate(35deg)} }
-.jami-birthday-blow { min-width:130px; padding:9px 18px; border:1px solid rgba(169,239,211,.52); border-radius:8px; background:linear-gradient(135deg,rgba(169,239,211,.15),rgba(169,217,255,.12)); color:#effff8; font:inherit; cursor:pointer; box-shadow:0 7px 20px rgba(0,0,0,.2); }
-.jami-birthday-blow:hover { border-color:var(--jami-mint); background:linear-gradient(135deg,rgba(169,239,211,.24),rgba(255,184,210,.12)); }
-.jami-birthday-message { color:#fff2f8; font-size:20px; font-weight:700; text-align:center; text-shadow:0 0 15px rgba(255,184,210,.48); animation:jamiBirthdayMessage .55s cubic-bezier(.2,.8,.2,1) both; }
-@keyframes jamiBirthdayMessage { from{opacity:0;transform:scale(.8) translateY(8px)} to{opacity:1;transform:none} }
-.jami-birthday-sprinkles { position:absolute; inset:0; pointer-events:none; opacity:.7; background-image:radial-gradient(circle,#ffb8d2 0 2px,transparent 2.5px),radial-gradient(circle,#a9efd3 0 2px,transparent 2.5px),radial-gradient(circle,#cdbdff 0 2px,transparent 2.5px),radial-gradient(circle,#ffd0a8 0 2px,transparent 2.5px); background-size:73px 79px,91px 67px,83px 101px,109px 89px; background-position:7px 11px,31px 19px,53px 3px,17px 47px; mask-image:linear-gradient(to bottom,#000,transparent 72%); }
-
-@media (max-width:640px) {
-  .jami-birthday-window { left:8px!important; top:8px!important; width:calc(100vw - 16px)!important; height:calc(100vh - 50px)!important; transform:none!important; }
-  .jami-birthday-cake-stage { transform:scale(.86); margin:-20px 0; }
-}
