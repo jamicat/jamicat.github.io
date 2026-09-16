@@ -144,7 +144,7 @@
                                     </div>
                                 </div>
                                 <div class="jami-birthday-actions">
-                                    <button class="jami-birthday-music" type="button" data-jami-birthday-music>pause</button>
+                                    <button class="jami-birthday-music" type="button" data-jami-birthday-music>stop music</button>
                                     <button class="jami-birthday-blow" type="button" data-jami-birthday-blow>blow out</button>
                                     <button class="jami-birthday-console-button" type="button" data-jami-birthday-console>console</button>
                                 </div>
@@ -655,7 +655,7 @@
             audio.volume = 0.30;
             audio.play().then(() => {
                 this.birthdayMusicPlaying = true;
-                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "pause";
+                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "stop music";
             }).catch(() => {
                 this.birthdayMusicPlaying = false;
                 if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "play music";
