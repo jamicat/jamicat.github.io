@@ -636,6 +636,7 @@
             audio.src = "jami/birthday.mp3";
             audio.preload = "auto";
             audio.volume = 0.30;
+            audio.loop = true;
             audio.setAttribute("aria-hidden", "true");
             audio.style.display = "none";
             this.birthdayWindow?.appendChild(audio);
