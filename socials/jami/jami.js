@@ -732,6 +732,20 @@
                 bit.className = i % 5 === 0 ? "is-star" : (i % 3 === 0 ? "is-round" : "");
                 host.appendChild(bit);
             }
+            for (let i = 0; i < 18; i += 1) {
+                const shark = document.createElement("span");
+                shark.className = "jami-birthday-shark-confetti";
+                shark.textContent = "🦈";
+                const angle = (Math.PI * 2 * i / 18) + (Math.random() - .5) * .55;
+                const distance = 145 + Math.random() * 245;
+                shark.style.setProperty("--x", `${Math.cos(angle) * distance}px`);
+                shark.style.setProperty("--y", `${Math.sin(angle) * distance - 80}px`);
+                shark.style.setProperty("--r", `${Math.round((Math.random() - .5) * 700)}deg`);
+                shark.style.setProperty("--delay", `${Math.random() * .2}s`);
+                shark.style.setProperty("--dur", `${1.15 + Math.random() * .9}s`);
+                shark.style.setProperty("--scale", `${.72 + Math.random() * .65}`);
+                host.appendChild(shark);
+            }
         }
 
         formatRelativeVisit(ms) {
