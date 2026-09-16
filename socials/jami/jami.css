@@ -94,8 +94,7 @@
     user-select: none;
 }
 
-/* Pass 8H wallpaper: catwp.png lives beside jami.css.
-   The image is always aspect-ratio preserved and centered, never stretched. */
+
 .jami-desktop::before {
     content: "";
     position: absolute;
@@ -350,7 +349,7 @@
     }
 }
 
-/* Pass 2: persistent shared filesystem */
+
 .jami-explorer-window {
     left: calc(50% - 360px);
     top: calc(50% - 235px);
@@ -463,7 +462,7 @@
     .jami-explorer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* Pass 3: live presence, collaborative drafts and shared icon movement */
+
 .jami-directory-presence {
     margin-left: auto;
     color: var(--jami-ok);
@@ -537,7 +536,7 @@
     }
 }
 
-/* Pass 6: live system monitor */
+
 .jami-monitor-window {
     width: min(760px, calc(100vw - 50px));
     height: min(560px, calc(100vh - 90px));
@@ -614,7 +613,7 @@
     opacity: 0.55;
 }
 
-/* Close controls must never start a window drag. */
+
 .jami-window-close {
     position: relative;
     z-index: 3;
@@ -632,7 +631,7 @@
     }
 }
 
-/* Pass 6 update: separate terminal Cat Chat window */
+
 .jami-chat-window {
     left: calc(50% - 250px);
     top: calc(50% - 190px);
@@ -705,7 +704,7 @@
 }
 
 
-/* Pass 7: live Watch Party radio */
+
 .jami-radio-window {
     width: min(390px, calc(100vw - 32px));
     height: auto;
@@ -739,7 +738,7 @@
     font: inherit;
 }
 
-/* Pass 7 corrected: two-source working radio */
+
 .jami-radio-modes {
     display: flex;
     gap: 6px;
@@ -773,7 +772,7 @@
     flex-wrap: wrap;
 }
 
-/* Pass 8 polish */
+
 .jami-radio-player-wrap[hidden] { display: none !important; }
 
 .jami-context-menu {
@@ -839,7 +838,7 @@
     font: 10px/1.45 Consolas, "Courier New", monospace;
 }
 
-/* Pass 8A final polish */
+
 .jami-window-controls {
     display: flex;
     align-items: center;
@@ -972,7 +971,7 @@
     .jami-file-card { touch-action: manipulation; }
 }
 
-/* Pass 8C: pastel cat details + radio/watch party UI */
+
 :root {
     --jami-pink: #f4b8cf;
     --jami-lilac: #c8b8f4;
@@ -989,7 +988,7 @@
         linear-gradient(180deg, #080a10, #0d1219 65%, #080a0e);
 }
 
-/* launcher: compact cat-terminal mark, no text label */
+
 #jamiLauncher {
     width: 38px;
     height: 34px;
@@ -1031,7 +1030,7 @@
 .jami-taskbar { border-top-color: rgba(200,184,244,.28); }
 .jami-task-button.active { border-color: rgba(244,184,207,.5); background: rgba(244,184,207,.09); }
 
-/* Small custom cat motifs rather than emoji everywhere. */
+
 .jami-cat-folder, .jami-cat-chat, .jami-cat-trash,
 .jami-file-glyph-folder, .jami-file-glyph-text, .jami-file-glyph-trash {
     position: relative;
@@ -1144,7 +1143,7 @@
     .jami-radio-modes button small { display: none; }
 }
 
-/* Pass 8D: solid vector cat icons + richer pastel SSH palette */
+
 :root {
     --jami-pink: #ffb8d2;
     --jami-rose: #f7a9b8;
@@ -1187,7 +1186,7 @@
     mask-image: linear-gradient(to bottom, rgba(0,0,0,.75), transparent 86%);
 }
 
-/* Richer, recognizable vector application icons. */
+
 .jami-vector-icon {
     --icon-main: var(--jami-blue);
     --icon-accent: var(--jami-pink);
@@ -1266,7 +1265,7 @@ img.jami-vector-icon {
     text-shadow: 0 2px 5px #05050b;
 }
 
-/* Launcher uses the same finished vector language as the OS. */
+
 #jamiLauncher {
     width: 45px;
     height: 41px;
@@ -1294,7 +1293,7 @@ img.jami-vector-icon {
 }
 #jamiLauncher:hover { border-color: var(--jami-pink); box-shadow: 0 10px 30px rgba(0,0,0,.4), 0 0 18px rgba(255,184,210,.14); }
 
-/* Each app keeps the terminal structure but gets its own pastel identity. */
+
 .jami-window {
     border-color: color-mix(in srgb, var(--window-accent, var(--jami-lilac)) 32%, transparent);
     box-shadow: 0 22px 72px rgba(0,0,0,.52), 0 0 0 1px rgba(255,255,255,.025) inset;
@@ -1324,7 +1323,7 @@ img.jami-vector-icon {
 .jami-window-minimize:hover { background: rgba(169,217,255,.12); color: var(--jami-blue); }
 .jami-window-close:hover { background: rgba(255,169,184,.13); color: var(--jami-rose); }
 
-/* Files now read as real icons/cards, with different pastel families. */
+
 .jami-file-card {
     min-height: 112px;
     padding: 11px;
@@ -1345,7 +1344,7 @@ img.jami-vector-icon {
 .jami-system-file { border-style: dashed; }
 .jami-system-file .jami-vector-icon { filter: drop-shadow(0 4px 8px rgba(0,0,0,.3)) saturate(.82); }
 
-/* Pastel controls: still monospace and restrained, but much less monochrome. */
+
 .jami-explorer-toolbar,
 .jami-notepad-meta,
 .jami-notepad-presence,
@@ -1394,7 +1393,6 @@ img.jami-vector-icon {
 .jami-monitor-events { border-color: rgba(255,184,210,.15); background: rgba(255,184,210,.025); }
 .jami-monitor-events h3 { color: var(--jami-pink); opacity: 1; }
 
-/* Radio: pastel source cards and clearly separate transport controls. */
 .jami-radio-body {
     background: linear-gradient(155deg, rgba(18,10,18,.88), rgba(9,14,20,.91));
 }
@@ -1452,7 +1450,7 @@ img.jami-vector-icon {
 .jami-radio-title { color: #fff3f8; }
 .jami-radio-meta { color: #b8bdd0; }
 
-/* Taskbar gets more color without losing its compact SSH feel. */
+
 .jami-taskbar {
     border-top-color: rgba(205,189,255,.28);
     background: linear-gradient(90deg, rgba(13,14,24,.96), rgba(20,17,31,.96), rgba(12,17,25,.96));
@@ -1480,7 +1478,7 @@ img.jami-vector-icon {
     .jami-file-card { min-height: 106px; }
 }
 
-/* Birthday pass: pastel party cake with an edible sharkbday.png print. */
+
 .jami-app-birthday { --icon-app: var(--jami-peach); }
 .jami-birthday-desktop-icon { position:relative;display:block;width:50px;height:45px;margin:0 auto 5px;filter:drop-shadow(0 5px 7px rgba(0,0,0,.28)); }
 .jami-birthday-icon-cake { position:absolute;left:7px;right:7px;bottom:3px;height:22px;border:2px solid #554c70;border-radius:5px 5px 8px 8px;background:linear-gradient(90deg,#ffb8d2 0 33%,#a9d9ff 33% 66%,#a9efd3 66%); }
@@ -1496,14 +1494,14 @@ img.jami-vector-icon {
 .jami-birthday-layer.layer-one::before { content:"";position:absolute;left:-2px;right:-2px;top:-25px;height:50px;border:2px solid #5b5276;border-radius:50%;background:linear-gradient(100deg,#fff2fa,#b9efff 44%,#ffd1e3); }
 .jami-birthday-layer.layer-one::after { content:"";position:absolute;left:12px;right:12px;top:18px;height:31px;background:radial-gradient(ellipse at 12% 0,#fff5fb 0 9px,transparent 10px),radial-gradient(ellipse at 32% 0,#ffb8d2 0 11px,transparent 12px),radial-gradient(ellipse at 55% 0,#fff5fb 0 8px,transparent 9px),radial-gradient(ellipse at 76% 0,#cdbdff 0 12px,transparent 13px),radial-gradient(ellipse at 94% 0,#fff5fb 0 9px,transparent 10px);opacity:.9; }
 .jami-birthday-plate { position:absolute;z-index:1;left:20px;right:20px;bottom:40px;height:22px;border:2px solid #5b5276;border-radius:50%;background:linear-gradient(90deg,#ffb8d2,#cdbdff,#a9d9ff);box-shadow:0 8px 15px rgba(0,0,0,.2); }
-/* Pastel icing top; sharkbday.png is now showcased on the cake body below it. */
+
 .jami-birthday-cake-top { position:absolute;z-index:5;left:41px;right:41px;bottom:171px;height:62px;border:2px solid #5b5276;border-radius:50%;overflow:hidden;background:radial-gradient(ellipse at 35% 38%,rgba(255,255,255,.55),transparent 18%),linear-gradient(100deg,#fff2fa 0%,#a9efd3 28%,#a9d9ff 53%,#cdbdff 76%,#ffb8d2 100%);box-shadow:inset 0 0 0 5px rgba(255,244,251,.45),0 4px 0 rgba(255,184,210,.52),0 8px 14px rgba(0,0,0,.18); }
 .jami-birthday-cake-top::after { content:"";position:absolute;inset:9px 18px;border-radius:50%;border:2px dashed rgba(255,255,255,.5); }
 .jami-birthday-cake-photo { position:absolute;z-index:4;left:50%;top:29px;width:150px;height:96px;transform:translateX(-50%);overflow:hidden;border:3px solid rgba(255,246,252,.88);border-radius:14px;box-shadow:0 5px 12px rgba(68,55,88,.22),0 0 0 2px rgba(91,82,118,.55);background:#cdbdff; }
 .jami-birthday-cake-photo img { width:100%;height:100%;display:block;object-fit:cover;object-position:50% 36%;transform:scale(.88);background:#a9d9ff; }
 .jami-birthday-candles { position:absolute;inset:0;z-index:8; }
 .jami-bday-candle { position:absolute;bottom:200px;width:8px;height:39px;border:1px solid #5b5276;border-radius:3px 3px 1px 1px;background:repeating-linear-gradient(135deg,#a9d9ff 0 5px,#ffb8d2 5px 10px);transform-origin:bottom center; }
-/* All candles sit on the actual cake top, tucked around the printed icing disc. */
+
 .jami-bday-candle.c1 { left:69px;height:34px;transform:rotate(-4deg); }
 .jami-bday-candle.c2 { left:91px;height:43px;transform:rotate(-2deg); }
 .jami-bday-candle.c3 { right:69px;height:35px;transform:rotate(4deg); }
@@ -1543,17 +1541,18 @@ img.jami-vector-icon {
 
 .jami-birthday-stage.is-blown-out .jami-bday-candle i { pointer-events:none; }
 
-/* Pass 8N: sharks join the birthday confetti burst. */
+
 .jami-birthday-shark-confetti { --x:0px;--y:-180px;--r:360deg;--delay:0s;--dur:1.5s;--scale:1;position:absolute;left:0;top:0;display:block;font-size:24px;line-height:1;opacity:0;filter:drop-shadow(0 2px 3px rgba(0,0,0,.24));animation:jamiBirthdaySharkConfetti var(--dur) var(--delay) cubic-bezier(.12,.7,.25,1) forwards; }
 @keyframes jamiBirthdaySharkConfetti { 0%{opacity:0;transform:translate(0,0) rotate(0) scale(.2)} 8%{opacity:1} 60%{opacity:1} 100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(var(--scale))} }
 @media (prefers-reduced-motion:reduce) { .jami-birthday-shark-confetti{animation-duration:.01ms!important;} }
 
 
-/* Pass 8O: shark artwork is the cake body itself; console cake gets its own pastel treatment. */
+
 .jami-birthday-layer.layer-one {
     overflow:hidden;
     background-image:linear-gradient(rgba(255,184,210,.08),rgba(169,239,211,.06)),url("sharkbday.png");
-    background-size:cover;
+    background-size: 100% auto;
+background-position: center 50%;
     background-position:50% 35%;
     background-repeat:no-repeat;
 }
