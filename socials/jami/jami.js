@@ -693,7 +693,7 @@
             audio.volume = 0.30;
             audio.play().then(() => {
                 this.birthdayMusicPlaying = true;
-                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "pause";
+                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "stop music";
             }).catch(() => {
                 this.birthdayMusicPlaying = false;
                 if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "play music";
