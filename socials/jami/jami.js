@@ -137,7 +137,7 @@
                                             <span class="jami-bday-candle c5"><i></i></span>
                                         </div>
                                         <div class="jami-birthday-cake-top" aria-hidden="true"></div>
-                                        <div class="jami-birthday-layer layer-one"><div class="jami-birthday-cake-photo"><img src="jami/sharkbday.png" alt="Shark girl on the birthday cake"></div></div>
+                                        <div class="jami-birthday-layer layer-one" aria-label="Shark girl birthday cake"></div>
                                         <div class="jami-birthday-plate"></div>
                                     </div>
                                 </div>
@@ -650,19 +650,33 @@
         }
 
         birthdayCakeAscii(blownOut = false) {
-            const flames = blownOut ? "      .       .       ." : "     ( )     ( )     ( )";
-            const wicks  = "      |       |       |";
+            const flames = blownOut ? "       .        .        ." : "      ( )      ( )      ( )";
+            const wicks  = "       |        |        |";
             return [
                 flames,
                 wicks,
-                "   ___|_______|_______|___",
-                "  /   |  HAPPY NORDY  |   \\",
-                " /_________________________\\",
-                " |  ~  ~  ~  ~  ~  ~  ~  |",
-                " |   pastel birthday cake   |",
-                " |___________________________|",
-                "  \_________________________/",
+                "   ____|________|________|____",
+                "  /                            \\",
+                " /    HAPPY BIRTHDAY NORDY!     \\",
+                "/________________________________\\",
+                "|  ~  ~  ~  ~  ~  ~  ~  ~  ~  |",
+                "|      pastel birthday cake      |",
+                "|________________________________|",
+                " \\______________________________/",
             ].join("\n");
+        }
+
+        appendBirthdayConsoleText(text) {
+            if (!this.birthdayConsoleOutput) return;
+            this.birthdayConsoleOutput.appendChild(document.createTextNode(text));
+        }
+
+        appendBirthdayConsoleCake(blownOut = false) {
+            if (!this.birthdayConsoleOutput) return;
+            const cake = document.createElement("pre");
+            cake.className = "jami-birthday-ascii-cake";
+            cake.textContent = this.birthdayCakeAscii(blownOut);
+            this.birthdayConsoleOutput.appendChild(cake);
         }
 
         openBirthdayConsole() {
@@ -672,22 +686,24 @@
             win.dataset.minimized = "0";
             this.focusWindow("birthday-console");
             if (this.birthdayConsoleOutput && !this.birthdayConsoleOutput.textContent.trim()) {
-                this.birthdayConsoleOutput.textContent = `${this.birthdayCakeAscii(this.birthdayBlownOut)}\n\n${this.birthdayBlownOut ? "Happy Birthday Nordy!!!" : "type /blow-out to blow out the candles"}\n`;
+                this.appendBirthdayConsoleCake(this.birthdayBlownOut);
+                this.appendBirthdayConsoleText(`\n${this.birthdayBlownOut ? "Happy Birthday Nordy!!!" : "type /blow-out to blow out the candles"}\n`);
             }
             window.setTimeout(() => this.birthdayConsoleInput?.focus(), 0);
         }
 
         runBirthdayConsoleCommand(command) {
-            if (!this.birthdayConsoleOutput) return;
-            if (!command) return;
-            this.birthdayConsoleOutput.textContent += `\nbirthday@jami> ${command}\n`;
+            if (!this.birthdayConsoleOutput || !command) return;
+            this.appendBirthdayConsoleText(`\nbirthday@jami> ${command}\n`);
             if (command.toLowerCase() === "/blow-out") {
                 if (!this.birthdayBlownOut) this.blowOutBirthdayCandles(true);
-                this.birthdayConsoleOutput.textContent += `\n${this.birthdayCakeAscii(true)}\n\nHappy Birthday Nordy!!!\n`;
+                this.appendBirthdayConsoleText("\n");
+                this.appendBirthdayConsoleCake(true);
+                this.appendBirthdayConsoleText("\nHappy Birthday Nordy!!!\n");
             } else if (command.toLowerCase() === "/help") {
-                this.birthdayConsoleOutput.textContent += "/blow-out   blow out the birthday candles\n";
+                this.appendBirthdayConsoleText("/blow-out   blow out the birthday candles\n");
             } else {
-                this.birthdayConsoleOutput.textContent += `unknown birthday command: ${command}\ntype /help\n`;
+                this.appendBirthdayConsoleText(`unknown birthday command: ${command}\ntype /help\n`);
             }
             this.birthdayConsoleOutput.scrollTop = this.birthdayConsoleOutput.scrollHeight;
         }
@@ -701,7 +717,9 @@
                 this.birthdayStage?.querySelectorAll(".jami-bday-candle i").forEach(flame => { flame.style.opacity = "0"; flame.style.visibility = "hidden"; });
             }, 720);
             if (!fromConsole && this.birthdayConsoleOutput?.textContent.trim()) {
-                this.birthdayConsoleOutput.textContent += `\n[ candles blown out ]\n\n${this.birthdayCakeAscii(true)}\n\nHappy Birthday Nordy!!!\n`;
+                this.appendBirthdayConsoleText("\n[ candles blown out ]\n\n");
+                this.appendBirthdayConsoleCake(true);
+                this.appendBirthdayConsoleText("\nHappy Birthday Nordy!!!\n");
                 this.birthdayConsoleOutput.scrollTop = this.birthdayConsoleOutput.scrollHeight;
             }
             window.setTimeout(() => {
