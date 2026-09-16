@@ -368,7 +368,6 @@
             });
 
             this.root.querySelector("[data-jami-open-birthday]")?.addEventListener("dblclick", () => {
-                // The desktop shortcut only reloads the cake after the birthday window is closed.
                 if (this.isWindowOpen("birthday")) return;
                 this.openBirthday(true);
             });
@@ -577,8 +576,7 @@
                     watchPartyActive = state?.enabled === true;
                 }
             } catch {
-                // The live socket below is the source of truth if these lightweight
-                // boot-time requests are temporarily unavailable.
+      
             }
 
             const connected = Array.isArray(status?.users)
