@@ -125,7 +125,8 @@
                         ${this.windowMarkup("birthday", "birthday", `
                             <div class="jami-window-body jami-birthday-body">
                                 <div class="jami-birthday-sprinkles" aria-hidden="true"></div>
-                                <div class="jami-birthday-copy">a cake was left here for nordy</div>
+                                <div class="jami-birthday-confetti" data-jami-birthday-confetti aria-hidden="true"></div>
+                                <div class="jami-birthday-copy">a cake was left here for Nordy</div>
                                 <div class="jami-birthday-cake-stage" data-jami-birthday-stage>
                                     <div class="jami-birthday-cake">
                                         <div class="jami-birthday-candles" aria-hidden="true">
@@ -138,7 +139,6 @@
                                         <div class="jami-birthday-topper"><img src="jami/sharkbday.png" alt="Shark girl birthday cake topper"></div>
                                         <div class="jami-birthday-frosting"></div>
                                         <div class="jami-birthday-layer layer-one"></div>
-                                        <div class="jami-birthday-layer layer-two"></div>
                                         <div class="jami-birthday-plate"></div>
                                     </div>
                                 </div>
@@ -323,6 +323,7 @@
             this.birthdayStage = this.root.querySelector("[data-jami-birthday-stage]");
             this.birthdayMessage = this.root.querySelector("[data-jami-birthday-message]");
             this.birthdayBlowButton = this.root.querySelector("[data-jami-birthday-blow]");
+            this.birthdayConfetti = this.root.querySelector("[data-jami-birthday-confetti]");
 
             const launcher = document.getElementById("jamiLauncher");
             if (launcher) {
@@ -611,7 +612,8 @@
             if (!win.hidden && !reset) return;
             if (reset) {
                 this.birthdayBlownOut = false;
-                this.birthdayStage?.classList.remove("is-blown-out");
+                this.birthdayStage?.classList.remove("is-blown-out", "is-celebrating");
+                if (this.birthdayConfetti) this.birthdayConfetti.replaceChildren();
                 if (this.birthdayMessage) this.birthdayMessage.hidden = true;
                 if (this.birthdayBlowButton) {
                     this.birthdayBlowButton.hidden = false;
@@ -630,9 +632,33 @@
             if (this.birthdayBlowButton) this.birthdayBlowButton.disabled = true;
             this.birthdayStage?.classList.add("is-blown-out");
             window.setTimeout(() => {
+                this.birthdayStage?.classList.add("is-celebrating");
+                this.launchBirthdayConfetti();
+            }, 430);
+            window.setTimeout(() => {
                 if (this.birthdayBlowButton) this.birthdayBlowButton.hidden = true;
                 if (this.birthdayMessage) this.birthdayMessage.hidden = false;
-            }, 1150);
+            }, 760);
+        }
+
+        launchBirthdayConfetti() {
+            const host = this.birthdayConfetti;
+            if (!host) return;
+            host.replaceChildren();
+            const colors = ["#ff8fbd", "#8fd3ff", "#92efc4", "#c9a8ff", "#ffe17d", "#ffb27d", "#8fe8ee"];
+            for (let i = 0; i < 84; i += 1) {
+                const bit = document.createElement("i");
+                const angle = (Math.PI * 2 * i / 84) + (Math.random() - .5) * .45;
+                const distance = 120 + Math.random() * 250;
+                bit.style.setProperty("--x", `${Math.cos(angle) * distance}px`);
+                bit.style.setProperty("--y", `${Math.sin(angle) * distance - 70}px`);
+                bit.style.setProperty("--r", `${Math.round((Math.random() - .5) * 900)}deg`);
+                bit.style.setProperty("--delay", `${Math.random() * .16}s`);
+                bit.style.setProperty("--dur", `${1.05 + Math.random() * .85}s`);
+                bit.style.setProperty("--confetti", colors[i % colors.length]);
+                bit.className = i % 5 === 0 ? "is-star" : (i % 3 === 0 ? "is-round" : "");
+                host.appendChild(bit);
+            }
         }
 
         formatRelativeVisit(ms) {
