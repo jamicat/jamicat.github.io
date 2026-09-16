@@ -136,16 +136,28 @@
                                             <span class="jami-bday-candle c4"><i></i></span>
                                             <span class="jami-bday-candle c5"><i></i></span>
                                         </div>
-                                        <div class="jami-birthday-topper"><img src="jami/sharkbday.png" alt="Shark girl birthday cake topper"></div>
-                                        <div class="jami-birthday-frosting"></div>
+                                        <div class="jami-birthday-cake-top"><img src="jami/sharkbday.png" alt="Shark girl printed on the birthday cake"></div>
                                         <div class="jami-birthday-layer layer-one"></div>
                                         <div class="jami-birthday-plate"></div>
                                     </div>
                                 </div>
-                                <button class="jami-birthday-blow" type="button" data-jami-birthday-blow>blow out</button>
+                                <div class="jami-birthday-actions">
+                                    <button class="jami-birthday-blow" type="button" data-jami-birthday-blow>blow out</button>
+                                    <button class="jami-birthday-console-button" type="button" data-jami-birthday-console>console</button>
+                                </div>
                                 <div class="jami-birthday-message" data-jami-birthday-message hidden>Happy Birthday Nordy!!!</div>
                             </div>
                         `, "jami-birthday-window")}
+
+                        ${this.windowMarkup("birthday-console", "birthday console", `
+                            <div class="jami-window-body jami-birthday-console-body">
+                                <div class="jami-birthday-console-output" data-jami-birthday-console-output></div>
+                                <form class="jami-birthday-console-form" data-jami-birthday-console-form>
+                                    <span class="jami-birthday-console-prompt">birthday@jami&gt;</span>
+                                    <input class="jami-birthday-console-input" data-jami-birthday-console-input autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Birthday console command">
+                                </form>
+                            </div>
+                        `, "jami-birthday-console-window")}
 
                         ${this.windowMarkup("terminal", "terminal", `
                             <div class="jami-terminal jami-window-body">
@@ -324,6 +336,8 @@
             this.birthdayMessage = this.root.querySelector("[data-jami-birthday-message]");
             this.birthdayBlowButton = this.root.querySelector("[data-jami-birthday-blow]");
             this.birthdayConfetti = this.root.querySelector("[data-jami-birthday-confetti]");
+            this.birthdayConsoleOutput = this.root.querySelector("[data-jami-birthday-console-output]");
+            this.birthdayConsoleInput = this.root.querySelector("[data-jami-birthday-console-input]");
 
             const launcher = document.getElementById("jamiLauncher");
             if (launcher) {
@@ -359,6 +373,13 @@
                 this.openBirthday(true);
             });
             this.birthdayBlowButton?.addEventListener("click", () => this.blowOutBirthdayCandles());
+            this.root.querySelector("[data-jami-birthday-console]")?.addEventListener("click", () => this.openBirthdayConsole());
+            this.root.querySelector("[data-jami-birthday-console-form]")?.addEventListener("submit", event => {
+                event.preventDefault();
+                const command = (this.birthdayConsoleInput?.value || "").trim();
+                if (this.birthdayConsoleInput) this.birthdayConsoleInput.value = "";
+                this.runBirthdayConsoleCommand(command);
+            });
 
             this.root.querySelectorAll("[data-jami-placeholder]").forEach(button => {
                 button.addEventListener("dblclick", () => {
@@ -615,6 +636,7 @@
                 this.birthdayStage?.classList.remove("is-blown-out", "is-celebrating");
                 if (this.birthdayConfetti) this.birthdayConfetti.replaceChildren();
                 if (this.birthdayMessage) this.birthdayMessage.hidden = true;
+                if (this.birthdayConsoleOutput) this.birthdayConsoleOutput.textContent = "";
                 if (this.birthdayBlowButton) {
                     this.birthdayBlowButton.hidden = false;
                     this.birthdayBlowButton.disabled = false;
@@ -626,11 +648,58 @@
             this.addSystemEvent("opened birthday");
         }
 
-        blowOutBirthdayCandles() {
+        birthdayCakeAscii(blownOut = false) {
+            const flames = blownOut ? "     .       .       ." : "     ( )     ( )     ( )";
+            const wicks  = blownOut ? "     |       |       |" : "     |       |       |";
+            return [
+                flames,
+                wicks,
+                "   __|_______|_______|__",
+                "  /  |  HAPPY NORDY  |  \\",
+                " /_______________________\\",
+                " |  ~  ~  ~  ~  ~  ~  ~  |",
+                " |   pastel birthday cake  |",
+                " |__________________________|",
+                "   \\____________________/",
+            ].join("\n");
+        }
+
+        openBirthdayConsole() {
+            const win = this.root.querySelector('[data-jami-window="birthday-console"]');
+            if (!win) return;
+            win.hidden = false;
+            win.dataset.minimized = "0";
+            this.focusWindow("birthday-console");
+            if (this.birthdayConsoleOutput && !this.birthdayConsoleOutput.textContent.trim()) {
+                this.birthdayConsoleOutput.textContent = `${this.birthdayCakeAscii(this.birthdayBlownOut)}\n\n${this.birthdayBlownOut ? "Happy Birthday Nordy!!!" : "type /blow-out to blow out the candles"}\n`;
+            }
+            window.setTimeout(() => this.birthdayConsoleInput?.focus(), 0);
+        }
+
+        runBirthdayConsoleCommand(command) {
+            if (!this.birthdayConsoleOutput) return;
+            if (!command) return;
+            this.birthdayConsoleOutput.textContent += `\nbirthday@jami> ${command}\n`;
+            if (command.toLowerCase() === "/blow-out") {
+                if (!this.birthdayBlownOut) this.blowOutBirthdayCandles(true);
+                this.birthdayConsoleOutput.textContent += `\n${this.birthdayCakeAscii(true)}\n\nHappy Birthday Nordy!!!\n`;
+            } else if (command.toLowerCase() === "/help") {
+                this.birthdayConsoleOutput.textContent += "/blow-out   blow out the birthday candles\n";
+            } else {
+                this.birthdayConsoleOutput.textContent += `unknown birthday command: ${command}\ntype /help\n`;
+            }
+            this.birthdayConsoleOutput.scrollTop = this.birthdayConsoleOutput.scrollHeight;
+        }
+
+        blowOutBirthdayCandles(fromConsole = false) {
             if (this.birthdayBlownOut) return;
             this.birthdayBlownOut = true;
             if (this.birthdayBlowButton) this.birthdayBlowButton.disabled = true;
             this.birthdayStage?.classList.add("is-blown-out");
+            if (!fromConsole && this.birthdayConsoleOutput?.textContent.trim()) {
+                this.birthdayConsoleOutput.textContent += `\n[ candles blown out ]\n\n${this.birthdayCakeAscii(true)}\n\nHappy Birthday Nordy!!!\n`;
+                this.birthdayConsoleOutput.scrollTop = this.birthdayConsoleOutput.scrollHeight;
+            }
             window.setTimeout(() => {
                 this.birthdayStage?.classList.add("is-celebrating");
                 this.launchBirthdayConfetti();
