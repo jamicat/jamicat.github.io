@@ -136,8 +136,8 @@
                                             <span class="jami-bday-candle c4"><i></i></span>
                                             <span class="jami-bday-candle c5"><i></i></span>
                                         </div>
-                                        <div class="jami-birthday-cake-top"><img src="jami/sharkbday.png" alt="Shark girl printed on the birthday cake"></div>
-                                        <div class="jami-birthday-layer layer-one"></div>
+                                        <div class="jami-birthday-cake-top" aria-hidden="true"></div>
+                                        <div class="jami-birthday-layer layer-one"><div class="jami-birthday-cake-photo"><img src="jami/sharkbday.png" alt="Shark girl on the birthday cake"></div></div>
                                         <div class="jami-birthday-plate"></div>
                                     </div>
                                 </div>
@@ -149,7 +149,7 @@
                             </div>
                         `, "jami-birthday-window")}
 
-                        ${this.windowMarkup("birthday-console", "birthday console", `
+                        ${this.windowMarkup("birthday-console", "birthday", `
                             <div class="jami-window-body jami-birthday-console-body">
                                 <div class="jami-birthday-console-output" data-jami-birthday-console-output></div>
                                 <form class="jami-birthday-console-form" data-jami-birthday-console-form>
@@ -634,6 +634,7 @@
             if (reset) {
                 this.birthdayBlownOut = false;
                 this.birthdayStage?.classList.remove("is-blown-out", "is-celebrating");
+                this.birthdayStage?.querySelectorAll(".jami-bday-candle i").forEach(flame => { flame.style.visibility = ""; flame.style.opacity = ""; });
                 if (this.birthdayConfetti) this.birthdayConfetti.replaceChildren();
                 if (this.birthdayMessage) this.birthdayMessage.hidden = true;
                 if (this.birthdayConsoleOutput) this.birthdayConsoleOutput.textContent = "";
@@ -649,18 +650,18 @@
         }
 
         birthdayCakeAscii(blownOut = false) {
-            const flames = blownOut ? "     .       .       ." : "     ( )     ( )     ( )";
-            const wicks  = blownOut ? "     |       |       |" : "     |       |       |";
+            const flames = blownOut ? "      .       .       ." : "     ( )     ( )     ( )";
+            const wicks  = "      |       |       |";
             return [
                 flames,
                 wicks,
-                "   __|_______|_______|__",
-                "  /  |  HAPPY NORDY  |  \\",
-                " /_______________________\\",
+                "   ___|_______|_______|___",
+                "  /   |  HAPPY NORDY  |   \\",
+                " /_________________________\\",
                 " |  ~  ~  ~  ~  ~  ~  ~  |",
-                " |   pastel birthday cake  |",
-                " |__________________________|",
-                "   \\____________________/",
+                " |   pastel birthday cake   |",
+                " |___________________________|",
+                "  \_________________________/",
             ].join("\n");
         }
 
@@ -696,6 +697,9 @@
             this.birthdayBlownOut = true;
             if (this.birthdayBlowButton) this.birthdayBlowButton.disabled = true;
             this.birthdayStage?.classList.add("is-blown-out");
+            window.setTimeout(() => {
+                this.birthdayStage?.querySelectorAll(".jami-bday-candle i").forEach(flame => { flame.style.opacity = "0"; flame.style.visibility = "hidden"; });
+            }, 720);
             if (!fromConsole && this.birthdayConsoleOutput?.textContent.trim()) {
                 this.birthdayConsoleOutput.textContent += `\n[ candles blown out ]\n\n${this.birthdayCakeAscii(true)}\n\nHappy Birthday Nordy!!!\n`;
                 this.birthdayConsoleOutput.scrollTop = this.birthdayConsoleOutput.scrollHeight;
