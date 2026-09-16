@@ -144,7 +144,7 @@
                                     </div>
                                 </div>
                                 <div class="jami-birthday-actions">
-                                    <button class="jami-birthday-music" type="button" data-jami-birthday-music>play music</button>
+                                    <button class="jami-birthday-music" type="button" data-jami-birthday-music>pause</button>
                                     <button class="jami-birthday-blow" type="button" data-jami-birthday-blow>blow out</button>
                                     <button class="jami-birthday-console-button" type="button" data-jami-birthday-console>console</button>
                                 </div>
@@ -632,34 +632,34 @@
 
         ensureBirthdayMusicPlayer() {
             if (this.birthdayMusicPlayer) return this.birthdayMusicPlayer;
-            const frame = document.createElement("iframe");
-            frame.title = "Birthday music";
-            frame.setAttribute("aria-hidden", "true");
-            frame.setAttribute("allow", "autoplay; encrypted-media");
-            frame.style.cssText = "position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:0;";
-            frame.src = "https://www.youtube.com/embed/TKvwG4OWzWc?enablejsapi=1&playsinline=1&rel=0";
-            this.birthdayWindow?.appendChild(frame);
-            this.birthdayMusicPlayer = frame;
-            return frame;
-        }
-
-        birthdayMusicCommand(func, args = []) {
-            const frame = this.ensureBirthdayMusicPlayer();
-            frame?.contentWindow?.postMessage(JSON.stringify({ event: "command", func, args }), "https://www.youtube.com");
+            const audio = document.createElement("audio");
+            audio.src = "jami/birthday.mp3";
+            audio.preload = "auto";
+            audio.volume = 0.30;
+            audio.setAttribute("aria-hidden", "true");
+            audio.style.display = "none";
+            this.birthdayWindow?.appendChild(audio);
+            this.birthdayMusicPlayer = audio;
+            return audio;
         }
 
         toggleBirthdayMusic() {
-            this.ensureBirthdayMusicPlayer();
-            if (this.birthdayMusicPlaying) {
-                this.birthdayMusicCommand("pauseVideo");
+            const audio = this.ensureBirthdayMusicPlayer();
+            if (!audio) return;
+            if (!audio.paused) {
+                audio.pause();
                 this.birthdayMusicPlaying = false;
                 if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "play music";
                 return;
             }
-            this.birthdayMusicCommand("setVolume", [50]);
-            this.birthdayMusicCommand("playVideo");
-            this.birthdayMusicPlaying = true;
-            if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "stop playing";
+            audio.volume = 0.30;
+            audio.play().then(() => {
+                this.birthdayMusicPlaying = true;
+                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "pause";
+            }).catch(() => {
+                this.birthdayMusicPlaying = false;
+                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "play music";
+            });
         }
 
         openBirthday(reset = false) {
@@ -668,8 +668,12 @@
             if (!win.hidden && !reset) return;
             if (reset) {
                 this.birthdayBlownOut = false;
-            this.birthdayMusicPlayer = null;
-            this.birthdayMusicPlaying = false;
+                if (this.birthdayMusicPlayer) {
+                    this.birthdayMusicPlayer.pause();
+                    this.birthdayMusicPlayer.remove();
+                }
+                this.birthdayMusicPlayer = null;
+                this.birthdayMusicPlaying = false;
                 this.birthdayStage?.classList.remove("is-blown-out", "is-celebrating");
                 this.birthdayStage?.querySelectorAll(".jami-bday-candle i").forEach(flame => { flame.style.visibility = ""; flame.style.opacity = ""; });
                 if (this.birthdayConfetti) this.birthdayConfetti.replaceChildren();
@@ -683,6 +687,17 @@
             win.hidden = false;
             win.dataset.minimized = "0";
             this.focusWindow("birthday");
+
+            const audio = this.ensureBirthdayMusicPlayer();
+            audio.volume = 0.30;
+            audio.play().then(() => {
+                this.birthdayMusicPlaying = true;
+                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "pause";
+            }).catch(() => {
+                this.birthdayMusicPlaying = false;
+                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "play music";
+            });
+
             this.addSystemEvent("opened birthday");
         }
 
@@ -990,7 +1005,7 @@
             if (id === "monitor") this.stopSystemMonitor();
             if (id === "radio") this.stopRadio();
             if (id === "birthday" && this.birthdayMusicPlaying) {
-                this.birthdayMusicCommand("pauseVideo");
+                this.birthdayMusicPlayer?.pause();
                 this.birthdayMusicPlaying = false;
                 if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "play music";
             }
