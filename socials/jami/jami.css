@@ -1573,3 +1573,21 @@ background-position: center 50%;
     background-clip:text;
     text-shadow:none;
 }
+
+
+/* Birthday music control matches the existing birthday action buttons. */
+.jami-birthday-actions .jami-birthday-music {
+    border: 1px solid rgba(174, 226, 255, 0.45);
+    border-radius: 8px;
+    padding: 12px 20px;
+    background: rgba(155, 231, 255, 0.10);
+    color: var(--jami-text);
+    font: inherit;
+    cursor: pointer;
+}
+.jami-birthday-actions .jami-birthday-music:hover,
+.jami-birthday-actions .jami-birthday-music:focus-visible {
+    border-color: rgba(155, 231, 255, 0.72);
+    background: rgba(155, 231, 255, 0.16);
+    outline: none;
+}
