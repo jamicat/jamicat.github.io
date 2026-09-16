@@ -57,6 +57,7 @@
             this.radioStationPlaying = true;
             this.radioCurrentVideoId = null;
             this.radioSiteVolume = null;
+            this.birthdayBlownOut = false;
 
             this.clientId =
                 localStorage.getItem("chat_client_id") ||
@@ -118,7 +119,33 @@
                             <button class="jami-icon jami-app-system" type="button" data-jami-open="monitor">${this.iconSvg("system")}<span class="jami-icon-label">system</span></button>
                             <button class="jami-icon jami-app-radio" type="button" data-jami-open="radio">${this.iconSvg("radio")}<span class="jami-icon-label">music</span></button>
                             <button class="jami-icon jami-app-trash" type="button" data-jami-open-trash>${this.iconSvg("trash")}<span class="jami-icon-label">trash</span></button>
+                            <button class="jami-icon jami-app-birthday" type="button" data-jami-open-birthday><span class="jami-birthday-desktop-icon" aria-hidden="true"><span class="jami-birthday-candle"></span><span class="jami-birthday-icon-frosting"></span><span class="jami-birthday-icon-cake"></span></span><span class="jami-icon-label">Birthday</span></button>
                         </div>
+
+                        ${this.windowMarkup("birthday", "birthday", `
+                            <div class="jami-window-body jami-birthday-body">
+                                <div class="jami-birthday-sprinkles" aria-hidden="true"></div>
+                                <div class="jami-birthday-copy">a cake was left here for nordy</div>
+                                <div class="jami-birthday-cake-stage" data-jami-birthday-stage>
+                                    <div class="jami-birthday-cake">
+                                        <div class="jami-birthday-candles" aria-hidden="true">
+                                            <span class="jami-bday-candle c1"><i></i></span>
+                                            <span class="jami-bday-candle c2"><i></i></span>
+                                            <span class="jami-bday-candle c3"><i></i></span>
+                                            <span class="jami-bday-candle c4"><i></i></span>
+                                            <span class="jami-bday-candle c5"><i></i></span>
+                                        </div>
+                                        <div class="jami-birthday-topper"><img src="jami/sharkbday.png" alt="Shark girl birthday cake topper"></div>
+                                        <div class="jami-birthday-frosting"></div>
+                                        <div class="jami-birthday-layer layer-one"></div>
+                                        <div class="jami-birthday-layer layer-two"></div>
+                                        <div class="jami-birthday-plate"></div>
+                                    </div>
+                                </div>
+                                <button class="jami-birthday-blow" type="button" data-jami-birthday-blow>blow out</button>
+                                <div class="jami-birthday-message" data-jami-birthday-message hidden>Happy Birthday Nordy!!!</div>
+                            </div>
+                        `, "jami-birthday-window")}
 
                         ${this.windowMarkup("terminal", "terminal", `
                             <div class="jami-terminal jami-window-body">
@@ -292,6 +319,10 @@
             this.monitorBrowser = this.root.querySelector("[data-jami-monitor-browser]");
             this.monitorServices = this.root.querySelector("[data-jami-monitor-services]");
             this.monitorEvents = this.root.querySelector("[data-jami-monitor-events]");
+            this.birthdayWindow = this.root.querySelector('[data-jami-window="birthday"]');
+            this.birthdayStage = this.root.querySelector("[data-jami-birthday-stage]");
+            this.birthdayMessage = this.root.querySelector("[data-jami-birthday-message]");
+            this.birthdayBlowButton = this.root.querySelector("[data-jami-birthday-blow]");
 
             const launcher = document.getElementById("jamiLauncher");
             if (launcher) {
@@ -320,6 +351,13 @@
                 this.openWindow("explorer");
                 this.loadExplorer("/trash");
             });
+
+            this.root.querySelector("[data-jami-open-birthday]")?.addEventListener("dblclick", () => {
+                // The desktop shortcut only reloads the cake after the birthday window is closed.
+                if (this.isWindowOpen("birthday")) return;
+                this.openBirthday(true);
+            });
+            this.birthdayBlowButton?.addEventListener("click", () => this.blowOutBirthdayCandles());
 
             this.root.querySelectorAll("[data-jami-placeholder]").forEach(button => {
                 button.addEventListener("dblclick", () => {
@@ -465,6 +503,7 @@
                 await this.boot();
                 this.booted = true;
             }
+            this.openBirthday(true);
         }
 
         close() {
@@ -564,6 +603,36 @@
 
             await sleep(180);
             boot.hidden = true;
+        }
+
+        openBirthday(reset = false) {
+            const win = this.birthdayWindow;
+            if (!win) return;
+            if (!win.hidden && !reset) return;
+            if (reset) {
+                this.birthdayBlownOut = false;
+                this.birthdayStage?.classList.remove("is-blown-out");
+                if (this.birthdayMessage) this.birthdayMessage.hidden = true;
+                if (this.birthdayBlowButton) {
+                    this.birthdayBlowButton.hidden = false;
+                    this.birthdayBlowButton.disabled = false;
+                }
+            }
+            win.hidden = false;
+            win.dataset.minimized = "0";
+            this.focusWindow("birthday");
+            this.addSystemEvent("opened birthday");
+        }
+
+        blowOutBirthdayCandles() {
+            if (this.birthdayBlownOut) return;
+            this.birthdayBlownOut = true;
+            if (this.birthdayBlowButton) this.birthdayBlowButton.disabled = true;
+            this.birthdayStage?.classList.add("is-blown-out");
+            window.setTimeout(() => {
+                if (this.birthdayBlowButton) this.birthdayBlowButton.hidden = true;
+                if (this.birthdayMessage) this.birthdayMessage.hidden = false;
+            }, 1150);
         }
 
         formatRelativeVisit(ms) {
@@ -752,7 +821,7 @@
             if (id === "monitor") this.stopSystemMonitor();
             if (id === "radio") this.stopRadio();
 
-            const visible = ["chat", "notepad", "explorer", "terminal", "monitor", "radio"].find(name => this.isWindowOpen(name));
+            const visible = ["birthday", "chat", "notepad", "explorer", "terminal", "monitor", "radio"].find(name => this.isWindowOpen(name));
             if (visible === "chat") this.setActivity(this.currentPath, "cat-chat");
             else if (visible === "notepad") this.setActivity(this.notepadPath || this.currentPath, "notepad");
             else if (visible === "explorer") this.setActivity(this.explorerPath, "explorer");
@@ -1823,6 +1892,7 @@
                 slider.dispatchEvent(new Event("input", { bubbles: true }));
             }
             this.radioSiteVolume = null;
+            this.birthdayBlownOut = false;
         }
 
         suppressSiteWatchPartyVisual() {
