@@ -57,6 +57,9 @@
             this.radioStationPlaying = true;
             this.radioCurrentVideoId = null;
             this.radioSiteVolume = null;
+            this.birthdayBlownOut = false;
+            this.birthdayMusicPlayer = null;
+            this.birthdayMusicPlaying = false;
 
             this.clientId =
                 localStorage.getItem("chat_client_id") ||
@@ -118,7 +121,46 @@
                             <button class="jami-icon jami-app-system" type="button" data-jami-open="monitor">${this.iconSvg("system")}<span class="jami-icon-label">system</span></button>
                             <button class="jami-icon jami-app-radio" type="button" data-jami-open="radio">${this.iconSvg("radio")}<span class="jami-icon-label">music</span></button>
                             <button class="jami-icon jami-app-trash" type="button" data-jami-open-trash>${this.iconSvg("trash")}<span class="jami-icon-label">trash</span></button>
+                            <button class="jami-icon jami-app-birthday" type="button" data-jami-open-birthday><span class="jami-birthday-desktop-icon" aria-hidden="true"><span class="jami-birthday-candle"></span><span class="jami-birthday-icon-frosting"></span><span class="jami-birthday-icon-cake"></span></span><span class="jami-icon-label">Birthday</span></button>
                         </div>
+
+                        ${this.windowMarkup("birthday", "birthday", `
+                            <div class="jami-window-body jami-birthday-body">
+                                <div class="jami-birthday-sprinkles" aria-hidden="true"></div>
+                                <div class="jami-birthday-confetti" data-jami-birthday-confetti aria-hidden="true"></div>
+                                <div class="jami-birthday-copy">a cake was left here for Nordy</div>
+                                <div class="jami-birthday-cake-stage" data-jami-birthday-stage>
+                                    <div class="jami-birthday-cake">
+                                        <div class="jami-birthday-candles" aria-hidden="true">
+                                            <span class="jami-bday-candle c1"><i></i></span>
+                                            <span class="jami-bday-candle c2"><i></i></span>
+                                            <span class="jami-bday-candle c3"><i></i></span>
+                                            <span class="jami-bday-candle c4"><i></i></span>
+                                            <span class="jami-bday-candle c5"><i></i></span>
+                                        </div>
+                                        <div class="jami-birthday-cake-top" aria-hidden="true"></div>
+                                        <div class="jami-birthday-layer layer-one" aria-label="Shark girl birthday cake"></div>
+                                        <div class="jami-birthday-plate"></div>
+                                    </div>
+                                </div>
+                                <div class="jami-birthday-actions">
+                                    <button class="jami-birthday-music" type="button" data-jami-birthday-music>stop music</button>
+                                    <button class="jami-birthday-blow" type="button" data-jami-birthday-blow>blow out</button>
+                                    <button class="jami-birthday-console-button" type="button" data-jami-birthday-console>console</button>
+                                </div>
+                                <div class="jami-birthday-message" data-jami-birthday-message hidden>Happy Birthday Nordy!!!</div>
+                            </div>
+                        `, "jami-birthday-window")}
+
+                        ${this.windowMarkup("birthday-console", "birthday", `
+                            <div class="jami-window-body jami-birthday-console-body">
+                                <div class="jami-birthday-console-output" data-jami-birthday-console-output></div>
+                                <form class="jami-birthday-console-form" data-jami-birthday-console-form>
+                                    <span class="jami-birthday-console-prompt">birthday@jami&gt;</span>
+                                    <input class="jami-birthday-console-input" data-jami-birthday-console-input autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Birthday console command">
+                                </form>
+                            </div>
+                        `, "jami-birthday-console-window")}
 
                         ${this.windowMarkup("terminal", "terminal", `
                             <div class="jami-terminal jami-window-body">
@@ -292,6 +334,14 @@
             this.monitorBrowser = this.root.querySelector("[data-jami-monitor-browser]");
             this.monitorServices = this.root.querySelector("[data-jami-monitor-services]");
             this.monitorEvents = this.root.querySelector("[data-jami-monitor-events]");
+            this.birthdayWindow = this.root.querySelector('[data-jami-window="birthday"]');
+            this.birthdayStage = this.root.querySelector("[data-jami-birthday-stage]");
+            this.birthdayMessage = this.root.querySelector("[data-jami-birthday-message]");
+            this.birthdayBlowButton = this.root.querySelector("[data-jami-birthday-blow]");
+            this.birthdayMusicButton = this.root.querySelector("[data-jami-birthday-music]");
+            this.birthdayConfetti = this.root.querySelector("[data-jami-birthday-confetti]");
+            this.birthdayConsoleOutput = this.root.querySelector("[data-jami-birthday-console-output]");
+            this.birthdayConsoleInput = this.root.querySelector("[data-jami-birthday-console-input]");
 
             const launcher = document.getElementById("jamiLauncher");
             if (launcher) {
@@ -319,6 +369,20 @@
             this.root.querySelector("[data-jami-open-trash]")?.addEventListener("dblclick", () => {
                 this.openWindow("explorer");
                 this.loadExplorer("/trash");
+            });
+
+            this.root.querySelector("[data-jami-open-birthday]")?.addEventListener("dblclick", () => {
+                if (this.isWindowOpen("birthday")) return;
+                this.openBirthday(true);
+            });
+            this.birthdayBlowButton?.addEventListener("click", () => this.blowOutBirthdayCandles());
+            this.birthdayMusicButton?.addEventListener("click", () => this.toggleBirthdayMusic());
+            this.root.querySelector("[data-jami-birthday-console]")?.addEventListener("click", () => this.openBirthdayConsole());
+            this.root.querySelector("[data-jami-birthday-console-form]")?.addEventListener("submit", event => {
+                event.preventDefault();
+                const command = (this.birthdayConsoleInput?.value || "").trim();
+                if (this.birthdayConsoleInput) this.birthdayConsoleInput.value = "";
+                this.runBirthdayConsoleCommand(command);
             });
 
             this.root.querySelectorAll("[data-jami-placeholder]").forEach(button => {
@@ -465,6 +529,7 @@
                 await this.boot();
                 this.booted = true;
             }
+            this.openBirthday(true);
         }
 
         close() {
@@ -563,6 +628,196 @@
 
             await sleep(180);
             boot.hidden = true;
+        }
+
+        ensureBirthdayMusicPlayer() {
+            if (this.birthdayMusicPlayer) return this.birthdayMusicPlayer;
+            const audio = document.createElement("audio");
+            audio.src = "jami/birthday.mp3";
+            audio.preload = "auto";
+            audio.volume = 0.30;
+            audio.loop = true;
+            audio.setAttribute("aria-hidden", "true");
+            audio.style.display = "none";
+            this.birthdayWindow?.appendChild(audio);
+            this.birthdayMusicPlayer = audio;
+            return audio;
+        }
+
+        toggleBirthdayMusic() {
+            const audio = this.ensureBirthdayMusicPlayer();
+            if (!audio) return;
+            if (!audio.paused) {
+                audio.pause();
+                this.birthdayMusicPlaying = false;
+                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "play music";
+                return;
+            }
+            audio.volume = 0.30;
+            audio.play().then(() => {
+                this.birthdayMusicPlaying = true;
+                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "stop music";
+            }).catch(() => {
+                this.birthdayMusicPlaying = false;
+                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "play music";
+            });
+        }
+
+        openBirthday(reset = false) {
+            const win = this.birthdayWindow;
+            if (!win) return;
+            if (!win.hidden && !reset) return;
+            if (reset) {
+                this.birthdayBlownOut = false;
+                if (this.birthdayMusicPlayer) {
+                    this.birthdayMusicPlayer.pause();
+                    this.birthdayMusicPlayer.remove();
+                }
+                this.birthdayMusicPlayer = null;
+                this.birthdayMusicPlaying = false;
+                this.birthdayStage?.classList.remove("is-blown-out", "is-celebrating");
+                this.birthdayStage?.querySelectorAll(".jami-bday-candle i").forEach(flame => { flame.style.visibility = ""; flame.style.opacity = ""; });
+                if (this.birthdayConfetti) this.birthdayConfetti.replaceChildren();
+                if (this.birthdayMessage) this.birthdayMessage.hidden = true;
+                if (this.birthdayConsoleOutput) this.birthdayConsoleOutput.textContent = "";
+                if (this.birthdayBlowButton) {
+                    this.birthdayBlowButton.hidden = false;
+                    this.birthdayBlowButton.disabled = false;
+                }
+            }
+            win.hidden = false;
+            win.dataset.minimized = "0";
+            this.focusWindow("birthday");
+
+            const audio = this.ensureBirthdayMusicPlayer();
+            audio.volume = 0.30;
+            audio.play().then(() => {
+                this.birthdayMusicPlaying = true;
+                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "stop music";
+            }).catch(() => {
+                this.birthdayMusicPlaying = false;
+                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "play music";
+            });
+
+            this.addSystemEvent("opened birthday");
+        }
+
+        birthdayCakeAscii(blownOut = false) {
+            const flames = blownOut ? "       .        .        ." : "      ( )      ( )      ( )";
+            const wicks  = "       |        |        |";
+            return [
+                flames,
+                wicks,
+                "   ____|________|________|____",
+                "  /                            \\",
+                " /    HAPPY BIRTHDAY NORDY!     \\",
+                "/________________________________\\",
+                "|  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  |",
+                "|      shark birthday cake       |",
+                "|  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  |",
+                "|________________________________|",
+                "\\________________________________/",
+            ].join("\n");
+        }
+
+        appendBirthdayConsoleText(text) {
+            if (!this.birthdayConsoleOutput) return;
+            this.birthdayConsoleOutput.appendChild(document.createTextNode(text));
+        }
+
+        appendBirthdayConsoleCake(blownOut = false) {
+            if (!this.birthdayConsoleOutput) return;
+            const cake = document.createElement("pre");
+            cake.className = "jami-birthday-ascii-cake";
+            cake.textContent = this.birthdayCakeAscii(blownOut);
+            this.birthdayConsoleOutput.appendChild(cake);
+        }
+
+        openBirthdayConsole() {
+            const win = this.root.querySelector('[data-jami-window="birthday-console"]');
+            if (!win) return;
+            win.hidden = false;
+            win.dataset.minimized = "0";
+            this.focusWindow("birthday-console");
+            if (this.birthdayConsoleOutput && !this.birthdayConsoleOutput.textContent.trim()) {
+                this.appendBirthdayConsoleCake(this.birthdayBlownOut);
+                this.appendBirthdayConsoleText(`\n${this.birthdayBlownOut ? "Happy Birthday Nordy!!!" : "type /blow-out to blow out the candles"}\n`);
+            }
+            window.setTimeout(() => this.birthdayConsoleInput?.focus(), 0);
+        }
+
+        runBirthdayConsoleCommand(command) {
+            if (!this.birthdayConsoleOutput || !command) return;
+            this.appendBirthdayConsoleText(`\nbirthday@jami> ${command}\n`);
+            if (command.toLowerCase() === "/blow-out") {
+                if (!this.birthdayBlownOut) this.blowOutBirthdayCandles(true);
+                this.appendBirthdayConsoleText("\n");
+                this.appendBirthdayConsoleCake(true);
+                this.appendBirthdayConsoleText("\nHappy Birthday Nordy!!!\n");
+            } else if (command.toLowerCase() === "/help") {
+                this.appendBirthdayConsoleText("/blow-out   blow out the birthday candles\n");
+            } else {
+                this.appendBirthdayConsoleText(`unknown birthday command: ${command}\ntype /help\n`);
+            }
+            this.birthdayConsoleOutput.scrollTop = this.birthdayConsoleOutput.scrollHeight;
+        }
+
+        blowOutBirthdayCandles(fromConsole = false) {
+            if (this.birthdayBlownOut) return;
+            this.birthdayBlownOut = true;
+            if (this.birthdayBlowButton) this.birthdayBlowButton.disabled = true;
+            this.birthdayStage?.classList.add("is-blown-out");
+            window.setTimeout(() => {
+                this.birthdayStage?.querySelectorAll(".jami-bday-candle i").forEach(flame => { flame.style.opacity = "0"; flame.style.visibility = "hidden"; });
+            }, 720);
+            if (!fromConsole && this.birthdayConsoleOutput?.textContent.trim()) {
+                this.appendBirthdayConsoleText("\n[ candles blown out ]\n\n");
+                this.appendBirthdayConsoleCake(true);
+                this.appendBirthdayConsoleText("\nHappy Birthday Nordy!!!\n");
+                this.birthdayConsoleOutput.scrollTop = this.birthdayConsoleOutput.scrollHeight;
+            }
+            window.setTimeout(() => {
+                this.birthdayStage?.classList.add("is-celebrating");
+                this.launchBirthdayConfetti();
+            }, 430);
+            window.setTimeout(() => {
+                if (this.birthdayBlowButton) this.birthdayBlowButton.hidden = true;
+                if (this.birthdayMessage) this.birthdayMessage.hidden = false;
+            }, 760);
+        }
+
+        launchBirthdayConfetti() {
+            const host = this.birthdayConfetti;
+            if (!host) return;
+            host.replaceChildren();
+            const colors = ["#ff8fbd", "#8fd3ff", "#92efc4", "#c9a8ff", "#ffe17d", "#ffb27d", "#8fe8ee"];
+            for (let i = 0; i < 84; i += 1) {
+                const bit = document.createElement("i");
+                const angle = (Math.PI * 2 * i / 84) + (Math.random() - .5) * .45;
+                const distance = 120 + Math.random() * 250;
+                bit.style.setProperty("--x", `${Math.cos(angle) * distance}px`);
+                bit.style.setProperty("--y", `${Math.sin(angle) * distance - 70}px`);
+                bit.style.setProperty("--r", `${Math.round((Math.random() - .5) * 900)}deg`);
+                bit.style.setProperty("--delay", `${Math.random() * .16}s`);
+                bit.style.setProperty("--dur", `${1.05 + Math.random() * .85}s`);
+                bit.style.setProperty("--confetti", colors[i % colors.length]);
+                bit.className = i % 5 === 0 ? "is-star" : (i % 3 === 0 ? "is-round" : "");
+                host.appendChild(bit);
+            }
+            for (let i = 0; i < 18; i += 1) {
+                const shark = document.createElement("span");
+                shark.className = "jami-birthday-shark-confetti";
+                shark.textContent = "🦈";
+                const angle = (Math.PI * 2 * i / 18) + (Math.random() - .5) * .55;
+                const distance = 145 + Math.random() * 245;
+                shark.style.setProperty("--x", `${Math.cos(angle) * distance}px`);
+                shark.style.setProperty("--y", `${Math.sin(angle) * distance - 80}px`);
+                shark.style.setProperty("--r", `${Math.round((Math.random() - .5) * 700)}deg`);
+                shark.style.setProperty("--delay", `${Math.random() * .2}s`);
+                shark.style.setProperty("--dur", `${1.15 + Math.random() * .9}s`);
+                shark.style.setProperty("--scale", `${.72 + Math.random() * .65}`);
+                host.appendChild(shark);
+            }
         }
 
         formatRelativeVisit(ms) {
@@ -750,8 +1005,13 @@
             if (id === "chat") this.leaveChatClient(false);
             if (id === "monitor") this.stopSystemMonitor();
             if (id === "radio") this.stopRadio();
+            if (id === "birthday" && this.birthdayMusicPlaying) {
+                this.birthdayMusicPlayer?.pause();
+                this.birthdayMusicPlaying = false;
+                if (this.birthdayMusicButton) this.birthdayMusicButton.textContent = "play music";
+            }
 
-            const visible = ["chat", "notepad", "explorer", "terminal", "monitor", "radio"].find(name => this.isWindowOpen(name));
+            const visible = ["birthday", "chat", "notepad", "explorer", "terminal", "monitor", "radio"].find(name => this.isWindowOpen(name));
             if (visible === "chat") this.setActivity(this.currentPath, "cat-chat");
             else if (visible === "notepad") this.setActivity(this.notepadPath || this.currentPath, "notepad");
             else if (visible === "explorer") this.setActivity(this.explorerPath, "explorer");
@@ -1822,6 +2082,9 @@
                 slider.dispatchEvent(new Event("input", { bubbles: true }));
             }
             this.radioSiteVolume = null;
+            this.birthdayBlownOut = false;
+            this.birthdayMusicPlayer = null;
+            this.birthdayMusicPlaying = false;
         }
 
         suppressSiteWatchPartyVisual() {
