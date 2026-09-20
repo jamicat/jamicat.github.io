@@ -1,13 +1,3 @@
-
-/* Code View runtime bridge: emits sanitized operational metadata only. */
-window.__jamicatTrace = window.__jamicatTrace || function (channel, name, detail = {}) {
-  try {
-    window.dispatchEvent(new CustomEvent("jamicat-runtime", {
-      detail: { channel, name, detail }
-    }));
-  } catch {}
-};
-
 const themes = {
   Default: {
     glowPrimary: 'text-blue-glow',      
@@ -113,7 +103,6 @@ const themes = {
 };
 
 function applyTheme(themeName) {
-  window.__jamicatTrace?.("site", "theme.apply", { theme: String(themeName || "") });
   const theme = themes[themeName];
   if (!theme) return console.warn(`Theme not found: ${themeName}`);
 
@@ -446,7 +435,7 @@ function initTyped(themeName = 'Default') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
   const strings = [
-    `<span class="text-white theme-body text-sm mr-2 ${glow}">ᓚᘏᗢᶻ 𝗓 𐰁</span>`,
+    `<span class="text-white theme-body text-sm mr-2 ${glow}">ᓚᘏᗢ</span>`,
   ];
 
   typedInstance = new Typed('#typed', {
@@ -1376,7 +1365,6 @@ function seekYouTubePrecisely(
 
 function updatePlaybackIcons(playing) {
   isPlaying = playing === true;
-  window.__jamicatTrace?.("player", "playback.state", { playing: isPlaying, mode: playbackMode, videoId: loadedVideoId || null });
 
   playIcon?.classList.toggle(
     "hidden",
@@ -1626,13 +1614,6 @@ if (iframeEl) {
 }
 
 function applyWatchPartyState(state) {
-  window.__jamicatTrace?.("watchparty", "state.apply", {
-    enabled: state?.enabled === true,
-    videoId: state?.currentVideoId || null,
-    index: Number.isInteger(state?.currentIndex) ? state.currentIndex : null,
-    paused: state?.paused === true,
-    queueLength: Array.isArray(state?.queue) ? state.queue.length : 0
-  });
   const previousEnabled =
     watchPartyState.enabled;
 
@@ -3170,17 +3151,11 @@ window.watchPartyVisualizers = watchPartyVisualizers;
 
 window.watchPartyPlayer = {
  applyState(state) {
-  window.__jamicatTrace?.("player", "watchPartyPlayer.applyState", {
-    enabled: state?.enabled === true,
-    videoId: state?.currentVideoId || null,
-    paused: state?.paused === true
-  });
   currentWatchPartyState = state;
   applyWatchPartyState(state);
 },
 
   seekTo(targetTime) {
-    window.__jamicatTrace?.("player", "seek", { targetTime: Number(targetTime) || 0 });
     if (
         !player ||
         !playerReady ||
@@ -4769,7 +4744,7 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-<button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">About!</button>
+<!--button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">About!</button-->
 <button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">Art</button>
 <button class="terminal-button theme-body text-xs" onclick="showList()">Playlist</button>
 <button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">Guestbook</button>
@@ -4788,7 +4763,7 @@ document.head.appendChild(tag);
 window.addEventListener('DOMContentLoaded', () => {
   let savedTheme = localStorage.getItem('theme');
   if (!savedTheme) {
-    savedTheme = 'Default';
+    savedTheme = 'Stars';
     localStorage.setItem('theme', savedTheme);
   }
   applyTheme(savedTheme);
