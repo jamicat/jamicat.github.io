@@ -54,6 +54,14 @@ class RuntimeStream {
       q("[data-head]",this.root).textContent=this.paused?"render paused":"streaming";
     });
 
+    window.addEventListener("jamicat-runtime", event => {
+      const packet = event.detail || {};
+      const channel = clean(packet.channel || "site", 28);
+      const name = clean(packet.name || "event", 56);
+      const detail = packet.detail && typeof packet.detail === "object" ? packet.detail : {};
+      this.emit(channel, name, detail, "event");
+    });
+
     window.addEventListener("site-player-state",e=>{
       const d=e.detail||{};
       this.emit("player","state.change",{playing:d.playing===true,mode:clean(d.mode||"normal",24),videoId:d.videoId?clean(d.videoId,32):null},"event");
@@ -272,7 +280,18 @@ class RuntimeStream {
       }
     }catch{}
     const m=q("audio, video");if(!m)return null;
-    return {currentTime:Number(m.currentTime),duration:Number(m.duration),playing:!m.paused,videoId:null};
+    let bufferedEnd=null;
+    try {
+      if(m.buffered && m.buffered.length) bufferedEnd=Number(m.buffered.end(m.buffered.length-1));
+    } catch {}
+    return {
+      currentTime:Number(m.currentTime),
+      duration:Number(m.duration),
+      playing:!m.paused,
+      videoId:null,
+      bufferedEnd,
+      readyState:Number(m.readyState)
+    };
   }
   depth(){
     const text=[...this.feed.children].slice(-45).map(x=>x.textContent.trim()).filter(Boolean).join("\n");
