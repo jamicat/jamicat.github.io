@@ -5487,21 +5487,104 @@ if (
 ) {
     return;
 }
-                await fetch(
-                    `${this.API}/api/watchparty/play`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-                        body: JSON.stringify({
-                            clientId:
-                                this.clientId,
-                            queueId
-                        })
+
+                const previousVideoId =
+                    this.watchParty.currentVideoId;
+
+                const previousIndex =
+                    this.watchParty.currentIndex;
+
+                const response =
+                    await fetch(
+                        `${this.API}/api/watchparty/play`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body: JSON.stringify({
+                                clientId:
+                                    this.clientId,
+                                queueId
+                            })
+                        }
+                    );
+
+                let result = null;
+
+                try {
+                    result = await response.json();
+                } catch {}
+
+                if (!response.ok) {
+                    throw new Error(
+                        result?.error ||
+                        `Watch party switch failed (${response.status})`
+                    );
+                }
+
+                if (
+                    result?.success === true &&
+                    result?.switched === true &&
+                    typeof result.currentVideoId ===
+                        "string" &&
+                    result.currentVideoId
+                ) {
+                    const confirmedIndex =
+                        Number(result.currentIndex);
+
+                    const currentStateChanged =
+                        this.watchParty.currentVideoId !==
+                            previousVideoId ||
+                        this.watchParty.currentIndex !==
+                            previousIndex;
+
+                    const alreadyOnConfirmedState =
+                        this.watchParty.currentVideoId ===
+                            result.currentVideoId &&
+                        this.watchParty.currentIndex ===
+                            confirmedIndex;
+
+                    if (
+                        !currentStateChanged ||
+                        alreadyOnConfirmedState
+                    ) {
+                        const confirmedState = {
+                            ...this.watchParty,
+                            currentVideoId:
+                                result.currentVideoId,
+                            currentIndex:
+                                Number.isInteger(
+                                    confirmedIndex
+                                )
+                                    ? confirmedIndex
+                                    : 0,
+                            startedAt:
+                                Number.isFinite(
+                                    Number(
+                                        result.startedAt
+                                    )
+                                )
+                                    ? Number(
+                                        result.startedAt
+                                    )
+                                    : Date.now(),
+                            paused: false,
+                            pausedAt: null
+                        };
+
+                        this.watchParty =
+                            confirmedState;
+
+                        window.watchPartyPlayer
+                            ?.applyState?.(
+                                confirmedState
+                            );
+
+                        this.renderWatchParty();
                     }
-                );
+                }
 
             } catch (error) {
                 console.error(
@@ -8956,17 +9039,13 @@ renderWatchPartyVisualizerMenu() {
     };
 
     const modes = [
-        ["wave", "Waveform"],
-        ["bars", "Equalizer"],
-        ["decay", "Spectrum"],
-        ["line", "Frequency line"],
-        ["peaks", "Peaks"],
-        ["mountain", "Filled spectrum"]
+        ["Wave", "Waveform"],
+        ["Bars", "Equalizer"],
+        ["Decay", "Spectrum"],
+        ["Line", "Frequency line"],
+        ["Peaks", "Peaks"],
+        ["Mountain", "Filled spectrum"]
     ];
-
-    this.watchPartyVisualizerMode =
-        String(this.watchPartyVisualizerMode || "bars")
-            .toLowerCase();
 
     if (!modes.some(([mode]) => mode === this.watchPartyVisualizerMode)) {
         this.watchPartyVisualizerMode = "bars";
@@ -9083,8 +9162,7 @@ renderWatchPartyVisualizerMenu() {
             event.stopPropagation();
 
             const selectedMode =
-                button.dataset.watchPartyVisualizerMode
-                    ?.toLowerCase();
+                button.dataset.watchPartyVisualizerMode;
 
             if (!selectedMode) {
                 return;
@@ -13121,8 +13199,20 @@ connect() {
     console.log("Connecting chat websocket...");
 
     this.socket = new WebSocket(socketUrl);
+    window.__jamicatTrace?.("chat", "socket.create", { endpoint: "/api/chat/socket" });
+
+    this.socket.addEventListener("close", event => {
+        window.__jamicatTrace?.("chat", "socket.close", {
+            code: Number(event.code) || 0,
+            clean: event.wasClean === true
+        });
+    });
+    this.socket.addEventListener("error", () => {
+        window.__jamicatTrace?.("chat", "socket.error", {});
+    });
 
     this.socket.addEventListener("open", () => {
+    window.__jamicatTrace?.("chat", "socket.open", { state: "OPEN" });
     console.log("Chat websocket connected");
     this.eggHatchLastTickAt = null;
 
@@ -13154,6 +13244,11 @@ connect() {
 
     try {
         const data = JSON.parse(event.data);
+
+        window.__jamicatTrace?.("chat", "socket.receive", {
+            type: typeof data?.type === "string" ? data.type : "unknown",
+            bytes: typeof event.data === "string" ? new Blob([event.data]).size : null
+        });
 
         console.log("Chat websocket data:", data);
 
@@ -13290,6 +13385,12 @@ if (data.type === "motd") {
 }
 
 if (data.type === "watchparty-state") {
+    window.__jamicatTrace?.("chat", "watchparty.receive", {
+        enabled: data.state?.enabled === true,
+        videoId: data.state?.currentVideoId || null,
+        paused: data.state?.paused === true,
+        queueLength: Array.isArray(data.queue) ? data.queue.length : 0
+    });
     this.watchParty = {
         enabled:
             data.state?.enabled === true,
@@ -19864,6 +19965,19 @@ setupEmojiPicker() {
     skins: [
         {
             src: "/emojis/kitdance.gif"
+        }
+    ]
+},
+{
+    id: "pinguflap",
+    name: "pingu flap",
+    keywords: [
+        "kitten",
+        "dance"
+    ],
+    skins: [
+        {
+            src: "/emojis/pinguflap.gif"
         }
     ]
 },
