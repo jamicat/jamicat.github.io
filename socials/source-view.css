@@ -100,7 +100,7 @@
     content: attr(data-seq);
     position: absolute;
     right: calc(100% + 14px);
-    color: rgba(246,184,208,.14);
+    color: rgba(246,184,208,.25);
     font-size: 8px;
 }
 .sv-time { color: rgba(246,184,208,.19); }
@@ -176,7 +176,7 @@
     bottom: -15vh;
     width: 32vw;
     overflow: hidden;
-    color: rgba(246,184,208,.14);
+    color: rgba(246,184,208,.25);
     font: 400 8px/1.75 Consolas, monospace;
     white-space: pre;
     pointer-events: none;
@@ -185,12 +185,12 @@
 }
 .source-depth-a {
     left: -4vw;
-    opacity: .88;
+    opacity: .96;
     transform: translateY(var(--depth-shift,0));
 }
 .source-depth-b {
     right: -6vw;
-    opacity: .68;
+    opacity: .82;
     animation-duration: 25s;
     animation-direction: reverse;
     transform: translateY(var(--depth-shift,0));
@@ -239,3 +239,7 @@
 .source-line.source-heartbeat:nth-last-child(-n+8) {
     opacity: .74;
 }
+
+/* Combined Pass 3.1 + 4: clearer secondary execution planes. */
+.source-depth-a { font-size: 8.25px; }
+.source-depth-b { font-size: 7.75px; }
