@@ -44,14 +44,14 @@ class RuntimeStream {
     this.root.innerHTML=`
       <div class="source-depth source-depth-a" aria-hidden="true"></div>
       <div class="source-depth source-depth-b" aria-hidden="true"></div>
-      <header class="source-stream-head"><span><b>jamie.live</b> — execution trace</span><span data-head>standby</span></header>
+      <header class="source-stream-head"><span><b>jami</b> — execution trace</span><span data-head>standby</span></header>
       <main class="source-feed-wrap"><div class="source-feed" role="log" aria-live="off"></div></main>
       <footer class="source-stream-foot">
         <span data-rate>0 rows/s</span><span data-queue>queue 0</span>
         <form class="source-command" data-command autocomplete="off">
           <label aria-label="Code View command"><span>&gt;</span><input data-command-input spellcheck="false" autocomplete="off" placeholder="help" /></label>
         </form>
-        <span class="source-foot-note">measured runtime · secrets omitted</span>
+        <span class="source-foot-note">secrets omitted</span>
         <button type="button" data-pause>pause</button><button type="button" data-exit>GUI</button>
       </footer>`;
     document.body.append(this.root,this.toggle); this.feed=q(".source-feed",this.root);
