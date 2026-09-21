@@ -38,7 +38,7 @@ class RuntimeStream {
   build(){
     this.toggle=document.createElement("button");
     this.toggle.id="sourceViewToggle"; this.toggle.type="button"; this.toggle.setAttribute("aria-pressed","false");
-    this.toggle.innerHTML='<span aria-hidden="true">&lt;/&gt;</span><span class="source-toggle-label">source</span>';
+    this.toggle.innerHTML='<span aria-hidden="true">&lt;/&gt;</span>';
 
     this.root=document.createElement("section"); this.root.id="sourceView"; this.root.setAttribute("aria-hidden","true");
     this.root.innerHTML=`
