@@ -430,14 +430,14 @@ transition-[height] duration-200
             class="jami-chat-theme-menu invisible pointer-events-none opacity-0"
             role="menu"
         >
-            <button type="button" data-chat-theme-choice="original" role="menuitem">
-                Original
+            <button type="button" data-chat-theme-choice="paws" role="menuitem">
+                Paws
             </button>
-            <button type="button" data-chat-theme-choice="stars" role="menuitem">
+			<button type="button" data-chat-theme-choice="stars" role="menuitem">
                 Stars
             </button>
-            <button type="button" data-chat-theme-choice="paws" role="menuitem">
-                Animal Crossing
+			<button type="button" data-chat-theme-choice="original" role="menuitem">
+                Original
             </button>
         </div>
     </div>
