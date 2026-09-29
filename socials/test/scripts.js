@@ -29,7 +29,7 @@ const themes = {
     glowPrimary: 'text-blue-glow', glowSecondary: 'text-pink-glow',
     typed2Text: 'Guestbook!', typed3Text: 'Jamie',
     avatar: 'acl.png', gbAvatar: 'aclolly.png',
-    headingFont: 'DynaPuff', bodyFont: 'nintendoh',
+    headingFont: 'dynapuff', bodyFont: 'nintendoh',
     buttonColor: 'bg-transparent hover:bg-transparent', buttonTextColor: 'text-white',
     aboutButtonStyle: 'bg-[#f6d98b] hover:bg-[#f2cf7a] text-[#5a3b2e]',
     iconColor: 'text-[#f6a8c8] hover:text-[#9fc8ea]', hoverRing: 'hover:ring-[#9fc8ea]',
