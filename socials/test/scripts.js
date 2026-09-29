@@ -195,7 +195,7 @@ const typed2El = document.getElementById('typed2');
 if (typed2El) {
   const title = theme.typed2Text || 'guest wall!';
   if (themeName === 'Pastel' && title.toLowerCase().startsWith('guestbook')) {
-    typed2El.innerHTML = '<span class="pastel-jamie-letter pastel-jamie-pink">' + title + '</span>';
+    typed2El.innerHTML = pastelLetterText(title);
   } else {
     typed2El.textContent = title;
   }
