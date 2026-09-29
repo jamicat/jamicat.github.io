@@ -22559,7 +22559,7 @@ keepTitleBarInViewport() {
 
     let nextTheme =
         [
-            "riginal",
+            "original",
             "stars",
             "paws"
         ].includes(
@@ -22570,7 +22570,7 @@ keepTitleBarInViewport() {
 
     if (!nextTheme) {
         nextTheme =
-            "original";
+            "paws";
 
         localStorage.setItem(
             "chat_theme",
