@@ -28,7 +28,7 @@ const themes = {
   Pastel: {
     glowPrimary: 'text-blue-glow', glowSecondary: 'text-pink-glow',
     typed2Text: 'Guestbook!', typed3Text: 'Jamie',
-    avatar: 'acl.png', gbAvatar: 'aclolly.png',
+    avatar: 'chibi1.png', gbAvatar: 'chibi2.png',
     headingFont: '"DynaPuff"', bodyFont: '"nintendoh"',
     buttonColor: 'bg-transparent hover:bg-transparent', buttonTextColor: 'text-white',
     aboutButtonStyle: 'bg-transparent hover:bg-transparent text-white',
