@@ -14,7 +14,7 @@ src: url('nunito.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "DynaPuff";
+  font-family: "dynapuff";
   src: url("/dynapuff.ttf") format("truetype");
   font-display: swap;
 }
