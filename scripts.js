@@ -4846,7 +4846,7 @@ document.head.appendChild(tag);
 window.addEventListener('DOMContentLoaded', () => {
   let savedTheme = localStorage.getItem('theme');
   if (!savedTheme) {
-    savedTheme = 'Stars';
+    savedTheme = 'Pastel';
     localStorage.setItem('theme', savedTheme);
   }
   applyTheme(savedTheme);
