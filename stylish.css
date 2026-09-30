@@ -1093,17 +1093,20 @@ font-size: 0.65rem;
     }
 }
 
+
+
+/* Theme-specific restoration and Pastel guestbook polish */
 .typed-paw-text {
   color: #ffffff !important;
 }
 
 .theme-stars .terminal-button:not(.guestbook-submit) {
-  background-color: rgb(253 164 175) !important; 
+  background-color: rgb(253 164 175) !important; /* Tailwind bg-rose-300 */
   color: #000 !important;
 }
 
 .theme-stars .terminal-button:not(.guestbook-submit):hover {
-  background-color: rgb(251 113 133) !important; 
+  background-color: rgb(251 113 133) !important; /* Tailwind hover:bg-rose-400 */
   color: #000 !important;
 }
 
@@ -1112,6 +1115,7 @@ font-size: 0.65rem;
   color: #000 !important;
 }
 
+/* Never let Pastel button decoration leak into Stars. */
 .theme-stars .terminal-button:not(.guestbook-submit) .pastel-jamie-letter {
   color: inherit !important;
 }
