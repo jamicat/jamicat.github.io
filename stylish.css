@@ -1093,20 +1093,17 @@ font-size: 0.65rem;
     }
 }
 
-
-
-/* Theme-specific restoration and Pastel guestbook polish */
 .typed-paw-text {
   color: #ffffff !important;
 }
 
 .theme-stars .terminal-button:not(.guestbook-submit) {
-  background-color: rgb(253 164 175) !important; /* Tailwind bg-rose-300 */
+  background-color: rgb(253 164 175) !important; 
   color: #000 !important;
 }
 
 .theme-stars .terminal-button:not(.guestbook-submit):hover {
-  background-color: rgb(251 113 133) !important; /* Tailwind hover:bg-rose-400 */
+  background-color: rgb(251 113 133) !important; 
   color: #000 !important;
 }
 
@@ -1115,7 +1112,6 @@ font-size: 0.65rem;
   color: #000 !important;
 }
 
-/* Never let Pastel button decoration leak into Stars. */
 .theme-stars .terminal-button:not(.guestbook-submit) .pastel-jamie-letter {
   color: inherit !important;
 }
@@ -1184,38 +1180,34 @@ font-size: 0.65rem;
   background-color: rgba(191, 219, 254, .9);
 }
 
-
-/* Pastel Guestbook writing-paper lines */
 .theme-pastel #guestbookComments {
   position: relative;
-  background-color: transparent !important;
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0,
-    transparent 7px,
-    rgba(246, 168, 200, .16) 7px,
-    rgba(246, 168, 200, .16) 9px,
-    transparent 9px,
-    transparent 21px,
-    rgba(246, 217, 139, .14) 21px,
-    rgba(246, 217, 139, .14) 23px,
-    transparent 23px,
-    transparent 35px,
-    rgba(159, 200, 234, .14) 35px,
-    rgba(159, 200, 234, .14) 37px,
-    transparent 37px,
-    transparent 49px,
-    rgba(168, 216, 176, .14) 49px,
-    rgba(168, 216, 176, .14) 51px,
-    transparent 51px,
-    transparent 56px
+    transparent 10px,
+    rgba(246, 168, 200, .10) 10px,
+    rgba(246, 168, 200, .10) 11.5px,
+    transparent 11.5px,
+    transparent 24px,
+    rgba(246, 217, 139, .085) 24px,
+    rgba(246, 217, 139, .085) 25.5px,
+    transparent 25.5px,
+    transparent 38px,
+    rgba(159, 200, 234, .085) 38px,
+    rgba(159, 200, 234, .085) 39.5px,
+    transparent 39.5px,
+    transparent 52px,
+    rgba(168, 216, 176, .085) 52px,
+    rgba(168, 216, 176, .085) 53.5px,
+    transparent 53.5px,
+    transparent 66px
   ) !important;
-  background-size: 88% 56px !important;
+  background-size: 88% 66px !important;
   background-position: center top !important;
-  background-repeat: no-repeat, repeat-y !important;
+  background-repeat: repeat-y !important;
   background-attachment: local !important;
   background-clip: padding-box !important;
-  border-radius: 1.5rem;
 }
 
 .theme-pastel #guestbookComments > * {
