@@ -1188,51 +1188,32 @@ font-size: 0.65rem;
 /* Pastel Guestbook writing-paper lines */
 .theme-pastel #guestbookComments {
   position: relative;
-  background-image: none !important;
-}
-
-.theme-pastel #guestbookComments::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  left: 9%;
-  width: 82%;
-  height: 100%;
-  pointer-events: none;
   background-image: repeating-linear-gradient(
     to bottom,
-    rgba(246, 168, 200, .10) 0,
-    rgba(246, 168, 200, .10) 1.5px,
-    transparent 1.5px,
-    transparent 14px,
-    rgba(246, 217, 139, .085) 14px,
-    rgba(246, 217, 139, .085) 15.5px,
-    transparent 15.5px,
-    transparent 28px,
-    rgba(159, 200, 234, .085) 28px,
-    rgba(159, 200, 234, .085) 29.5px,
-    transparent 29.5px,
-    transparent 42px,
-    rgba(168, 216, 176, .085) 42px,
-    rgba(168, 216, 176, .085) 43.5px,
-    transparent 43.5px,
-    transparent 56px
-  );
-  -webkit-mask-image: linear-gradient(
-    to right,
     transparent 0,
-    #000 9%,
-    #000 91%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    #000 9%,
-    #000 91%,
-    transparent 100%
-  );
+    transparent 10px,
+    rgba(246, 168, 200, .10) 10px,
+    rgba(246, 168, 200, .10) 11.5px,
+    transparent 11.5px,
+    transparent 24px,
+    rgba(246, 217, 139, .085) 24px,
+    rgba(246, 217, 139, .085) 25.5px,
+    transparent 25.5px,
+    transparent 38px,
+    rgba(159, 200, 234, .085) 38px,
+    rgba(159, 200, 234, .085) 39.5px,
+    transparent 39.5px,
+    transparent 52px,
+    rgba(168, 216, 176, .085) 52px,
+    rgba(168, 216, 176, .085) 53.5px,
+    transparent 53.5px,
+    transparent 66px
+  ) !important;
+  background-size: 88% 66px !important;
+  background-position: center top !important;
+  background-repeat: repeat-y !important;
+  background-attachment: local !important;
+  background-clip: padding-box !important;
 }
 
 .theme-pastel #guestbookComments > * {
