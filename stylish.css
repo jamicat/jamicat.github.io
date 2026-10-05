@@ -1187,25 +1187,14 @@ font-size: 0.65rem;
 .theme-pastel #guestbookComments {
   position: relative;
   --gb-rule-step: 20px;
-
-  /*
-   * Pastel writing-paper rhythm:
-   * one evenly-spaced rule every 20px, with the four colours cycling
-   * without changing the gap from green back to pink.
-   */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='80' viewBox='0 0 100 80' preserveAspectRatio='none'%3E%3Cline x1='1.25' y1='2' x2='98.75' y2='2' stroke='%23f6a8c8' stroke-opacity='.17' stroke-width='2.4' stroke-linecap='round'/%3E%3Cline x1='1.25' y1='22' x2='98.75' y2='22' stroke='%23f6d98b' stroke-opacity='.17' stroke-width='2.4' stroke-linecap='round'/%3E%3Cline x1='1.25' y1='42' x2='98.75' y2='42' stroke='%239fc8ea' stroke-opacity='.17' stroke-width='2.4' stroke-linecap='round'/%3E%3Cline x1='1.25' y1='62' x2='98.75' y2='62' stroke='%23a8d8b0' stroke-opacity='.17' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") !important;
   background-size: 93.5% 80px !important;
   background-position: center 36px !important;
   background-repeat: repeat-y !important;
   background-attachment: local !important;
+  background-color: rgba(255, 205, 160, 0.42) !important;
 }
 
-/*
- * Keep every comment on the same 20px vertical grid as the paper.
- * 5px top + 5px bottom padding plus a 10px inter-card gap = one full
- * rule step, so wrapped comments and replies never knock later cards
- * out of alignment.
- */
 .theme-pastel #guestbookComments > .gb-entry {
   padding: 5px 0.75rem !important;
   margin-bottom: 10px !important;
@@ -1237,7 +1226,6 @@ font-size: 0.65rem;
   border-bottom-color: rgba(191, 219, 254, 0.20) !important;
 }
 
-/* Keep comment content above the ruled-paper layer. */
 .theme-pastel #guestbookComments > * {
   position: relative;
   z-index: 1;
