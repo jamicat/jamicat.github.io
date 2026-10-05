@@ -16,7 +16,7 @@ this.activeImageUploads =
     new Map();
 this.imageUploadCompleteSound =
     new Audio(
-        "/socials/audio/upload-complete.wav"
+        "/audio/upload-complete.wav"
     );
 this.imageUploadCompleteSound.preload =
     "auto";
@@ -14337,7 +14337,7 @@ createCompletedImageElement(
 
     playImageUploadCompleteSound() {
     const soundUrl =
-        "/socials/audio/upload-complete.wav";
+        "/audio/upload-complete.wav";
 
     if (!this.imageUploadCompleteSound) {
         const audio =
