@@ -69,7 +69,6 @@ this.sourceContext = null;
 "catflowers.png",
 "kittydance.gif",
 "kitdance.gif",
-"nonono.gif",
 "ayoblush.png",
 "duckthink.png",
 "duckswim.gif",
