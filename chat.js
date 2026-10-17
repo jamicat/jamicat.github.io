@@ -19701,19 +19701,6 @@ setupEmojiPicker() {
     ]
 },
 {
-    id: "nonono",
-    name: "nonono",
-    keywords: [
-        "cat",
-        "nonono"
-    ],
-    skins: [
-        {
-            src: "/emojis/nonono.gif"
-        }
-    ]
-},
-{
     id: "ayoblush",
     name: "ayo blush",
     keywords: [
