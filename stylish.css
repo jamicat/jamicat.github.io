@@ -1577,9 +1577,9 @@ font-size: 0.65rem;
   --art-accent-rgb: 255, 255, 255;
   position: relative;
   box-sizing: border-box;
-  padding: 3px;
-  border: 1px solid rgba(var(--art-accent-rgb), 0.48);
-  background: rgba(var(--art-accent-rgb), 0.035);
+  padding: 4px;
+  border: 2px solid rgba(var(--art-accent-rgb), 0.72);
+  background: transparent;
 }
 
 #artGallery .art-card-image {
@@ -1590,14 +1590,13 @@ font-size: 0.65rem;
 
 #artGallery .art-card-paw {
   position: absolute;
-  top: 9px;
-  left: 9px;
+  top: 10px;
+  left: 10px;
   z-index: 2;
   display: block;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   color: rgb(var(--art-accent-rgb));
-  opacity: 0.17;
   pointer-events: none;
 }
 
@@ -1605,12 +1604,22 @@ font-size: 0.65rem;
   display: block;
   width: 100%;
   height: 100%;
+  overflow: visible;
   fill: none;
 }
 
-#artGallery .art-card-paw-shell,
+#artGallery .art-card-paw-shell {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.50;
+}
+
 #artGallery .art-card-paw-pad {
   fill: currentColor;
+  opacity: 0.58;
 }
 
 .theme-pastel #artGallery .art-card:nth-child(3n + 1) {
@@ -1627,10 +1636,10 @@ font-size: 0.65rem;
 
 @media (max-width: 640px) {
   #artGallery .art-card-paw {
-    top: 8px;
-    left: 8px;
-    width: 24px;
-    height: 24px;
+    top: 9px;
+    left: 9px;
+    width: 27px;
+    height: 27px;
   }
 }
 
