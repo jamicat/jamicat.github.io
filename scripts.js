@@ -4056,12 +4056,6 @@ $('#terminalContent').html(`
        <a href="jamiefeara.png" class="block rounded overflow-hidden">
     <img src="feara_thumb.jpg" alt="jamie & feara - haru" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
-   <a href="skp.png" class="block rounded overflow-hidden">
-    <img src="skp_thumb.jpg" alt="sketchpage - sofii" class="rounded hover:scale-105 transition transform duration-200" />
-      </a>
-   <a href="party.jpg" class="block rounded overflow-hidden">
-    <img src="party_thumb.jpg" alt="yaaaypartypopper" class="rounded hover:scale-105 transition transform duration-200" />
-      </a>
    <a href="2.png" class="block rounded overflow-hidden">
     <img src="2.png" alt="jamie - saproena" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
