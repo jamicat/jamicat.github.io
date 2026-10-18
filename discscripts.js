@@ -14,7 +14,7 @@ nunitoFont.textContent = `
 }
 
 #discordName {
-  font-family: 'Nunito', sans-serif;
+  font-family: 'nintendoh', sans-serif;
 }
 `;
 document.head.appendChild(nunitoFont);
@@ -22,7 +22,7 @@ document.head.appendChild(nunitoFont);
 const statusContainer = document.createElement("div");
 statusContainer.id = "discordStatus";
 statusContainer.className =
-  "absolute top-6 right-6 flex items-center space-x-3 p-2.5 rounded-3xl bg-black/15 backdrop-blur-md shadow-lg transition-transform duration-300 ease-in-out z-[9] hover:bg-black/25 hover:border-white/30 text-base perspective-[800px]";
+  "fixed flex items-center space-x-3 p-2.5 rounded-3xl bg-black/15 backdrop-blur-md shadow-lg transition-transform duration-300 ease-in-out z-[10020] hover:bg-black/25 hover:border-white/30 text-base perspective-[800px]";
 
 statusContainer.innerHTML = `
   <div class="relative">
@@ -30,7 +30,7 @@ statusContainer.innerHTML = `
     <span id="statusDot" class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-black"></span>
   </div>
   <div id="discordText" class="flex flex-col leading-tight">
-    <span id="discordName" class="text-white text-[16px] font-semibold font-medium text-blue-glow">Loading...</span>
+    <span id="discordName" class="text-white text-[16px] font-semibold font-medium text-blue-glow no-theme-glow">Loading...</span>
     <span id="discordActivity" class="text-rose-300 text-[13.5px] opacity-90 italic font-medium">Fetching status...</span>
   </div>
 `;
