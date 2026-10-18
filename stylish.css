@@ -620,12 +620,13 @@ object-fit: contain;
     rgba(255, 153, 72, 0.30) !important;
 
   box-shadow:
-    3px 3px 0 rgba(210, 105, 45, 0.24),
-    0 12px 34px rgba(40, 16, 7, 0.30),
-    0 0 30px rgba(255, 177, 110, 0.16),
-    0 0 72px rgba(255, 139, 62, 0.085),
-    inset 0 1px 0 rgba(255, 241, 224, 0.26),
-    inset 0 -1px 0 rgba(86, 32, 12, 0.13) !important;
+    0 12px 32px rgba(45, 20, 10, 0.30),
+    0 0 7px rgba(255, 205, 155, 0.32),
+    0 0 18px rgba(255, 170, 95, 0.26),
+    0 0 38px rgba(255, 140, 65, 0.20),
+    0 0 72px rgba(255, 115, 40, 0.11),
+    inset 0 1px 0 rgba(255, 242, 220, 0.30),
+    inset 0 0 24px rgba(255, 190, 135, 0.08) !important;
 }
 
 .theme-pastel .theme-heading,
