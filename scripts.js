@@ -1867,6 +1867,44 @@ if (iframeEl) {
   }
 }
 
+
+function setHomepageSocialLinksVisible(visible) {
+  const socialLinks =
+    document.getElementById(
+      "homepageSocialLinks"
+    );
+
+  if (!socialLinks) {
+    return;
+  }
+
+  const shouldShow =
+    visible !== false;
+
+  socialLinks.classList.toggle(
+    "is-watch-party-hidden",
+    !shouldShow
+  );
+
+  socialLinks.setAttribute(
+    "aria-hidden",
+    shouldShow ? "false" : "true"
+  );
+}
+
+window.setHomepageSocialLinksVisible =
+  setHomepageSocialLinksVisible;
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+    window.setHomepageSocialLinksVisible?.(
+      true
+    );
+  },
+  { once: true }
+);
+
 function applyWatchPartyState(state) {
   const previousEnabled =
     watchPartyState.enabled;
@@ -1913,6 +1951,10 @@ function applyWatchPartyState(state) {
     watchPartyState.enabled
         ? "watch-party"
         : "normal";
+
+  window.setHomepageSocialLinksVisible?.(
+    !watchPartyState.enabled
+  );
 
 const requiredEnglishSubtitles =
     shouldUseWatchPartyEnglishSubtitles();
