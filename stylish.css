@@ -1572,3 +1572,65 @@ font-size: 0.65rem;
     transition: none !important;
   }
 }
+
+#artGallery .art-card {
+  --art-accent-rgb: 255, 255, 255;
+  position: relative;
+  box-sizing: border-box;
+  padding: 3px;
+  border: 1px solid rgba(var(--art-accent-rgb), 0.48);
+  background: rgba(var(--art-accent-rgb), 0.035);
+}
+
+#artGallery .art-card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#artGallery .art-card-paw {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  z-index: 2;
+  display: block;
+  width: 28px;
+  height: 28px;
+  color: rgb(var(--art-accent-rgb));
+  opacity: 0.17;
+  pointer-events: none;
+}
+
+#artGallery .art-card-paw svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+}
+
+#artGallery .art-card-paw-shell,
+#artGallery .art-card-paw-pad {
+  fill: currentColor;
+}
+
+.theme-pastel #artGallery .art-card:nth-child(3n + 1) {
+  --art-accent-rgb: 246, 168, 200;
+}
+
+.theme-pastel #artGallery .art-card:nth-child(3n + 2) {
+  --art-accent-rgb: 246, 217, 139;
+}
+
+.theme-pastel #artGallery .art-card:nth-child(3n) {
+  --art-accent-rgb: 159, 200, 234;
+}
+
+@media (max-width: 640px) {
+  #artGallery .art-card-paw {
+    top: 8px;
+    left: 8px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
