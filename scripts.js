@@ -1009,6 +1009,131 @@ function getActiveVideoId() {
   return getNormalVideoId();
 }
 
+function getNormalPlaylistItem(videoId) {
+  const currentItem =
+    PLAYLIST[normalPlaylistIndex];
+
+  if (
+    currentItem?.videoId === videoId
+  ) {
+    return currentItem;
+  }
+
+  return (
+    PLAYLIST.find(item =>
+      item?.videoId === videoId
+    ) || null
+  );
+}
+
+function extractYouTubeThumbnailVideoId(value) {
+  const input =
+    typeof value === "string"
+      ? value.trim()
+      : "";
+
+  if (!input) {
+    return "";
+  }
+
+  if (/^[A-Za-z0-9_-]{11}$/.test(input)) {
+    return input;
+  }
+
+  try {
+    const url = new URL(
+      /^https?:\/\//i.test(input)
+        ? input
+        : `https://${input}`
+    );
+
+    const host =
+      url.hostname
+        .toLowerCase()
+        .replace(/^www\./, "");
+
+    if (host === "youtu.be") {
+      const id =
+        url.pathname
+          .split("/")
+          .filter(Boolean)[0] || "";
+
+      return /^[A-Za-z0-9_-]{11}$/.test(id)
+        ? id
+        : "";
+    }
+
+    if (
+      host === "youtube.com" ||
+      host.endsWith(".youtube.com")
+    ) {
+      const watchId =
+        url.searchParams.get("v") || "";
+
+      if (/^[A-Za-z0-9_-]{11}$/.test(watchId)) {
+        return watchId;
+      }
+
+      const parts =
+        url.pathname
+          .split("/")
+          .filter(Boolean);
+
+      if (
+        ["shorts", "embed", "live"]
+          .includes(parts[0]) &&
+        /^[A-Za-z0-9_-]{11}$/.test(parts[1] || "")
+      ) {
+        return parts[1];
+      }
+    }
+  } catch {}
+
+  return "";
+}
+
+function getPlaylistPosterOverrides(videoId) {
+  if (playbackMode !== "normal") {
+    return [];
+  }
+
+  const item =
+    getNormalPlaylistItem(videoId);
+
+  if (!item) {
+    return [];
+  }
+
+  if (item.customThumbnailEnabled === true) {
+    const customUrl =
+      typeof item.customThumbnailUrl === "string"
+        ? item.customThumbnailUrl.trim()
+        : "";
+
+    return customUrl
+      ? [customUrl]
+      : [];
+  }
+
+  if (item.youtubeThumbnailEnabled === true) {
+    const thumbnailVideoId =
+      extractYouTubeThumbnailVideoId(
+        item.youtubeThumbnailSource
+      );
+
+    if (!thumbnailVideoId) {
+      return [];
+    }
+
+    return [
+      `https://img.youtube.com/vi/${thumbnailVideoId}/maxresdefault.jpg`,
+      `https://img.youtube.com/vi/${thumbnailVideoId}/hqdefault.jpg`
+    ];
+  }
+
+  return [];
+}
+
 function setPoster(videoId) {
   const posterEl =
     document.getElementById("videoPoster");
@@ -1020,8 +1145,12 @@ function setPoster(videoId) {
   if (!videoId) {
     posterEl.style.backgroundImage = "none";
     posterEl.style.opacity = "0";
+    delete posterEl.dataset.posterVideoId;
     return;
   }
+
+  const posterOverrides =
+    getPlaylistPosterOverrides(videoId);
 
   const highRes =
     `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -1029,20 +1158,59 @@ function setPoster(videoId) {
   const fallback =
     `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-  const image =
-    new Image();
+  const candidates =
+    [...posterOverrides, highRes, fallback]
+      .filter(Boolean)
+      .filter(
+        (url, index, array) =>
+          array.indexOf(url) === index
+      );
+
+  posterEl.dataset.posterVideoId =
+    videoId;
+
+  let candidateIndex = 0;
+  const image = new Image();
+
+  const loadCandidate = () => {
+    const candidate =
+      candidates[candidateIndex];
+
+    if (!candidate) {
+      if (
+        posterEl.dataset.posterVideoId ===
+        videoId
+      ) {
+        posterEl.style.backgroundImage =
+          "none";
+      }
+      return;
+    }
+
+    image.src = candidate;
+  };
 
   image.onload = () => {
+    if (
+      posterEl.dataset.posterVideoId !==
+      videoId
+    ) {
+      return;
+    }
+
+    const candidate =
+      candidates[candidateIndex];
+
     posterEl.style.backgroundImage =
-      `url(${highRes})`;
+      `url(${JSON.stringify(candidate)})`;
   };
 
   image.onerror = () => {
-    posterEl.style.backgroundImage =
-      `url(${fallback})`;
+    candidateIndex += 1;
+    loadCandidate();
   };
 
-  image.src = highRes;
+  loadCandidate();
 }
 
 function showBlackPlayerBackground() {
