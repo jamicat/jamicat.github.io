@@ -99,6 +99,74 @@ button:hover{
   box-shadow:0 0 16px rgba(255,160,70,.35);
 }
 
+.card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.song-number{
+  font-size:.8rem;
+  color:#9fb7d2;
+}
+
+.order-controls{
+  display:flex;
+  gap:6px;
+}
+
+.order-button{
+  margin-top:0;
+  min-width:38px;
+  padding:6px 10px;
+}
+
+button:disabled{
+  opacity:.35;
+  cursor:not-allowed;
+  transform:none !important;
+  box-shadow:none !important;
+}
+
+.thumbnail-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.thumbnail-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:#d7e7f8;
+  font-size:.9rem;
+  cursor:pointer;
+  user-select:none;
+}
+
+.thumbnail-toggle input[type="checkbox"]{
+  width:auto;
+  margin:0;
+  padding:0;
+  box-shadow:none;
+  accent-color:#ff9d46;
+}
+
+.custom-thumbnail-input:disabled,
+.youtube-thumbnail-input:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.thumbnail-help{
+  margin:0;
+  color:#8fa8c4;
+  font-size:.78rem;
+  line-height:1.35;
+}
+
 .controls{
   margin-top:20px;
   display:flex;
@@ -129,6 +197,14 @@ if (!ADMIN_KEY) {
 
 let playlist = [];
 
+function escapeAttribute(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
 async function fetchMeta(videoId) {
   if (!videoId) return null;
 
@@ -141,8 +217,25 @@ async function fetchMeta(videoId) {
 
 async function load() {
   const res = await fetch(`${API}/api/playlist`);
+  const result = await res.json();
 
-  playlist = await res.json();
+  playlist = Array.isArray(result)
+    ? result.map(song => ({
+        ...song,
+        customThumbnailEnabled:
+          song?.customThumbnailEnabled === true,
+        customThumbnailUrl:
+          typeof song?.customThumbnailUrl === "string"
+            ? song.customThumbnailUrl
+            : "",
+        youtubeThumbnailEnabled:
+          song?.youtubeThumbnailEnabled === true,
+        youtubeThumbnailSource:
+          typeof song?.youtubeThumbnailSource === "string"
+            ? song.youtubeThumbnailSource
+            : ""
+      }))
+    : [];
 
   render();
 }
@@ -161,6 +254,44 @@ async function autoFill(i) {
   render();
 }
 
+function moveSong(i, direction) {
+  const nextIndex = i + direction;
+
+  if (
+    nextIndex < 0 ||
+    nextIndex >= playlist.length
+  ) {
+    return;
+  }
+
+  const [song] = playlist.splice(i, 1);
+  playlist.splice(nextIndex, 0, song);
+
+  render();
+}
+
+function setCustomThumbnailEnabled(i, checkbox) {
+  playlist[i].customThumbnailEnabled =
+    checkbox.checked;
+
+  if (checkbox.checked) {
+    playlist[i].youtubeThumbnailEnabled = false;
+  }
+
+  render();
+}
+
+function setYouTubeThumbnailEnabled(i, checkbox) {
+  playlist[i].youtubeThumbnailEnabled =
+    checkbox.checked;
+
+  if (checkbox.checked) {
+    playlist[i].customThumbnailEnabled = false;
+  }
+
+  render();
+}
+
 function render() {
   const el = document.getElementById("list");
   el.innerHTML = "";
@@ -169,26 +300,112 @@ function render() {
     const div = document.createElement("div");
     div.className = "card";
 
+    const customThumbnailEnabled =
+      song.customThumbnailEnabled === true;
+
+    const youtubeThumbnailEnabled =
+      song.youtubeThumbnailEnabled === true;
+
     div.innerHTML = `
-      <input value="${song.videoId || ''}" 
-        onchange="playlist[${i}].videoId=this.value" 
-        placeholder="videoId">
+      <div class="card-head">
+        <span class="song-number">#${i + 1}</span>
 
-      <button onclick="autoFill(${i})">Auto-fill</button>
+        <div class="order-controls">
+          <button
+            class="order-button"
+            type="button"
+            onclick="moveSong(${i}, -1)"
+            ${i === 0 ? "disabled" : ""}
+            aria-label="Move song up"
+            title="Move up"
+          >↑</button>
 
-      <input value="${song.title || ''}" 
-        onchange="playlist[${i}].title=this.value" 
-        placeholder="title">
+          <button
+            class="order-button"
+            type="button"
+            onclick="moveSong(${i}, 1)"
+            ${i === playlist.length - 1 ? "disabled" : ""}
+            aria-label="Move song down"
+            title="Move down"
+          >↓</button>
+        </div>
+      </div>
 
-      <input value="${song.channelAvatar || ''}" 
-        onchange="playlist[${i}].channelAvatar=this.value" 
-        placeholder="avatar">
+      <input
+        value="${escapeAttribute(song.videoId)}"
+        oninput="playlist[${i}].videoId=this.value"
+        placeholder="videoId"
+      >
 
-      <input value="${song.channelUrl || ''}" 
-        onchange="playlist[${i}].channelUrl=this.value" 
-        placeholder="channel url">
+      <button
+        type="button"
+        onclick="autoFill(${i})"
+      >Auto-fill</button>
 
-      <button onclick="remove(${i})">Remove</button>
+      <input
+        value="${escapeAttribute(song.title)}"
+        oninput="playlist[${i}].title=this.value"
+        placeholder="title"
+      >
+
+      <input
+        value="${escapeAttribute(song.channelAvatar)}"
+        oninput="playlist[${i}].channelAvatar=this.value"
+        placeholder="avatar"
+      >
+
+      <input
+        value="${escapeAttribute(song.channelUrl)}"
+        oninput="playlist[${i}].channelUrl=this.value"
+        placeholder="channel url"
+      >
+
+      <div class="thumbnail-row">
+        <label class="thumbnail-toggle">
+          <input
+            type="checkbox"
+            ${customThumbnailEnabled ? "checked" : ""}
+            onchange="setCustomThumbnailEnabled(${i}, this)"
+          >
+          Use custom image URL
+        </label>
+
+        <label class="thumbnail-toggle">
+          <input
+            type="checkbox"
+            ${youtubeThumbnailEnabled ? "checked" : ""}
+            onchange="setYouTubeThumbnailEnabled(${i}, this)"
+          >
+          Use another YouTube video's thumbnail
+        </label>
+      </div>
+
+      <input
+        class="custom-thumbnail-input"
+        type="url"
+        value="${escapeAttribute(song.customThumbnailUrl)}"
+        oninput="playlist[${i}].customThumbnailUrl=this.value"
+        placeholder="custom thumbnail image URL"
+        ${customThumbnailEnabled ? "" : "disabled"}
+      >
+
+      <input
+        class="youtube-thumbnail-input"
+        type="text"
+        value="${escapeAttribute(song.youtubeThumbnailSource)}"
+        oninput="playlist[${i}].youtubeThumbnailSource=this.value"
+        placeholder="YouTube video URL (or video ID) to borrow thumbnail from"
+        ${youtubeThumbnailEnabled ? "" : "disabled"}
+      >
+
+      <p class="thumbnail-help">
+        Leave both options unchecked to use this video's normal YouTube thumbnail.
+      </p>
+
+      <button
+        type="button"
+        onclick="remove(${i})"
+      >Remove</button>
     `;
 
     el.appendChild(div);
@@ -200,8 +417,13 @@ function addSong() {
     videoId: "",
     title: "",
     channelAvatar: "",
-    channelUrl: ""
+    channelUrl: "",
+    customThumbnailEnabled: false,
+    customThumbnailUrl: "",
+    youtubeThumbnailEnabled: false,
+    youtubeThumbnailSource: ""
   });
+
   render();
 }
 
@@ -220,6 +442,11 @@ async function save() {
   if (res.status === 403) {
     document.body.innerHTML = "Unauthorized";
     throw new Error("Unauthorized");
+  }
+
+  if (!res.ok) {
+    alert(`Save failed (${res.status})`);
+    return;
   }
 
   alert("Saved!");
