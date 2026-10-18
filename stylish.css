@@ -602,6 +602,30 @@ object-fit: contain;
   box-shadow: 3px 3px 0 rgba(210, 105, 45, 0.26) !important;
 }
 
+/* Pastel-only terminal depth:
+ * keep the existing peach glass look, but give all three terminal surfaces
+ * a soft ambient lift instead of a hard/neon glow.
+ */
+.theme-pastel .terminal,
+.theme-pastel .terminal2,
+.theme-pastel .gwterminal {
+  background:
+    radial-gradient(
+      circle at 45% 25%,
+      rgba(255, 205, 165, 0.055),
+      transparent 58%
+    ),
+    rgba(255, 153, 72, 0.30) !important;
+
+  box-shadow:
+    3px 3px 0 rgba(210, 105, 45, 0.22),
+    0 10px 30px rgba(45, 20, 10, 0.20),
+    0 0 24px rgba(255, 174, 112, 0.08),
+    0 0 58px rgba(255, 145, 75, 0.035),
+    inset 0 1px 0 rgba(255, 236, 215, 0.18),
+    inset 0 -1px 0 rgba(90, 40, 20, 0.09) !important;
+}
+
 .theme-pastel .theme-heading,
 .theme-pastel #typed2,
 .theme-pastel #typed3,
