@@ -304,32 +304,12 @@ function extractYouTubeVideoId(value) {
 }
 
 function updateVideoId(i, input) {
-  const normalized =
-    extractYouTubeVideoId(input.value);
-
-  playlist[i].videoId = normalized;
-
-  if (
-    normalized !== input.value &&
-    /^[A-Za-z0-9_-]{11}$/.test(normalized)
-  ) {
-    input.value = normalized;
-  }
+  playlist[i].videoId = input.value;
 }
 
 function updateYouTubeThumbnailSource(i, input) {
-  const normalized =
-    extractYouTubeVideoId(input.value);
-
   playlist[i].youtubeThumbnailSource =
-    normalized;
-
-  if (
-    normalized !== input.value &&
-    /^[A-Za-z0-9_-]{11}$/.test(normalized)
-  ) {
-    input.value = normalized;
-  }
+    input.value;
 }
 
 async function fetchMeta(videoId) {
@@ -372,8 +352,6 @@ async function autoFill(i) {
     extractYouTubeVideoId(
       playlist[i].videoId
     );
-
-  playlist[i].videoId = videoId;
 
   const meta = await fetchMeta(videoId);
 
@@ -561,10 +539,20 @@ function remove(i) {
 }
 
 async function save() {
+  const payload = playlist.map(song => ({
+    ...song,
+    videoId:
+      extractYouTubeVideoId(song.videoId),
+    youtubeThumbnailSource:
+      extractYouTubeVideoId(
+        song.youtubeThumbnailSource
+      )
+  }));
+
   const res = await fetch(`${API}/api/playlist/update?key=${ADMIN_KEY}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(playlist)
+    body: JSON.stringify(payload)
   });
 
   if (res.status === 403) {
