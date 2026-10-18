@@ -796,6 +796,69 @@ interact('#terminal').draggable({
 
 const API = "https://api.jmeow.co.uk";
 
+
+async function updateSiteViewCounter() {
+  const wrapper =
+    document.getElementById(
+      "homepageViewCounter"
+    );
+
+  const countElement =
+    document.getElementById(
+      "siteViewCount"
+    );
+
+  if (!wrapper || !countElement) {
+    return;
+  }
+
+  try {
+    const request =
+      await fetch(
+        `${API}/api/views`,
+        {
+          method: "POST",
+          cache: "no-store"
+        }
+      );
+
+    if (!request.ok) {
+      return;
+    }
+
+    const result =
+      await request.json();
+
+    const views =
+      Number(result?.views);
+
+    if (
+      !Number.isFinite(views) ||
+      views < 0
+    ) {
+      return;
+    }
+
+    countElement.textContent =
+      Math.floor(views)
+        .toLocaleString("en-GB");
+
+    wrapper.hidden = false;
+  } catch {
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    updateSiteViewCounter,
+    { once: true }
+  );
+} else {
+  updateSiteViewCounter();
+}
+
+
 let PLAYLIST = [];
 let player = null;
 let playerReady = false;
@@ -1874,19 +1937,34 @@ function setHomepageSocialLinksVisible(visible) {
       "homepageSocialLinks"
     );
 
-  if (!socialLinks) {
+  const viewCounter =
+    document.getElementById(
+      "homepageViewCounter"
+    );
+
+  if (!socialLinks && !viewCounter) {
     return;
   }
 
   const shouldShow =
     visible !== false;
 
-  socialLinks.classList.toggle(
+  socialLinks?.classList.toggle(
     "is-watch-party-hidden",
     !shouldShow
   );
 
-  socialLinks.setAttribute(
+  socialLinks?.setAttribute(
+    "aria-hidden",
+    shouldShow ? "false" : "true"
+  );
+
+  viewCounter?.classList.toggle(
+    "is-watch-party-hidden",
+    !shouldShow
+  );
+
+  viewCounter?.setAttribute(
     "aria-hidden",
     shouldShow ? "false" : "true"
   );
