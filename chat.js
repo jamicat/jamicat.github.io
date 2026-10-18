@@ -1,7 +1,7 @@
 class ChatWidget {
 
 constructor() {
-this.API = "https://jamicat.ahrly.workers.dev";
+this.API = "https://api.jmeow.co.uk";
 this.imageUploadConfig = {
     enabled: true,
     apiBase:
@@ -13194,7 +13194,7 @@ connect() {
     clearTimeout(this.reconnectTimer);
 
     const socketUrl =
-        "wss://jamicat.ahrly.workers.dev/api/chat/socket";
+        "wss://api.jmeow.co.uk/api/chat/socket";
 
     console.log("Connecting chat websocket...");
 
