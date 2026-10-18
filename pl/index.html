@@ -205,6 +205,133 @@ function escapeAttribute(value) {
     .replaceAll(">", "&gt;");
 }
 
+function extractYouTubeVideoId(value) {
+  const input = String(value ?? "").trim();
+
+  if (!input) return "";
+
+  if (/^[A-Za-z0-9_-]{11}$/.test(input)) {
+    return input;
+  }
+
+  let candidate = input;
+
+  if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(candidate)) {
+    candidate = `https://${candidate}`;
+  }
+
+  let url;
+
+  try {
+    url = new URL(candidate);
+  } catch {
+    return input;
+  }
+
+  const host = url.hostname
+    .toLowerCase()
+    .replace(/^www\./, "")
+    .replace(/^m\./, "")
+    .replace(/^music\./, "");
+
+  let videoId = "";
+
+  if (host === "youtu.be") {
+    videoId = url.pathname
+      .split("/")
+      .filter(Boolean)[0] || "";
+  } else if (
+    host === "youtube.com" ||
+    host.endsWith(".youtube.com") ||
+    host === "youtube-nocookie.com" ||
+    host.endsWith(".youtube-nocookie.com")
+  ) {
+    videoId =
+      url.searchParams.get("v") ||
+      url.searchParams.get("vi") ||
+      "";
+
+    if (!videoId) {
+      const parts = url.pathname
+        .split("/")
+        .filter(Boolean);
+
+      if (
+        ["shorts", "embed", "live", "v"].includes(parts[0]) &&
+        parts[1]
+      ) {
+        videoId = parts[1];
+      }
+    }
+
+    if (!videoId) {
+      const nested =
+        url.searchParams.get("u") ||
+        url.searchParams.get("q") ||
+        url.searchParams.get("url");
+
+      if (nested) {
+        const decoded = (() => {
+          try {
+            return decodeURIComponent(nested);
+          } catch {
+            return nested;
+          }
+        })();
+
+        const nestedValue =
+          decoded.startsWith("/")
+            ? `https://youtube.com${decoded}`
+            : decoded;
+
+        const nestedId =
+          extractYouTubeVideoId(nestedValue);
+
+        if (/^[A-Za-z0-9_-]{11}$/.test(nestedId)) {
+          videoId = nestedId;
+        }
+      }
+    }
+  }
+
+  videoId = String(videoId)
+    .split(/[?&#/]/)[0]
+    .trim();
+
+  return /^[A-Za-z0-9_-]{11}$/.test(videoId)
+    ? videoId
+    : input;
+}
+
+function updateVideoId(i, input) {
+  const normalized =
+    extractYouTubeVideoId(input.value);
+
+  playlist[i].videoId = normalized;
+
+  if (
+    normalized !== input.value &&
+    /^[A-Za-z0-9_-]{11}$/.test(normalized)
+  ) {
+    input.value = normalized;
+  }
+}
+
+function updateYouTubeThumbnailSource(i, input) {
+  const normalized =
+    extractYouTubeVideoId(input.value);
+
+  playlist[i].youtubeThumbnailSource =
+    normalized;
+
+  if (
+    normalized !== input.value &&
+    /^[A-Za-z0-9_-]{11}$/.test(normalized)
+  ) {
+    input.value = normalized;
+  }
+}
+
 async function fetchMeta(videoId) {
   if (!videoId) return null;
 
@@ -241,7 +368,12 @@ async function load() {
 }
 
 async function autoFill(i) {
-  const videoId = playlist[i].videoId;
+  const videoId =
+    extractYouTubeVideoId(
+      playlist[i].videoId
+    );
+
+  playlist[i].videoId = videoId;
 
   const meta = await fetchMeta(videoId);
 
@@ -333,8 +465,8 @@ function render() {
 
       <input
         value="${escapeAttribute(song.videoId)}"
-        oninput="playlist[${i}].videoId=this.value"
-        placeholder="videoId"
+        oninput="updateVideoId(${i}, this)"
+        placeholder="YouTube URL or video ID"
       >
 
       <button
@@ -393,7 +525,7 @@ function render() {
         class="youtube-thumbnail-input"
         type="text"
         value="${escapeAttribute(song.youtubeThumbnailSource)}"
-        oninput="playlist[${i}].youtubeThumbnailSource=this.value"
+        oninput="updateYouTubeThumbnailSource(${i}, this)"
         placeholder="YouTube video URL (or video ID) to borrow thumbnail from"
         ${youtubeThumbnailEnabled ? "" : "disabled"}
       >
