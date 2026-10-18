@@ -794,7 +794,7 @@ interact('#terminal').draggable({
   },
 });
 
-const API = "https://jamicat.ahrly.workers.dev";
+const API = "https://api.jmeow.co.uk";
 
 let PLAYLIST = [];
 let player = null;
@@ -4857,7 +4857,7 @@ function connectGuestbookSocket() {
     return;
   }
   guestbookSocket = new WebSocket(
-  "wss://jamicat.ahrly.workers.dev/api/ws"
+  "wss://api.jmeow.co.uk/api/ws"
 );
   guestbookSocket.onmessage = (event) => {
     if (event.data === "refresh") {
