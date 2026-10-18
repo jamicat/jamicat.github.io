@@ -1257,10 +1257,94 @@ font-size: 0.65rem;
   z-index: 1;
 }
 
-.homepage-social-links {
-  position: fixed;
+#discordStatus {
   left: max(18px, env(safe-area-inset-left));
   bottom: max(18px, env(safe-area-inset-bottom));
+  top: auto;
+  right: auto;
+}
+
+#discordName {
+  font-family: "nintendoh", sans-serif !important;
+}
+
+.theme-pastel #discordStatus {
+  background:
+    radial-gradient(
+      circle at 42% 20%,
+      rgba(255, 222, 194, 0.11),
+      rgba(255, 191, 139, 0.035) 38%,
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 224, 194, 0.035),
+      rgba(83, 31, 12, 0.045)
+    ),
+    rgba(255, 153, 72, 0.30) !important;
+  border: 1px solid rgba(255, 214, 166, 0.72) !important;
+  box-shadow:
+    0 10px 28px rgba(45, 20, 10, 0.28),
+    0 0 7px rgba(255, 205, 155, 0.32),
+    0 0 18px rgba(255, 170, 95, 0.26),
+    0 0 38px rgba(255, 140, 65, 0.20),
+    0 0 72px rgba(255, 115, 40, 0.11),
+    inset 0 1px 0 rgba(255, 242, 220, 0.30),
+    inset 0 0 24px rgba(255, 190, 135, 0.08) !important;
+}
+
+.theme-pastel #discordStatus:hover {
+  background:
+    radial-gradient(
+      circle at 42% 20%,
+      rgba(255, 226, 201, 0.14),
+      rgba(255, 193, 142, 0.05) 38%,
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 226, 198, 0.05),
+      rgba(83, 31, 12, 0.04)
+    ),
+    rgba(255, 153, 72, 0.34) !important;
+  border-color: rgba(255, 224, 188, 0.86) !important;
+}
+
+.theme-pastel #discordName,
+.theme-pastel #discordActivity {
+  color: #f6a8c8 !important;
+}
+
+.theme-pastel #discordName {
+  text-shadow:
+    0 0 2px rgba(246, 168, 200, 0.62),
+    0 0 7px rgba(255, 145, 72, 0.28) !important;
+}
+
+.theme-pastel #discordActivity {
+  opacity: 0.95 !important;
+  text-shadow: 0 0 5px rgba(246, 168, 200, 0.20);
+}
+
+.theme-pastel #discordAvatar {
+  box-shadow:
+    0 0 6px rgba(255, 205, 155, 0.22),
+    0 0 14px rgba(255, 140, 65, 0.14) !important;
+}
+
+@media (max-width: 640px) {
+  #discordStatus {
+    left: max(13px, env(safe-area-inset-left));
+    bottom: max(13px, env(safe-area-inset-bottom));
+  }
+}
+
+.homepage-social-links {
+  position: fixed;
+  right: max(18px, env(safe-area-inset-right));
+  top: max(18px, env(safe-area-inset-top));
+  left: auto;
+  bottom: auto;
   z-index: 10030;
 
   display: flex;
@@ -1281,7 +1365,7 @@ font-size: 0.65rem;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateY(7px);
+  transform: translateY(-7px);
 
   transition:
     opacity 150ms ease,
@@ -1290,8 +1374,8 @@ font-size: 0.65rem;
 }
 
 .homepage-social-link {
-  width: 28px;
-  height: 28px;
+  width: 46px;
+  height: 46px;
 
   display: grid;
   place-items: center;
@@ -1315,8 +1399,8 @@ font-size: 0.65rem;
 
 .homepage-social-icon {
   display: block;
-  width: 40px;
-  height: 40px;
+  width: 46px;
+  height: 46px;
   object-fit: contain;
 
   filter:
@@ -1362,19 +1446,21 @@ font-size: 0.65rem;
 
 @media (max-width: 640px) {
   .homepage-social-links {
-    left: max(13px, env(safe-area-inset-left));
-    bottom: max(13px, env(safe-area-inset-bottom));
+    right: max(13px, env(safe-area-inset-right));
+    top: max(13px, env(safe-area-inset-top));
+    left: auto;
+    bottom: auto;
     gap: 11px;
   }
 
   .homepage-social-link {
-    width: 26px;
-    height: 26px;
+    width: 40px;
+    height: 40px;
   }
 
   .homepage-social-icon {
-    width: 23px;
-    height: 23px;
+    width: 40px;
+    height: 40px;
   }
 }
 
