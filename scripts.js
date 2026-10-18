@@ -4049,7 +4049,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function showArt() {
 $('#terminalContent').html(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
-  <div id="artGallery" class="grid grid-cols-3 gap-4">
+  <div id="artGallery" class="grid grid-cols-2 gap-4">
    <a href="jamieteph.png" class="block rounded overflow-hidden">
     <img src="jamieteph_thumb.jpg" alt="jamie & teph in happy burger - saproena" class="rounded hover:scale-105 transition transform duration-200" />
       </a>
