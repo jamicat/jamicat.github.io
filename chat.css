@@ -12022,3 +12022,11 @@ html[data-chat-theme="stars"]
     -webkit-font-smoothing: antialiased;
 }
 
+#chatWindow[data-chat-theme="paws"]
+.jami-cute-profile-title,
+#chatWindow[data-chat-theme="paws"]
+.jami-cute-avatar-label {
+    font-family: "nintendoh", sans-serif !important;
+    font-size: 8px !important;
+    text-transform: lowercase !important;
+}
