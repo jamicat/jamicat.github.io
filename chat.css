@@ -12123,3 +12123,7 @@ html[data-chat-theme="stars"]
     opacity: .60 !important;
     text-shadow: none !important;
 }
+
+.jami-member-presence {
+    margin-top: 3px !important;
+}
