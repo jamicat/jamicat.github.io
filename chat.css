@@ -8267,9 +8267,7 @@ html[data-chat-theme="paws"]
 #chatWindow[data-chat-theme="paws"] #chatTitle,
 #chatWindow[data-chat-theme="paws"] #chatMembersPanel .theme-heading {
     font-family:
-        "Fink",
         "nintendoh",
-        "Nunito",
         sans-serif !important;
 }
 
@@ -11984,5 +11982,49 @@ html[data-chat-theme="paws"]
 
 .jami-member-afk {
     color: inherit !important;
+}
+
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembersPanel .theme-heading {
+    font-family: "nintendoh", sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 650 !important;
+    line-height: 1.1 !important;
+    letter-spacing: .015em !important;
+    text-transform: lowercase !important;
+    -webkit-font-smoothing: antialiased;
+}
+
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatMembersPanel .theme-heading {
+    font-family: "Nunito", sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 650 !important;
+    line-height: 1.1 !important;
+    letter-spacing: .015em !important;
+    text-transform: lowercase !important;
+    -webkit-font-smoothing: antialiased;
+}
+
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembers,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatMembers {
+    font-family: "Nunito", sans-serif !important;
+    font-size: 11px !important;
+}
+
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMembers *,
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatMembers * {
+    font-family: "Nunito", sans-serif !important;
+    -webkit-font-smoothing: antialiased;
 }
 
