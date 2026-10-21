@@ -11812,3 +11812,118 @@ html[data-chat-theme="paws"]
     text-shadow: none !important;
 }
 
+#chatWindow[data-chat-theme="paws"] #chatMotd > span:first-child {
+    color: rgba(215, 124, 154, .72) !important;
+    font-weight: 600 !important;
+    text-shadow:
+        0 1px 0 rgba(255,255,255,.72) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatMotdText {
+    color: #d97898 !important;
+    font-weight: 650 !important;
+    text-shadow:
+        0 1px 0 rgba(255,255,255,.62) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] #chatMotd > span:first-child {
+    color: rgba(221, 211, 255, .66) !important;
+    font-weight: 600 !important;
+    text-shadow:
+        0 1px 1px rgba(57, 48, 111, .22) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] #chatMotdText {
+    color: rgba(245, 240, 255, .90) !important;
+    font-weight: 650 !important;
+    text-shadow:
+        0 1px 1px rgba(57, 48, 111, .20) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .chatMessageName {
+    font-family:
+        "nintendoh",
+        "Nunito",
+        sans-serif !important;
+    color: #d97898 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+    text-shadow:
+        0 1px 0 rgba(255,255,255,.72) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] .chatMessageName {
+    font-family:
+        "JamiFredoka",
+        "Fredoka",
+        "Nunito",
+        sans-serif !important;
+    color: #ded2ff !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+    text-shadow:
+        0 1px 1px rgba(55, 46, 108, .24),
+        0 0 4px rgba(238, 232, 255, .12) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .chatText {
+    font-family: "Nunito", sans-serif !important;
+    color: #6f5660 !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+    text-shadow:
+        0 1px 0 rgba(255,255,255,.38) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] .chatText {
+    font-family: "Nunito", sans-serif !important;
+    color: rgba(250, 247, 255, .92) !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+    text-shadow:
+        0 1px 1px rgba(48, 40, 96, .18) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .chatTime,
+#chatWindow[data-chat-theme="paws"] .chatContinuationTime {
+    font-family: "Nunito", sans-serif !important;
+    color: rgba(174, 108, 133, .72) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+    text-shadow:
+        0 1px 0 rgba(255,255,255,.42) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] .chatTime,
+#chatWindow[data-chat-theme="stars"] .chatContinuationTime {
+    font-family: "Nunito", sans-serif !important;
+    color: rgba(222, 213, 255, .70) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+    text-shadow:
+        0 1px 1px rgba(48, 40, 96, .18) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatMembers,
+#chatWindow[data-chat-theme="paws"] #chatMembers *,
+#chatWindow[data-chat-theme="stars"] #chatMembers,
+#chatWindow[data-chat-theme="stars"] #chatMembers * {
+    font-family: "Nunito", sans-serif !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatMembers > div > span {
+    color: #d97898 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+    text-shadow:
+        0 1px 0 rgba(255,255,255,.68) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] #chatMembers > div > span {
+    color: #ded2ff !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+    text-shadow:
+        0 1px 1px rgba(55, 46, 108, .22) !important;
+}
+
