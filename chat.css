@@ -6599,7 +6599,7 @@ html[data-chat-pastel="paws"]
 #chatWindow[data-chat-pastel]
 .jami-cute-avatar-label {
     margin-bottom: 8px;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 700;
     letter-spacing: .11em;
     text-transform: uppercase;
@@ -8491,7 +8491,7 @@ html[data-chat-theme="original"] #chatAvatarPicker {
 html[data-chat-theme="original"] #chatAvatarPicker .jami-cute-profile-title {
     margin: 0 0 9px !important;
     color: rgba(255,255,255,.62) !important;
-    font-size: 10px !important;
+    font-size: 8px !important;
     font-weight: 700 !important;
     letter-spacing: .10em !important;
     text-transform: uppercase !important;
