@@ -530,7 +530,7 @@ object-fit: contain;
   width: 20px;
   height: 20px;
 
-  color: rgb(253 164 175);
+  color: #f6a8c8;
 
   flex-shrink: 0;
   cursor: pointer;
