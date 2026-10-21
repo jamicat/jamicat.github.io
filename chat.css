@@ -12031,14 +12031,16 @@ html[data-chat-theme="stars"]
     text-transform: lowercase !important;
 }
 
-#chatWindow[data-chat-theme="paws"] .chatMessageName,
-#chatWindow[data-chat-theme="original"] .chatMessageName {
-    font-size: 11px !important;
+#chatWindow[data-chat-theme="paws"] .chatMessage,
+#chatWindow[data-chat-theme="original"] .chatMessage {
+    font-size: 10px !important;
 }
 
+#chatWindow[data-chat-theme="paws"] .chatMessageName,
+#chatWindow[data-chat-theme="original"] .chatMessageName,
 #chatWindow[data-chat-theme="paws"] .chatText,
 #chatWindow[data-chat-theme="original"] .chatText {
-    font-size: 11px !important;
+    font-size: 10px !important;
 }
 
 #chatWindow[data-chat-theme="paws"] .chatTime,
@@ -12050,15 +12052,13 @@ html[data-chat-theme="stars"]
 
 #chatWindow[data-chat-theme="paws"]
 .jami-cute-message-input::placeholder {
-    color: rgba(230, 126, 159, .52) !important;
-    text-shadow:
-        0 1px 0 rgba(255,255,255,.42) !important;
+    color: rgba(230, 126, 159, .40) !important;
+    text-shadow: none !important;
 }
 
 #chatWindow[data-chat-theme="stars"]
 .jami-cute-message-input::placeholder {
-    color: rgba(246, 241, 255, .48) !important;
-    text-shadow:
-        0 1px 1px rgba(54, 44, 108, .10) !important;
+    color: rgba(246, 241, 255, .38) !important;
+    text-shadow: none !important;
 }
 
