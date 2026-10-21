@@ -360,6 +360,9 @@ html:not(.site-theme-ready) .avatar-icon2 {
   align-items: center;
   gap: 8px;
 
+  --homepage-media-accent: #f6a8c8;
+  color: var(--homepage-media-accent);
+
   scale: 0.9;
   transform-origin: top left;
 }
@@ -377,8 +380,7 @@ html:not(.site-theme-ready) .avatar-icon2 {
 
   background: transparent;
 
-  --volume-accent: #f6a8c8;
-  color: var(--volume-accent);
+  color: inherit;
 
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -422,6 +424,7 @@ html:not(.site-theme-ready) .avatar-icon2 {
   -webkit-appearance: none;
 
   background: transparent;
+  color: inherit;
   cursor: pointer;
   touch-action: none;
 }
@@ -433,13 +436,21 @@ html:not(.site-theme-ready) .avatar-icon2 {
   background:
     linear-gradient(
       to right,
-      rgb(253 164 175)
+      var(--homepage-media-accent)
         0%,
-      rgb(253 164 175)
+      var(--homepage-media-accent)
         var(--normal-progress, 0%),
-      rgba(255, 255, 255, 0.15)
+      color-mix(
+        in srgb,
+        var(--homepage-media-accent) 22%,
+        transparent
+      )
         var(--normal-progress, 0%),
-      rgba(255, 255, 255, 0.15)
+      color-mix(
+        in srgb,
+        var(--homepage-media-accent) 22%,
+        transparent
+      )
         100%
     );
 }
@@ -455,25 +466,34 @@ html:not(.site-theme-ready) .avatar-icon2 {
   border: 0;
   border-radius: 50%;
 
-  background: white;
+  background: var(--homepage-media-accent);
 
   box-shadow:
-    0 0 8px rgba(255, 255, 255, 0.4),
-    0 0 12px rgba(103, 232, 249, 0.25);
+    0 0 6px
+      color-mix(
+        in srgb,
+        var(--homepage-media-accent) 42%,
+        transparent
+      );
 }
 
 #normalProgressSlider::-moz-range-track {
   height: 3px;
   border-radius: 999px;
 
-  background: rgba(255, 255, 255, 0.15);
+  background:
+    color-mix(
+      in srgb,
+      var(--homepage-media-accent) 22%,
+      transparent
+    );
 }
 
 #normalProgressSlider::-moz-range-progress {
   height: 3px;
   border-radius: 999px;
 
-  background: rgb(253 164 175);
+  background: var(--homepage-media-accent);
 }
 
 #normalProgressSlider::-moz-range-thumb {
@@ -483,11 +503,15 @@ html:not(.site-theme-ready) .avatar-icon2 {
   border: 0;
   border-radius: 50%;
 
-  background: white;
+  background: var(--homepage-media-accent);
 
   box-shadow:
-    0 0 8px rgba(255, 255, 255, 0.4),
-    0 0 12px rgba(103, 232, 249, 0.25);
+    0 0 6px
+      color-mix(
+        in srgb,
+        var(--homepage-media-accent) 42%,
+        transparent
+      );
 }
 
 .normal-progress-tooltip {
