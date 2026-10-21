@@ -12090,3 +12090,36 @@ html[data-chat-theme="stars"]
     font-size: 7px !important;
 }
 
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatControls
+#chatMessage.jami-cute-message-input {
+    color: rgba(238, 157, 174, .80) !important;
+    opacity: 1 !important;
+}
+
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatControls
+#chatMessage.jami-cute-message-input::placeholder {
+    color: rgb(238, 157, 174) !important;
+    opacity: .50 !important;
+    text-shadow: none !important;
+}
+
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatControls
+#chatMessage.jami-cute-message-input {
+    color: rgba(255, 255, 255, .80) !important;
+    opacity: 1 !important;
+}
+
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatControls
+#chatMessage.jami-cute-message-input::placeholder {
+    color: rgb(255, 255, 255) !important;
+    opacity: .50 !important;
+    text-shadow: none !important;
+}
