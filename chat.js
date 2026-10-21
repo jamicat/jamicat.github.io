@@ -23087,14 +23087,22 @@ keepTitleBarInViewport() {
         { shell: "#f5cbdc", pad: "#e995b4" }
     ];
 
-    const applyPawPalette = paw => {
+    const applyPawPalette = (
+        paw,
+        paletteIndex = null
+    ) => {
         const palette =
-            pawPalettes[
-                Math.floor(
-                    Math.random() *
+            paletteIndex === null
+                ? pawPalettes[
+                    Math.floor(
+                        Math.random() *
+                        pawPalettes.length
+                    )
+                ]
+                : pawPalettes[
+                    paletteIndex %
                     pawPalettes.length
-                )
-            ];
+                ];
 
         paw.style.color =
             palette.shell;
@@ -23219,6 +23227,300 @@ keepTitleBarInViewport() {
             height,
             occupied
         );
+
+    if (theme === "paws") {
+        const sizes = [
+            18,
+            20,
+            17,
+            19,
+            18,
+            21
+        ];
+
+        const rotations = [
+            -7,
+            5,
+            -3,
+            7,
+            0,
+            -5,
+            4
+        ];
+
+        const opacities = [
+            .20,
+            .23,
+            .19,
+            .22,
+            .21
+        ];
+
+        const appendPaw = (
+            parent,
+            left,
+            top,
+            size,
+            index,
+            shell = false
+        ) => {
+            const paw =
+                document.createElement("i");
+
+            paw.className =
+                shell
+                    ? "jami-chat-paw jami-chat-shell-paw"
+                    : "jami-chat-paw";
+
+            paw.style.left =
+                `${left}%`;
+
+            paw.style.top =
+                `${top}%`;
+
+            paw.style.width =
+                `${size}px`;
+
+            paw.style.height =
+                `${size}px`;
+
+            applyPawPalette(
+                paw,
+                index
+            );
+
+            paw.style.opacity =
+                `${opacities[
+                    index %
+                    opacities.length
+                ]}`;
+
+            paw.style.transform =
+                `translate(-50%, -50%) rotate(${rotations[
+                    index %
+                    rotations.length
+                ]}deg)`;
+
+            paw.innerHTML =
+                makePawMarkup();
+
+            parent.appendChild(paw);
+        };
+
+        let pawIndex = 0;
+        const mainRows = 6;
+
+        for (
+            let row = 0;
+            row < mainRows;
+            row += 1
+        ) {
+            const evenRow =
+                row % 2 === 0;
+
+            const columns =
+                evenRow
+                    ? 6
+                    : 5;
+
+            const minLeft =
+                evenRow
+                    ? 8
+                    : 16.4;
+
+            const maxLeft =
+                evenRow
+                    ? 92
+                    : 83.6;
+
+            const top =
+                8 +
+                row *
+                (84 / (mainRows - 1));
+
+            for (
+                let column = 0;
+                column < columns;
+                column += 1
+            ) {
+                const left =
+                    columns === 1
+                        ? 50
+                        : minLeft +
+                            column *
+                            (
+                                maxLeft -
+                                minLeft
+                            ) /
+                            (
+                                columns -
+                                1
+                            );
+
+                appendPaw(
+                    layer,
+                    left,
+                    top,
+                    sizes[
+                        pawIndex %
+                        sizes.length
+                    ],
+                    pawIndex
+                );
+
+                pawIndex += 1;
+            }
+        }
+
+        main.prepend(layer);
+
+        const shellLayer =
+            document.createElement("div");
+
+        shellLayer.className =
+            "jami-chat-shell-decor";
+
+        const shellHeight =
+            Math.max(
+                this.window.clientHeight,
+                260
+            );
+
+        const windowRect =
+            this.window
+                .getBoundingClientRect();
+
+        const mainRect =
+            main.getBoundingClientRect();
+
+        const topEnd =
+            Math.max(
+                0,
+                mainRect.top -
+                windowRect.top -
+                5
+            );
+
+        const bottomStart =
+            Math.min(
+                shellHeight,
+                mainRect.bottom -
+                windowRect.top +
+                5
+            );
+
+        const shellRegions = [
+            {
+                start: 5,
+                end: topEnd
+            },
+            {
+                start: bottomStart,
+                end: shellHeight - 5
+            }
+        ].filter(region =>
+            region.end -
+            region.start >= 18
+        );
+
+        shellRegions.forEach(
+            (region, regionIndex) => {
+                const regionHeight =
+                    region.end -
+                    region.start;
+
+                const rows =
+                    regionHeight >= 66
+                        ? 2
+                        : 1;
+
+                for (
+                    let row = 0;
+                    row < rows;
+                    row += 1
+                ) {
+                    const evenRow =
+                        (
+                            row +
+                            regionIndex
+                        ) %
+                        2 === 0;
+
+                    const columns =
+                        evenRow
+                            ? 7
+                            : 6;
+
+                    const minLeft =
+                        evenRow
+                            ? 7
+                            : 14.2;
+
+                    const maxLeft =
+                        evenRow
+                            ? 93
+                            : 85.8;
+
+                    const y =
+                        region.start +
+                        (
+                            row + 1
+                        ) *
+                        regionHeight /
+                        (
+                            rows + 1
+                        );
+
+                    const top =
+                        y *
+                        100 /
+                        shellHeight;
+
+                    for (
+                        let column = 0;
+                        column < columns;
+                        column += 1
+                    ) {
+                        const left =
+                            minLeft +
+                            column *
+                            (
+                                maxLeft -
+                                minLeft
+                            ) /
+                            (
+                                columns -
+                                1
+                            );
+
+                        const size =
+                            14 +
+                            (
+                                pawIndex %
+                                4
+                            );
+
+                        appendPaw(
+                            shellLayer,
+                            left,
+                            top,
+                            size,
+                            pawIndex,
+                            true
+                        );
+
+                        pawIndex += 1;
+                    }
+                }
+            }
+        );
+
+        this.window.appendChild(
+            shellLayer
+        );
+
+        return;
+    }
 
     if (theme === "stars") {
         const mainHaze =
