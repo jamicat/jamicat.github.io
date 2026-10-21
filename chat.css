@@ -5699,6 +5699,14 @@ html[data-chat-pastel="paws"]
     height: 560px !important;
 }
 
+#chatWindow[data-chat-pastel="paws"] {
+    width: 480px !important;
+}
+
+#chatWindow[data-chat-pastel="paws"]:not(.h-10) {
+    height: 520px !important;
+}
+
 #chatWindow[data-chat-pastel].h-10 {
     height: 40px !important;
     min-height: 40px !important;
