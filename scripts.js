@@ -4628,6 +4628,14 @@ function showGuestBook() {
     return;
   }
 
+  const activeThemeName =
+    localStorage.getItem('theme') ||
+    'Pastel';
+
+  const activeTheme =
+    themes[activeThemeName] ||
+    themes.Pastel;
+
    const guestBookWindow = document.createElement('div');
   guestBookWindow.className = `
   terminal2
@@ -4662,7 +4670,7 @@ guestBookWindow.id = 'guestBookWindow';
 
  guestBookWindow.innerHTML = `<div class="drag-area flex justify-between items-center select-none mb-2 text-sm"> 
  <span class="flex items-center space-x-2"> 
- <img id="gbAvatar" src="aclolly.png" alt="Avatar2" class="avatar-icon2" />
+ <img id="gbAvatar" src="${activeTheme.gbAvatar}" alt="Avatar2" class="avatar-icon2" />
  <span id="typed2" class="theme-heading font-medium text-3xl mt-10 mb-3 text-blue-glow no-theme-glow"> guest wall!
  </span> 
  </span> 
@@ -5157,15 +5165,42 @@ const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
 
-window.addEventListener('DOMContentLoaded', () => {
-  let savedTheme = localStorage.getItem('theme');
-  if (!savedTheme) {
+function initializeSavedTheme() {
+  let savedTheme =
+    localStorage.getItem('theme');
+
+  if (!savedTheme || !themes[savedTheme]) {
     savedTheme = 'Pastel';
-    localStorage.setItem('theme', savedTheme);
+    localStorage.setItem(
+      'theme',
+      savedTheme
+    );
   }
+
   applyTheme(savedTheme);
   initTyped(savedTheme);
-});
+
+  if (
+    document.querySelector(
+      '.avatar-icon, .avatar-icon2'
+    ) ||
+    document.readyState !== 'loading'
+  ) {
+    document.documentElement.classList.add(
+      'site-theme-ready'
+    );
+  }
+}
+
+initializeSavedTheme();
+
+if (document.readyState === 'loading') {
+  window.addEventListener(
+    'DOMContentLoaded',
+    initializeSavedTheme,
+    { once: true }
+  );
+}
 
 
 window.addEventListener('chat-theme-change', () => {
