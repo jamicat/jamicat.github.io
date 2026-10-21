@@ -2476,7 +2476,7 @@ top: -0.2px;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: .12em;
-    text-transform: uppercase;
+    text-transform: lowercase;
 }
 
 .jami-saved-remix-close {
@@ -2648,7 +2648,7 @@ top: -0.2px;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: .12em;
-    text-transform: uppercase;
+    text-transform: lowercase;
 }
 
 .jami-name-history-close {
@@ -3014,7 +3014,7 @@ top: -0.2px;
     font-size: 9px;
     font-weight: 700;
     letter-spacing: .12em;
-    text-transform: uppercase;
+    text-transform: lowercase;
 }
 
 .watch-party-visualizer-mode-label {
@@ -6550,7 +6550,7 @@ html[data-chat-pastel="paws"]
     font-size: 10px;
     font-weight: 700;
     letter-spacing: .11em;
-    text-transform: uppercase;
+    text-transform: lowercase;
     opacity: .76;
 }
 
@@ -6602,7 +6602,7 @@ html[data-chat-pastel="paws"]
     font-size: 8px;
     font-weight: 700;
     letter-spacing: .11em;
-    text-transform: uppercase;
+    text-transform: lowercase;
     opacity: .62;
 }
 
@@ -8096,7 +8096,7 @@ html[data-chat-theme="original"]
     color: rgba(255,255,255,.72) !important;
     font: 700 10px/1 "Nunito", sans-serif !important;
     letter-spacing: .08em !important;
-    text-transform: uppercase !important;
+    text-transform: lowercase !important;
 }
 
 html[data-chat-theme="original"]
@@ -8494,7 +8494,7 @@ html[data-chat-theme="original"] #chatAvatarPicker .jami-cute-profile-title {
     font-size: 8px !important;
     font-weight: 700 !important;
     letter-spacing: .10em !important;
-    text-transform: uppercase !important;
+    text-transform: lowercase !important;
 }
 
 html[data-chat-theme="original"] #chatAvatarPicker .jami-cute-profile-name-wrap,
@@ -9055,7 +9055,7 @@ html[data-chat-theme="original"] #chatAvatarPicker .jami-cute-profile-title {
     font-weight: 700 !important;
     letter-spacing: .1em !important;
     color: rgba(255, 255, 255, .60) !important;
-    text-transform: uppercase !important;
+    text-transform: lowercase !important;
 }
 
 html[data-chat-theme="original"] #chatAvatarGrid {
@@ -10691,7 +10691,7 @@ html[data-chat-theme="paws"]
     font-size: 10px;
     font-weight: 700;
     letter-spacing: .08em;
-    text-transform: uppercase;
+    text-transform: lowercase;
 }
 
 .jami-emoji-animation-picker-hint {
@@ -11037,7 +11037,7 @@ html[data-chat-theme="paws"] .jami-emoji-combine-action:hover:not(:disabled) {
 .jami-emoji-party-picker-heading {
     font-size: 10px;
     font-weight: 700;
-    text-transform: uppercase;
+    text-transform: lowercase;
     letter-spacing: .06em;
 }
 
@@ -11247,7 +11247,7 @@ html[data-chat-theme="paws"] #chatEmojiPartyButton {
     font-size: 11px;
     font-weight: 800;
     letter-spacing: .16em;
-    text-transform: uppercase;
+    text-transform: lowercase;
     color: rgba(155,255,198,.86);
 }
 .jami-chat-tree-art {
@@ -11335,7 +11335,7 @@ html[data-chat-theme="paws"] #chatEmojiPartyButton {
     font-size: 8px;
     letter-spacing: .14em;
     color: rgba(142, 255, 191, .46);
-    text-transform: uppercase;
+    text-transform: lowercase;
 }
 
 .jami-palm-lattice {
