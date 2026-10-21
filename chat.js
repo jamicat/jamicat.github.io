@@ -403,8 +403,10 @@ transition-[height] duration-200
         "
         aria-controls="chatMembersPanel"
         aria-expanded="true"
+        aria-label="hide members"
+        title="hide members"
     >
-        Hide members
+        members
     </button>
 
     <div class="relative jami-chat-theme-wrap">
@@ -422,7 +424,7 @@ transition-[height] duration-200
             aria-controls="chatThemeMenu"
             title="change chat theme"
         >
-            Theme
+            theme
         </button>
 
         <div
@@ -448,7 +450,7 @@ transition-[height] duration-200
         class="text-[9px] text-white/40"
         aria-live="polite"
     >
-        Connecting
+        connecting
     </span>
 
     <button
@@ -489,7 +491,7 @@ transition-[height] duration-200
     title="Message of the day"
 >
     <span class="font-semibold text-white/85">
-        Message of the day:
+        message of the day:
     </span>
 
     <span
@@ -534,7 +536,7 @@ transition-[height] duration-200
                 text-white/50
             "
         >
-            Members
+            members
         </div>
 
         <div
@@ -1464,7 +1466,7 @@ createBanManagerButton() {
 
     button.type = "button";
     button.id = "chatBanManagerButton";
-    button.textContent = "Bans";
+    button.textContent = "bans";
 
     button.className = [
         "theme-body",
@@ -1521,7 +1523,7 @@ createBanManagerButton() {
 
     button.type = "button";
     button.id = "chatPartyManagerButton";
-    button.textContent = "Party";
+    button.textContent = "party";
 
     button.className = [
         "theme-body",
@@ -1532,7 +1534,7 @@ createBanManagerButton() {
     ].join(" ");
 
     button.title =
-        "Manage watch party";
+        "manage watch party";
 
     button.setAttribute(
         "aria-expanded",
@@ -21437,9 +21439,22 @@ closeAvatarPicker() {
         );
 
         this.membersToggle.textContent =
+            "members";
+
+        const membersAction =
             this.membersVisible
-                ? "Hide members"
-                : "Show members";
+                ? "hide members"
+                : "show members";
+
+        this.membersToggle.setAttribute(
+            "aria-label",
+            membersAction
+        );
+
+        this.membersToggle.setAttribute(
+            "title",
+            membersAction
+        );
 
         this.membersToggle.setAttribute(
             "aria-expanded",
