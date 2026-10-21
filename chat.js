@@ -23229,14 +23229,7 @@ keepTitleBarInViewport() {
         );
 
     if (theme === "paws") {
-        const sizes = [
-            18,
-            20,
-            17,
-            19,
-            18,
-            21
-        ];
+        const pawSize = 26;
 
         const rotations = [
             -7,
@@ -23308,7 +23301,7 @@ keepTitleBarInViewport() {
         };
 
         let pawIndex = 0;
-        const mainRows = 6;
+        const mainRows = 7;
 
         for (
             let row = 0;
@@ -23320,23 +23313,23 @@ keepTitleBarInViewport() {
 
             const columns =
                 evenRow
-                    ? 6
-                    : 5;
+                    ? 7
+                    : 6;
 
             const minLeft =
                 evenRow
-                    ? 8
-                    : 16.4;
+                    ? 7
+                    : 14.2;
 
             const maxLeft =
                 evenRow
-                    ? 92
-                    : 83.6;
+                    ? 93
+                    : 85.8;
 
             const top =
-                8 +
+                6.5 +
                 row *
-                (84 / (mainRows - 1));
+                (87 / (mainRows - 1));
 
             for (
                 let column = 0;
@@ -23361,10 +23354,7 @@ keepTitleBarInViewport() {
                     layer,
                     left,
                     top,
-                    sizes[
-                        pawIndex %
-                        sizes.length
-                    ],
+                    pawSize,
                     pawIndex
                 );
 
@@ -23448,18 +23438,18 @@ keepTitleBarInViewport() {
 
                     const columns =
                         evenRow
-                            ? 7
-                            : 6;
+                            ? 8
+                            : 7;
 
                     const minLeft =
                         evenRow
-                            ? 7
-                            : 14.2;
+                            ? 6
+                            : 12.5;
 
                     const maxLeft =
                         evenRow
-                            ? 93
-                            : 85.8;
+                            ? 94
+                            : 87.5;
 
                     const y =
                         region.start +
@@ -23493,18 +23483,11 @@ keepTitleBarInViewport() {
                                 1
                             );
 
-                        const size =
-                            14 +
-                            (
-                                pawIndex %
-                                4
-                            );
-
                         appendPaw(
                             shellLayer,
                             left,
                             top,
-                            size,
+                            pawSize,
                             pawIndex,
                             true
                         );
