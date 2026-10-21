@@ -8819,7 +8819,7 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembers * 
 
 html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitle,
 html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatMembersPanel .theme-heading {
-    font-family: "Fink", "nintendoh", "Nunito", sans-serif !important;
+    font-family: "nintendoh", "Nunito", sans-serif !important;
 }
 
 
