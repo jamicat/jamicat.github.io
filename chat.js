@@ -12637,9 +12637,7 @@ setupMemberActivity() {
             document.createElement("span");
 
         name.className =
-            member.afk === true
-                ? "min-w-0 mt-0.5 truncate jami-member-afk"
-                : "min-w-0 mt-0.5 truncate text-white/75";
+            "min-w-0 mt-0.5 truncate text-white/75";
 
         name.textContent =
             member.name ||
@@ -12649,9 +12647,33 @@ setupMemberActivity() {
             member.name ||
             "Anonymous";
 
+        const presence =
+            document.createElement("span");
+
+        const isAway =
+            member.afk === true;
+
+        presence.className =
+            isAway
+                ? "jami-member-presence is-away"
+                : "jami-member-presence is-online";
+
+        presence.setAttribute(
+            "aria-label",
+            isAway
+                ? "away"
+                : "online"
+        );
+
+        presence.title =
+            isAway
+                ? "away"
+                : "online";
+
         row.append(
             avatar,
-            name
+            name,
+            presence
         );
 
         this.membersElement.appendChild(
