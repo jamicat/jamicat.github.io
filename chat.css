@@ -12062,3 +12062,31 @@ html[data-chat-theme="stars"]
     text-shadow: none !important;
 }
 
+html[data-chat-theme="paws"]
+#chatWindow[data-chat-theme="paws"]
+#chatMessage::placeholder {
+    color: #ee9dad !important;
+    opacity: .42 !important;
+    text-shadow: none !important;
+}
+
+html[data-chat-theme="stars"]
+#chatWindow[data-chat-theme="stars"]
+#chatMessage::placeholder {
+    color: #ffffff !important;
+    opacity: .38 !important;
+    text-shadow: none !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .chatMessageName,
+#chatWindow[data-chat-theme="original"] .chatMessageName {
+    font-size: 9px !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .chatTime,
+#chatWindow[data-chat-theme="paws"] .chatContinuationTime,
+#chatWindow[data-chat-theme="original"] .chatTime,
+#chatWindow[data-chat-theme="original"] .chatContinuationTime {
+    font-size: 7px !important;
+}
+
