@@ -2,7 +2,7 @@ const themes = {
   Default: {
     glowPrimary: 'text-blue-glow',      
     glowSecondary: 'text-pink-glow',   
-    typed2Text: 'Guestbook!',
+    typed2Text: 'guestbook!',
     typed3Text: 'Jamie',
     avatar: 'acl.png',
     gbAvatar: 'aclolly.png',
@@ -27,7 +27,7 @@ const themes = {
 
   Pastel: {
     glowPrimary: 'text-blue-glow', glowSecondary: 'text-pink-glow',
-    typed2Text: 'Guestbook!', typed3Text: 'Jamie',
+    typed2Text: 'guestbook!', typed3Text: 'Jamie',
     avatar: 'chibi1.png', gbAvatar: 'chibi2.png',
     headingFont: '"DynaPuff"', bodyFont: '"nintendoh"',
     buttonColor: 'bg-transparent hover:bg-transparent', buttonTextColor: 'text-white',
@@ -68,7 +68,7 @@ const themes = {
   Stars: {
    glowPrimary: 'text-pink-glow',     
     glowSecondary: 'text-red-glow',   
-    typed2Text: 'Guestbook!',
+    typed2Text: 'guestbook!',
     typed3Text: 'Jamie',
     avatar: 'g1.gif',
     gbAvatar: 'pbcat.gif',
@@ -130,7 +130,7 @@ function pastelFullText(text, index = 0) {
 
 function applyTheme(themeName) {
   const theme = themes[themeName];
-  if (!theme) return console.warn(`Theme not found: ${themeName}`);
+  if (!theme) return console.warn(`theme not found: ${themeName}`);
 
   document.documentElement.setAttribute('data-theme', themeName);
 
@@ -462,10 +462,10 @@ const submitButtons = document.querySelectorAll('.guestbook-submit');
 submitButtons.forEach(btn => {
   if (themeName === 'Pastel') {
     btn.classList.add('pastel-submit');
-    btn.innerHTML = pastelLetterText('Submit');
+    btn.innerHTML = pastelLetterText('submit');
   } else {
     btn.classList.remove('pastel-submit');
-    btn.textContent = 'Submit';
+    btn.textContent = 'submit';
   }
 });
 
@@ -2236,7 +2236,7 @@ function correctWatchPartyDrift() {
   }
 
   console.debug(
-    "Correcting Watch Party drift:",
+    "correcting watch party drift:",
     {
       expectedTime,
       actualTime,
@@ -2550,7 +2550,7 @@ if (
         )
         .catch(error => {
             console.error(
-                "Watch Party automatic next failed:",
+                "watch party automatic next failed:",
                 error
             );
         })
@@ -4267,7 +4267,7 @@ function showList() {
 
   html += `
     <div class="mt-6 flex justify-center">
-      <button class="terminal-button" onclick="resetTerminal()">Back</button>
+      <button class="terminal-button" onclick="resetTerminal()">back</button>
     </div>
   `;
 
@@ -4366,7 +4366,7 @@ $('#terminalContent').html(`
       </a>
     </div>
   <div class="mt-4 flex justify-center">
-  <button class="terminal-button" onclick="resetTerminal()">Back</button>
+  <button class="terminal-button" onclick="resetTerminal()">back</button>
     </div>
   `);
 
@@ -4421,15 +4421,15 @@ function siteFAQ() {
             </h2>
 
             <p class="about-text">
-              Hi! I'm Jamie, and welcome to my little corner of the internet! 🐾
+              hi! i'm Jamie, and welcome to my little corner of the internet! 🐾
             </p>
 
             <p class="about-text">
-              This is where I share the music I'm currently obsessed with,
+              this is where i share the music i'm currently obsessed with,
               showcase art commissions, and slowly build my own little comfy
-              techy space on the web. I've poured a lot of love into this place,
-              and hopefully that passion shines through! I hope you enjoy
-              exploring it as much as I've enjoyed making it 🎀.
+              techy space on the web. i've poured a lot of love into this place,
+              and hopefully that passion shines through! i hope you enjoy
+              exploring it as much as i've enjoyed making it 🎀.
             </p>
           </section>
 
@@ -4437,20 +4437,20 @@ function siteFAQ() {
             <h3 class="about-heading text-blue-glow">the website</h3>
 
             <p class="about-text">
-              The website is intentionally minimal, clutter-free and light. I
+              the website is intentionally minimal, clutter-free and light. i
               wanted it to feel calm and easy to browse without every pixel
               screaming “this is Jamie!!”
             </p>
 
             <p class="about-text">
-              Instead, you'll find little hints of me scattered around - the
+              instead, you'll find little hints of me scattered around - the
               fursona artwork, the mascots, the soft design choices, and the
               slightly excessive amount of nerdy optimisation hidden behind
               the scenes.
             </p>
 
             <p class="about-text">
-              If you're into that sort of thing, there's a section below
+              if you're into that sort of thing, there's a section below
               showing off some of the libraries powering the interactive bits
               too!
             </p>
@@ -4460,14 +4460,14 @@ function siteFAQ() {
             <h3 class="about-heading text-blue-glow">themes</h3>
 
             <p class="about-text">
-              The theme selector (the little brush icon) changes more than just
-              the colours. Each theme has its own personality.
+              the theme selector (the little brush icon) changes more than just
+              the colours. each theme has its own personality.
             </p>
 
             <p class="about-text">
-              The Animal Crossing theme borrows little touches from the game's
-              UI and interactions, while the default theme leans into pixel
-              cats, terminal windows, and retro SSH vibes. I want every theme
+              the animal crossing theme borrows little touches from the game's
+              ui and interactions, while the default theme leans into pixel
+              cats, terminal windows, and retro ssh vibes. i want every theme
               to feel familiar, comfy, and just different enough ☁️.
             </p>
           </section>
@@ -4476,14 +4476,14 @@ function siteFAQ() {
             <h3 class="about-heading text-blue-glow">always a work in progress</h3>
 
             <p class="about-text">
-              This website will probably never be “finished”, and I love that.
-              Keeping things simple means I can keep tinkering, adding new
+              this website will probably never be “finished”, and i love that.
+              keeping things simple means i can keep tinkering, adding new
               ideas, making silly little themes, and nurturing this hobby for
-              as long as I like.
+              as long as i like.
             </p>
 
             <p class="about-text">
-              There are always more things I want to build (my desktop is SO
+              there are always more things i want to build (my desktop is so
               messy).
             </p>
           </section>
@@ -4492,16 +4492,16 @@ function siteFAQ() {
             <h3 class="about-heading text-blue-glow">away from the keyboard</h3>
 
          <p class="about-text">
-  As a cat away from the keyboard, I've always felt happiest surrounded by
-  cosy, cute, pastel-coloured things. Being feminine has always been part of
-  who I am, so it's only fitting that my fursona is a little more
+  as a cat away from the keyboard, i've always felt happiest surrounded by
+  cosy, cute, pastel-coloured things. being feminine has always been part of
+  who i am, so it's only fitting that my fursona is a little more
   pastel-toned too.
 </p>
 
 <p class="about-text">
-  I'm a feminine, gay guy who loves expressing myself through fashion,
-  staying comfy, and experimenting with new aesthetics 💅. I'm always finding
-  new outfits to obsess over and collecting new plushies (30+... I don't have
+  i'm a feminine, gay guy who loves expressing myself through fashion,
+  staying comfy, and experimenting with new aesthetics 💅. i'm always finding
+  new outfits to obsess over and collecting new plushies (30+... i don't have
   a problem :3).
 </p>
           </section>
@@ -4510,14 +4510,14 @@ function siteFAQ() {
             <h3 class="about-heading text-blue-glow">working cat</h3>
 
             <p class="about-text">
-              As a working cat, I'm an L2 NOC engineer. I spend my days
+              as a working cat, i'm an l2 noc engineer. i spend my days
               configuring and troubleshooting networks, working alongside
               different teams to untangle complicated problems and keep things
               running smoothly.
             </p>
 
             <p class="about-text">
-              It's rewarding work, but it definitely leaves me wanting a
+              it's rewarding work, but it definitely leaves me wanting a
               creative outlet, and this place is exactly that.
             </p>
           </section>
@@ -4526,7 +4526,7 @@ function siteFAQ() {
             <h3 class="about-heading text-blue-glow">usually found...</h3>
 
             <p class="about-text">
-              When I'm not working, you'll probably find me playing games with
+              when i'm not working, you'll probably find me playing games with
               friends, obsessing over whatever music is currently living
               rent-free in my head, dreaming about my next festival, or
               (mostest likely) eeping 😺💤.
@@ -4537,10 +4537,10 @@ function siteFAQ() {
             <h3 class="about-heading text-blue-glow">libraries used</h3>
 
             <p class="about-text opacity-90">
-              jQuery, Typed.js, Interact.js, Tailwind CSS, YouTube IFrame API,
-              LightGallery, Three.js, Cloudflare Workers & API, Cloudflare Durable Objects for the live chat, WebSockets
-              for guestbook updates, SQLite, custom guestbook and playlist
-              APIs, and local storage for themes.
+              jquery, typed.js, interact.js, tailwind css, youtube iframe api,
+              lightgallery, three.js, cloudflare workers & api, cloudflare durable objects for the live chat, websockets
+              for guestbook updates, sqlite, custom guestbook and playlist
+              apis, and local storage for themes.
             </p>
           </section>
 
@@ -4553,7 +4553,7 @@ function siteFAQ() {
           class="terminal-button theme-body text-xs"
           onclick="resetTerminal()"
         >
-          Back
+          back
         </button>
       </div>
 
@@ -4584,7 +4584,7 @@ terminal.classList.add('sm:w-[600px]');
            target="_blank" 
            rel="noopener noreferrer" 
            class="text-blue-glow hover:text-white hover:underline transition font-medium">
-          Song title
+          song title
         </a>
       </p>
       </div>
@@ -4601,7 +4601,7 @@ terminal.classList.add('sm:w-[600px]');
     </div>
 
     <div id="buttonRow" class="flex justify-center mt-4">
-      <button class="terminal-button" onclick="siteFAQ()">Back</button>
+      <button class="terminal-button" onclick="siteFAQ()">back</button>
     </div>
   `);
 
@@ -4670,7 +4670,7 @@ guestBookWindow.id = 'guestBookWindow';
 
  guestBookWindow.innerHTML = `<div class="drag-area flex justify-between items-center select-none mb-2 text-sm"> 
  <span class="flex items-center space-x-2"> 
- <img id="gbAvatar" src="${activeTheme.gbAvatar}" alt="Avatar2" class="avatar-icon2" />
+ <img id="gbAvatar" src="${activeTheme.gbAvatar}" alt="avatar2" class="avatar-icon2" />
  <span id="typed2" class="theme-heading font-medium text-3xl mt-10 mb-3 text-blue-glow no-theme-glow"> guest wall!
  </span> 
  </span> 
@@ -4687,10 +4687,10 @@ guestBookWindow.id = 'guestBookWindow';
  <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> 
  <p id="welcomeMessage" class="text-blue-glow text-white theme-body text-sm"> /ᐠ > ˕ <マ </p> </div>
  <form id="guestbookForm" class="space-y-4 text-blue-100"> 
- <input id="name" type="text" name="name" placeholder="Name" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
- <textarea id="message" name="message" placeholder="Message" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
+ <input id="name" type="text" name="name" placeholder="name" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
+ <textarea id="message" name="message" placeholder="message" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
  <div class="text-center"> 
- <button type="submit" class="theme-body text-xs terminal-button text-white guestbook-submit" > Submit </button> 
+ <button type="submit" class="theme-body text-xs terminal-button text-white guestbook-submit" > submit </button> 
  </div> 
  </form> 
  </div> 
@@ -4934,7 +4934,7 @@ welcomeMessage.textContent = "ദ്ദി◝ ⩊ ◜.ᐟ";
 
   const submitBtn = this.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Sending...';
+  submitBtn.textContent = 'sending...';
 
   try {
     await fetch('YOUR_SUBMIT_URL_HERE', {
@@ -4945,11 +4945,11 @@ welcomeMessage.textContent = "ദ്ദി◝ ⩊ ◜.ᐟ";
     this.reset();
     //loadGuestbookComments(); 
   } catch (err) {
-    alert('Failed to send message');
+    alert('failed to send message');
     console.error(err);
   } finally {
     submitBtn.disabled = false;
-    submitBtn.textContent = 'Submit';
+    submitBtn.textContent = 'submit';
   }
 });*/
 function connectGuestbookSocket() {
@@ -4965,11 +4965,11 @@ function connectGuestbookSocket() {
     }
   };
   guestbookSocket.onclose = () => {
-    console.log("Guestbook WS closed, reconnecting...");
+    console.log("guestbook ws closed, reconnecting...");
     setTimeout(connectGuestbookSocket, 2000);
   };
   guestbookSocket.onerror = (err) => {
-    console.error("Guestbook WS error:", err);
+    console.error("guestbook ws error:", err);
   };
 }
 connectGuestbookSocket();
@@ -5070,7 +5070,7 @@ div.innerHTML = `
 
   } catch (err) {
 
-    console.error("Guestbook load error:", err);
+    console.error("guestbook load error:", err);
     container.innerHTML = '<p class="text-blue-100 text-sm">failed to load.</p>';
 
   }
@@ -5091,7 +5091,7 @@ document.getElementById('terminalContent').innerHTML = `
       <textarea id="message" name="message" placeholder="meow" class="w-full p-2 rounded bg-black text-white border border-pink-300 bg-opacity-20 border-opacity-50" required></textarea>
       <div class="flex justify-center space-x-4 flex-wrap">
       <button type="submit" class="terminal-button">submit</button>
-      <button type="button" class="terminal-button" onclick="resetTerminal()">Back</button>
+      <button type="button" class="terminal-button" onclick="resetTerminal()">back</button>
       </div>
       <div id="formResponse" class="text-pink-100 text-md mt-2 mb-4 text-center"></div>
     </form>
@@ -5108,7 +5108,7 @@ const message = document.getElementById("message").value.trim();
 const now = Date.now();
 
 if (!name || !message) {
-alert("Fill in the fields!");
+alert("fill in the fields!");
 return;
 }
 
@@ -5149,10 +5149,10 @@ terminal.classList.add('sm:w-[480px]');
   $('#terminalContent').html(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
-<!--button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">About!</button-->
-<button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">Art</button>
-<button class="terminal-button theme-body text-xs" onclick="showList()">Playlist</button>
-<button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">Guestbook</button>
+<!--button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">about!</button-->
+<button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">art</button>
+<button class="terminal-button theme-body text-xs" onclick="showList()">playlist</button>
+<button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">guestbook</button>
   </div>
 `);
 const currentTheme = localStorage.getItem('theme') || 'Default';
