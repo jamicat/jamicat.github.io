@@ -11686,3 +11686,129 @@ html[data-chat-theme="paws"]
         0 1px 1px rgba(45, 37, 91, .22) !important;
 }
 
+#chatWindow[data-chat-theme="paws"] #chatMembersToggle,
+#chatWindow[data-chat-theme="paws"] #chatThemeButton,
+#chatWindow[data-chat-theme="paws"] #chatBanManagerButton,
+#chatWindow[data-chat-theme="paws"] #chatPartyManagerButton,
+#chatWindow[data-chat-theme="paws"] #chatConnectionStatus,
+#chatWindow[data-chat-theme="stars"] #chatMembersToggle,
+#chatWindow[data-chat-theme="stars"] #chatThemeButton,
+#chatWindow[data-chat-theme="stars"] #chatBanManagerButton,
+#chatWindow[data-chat-theme="stars"] #chatPartyManagerButton,
+#chatWindow[data-chat-theme="stars"] #chatConnectionStatus {
+    font-family: "Nunito", sans-serif !important;
+    font-size: 9px !important;
+    font-weight: 650 !important;
+    line-height: 1 !important;
+    letter-spacing: .015em !important;
+    text-transform: lowercase !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatMembersToggle,
+#chatWindow[data-chat-theme="paws"] #chatThemeButton,
+#chatWindow[data-chat-theme="paws"] #chatBanManagerButton,
+#chatWindow[data-chat-theme="paws"] #chatPartyManagerButton {
+    color: rgba(129, 77, 97, .76) !important;
+    text-shadow:
+        0 1px 0 rgba(255,255,255,.78),
+        0 -1px 0 rgba(121, 72, 91, .04) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] #chatMembersToggle,
+#chatWindow[data-chat-theme="stars"] #chatThemeButton,
+#chatWindow[data-chat-theme="stars"] #chatBanManagerButton,
+#chatWindow[data-chat-theme="stars"] #chatPartyManagerButton {
+    color: rgba(255,255,255,.72) !important;
+    text-shadow:
+        0 1px 1px rgba(50, 42, 101, .24),
+        0 0 4px rgba(239, 234, 255, .16) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatMembersToggle:hover,
+#chatWindow[data-chat-theme="paws"] #chatThemeButton:hover,
+#chatWindow[data-chat-theme="paws"] #chatBanManagerButton:hover,
+#chatWindow[data-chat-theme="paws"] #chatPartyManagerButton:hover {
+    color: rgba(129, 77, 97, .98) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] #chatMembersToggle:hover,
+#chatWindow[data-chat-theme="stars"] #chatThemeButton:hover,
+#chatWindow[data-chat-theme="stars"] #chatBanManagerButton:hover,
+#chatWindow[data-chat-theme="stars"] #chatPartyManagerButton:hover {
+    color: rgba(255,255,255,.96) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatMembersPanel .theme-heading,
+#chatWindow[data-chat-theme="stars"] #chatMembersPanel .theme-heading {
+    font-family: "Nunito", sans-serif !important;
+    font-size: 8.5px !important;
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+    letter-spacing: .065em !important;
+    text-transform: lowercase !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatMembersPanel .theme-heading {
+    color: rgba(120, 82, 96, .66) !important;
+    text-shadow:
+        0 1px 0 rgba(255,255,255,.70) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] #chatMembersPanel .theme-heading {
+    color: rgba(249,246,255,.62) !important;
+    text-shadow:
+        0 1px 1px rgba(53, 44, 105, .22) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatMotd,
+#chatWindow[data-chat-theme="paws"] #chatMotd *,
+#chatWindow[data-chat-theme="stars"] #chatMotd,
+#chatWindow[data-chat-theme="stars"] #chatMotd * {
+    font-family: "Nunito", sans-serif !important;
+    font-size: 9.5px !important;
+    line-height: 1.35 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatMotd > span:first-child {
+    color: rgba(118, 91, 100, .62) !important;
+    font-weight: 600 !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatMotdText {
+    color: rgba(118, 91, 100, .88) !important;
+    font-weight: 600 !important;
+}
+
+#chatWindow[data-chat-theme="stars"] #chatMotd > span:first-child {
+    color: rgba(255,255,255,.52) !important;
+    font-weight: 600 !important;
+}
+
+#chatWindow[data-chat-theme="stars"] #chatMotdText {
+    color: rgba(255,255,255,.80) !important;
+    font-weight: 600 !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .jami-cute-message-input,
+#chatWindow[data-chat-theme="paws"] .jami-cute-message-input::placeholder,
+#chatWindow[data-chat-theme="stars"] .jami-cute-message-input,
+#chatWindow[data-chat-theme="stars"] .jami-cute-message-input::placeholder {
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+}
+
+#chatWindow[data-chat-theme="paws"] .jami-cute-message-input::placeholder {
+    color: rgba(230, 126, 159, .82) !important;
+}
+
+#chatWindow[data-chat-theme="stars"] .jami-cute-message-input::placeholder {
+    color: rgba(246, 241, 255, .76) !important;
+}
+
+#chatWindow[data-chat-theme="paws"] #chatConnectionStatus,
+#chatWindow[data-chat-theme="stars"] #chatConnectionStatus {
+    text-shadow: none !important;
+}
+
