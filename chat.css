@@ -12103,7 +12103,7 @@ html[data-chat-theme="paws"]
 #chatControls
 #chatMessage.jami-cute-message-input::placeholder {
     color: rgb(238, 157, 174) !important;
-    opacity: .50 !important;
+    opacity: .60 !important;
     text-shadow: none !important;
 }
 
@@ -12120,6 +12120,6 @@ html[data-chat-theme="stars"]
 #chatControls
 #chatMessage.jami-cute-message-input::placeholder {
     color: rgb(255, 255, 255) !important;
-    opacity: .50 !important;
+    opacity: .60 !important;
     text-shadow: none !important;
 }
