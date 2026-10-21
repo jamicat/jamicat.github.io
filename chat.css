@@ -11948,20 +11948,14 @@ html[data-chat-theme="paws"]
 
 .jami-member-presence.is-online {
     background: #a8d8b8;
-    border: 1px solid rgba(121, 183, 143, .34);
-    box-shadow:
-        0 0 5px rgba(168, 216, 184, .34),
-        inset 0 1px 0 rgba(255,255,255,.70),
-        inset 0 -1px 0 rgba(92, 150, 113, .14);
+    border: 0;
+    box-shadow: none;
 }
 
 .jami-member-presence.is-away {
     background: #f4c795;
-    border: 1px solid rgba(205, 158, 102, .34);
-    box-shadow:
-        0 0 5px rgba(244, 199, 149, .34),
-        inset 0 1px 0 rgba(255,255,255,.72),
-        inset 0 -1px 0 rgba(168, 122, 72, .14);
+    border: 0;
+    box-shadow: none;
 }
 
 #chatWindow[data-chat-theme="paws"] .jami-member-presence,
