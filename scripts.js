@@ -5213,3 +5213,94 @@ window.addEventListener('chat-theme-change', () => {
     applyTheme(activeSiteTheme);
   }
 });
+
+function initializeTillyVideoGallery() {
+  const trigger =
+    document.getElementById(
+      'tillyVideoTrigger'
+    );
+
+  if (
+    !trigger ||
+    trigger.dataset.galleryReady === 'true' ||
+    typeof lightGallery !== 'function' ||
+    typeof lgVideo === 'undefined'
+  ) {
+    return;
+  }
+
+  const gallery = lightGallery(
+    trigger,
+    {
+      dynamic: true,
+      plugins: [lgVideo],
+      addClass: 'tilly-video-gallery',
+      download: false,
+      counter: true,
+      controls: true,
+      loop: true,
+      escKey: true,
+      keyPress: true,
+      showCloseIcon: true,
+      autoplayFirstVideo: true,
+      autoplayVideoOnSlide: true,
+      gotoNextSlideOnVideoEnd: false,
+      dynamicEl: [
+        {
+          poster: 'tilly.png',
+          video: {
+            source: [
+              {
+                src: 'tilly1.mp4',
+                type: 'video/mp4'
+              }
+            ],
+            attributes: {
+              controls: true,
+              preload: 'none',
+              playsinline: true,
+              loop: true
+            }
+          }
+        },
+        {
+          poster: 'tilly.png',
+          video: {
+            source: [
+              {
+                src: 'tilly2.mp4',
+                type: 'video/mp4'
+              }
+            ],
+            attributes: {
+              controls: true,
+              preload: 'none',
+              playsinline: true,
+              loop: true
+            }
+          }
+        }
+      ]
+    }
+  );
+
+  trigger.dataset.galleryReady = 'true';
+
+  trigger.addEventListener(
+    'click',
+    () => {
+      gallery.openGallery(0);
+    }
+  );
+}
+
+initializeTillyVideoGallery();
+
+if (document.readyState === 'loading') {
+  window.addEventListener(
+    'DOMContentLoaded',
+    initializeTillyVideoGallery,
+    { once: true }
+  );
+}
+
