@@ -2034,6 +2034,10 @@ function applyWatchPartyState(state) {
     !watchPartyState.enabled
   );
 
+  window.setTillyVideoTriggerVisible?.(
+    !watchPartyState.enabled
+  );
+
 const requiredEnglishSubtitles =
     shouldUseWatchPartyEnglishSubtitles();
 
@@ -5214,6 +5218,22 @@ window.addEventListener('chat-theme-change', () => {
   }
 });
 
+function setTillyVideoTriggerVisible(visible) {
+  const trigger =
+    document.getElementById(
+      'tillyVideoTrigger'
+    );
+
+  if (!trigger) {
+    return;
+  }
+
+  trigger.hidden = !visible;
+}
+
+window.setTillyVideoTriggerVisible =
+  setTillyVideoTriggerVisible;
+
 function initializeTillyVideoGallery() {
   const trigger =
     document.getElementById(
@@ -5228,6 +5248,40 @@ function initializeTillyVideoGallery() {
   ) {
     return;
   }
+
+  const playActiveVideo = () => {
+    const video =
+      document.querySelector(
+        '.tilly-video-gallery .lg-current video'
+      );
+
+    if (!video) {
+      return;
+    }
+
+    if (video.readyState === 0) {
+      video.load();
+    }
+
+    const playResult = video.play();
+
+    if (
+      playResult &&
+      typeof playResult.catch === 'function'
+    ) {
+      playResult.catch(() => {});
+    }
+  };
+
+  trigger.addEventListener(
+    'lgAfterOpen',
+    playActiveVideo
+  );
+
+  trigger.addEventListener(
+    'lgAfterSlide',
+    playActiveVideo
+  );
 
   const gallery = lightGallery(
     trigger,
@@ -5247,7 +5301,6 @@ function initializeTillyVideoGallery() {
       gotoNextSlideOnVideoEnd: false,
       dynamicEl: [
         {
-          poster: 'tilly.png',
           video: {
             source: [
               {
@@ -5257,14 +5310,14 @@ function initializeTillyVideoGallery() {
             ],
             attributes: {
               controls: true,
-              preload: 'none',
+              preload: 'auto',
+              autoplay: true,
               playsinline: true,
               loop: true
             }
           }
         },
         {
-          poster: 'tilly.png',
           video: {
             source: [
               {
@@ -5274,7 +5327,8 @@ function initializeTillyVideoGallery() {
             ],
             attributes: {
               controls: true,
-              preload: 'none',
+              preload: 'auto',
+              autoplay: true,
               playsinline: true,
               loop: true
             }
@@ -5291,6 +5345,10 @@ function initializeTillyVideoGallery() {
     () => {
       gallery.openGallery(0);
     }
+  );
+
+  setTillyVideoTriggerVisible(
+    !watchPartyState.enabled
   );
 }
 
