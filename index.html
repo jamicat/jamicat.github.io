@@ -15,7 +15,7 @@ if (window.location.hostname === "jamicat.github.io") {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description"
 content="jamie's personal website with a live chat, guest wall, furry art, music player and interactive themes.">
-<link rel="stylesheet" href="stylish.css?v=1"/>
+<link rel="stylesheet" href="stylish.css?v=2"/>
 <link
     rel="stylesheet"
     href="./image-transfer.css?v=1"
@@ -48,6 +48,7 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/lightgallery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/video/lg-video.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script type="application/ld+json">
 {
@@ -82,6 +83,22 @@ addComponents({
 <div id="videoPoster" class="absolute inset-0 bg-black z-0 bg-cover bg-center"></div>
 <div id="background-video-iframe" style="opacity: 0; transition: opacity 0.5s;"></div>
 </div>
+
+
+<button
+    id="tillyVideoTrigger"
+    class="tilly-video-trigger"
+    type="button"
+    aria-label="open tilly videos"
+    title="tilly"
+>
+    <img
+        src="tilly.png"
+        alt=""
+        aria-hidden="true"
+        draggable="false"
+    >
+</button>
 
 <div id="terminal" class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[480px] rounded-3xl shadow-lg backdrop-blur-xl" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
 <div class="drag-area text-pink-600 text-xs mb-2 select-none flex justify-between items-center">
@@ -385,7 +402,7 @@ addComponents({
     <span id="siteViewCount">0</span>
 </div>
 
-<script src="scripts.js?v=5"></script>
+<script src="scripts.js?v=6"></script>
 <script src="discscripts.js?v=4"></script>
 <script
     src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"
