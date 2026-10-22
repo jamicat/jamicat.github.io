@@ -1694,3 +1694,81 @@ font-size: 0.65rem;
   }
 }
 
+.tilly-video-trigger {
+  position: fixed;
+  top: 50%;
+  left: -68px;
+  z-index: 12;
+  width: 138px;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transform-origin: left center;
+  transition:
+    transform 180ms ease,
+    filter 180ms ease,
+    opacity 180ms ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tilly-video-trigger img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.tilly-video-trigger:hover,
+.tilly-video-trigger:focus-visible {
+  transform:
+    translateY(-50%)
+    translateX(9px)
+    rotate(1deg);
+  filter:
+    drop-shadow(
+      0 4px 8px
+      rgba(0, 0, 0, .28)
+    );
+}
+
+.tilly-video-trigger:active {
+  transform:
+    translateY(-50%)
+    translateX(6px)
+    scale(.97);
+}
+
+.tilly-video-trigger:focus-visible {
+  outline: none;
+}
+
+.tilly-video-gallery .lg-video-cont {
+  max-width: min(92vw, 1100px);
+}
+
+.tilly-video-gallery .lg-video-object {
+  border-radius: 12px;
+}
+
+@media (max-width: 640px) {
+  .tilly-video-trigger {
+    left: -50px;
+    width: 104px;
+  }
+
+  .tilly-video-trigger:hover,
+  .tilly-video-trigger:focus-visible {
+    transform:
+      translateY(-50%)
+      translateX(6px);
+  }
+}
+
