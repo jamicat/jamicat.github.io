@@ -1725,6 +1725,46 @@ font-size: 0.65rem;
   -webkit-user-drag: none;
 }
 
+.tilly-video-tooltip {
+  position: absolute;
+  top: 50%;
+  left: 106px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 6px 12px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, .82);
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 247, 252, .96) 0%,
+      rgba(255, 236, 246, .94) 100%
+    );
+  box-shadow:
+    0 10px 20px rgba(24, 20, 32, .22),
+    inset 0 1px 0 rgba(255, 255, 255, .92);
+  color: #d78aa6;
+  font-family: 'fredoka', 'nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .01em;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .72);
+  transform: translateY(-50%) translateX(-8px) scale(.96);
+  transform-origin: left center;
+  transition:
+    opacity 170ms ease,
+    transform 170ms ease;
+}
+
+
 .tilly-video-trigger:hover,
 .tilly-video-trigger:focus-visible {
   transform:
@@ -1737,6 +1777,13 @@ font-size: 0.65rem;
       rgba(0, 0, 0, .28)
     );
 }
+
+.tilly-video-trigger:hover .tilly-video-tooltip,
+.tilly-video-trigger:focus-visible .tilly-video-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0) scale(1);
+}
+
 
 .tilly-video-trigger:active {
   transform:
@@ -1761,6 +1808,14 @@ font-size: 0.65rem;
   .tilly-video-trigger {
     left: -50px;
     width: 104px;
+  }
+
+
+  .tilly-video-tooltip {
+    left: 82px;
+    min-height: 24px;
+    padding: 5px 10px;
+    font-size: 12px;
   }
 
   .tilly-video-trigger:hover,
@@ -2644,7 +2699,7 @@ font-size: 0.65rem;
   flex: 1 1 auto;
   color: rgba(55, 102, 106, .76);
   font-family: 'nunito', sans-serif;
-  font-size: 17px;
+  font-size: 10px;
   text-align: right;
 }
 
