@@ -15,7 +15,7 @@ if (window.location.hostname === "jamicat.github.io") {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description"
 content="jamie's personal website with a live chat, guest wall, furry art, music player and interactive themes.">
-<link rel="stylesheet" href="stylish.css?v=3"/>
+<link rel="stylesheet" href="stylish.css?v=4"/>
 <link
     rel="stylesheet"
     href="./image-transfer.css?v=1"
@@ -129,7 +129,7 @@ addComponents({
     >
         <div class="letter-maker-header">
             <div>
-                <h2 id="letterMakerTitle" class="letter-maker-title">letter paper</h2>
+                <h2 id="letterMakerTitle" class="letter-maker-title">write a letter</h2>
                 <div id="letterMakerCount" class="letter-maker-count">01 / 18</div>
             </div>
             <button
@@ -151,13 +151,37 @@ addComponents({
             >‹</button>
 
             <div class="letter-maker-preview-shell">
-                <img
-                    id="letterMakerPreview"
-                    class="letter-maker-preview"
-                    src="/tmplates/Letter01.png"
-                    alt="letter paper 01"
-                    draggable="false"
+                <div
+                    id="letterMakerPaper"
+                    class="letter-maker-paper"
+                    data-letter-font="nunito"
+                    data-letter-size="medium"
                 >
+                    <img
+                        id="letterMakerPreview"
+                        class="letter-maker-preview"
+                        src="/tmplates/Letter01.png"
+                        alt="letter paper 01"
+                        draggable="false"
+                    >
+                    <textarea
+                        id="letterMakerMessage"
+                        class="letter-maker-message"
+                        maxlength="650"
+                        aria-label="letter message"
+                        placeholder="write your letter..."
+                        spellcheck="true"
+                    ></textarea>
+                    <input
+                        id="letterMakerSignature"
+                        class="letter-maker-signature"
+                        type="text"
+                        maxlength="32"
+                        aria-label="letter signature"
+                        placeholder="signature"
+                        autocomplete="off"
+                    >
+                </div>
             </div>
 
             <button
@@ -167,6 +191,39 @@ addComponents({
                 aria-label="next letter paper"
                 title="next"
             >›</button>
+        </div>
+
+        <div class="letter-maker-controls" aria-label="letter formatting">
+            <label class="letter-maker-control letter-maker-font-control">
+                <span>font</span>
+                <select id="letterMakerFont" aria-label="letter font">
+                    <option value="nunito">nunito</option>
+                    <option value="nintendoh">nintendoh</option>
+                    <option value="dynapuff">dynapuff</option>
+                    <option value="spiritsoft">spiritsoft</option>
+                </select>
+            </label>
+
+            <div class="letter-maker-control">
+                <span>colour</span>
+                <div class="letter-maker-colours" role="group" aria-label="letter text colour">
+                    <button type="button" class="letter-maker-colour is-selected" data-letter-colour="#433d46" aria-label="charcoal" aria-pressed="true" style="--letter-colour:#433d46"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#c76587" aria-label="pastel pink" aria-pressed="false" style="--letter-colour:#c76587"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#5f86aa" aria-label="pastel blue" aria-pressed="false" style="--letter-colour:#5f86aa"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#648d74" aria-label="pastel green" aria-pressed="false" style="--letter-colour:#648d74"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#806da3" aria-label="lavender" aria-pressed="false" style="--letter-colour:#806da3"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#896951" aria-label="warm brown" aria-pressed="false" style="--letter-colour:#896951"></button>
+                </div>
+            </div>
+
+            <div class="letter-maker-control">
+                <span>size</span>
+                <div class="letter-maker-sizes" role="group" aria-label="letter text size">
+                    <button type="button" class="letter-maker-size" data-letter-size="small" aria-pressed="false">small</button>
+                    <button type="button" class="letter-maker-size is-selected" data-letter-size="medium" aria-pressed="true">medium</button>
+                    <button type="button" class="letter-maker-size" data-letter-size="large" aria-pressed="false">large</button>
+                </div>
+            </div>
         </div>
 
         <div
@@ -479,7 +536,7 @@ addComponents({
     <span id="siteViewCount">0</span>
 </div>
 
-<script src="scripts.js?v=8"></script>
+<script src="scripts.js?v=9"></script>
 <script src="discscripts.js?v=4"></script>
 <script
     src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"
