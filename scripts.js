@@ -5378,7 +5378,6 @@ const letterMakerState = {
   savedRange: null,
   savedRangeEditorId: null,
   emojiPicker: null,
-  emojiTargetId: null,
   layouts: Array.from(
     { length: 18 },
     () => ({
@@ -5403,10 +5402,7 @@ function letterEditorIsEmpty(editor) {
     return true;
   }
 
-  return (
-    editor.textContent.trim() === '' &&
-    !editor.querySelector('.letter-maker-inline-emoji')
-  );
+  return editor.textContent.trim() === '';
 }
 
 function normaliseLetterEditor(editor) {
@@ -5424,15 +5420,7 @@ function letterEditorLength(editor) {
     return 0;
   }
 
-  const textLength =
-    [...editor.textContent].length;
-
-  const emojiCount =
-    editor.querySelectorAll(
-      '.letter-maker-inline-emoji'
-    ).length;
-
-  return textLength + emojiCount;
+  return [...editor.textContent].length;
 }
 
 function placeLetterCaretAtEnd(editor) {
@@ -5843,6 +5831,33 @@ function applyLetterMakerFormatting() {
     });
 }
 
+function getLetterCommandStates(editor) {
+  const states = {
+    bold: false,
+    italic: false
+  };
+
+  if (!editor) {
+    return states;
+  }
+
+  if (!selectionBelongsToLetterEditor(editor)) {
+    return states;
+  }
+
+  try {
+    states.bold =
+      document.queryCommandState('bold') === true;
+    states.italic =
+      document.queryCommandState('italic') === true;
+  } catch {
+    states.bold = false;
+    states.italic = false;
+  }
+
+  return states;
+}
+
 function syncLetterStyleButtons() {
   const boldButton =
     document.getElementById(
@@ -5855,38 +5870,28 @@ function syncLetterStyleButtons() {
     );
 
   const editor = getLetterEditor();
-  let bold = false;
-  let italic = false;
-
-  if (editor && selectionBelongsToLetterEditor(editor)) {
-    try {
-      bold = document.queryCommandState('bold');
-      italic = document.queryCommandState('italic');
-    } catch {
-      bold = false;
-      italic = false;
-    }
-  }
+  const states =
+    getLetterCommandStates(editor);
 
   if (boldButton) {
     boldButton.classList.toggle(
       'is-selected',
-      bold
+      states.bold
     );
     boldButton.setAttribute(
       'aria-pressed',
-      bold ? 'true' : 'false'
+      states.bold ? 'true' : 'false'
     );
   }
 
   if (italicButton) {
     italicButton.classList.toggle(
       'is-selected',
-      italic
+      states.italic
     );
     italicButton.setAttribute(
       'aria-pressed',
-      italic ? 'true' : 'false'
+      states.italic ? 'true' : 'false'
     );
   }
 }
@@ -5956,11 +5961,22 @@ function updateLetterEditorState(editor) {
 function runLetterStyleCommand(command) {
   const editor = getLetterEditor();
 
-  if (!editor) {
+  if (
+    !editor ||
+    (command !== 'bold' && command !== 'italic')
+  ) {
     return;
   }
 
   restoreLetterSelection(editor);
+
+  const before =
+    getLetterCommandStates(editor);
+
+  const otherCommand =
+    command === 'bold'
+      ? 'italic'
+      : 'bold';
 
   try {
     document.execCommand(
@@ -5968,12 +5984,26 @@ function runLetterStyleCommand(command) {
       false,
       null
     );
+
+    const after =
+      getLetterCommandStates(editor);
+
+    if (
+      after[otherCommand] !==
+      before[otherCommand]
+    ) {
+      document.execCommand(
+        otherCommand,
+        false,
+        null
+      );
+    }
   } catch {
     return;
   }
 
-  updateLetterEditorState(editor);
   saveLetterSelection(editor);
+  updateLetterEditorState(editor);
   syncLetterStyleButtons();
 }
 
@@ -6010,74 +6040,30 @@ function insertLetterText(editor, value) {
   updateLetterEditorState(editor);
 }
 
-function customLetterEmojiSource(emoji) {
-  if (!emoji || typeof emoji.id !== 'string') {
-    return null;
-  }
-
-  const id = emoji.id.toLowerCase();
-
-  const chatSource =
-    window.chat?.customEmojiLookup?.get?.(id)?.src;
-
-  if (chatSource) {
-    return chatSource;
-  }
-
-  const skinSource =
-    emoji.skins?.find?.(skin => skin?.src)?.src;
-
-  return skinSource || null;
-}
-
 function insertLetterEmoji(emoji) {
   const editor =
     getLetterEditor(
-      letterMakerState.emojiTargetId ||
       letterMakerState.activeEditorId
+    ) ||
+    getLetterEditor(
+      'letterMakerMessage'
     );
 
-  if (!editor || !emoji) {
+  if (
+    !editor ||
+    !emoji ||
+    typeof emoji.native !== 'string'
+  ) {
     return;
   }
 
-  restoreLetterSelection(editor);
+  letterMakerState.activeEditorId =
+    editor.id;
 
-  if (typeof emoji.native === 'string') {
-    insertLetterText(editor, emoji.native);
-    return;
-  }
-
-  const source = customLetterEmojiSource(emoji);
-
-  if (!source) {
-    return;
-  }
-
-  const selection = window.getSelection();
-
-  if (!selection || selection.rangeCount === 0) {
-    return;
-  }
-
-  const range = selection.getRangeAt(0);
-  range.deleteContents();
-
-  const image = document.createElement('img');
-  image.className = 'letter-maker-inline-emoji';
-  image.src = source;
-  image.alt = `:${emoji.id}:`;
-  image.dataset.emoji = emoji.id;
-  image.draggable = false;
-  image.contentEditable = 'false';
-
-  range.insertNode(image);
-  range.setStartAfter(image);
-  range.collapse(true);
-  selection.removeAllRanges();
-  selection.addRange(range);
-
-  updateLetterEditorState(editor);
+  insertLetterText(
+    editor,
+    emoji.native
+  );
 }
 
 async function createLetterEmojiPicker() {
@@ -6094,46 +6080,35 @@ async function createLetterEmojiPicker() {
     return letterMakerState.emojiPicker;
   }
 
-  let picker = null;
-
   if (
-    window.chat &&
-    typeof window.chat.createSharedEmojiPicker === 'function'
+    !window.EmojiMart ||
+    typeof window.EmojiMart.Picker !== 'function'
   ) {
-    picker =
-      window.chat.createSharedEmojiPicker(
-        insertLetterEmoji
+    return null;
+  }
+
+  const loadEmojiData = async () => {
+    const response = await fetch(
+      'https://cdn.jsdelivr.net/npm/@emoji-mart/data@1.2.1'
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `emoji data failed (${response.status})`
       );
-  } else if (
-    window.EmojiMart &&
-    typeof window.EmojiMart.Picker === 'function'
-  ) {
-    const loadEmojiData = async () => {
-      const response = await fetch(
-        'https://cdn.jsdelivr.net/npm/@emoji-mart/data@1.2.1'
-      );
+    }
 
-      if (!response.ok) {
-        throw new Error(
-          `emoji data failed (${response.status})`
-        );
-      }
+    return response.json();
+  };
 
-      return response.json();
-    };
-
-    picker = new window.EmojiMart.Picker({
+  const picker =
+    new window.EmojiMart.Picker({
       data: loadEmojiData,
       emojiSize: 16,
       emojiButtonSize: 26,
       perLine: 10,
       onEmojiSelect: insertLetterEmoji
     });
-  }
-
-  if (!picker) {
-    return null;
-  }
 
   picker.style.width = '320px';
   picker.style.maxWidth = '100%';
@@ -6211,11 +6186,9 @@ function closeLetterEmojiPicker() {
   }
 
   host.hidden = true;
-  letterMakerState.emojiTargetId = null;
 }
 
 async function openLetterEmojiPicker(
-  editor,
   anchor
 ) {
   const host =
@@ -6223,12 +6196,21 @@ async function openLetterEmojiPicker(
       'letterMakerEmojiPopover'
     );
 
+  const editor =
+    getLetterEditor(
+      letterMakerState.activeEditorId
+    ) ||
+    getLetterEditor(
+      'letterMakerMessage'
+    );
+
   if (!editor || !anchor || !host) {
     return;
   }
 
-  letterMakerState.activeEditorId = editor.id;
-  letterMakerState.emojiTargetId = editor.id;
+  letterMakerState.activeEditorId =
+    editor.id;
+
   saveLetterSelection(editor);
 
   const picker =
@@ -6259,6 +6241,11 @@ function openLetterMaker() {
 
   letterMakerState.previousFocus =
     document.activeElement;
+
+  letterMakerState.activeEditorId =
+    'letterMakerMessage';
+  letterMakerState.savedRange = null;
+  letterMakerState.savedRangeEditorId = null;
 
   overlay.hidden = false;
   document.documentElement.classList.add(
@@ -6469,14 +6456,9 @@ function initializeLetterMaker() {
       'letterMakerItalic'
     );
 
-  const messageEmojiButton =
+  const emojiButton =
     document.getElementById(
-      'letterMakerMessageEmoji'
-    );
-
-  const signatureEmojiButton =
-    document.getElementById(
-      'letterMakerSignatureEmoji'
+      'letterMakerEmoji'
     );
 
   const emojiPopover =
@@ -6637,39 +6619,27 @@ function initializeLetterMaker() {
     () => runLetterStyleCommand('italic')
   );
 
-  messageEmojiButton?.addEventListener(
+  emojiButton?.addEventListener(
     'pointerdown',
     event => {
       event.preventDefault();
-      if (message) {
-        saveLetterSelection(message);
+
+      const editor =
+        getLetterEditor(
+          letterMakerState.activeEditorId
+        ) ||
+        message;
+
+      if (editor) {
+        saveLetterSelection(editor);
       }
     }
   );
 
-  signatureEmojiButton?.addEventListener(
-    'pointerdown',
-    event => {
-      event.preventDefault();
-      if (signature) {
-        saveLetterSelection(signature);
-      }
-    }
-  );
-
-  messageEmojiButton?.addEventListener(
+  emojiButton?.addEventListener(
     'click',
     () => openLetterEmojiPicker(
-      message,
-      messageEmojiButton
-    )
-  );
-
-  signatureEmojiButton?.addEventListener(
-    'click',
-    () => openLetterEmojiPicker(
-      signature,
-      signatureEmojiButton
+      emojiButton
     )
   );
 
@@ -6703,8 +6673,7 @@ function initializeLetterMaker() {
 
       if (
         path.includes(emojiPopover) ||
-        path.includes(messageEmojiButton) ||
-        path.includes(signatureEmojiButton)
+        path.includes(emojiButton)
       ) {
         return;
       }
