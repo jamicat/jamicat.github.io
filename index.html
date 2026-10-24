@@ -15,7 +15,7 @@ if (window.location.hostname === "jamicat.github.io") {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description"
 content="jamie's personal website with a live chat, guest wall, furry art, music player and interactive themes.">
-<link rel="stylesheet" href="stylish.css?v=9"/>
+<link rel="stylesheet" href="stylish.css?v=10"/>
 <link
     rel="stylesheet"
     href="./image-transfer.css?v=1"
@@ -274,6 +274,19 @@ addComponents({
             class="letter-maker-templates"
             aria-label="letter paper choices"
         ></div>
+
+        <div class="letter-maker-send-row">
+            <div
+                id="letterMakerStatus"
+                class="letter-maker-status"
+                aria-live="polite"
+            ></div>
+            <button
+                id="letterMakerSend"
+                class="letter-maker-send"
+                type="button"
+            >send letter</button>
+        </div>
     </section>
 </div>
 
@@ -579,7 +592,7 @@ addComponents({
     <span id="siteViewCount">0</span>
 </div>
 
-<script src="scripts.js?v=13"></script>
+<script src="scripts.js?v=14"></script>
 <script src="discscripts.js?v=4"></script>
 <script
     src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"
