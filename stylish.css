@@ -2716,3 +2716,46 @@ font-size: 0.65rem;
     padding: 0 12px;
   }
 }
+
+.letter-maker-status {
+  min-height: 18px;
+  margin: 2px auto 5px;
+  width: min(520px, calc(100% - 90px));
+  color: rgba(55, 102, 106, .86);
+  font-family: 'nunito', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, .92),
+    0 0 7px rgba(255, 255, 255, .58);
+}
+
+.letter-maker-status[data-state="success"] {
+  color: #4f8f78;
+}
+
+.letter-maker-status[data-state="error"] {
+  color: #b85f73;
+}
+
+.letter-maker-controls .letter-maker-send {
+  align-self: center;
+  margin-left: 2px;
+}
+
+.letter-maker-send-row {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .letter-maker-status {
+    width: min(88%, 430px);
+    margin-bottom: 3px;
+    font-size: 9px;
+  }
+
+  .letter-maker-controls .letter-maker-send {
+    min-width: 96px;
+  }
+}
