@@ -5370,10 +5370,17 @@ const letterMakerState = {
   index: 0,
   previousFocus: null,
   font: 'nunito',
-  colour: '#433d46',
+  colour: '#333238',
   size: 'medium',
   message: '',
-  signature: ''
+  signature: '',
+  layouts: Array.from(
+    { length: 18 },
+    () => ({
+      message: { x: 12, y: 17 },
+      signature: { x: 52, y: 78 }
+    })
+  )
 };
 
 function letterMakerTemplatePath(index) {
@@ -5401,6 +5408,174 @@ function setLetterMakerTriggerVisible(visible) {
 window.setLetterMakerTriggerVisible =
   setLetterMakerTriggerVisible;
 
+function applyLetterMakerLayout(index = letterMakerState.index) {
+  const layout =
+    letterMakerState.layouts[index];
+
+  const messageBlock =
+    document.getElementById(
+      'letterMakerMessageBlock'
+    );
+
+  const signatureBlock =
+    document.getElementById(
+      'letterMakerSignatureBlock'
+    );
+
+  if (messageBlock && layout?.message) {
+    messageBlock.style.left =
+      `${layout.message.x}%`;
+    messageBlock.style.top =
+      `${layout.message.y}%`;
+  }
+
+  if (signatureBlock && layout?.signature) {
+    signatureBlock.style.left =
+      `${layout.signature.x}%`;
+    signatureBlock.style.top =
+      `${layout.signature.y}%`;
+  }
+}
+
+function initializeLetterMakerDrag(
+  handle,
+  block,
+  layoutKey
+) {
+  const paper =
+    document.getElementById(
+      'letterMakerPaper'
+    );
+
+  if (!handle || !block || !paper) {
+    return;
+  }
+
+  handle.addEventListener(
+    'pointerdown',
+    event => {
+      if (event.button !== 0) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const paperRect =
+        paper.getBoundingClientRect();
+
+      const blockRect =
+        block.getBoundingClientRect();
+
+      const startLeft =
+        blockRect.left - paperRect.left;
+
+      const startTop =
+        blockRect.top - paperRect.top;
+
+      const startX = event.clientX;
+      const startY = event.clientY;
+
+      const maxLeft = Math.max(
+        0,
+        paperRect.width - blockRect.width
+      );
+
+      const maxTop = Math.max(
+        0,
+        paperRect.height - blockRect.height
+      );
+
+      block.classList.add('is-dragging');
+      handle.setPointerCapture(event.pointerId);
+
+      const move = moveEvent => {
+        const nextLeft = Math.min(
+          maxLeft,
+          Math.max(
+            0,
+            startLeft +
+              moveEvent.clientX - startX
+          )
+        );
+
+        const nextTop = Math.min(
+          maxTop,
+          Math.max(
+            0,
+            startTop +
+              moveEvent.clientY - startY
+          )
+        );
+
+        const x =
+          paperRect.width > 0
+            ? nextLeft / paperRect.width * 100
+            : 0;
+
+        const y =
+          paperRect.height > 0
+            ? nextTop / paperRect.height * 100
+            : 0;
+
+        const layout =
+          letterMakerState.layouts[
+            letterMakerState.index
+          ];
+
+        layout[layoutKey] = { x, y };
+
+        block.style.left = `${x}%`;
+        block.style.top = `${y}%`;
+      };
+
+      const stop = stopEvent => {
+        block.classList.remove('is-dragging');
+
+        handle.removeEventListener(
+          'pointermove',
+          move
+        );
+
+        handle.removeEventListener(
+          'pointerup',
+          stop
+        );
+
+        handle.removeEventListener(
+          'pointercancel',
+          stop
+        );
+
+        if (
+          handle.hasPointerCapture(
+            stopEvent.pointerId
+          )
+        ) {
+          handle.releasePointerCapture(
+            stopEvent.pointerId
+          );
+        }
+      };
+
+      handle.addEventListener(
+        'pointermove',
+        move
+      );
+
+      handle.addEventListener(
+        'pointerup',
+        stop
+      );
+
+      handle.addEventListener(
+        'pointercancel',
+        stop
+      );
+    }
+  );
+}
+
 function updateLetterMakerTemplate(index, movePicker = true) {
   const preview =
     document.getElementById(
@@ -5417,6 +5592,7 @@ function updateLetterMakerTemplate(index, movePicker = true) {
     ((index % total) + total) % total;
 
   letterMakerState.index = normalized;
+  applyLetterMakerLayout(normalized);
 
   if (preview) {
     const number =
@@ -5664,6 +5840,26 @@ function initializeLetterMaker() {
       'letterMakerFont'
     );
 
+  const messageBlock =
+    document.getElementById(
+      'letterMakerMessageBlock'
+    );
+
+  const signatureBlock =
+    document.getElementById(
+      'letterMakerSignatureBlock'
+    );
+
+  const messageMove =
+    document.getElementById(
+      'letterMakerMessageMove'
+    );
+
+  const signatureMove =
+    document.getElementById(
+      'letterMakerSignatureMove'
+    );
+
   if (
     !trigger ||
     !overlay ||
@@ -5710,6 +5906,18 @@ function initializeLetterMaker() {
 
     templates.appendChild(button);
   }
+
+  initializeLetterMakerDrag(
+    messageMove,
+    messageBlock,
+    'message'
+  );
+
+  initializeLetterMakerDrag(
+    signatureMove,
+    signatureBlock,
+    'signature'
+  );
 
   trigger.addEventListener(
     'click',
@@ -5773,7 +5981,7 @@ function initializeLetterMaker() {
         () => {
           letterMakerState.colour =
             button.dataset.letterColour ||
-            '#433d46';
+            '#333238';
           applyLetterMakerFormatting();
         }
       );
