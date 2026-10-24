@@ -1728,13 +1728,13 @@ font-size: 0.65rem;
 .tilly-video-tooltip {
   position: absolute;
   top: 50%;
-  left: 106px;
+  left: 104px;
   z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 28px;
-  padding: 6px 12px;
+  min-height: 23px;
+  padding: 4px 9px;
   box-sizing: border-box;
   border: 1px solid rgba(255, 255, 255, .82);
   border-radius: 999px;
@@ -1745,23 +1745,20 @@ font-size: 0.65rem;
       rgba(255, 236, 246, .94) 100%
     );
   box-shadow:
-    0 10px 20px rgba(24, 20, 32, .22),
+    0 8px 16px rgba(24, 20, 32, .20),
     inset 0 1px 0 rgba(255, 255, 255, .92);
   color: #d78aa6;
   font-family: 'fredoka', 'nunito', sans-serif;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: .01em;
   line-height: 1;
   white-space: nowrap;
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
   text-shadow: 0 1px 0 rgba(255, 255, 255, .72);
-  transform: translateY(-50%) translateX(-8px) scale(.96);
+  transform: translateY(-50%);
   transform-origin: left center;
-  transition:
-    opacity 170ms ease,
-    transform 170ms ease;
 }
 
 
@@ -1776,12 +1773,6 @@ font-size: 0.65rem;
       0 4px 8px
       rgba(0, 0, 0, .28)
     );
-}
-
-.tilly-video-trigger:hover .tilly-video-tooltip,
-.tilly-video-trigger:focus-visible .tilly-video-tooltip {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0) scale(1);
 }
 
 
@@ -1812,10 +1803,10 @@ font-size: 0.65rem;
 
 
   .tilly-video-tooltip {
-    left: 82px;
-    min-height: 24px;
-    padding: 5px 10px;
-    font-size: 12px;
+    left: 80px;
+    min-height: 21px;
+    padding: 4px 8px;
+    font-size: 10px;
   }
 
   .tilly-video-trigger:hover,
@@ -1831,7 +1822,7 @@ font-size: 0.65rem;
   right: 140px;
   bottom: -12px;
   z-index: 10025;
-  width: 90px;
+  width: 72px;
   height: auto;
   margin: 0;
   padding: 0;
