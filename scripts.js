@@ -5378,6 +5378,8 @@ const letterMakerState = {
   savedRange: null,
   savedRangeEditorId: null,
   emojiPicker: null,
+  sending: false,
+  lastSentPayload: '',
   layouts: Array.from(
     { length: 18 },
     () => ({
@@ -6224,6 +6226,161 @@ async function openLetterEmojiPicker(
   positionLetterEmojiPopover(anchor);
 }
 
+function setLetterMakerStatus(message, state = '') {
+  const status =
+    document.getElementById(
+      'letterMakerStatus'
+    );
+
+  if (!status) {
+    return;
+  }
+
+  status.textContent = message || '';
+  status.dataset.state = state;
+}
+
+function buildLetterPayload() {
+  const message =
+    getLetterEditor('letterMakerMessage');
+  const signature =
+    getLetterEditor('letterMakerSignature');
+
+  if (!message || !signature) {
+    return null;
+  }
+
+  updateLetterEditorState(message);
+  updateLetterEditorState(signature);
+
+  if (!message.textContent.trim()) {
+    setLetterMakerStatus(
+      'write a message first',
+      'error'
+    );
+    message.focus();
+    return null;
+  }
+
+  const layout =
+    letterMakerState.layouts[
+      letterMakerState.index
+    ];
+
+  return {
+    template: letterMakerState.index + 1,
+    messageHtml: letterMakerState.messageHtml,
+    signatureHtml: letterMakerState.signatureHtml,
+    font: letterMakerState.font,
+    colour: letterMakerState.colour,
+    size: letterMakerState.size,
+    messagePosition: {
+      x: Number(layout.message.x.toFixed(3)),
+      y: Number(layout.message.y.toFixed(3))
+    },
+    signaturePosition: {
+      x: Number(layout.signature.x.toFixed(3)),
+      y: Number(layout.signature.y.toFixed(3))
+    }
+  };
+}
+
+async function sendLetterMakerLetter() {
+  const button =
+    document.getElementById(
+      'letterMakerSend'
+    );
+
+  if (letterMakerState.sending) {
+    return;
+  }
+
+  const payload = buildLetterPayload();
+
+  if (!payload) {
+    return;
+  }
+
+  const fingerprint =
+    JSON.stringify(payload);
+
+  if (
+    fingerprint ===
+    letterMakerState.lastSentPayload
+  ) {
+    setLetterMakerStatus(
+      'this letter is already sent ♡',
+      'success'
+    );
+    return;
+  }
+
+  letterMakerState.sending = true;
+
+  if (button) {
+    button.disabled = true;
+    button.textContent = 'sending...';
+  }
+
+  setLetterMakerStatus('sending...', 'sending');
+
+  try {
+    const result = await fetch(
+      `${API}/api/letters`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    let body = null;
+
+    try {
+      body = await result.json();
+    } catch {
+      body = null;
+    }
+
+    if (!result.ok || body?.success !== true) {
+      throw new Error(
+        body?.error ||
+        'could not send the letter'
+      );
+    }
+
+    letterMakerState.lastSentPayload =
+      fingerprint;
+
+    setLetterMakerStatus(
+      'letter sent ♡',
+      'success'
+    );
+
+    if (button) {
+      button.textContent = 'sent ♡';
+    }
+  } catch (error) {
+    setLetterMakerStatus(
+      error?.message ||
+        'could not send the letter',
+      'error'
+    );
+
+    if (button) {
+      button.textContent = 'send letter';
+    }
+  } finally {
+    letterMakerState.sending = false;
+
+    if (button) {
+      button.disabled = false;
+    }
+  }
+}
+
 function openLetterMaker() {
   const overlay =
     document.getElementById(
@@ -6246,6 +6403,15 @@ function openLetterMaker() {
     'letterMakerMessage';
   letterMakerState.savedRange = null;
   letterMakerState.savedRangeEditorId = null;
+  setLetterMakerStatus('');
+
+  const sendButton =
+    document.getElementById('letterMakerSend');
+
+  if (sendButton && !letterMakerState.sending) {
+    sendButton.textContent = 'send letter';
+    sendButton.disabled = false;
+  }
 
   overlay.hidden = false;
   document.documentElement.classList.add(
@@ -6466,6 +6632,11 @@ function initializeLetterMaker() {
       'letterMakerEmojiPopover'
     );
 
+  const sendButton =
+    document.getElementById(
+      'letterMakerSend'
+    );
+
   if (
     !trigger ||
     !overlay ||
@@ -6641,6 +6812,11 @@ function initializeLetterMaker() {
     () => openLetterEmojiPicker(
       emojiButton
     )
+  );
+
+  sendButton?.addEventListener(
+    'click',
+    sendLetterMakerLetter
   );
 
   document.addEventListener(
