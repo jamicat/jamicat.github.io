@@ -1709,7 +1709,6 @@ font-size: 0.65rem;
   transform: translateY(-50%);
   transform-origin: left center;
   transition:
-    transform 180ms ease,
     filter 180ms ease,
     opacity 180ms ease;
   touch-action: manipulation;
@@ -1774,8 +1773,8 @@ font-size: 0.65rem;
 
 .letter-maker-trigger {
   position: fixed;
-  right: 132px;
-  bottom: 8px;
+  right: 140px;
+  bottom: -12px;
   z-index: 10025;
   width: 72px;
   height: auto;
@@ -1787,7 +1786,6 @@ font-size: 0.65rem;
   transform: translateY(0);
   transform-origin: center bottom;
   transition:
-    transform 180ms ease,
     filter 180ms ease,
     opacity 180ms ease;
   touch-action: manipulation;
@@ -1808,11 +1806,30 @@ font-size: 0.65rem;
   -webkit-user-drag: none;
 }
 
+@keyframes letter-mailbox-ring {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  18% {
+    transform: rotate(-4deg);
+  }
+  36% {
+    transform: rotate(4deg);
+  }
+  54% {
+    transform: rotate(-3deg);
+  }
+  72% {
+    transform: rotate(3deg);
+  }
+  88% {
+    transform: rotate(-1deg);
+  }
+}
+
 .letter-maker-trigger:hover,
 .letter-maker-trigger:focus-visible {
-  transform:
-    translateY(-2px)
-    scale(1.015);
+  animation: letter-mailbox-ring 720ms ease-in-out infinite;
   filter:
     drop-shadow(
       0 3px 6px
@@ -1821,9 +1838,8 @@ font-size: 0.65rem;
 }
 
 .letter-maker-trigger:active {
-  transform:
-    translateY(0)
-    scale(.98);
+  animation: none;
+  transform: scale(.98);
 }
 
 .letter-maker-trigger:focus-visible {
@@ -1855,6 +1871,7 @@ font-size: 0.65rem;
 
 .letter-maker-window {
   --letter-maker-accent: #d978a0;
+  position: relative;
   width: min(900px, 94vw);
   max-height: min(820px, 94vh);
   padding: 18px;
@@ -2051,12 +2068,12 @@ font-size: 0.65rem;
   height: 100%;
   margin: 0;
   padding: 0;
-  padding-right: 28px;
+  padding-right: 34px;
   border: 0;
   outline: 0;
   background: transparent;
   color: var(--letter-text-colour);
-  font-weight: 600;
+  font-weight: 400;
   text-shadow: 0 1px 0 rgba(255, 255, 255, .32);
   caret-color: currentColor;
   transition:
@@ -2065,15 +2082,32 @@ font-size: 0.65rem;
 }
 
 .letter-maker-message {
-  resize: none;
   overflow: hidden;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   line-height: 1.9;
   letter-spacing: .01em;
 }
 
 .letter-maker-signature {
+  overflow: hidden;
+  white-space: nowrap;
   text-align: right;
   line-height: 1.2;
+}
+
+.letter-maker-message b,
+.letter-maker-message strong,
+.letter-maker-signature b,
+.letter-maker-signature strong {
+  font-weight: 700;
+}
+
+.letter-maker-message i,
+.letter-maker-message em,
+.letter-maker-signature i,
+.letter-maker-signature em {
+  font-style: italic;
 }
 
 .letter-maker-message:hover,
@@ -2088,8 +2122,8 @@ font-size: 0.65rem;
 
 .letter-maker-drag-handle {
   position: absolute;
-  top: 3px;
-  right: 3px;
+  top: 4px;
+  right: 10px;
   z-index: 3;
   display: grid;
   place-items: center;
@@ -2129,19 +2163,36 @@ font-size: 0.65rem;
 }
 
 .letter-maker-signature-block .letter-maker-drag-handle {
-  right: auto;
-  left: 3px;
+  right: 8px;
 }
 
 .letter-maker-signature {
-  padding-right: 0;
-  padding-left: 28px;
+  padding-right: 34px;
+  padding-left: 0;
 }
 
-.letter-maker-message::placeholder,
-.letter-maker-signature::placeholder {
+.letter-maker-message:empty::before,
+.letter-maker-signature:empty::before {
+  content: attr(data-placeholder);
   color: currentColor;
   opacity: .42;
+  pointer-events: none;
+}
+
+.letter-maker-message:focus:empty::before,
+.letter-maker-signature:focus:empty::before {
+  opacity: .30;
+}
+
+.letter-maker-inline-emoji {
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  margin: 0 .05em;
+  object-fit: contain;
+  vertical-align: -.18em;
+  image-rendering: auto;
+  user-select: none;
 }
 
 .letter-maker-paper[data-letter-font="nunito"] .letter-maker-message,
@@ -2161,9 +2212,9 @@ font-size: 0.65rem;
   font-weight: 400;
 }
 
-.letter-maker-paper[data-letter-font="spiritsoft"] .letter-maker-message,
-.letter-maker-paper[data-letter-font="spiritsoft"] .letter-maker-signature {
-  font-family: 'spiritsoft', sans-serif;
+.letter-maker-paper[data-letter-font="sans"] .letter-maker-message,
+.letter-maker-paper[data-letter-font="sans"] .letter-maker-signature {
+  font-family: Arial, Helvetica, sans-serif;
   font-weight: 400;
 }
 
@@ -2260,7 +2311,9 @@ font-size: 0.65rem;
 }
 
 .letter-maker-colours,
-.letter-maker-sizes {
+.letter-maker-sizes,
+.letter-maker-styles,
+.letter-maker-emojis {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -2322,6 +2375,73 @@ font-size: 0.65rem;
   background: rgba(255, 255, 255, .88);
   color: #b3527b;
   box-shadow: 0 2px 6px rgba(111, 64, 86, .08);
+}
+
+.letter-maker-style,
+.letter-maker-emoji {
+  height: 27px;
+  padding: 0 9px;
+  border: 1px solid rgba(184, 104, 141, .20);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .55);
+  color: #83536c;
+  font-family: 'nunito', sans-serif;
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    transform 120ms ease,
+    background 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+.letter-maker-style {
+  min-width: 29px;
+  padding: 0 7px;
+  font-size: 12px;
+}
+
+.letter-maker-emoji {
+  padding: 0 8px;
+  font-size: 9px;
+}
+
+.letter-maker-style:hover,
+.letter-maker-style:focus-visible,
+.letter-maker-emoji:hover,
+.letter-maker-emoji:focus-visible {
+  background: rgba(255, 255, 255, .78);
+  outline: none;
+}
+
+.letter-maker-style.is-selected {
+  border-color: rgba(201, 95, 139, .50);
+  background: rgba(255, 255, 255, .92);
+  color: #b3527b;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, .45),
+    0 2px 7px rgba(111, 64, 86, .10);
+}
+
+.letter-maker-emoji-popover {
+  position: absolute;
+  z-index: 30;
+  width: min(320px, calc(100% - 20px));
+  max-height: 372px;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, .76);
+  border-radius: 16px;
+  background: rgba(255, 238, 246, .96);
+  box-shadow:
+    0 16px 38px rgba(85, 47, 68, .22),
+    inset 0 1px 0 rgba(255, 255, 255, .82);
+  overflow: hidden;
+}
+
+.letter-maker-emoji-popover[hidden] {
+  display: none;
 }
 
 .letter-maker-templates {
@@ -2396,16 +2516,9 @@ font-size: 0.65rem;
 
 @media (max-width: 700px) {
   .letter-maker-trigger {
-    right: 104px;
-    bottom: 6px;
+    right: 108px;
+    bottom: -10px;
     width: 58px;
-  }
-
-  .letter-maker-trigger:hover,
-  .letter-maker-trigger:focus-visible {
-    transform:
-      translateY(-2px)
-      scale(1.015);
   }
 
   .letter-maker-overlay {
@@ -2442,5 +2555,13 @@ font-size: 0.65rem;
 
   .letter-maker-template {
     width: 75px;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .letter-maker-trigger:hover,
+  .letter-maker-trigger:focus-visible {
+    animation: none !important;
   }
 }
