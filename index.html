@@ -15,7 +15,7 @@ if (window.location.hostname === "jamicat.github.io") {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description"
 content="jamie's personal website with a live chat, guest wall, furry art, music player and interactive themes.">
-<link rel="stylesheet" href="stylish.css?v=5"/>
+<link rel="stylesheet" href="stylish.css?v=6"/>
 <link
     rel="stylesheet"
     href="./image-transfer.css?v=1"
@@ -154,7 +154,7 @@ addComponents({
                 <div
                     id="letterMakerPaper"
                     class="letter-maker-paper"
-                    data-letter-font="nunito"
+                    data-letter-font="nintendoh"
                     data-letter-size="medium"
                 >
                     <img
@@ -168,14 +168,16 @@ addComponents({
                         id="letterMakerMessageBlock"
                         class="letter-maker-text-block letter-maker-message-block"
                     >
-                        <textarea
+                        <div
                             id="letterMakerMessage"
                             class="letter-maker-message"
-                            maxlength="650"
+                            contenteditable="true"
+                            role="textbox"
+                            aria-multiline="true"
                             aria-label="letter message"
-                            placeholder="write your letter..."
+                            data-placeholder="write your letter..."
                             spellcheck="true"
-                        ></textarea>
+                        ></div>
                         <button
                             id="letterMakerMessageMove"
                             class="letter-maker-drag-handle"
@@ -188,15 +190,16 @@ addComponents({
                         id="letterMakerSignatureBlock"
                         class="letter-maker-text-block letter-maker-signature-block"
                     >
-                        <input
+                        <div
                             id="letterMakerSignature"
                             class="letter-maker-signature"
-                            type="text"
-                            maxlength="32"
+                            contenteditable="true"
+                            role="textbox"
+                            aria-multiline="false"
                             aria-label="letter signature"
-                            placeholder="signature"
-                            autocomplete="off"
-                        >
+                            data-placeholder="signature"
+                            spellcheck="true"
+                        ></div>
                         <button
                             id="letterMakerSignatureMove"
                             class="letter-maker-drag-handle"
@@ -221,10 +224,10 @@ addComponents({
             <label class="letter-maker-control letter-maker-font-control">
                 <span>font</span>
                 <select id="letterMakerFont" aria-label="letter font">
-                    <option value="nunito">nunito</option>
                     <option value="nintendoh">nintendoh</option>
                     <option value="dynapuff">dynapuff</option>
-                    <option value="spiritsoft">spiritsoft</option>
+                    <option value="nunito">nunito</option>
+                    <option value="sans">sans</option>
                 </select>
             </label>
 
@@ -233,7 +236,7 @@ addComponents({
                 <div class="letter-maker-colours" role="group" aria-label="letter text colour">
                     <button type="button" class="letter-maker-colour is-selected" data-letter-colour="#333238" aria-label="black" aria-pressed="true" style="--letter-colour:#333238"></button>
                     <button type="button" class="letter-maker-colour" data-letter-colour="#4f7fbd" aria-label="blue" aria-pressed="false" style="--letter-colour:#4f7fbd"></button>
-                    <button type="button" class="letter-maker-colour" data-letter-colour="#4f8d68" aria-label="green" aria-pressed="false" style="--letter-colour:#4f8d68"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#a8d8b0" aria-label="pastel green" aria-pressed="false" style="--letter-colour:#a8d8b0"></button>
                     <button type="button" class="letter-maker-colour" data-letter-colour="#ee9fbd" aria-label="pastel pink" aria-pressed="false" style="--letter-colour:#ee9fbd"></button>
                     <button type="button" class="letter-maker-colour" data-letter-colour="#b8a5df" aria-label="pastel lavender" aria-pressed="false" style="--letter-colour:#b8a5df"></button>
                     <button type="button" class="letter-maker-colour" data-letter-colour="#d8a381" aria-label="pastel peach" aria-pressed="false" style="--letter-colour:#d8a381"></button>
@@ -248,7 +251,29 @@ addComponents({
                     <button type="button" class="letter-maker-size" data-letter-size="large" aria-pressed="false">large</button>
                 </div>
             </div>
+
+            <div class="letter-maker-control">
+                <span>style</span>
+                <div class="letter-maker-styles" role="group" aria-label="letter text style">
+                    <button id="letterMakerBold" type="button" class="letter-maker-style" aria-label="bold" aria-pressed="false"><strong>b</strong></button>
+                    <button id="letterMakerItalic" type="button" class="letter-maker-style" aria-label="italic" aria-pressed="false"><em>i</em></button>
+                </div>
+            </div>
+
+            <div class="letter-maker-control">
+                <span>emoji</span>
+                <div class="letter-maker-emojis" role="group" aria-label="insert emoji">
+                    <button id="letterMakerMessageEmoji" type="button" class="letter-maker-emoji" aria-label="add emoji to message">☺ message</button>
+                    <button id="letterMakerSignatureEmoji" type="button" class="letter-maker-emoji" aria-label="add emoji to signature">☺ signature</button>
+                </div>
+            </div>
         </div>
+
+        <div
+            id="letterMakerEmojiPopover"
+            class="letter-maker-emoji-popover"
+            hidden
+        ></div>
 
         <div
             id="letterMakerTemplates"
@@ -560,7 +585,7 @@ addComponents({
     <span id="siteViewCount">0</span>
 </div>
 
-<script src="scripts.js?v=10"></script>
+<script src="scripts.js?v=11"></script>
 <script src="discscripts.js?v=4"></script>
 <script
     src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"
