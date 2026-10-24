@@ -2557,3 +2557,76 @@ font-size: 0.65rem;
     linear-gradient(135deg, rgba(220, 249, 242, .58), rgba(215, 239, 252, .58));
   border-color: rgba(255, 255, 255, .72);
 }
+
+.letter-maker-window {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(228, 252, 246, .28),
+      rgba(215, 239, 252, .24)
+    ),
+    url('/tmplates/bg.png') center center / cover no-repeat;
+  border-color: rgba(255, 255, 255, .82);
+  box-shadow:
+    0 24px 70px rgba(28, 67, 73, .30),
+    0 0 0 1px rgba(117, 205, 194, .16),
+    inset 0 1px 0 rgba(255, 255, 255, .92);
+}
+
+.letter-maker-title,
+.letter-maker-count {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, .78),
+    0 0 8px rgba(255, 255, 255, .34);
+}
+
+.letter-maker-close,
+.letter-maker-nav,
+.letter-maker-controls,
+.letter-maker-template,
+.letter-maker-font-control select,
+.letter-maker-size,
+.letter-maker-style,
+.letter-maker-emoji {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.letter-maker-controls {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(232, 255, 249, .66),
+      rgba(226, 245, 255, .64)
+    );
+  border-color: rgba(255, 255, 255, .82);
+  box-shadow:
+    0 7px 22px rgba(52, 103, 106, .10),
+    inset 0 1px 0 rgba(255, 255, 255, .76);
+}
+
+.letter-maker-close,
+.letter-maker-nav {
+  background: rgba(242, 255, 252, .66);
+}
+
+.letter-maker-template {
+  background: rgba(238, 253, 250, .58);
+}
+
+.letter-maker-template.is-selected {
+  background: rgba(241, 255, 252, .82);
+}
+
+.letter-maker-font-control select,
+.letter-maker-size,
+.letter-maker-style,
+.letter-maker-emoji {
+  background: rgba(250, 255, 254, .72);
+}
+
+.letter-maker-emoji-popover {
+  background: rgba(232, 251, 247, .94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
