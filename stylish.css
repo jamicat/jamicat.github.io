@@ -1854,7 +1854,7 @@ font-size: 0.65rem;
   place-items: center;
   padding: 22px;
   box-sizing: border-box;
-  background: rgba(36, 24, 33, .48);
+  background: rgba(20, 38, 42, .46);
   backdrop-filter: blur(9px);
   -webkit-backdrop-filter: blur(9px);
   opacity: 0;
@@ -1870,7 +1870,7 @@ font-size: 0.65rem;
 }
 
 .letter-maker-window {
-  --letter-maker-accent: #d978a0;
+  --letter-maker-accent: #78cdbd;
   position: relative;
   width: min(900px, 94vw);
   max-height: min(820px, 94vh);
@@ -1887,24 +1887,24 @@ font-size: 0.65rem;
     ),
     radial-gradient(
       circle at 92% 100%,
-      rgba(224, 211, 255, .58),
+      rgba(203, 232, 255, .58),
       transparent 38%
     ),
     linear-gradient(
       145deg,
-      #ffe0ec 0%,
-      #f8c3d9 52%,
-      #e8d8f4 100%
+      #e6fbf4 0%,
+      #cfeff0 52%,
+      #d9e8fb 100%
     );
   box-shadow:
-    0 24px 70px rgba(73, 36, 59, .30),
+    0 24px 70px rgba(35, 73, 78, .28),
     inset 0 1px 0 rgba(255, 255, 255, .90);
-  color: #704b60;
+  color: #476c70;
   font-family: 'nunito', sans-serif;
   transform: translateY(10px) scale(.985);
   transition: transform 170ms ease;
   scrollbar-width: thin;
-  scrollbar-color: rgba(190, 106, 145, .48) transparent;
+  scrollbar-color: rgba(100, 177, 177, .48) transparent;
 }
 
 .letter-maker-window::-webkit-scrollbar {
@@ -1917,7 +1917,7 @@ font-size: 0.65rem;
 
 .letter-maker-window::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: rgba(190, 106, 145, .48);
+  background: rgba(100, 177, 177, .48);
 }
 
 .letter-maker-overlay.is-open .letter-maker-window {
@@ -1934,7 +1934,7 @@ font-size: 0.65rem;
 
 .letter-maker-title {
   margin: 0;
-  color: #8f5c78;
+  color: #4f7f84;
   font-family: 'DynaPuff', 'nunito', sans-serif;
   font-size: 17px;
   font-weight: 400;
@@ -1944,7 +1944,7 @@ font-size: 0.65rem;
 
 .letter-maker-count {
   margin-top: 4px;
-  color: rgba(112, 75, 96, .62);
+  color: rgba(71, 108, 112, .66);
   font-family: 'nunito', sans-serif;
   font-size: 10px;
   line-height: 1;
@@ -1956,10 +1956,10 @@ font-size: 0.65rem;
   -webkit-appearance: none;
   border: 1px solid rgba(255, 255, 255, .82);
   background: rgba(255, 255, 255, .45);
-  color: #995f7c;
+  color: #4e7f86;
   cursor: pointer;
   box-shadow:
-    0 4px 12px rgba(123, 66, 96, .08),
+    0 4px 12px rgba(62, 104, 109, .10),
     inset 0 1px 0 rgba(255, 255, 255, .78);
   transition:
     transform 150ms ease,
@@ -1984,9 +1984,9 @@ font-size: 0.65rem;
 .letter-maker-close:focus-visible,
 .letter-maker-nav:hover,
 .letter-maker-nav:focus-visible {
-  border-color: rgba(217, 120, 160, .46);
+  border-color: rgba(90, 176, 166, .52);
   background: rgba(255, 255, 255, .72);
-  color: #c15f88;
+  color: #3d8e91;
   outline: none;
 }
 
@@ -2020,7 +2020,7 @@ font-size: 0.65rem;
   filter:
     drop-shadow(
       0 10px 18px
-      rgba(91, 50, 71, .16)
+      rgba(51, 93, 98, .16)
     );
 }
 
@@ -2256,7 +2256,7 @@ font-size: 0.65rem;
 
 .letter-maker-controls {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px 14px;
@@ -2273,34 +2273,25 @@ font-size: 0.65rem;
 
 .letter-maker-control {
   display: grid;
-  gap: 5px;
-}
-
-.letter-maker-control > span {
-  color: rgba(112, 75, 96, .72);
-  font-family: 'nunito', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
-  line-height: 1;
-  text-transform: lowercase;
+  gap: 0;
 }
 
 .letter-maker-font-control select {
   min-width: 116px;
   height: 29px;
   padding: 0 28px 0 9px;
-  border: 1px solid rgba(184, 104, 141, .22);
+  border: 1px solid rgba(93, 165, 165, .24);
   border-radius: 10px;
   outline: none;
   background: rgba(255, 255, 255, .65);
-  color: #744b61;
+  color: #456d72;
   font-family: 'nunito', sans-serif;
   font-size: 10px;
   cursor: pointer;
 }
 
 .letter-maker-font-control select:focus-visible {
-  border-color: rgba(201, 95, 139, .58);
+  border-color: rgba(73, 160, 158, .60);
   box-shadow: 0 0 0 2px rgba(255, 255, 255, .48);
 }
 
@@ -2322,8 +2313,8 @@ font-size: 0.65rem;
   background: var(--letter-colour);
   cursor: pointer;
   box-shadow:
-    0 0 0 1px rgba(140, 80, 108, .13),
-    0 3px 7px rgba(111, 64, 86, .10);
+    0 0 0 1px rgba(63, 119, 122, .14),
+    0 3px 7px rgba(54, 101, 105, .10);
   transition:
     transform 120ms ease,
     box-shadow 120ms ease;
@@ -2338,17 +2329,17 @@ font-size: 0.65rem;
 .letter-maker-colour.is-selected {
   box-shadow:
     0 0 0 2px #fff,
-    0 0 0 4px rgba(201, 95, 139, .48),
-    0 3px 7px rgba(111, 64, 86, .10);
+    0 0 0 4px rgba(73, 160, 158, .48),
+    0 3px 7px rgba(54, 101, 105, .10);
 }
 
 .letter-maker-size {
   height: 27px;
   padding: 0 9px;
-  border: 1px solid rgba(184, 104, 141, .20);
+  border: 1px solid rgba(93, 165, 165, .22);
   border-radius: 9px;
   background: rgba(255, 255, 255, .55);
-  color: #83536c;
+  color: #4c7478;
   font-family: 'nunito', sans-serif;
   font-size: 9px;
   cursor: pointer;
@@ -2365,9 +2356,9 @@ font-size: 0.65rem;
 }
 
 .letter-maker-size.is-selected {
-  border-color: rgba(201, 95, 139, .45);
+  border-color: rgba(73, 160, 158, .46);
   background: rgba(255, 255, 255, .88);
-  color: #b3527b;
+  color: #3d8a8c;
   box-shadow: 0 2px 6px rgba(111, 64, 86, .08);
 }
 
@@ -2375,10 +2366,10 @@ font-size: 0.65rem;
 .letter-maker-emoji {
   height: 27px;
   padding: 0 9px;
-  border: 1px solid rgba(184, 104, 141, .20);
+  border: 1px solid rgba(93, 165, 165, .22);
   border-radius: 9px;
   background: rgba(255, 255, 255, .55);
-  color: #83536c;
+  color: #4c7478;
   font-family: 'nunito', sans-serif;
   font-size: 10px;
   line-height: 1;
@@ -2411,12 +2402,12 @@ font-size: 0.65rem;
 }
 
 .letter-maker-style.is-selected {
-  border-color: rgba(201, 95, 139, .50);
+  border-color: rgba(73, 160, 158, .50);
   background: rgba(255, 255, 255, .92);
-  color: #b3527b;
+  color: #3d8a8c;
   box-shadow:
     0 0 0 2px rgba(255, 255, 255, .45),
-    0 2px 7px rgba(111, 64, 86, .10);
+    0 2px 7px rgba(54, 101, 105, .10);
 }
 
 .letter-maker-emoji-popover {
@@ -2428,9 +2419,9 @@ font-size: 0.65rem;
   box-sizing: border-box;
   border: 1px solid rgba(255, 255, 255, .76);
   border-radius: 16px;
-  background: rgba(255, 238, 246, .96);
+  background: rgba(232, 251, 247, .97);
   box-shadow:
-    0 16px 38px rgba(85, 47, 68, .22),
+    0 16px 38px rgba(45, 89, 92, .22),
     inset 0 1px 0 rgba(255, 255, 255, .82);
   overflow: hidden;
 }
@@ -2448,7 +2439,7 @@ font-size: 0.65rem;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
-  scrollbar-color: rgba(190, 106, 145, .48) transparent;
+  scrollbar-color: rgba(100, 177, 177, .48) transparent;
 }
 
 .letter-maker-templates::-webkit-scrollbar {
@@ -2461,7 +2452,7 @@ font-size: 0.65rem;
 
 .letter-maker-templates::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: rgba(190, 106, 145, .48);
+  background: rgba(100, 177, 177, .48);
 }
 
 .letter-maker-template {
@@ -2502,10 +2493,10 @@ font-size: 0.65rem;
 }
 
 .letter-maker-template.is-selected {
-  border-color: rgba(197, 91, 136, .66);
+  border-color: rgba(70, 157, 157, .68);
   box-shadow:
     0 0 0 2px rgba(255, 255, 255, .68),
-    0 0 0 4px rgba(207, 108, 150, .30);
+    0 0 0 4px rgba(92, 185, 174, .30);
   opacity: 1;
 }
 
@@ -2559,4 +2550,10 @@ font-size: 0.65rem;
   .letter-maker-trigger:focus-visible {
     animation: none !important;
   }
+}
+
+.letter-maker-controls {
+  background:
+    linear-gradient(135deg, rgba(220, 249, 242, .58), rgba(215, 239, 252, .58));
+  border-color: rgba(255, 255, 255, .72);
 }
