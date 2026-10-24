@@ -5369,11 +5369,16 @@ if (document.readyState === 'loading') {
 const letterMakerState = {
   index: 0,
   previousFocus: null,
-  font: 'nunito',
+  font: 'nintendoh',
   colour: '#333238',
   size: 'medium',
-  message: '',
-  signature: '',
+  messageHtml: '',
+  signatureHtml: '',
+  activeEditorId: 'letterMakerMessage',
+  savedRange: null,
+  savedRangeEditorId: null,
+  emojiPicker: null,
+  emojiTargetId: null,
   layouts: Array.from(
     { length: 18 },
     () => ({
@@ -5386,6 +5391,135 @@ const letterMakerState = {
 function letterMakerTemplatePath(index) {
   const number = String(index + 1).padStart(2, '0');
   return `/tmplates/Letter${number}.png`;
+}
+
+function getLetterEditor(id = letterMakerState.activeEditorId) {
+  const editor = document.getElementById(id);
+  return editor?.isContentEditable ? editor : null;
+}
+
+function letterEditorIsEmpty(editor) {
+  if (!editor) {
+    return true;
+  }
+
+  return (
+    editor.textContent.trim() === '' &&
+    !editor.querySelector('.letter-maker-inline-emoji')
+  );
+}
+
+function normaliseLetterEditor(editor) {
+  if (!editor) {
+    return;
+  }
+
+  if (letterEditorIsEmpty(editor)) {
+    editor.innerHTML = '';
+  }
+}
+
+function letterEditorLength(editor) {
+  if (!editor) {
+    return 0;
+  }
+
+  const textLength =
+    [...editor.textContent].length;
+
+  const emojiCount =
+    editor.querySelectorAll(
+      '.letter-maker-inline-emoji'
+    ).length;
+
+  return textLength + emojiCount;
+}
+
+function placeLetterCaretAtEnd(editor) {
+  if (!editor) {
+    return;
+  }
+
+  const range = document.createRange();
+  range.selectNodeContents(editor);
+  range.collapse(false);
+
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
+function selectionBelongsToLetterEditor(editor) {
+  if (!editor) {
+    return false;
+  }
+
+  const selection = window.getSelection();
+
+  if (!selection || selection.rangeCount === 0) {
+    return false;
+  }
+
+  const range = selection.getRangeAt(0);
+  const container =
+    range.commonAncestorContainer.nodeType === Node.TEXT_NODE
+      ? range.commonAncestorContainer.parentElement
+      : range.commonAncestorContainer;
+
+  return (
+    container instanceof Node &&
+    editor.contains(container)
+  );
+}
+
+function saveLetterSelection(editor) {
+  if (!editor || !selectionBelongsToLetterEditor(editor)) {
+    return;
+  }
+
+  const selection = window.getSelection();
+
+  if (!selection || selection.rangeCount === 0) {
+    return;
+  }
+
+  letterMakerState.activeEditorId = editor.id;
+  letterMakerState.savedRange =
+    selection.getRangeAt(0).cloneRange();
+  letterMakerState.savedRangeEditorId =
+    editor.id;
+}
+
+function restoreLetterSelection(editor) {
+  if (!editor) {
+    return;
+  }
+
+  const selection = window.getSelection();
+
+  if (!selection) {
+    return;
+  }
+
+  editor.focus();
+
+  if (
+    letterMakerState.savedRange &&
+    letterMakerState.savedRangeEditorId === editor.id
+  ) {
+    try {
+      selection.removeAllRanges();
+      selection.addRange(
+        letterMakerState.savedRange.cloneRange()
+      );
+      return;
+    } catch {
+      letterMakerState.savedRange = null;
+      letterMakerState.savedRangeEditorId = null;
+    }
+  }
+
+  placeLetterCaretAtEnd(editor);
 }
 
 function setLetterMakerTriggerVisible(visible) {
@@ -5709,29 +5843,403 @@ function applyLetterMakerFormatting() {
     });
 }
 
-function keepLetterMessageInsidePaper(message) {
-  const previous = letterMakerState.message;
-  const start = message.selectionStart;
-  const end = message.selectionEnd;
+function syncLetterStyleButtons() {
+  const boldButton =
+    document.getElementById(
+      'letterMakerBold'
+    );
 
-  if (
-    message.scrollHeight >
-    message.clientHeight + 2
-  ) {
-    message.value = previous;
-    const caret = Math.min(
-      start,
-      previous.length
+  const italicButton =
+    document.getElementById(
+      'letterMakerItalic'
     );
-    message.setSelectionRange(
-      caret,
-      Math.min(end, previous.length)
+
+  const editor = getLetterEditor();
+  let bold = false;
+  let italic = false;
+
+  if (editor && selectionBelongsToLetterEditor(editor)) {
+    try {
+      bold = document.queryCommandState('bold');
+      italic = document.queryCommandState('italic');
+    } catch {
+      bold = false;
+      italic = false;
+    }
+  }
+
+  if (boldButton) {
+    boldButton.classList.toggle(
+      'is-selected',
+      bold
     );
+    boldButton.setAttribute(
+      'aria-pressed',
+      bold ? 'true' : 'false'
+    );
+  }
+
+  if (italicButton) {
+    italicButton.classList.toggle(
+      'is-selected',
+      italic
+    );
+    italicButton.setAttribute(
+      'aria-pressed',
+      italic ? 'true' : 'false'
+    );
+  }
+}
+
+function validateLetterEditor(
+  editor,
+  stateKey,
+  maxLength,
+  overflowMode
+) {
+  if (!editor) {
+    return true;
+  }
+
+  normaliseLetterEditor(editor);
+
+  const previous =
+    letterMakerState[stateKey] || '';
+
+  const tooLong =
+    letterEditorLength(editor) > maxLength;
+
+  const overflows =
+    overflowMode === 'vertical'
+      ? editor.scrollHeight > editor.clientHeight + 2
+      : overflowMode === 'horizontal'
+        ? editor.scrollWidth > editor.clientWidth + 2
+        : false;
+
+  if (tooLong || overflows) {
+    editor.innerHTML = previous;
+    placeLetterCaretAtEnd(editor);
+    saveLetterSelection(editor);
+    return false;
+  }
+
+  letterMakerState[stateKey] =
+    editor.innerHTML;
+  saveLetterSelection(editor);
+  return true;
+}
+
+function updateLetterEditorState(editor) {
+  if (!editor) {
     return;
   }
 
-  letterMakerState.message =
-    message.value;
+  if (editor.id === 'letterMakerSignature') {
+    validateLetterEditor(
+      editor,
+      'signatureHtml',
+      32,
+      'horizontal'
+    );
+  } else {
+    validateLetterEditor(
+      editor,
+      'messageHtml',
+      650,
+      'vertical'
+    );
+  }
+
+  syncLetterStyleButtons();
+}
+
+function runLetterStyleCommand(command) {
+  const editor = getLetterEditor();
+
+  if (!editor) {
+    return;
+  }
+
+  restoreLetterSelection(editor);
+
+  try {
+    document.execCommand(
+      command,
+      false,
+      null
+    );
+  } catch {
+    return;
+  }
+
+  updateLetterEditorState(editor);
+  saveLetterSelection(editor);
+  syncLetterStyleButtons();
+}
+
+function insertLetterText(editor, value) {
+  if (!editor || typeof value !== 'string') {
+    return;
+  }
+
+  restoreLetterSelection(editor);
+
+  try {
+    document.execCommand(
+      'insertText',
+      false,
+      value
+    );
+  } catch {
+    const selection = window.getSelection();
+
+    if (!selection || selection.rangeCount === 0) {
+      return;
+    }
+
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+    const node = document.createTextNode(value);
+    range.insertNode(node);
+    range.setStartAfter(node);
+    range.collapse(true);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+
+  updateLetterEditorState(editor);
+}
+
+function customLetterEmojiSource(emoji) {
+  if (!emoji || typeof emoji.id !== 'string') {
+    return null;
+  }
+
+  const id = emoji.id.toLowerCase();
+
+  const chatSource =
+    window.chat?.customEmojiLookup?.get?.(id)?.src;
+
+  if (chatSource) {
+    return chatSource;
+  }
+
+  const skinSource =
+    emoji.skins?.find?.(skin => skin?.src)?.src;
+
+  return skinSource || null;
+}
+
+function insertLetterEmoji(emoji) {
+  const editor =
+    getLetterEditor(
+      letterMakerState.emojiTargetId ||
+      letterMakerState.activeEditorId
+    );
+
+  if (!editor || !emoji) {
+    return;
+  }
+
+  restoreLetterSelection(editor);
+
+  if (typeof emoji.native === 'string') {
+    insertLetterText(editor, emoji.native);
+    return;
+  }
+
+  const source = customLetterEmojiSource(emoji);
+
+  if (!source) {
+    return;
+  }
+
+  const selection = window.getSelection();
+
+  if (!selection || selection.rangeCount === 0) {
+    return;
+  }
+
+  const range = selection.getRangeAt(0);
+  range.deleteContents();
+
+  const image = document.createElement('img');
+  image.className = 'letter-maker-inline-emoji';
+  image.src = source;
+  image.alt = `:${emoji.id}:`;
+  image.dataset.emoji = emoji.id;
+  image.draggable = false;
+  image.contentEditable = 'false';
+
+  range.insertNode(image);
+  range.setStartAfter(image);
+  range.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  updateLetterEditorState(editor);
+}
+
+async function createLetterEmojiPicker() {
+  const host =
+    document.getElementById(
+      'letterMakerEmojiPopover'
+    );
+
+  if (!host) {
+    return null;
+  }
+
+  if (letterMakerState.emojiPicker) {
+    return letterMakerState.emojiPicker;
+  }
+
+  let picker = null;
+
+  if (
+    window.chat &&
+    typeof window.chat.createSharedEmojiPicker === 'function'
+  ) {
+    picker =
+      window.chat.createSharedEmojiPicker(
+        insertLetterEmoji
+      );
+  } else if (
+    window.EmojiMart &&
+    typeof window.EmojiMart.Picker === 'function'
+  ) {
+    const loadEmojiData = async () => {
+      const response = await fetch(
+        'https://cdn.jsdelivr.net/npm/@emoji-mart/data@1.2.1'
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `emoji data failed (${response.status})`
+        );
+      }
+
+      return response.json();
+    };
+
+    picker = new window.EmojiMart.Picker({
+      data: loadEmojiData,
+      emojiSize: 16,
+      emojiButtonSize: 26,
+      perLine: 10,
+      onEmojiSelect: insertLetterEmoji
+    });
+  }
+
+  if (!picker) {
+    return null;
+  }
+
+  picker.style.width = '320px';
+  picker.style.maxWidth = '100%';
+  picker.style.height = '360px';
+  host.appendChild(picker);
+  letterMakerState.emojiPicker = picker;
+
+  return picker;
+}
+
+function positionLetterEmojiPopover(anchor) {
+  const host =
+    document.getElementById(
+      'letterMakerEmojiPopover'
+    );
+
+  const windowElement =
+    document.querySelector(
+      '.letter-maker-window'
+    );
+
+  if (!host || !anchor || !windowElement) {
+    return;
+  }
+
+  const anchorRect =
+    anchor.getBoundingClientRect();
+
+  const windowRect =
+    windowElement.getBoundingClientRect();
+
+  const width = Math.min(
+    320,
+    windowRect.width - 20
+  );
+
+  const height = 372;
+
+  let left =
+    anchorRect.left - windowRect.left;
+
+  left = Math.max(
+    10,
+    Math.min(
+      left,
+      windowRect.width - width - 10
+    )
+  );
+
+  let top =
+    anchorRect.bottom - windowRect.top + 8;
+
+  if (top + height > windowRect.height - 8) {
+    top =
+      anchorRect.top -
+      windowRect.top -
+      height -
+      8;
+  }
+
+  top = Math.max(10, top);
+
+  host.style.left = `${left}px`;
+  host.style.top = `${top}px`;
+}
+
+function closeLetterEmojiPicker() {
+  const host =
+    document.getElementById(
+      'letterMakerEmojiPopover'
+    );
+
+  if (!host) {
+    return;
+  }
+
+  host.hidden = true;
+  letterMakerState.emojiTargetId = null;
+}
+
+async function openLetterEmojiPicker(
+  editor,
+  anchor
+) {
+  const host =
+    document.getElementById(
+      'letterMakerEmojiPopover'
+    );
+
+  if (!editor || !anchor || !host) {
+    return;
+  }
+
+  letterMakerState.activeEditorId = editor.id;
+  letterMakerState.emojiTargetId = editor.id;
+  saveLetterSelection(editor);
+
+  const picker =
+    await createLetterEmojiPicker();
+
+  if (!picker) {
+    return;
+  }
+
+  host.hidden = false;
+  positionLetterEmojiPopover(anchor);
 }
 
 function openLetterMaker() {
@@ -5769,6 +6277,8 @@ function closeLetterMaker() {
       'letterMakerOverlay'
     );
 
+  closeLetterEmojiPicker();
+
   if (!overlay || overlay.hidden) {
     return;
   }
@@ -5792,6 +6302,95 @@ function closeLetterMaker() {
   ) {
     previousFocus.focus();
   }
+}
+
+function initializeLetterEditor(editor) {
+  if (!editor) {
+    return;
+  }
+
+  editor.addEventListener(
+    'focus',
+    () => {
+      letterMakerState.activeEditorId = editor.id;
+      saveLetterSelection(editor);
+      syncLetterStyleButtons();
+    }
+  );
+
+  editor.addEventListener(
+    'mouseup',
+    () => {
+      saveLetterSelection(editor);
+      syncLetterStyleButtons();
+    }
+  );
+
+  editor.addEventListener(
+    'keyup',
+    () => {
+      saveLetterSelection(editor);
+      syncLetterStyleButtons();
+    }
+  );
+
+  editor.addEventListener(
+    'input',
+    () => updateLetterEditorState(editor)
+  );
+
+  editor.addEventListener(
+    'blur',
+    () => {
+      normaliseLetterEditor(editor);
+      updateLetterEditorState(editor);
+    }
+  );
+
+  editor.addEventListener(
+    'paste',
+    event => {
+      event.preventDefault();
+
+      let text =
+        event.clipboardData?.getData('text/plain') || '';
+
+      if (editor.id === 'letterMakerSignature') {
+        text = text.replace(/\s*\n+\s*/g, ' ');
+      }
+
+      insertLetterText(editor, text);
+    }
+  );
+
+  editor.addEventListener(
+    'keydown',
+    event => {
+      if (
+        editor.id === 'letterMakerSignature' &&
+        event.key === 'Enter'
+      ) {
+        event.preventDefault();
+        return;
+      }
+
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        !event.altKey &&
+        (event.key.toLowerCase() === 'b' ||
+          event.key.toLowerCase() === 'i')
+      ) {
+        event.preventDefault();
+        letterMakerState.activeEditorId = editor.id;
+        saveLetterSelection(editor);
+        runLetterStyleCommand(
+          event.key.toLowerCase() === 'b'
+            ? 'bold'
+            : 'italic'
+        );
+      }
+    }
+  );
 }
 
 function initializeLetterMaker() {
@@ -5860,6 +6459,31 @@ function initializeLetterMaker() {
       'letterMakerSignatureMove'
     );
 
+  const boldButton =
+    document.getElementById(
+      'letterMakerBold'
+    );
+
+  const italicButton =
+    document.getElementById(
+      'letterMakerItalic'
+    );
+
+  const messageEmojiButton =
+    document.getElementById(
+      'letterMakerMessageEmoji'
+    );
+
+  const signatureEmojiButton =
+    document.getElementById(
+      'letterMakerSignatureEmoji'
+    );
+
+  const emojiPopover =
+    document.getElementById(
+      'letterMakerEmojiPopover'
+    );
+
   if (
     !trigger ||
     !overlay ||
@@ -5919,6 +6543,9 @@ function initializeLetterMaker() {
     'signature'
   );
 
+  initializeLetterEditor(message);
+  initializeLetterEditor(signature);
+
   trigger.addEventListener(
     'click',
     openLetterMaker
@@ -5947,27 +6574,13 @@ function initializeLetterMaker() {
     }
   );
 
-  message?.addEventListener(
-    'input',
-    () => keepLetterMessageInsidePaper(message)
-  );
-
-  signature?.addEventListener(
-    'input',
-    () => {
-      letterMakerState.signature =
-        signature.value;
-    }
-  );
-
   font?.addEventListener(
     'change',
     () => {
       letterMakerState.font = font.value;
       applyLetterMakerFormatting();
-      if (message) {
-        keepLetterMessageInsidePaper(message);
-      }
+      updateLetterEditorState(message);
+      updateLetterEditorState(signature);
     }
   );
 
@@ -5999,12 +6612,107 @@ function initializeLetterMaker() {
             button.dataset.letterSize ||
             'medium';
           applyLetterMakerFormatting();
-          if (message) {
-            keepLetterMessageInsidePaper(message);
-          }
+          updateLetterEditorState(message);
+          updateLetterEditorState(signature);
         }
       );
     });
+
+  [boldButton, italicButton]
+    .filter(Boolean)
+    .forEach(button => {
+      button.addEventListener(
+        'pointerdown',
+        event => event.preventDefault()
+      );
+    });
+
+  boldButton?.addEventListener(
+    'click',
+    () => runLetterStyleCommand('bold')
+  );
+
+  italicButton?.addEventListener(
+    'click',
+    () => runLetterStyleCommand('italic')
+  );
+
+  messageEmojiButton?.addEventListener(
+    'pointerdown',
+    event => {
+      event.preventDefault();
+      if (message) {
+        saveLetterSelection(message);
+      }
+    }
+  );
+
+  signatureEmojiButton?.addEventListener(
+    'pointerdown',
+    event => {
+      event.preventDefault();
+      if (signature) {
+        saveLetterSelection(signature);
+      }
+    }
+  );
+
+  messageEmojiButton?.addEventListener(
+    'click',
+    () => openLetterEmojiPicker(
+      message,
+      messageEmojiButton
+    )
+  );
+
+  signatureEmojiButton?.addEventListener(
+    'click',
+    () => openLetterEmojiPicker(
+      signature,
+      signatureEmojiButton
+    )
+  );
+
+  document.addEventListener(
+    'selectionchange',
+    () => {
+      const editor =
+        document.activeElement?.closest?.(
+          '.letter-maker-message, .letter-maker-signature'
+        );
+
+      if (editor?.isContentEditable) {
+        letterMakerState.activeEditorId = editor.id;
+        saveLetterSelection(editor);
+        syncLetterStyleButtons();
+      }
+    }
+  );
+
+  document.addEventListener(
+    'pointerdown',
+    event => {
+      if (!emojiPopover || emojiPopover.hidden) {
+        return;
+      }
+
+      const path =
+        typeof event.composedPath === 'function'
+          ? event.composedPath()
+          : [];
+
+      if (
+        path.includes(emojiPopover) ||
+        path.includes(messageEmojiButton) ||
+        path.includes(signatureEmojiButton)
+      ) {
+        return;
+      }
+
+      closeLetterEmojiPicker();
+    },
+    true
+  );
 
   overlay.addEventListener(
     'click',
@@ -6015,6 +6723,11 @@ function initializeLetterMaker() {
     }
   );
 
+  window.addEventListener(
+    'resize',
+    closeLetterEmojiPicker
+  );
+
   document.addEventListener(
     'keydown',
     event => {
@@ -6023,6 +6736,11 @@ function initializeLetterMaker() {
       }
 
       if (event.key === 'Escape') {
+        if (emojiPopover && !emojiPopover.hidden) {
+          closeLetterEmojiPicker();
+          return;
+        }
+
         closeLetterMaker();
         return;
       }
@@ -6030,7 +6748,7 @@ function initializeLetterMaker() {
       if (
         event.target instanceof HTMLElement &&
         event.target.closest(
-          'input, textarea, select'
+          'input, textarea, select, [contenteditable="true"]'
         )
       ) {
         return;
@@ -6054,6 +6772,7 @@ function initializeLetterMaker() {
 
   updateLetterMakerTemplate(0, false);
   applyLetterMakerFormatting();
+  syncLetterStyleButtons();
   setLetterMakerTriggerVisible(
     !watchPartyState.enabled
   );
