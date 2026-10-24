@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>letters</title>
+<link rel="stylesheet" href="letters.css?v=1">
+</head>
+<body>
+<main class="mailbox-app">
+    <section id="mailboxLogin" class="mailbox-login">
+        <div class="mailbox-login-card">
+            <h1>letters</h1>
+            <p>private mailbox</p>
+            <input id="mailboxKey" type="password" autocomplete="current-password" placeholder="admin key" aria-label="admin key">
+            <button id="mailboxLoginButton" type="button">open mailbox</button>
+            <div id="mailboxLoginStatus" class="mailbox-login-status" aria-live="polite"></div>
+        </div>
+    </section>
+
+    <section id="mailboxInbox" class="mailbox-inbox" hidden>
+        <header class="mailbox-header">
+            <div>
+                <h1>letters</h1>
+                <div id="mailboxUnread" class="mailbox-unread">0 unread</div>
+            </div>
+            <div class="mailbox-header-actions">
+                <button id="mailboxRefresh" type="button">refresh</button>
+                <button id="mailboxLogout" type="button">lock</button>
+            </div>
+        </header>
+
+        <div class="mailbox-layout">
+            <aside id="mailboxList" class="mailbox-list" aria-label="received letters"></aside>
+
+            <section class="mailbox-reader">
+                <div id="mailboxEmpty" class="mailbox-empty">no letters yet ♡</div>
+
+                <div id="mailboxLetter" class="mailbox-letter" hidden>
+                    <div class="mailbox-paper-shell">
+                        <div id="mailboxPaper" class="mailbox-paper" data-letter-font="nintendoh" data-letter-size="medium">
+                            <img id="mailboxPaperImage" class="mailbox-paper-image" src="/tmplates/Letter01.png" alt="letter paper" draggable="false">
+                            <div id="mailboxMessageBlock" class="mailbox-message-block">
+                                <div id="mailboxMessage" class="mailbox-message"></div>
+                            </div>
+                            <div id="mailboxSignatureBlock" class="mailbox-signature-block">
+                                <div id="mailboxSignature" class="mailbox-signature"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mailbox-letter-footer">
+                        <button id="mailboxPrevious" type="button" aria-label="previous letter">‹</button>
+                        <div>
+                            <div id="mailboxDate" class="mailbox-date"></div>
+                            <div id="mailboxNumber" class="mailbox-number"></div>
+                        </div>
+                        <button id="mailboxNext" type="button" aria-label="next letter">›</button>
+                    </div>
+
+                    <button id="mailboxDelete" class="mailbox-delete" type="button">delete letter</button>
+                </div>
+            </section>
+        </div>
+    </section>
+</main>
+<script src="letters.js?v=1"></script>
+</body>
+</html>
