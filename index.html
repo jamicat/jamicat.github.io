@@ -15,7 +15,7 @@ if (window.location.hostname === "jamicat.github.io") {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description"
 content="jamie's personal website with a live chat, guest wall, furry art, music player and interactive themes.">
-<link rel="stylesheet" href="stylish.css?v=4"/>
+<link rel="stylesheet" href="stylish.css?v=5"/>
 <link
     rel="stylesheet"
     href="./image-transfer.css?v=1"
@@ -109,7 +109,7 @@ addComponents({
     hidden
 >
     <img
-        src="/tmplates/paper.png"
+        src="/tmplates/mbox.png"
         alt=""
         aria-hidden="true"
         draggable="false"
@@ -164,23 +164,47 @@ addComponents({
                         alt="letter paper 01"
                         draggable="false"
                     >
-                    <textarea
-                        id="letterMakerMessage"
-                        class="letter-maker-message"
-                        maxlength="650"
-                        aria-label="letter message"
-                        placeholder="write your letter..."
-                        spellcheck="true"
-                    ></textarea>
-                    <input
-                        id="letterMakerSignature"
-                        class="letter-maker-signature"
-                        type="text"
-                        maxlength="32"
-                        aria-label="letter signature"
-                        placeholder="signature"
-                        autocomplete="off"
+                    <div
+                        id="letterMakerMessageBlock"
+                        class="letter-maker-text-block letter-maker-message-block"
                     >
+                        <textarea
+                            id="letterMakerMessage"
+                            class="letter-maker-message"
+                            maxlength="650"
+                            aria-label="letter message"
+                            placeholder="write your letter..."
+                            spellcheck="true"
+                        ></textarea>
+                        <button
+                            id="letterMakerMessageMove"
+                            class="letter-maker-drag-handle"
+                            type="button"
+                            aria-label="move letter message"
+                            title="move"
+                        >✥</button>
+                    </div>
+                    <div
+                        id="letterMakerSignatureBlock"
+                        class="letter-maker-text-block letter-maker-signature-block"
+                    >
+                        <input
+                            id="letterMakerSignature"
+                            class="letter-maker-signature"
+                            type="text"
+                            maxlength="32"
+                            aria-label="letter signature"
+                            placeholder="signature"
+                            autocomplete="off"
+                        >
+                        <button
+                            id="letterMakerSignatureMove"
+                            class="letter-maker-drag-handle"
+                            type="button"
+                            aria-label="move letter signature"
+                            title="move"
+                        >✥</button>
+                    </div>
                 </div>
             </div>
 
@@ -207,12 +231,12 @@ addComponents({
             <div class="letter-maker-control">
                 <span>colour</span>
                 <div class="letter-maker-colours" role="group" aria-label="letter text colour">
-                    <button type="button" class="letter-maker-colour is-selected" data-letter-colour="#433d46" aria-label="charcoal" aria-pressed="true" style="--letter-colour:#433d46"></button>
-                    <button type="button" class="letter-maker-colour" data-letter-colour="#c76587" aria-label="pastel pink" aria-pressed="false" style="--letter-colour:#c76587"></button>
-                    <button type="button" class="letter-maker-colour" data-letter-colour="#5f86aa" aria-label="pastel blue" aria-pressed="false" style="--letter-colour:#5f86aa"></button>
-                    <button type="button" class="letter-maker-colour" data-letter-colour="#648d74" aria-label="pastel green" aria-pressed="false" style="--letter-colour:#648d74"></button>
-                    <button type="button" class="letter-maker-colour" data-letter-colour="#806da3" aria-label="lavender" aria-pressed="false" style="--letter-colour:#806da3"></button>
-                    <button type="button" class="letter-maker-colour" data-letter-colour="#896951" aria-label="warm brown" aria-pressed="false" style="--letter-colour:#896951"></button>
+                    <button type="button" class="letter-maker-colour is-selected" data-letter-colour="#333238" aria-label="black" aria-pressed="true" style="--letter-colour:#333238"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#4f7fbd" aria-label="blue" aria-pressed="false" style="--letter-colour:#4f7fbd"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#4f8d68" aria-label="green" aria-pressed="false" style="--letter-colour:#4f8d68"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#ee9fbd" aria-label="pastel pink" aria-pressed="false" style="--letter-colour:#ee9fbd"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#b8a5df" aria-label="pastel lavender" aria-pressed="false" style="--letter-colour:#b8a5df"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#d8a381" aria-label="pastel peach" aria-pressed="false" style="--letter-colour:#d8a381"></button>
                 </div>
             </div>
 
@@ -536,7 +560,7 @@ addComponents({
     <span id="siteViewCount">0</span>
 </div>
 
-<script src="scripts.js?v=9"></script>
+<script src="scripts.js?v=10"></script>
 <script src="discscripts.js?v=4"></script>
 <script
     src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"
