@@ -15,7 +15,7 @@ if (window.location.hostname === "jamicat.github.io") {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description"
 content="jamie's personal website with a live chat, guest wall, furry art, music player and interactive themes.">
-<link rel="stylesheet" href="stylish.css?v=7"/>
+<link rel="stylesheet" href="stylish.css?v=8"/>
 <link
     rel="stylesheet"
     href="./image-transfer.css?v=1"
@@ -222,7 +222,6 @@ addComponents({
 
         <div class="letter-maker-controls" aria-label="letter formatting">
             <label class="letter-maker-control letter-maker-font-control">
-                <span>font</span>
                 <select id="letterMakerFont" aria-label="letter font">
                     <option value="nintendoh">nintendoh</option>
                     <option value="dynapuff">dynapuff</option>
@@ -232,7 +231,6 @@ addComponents({
             </label>
 
             <div class="letter-maker-control">
-                <span>colour</span>
                 <div class="letter-maker-colours" role="group" aria-label="letter text colour">
                     <button type="button" class="letter-maker-colour is-selected" data-letter-colour="#333238" aria-label="black" aria-pressed="true" style="--letter-colour:#333238"></button>
                     <button type="button" class="letter-maker-colour" data-letter-colour="#4f7fbd" aria-label="blue" aria-pressed="false" style="--letter-colour:#4f7fbd"></button>
@@ -244,7 +242,6 @@ addComponents({
             </div>
 
             <div class="letter-maker-control">
-                <span>size</span>
                 <div class="letter-maker-sizes" role="group" aria-label="letter text size">
                     <button type="button" class="letter-maker-size" data-letter-size="small" aria-pressed="false">small</button>
                     <button type="button" class="letter-maker-size is-selected" data-letter-size="medium" aria-pressed="true">medium</button>
@@ -253,7 +250,6 @@ addComponents({
             </div>
 
             <div class="letter-maker-control">
-                <span>style</span>
                 <div class="letter-maker-styles" role="group" aria-label="letter text style">
                     <button id="letterMakerBold" type="button" class="letter-maker-style" aria-label="bold" aria-pressed="false"><strong>b</strong></button>
                     <button id="letterMakerItalic" type="button" class="letter-maker-style" aria-label="italic" aria-pressed="false"><em>i</em></button>
@@ -261,7 +257,6 @@ addComponents({
             </div>
 
             <div class="letter-maker-control">
-                <span>emoji</span>
                 <div class="letter-maker-emojis" role="group" aria-label="insert emoji">
                     <button id="letterMakerEmoji" type="button" class="letter-maker-emoji" aria-label="add emoji">☺️</button>
                 </div>
@@ -584,7 +579,7 @@ addComponents({
     <span id="siteViewCount">0</span>
 </div>
 
-<script src="scripts.js?v=12"></script>
+<script src="scripts.js?v=13"></script>
 <script src="discscripts.js?v=4"></script>
 <script
     src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"
