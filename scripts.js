@@ -5368,7 +5368,12 @@ if (document.readyState === 'loading') {
 
 const letterMakerState = {
   index: 0,
-  previousFocus: null
+  previousFocus: null,
+  font: 'nunito',
+  colour: '#433d46',
+  size: 'medium',
+  message: '',
+  signature: ''
 };
 
 function letterMakerTemplatePath(index) {
@@ -5455,6 +5460,102 @@ function updateLetterMakerTemplate(index, movePicker = true) {
         });
       }
     });
+}
+
+function applyLetterMakerFormatting() {
+  const paper =
+    document.getElementById(
+      'letterMakerPaper'
+    );
+
+  if (!paper) {
+    return;
+  }
+
+  paper.dataset.letterFont =
+    letterMakerState.font;
+
+  paper.dataset.letterSize =
+    letterMakerState.size;
+
+  paper.style.setProperty(
+    '--letter-text-colour',
+    letterMakerState.colour
+  );
+
+  const font =
+    document.getElementById(
+      'letterMakerFont'
+    );
+
+  if (font) {
+    font.value = letterMakerState.font;
+  }
+
+  document
+    .querySelectorAll(
+      '.letter-maker-colour'
+    )
+    .forEach(button => {
+      const selected =
+        button.dataset.letterColour ===
+        letterMakerState.colour;
+
+      button.classList.toggle(
+        'is-selected',
+        selected
+      );
+
+      button.setAttribute(
+        'aria-pressed',
+        selected ? 'true' : 'false'
+      );
+    });
+
+  document
+    .querySelectorAll(
+      '.letter-maker-size'
+    )
+    .forEach(button => {
+      const selected =
+        button.dataset.letterSize ===
+        letterMakerState.size;
+
+      button.classList.toggle(
+        'is-selected',
+        selected
+      );
+
+      button.setAttribute(
+        'aria-pressed',
+        selected ? 'true' : 'false'
+      );
+    });
+}
+
+function keepLetterMessageInsidePaper(message) {
+  const previous = letterMakerState.message;
+  const start = message.selectionStart;
+  const end = message.selectionEnd;
+
+  if (
+    message.scrollHeight >
+    message.clientHeight + 2
+  ) {
+    message.value = previous;
+    const caret = Math.min(
+      start,
+      previous.length
+    );
+    message.setSelectionRange(
+      caret,
+      Math.min(end, previous.length)
+    );
+    return;
+  }
+
+  letterMakerState.message =
+    message.value;
 }
 
 function openLetterMaker() {
@@ -5548,6 +5649,21 @@ function initializeLetterMaker() {
       'letterMakerTemplates'
     );
 
+  const message =
+    document.getElementById(
+      'letterMakerMessage'
+    );
+
+  const signature =
+    document.getElementById(
+      'letterMakerSignature'
+    );
+
+  const font =
+    document.getElementById(
+      'letterMakerFont'
+    );
+
   if (
     !trigger ||
     !overlay ||
@@ -5623,6 +5739,65 @@ function initializeLetterMaker() {
     }
   );
 
+  message?.addEventListener(
+    'input',
+    () => keepLetterMessageInsidePaper(message)
+  );
+
+  signature?.addEventListener(
+    'input',
+    () => {
+      letterMakerState.signature =
+        signature.value;
+    }
+  );
+
+  font?.addEventListener(
+    'change',
+    () => {
+      letterMakerState.font = font.value;
+      applyLetterMakerFormatting();
+      if (message) {
+        keepLetterMessageInsidePaper(message);
+      }
+    }
+  );
+
+  document
+    .querySelectorAll(
+      '.letter-maker-colour'
+    )
+    .forEach(button => {
+      button.addEventListener(
+        'click',
+        () => {
+          letterMakerState.colour =
+            button.dataset.letterColour ||
+            '#433d46';
+          applyLetterMakerFormatting();
+        }
+      );
+    });
+
+  document
+    .querySelectorAll(
+      '.letter-maker-size'
+    )
+    .forEach(button => {
+      button.addEventListener(
+        'click',
+        () => {
+          letterMakerState.size =
+            button.dataset.letterSize ||
+            'medium';
+          applyLetterMakerFormatting();
+          if (message) {
+            keepLetterMessageInsidePaper(message);
+          }
+        }
+      );
+    });
+
   overlay.addEventListener(
     'click',
     event => {
@@ -5644,6 +5819,15 @@ function initializeLetterMaker() {
         return;
       }
 
+      if (
+        event.target instanceof HTMLElement &&
+        event.target.closest(
+          'input, textarea, select'
+        )
+      ) {
+        return;
+      }
+
       if (event.key === 'ArrowLeft') {
         updateLetterMakerTemplate(
           letterMakerState.index - 1
@@ -5661,6 +5845,7 @@ function initializeLetterMaker() {
   trigger.dataset.letterMakerReady = 'true';
 
   updateLetterMakerTemplate(0, false);
+  applyLetterMakerFormatting();
   setLetterMakerTriggerVisible(
     !watchPartyState.enabled
   );
@@ -5675,4 +5860,3 @@ if (document.readyState === 'loading') {
     { once: true }
   );
 }
-
