@@ -1775,9 +1775,9 @@ font-size: 0.65rem;
 .letter-maker-trigger {
   position: fixed;
   top: 68%;
-  left: -31px;
+  left: -8px;
   z-index: 12;
-  width: 82px;
+  width: 86px;
   height: auto;
   margin: 0;
   padding: 0;
@@ -1812,20 +1812,19 @@ font-size: 0.65rem;
 .letter-maker-trigger:focus-visible {
   transform:
     translateY(-50%)
-    translateX(8px)
-    rotate(-1deg);
+    translateX(3px);
   filter:
     drop-shadow(
-      0 4px 8px
-      rgba(0, 0, 0, .28)
+      0 3px 6px
+      rgba(0, 0, 0, .24)
     );
 }
 
 .letter-maker-trigger:active {
   transform:
     translateY(-50%)
-    translateX(5px)
-    scale(.97);
+    translateX(2px)
+    scale(.98);
 }
 
 .letter-maker-trigger:focus-visible {
@@ -1840,9 +1839,9 @@ font-size: 0.65rem;
   place-items: center;
   padding: 22px;
   box-sizing: border-box;
-  background: rgba(0, 0, 0, .58);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(36, 24, 33, .48);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
   opacity: 0;
   transition: opacity 170ms ease;
 }
@@ -1856,44 +1855,57 @@ font-size: 0.65rem;
 }
 
 .letter-maker-window {
-  --letter-maker-accent: #f6a8c8;
-  width: min(860px, 94vw);
-  max-height: min(760px, 92vh);
+  --letter-maker-accent: #d978a0;
+  width: min(900px, 94vw);
+  max-height: min(820px, 94vh);
   padding: 18px;
   box-sizing: border-box;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, .18);
-  border-radius: 24px;
+  overflow: auto;
+  border: 1px solid rgba(255, 255, 255, .78);
+  border-radius: 26px;
   background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, .08),
-      rgba(255, 255, 255, .025)
+    radial-gradient(
+      circle at 8% 0%,
+      rgba(255, 255, 255, .78),
+      transparent 34%
     ),
-    rgba(16, 16, 20, .88);
+    radial-gradient(
+      circle at 92% 100%,
+      rgba(224, 211, 255, .58),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      #ffe0ec 0%,
+      #f8c3d9 52%,
+      #e8d8f4 100%
+    );
   box-shadow:
-    0 24px 70px rgba(0, 0, 0, .44),
-    inset 0 1px 0 rgba(255, 255, 255, .08);
-  color: #fff;
-  font-family: var(--body-font), 'nunito', sans-serif;
+    0 24px 70px rgba(73, 36, 59, .30),
+    inset 0 1px 0 rgba(255, 255, 255, .90);
+  color: #704b60;
+  font-family: 'nunito', sans-serif;
   transform: translateY(10px) scale(.985);
   transition: transform 170ms ease;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(190, 106, 145, .48) transparent;
+}
+
+.letter-maker-window::-webkit-scrollbar {
+  width: 5px;
+}
+
+.letter-maker-window::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.letter-maker-window::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(190, 106, 145, .48);
 }
 
 .letter-maker-overlay.is-open .letter-maker-window {
   transform: translateY(0) scale(1);
-}
-
-.theme-pastel .letter-maker-window {
-  --letter-maker-accent: #f6a8c8;
-  border-color: rgba(255, 225, 196, .45);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 228, 204, .12),
-      rgba(255, 180, 124, .04)
-    ),
-    rgba(53, 27, 19, .88);
 }
 
 .letter-maker-header {
@@ -1906,17 +1918,17 @@ font-size: 0.65rem;
 
 .letter-maker-title {
   margin: 0;
-  color: #fff;
-  font-family: 'nintendoh', sans-serif;
-  font-size: 12px;
+  color: #8f5c78;
+  font-family: 'DynaPuff', 'nunito', sans-serif;
+  font-size: 17px;
   font-weight: 400;
-  letter-spacing: .04em;
+  letter-spacing: .01em;
   text-transform: lowercase;
 }
 
 .letter-maker-count {
-  margin-top: 5px;
-  color: rgba(255, 255, 255, .56);
+  margin-top: 4px;
+  color: rgba(112, 75, 96, .62);
   font-family: 'nunito', sans-serif;
   font-size: 10px;
   line-height: 1;
@@ -1926,10 +1938,13 @@ font-size: 0.65rem;
 .letter-maker-nav {
   appearance: none;
   -webkit-appearance: none;
-  border: 1px solid rgba(255, 255, 255, .15);
-  background: rgba(255, 255, 255, .055);
-  color: rgba(255, 255, 255, .86);
+  border: 1px solid rgba(255, 255, 255, .82);
+  background: rgba(255, 255, 255, .45);
+  color: #995f7c;
   cursor: pointer;
+  box-shadow:
+    0 4px 12px rgba(123, 66, 96, .08),
+    inset 0 1px 0 rgba(255, 255, 255, .78);
   transition:
     transform 150ms ease,
     background 150ms ease,
@@ -1953,23 +1968,15 @@ font-size: 0.65rem;
 .letter-maker-close:focus-visible,
 .letter-maker-nav:hover,
 .letter-maker-nav:focus-visible {
-  border-color: color-mix(
-    in srgb,
-    var(--letter-maker-accent) 70%,
-    white
-  );
-  background: color-mix(
-    in srgb,
-    var(--letter-maker-accent) 18%,
-    transparent
-  );
-  color: #fff;
+  border-color: rgba(217, 120, 160, .46);
+  background: rgba(255, 255, 255, .72);
+  color: #c15f88;
   outline: none;
 }
 
 .letter-maker-close:active,
 .letter-maker-nav:active {
-  transform: scale(.94);
+  transform: scale(.95);
 }
 
 .letter-maker-stage {
@@ -1977,7 +1984,6 @@ font-size: 0.65rem;
   grid-template-columns: 44px minmax(0, 1fr) 44px;
   align-items: center;
   gap: 12px;
-  min-height: 468px;
 }
 
 .letter-maker-preview-shell {
@@ -1987,16 +1993,139 @@ font-size: 0.65rem;
   min-height: 0;
 }
 
-.letter-maker-preview {
-  display: block;
+.letter-maker-paper {
+  --letter-text-colour: #433d46;
+  position: relative;
   width: min(624px, 100%);
-  height: auto;
-  max-height: 60vh;
-  object-fit: contain;
+  aspect-ratio: 4 / 3;
+  container-type: inline-size;
+  overflow: hidden;
+  isolation: isolate;
+  filter:
+    drop-shadow(
+      0 10px 18px
+      rgba(91, 50, 71, .16)
+    );
+}
+
+.letter-maker-preview {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   user-select: none;
   -webkit-user-drag: none;
+}
+
+.letter-maker-message,
+.letter-maker-signature {
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--letter-text-colour);
+  font-weight: 600;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .32);
+  caret-color: currentColor;
+  transition:
+    background 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.letter-maker-message {
+  top: 17%;
+  left: 12%;
+  width: 76%;
+  height: 56%;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.9;
+  letter-spacing: .01em;
+}
+
+.letter-maker-signature {
+  right: 12%;
+  bottom: 11%;
+  width: 36%;
+  height: 11%;
+  text-align: right;
+  line-height: 1.2;
+}
+
+.letter-maker-message:hover,
+.letter-maker-message:focus,
+.letter-maker-signature:hover,
+.letter-maker-signature:focus {
+  background: rgba(255, 255, 255, .10);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .18);
+}
+
+.letter-maker-message::placeholder,
+.letter-maker-signature::placeholder {
+  color: currentColor;
+  opacity: .42;
+}
+
+.letter-maker-paper[data-letter-font="nunito"] .letter-maker-message,
+.letter-maker-paper[data-letter-font="nunito"] .letter-maker-signature {
+  font-family: 'nunito', sans-serif;
+}
+
+.letter-maker-paper[data-letter-font="nintendoh"] .letter-maker-message,
+.letter-maker-paper[data-letter-font="nintendoh"] .letter-maker-signature {
+  font-family: 'nintendoh', sans-serif;
+  font-weight: 400;
+}
+
+.letter-maker-paper[data-letter-font="dynapuff"] .letter-maker-message,
+.letter-maker-paper[data-letter-font="dynapuff"] .letter-maker-signature {
+  font-family: 'DynaPuff', sans-serif;
+  font-weight: 400;
+}
+
+.letter-maker-paper[data-letter-font="spiritsoft"] .letter-maker-message,
+.letter-maker-paper[data-letter-font="spiritsoft"] .letter-maker-signature {
+  font-family: 'spiritsoft', sans-serif;
+  font-weight: 400;
+}
+
+.letter-maker-paper[data-letter-size="small"] .letter-maker-message {
+  font-size: 15px;
+  font-size: 2.5cqw;
+}
+
+.letter-maker-paper[data-letter-size="small"] .letter-maker-signature {
+  font-size: 14px;
+  font-size: 2.35cqw;
+}
+
+.letter-maker-paper[data-letter-size="medium"] .letter-maker-message {
+  font-size: 18px;
+  font-size: 3cqw;
+}
+
+.letter-maker-paper[data-letter-size="medium"] .letter-maker-signature {
+  font-size: 16px;
+  font-size: 2.65cqw;
+}
+
+.letter-maker-paper[data-letter-size="large"] .letter-maker-message {
+  font-size: 21px;
+  font-size: 3.5cqw;
+}
+
+.letter-maker-paper[data-letter-size="large"] .letter-maker-signature {
+  font-size: 18px;
+  font-size: 3cqw;
 }
 
 .letter-maker-nav {
@@ -2011,22 +2140,131 @@ font-size: 0.65rem;
   line-height: 1;
 }
 
+.letter-maker-controls {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin: 14px auto 2px;
+  padding: 10px 12px;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, .64);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .30);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55);
+}
+
+.letter-maker-control {
+  display: grid;
+  gap: 5px;
+}
+
+.letter-maker-control > span {
+  color: rgba(112, 75, 96, .72);
+  font-family: 'nunito', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: lowercase;
+}
+
+.letter-maker-font-control select {
+  min-width: 116px;
+  height: 29px;
+  padding: 0 28px 0 9px;
+  border: 1px solid rgba(184, 104, 141, .22);
+  border-radius: 10px;
+  outline: none;
+  background: rgba(255, 255, 255, .65);
+  color: #744b61;
+  font-family: 'nunito', sans-serif;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.letter-maker-font-control select:focus-visible {
+  border-color: rgba(201, 95, 139, .58);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .48);
+}
+
+.letter-maker-colours,
+.letter-maker-sizes {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.letter-maker-colour {
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  border: 3px solid rgba(255, 255, 255, .72);
+  border-radius: 50%;
+  background: var(--letter-colour);
+  cursor: pointer;
+  box-shadow:
+    0 0 0 1px rgba(140, 80, 108, .13),
+    0 3px 7px rgba(111, 64, 86, .10);
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.letter-maker-colour:hover,
+.letter-maker-colour:focus-visible {
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.letter-maker-colour.is-selected {
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 4px rgba(201, 95, 139, .48),
+    0 3px 7px rgba(111, 64, 86, .10);
+}
+
+.letter-maker-size {
+  height: 27px;
+  padding: 0 9px;
+  border: 1px solid rgba(184, 104, 141, .20);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .55);
+  color: #83536c;
+  font-family: 'nunito', sans-serif;
+  font-size: 9px;
+  cursor: pointer;
+  transition:
+    transform 120ms ease,
+    background 120ms ease,
+    border-color 120ms ease;
+}
+
+.letter-maker-size:hover,
+.letter-maker-size:focus-visible {
+  background: rgba(255, 255, 255, .76);
+  outline: none;
+}
+
+.letter-maker-size.is-selected {
+  border-color: rgba(201, 95, 139, .45);
+  background: rgba(255, 255, 255, .88);
+  color: #b3527b;
+  box-shadow: 0 2px 6px rgba(111, 64, 86, .08);
+}
+
 .letter-maker-templates {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 12px;
   padding: 7px 2px 9px;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
-  scrollbar-color:
-    color-mix(
-      in srgb,
-      var(--letter-maker-accent) 55%,
-      transparent
-    )
-    transparent;
+  scrollbar-color: rgba(190, 106, 145, .48) transparent;
 }
 
 .letter-maker-templates::-webkit-scrollbar {
@@ -2039,22 +2277,18 @@ font-size: 0.65rem;
 
 .letter-maker-templates::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: color-mix(
-    in srgb,
-    var(--letter-maker-accent) 55%,
-    transparent
-  );
+  background: rgba(190, 106, 145, .48);
 }
 
 .letter-maker-template {
   flex: 0 0 auto;
-  width: 96px;
+  width: 92px;
   padding: 3px;
-  border: 1px solid rgba(255, 255, 255, .10);
-  border-radius: 9px;
-  background: rgba(255, 255, 255, .035);
+  border: 1px solid rgba(255, 255, 255, .62);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .30);
   cursor: pointer;
-  opacity: .62;
+  opacity: .68;
   transition:
     opacity 150ms ease,
     transform 150ms ease,
@@ -2066,7 +2300,9 @@ font-size: 0.65rem;
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 5px;
+  aspect-ratio: 4 / 3;
+  object-fit: fill;
+  border-radius: 6px;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   pointer-events: none;
@@ -2076,60 +2312,66 @@ font-size: 0.65rem;
 
 .letter-maker-template:hover,
 .letter-maker-template:focus-visible {
-  opacity: .9;
+  opacity: .94;
   transform: translateY(-1px);
   outline: none;
 }
 
 .letter-maker-template.is-selected {
-  border-color: var(--letter-maker-accent);
+  border-color: rgba(197, 91, 136, .66);
   box-shadow:
-    0 0 0 1px
-    color-mix(
-      in srgb,
-      var(--letter-maker-accent) 35%,
-      transparent
-    );
+    0 0 0 2px rgba(255, 255, 255, .68),
+    0 0 0 4px rgba(207, 108, 150, .30);
   opacity: 1;
 }
 
 @media (max-width: 700px) {
   .letter-maker-trigger {
     top: 66%;
-    left: -25px;
-    width: 68px;
+    left: -6px;
+    width: 72px;
+  }
+
+  .letter-maker-trigger:hover,
+  .letter-maker-trigger:focus-visible {
+    transform:
+      translateY(-50%)
+      translateX(2px);
   }
 
   .letter-maker-overlay {
-    padding: 12px;
+    padding: 10px;
   }
 
   .letter-maker-window {
-    width: min(96vw, 640px);
-    max-height: 94vh;
-    padding: 14px;
-    border-radius: 19px;
+    width: min(97vw, 640px);
+    max-height: 96vh;
+    padding: 13px;
+    border-radius: 20px;
+  }
+
+  .letter-maker-title {
+    font-size: 15px;
   }
 
   .letter-maker-stage {
-    grid-template-columns: 32px minmax(0, 1fr) 32px;
-    gap: 6px;
-    min-height: 0;
+    grid-template-columns: 30px minmax(0, 1fr) 30px;
+    gap: 5px;
   }
 
   .letter-maker-nav {
-    width: 31px;
-    height: 31px;
-    font-size: 23px;
+    width: 29px;
+    height: 29px;
+    font-size: 22px;
   }
 
-  .letter-maker-preview {
-    width: 100%;
-    max-height: 58vh;
+  .letter-maker-controls {
+    gap: 9px 11px;
+    margin-top: 11px;
+    padding: 9px;
   }
 
   .letter-maker-template {
-    width: 78px;
+    width: 75px;
   }
 }
-
