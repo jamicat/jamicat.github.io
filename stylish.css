@@ -2630,3 +2630,89 @@ font-size: 0.65rem;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
+
+.letter-maker-send-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.letter-maker-status {
+  min-height: 18px;
+  flex: 1 1 auto;
+  color: rgba(55, 102, 106, .76);
+  font-family: 'nunito', sans-serif;
+  font-size: 10px;
+  text-align: right;
+}
+
+.letter-maker-status[data-state="success"] {
+  color: #4f8f78;
+}
+
+.letter-maker-status[data-state="error"] {
+  color: #b85f73;
+}
+
+.letter-maker-send {
+  flex: 0 0 auto;
+  min-width: 104px;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, .82);
+  border-radius: 11px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(200, 244, 229, .88),
+      rgba(201, 230, 249, .88)
+    );
+  color: #3e777a;
+  font-family: 'nintendoh', sans-serif;
+  font-size: 9px;
+  cursor: pointer;
+  box-shadow:
+    0 5px 14px rgba(47, 98, 102, .12),
+    inset 0 1px 0 rgba(255, 255, 255, .82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    transform 120ms ease,
+    filter 120ms ease,
+    opacity 120ms ease;
+}
+
+.letter-maker-send:hover,
+.letter-maker-send:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.035);
+  outline: none;
+}
+
+.letter-maker-send:active {
+  transform: translateY(0) scale(.98);
+}
+
+.letter-maker-send:disabled {
+  cursor: default;
+  opacity: .62;
+  transform: none;
+}
+
+@media (max-width: 700px) {
+  .letter-maker-send-row {
+    gap: 8px;
+  }
+
+  .letter-maker-status {
+    font-size: 9px;
+  }
+
+  .letter-maker-send {
+    min-width: 96px;
+    height: 30px;
+    padding: 0 12px;
+  }
+}
