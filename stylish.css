@@ -3145,3 +3145,7 @@ font-size: 0.65rem;
   height: auto;
   object-fit: contain;
 }
+
+.theme-halloween #videoPoster {
+  filter: grayscale(1) brightness(0.5);
+}
