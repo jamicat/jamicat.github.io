@@ -1230,7 +1230,19 @@ font-size: 0.65rem;
 }
 
 .theme-pastel .gb-name .pastel-jamie-letter {
-  text-shadow: 0 1px 0 rgba(255,255,255,.18);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.theme-pastel #guestbookComments .gb-name .pastel-jamie-pink {
+  color: #df9ab6 !important;
+}
+
+.theme-pastel #guestbookComments .gb-name .pastel-jamie-yellow {
+  color: #ddc68b !important;
+}
+
+.theme-pastel #guestbookComments .gb-name .pastel-jamie-blue {
+  color: #91b8d4 !important;
 }
 
 .theme-pastel #guestbookComments {
@@ -3001,7 +3013,29 @@ font-size: 0.65rem;
 }
 
 .theme-halloween #guestbookComments .gb-name {
-  color: #efefef !important;
+  color: #bcbcbc !important;
+}
+
+.theme-halloween #guestbookComments .gb-name .halloween-letter {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.09),
+    0 0 5px rgba(255, 255, 255, 0.035);
+}
+
+.theme-halloween #guestbookComments .gb-name .halloween-letter-light {
+  color: #c8c8c8 !important;
+}
+
+.theme-halloween #guestbookComments .gb-name .halloween-letter-mid {
+  color: #ababab !important;
+}
+
+.theme-halloween #guestbookComments .gb-name .halloween-letter-dark {
+  color: #8b8b8b !important;
+}
+
+.theme-halloween #guestbookComments .gb-name .halloween-letter-silver {
+  color: #bcbcbc !important;
 }
 
 .theme-halloween #guestbookComments .gb-comment {
