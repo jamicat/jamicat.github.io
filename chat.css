@@ -12463,3 +12463,21 @@ html.theme-halloween[data-chat-theme="original"]
     font-weight: 700;
     line-height: 1;
 }
+
+html[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatMembers > div > span:not(.jami-member-presence) {
+    font-family: "Nunito", sans-serif !important;
+    font-size: 9px !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    letter-spacing: 0 !important;
+    color: inherit !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"]
+#chatMembers > div > span:not(.jami-member-presence) {
+    color: #e1e1e1 !important;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.06) !important;
+}
