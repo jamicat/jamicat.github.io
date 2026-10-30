@@ -699,6 +699,14 @@ html:not(.site-theme-ready) .avatar-icon2 {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
+.theme-pastel #typed,
+.theme-pastel #typed span {
+  color: #e39ab7 !important;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 5px rgba(246, 168, 200, 0.10) !important;
+}
+
 
 .theme-pastel .pastel-theme-button {
   font-family: "nintendoh", sans-serif !important;
@@ -746,6 +754,14 @@ html:not(.site-theme-ready) .avatar-icon2 {
 .theme-pastel .pastel-jamie-pink { color: #f6a8c8 !important; }
 .theme-pastel .pastel-jamie-yellow { color: #f6d98b !important; }
 .theme-pastel .pastel-jamie-blue { color: #9fc8ea !important; }
+
+.theme-pastel .terminal-button .pastel-jamie-letter {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.theme-pastel .terminal-button .pastel-jamie-pink { color: #df9ab6 !important; }
+.theme-pastel .terminal-button .pastel-jamie-yellow { color: #ddc68b !important; }
+.theme-pastel .terminal-button .pastel-jamie-blue { color: #91b8d4 !important; }
 
 :root {
   --heading-font: 'Fink';
@@ -2891,6 +2907,25 @@ font-size: 0.65rem;
 .theme-halloween .halloween-letter-silver {
   color: #dddddd !important;
 }
+
+.theme-halloween #typed,
+.theme-halloween #typed span {
+  color: #a7a7a7 !important;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.07),
+    0 0 5px rgba(255, 255, 255, 0.035) !important;
+}
+
+.theme-halloween .terminal-button .halloween-letter {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.09),
+    0 0 5px rgba(255, 255, 255, 0.035);
+}
+
+.theme-halloween .terminal-button .halloween-letter-light { color: #c8c8c8 !important; }
+.theme-halloween .terminal-button .halloween-letter-mid { color: #ababab !important; }
+.theme-halloween .terminal-button .halloween-letter-dark { color: #8b8b8b !important; }
+.theme-halloween .terminal-button .halloween-letter-silver { color: #bcbcbc !important; }
 
 .theme-halloween .typed-paw-text {
   color: #c8c8c8 !important;
