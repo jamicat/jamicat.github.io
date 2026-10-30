@@ -12435,6 +12435,9 @@ html.theme-default #chatWindow[data-chat-theme="original"] #chatTitle {
   font-family: "nintendoh", sans-serif !important;
 }
 
-html.theme-pastel #chatWindow[data-chat-theme="original"] #chatTitle {
+html.theme-default #chatWindow[data-chat-theme="original"] #chatTitle,
+html.theme-default #chatWindow[data-chat-theme="original"] #chatMembersPanel .theme-heading,
+html.theme-pastel #chatWindow[data-chat-theme="original"] #chatTitle,
+html.theme-pastel #chatWindow[data-chat-theme="original"] #chatMembersPanel .theme-heading {
   font-family: "nintendoh", sans-serif !important;
 }
