@@ -12481,3 +12481,21 @@ html.theme-halloween[data-chat-theme="original"]
     color: #e1e1e1 !important;
     text-shadow: 0 0 6px rgba(255, 255, 255, 0.06) !important;
 }
+
+#chatWindow[data-chat-theme="original"] .jami-original-name-input,
+#chatWindow[data-chat-theme="original"] .jami-original-message-input {
+    font-size: 10px !important;
+    font-weight: 400 !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-name-input::placeholder,
+#chatWindow[data-chat-theme="original"] .jami-original-message-input::placeholder {
+    font-size: 10px !important;
+}
+
+#chatWindow[data-chat-theme="original"] .jami-original-send-button,
+#chatWindow[data-chat-theme="original"] .jami-original-send-button:hover,
+#chatWindow[data-chat-theme="original"] .jami-original-send-button:active {
+    font-size: 10px !important;
+    font-weight: 600 !important;
+}
