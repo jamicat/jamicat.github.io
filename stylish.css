@@ -727,13 +727,15 @@ html:not(.site-theme-ready) .avatar-icon2 {
 }
 
 .theme-pastel .pastel-form-name::placeholder {
-  color: #f6a8c8 !important;
-  opacity: 0.85 !important;
+  color: #9fc8ea !important;
+  opacity: 0.48 !important;
+  text-shadow: none !important;
 }
 
 .theme-pastel .pastel-form-message::placeholder {
-  color: #9fc8ea !important;
-  opacity: 0.85 !important;
+  color: #f6d98b !important;
+  opacity: 0.48 !important;
+  text-shadow: none !important;
 }
 
 .theme-pastel .pastel-form-name,
