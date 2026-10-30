@@ -1,4 +1,30 @@
 const themes = {
+  Halloween: {
+    glowPrimary: 'text-halloween-glow',
+    glowSecondary: 'text-halloween-glow-soft',
+    typedOverride: 'text-zinc-300',
+    typed2Text: 'guestbook!',
+    typed3Text: 'Jamie',
+    avatar: 'halloween1.png',
+    gbAvatar: 'halloween2.png',
+    headingFont: '"DynaPuff"',
+    bodyFont: '"nintendoh"',
+    buttonColor: 'bg-transparent hover:bg-white/5',
+    buttonTextColor: 'text-zinc-300 hover:text-white',
+    aboutButtonStyle: 'bg-transparent hover:bg-white/5 text-zinc-300 hover:text-white',
+    iconColor: 'text-zinc-400 hover:text-white',
+    hoverRing: 'hover:ring-zinc-300',
+    galaxyActive: 'text-white',
+    galaxyInactive: 'text-zinc-500',
+    playActive: 'text-white',
+    playInactive: 'text-zinc-400',
+    terminalColor: 'halloween-terminal',
+    terminal2Bg: 'halloween-terminal',
+    gwterminalBg: 'halloween-terminal',
+    borderColor: 'rgba(220,220,220,0.34)',
+    shadowColor: 'none'
+  },
+
   Default: {
     glowPrimary: 'text-blue-glow',      
     glowSecondary: 'text-pink-glow',   
@@ -128,6 +154,14 @@ function pastelFullText(text, index = 0) {
   return `<span class="pastel-jamie-letter ${pastelColors[index % pastelColors.length]}">${text}</span>`;
 }
 
+const halloweenColors = ['halloween-letter-light', 'halloween-letter-mid', 'halloween-letter-dark', 'halloween-letter-silver'];
+
+function halloweenLetterText(text, offset = 0) {
+  return [...String(text)].map((letter, index) =>
+    `<span class="halloween-letter ${halloweenColors[(index + offset) % halloweenColors.length]}">${letter === ' ' ? '&nbsp;' : letter}</span>`
+  ).join('');
+}
+
 function applyTheme(themeName) {
   const theme = themes[themeName];
   if (!theme) return console.warn(`theme not found: ${themeName}`);
@@ -152,6 +186,11 @@ document.documentElement.classList.toggle(
 document.documentElement.classList.toggle(
   'theme-pastel',
   themeName === 'Pastel'
+);
+
+document.documentElement.classList.toggle(
+  'theme-halloween',
+  themeName === 'Halloween'
 );
 
   const mainAvatar = document.getElementById('mainAvatar');
@@ -186,6 +225,8 @@ if (typed3El) {
   const title = theme.typed3Text || 'jamie';
   if (themeName === 'Pastel' && title.toLowerCase() === 'jamie') {
     typed3El.innerHTML = pastelLetterText(title);
+  } else if (themeName === 'Halloween' && title.toLowerCase() === 'jamie') {
+    typed3El.innerHTML = halloweenLetterText(title);
   } else {
     typed3El.textContent = title;
   }
@@ -196,6 +237,8 @@ if (typed2El) {
   const title = theme.typed2Text || 'guest wall!';
   if (themeName === 'Pastel' && title.toLowerCase().startsWith('guestbook')) {
     typed2El.innerHTML = pastelLetterText(title);
+  } else if (themeName === 'Halloween' && title.toLowerCase().startsWith('guestbook')) {
+    typed2El.innerHTML = halloweenLetterText(title, 1);
   } else {
     typed2El.textContent = title;
   }
@@ -330,7 +373,7 @@ if (toggleBtn) {
 }
   
   document.querySelectorAll(
-  '.text-blue-glow, .text-pink-glow, .text-red-glow, .text-aquag-glow, .text-cyan-glow, .text-darkblue-glow'
+  '.text-blue-glow, .text-pink-glow, .text-red-glow, .text-aquag-glow, .text-cyan-glow, .text-darkblue-glow, .text-halloween-glow, .text-halloween-glow-soft'
 ).forEach(el => {
   if (el.classList.contains('no-theme-glow')) return;
   
@@ -341,7 +384,7 @@ if (toggleBtn) {
     return;
   }
 
-  el.classList.remove('text-blue-glow', 'text-pink-glow', 'text-red-glow', 'text-aquag-glow', 'text-cyan-glow', 'text-darkblue-glow');
+  el.classList.remove('text-blue-glow', 'text-pink-glow', 'text-red-glow', 'text-aquag-glow', 'text-cyan-glow', 'text-darkblue-glow', 'text-halloween-glow', 'text-halloween-glow-soft');
   el.classList.add(theme.glowPrimary);
 });
   localStorage.setItem('theme', themeName);
@@ -426,7 +469,9 @@ if (typedEl) {
     'text-red-glow',
     'text-aquag-glow',
     'text-cyan-glow',
-    'text-darkblue-glow'
+    'text-darkblue-glow',
+    'text-halloween-glow',
+    'text-halloween-glow-soft'
   ];
 
   typedEl.classList.remove(...allowed);
@@ -439,6 +484,8 @@ const welcomeMessage = document.getElementById('welcomeMessage');
 if (welcomeMessage) {
   if (themeName === 'Pastel') {
     welcomeMessage.innerHTML = pastelFullText('/ᐠ > ˕ <マ', 0);
+  } else if (themeName === 'Halloween') {
+    welcomeMessage.innerHTML = halloweenLetterText('/ᐠ > ˕ <マ', 2);
   } else {
     welcomeMessage.textContent = '/ᐠ > ˕ <マ';
   }
@@ -454,6 +501,9 @@ if (themeName === 'Pastel') {
   messageInput?.classList.remove('pastel-form-message');
 }
 
+nameInput?.classList.toggle('halloween-form-name', themeName === 'Halloween');
+messageInput?.classList.toggle('halloween-form-message', themeName === 'Halloween');
+
 if (typeof loadGuestbookComments === 'function' && document.getElementById('guestbookComments')) {
   loadGuestbookComments();
 }
@@ -463,6 +513,9 @@ submitButtons.forEach(btn => {
   if (themeName === 'Pastel') {
     btn.classList.add('pastel-submit');
     btn.innerHTML = pastelLetterText('submit');
+  } else if (themeName === 'Halloween') {
+    btn.classList.remove('pastel-submit');
+    btn.innerHTML = halloweenLetterText('submit', 1);
   } else {
     btn.classList.remove('pastel-submit');
     btn.textContent = 'submit';
@@ -477,7 +530,7 @@ submitButtons.forEach(btn => {
 }
 
 function updatePlayButtonTheme() {
-  const themeName = localStorage.getItem('theme') || 'Default';
+  const themeName = localStorage.getItem('theme') || 'Halloween';
   const theme = themes[themeName];
   const toggleBtn = document.getElementById('videoToggle');
   Object.values(themes).forEach(t => {
@@ -492,7 +545,7 @@ function updatePlayButtonTheme() {
 
 let typedInstance;
 
-function initTyped(themeName = 'Default') {
+function initTyped(themeName = 'Halloween') {
   const typedEl = document.getElementById('typed');
   if (!typedEl) return; 
 
@@ -4236,7 +4289,7 @@ rewind10.classList.remove(
   'text-cyan-100'
 );
   
-const themeName = localStorage.getItem('theme') || 'Default';
+const themeName = localStorage.getItem('theme') || 'Halloween';
 const theme = themes[themeName];
   
   if (galaxyVisible) {
@@ -4281,7 +4334,7 @@ function showList() {
 
   $('#terminalContent').html(html);
 
-  const currentTheme = localStorage.getItem('theme') || 'Default';
+  const currentTheme = localStorage.getItem('theme') || 'Halloween';
   applyTheme(currentTheme);
 }
 
@@ -4292,6 +4345,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const defaultBtn = document.getElementById('themeDefault');
   const starsBtn = document.getElementById('themeStars');
   const aeroBtn = document.getElementById('themeAero');
+  const halloweenBtn = document.getElementById('themeHalloween');
   const pastelBtn = document.getElementById('themePastel');
 
   changeThemeBtn.addEventListener('click', (e) => {
@@ -4325,6 +4379,11 @@ document.addEventListener('DOMContentLoaded', () => {
   aeroBtn.addEventListener('click', () => {
     applyTheme('Aero');
     initTyped('Aero');
+    hideTooltip();
+  });
+  halloweenBtn?.addEventListener('click', () => {
+    applyTheme('Halloween');
+    initTyped('Halloween');
     hideTooltip();
   });
   pastelBtn?.addEventListener('click', () => {
@@ -4386,7 +4445,7 @@ download: false,
 });
 }, 100); 
   
-const currentTheme = localStorage.getItem('theme') || 'Default';
+const currentTheme = localStorage.getItem('theme') || 'Halloween';
 applyTheme(currentTheme);
 //changeTyped3('<span class="text-white text-xl mr-2 text-blue-glow">Art</span>');
 }
@@ -4573,7 +4632,7 @@ function siteFAQ() {
     aboutScroll.scrollTop = 0;
   }
 
-  const currentTheme = localStorage.getItem('theme') || 'Default';
+  const currentTheme = localStorage.getItem('theme') || 'Halloween';
   applyTheme(currentTheme);
 }
 
@@ -4614,7 +4673,7 @@ terminal.classList.add('sm:w-[600px]');
   `);
 
 
- const currentTheme = localStorage.getItem('theme') || 'Default';
+ const currentTheme = localStorage.getItem('theme') || 'Halloween';
  applyTheme(currentTheme);
 }
 
@@ -4622,7 +4681,7 @@ function somethingNew() {
   $('#terminalContent').html(`
   `);
 
-  const currentTheme = localStorage.getItem('theme') || 'Default';
+  const currentTheme = localStorage.getItem('theme') || 'Halloween';
   applyTheme(currentTheme);
 }*/
 
@@ -4638,11 +4697,11 @@ function showGuestBook() {
 
   const activeThemeName =
     localStorage.getItem('theme') ||
-    'Pastel';
+    'Halloween';
 
   const activeTheme =
     themes[activeThemeName] ||
-    themes.Pastel;
+    themes.Halloween;
 
    const guestBookWindow = document.createElement('div');
   guestBookWindow.className = `
@@ -4983,13 +5042,13 @@ function connectGuestbookSocket() {
 connectGuestbookSocket();
 loadGuestbookComments();
 
-const currentTheme = localStorage.getItem('theme') || 'Default';
+const currentTheme = localStorage.getItem('theme') || 'Halloween';
 applyTheme(currentTheme);
 }
                                                           
 async function loadGuestbookComments() {
 
-  const themeName = localStorage.getItem('theme') || 'Default';
+  const themeName = localStorage.getItem('theme') || 'Halloween';
 
   fetchDiscordStatus();
 
@@ -5022,7 +5081,7 @@ async function loadGuestbookComments() {
 
 div.innerHTML = `
   <div class="gb-name theme-body text-xs mb-1 font-medium text-white text-blue-glow no-theme-glow break-all">
-    ${themeName === 'Pastel' ? pastelFullText(entry.name || 'Anonymous', comments.indexOf(entry)) : (entry.name || 'Anonymous')}
+    ${themeName === 'Pastel' ? pastelFullText(entry.name || 'Anonymous', comments.indexOf(entry)) : (themeName === 'Halloween' ? halloweenLetterText(entry.name || 'Anonymous', comments.indexOf(entry)) : (entry.name || 'Anonymous'))}
   </div>
 
   <div class="gb-comment theme-body text-[0.60rem] mb-1 break-all">
@@ -5046,7 +5105,7 @@ div.innerHTML = `
       <div class="gb-reply-divider border-b border-blue-100/20 my-3 opacity-60"></div>
 
       <div class="gb-reply-head mb-1 flex items-center gap-1 font-medium">
-  <span class="gb-name theme-body text-xs text-white text-blue-glow">${themeName === 'Pastel' ? pastelFullText('jamie', 0) : 'jamie'}</span>
+  <span class="gb-name theme-body text-xs text-white text-blue-glow">${themeName === 'Pastel' ? pastelFullText('jamie', 0) : (themeName === 'Halloween' ? halloweenLetterText('jamie', 2) : 'jamie')}</span>
 </div>
 
       <div class="gb-comment theme-body text-[0.60rem] mb-1 break-all">
@@ -5163,7 +5222,7 @@ terminal.classList.add('sm:w-[480px]');
 <button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">guestbook</button>
   </div>
 `);
-const currentTheme = localStorage.getItem('theme') || 'Default';
+const currentTheme = localStorage.getItem('theme') || 'Halloween';
 applyTheme(currentTheme);
 initTyped(currentTheme);
 }
@@ -5178,7 +5237,7 @@ function initializeSavedTheme() {
     localStorage.getItem('theme');
 
   if (!savedTheme || !themes[savedTheme]) {
-    savedTheme = 'Pastel';
+    savedTheme = 'Halloween';
     localStorage.setItem(
       'theme',
       savedTheme
@@ -5215,7 +5274,7 @@ window.addEventListener('chat-theme-change', () => {
   const activeSiteTheme =
     localStorage.getItem('theme') ||
     document.documentElement.getAttribute('data-theme') ||
-    'Default';
+    'Halloween';
 
   if (themes[activeSiteTheme]) {
     applyTheme(activeSiteTheme);
