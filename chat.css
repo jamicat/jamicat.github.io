@@ -12434,3 +12434,7 @@ body > .jami-chat-theme-menu[data-chat-theme-owner="original"] button.is-active 
 html.theme-default #chatWindow[data-chat-theme="original"] #chatTitle {
   font-family: "nintendoh", sans-serif !important;
 }
+
+html.theme-pastel #chatWindow[data-chat-theme="original"] #chatTitle {
+  font-family: "nintendoh", sans-serif !important;
+}
