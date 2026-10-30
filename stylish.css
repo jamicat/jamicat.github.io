@@ -3220,3 +3220,46 @@ font-size: 0.65rem;
 .theme-halloween #videoPoster {
   filter: grayscale(1) brightness(0.5);
 }
+
+.theme-halloween #typed,
+.theme-halloween #typed span {
+  color: #8b8b8b !important;
+  opacity: 0.66;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.035) !important;
+}
+
+.theme-pastel #typed,
+.theme-pastel #typed span {
+  color: #c98fa6 !important;
+  opacity: 0.68;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.055) !important;
+}
+
+.theme-halloween #guestbookComments .gb-timestamp {
+  font-size: 0.47rem !important;
+  color: #777777 !important;
+  opacity: 0.60 !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-shadow: none !important;
+}
+
+.theme-pastel #guestbookComments .gb-timestamp {
+  font-size: 0.47rem !important;
+  color: #8faebe !important;
+  opacity: 0.62 !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-shadow: none !important;
+}
+
+.theme-pastel #guestbookComments .gb-reply-divider {
+  border-bottom: 0 !important;
+  opacity: 0.78 !important;
+  background: linear-gradient(
+    90deg,
+    rgba(223, 154, 182, 0.10) 0%,
+    rgba(221, 198, 139, 0.30) 50%,
+    rgba(145, 184, 212, 0.10) 100%
+  ) center / 100% 1px no-repeat !important;
+}
