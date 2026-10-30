@@ -265,6 +265,9 @@ if (terminalMinimizedLabel) {
 
 const pastelButtons = document.querySelectorAll('.terminal-button');
 pastelButtons.forEach((btn, index) => {
+  const buttonText = btn.textContent.trim();
+  const isMainTerminalButton = ['art', 'playlist', 'guestbook'].includes(buttonText.toLowerCase());
+
   btn.classList.add('theme-body');
   Object.values(themes).forEach(t => {
     t.buttonTextColor.split(' ').forEach(cls => btn.classList.remove(cls));
@@ -277,13 +280,19 @@ pastelButtons.forEach((btn, index) => {
   if (themeName === 'Pastel') {
     btn.classList.add('pastel-theme-button');
     btn.classList.remove('text-white');
-    btn.innerHTML = pastelFullText(btn.textContent.trim(), index);
+    btn.innerHTML = isMainTerminalButton
+      ? pastelLetterText(buttonText)
+      : pastelFullText(buttonText, index);
   } else {
     btn.classList.remove('pastel-theme-button');
+    btn.textContent = buttonText;
     theme.buttonTextColor.split(' ').forEach(cls => btn.classList.add(cls));
     theme.buttonColor.split(' ').forEach(cls => btn.classList.add(cls));
     if (btn.id === 'aboutButton' && theme.aboutButtonStyle) {
       theme.aboutButtonStyle.split(' ').forEach(cls => btn.classList.add(cls));
+    }
+    if (themeName === 'Halloween' && isMainTerminalButton) {
+      btn.innerHTML = halloweenLetterText(buttonText, 1);
     }
   }
 });
@@ -556,7 +565,7 @@ function initTyped(themeName = 'Halloween') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
  const strings = [
-  `<span class="typed-paw-text theme-body text-sm mr-2">happy halloween!!! spopky...,,</span>`,
+  `<span class="typed-paw-text theme-body text-sm mr-2">happy halloween!!!</span>`,
 ];
 
   typedInstance = new Typed('#typed', {
