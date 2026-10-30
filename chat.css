@@ -12127,3 +12127,306 @@ html[data-chat-theme="stars"]
 .jami-member-presence {
     margin-top: 3px !important;
 }
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] {
+    background:
+        radial-gradient(
+            circle at 18% 8%,
+            rgba(255, 255, 255, 0.095),
+            rgba(255, 255, 255, 0.025) 31%,
+            transparent 57%
+        ),
+        linear-gradient(
+            155deg,
+            rgba(52, 52, 56, 0.76),
+            rgba(14, 14, 17, 0.72) 58%,
+            rgba(32, 32, 35, 0.72)
+        ) !important;
+    border: 1px solid rgba(220, 220, 220, 0.34) !important;
+    box-shadow:
+        0 16px 38px rgba(0, 0, 0, 0.46),
+        0 0 14px rgba(240, 240, 240, 0.055),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 0 26px rgba(255, 255, 255, 0.025) !important;
+    backdrop-filter: blur(18px) saturate(0.35) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(0.35) !important;
+    color: #d6d6d6 !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"],
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatTitle,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMembersToggle,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatThemeButton,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatBanManagerButton,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatPartyManagerButton,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMotd,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMessages,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMembersPanel,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMembers,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatTyping,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatControls input,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-send-button,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMembersPanel .theme-heading {
+    font-family: "Nunito", sans-serif !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatTitleBar {
+    background: rgba(18, 18, 21, 0.34) !important;
+    border-bottom: 1px solid rgba(220, 220, 220, 0.16) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatTitle {
+    color: #eeeeee !important;
+    text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.16),
+        0 0 7px rgba(255, 255, 255, 0.08) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMembersToggle,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatThemeButton,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatBanManagerButton,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatPartyManagerButton,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMinimize {
+    color: rgba(218, 218, 218, 0.62) !important;
+    text-shadow: none !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMembersToggle:hover,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatThemeButton:hover,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatBanManagerButton:hover,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatPartyManagerButton:hover,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMinimize:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMotd {
+    background: rgba(255, 255, 255, 0.018) !important;
+    border-bottom: 1px solid rgba(220, 220, 220, 0.12) !important;
+    color: #aaaaaa !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMotd > span:first-child {
+    color: #c8c8c8 !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMotdText {
+    color: #b6b6b6 !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMembersPanel {
+    background: rgba(255, 255, 255, 0.018) !important;
+    border-left: 1px solid rgba(220, 220, 220, 0.13) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMembersPanel .theme-heading {
+    color: #a8a8a8 !important;
+    font-weight: 650 !important;
+    letter-spacing: 0.015em !important;
+    text-shadow: none !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMembers > div > span:not(.jami-member-presence) {
+    color: #d7d7d7 !important;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.055) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .chatMessageName {
+    font-family: "Nunito", sans-serif !important;
+    color: #e1e1e1 !important;
+    font-weight: 700 !important;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.06) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .chatText {
+    font-family: "Nunito", sans-serif !important;
+    color: #c5c5c5 !important;
+    font-weight: 500 !important;
+    text-shadow: none !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .chatTime,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .chatContinuationTime {
+    font-family: "Nunito", sans-serif !important;
+    color: #858585 !important;
+    text-shadow: none !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatTyping {
+    color: #929292 !important;
+    border-top-color: rgba(220, 220, 220, 0.08) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatControls {
+    background: rgba(18, 18, 21, 0.30) !important;
+    border-top: 1px solid rgba(220, 220, 220, 0.14) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-name-input,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-message-input {
+    background: rgba(255, 255, 255, 0.045) !important;
+    border: 1px solid rgba(220, 220, 220, 0.18) !important;
+    color: #dedede !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-name-input::placeholder,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-message-input::placeholder {
+    color: #8f8f8f !important;
+    opacity: 0.88 !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-name-input:focus,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-message-input:focus {
+    border-color: rgba(245, 245, 245, 0.36) !important;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.035) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-cute-avatar-button,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-image-button,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-emoji-button,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatWatchPartyButton {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(220, 220, 220, 0.16) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-cute-avatar-button:hover,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-image-button:hover,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-emoji-button:hover,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatWatchPartyButton:hover {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border-color: rgba(235, 235, 235, 0.28) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-send-button,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-send-button:active {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(220, 220, 220, 0.18) !important;
+    color: #dddddd !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-send-button:hover {
+    background: rgba(255, 255, 255, 0.085) !important;
+    border-color: rgba(240, 240, 240, 0.30) !important;
+    color: #ffffff !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMessages,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMembers {
+    scrollbar-color: rgba(205, 205, 205, 0.58) transparent !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMessages::-webkit-scrollbar-thumb,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] #chatMembers::-webkit-scrollbar-thumb {
+    background: rgba(205, 205, 205, 0.48) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatAvatarPicker {
+    font-family: "Nunito", sans-serif !important;
+    background:
+        linear-gradient(
+            155deg,
+            rgba(48, 48, 52, 0.95),
+            rgba(18, 18, 21, 0.96)
+        ) !important;
+    border-color: rgba(220, 220, 220, 0.22) !important;
+    box-shadow:
+        0 16px 34px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatAvatarPicker .jami-cute-profile-title,
+html.theme-halloween[data-chat-theme="original"]
+#chatAvatarPicker .jami-cute-avatar-label,
+html.theme-halloween[data-chat-theme="original"]
+#chatAvatarPicker button {
+    font-family: "Nunito", sans-serif !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+body > .jami-chat-theme-menu[data-chat-theme-owner="original"] {
+    font-family: "Nunito", sans-serif !important;
+    border-color: rgba(220, 220, 220, 0.22) !important;
+    background: rgba(24, 24, 27, 0.96) !important;
+    box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+body > .jami-chat-theme-menu[data-chat-theme-owner="original"] button {
+    color: #bcbcbc !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+body > .jami-chat-theme-menu[data-chat-theme-owner="original"] button:hover,
+html.theme-halloween[data-chat-theme="original"]
+body > .jami-chat-theme-menu[data-chat-theme-owner="original"] button.is-active {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.055) !important;
+}
