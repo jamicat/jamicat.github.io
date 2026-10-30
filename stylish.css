@@ -3263,3 +3263,23 @@ font-size: 0.65rem;
     rgba(145, 184, 212, 0.10) 100%
   ) center / 100% 1px no-repeat !important;
 }
+
+.theme-pastel #typed,
+.theme-pastel #typed span {
+  color: #d79ab3 !important;
+  opacity: 0.82 !important;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.07),
+    0 0 4px rgba(246, 168, 200, 0.055) !important;
+}
+
+.theme-pastel #guestbookComments .gb-reply-divider {
+  border-bottom: 0 !important;
+  opacity: 0.92 !important;
+  background: linear-gradient(
+    90deg,
+    rgba(223, 154, 182, 0.34) 0%,
+    rgba(221, 198, 139, 0.44) 50%,
+    rgba(145, 184, 212, 0.34) 100%
+  ) center / 82% 1px no-repeat !important;
+}
