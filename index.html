@@ -15,7 +15,7 @@ if (window.location.hostname === "jamicat.github.io") {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description"
 content="jamie's personal website with a live chat, guest wall, furry art, music player and interactive themes.">
-<link rel="stylesheet" href="stylish.css?v=11"/>
+<link rel="stylesheet" href="stylish.css?v=12"/>
 <link
     rel="stylesheet"
     href="./image-transfer.css?v=1"
@@ -377,6 +377,7 @@ addComponents({
       id="tooltip"
       class="absolute left-1/2 top-full mt-2 -translate-x-1/2 rounded-3xl bg-transparent text-sm text-white transition-all duration-300 py-2 px-3 flex flex-col gap-1 z-50 shadow-lg backdrop-blur-sm border border-white/5 min-w-[8rem] opacity-0 pointer-events-none invisible"
     >
+      <button id="themeHalloween" class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">halloween</button>
       <button id="themePastel" class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">pastel</button>
       <button id="themeDefault" class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">animal crossing</button>
       <button id="themeStars" class="hidden theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">pixel cat</button>
@@ -592,7 +593,7 @@ addComponents({
     <span id="siteViewCount">0</span>
 </div>
 
-<script src="scripts.js?v=14"></script>
+<script src="scripts.js?v=15"></script>
 <script src="discscripts.js?v=4"></script>
 <script
     src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"
