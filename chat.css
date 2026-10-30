@@ -9297,7 +9297,7 @@ html[data-chat-theme="original"]
 html[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"] * {
     font-family:
-        var(--body-font, "Nunito", sans-serif) !important;
+        var("Nunito", sans-serif) !important;
 }
 
 
