@@ -556,7 +556,7 @@ function initTyped(themeName = 'Halloween') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
  const strings = [
-  `<span class="typed-paw-text theme-body text-sm mr-2">happy halloween!!!</span>`,
+  `<span class="typed-paw-text theme-body text-sm mr-2">happy halloween!!! spopky...,,</span>`,
 ];
 
   typedInstance = new Typed('#typed', {
