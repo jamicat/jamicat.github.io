@@ -12157,8 +12157,6 @@ html.theme-halloween[data-chat-theme="original"]
 html.theme-halloween[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"],
 html.theme-halloween[data-chat-theme="original"]
-#chatWindow[data-chat-theme="original"] #chatTitle,
-html.theme-halloween[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"] #chatMembersToggle,
 html.theme-halloween[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"] #chatThemeButton,
@@ -12179,9 +12177,7 @@ html.theme-halloween[data-chat-theme="original"]
 html.theme-halloween[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"] #chatControls input,
 html.theme-halloween[data-chat-theme="original"]
-#chatWindow[data-chat-theme="original"] .jami-original-send-button,
-html.theme-halloween[data-chat-theme="original"]
-#chatWindow[data-chat-theme="original"] #chatMembersPanel .theme-heading {
+#chatWindow[data-chat-theme="original"] .jami-original-send-button {
     font-family: "Nunito", sans-serif !important;
 }
 
@@ -12431,13 +12427,11 @@ body > .jami-chat-theme-menu[data-chat-theme-owner="original"] button.is-active 
     background: rgba(255, 255, 255, 0.055) !important;
 }
 
-html.theme-default #chatWindow[data-chat-theme="original"] #chatTitle {
-  font-family: "nintendoh", sans-serif !important;
-}
-
 html.theme-default #chatWindow[data-chat-theme="original"] #chatTitle,
 html.theme-default #chatWindow[data-chat-theme="original"] #chatMembersPanel .theme-heading,
 html.theme-pastel #chatWindow[data-chat-theme="original"] #chatTitle,
-html.theme-pastel #chatWindow[data-chat-theme="original"] #chatMembersPanel .theme-heading {
+html.theme-pastel #chatWindow[data-chat-theme="original"] #chatMembersPanel .theme-heading,
+html.theme-halloween[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] #chatTitle,
+html.theme-halloween[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] #chatMembersPanel .theme-heading {
   font-family: "nintendoh", sans-serif !important;
 }
