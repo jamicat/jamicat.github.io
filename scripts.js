@@ -556,25 +556,7 @@ function initTyped(themeName = 'Halloween') {
   const glow = themes[themeName].glowPrimary || 'text-aquag-glow';
 
  const strings = [
-  `<span class="typed-paw-text theme-body text-sm mr-2">ฅ(^◕ᴥ◕^)ฅ</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">ฅ(ᵔ・ω・ᵔฅ)</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">ฅ^•ﻌ•^ฅ</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">(=^･ω･^=)</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">₍˄·͈༝·͈˄₎◞ ̑̑</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">₍ᵔ•ﻌ•ᵔ₎</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">(=^ᵕ^=)</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">(=ᵔᆺᵔ=)</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">(=^･ｪ･^=)</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">(=^-ω-^=)</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">(ᵔ=①ω①=ᵔ)</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">(=^･ω･^=)♡</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">(ฅᵔ• . •ᵔฅ)♡</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">(*ฅ́˘ฅ̀*)♡</span>`,
-`<span class="typed-paw-text theme-body text-sm mr-2">(ฅᵔ´ω\`ᵔฅ)</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">(ᵔ≧∇≦ᵔ)/</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">(^･ω･^ )</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">ヽ(=^･ω･^=)丿</span>`,
-  `<span class="typed-paw-text theme-body text-sm mr-2">ฅ(ᵔ• ɪ •ᵔ)ฅ</span>`,
+  `<span class="typed-paw-text theme-body text-sm mr-2">happy halloween!!!</span>`,
 ];
 
   typedInstance = new Typed('#typed', {
@@ -583,7 +565,7 @@ function initTyped(themeName = 'Halloween') {
     backSpeed: 30,
     showCursor: false,
     smartBackspace: false,
-    loop: true
+    loop: false
   });
 }
 
