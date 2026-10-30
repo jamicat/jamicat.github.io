@@ -5063,7 +5063,7 @@ async function loadGuestbookComments() {
 
 div.innerHTML = `
   <div class="gb-name theme-body text-xs mb-1 font-medium text-white text-blue-glow no-theme-glow break-all">
-    ${themeName === 'Pastel' ? pastelFullText(entry.name || 'Anonymous', comments.indexOf(entry)) : (themeName === 'Halloween' ? halloweenLetterText(entry.name || 'Anonymous', comments.indexOf(entry)) : (entry.name || 'Anonymous'))}
+    ${themeName === 'Pastel' ? pastelLetterText(entry.name || 'Anonymous', comments.indexOf(entry)) : (themeName === 'Halloween' ? halloweenLetterText(entry.name || 'Anonymous', comments.indexOf(entry)) : (entry.name || 'Anonymous'))}
   </div>
 
   <div class="gb-comment theme-body text-[0.60rem] mb-1 break-all">
@@ -5087,7 +5087,7 @@ div.innerHTML = `
       <div class="gb-reply-divider border-b border-blue-100/20 my-3 opacity-60"></div>
 
       <div class="gb-reply-head mb-1 flex items-center gap-1 font-medium">
-  <span class="gb-name theme-body text-xs text-white text-blue-glow">${themeName === 'Pastel' ? pastelFullText('jamie', 0) : (themeName === 'Halloween' ? halloweenLetterText('jamie', 2) : 'jamie')}</span>
+  <span class="gb-name theme-body text-xs text-white text-blue-glow">${themeName === 'Pastel' ? pastelLetterText('jamie', 0) : (themeName === 'Halloween' ? halloweenLetterText('jamie', 2) : 'jamie')}</span>
 </div>
 
       <div class="gb-comment theme-body text-[0.60rem] mb-1 break-all">
