@@ -9308,7 +9308,7 @@ html[data-chat-theme="original"]
 html[data-chat-theme="original"]
 #chatWindow[data-chat-theme="original"] #chatMembersPanel .theme-heading {
     font-family:
-        var(--heading-font, "Nunito", sans-serif) !important;
+        var("Nunito", sans-serif) !important;
 }
 
 
