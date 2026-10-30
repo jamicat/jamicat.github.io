@@ -12440,3 +12440,26 @@ html[data-chat-theme="original"]
 #chatMembersPanel .theme-heading {
   font-family: "Nunito", sans-serif !important;
 }
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-emoji-button,
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-image-button {
+    font-size: 0 !important;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-emoji-button::before {
+    content: "🐈‍⬛";
+    font-size: 17px;
+    line-height: 1;
+}
+
+html.theme-halloween[data-chat-theme="original"]
+#chatWindow[data-chat-theme="original"] .jami-original-image-button::before {
+    content: "▧";
+    color: #a8a8a8;
+    font-family: "Nunito", sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1;
+}
