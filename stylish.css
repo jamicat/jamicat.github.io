@@ -3116,12 +3116,22 @@ font-size: 0.65rem;
     0 0 7px rgba(190, 190, 190, 0.20) !important;
 }
 
+.theme-halloween #guestBookWindow button[onclick="closeGuestBook()"] svg {
+  color: #d8d8d8 !important;
+  stroke: currentColor !important;
+}
+
 .theme-halloween #guestBookWindow button[onclick="closeGuestBook()"]:hover,
 .theme-halloween #guestBookWindow button[onclick="closeGuestBook()"]:focus-visible {
   color: #ffffff !important;
   text-shadow:
     0 0 3px rgba(255, 255, 255, 0.82),
     0 0 9px rgba(220, 220, 220, 0.30) !important;
+}
+
+.theme-halloween #guestBookWindow button[onclick="closeGuestBook()"]:hover svg,
+.theme-halloween #guestBookWindow button[onclick="closeGuestBook()"]:focus-visible svg {
+  color: #ffffff !important;
 }
 
 .theme-halloween #mainAvatar.avatar-icon {
