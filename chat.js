@@ -22333,7 +22333,7 @@ keepTitleBarInViewport() {
 
     if (!nextTheme) {
         nextTheme =
-            "original";
+            "paws";
 
         localStorage.setItem(
             "chat_theme",
