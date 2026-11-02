@@ -5228,7 +5228,7 @@ function initializeSavedTheme() {
     localStorage.getItem('theme');
 
   if (!savedTheme || !themes[savedTheme]) {
-    savedTheme = 'Halloween';
+    savedTheme = 'Pastel';
     localStorage.setItem(
       'theme',
       savedTheme
