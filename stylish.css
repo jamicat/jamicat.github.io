@@ -3283,3 +3283,41 @@ font-size: 0.65rem;
     rgba(145, 184, 212, 0.34) 100%
   ) center / 82% 1px no-repeat !important;
 }
+
+.theme-pastel #typed,
+.theme-pastel #typed span {
+  color: #eca6c2 !important;
+  opacity: 0.96 !important;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 5px rgba(246, 168, 200, 0.10) !important;
+}
+
+.theme-pastel .terminal-button .pastel-jamie-letter {
+  opacity: 1 !important;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.16),
+    0 0 4px rgba(255, 220, 210, 0.07) !important;
+}
+
+.theme-pastel .terminal-button .pastel-jamie-pink,
+.theme-pastel #guestbookComments .gb-name .pastel-jamie-pink {
+  color: #f6a8c8 !important;
+}
+
+.theme-pastel .terminal-button .pastel-jamie-yellow,
+.theme-pastel #guestbookComments .gb-name .pastel-jamie-yellow {
+  color: #f6d98b !important;
+}
+
+.theme-pastel .terminal-button .pastel-jamie-blue,
+.theme-pastel #guestbookComments .gb-name .pastel-jamie-blue {
+  color: #9fc8ea !important;
+}
+
+.theme-pastel #guestbookComments .gb-name .pastel-jamie-letter {
+  opacity: 1 !important;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.16),
+    0 0 4px rgba(255, 220, 210, 0.07) !important;
+}
