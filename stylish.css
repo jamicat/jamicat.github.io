@@ -165,20 +165,11 @@ pointer-events: none;
 
 }
 
-.terminal {
-    scale: 0.9;
-    background: transparent;
-    border: 2px solid;
-}
 
-.terminal2 {
-    scale: 0.9;
-}
 
-.gwterminal {
-    background: transparent;
-    border: 2px solid rgba(255,255,255,0.15);
-}
+
+
+
 
 .terminal p, .terminal div { 
 line-height: 1.4; 
@@ -2733,13 +2724,9 @@ font-size: 0.65rem;
   text-align: right;
 }
 
-.letter-maker-status[data-state="success"] {
-  color: #4f8f78;
-}
 
-.letter-maker-status[data-state="error"] {
-  color: #b85f73;
-}
+
+
 
 .letter-maker-send {
   flex: 0 0 auto;
