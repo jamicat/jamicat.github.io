@@ -8875,7 +8875,9 @@ ensureWatchPartyVisualizerMenu() {
                 offsetX:
                     event.clientX - rect.left,
                 offsetY:
-                    event.clientY - rect.top
+                    event.clientY - rect.top,
+                width: menu.offsetWidth,
+                height: menu.offsetHeight
             };
 
             menu.dataset.positioned = "true";
@@ -8907,8 +8909,8 @@ ensureWatchPartyVisualizerMenu() {
             }
 
             const edge = 10;
-            const width = menu.offsetWidth;
-            const height = menu.offsetHeight;
+            const width = dragState.width;
+            const height = dragState.height;
 
             const left = Math.max(
                 edge,
