@@ -126,6 +126,7 @@ this.emojiPartyUnloadHandler = null;
 this.emojiPartyMenuButton = null;
 this.emojiPartyMenu = null;
 this.createSharedEmojiPicker = null;
+this.imageRemixLoadPromise = null;
 
 this.replyTarget = null;
 this.replyComposerPreview = null;
@@ -14102,7 +14103,52 @@ setupImageRemixing() {
     );
 }
 
-startImageRemix(upload) {
+async ensureImageRemixEditor() {
+    if (window.jamiImageRemixEditor) {
+        return window.jamiImageRemixEditor;
+    }
+
+    if (!this.imageRemixLoadPromise) {
+        const loadStylesheet =
+            window.jamiLoadStylesheet;
+
+        const loadScript =
+            window.jamiLoadScript;
+
+        if (
+            typeof loadStylesheet !== "function" ||
+            typeof loadScript !== "function"
+        ) {
+            return null;
+        }
+
+        this.imageRemixLoadPromise =
+            Promise.all([
+                loadStylesheet(
+                    "./image-remix.css?v=1"
+                ),
+                loadScript(
+                    "./image-remix.js?v=2"
+                )
+            ])
+                .then(() =>
+                    window.jamiImageRemixEditor ||
+                    null
+                )
+                .catch(error => {
+                    this.imageRemixLoadPromise = null;
+                    console.error(
+                        "could not load remix editor:",
+                        error
+                    );
+                    return null;
+                });
+    }
+
+    return this.imageRemixLoadPromise;
+}
+
+async startImageRemix(upload) {
     if (this.isBanned) {
         return;
     }
@@ -14116,7 +14162,7 @@ startImageRemix(upload) {
     }
 
     const editor =
-        window.jamiImageRemixEditor;
+        await this.ensureImageRemixEditor();
 
     if (!editor) {
         window.alert(
