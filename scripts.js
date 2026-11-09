@@ -5115,14 +5115,20 @@ const commentBox =
   );
 
 
-requestAnimationFrame(() => {
-  updateCommentBoxPosition();
-});
+let guestbookPositionFrame = 0;
 
-if (guestWindow && commentBox) {
-  const resizeObserver = new ResizeObserver(() => {
+function scheduleCommentBoxPosition() {
+  if (guestbookPositionFrame) return;
+  guestbookPositionFrame = requestAnimationFrame(() => {
+    guestbookPositionFrame = 0;
     updateCommentBoxPosition();
   });
+}
+
+scheduleCommentBoxPosition();
+
+if (guestWindow && commentBox) {
+  const resizeObserver = new ResizeObserver(scheduleCommentBoxPosition);
   resizeObserver.observe(guestWindow);
 }
 
@@ -5150,7 +5156,10 @@ interact(guestBookWindow)
         target.setAttribute('data-x', x);
         target.setAttribute('data-y', y);
 
-        updateCommentBoxPosition();
+        scheduleCommentBoxPosition();
+      },
+      end() {
+        scheduleCommentBoxPosition();
       }
     }
   });
