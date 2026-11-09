@@ -140,20 +140,87 @@ if (!avatarEl || !nameEl || !activityEl || !statusDot) return;
   }
 }
 
+let discordStatusTimer = null;
+
+function startDiscordStatusPolling() {
+  if (discordStatusTimer !== null) {
+    return;
+  }
+
+  discordStatusTimer = window.setInterval(
+    fetchDiscordStatus,
+    20000
+  );
+}
+
+function stopDiscordStatusPolling() {
+  if (discordStatusTimer === null) {
+    return;
+  }
+
+  window.clearInterval(discordStatusTimer);
+  discordStatusTimer = null;
+}
+
 fetchDiscordStatus();
-setInterval(fetchDiscordStatus, 20000);
+
+if (!document.hidden) {
+  startDiscordStatusPolling();
+}
+
+document.addEventListener(
+  "visibilitychange",
+  () => {
+    if (document.hidden) {
+      stopDiscordStatusPolling();
+      return;
+    }
+
+    fetchDiscordStatus();
+    startDiscordStatusPolling();
+  }
+);
+
+let discordTiltFrame = null;
+let discordTiltPoint = null;
 
 statusContainer.addEventListener("mousemove", (e) => {
-  const rect = statusContainer.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  const centerX = rect.width / 2;
-  const centerY = rect.height / 2;
-  const rotateX = ((y - centerY) / centerY) * 3;
-  const rotateY = ((x - centerX) / centerX) * -3;
-  statusContainer.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
+  discordTiltPoint = {
+    clientX: e.clientX,
+    clientY: e.clientY
+  };
+
+  if (discordTiltFrame !== null) {
+    return;
+  }
+
+  discordTiltFrame = requestAnimationFrame(() => {
+    discordTiltFrame = null;
+
+    if (!discordTiltPoint) {
+      return;
+    }
+
+    const rect = statusContainer.getBoundingClientRect();
+    const x = discordTiltPoint.clientX - rect.left;
+    const y = discordTiltPoint.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * 3;
+    const rotateY = ((x - centerX) / centerX) * -3;
+
+    statusContainer.style.transform =
+      `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
+  });
 });
 
 statusContainer.addEventListener("mouseleave", () => {
+  discordTiltPoint = null;
+
+  if (discordTiltFrame !== null) {
+    cancelAnimationFrame(discordTiltFrame);
+    discordTiltFrame = null;
+  }
+
   statusContainer.style.transform = "rotateX(0) rotateY(0) scale(1)";
 });
