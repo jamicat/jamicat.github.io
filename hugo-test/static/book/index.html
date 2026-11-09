@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catbook</title>
+	
+  <style>  
+ .video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  max-width: 80%;
+}
+
+.video-container iframe {
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 16 / 9;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+	  
+    @font-face {
+      font-family: 'hack-regular';
+      src: url('hack-regular.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'honeybee';
+      src: url('honeybee.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'nunito';
+      src: url('nunito.ttf') format('truetype');
+    }
+
+
+    @media (max-width: 1080px) and (max-height: 2400px) {
+    .species-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+      justify-content: center;
+      gap: 5px;
+    }
+    .form-container {
+    padding: 20px; 
+    }
+    }
+
+    @media (max-width: 1366px) and (max-height: 768px) { 
+    body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+	  }
+    }
+
+ .header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.header-container img {
+  height: 60px; 
+  margin-top: -30px;
+  border-radius: 50%;
+}
+
+body {
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  padding: 0;
+  background-color: beige;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 4.3em;
+  font-family: 'nunito', sans-serif;
+  color: #FADADD;
+   text-shadow: 
+  -1px -1px 0 #44444445, 
+   1px -1px 0 #44444445,  
+  -1px  1px 0 #44444445,  
+   1px  1px 0 #44444445;
+  
+}
+
+h1 span {
+  color: pink; 
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: black;
+  font-family: 'nunito', sans-serif; 
+  font-size: 0.9em;
+}
+
+.form-container {
+  margin: 20px auto;
+  width: 92%;
+  max-width: 640px;
+  padding: 15px;
+  background: rgba(255, 231, 205, 1); 
+  /*: 10px;*/
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form-container input,
+.form-container textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  font-size: 1em;
+  background: #fffbf5; 
+  color: #333; 
+  box-sizing: border-box;
+  border: 0.5px solid #44444440;
+
+}
+
+.form-container textarea {
+  resize: none;
+}
+
+.species-buttons {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.species-buttons button {
+  font-size: 1.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.species-buttons button:hover {
+  flex: 1 1 auto;
+  transform: scale(1.2);
+}
+
+.comments-section {
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
+}
+  
+.comment {
+  background-color: rgba(255, 231, 205, 1); 
+  color: #333; 
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 1.5rem;
+  font-family: 'Arial', sans-serif;
+  font-size: 0.9rem;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
+}
+
+.comment iframe {
+  width: 100%; 
+  height: auto; 
+  aspect-ratio: 16 / 9; 
+  border-radius: 8px; 
+  max-width: 100%; 
+}
+
+.comment h4 {
+  margin: 0 0 5px;
+  color: black;
+}
+
+.comment small {
+  display: block;
+  margin-top: 5px;
+  color: grey;
+}
+
+.submit-button {
+  display: block;
+  margin: 20px auto;
+  background-color: #fffbf5;
+  transition: background-color 0.3s, transform 0.2s;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.8em;
+  font-family: 'nunito';
+}
+
+.submit-button:hover {
+  background-color: #fffbf5;
+  transform: scale(1.05);
+}
+
+.submit-button:active {
+  background-color: #fffbf5;
+  transform: scale(0.95);
+}
+
+.home-btn {
+  display: block;
+  margin: 20px auto;
+  background-color: #fffbf5;
+  transition: background-color 0.3s, transform 0.2s;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.8em;
+  font-family: 'nunito';
+}
+
+.home-btn:hover {
+  background-color: #fffbf5;
+  transform: scale(1.05);
+}
+
+.home-btn:active {
+  background-color: #fffbf5;
+  transform: scale(0.95);
+}
+
+  </style>
+</head>
+  
+<body>
+ <div class="header-container">
+  <img src="cat.png" alt="Deer Fursona">
+  <h1>Catbook</h1>
+</div>
+
+  <div class="form-container">
+    <form id="guestbook-form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required required placeholder="Anonymous">
+
+      <label for="comment">Comment:</label>
+      <textarea id="comment" name="comment" rows="4" maxlength="10000" required placeholder="🐾"></textarea>
+
+      <label for="question">Favourite food:</label>
+      <input type="text" id="question" name="question" placeholder="Optional">
+
+      <label for="species">Icon:</label>
+      <div class="species-buttons" id="species-buttons">
+        <button type="button" data-species="🐱">🐱</button>
+        <button type="button" data-species="🐶">🐶</button>
+        <button type="button" data-species="🐺">🐺</button>
+        <button type="button" data-species="🦊">🦊</button>
+        <button type="button" data-species="🦁">🦁</button>
+        <button type="button" data-species="🐰">🐰</button>
+        <button type="button" data-species="🐮">🐮</button>
+        <button type="button" data-species="🦌">🦌</button>
+        <button type="button" data-species="🐐">🐐</button>
+        <button type="button" data-species="🦈">🦈</button>
+        <button type="button" data-species="🧑">🧑</button>
+        <button type="button" data-species="👩">👩</button>
+        <button type="button" data-species="❓">❓</button>
+      </div>
+
+<div style="text-align: center;">
+    <div style="display: inline-block; margin-right: 10px;">
+        <button type="submit" class="submit-button">Submit</button>
+    </div>
+    <div style="display: inline-block;">
+        <button class="home-btn" id="home-btn" onclick="window.location.href='/';">Home</button>
+    </div>
+</div>
+  
+<!--div class="video-container">
+  <iframe 
+    width="560" 
+    height="315" 
+    src="https://www.youtube.com/embed/v97FPN2US2o" 
+    frameborder="0" 
+    allowfullscreen>
+  </iframe>
+     </div-->
+
+   </form>
+   </div>
+
+  <div id="comment-info" class="comment-count-info"></div>
+  <div class="comments-section" id="comments-section"></div>
+
+<!--button id="mode-toggle" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #fffbf5;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-family: 'nunito', sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+">Mode: 🐈</button-->
+
+  <script>
+	  
+    const form = document.getElementById('guestbook-form');
+    const commentsSection = document.getElementById('comments-section');
+    const speciesButtons = document.querySelectorAll('#species-buttons button');
+    let selectedSpecies = '';
+
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbx7bzct-SU2XZ0OgiSQhH76NGyh6oSHkngglBgWLd9-wr76G4uPvtjRw31DifL59iadtA/exec';
+    const webAppUrl2 = 'https://script.google.com/macros/s/AKfycbwhUS5DfBvScIkj5WwN4AiBIe16W2u6_sjtpcMljJ668grmt3Yo0a9ploehTlpQdm5bdA/exec';
+
+    const cooldownPeriod = 5 * 60 * 1000;
+
+    speciesButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        selectedSpecies = button.dataset.species;
+        speciesButtons.forEach(btn => btn.style.opacity = '0.5');
+        button.style.opacity = '1';
+      });
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const lastSubmissionTime = localStorage.getItem('lastSubmissionTime');
+      const now = Date.now();
+
+      if (lastSubmissionTime && now - lastSubmissionTime < cooldownPeriod) {
+        alert('5 minutes between each comment, please!');
+        return;
+      }
+
+      const name = document.getElementById('name').value.trim();
+      const commentText = document.getElementById('comment').value.trim();
+      const question = document.getElementById('question').value.trim() || null;
+
+      if (!name || !commentText) {
+        alert('Name and comment cannot be empty!');
+        return;
+      }
+
+      const data = {
+        name,
+        species: selectedSpecies || '❓',
+        comment: commentText,
+        question,
+      };
+
+      fetch(webAppUrl2, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+	
+      });
+
+      localStorage.setItem('lastSubmissionTime', now);
+      form.reset();
+      selectedSpecies = '';
+      speciesButtons.forEach(btn => btn.style.opacity = '1');
+      loadComments();
+    });
+
+const COMMENTS_PER_PAGE = 6;
+let currentPage = 1;
+let currentComments = [];
+let currentQuestions = [];
+
+async function loadComments() {
+  try {
+    const response = await fetch(webAppUrl);
+    if (!response.ok) throw new Error('Failed to load comments.');
+
+    const { comments = [], questions = [] } = await response.json();
+    console.log('Fetched comments and questions:', { comments, questions });
+
+    currentComments = comments.slice().reverse();
+    currentQuestions = questions || [];
+    currentPage = 1; 
+    renderPage(currentPage);
+  } catch (error) {
+    console.error('Error loading comments:', error.message);
+    commentsSection.innerHTML = '<p>Failed to load comments. Please try again later.</p>';
+  }
+}
+
+function renderPage(pageNumber) {
+  const totalPages = Math.max(1, Math.ceil(currentComments.length / COMMENTS_PER_PAGE));
+  if (pageNumber < 1) pageNumber = 1;
+  if (pageNumber > totalPages) pageNumber = totalPages;
+  currentPage = pageNumber;
+
+  const totalComments = currentComments.length;
+  const startIndex = (pageNumber - 1) * COMMENTS_PER_PAGE + 1;
+  const endIndex = Math.min(startIndex + COMMENTS_PER_PAGE - 1, totalComments);
+
+  const infoBox = document.getElementById('comment-info');
+  if (infoBox) {
+    infoBox.textContent = `Page ${currentPage} of ${totalPages} — Showing comments ${startIndex}–${endIndex} of ${totalComments}`;
+  }
+	
+  commentsSection.innerHTML = '';
+
+  const startIdx = (pageNumber - 1) * COMMENTS_PER_PAGE;
+  const pageSlice = currentComments.slice(startIdx, startIdx + COMMENTS_PER_PAGE);
+
+  pageSlice.forEach(({ timestamp, name, species, comment }) => {
+    const questionData = currentQuestions.find(q => {
+      const commentTimestamp = new Date(timestamp).toISOString().slice(0, 19);
+      const questionTimestamp = new Date(q.timestamp).toISOString().slice(0, 19);
+      return (
+        q.name.trim().toLowerCase() === (name || '').trim().toLowerCase() &&
+        commentTimestamp === questionTimestamp
+      );
+    });
+    const questionText = questionData ? questionData.question : null;
+
+    const commentEl = document.createElement('div');
+    commentEl.classList.add('comment');
+
+    const nameEl = document.createElement('h4');
+    nameEl.textContent = `${species || '❓'} ${name || 'Anonymous'}`;
+    commentEl.appendChild(nameEl);
+
+    let replyEl;
+    let cleanedComment = comment;
+    commentEl.style.position = 'relative';
+    commentEl.style.overflow = 'visible';
+
+    const replyMatch = cleanedComment && cleanedComment.match(/^\/([^\\]+)\\(.*)?/);
+    if (replyMatch) {
+      let replyText = replyMatch[1].trim();
+      cleanedComment = replyMatch[2]?.trim() || '';
+
+      replyEl = document.createElement('div');
+      replyEl.style.marginLeft = 'auto';
+      replyEl.style.marginTop = 'auto';
+      replyEl.style.border = '0.5px solid #44444440';
+      replyEl.style.color = '#333';
+      replyEl.style.padding = '8px';
+      replyEl.style.boxSizing = 'border-box';
+      replyEl.style.whiteSpace = 'normal';
+      replyEl.style.borderRadius = '6px';
+      replyEl.style.fontSize = '0.85em';
+      replyEl.style.backgroundColor = 'beige';
+      replyEl.style.display = 'inline-block';
+      replyEl.style.maxWidth = '100%';
+
+      const replyLabel = document.createElement('div');
+      replyLabel.textContent = 'Reply from Jamie:';
+      replyLabel.style.marginBottom = '4px';
+      replyEl.appendChild(replyLabel);
+
+      const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/gi;
+      const imgurMatches = [...replyText.matchAll(imgurRegex)];
+      imgurMatches.forEach(match => {
+        const imageId = match[1];
+        const extension = match[2] || '.jpg';
+        const imgEl = document.createElement('img');
+        imgEl.src = `https://i.imgur.com/${imageId}${extension}`;
+        imgEl.alt = 'Imgur image';
+        imgEl.style.maxWidth = '50%';
+        imgEl.style.height = 'auto';
+        imgEl.style.display = 'block';
+        imgEl.style.borderRadius = '6px';
+        imgEl.style.marginBottom = '8px';
+        replyEl.appendChild(imgEl);
+      });
+
+      replyText = replyText.replace(imgurRegex, '').trim();
+
+      if (replyText) {
+        const replyTextEl = document.createElement('p');
+        replyTextEl.textContent = replyText;
+        replyTextEl.style.margin = '0';
+        replyEl.appendChild(replyTextEl);
+      }
+    }
+
+    if (cleanedComment && cleanedComment.startsWith("♡")) {
+      cleanedComment = cleanedComment.replace(/^♡\s*/, '');
+      const heartEl = document.createElement('span');
+      heartEl.textContent = '♡';
+      heartEl.style.position = 'absolute';
+      heartEl.style.bottom = '10px';
+      heartEl.style.right = '10px';
+      heartEl.style.color = '#FE307C';
+      heartEl.style.fontSize = '24px';
+      commentEl.appendChild(heartEl);
+    }
+
+    if (cleanedComment) {
+      const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/g;
+      const ytMatch = cleanedComment.match(ytRegex);
+      if (ytMatch) {
+        const videoId = ytMatch[0].split("v=")[1]?.split("&")[0] || ytMatch[0].split("/").pop().split("?")[0];
+        const iframe = document.createElement('iframe');
+        iframe.width = "100%";
+        iframe.height = "315";
+        iframe.src = `https://www.youtube.com/embed/${videoId}`;
+        iframe.frameBorder = "0";
+        iframe.allowFullscreen = true;
+        iframe.style.borderRadius = "8px";
+        cleanedComment = cleanedComment.replace(ytRegex, "").trim();
+        commentEl.appendChild(iframe);
+      }
+    }
+
+    if (cleanedComment) {
+      const imgurRegex = /https?:\/\/(?:i\.)?imgur\.com\/([a-zA-Z0-9]+)(\.(jpg|jpeg|png|gif|webp))?/g;
+      const imgurMatches = [...cleanedComment.matchAll(imgurRegex)];
+      if (imgurMatches.length) {
+        imgurMatches.forEach(match => {
+          const imageId = match[1];
+          const extension = match[2] || '.jpg';
+          const imgEl = document.createElement('img');
+          imgEl.src = `https://i.imgur.com/${imageId}${extension}`;
+          imgEl.alt = 'Imgur image';
+          imgEl.style.maxWidth = '50%';
+          imgEl.style.borderRadius = '8px';
+          imgEl.style.marginTop = '8px';
+          commentEl.appendChild(imgEl);
+        });
+        cleanedComment = cleanedComment.replace(imgurRegex, "").trim();
+      }
+    }
+
+    if (cleanedComment) {
+      const textEl = document.createElement('p');
+      textEl.textContent = cleanedComment;
+      commentEl.appendChild(textEl);
+    }
+
+    if (questionText) {
+      const questionEl = document.createElement('p');
+      questionEl.textContent = `Favourite food: ${questionText}`;
+      commentEl.appendChild(questionEl);
+    }
+
+    if (replyEl) {
+      commentEl.appendChild(replyEl);
+    }
+
+    const dateEl = document.createElement('small');
+    dateEl.textContent = timestamp ? formatDate(timestamp) : 'Invalid Date';
+    commentEl.appendChild(dateEl);
+
+    commentsSection.appendChild(commentEl);
+  });
+
+  renderPaginationControls(totalPages);
+}
+
+function renderPaginationControls(totalPages) {
+
+  const existing = document.querySelector('.pagination');
+  if (existing) existing.remove();
+
+ const totalComments = currentComments.length;
+ const startIndex = (currentPage - 1) * COMMENTS_PER_PAGE + 1;
+ const endIndex = Math.min(startIndex + COMMENTS_PER_PAGE - 1, totalComments);
+	
+  const paginationContainer = document.createElement('div');
+  paginationContainer.className = 'pagination';
+  paginationContainer.style.textAlign = 'center';
+  paginationContainer.style.marginTop = '20px';
+  paginationContainer.style.display = 'flex';
+  paginationContainer.style.flexWrap = 'wrap';
+  paginationContainer.style.justifyContent = 'center';
+  paginationContainer.style.alignItems = 'center';
+  paginationContainer.style.gap = '6px';
+
+  const prevBtn = document.createElement('button');
+  prevBtn.textContent = '←';
+  prevBtn.className = 'submit-button';
+  prevBtn.disabled = (currentPage === 1);
+  prevBtn.onclick = () => { if (currentPage > 1) renderPage(currentPage - 1); };
+  paginationContainer.appendChild(prevBtn);
+
+  const createPageButton = (num) => {
+    const btn = document.createElement('button');
+    btn.textContent = num;
+    btn.className = 'submit-button';
+    btn.style.margin = '0 4px';
+    if (num === currentPage) {
+      btn.disabled = true;
+      btn.style.transform = 'scale(1.02)';
+    }
+    btn.onclick = () => renderPage(num);
+    return btn;
+  };
+
+  if (totalPages <= 10) {
+    for (let i = 1; i <= totalPages; i++) {
+      paginationContainer.appendChild(createPageButton(i));
+    }
+  } else {
+    paginationContainer.appendChild(createPageButton(1));
+    if (currentPage > 4) {
+      const dots = document.createElement('span'); dots.textContent = ' ... '; paginationContainer.appendChild(dots);
+    }
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+    for (let i = start; i <= end; i++) paginationContainer.appendChild(createPageButton(i));
+    if (currentPage < totalPages - 3) {
+      const dots2 = document.createElement('span'); dots2.textContent = ' ... '; paginationContainer.appendChild(dots2);
+    }
+    paginationContainer.appendChild(createPageButton(totalPages));
+  }
+
+  const nextBtn = document.createElement('button');
+  nextBtn.textContent = '→';
+  nextBtn.className = 'submit-button';
+  nextBtn.disabled = (currentPage === totalPages);
+  nextBtn.onclick = () => { if (currentPage < totalPages) renderPage(currentPage + 1); };
+  paginationContainer.appendChild(nextBtn);
+
+  commentsSection.appendChild(paginationContainer);
+}
+
+    function formatDate(timestamp) {
+      if (timestamp.includes('/')) return timestamp;
+      const date = new Date(timestamp);
+      if (isNaN(date)) return 'Invalid Date';
+      return `${date.getDate().toString().padStart(2, '0')}/${
+        (date.getMonth() + 1).toString().padStart(2, '0')
+      }/${date.getFullYear()}, ${date.toLocaleTimeString()} `;
+    }
+
+  setTimeout(() => {
+	
+    loadComments();
+  }, 500);
+	  
+const modeToggleButton = document.getElementById('mode-toggle');
+	  
+let isDeer = true; 
+modeToggleButton.addEventListener('click', () => {
+  if (!isDeer) {
+    switchCommentColors();
+  } else {
+    switchToDeerMode();
+  }
+
+  isDeer = !isDeer; 
+});
+
+function switchCommentColors() {
+  document.head.insertAdjacentHTML(
+    'beforeend',
+    `<style>
+    
+    .header-container img {
+      content: url('cat.png'); 
+    }
+      .comment {
+        background-color: rgba(255, 231, 205, 1);
+        border: none;
+        color: #333;
+      }
+
+      .comment small {
+        color: grey;
+      }
+
+      .comment h4 {
+        color: black;
+      }
+
+      h1 {
+        color: #FADADD;
+        text-shadow: 
+  -1px -1px 0 #44444445, 
+   1px -1px 0 #44444445,  
+  -1px  1px 0 #44444445,  
+   1px  1px 0 #44444445;
+  
+}
+      h1 span {
+        color: pink;
+      }
+
+      label {
+        color: black;
+      }
+
+      body {
+        background-color: beige;
+      }
+
+      .submit-button {
+        background-color: #fffbf5;
+        color: black;
+      }
+
+      .submit-button:hover {
+        background-color: #fffbf5;
+      }
+
+      .submit-button:active {
+        background-color: #fffbf5;
+      }
+
+      .home-btn {
+        background-color: #fffbf5;
+        color: black;
+      }
+
+      .home-btn:hover {
+        background-color: #fffbf5;
+      }
+
+      .home-btn:active {
+        background-color: #fffbf5;
+      }
+
+.form-container{
+background-color: rgba(255, 231, 205, 1);
+}
+
+.form-container input,
+.form-container textarea {
+  border-radius: 5px;
+  background: #fffbf5; 
+  border: 0.5px solid #44444440;
+  color: #333; 
+}
+
+ .reply-box {
+background-color: beige;
+ }
+    </style>`
+  );
+
+  document.title = '>Catbook';
+  modeToggleButton.textContent = 'Mode: 🐈';
+  modeToggleButton.style.backgroundColor = '#fffbf5';
+  modeToggleButton.style.color = 'black';
+}
+
+function switchToDeerMode() {
+document.head.insertAdjacentHTML(
+    'beforeend',
+    `<style>
+
+    .header-container img {
+      content: url('deer.png'); 
+    }
+
+  body {
+  background-color: #C3E6C5;
+}
+
+h1 {
+  color: #ffffff; 
+  text-shadow: 
+    -1px -1px 0 #4CB6B6, 
+    1px -1px 0 #4CB6B6, 
+    -1px 1px 0 #4CB6B6, 
+    1px 1px 0 #4CB6B6; 
+}
+
+h1 span {
+  color: #77D9D7; 
+}
+
+label {
+  color: #225F5F;
+}
+
+.form-container {
+  background: #B0F0EC; 
+}
+
+.form-container input,
+.form-container textarea {
+  border: 0.5px solid #4CB6B6; 
+  background: #E2FAF8; 
+  color: #225F5F; 
+}
+
+.comment {
+  background-color: #B0F0EC; 
+  color: #225F5F; 
+}
+
+.comment h4 {
+  color: #155E5E;
+}
+
+.comment small {
+  color: #447F7F;
+}
+
+.submit-button {
+  background-color: #4CB6B6;
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: #38A3A3;
+}
+
+.submit-button:active {
+  background-color: #2D8787;
+}
+
+.home-btn {
+
+  background-color: #4CB6B6;
+  color: white;
+}
+
+.home-btn:hover {
+  background-color: #38A3A3;
+}
+
+.home-btn:active {
+  background-color: #2D8787;
+}
+
+.reply-box {
+background-color: #E2FAF8;
+ }
+    </style>`
+		
+  );
+  document.title = '>Deerbook';
+  modeToggleButton.textContent = 'Mode: 🦌';
+  modeToggleButton.style.backgroundColor = '#4CB6B6';
+  modeToggleButton.style.color = 'white';
+}
+  </script>
+</body>
+</html>
