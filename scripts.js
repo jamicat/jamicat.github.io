@@ -1,3 +1,151 @@
+const jamiResourceLoads = new Map();
+
+function setTerminalContent(html) {
+  const terminalContent =
+    document.getElementById(
+      'terminalContent'
+    );
+
+  if (!terminalContent) {
+    return;
+  }
+
+  terminalContent.innerHTML = html;
+}
+
+function jamiLoadScript(src) {
+  const absolute = new URL(src, document.baseURI).href;
+  const key = `script:${absolute}`;
+
+  if (jamiResourceLoads.has(key)) {
+    return jamiResourceLoads.get(key);
+  }
+
+  const promise = new Promise((resolve, reject) => {
+    const existing = Array.from(document.scripts).find(
+      script => script.src === absolute
+    );
+
+    const script = existing || document.createElement('script');
+
+    const handleLoad = () => {
+      script.dataset.jamiLoaded = 'true';
+      resolve(script);
+    };
+
+    const handleError = () => {
+      jamiResourceLoads.delete(key);
+      reject(new Error(`could not load ${absolute}`));
+    };
+
+    if (existing?.dataset.jamiLoaded === 'true') {
+      resolve(existing);
+      return;
+    }
+
+    script.addEventListener('load', handleLoad, { once: true });
+    script.addEventListener('error', handleError, { once: true });
+
+    if (!existing) {
+      script.src = absolute;
+      script.async = true;
+      document.head.appendChild(script);
+    }
+  });
+
+  jamiResourceLoads.set(key, promise);
+  return promise;
+}
+
+function jamiLoadStylesheet(href) {
+  const absolute = new URL(href, document.baseURI).href;
+  const key = `style:${absolute}`;
+
+  if (jamiResourceLoads.has(key)) {
+    return jamiResourceLoads.get(key);
+  }
+
+  const promise = new Promise((resolve, reject) => {
+    const existing = Array.from(
+      document.querySelectorAll('link[rel="stylesheet"]')
+    ).find(link => link.href === absolute);
+
+    const link = existing || document.createElement('link');
+
+    const handleLoad = () => {
+      link.dataset.jamiLoaded = 'true';
+      resolve(link);
+    };
+
+    const handleError = () => {
+      jamiResourceLoads.delete(key);
+      reject(new Error(`could not load ${absolute}`));
+    };
+
+    if (existing?.dataset.jamiLoaded === 'true' || existing?.sheet) {
+      resolve(existing);
+      return;
+    }
+
+    link.addEventListener('load', handleLoad, { once: true });
+    link.addEventListener('error', handleError, { once: true });
+
+    if (!existing) {
+      link.rel = 'stylesheet';
+      link.href = absolute;
+      document.head.appendChild(link);
+    }
+  });
+
+  jamiResourceLoads.set(key, promise);
+  return promise;
+}
+
+async function ensureLightGalleryDependencies({
+  thumbnail = false,
+  zoom = false,
+  video = false
+} = {}) {
+  await jamiLoadStylesheet(
+    'https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/css/lightgallery-bundle.min.css'
+  );
+
+  await jamiLoadScript(
+    'https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/lightgallery.min.js'
+  );
+
+  const plugins = [];
+
+  if (thumbnail) {
+    plugins.push(
+      jamiLoadScript(
+        'https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js'
+      )
+    );
+  }
+
+  if (zoom) {
+    plugins.push(
+      jamiLoadScript(
+        'https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js'
+      )
+    );
+  }
+
+  if (video) {
+    plugins.push(
+      jamiLoadScript(
+        'https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/video/lg-video.min.js'
+      )
+    );
+  }
+
+  await Promise.all(plugins);
+}
+
+window.jamiLoadScript = jamiLoadScript;
+window.jamiLoadStylesheet = jamiLoadStylesheet;
+
 const themes = {
   Halloween: {
     glowPrimary: 'text-halloween-glow',
@@ -4245,10 +4393,44 @@ volumeIcon?.addEventListener(
   }
 );
 
-window.setInterval(
-  updateNormalProgress,
-  250
+let normalProgressTimer = null;
+
+function startNormalProgressUpdates() {
+  if (normalProgressTimer !== null) {
+    return;
+  }
+
+  normalProgressTimer = window.setInterval(
+    updateNormalProgress,
+    250
+  );
+}
+
+function stopNormalProgressUpdates() {
+  if (normalProgressTimer === null) {
+    return;
+  }
+
+  window.clearInterval(normalProgressTimer);
+  normalProgressTimer = null;
+}
+
+document.addEventListener(
+  'visibilitychange',
+  () => {
+    if (document.hidden) {
+      stopNormalProgressUpdates();
+      return;
+    }
+
+    updateNormalProgress();
+    startNormalProgressUpdates();
+  }
 );
+
+if (!document.hidden) {
+  startNormalProgressUpdates();
+}
 
 loadPlaylist();
 
@@ -4323,7 +4505,7 @@ function showList() {
     </div>
   `;
 
-  $('#terminalContent').html(html);
+  setTerminalContent(html);
 
   const currentTheme = localStorage.getItem('theme') || 'Halloween';
   applyTheme(currentTheme);
@@ -4393,7 +4575,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function showArt() {
-$('#terminalContent').html(`
+setTerminalContent(`
 <div class="text-pink-300 text-lg mb-4 mt-4"></div>
   <div id="artGallery" class="grid grid-cols-2 gap-4">
    <a href="jamieteph.png" class="art-card block rounded overflow-hidden">
@@ -4428,13 +4610,39 @@ $('#terminalContent').html(`
     </div>
   `);
 
-setTimeout(() => {
-lightGallery(document.getElementById('artGallery'), {
-thumbnail: true,
-zoom: true,
-download: false,
-});
-}, 100); 
+const artGallery = document.getElementById('artGallery');
+
+if (artGallery) {
+  artGallery.inert = true;
+  artGallery.setAttribute('aria-busy', 'true');
+}
+
+ensureLightGalleryDependencies({
+  thumbnail: true,
+  zoom: true
+})
+  .then(() => {
+    if (
+      artGallery &&
+      document.documentElement.contains(artGallery) &&
+      typeof lightGallery === 'function'
+    ) {
+      lightGallery(artGallery, {
+        thumbnail: true,
+        zoom: true,
+        download: false
+      });
+    }
+  })
+  .catch(error => {
+    console.error('could not load art gallery:', error);
+  })
+  .finally(() => {
+    if (artGallery) {
+      artGallery.inert = false;
+      artGallery.removeAttribute('aria-busy');
+    }
+  });
   
 const currentTheme = localStorage.getItem('theme') || 'Halloween';
 applyTheme(currentTheme);
@@ -4456,7 +4664,7 @@ function siteFAQ() {
   terminal.classList.remove('sm:w-[480px]');
   terminal.classList.add('sm:w-[600px]');
 
-  $('#terminalContent').html(`
+  setTerminalContent(`
     <div class="mt-3 text-white">
 
       <div
@@ -4633,7 +4841,7 @@ const terminal = document.getElementById('terminal');
 terminal.classList.remove('sm:w-[480px]');
 terminal.classList.add('sm:w-[600px]');
   
-   $('#terminalContent').html(`
+   setTerminalContent(`
     <div class="text-pink-100 text-[13px] font-medium space-y-4">
 
  <div class="flex justify-center">
@@ -4669,7 +4877,7 @@ terminal.classList.add('sm:w-[600px]');
 }
 
 function somethingNew() {
-  $('#terminalContent').html(`
+  setTerminalContent(`
   `);
 
   const currentTheme = localStorage.getItem('theme') || 'Halloween';
@@ -5204,7 +5412,7 @@ const terminal = document.getElementById('terminal');
 terminal.classList.remove('sm:w-[600px]');
 terminal.classList.add('sm:w-[480px]');
   
-  $('#terminalContent').html(`
+  setTerminalContent(`
   <div id="typed" class="text-pink-300 text-lg mb-4 mt-4 text-center"></div>
   <div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
 <!--button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">about!</button-->
@@ -5296,12 +5504,13 @@ function initializeTillyVideoGallery() {
 
   if (
     !trigger ||
-    trigger.dataset.galleryReady === 'true' ||
-    typeof lightGallery !== 'function' ||
-    typeof lgVideo === 'undefined'
+    trigger.dataset.galleryBootstrapReady === 'true'
   ) {
     return;
   }
+
+  let gallery = null;
+  let galleryPromise = null;
 
   const playActiveVideo = () => {
     const video =
@@ -5327,79 +5536,119 @@ function initializeTillyVideoGallery() {
     }
   };
 
-  trigger.addEventListener(
-    'lgAfterOpen',
-    playActiveVideo
-  );
-
-  trigger.addEventListener(
-    'lgAfterSlide',
-    playActiveVideo
-  );
-
-  const gallery = lightGallery(
-    trigger,
-    {
-      dynamic: true,
-      plugins: [lgVideo],
-      addClass: 'tilly-video-gallery',
-      download: false,
-      counter: true,
-      controls: true,
-      loop: true,
-      escKey: true,
-      keyPress: true,
-      showCloseIcon: true,
-      autoplayFirstVideo: true,
-      autoplayVideoOnSlide: true,
-      gotoNextSlideOnVideoEnd: false,
-      dynamicEl: [
-        {
-          video: {
-            source: [
-              {
-                src: 'tilly1.mp4',
-                type: 'video/mp4'
-              }
-            ],
-            attributes: {
-              controls: true,
-              preload: 'auto',
-              autoplay: true,
-              playsinline: true,
-              loop: true
-            }
-          }
-        },
-        {
-          video: {
-            source: [
-              {
-                src: 'tilly2.mp4',
-                type: 'video/mp4'
-              }
-            ],
-            attributes: {
-              controls: true,
-              preload: 'auto',
-              autoplay: true,
-              playsinline: true,
-              loop: true
-            }
-          }
-        }
-      ]
+  const ensureGallery = async () => {
+    if (gallery) {
+      return gallery;
     }
-  );
 
-  trigger.dataset.galleryReady = 'true';
+    if (!galleryPromise) {
+      galleryPromise =
+        ensureLightGalleryDependencies({
+          video: true
+        })
+          .then(() => {
+            if (
+              typeof lightGallery !== 'function' ||
+              typeof lgVideo === 'undefined'
+            ) {
+              throw new Error(
+                'lightgallery video plugin unavailable'
+              );
+            }
+
+            trigger.addEventListener(
+              'lgAfterOpen',
+              playActiveVideo
+            );
+
+            trigger.addEventListener(
+              'lgAfterSlide',
+              playActiveVideo
+            );
+
+            gallery = lightGallery(
+              trigger,
+              {
+                dynamic: true,
+                plugins: [lgVideo],
+                addClass: 'tilly-video-gallery',
+                download: false,
+                counter: true,
+                controls: true,
+                loop: true,
+                escKey: true,
+                keyPress: true,
+                showCloseIcon: true,
+                autoplayFirstVideo: true,
+                autoplayVideoOnSlide: true,
+                gotoNextSlideOnVideoEnd: false,
+                dynamicEl: [
+                  {
+                    video: {
+                      source: [
+                        {
+                          src: 'tilly1.mp4',
+                          type: 'video/mp4'
+                        }
+                      ],
+                      attributes: {
+                        controls: true,
+                        preload: 'auto',
+                        autoplay: true,
+                        playsinline: true,
+                        loop: true
+                      }
+                    }
+                  },
+                  {
+                    video: {
+                      source: [
+                        {
+                          src: 'tilly2.mp4',
+                          type: 'video/mp4'
+                        }
+                      ],
+                      attributes: {
+                        controls: true,
+                        preload: 'auto',
+                        autoplay: true,
+                        playsinline: true,
+                        loop: true
+                      }
+                    }
+                  }
+                ]
+              }
+            );
+
+            trigger.dataset.galleryReady = 'true';
+            return gallery;
+          })
+          .catch(error => {
+            galleryPromise = null;
+            throw error;
+          });
+    }
+
+    return galleryPromise;
+  };
 
   trigger.addEventListener(
     'click',
-    () => {
-      gallery.openGallery(0);
+    async () => {
+      try {
+        const activeGallery = await ensureGallery();
+        activeGallery.openGallery(0);
+      } catch (error) {
+        console.error(
+          'could not load tilly videos:',
+          error
+        );
+      }
     }
   );
+
+  trigger.dataset.galleryBootstrapReady = 'true';
 
   setTillyVideoTriggerVisible(
     !watchPartyState.enabled
@@ -6973,12 +7222,43 @@ function initializeLetterMaker() {
   );
 }
 
-initializeLetterMaker();
+function prepareLetterMakerTrigger() {
+  const trigger =
+    document.getElementById(
+      'letterMakerTrigger'
+    );
+
+  if (
+    !trigger ||
+    trigger.dataset.letterMakerBootstrapReady === 'true'
+  ) {
+    return;
+  }
+
+  setLetterMakerTriggerVisible(
+    !watchPartyState.enabled
+  );
+
+  trigger.addEventListener(
+    'click',
+    event => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      initializeLetterMaker();
+      openLetterMaker();
+    },
+    { capture: true, once: true }
+  );
+
+  trigger.dataset.letterMakerBootstrapReady = 'true';
+}
+
+prepareLetterMakerTrigger();
 
 if (document.readyState === 'loading') {
   window.addEventListener(
     'DOMContentLoaded',
-    initializeLetterMaker,
+    prepareLetterMakerTrigger,
     { once: true }
   );
 }
