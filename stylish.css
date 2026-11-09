@@ -326,6 +326,7 @@ html:not(.site-theme-ready) .avatar-icon2 {
 
 .terminal-button:hover::after {
   opacity: 1;
+  will-change: transform;
   animation: bob 2s ease-in-out infinite;
 }
 
@@ -1905,6 +1906,7 @@ font-size: 0.65rem;
 
 .letter-maker-trigger:hover,
 .letter-maker-trigger:focus-visible {
+  will-change: transform;
   animation: letter-mailbox-ring 720ms ease-in-out infinite;
   filter:
     drop-shadow(
