@@ -38,7 +38,7 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
 <meta name="twitter:title" content="jamie - art, chat & music">
 <meta name="twitter:description" content="live chat, guest wall, furry art, music and interactive themes.">
 <meta name="twitter:image" content="https://jmeow.co.uk/og-image.png">
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="tailwind.generated.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -48,21 +48,7 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
   "description": "jamie's personal website with live chat, guest wall, furry art, music and interactive themes."
 }
 </script>
- <script>
-tailwind.config = {
-plugins: [
-function ({ addComponents }) {
-addComponents({
-'.terminal-button': {
-  '@apply relative bg-transparent border-0 text-white px-3 py-1.5 mt-3 rounded-xl transition duration-300 ease-in-out hover:scale-105 active:scale-95 text-xs font-medium transform hover:-translate-y-[0.5px]': {},
-  cursor: 'pointer',
-  userSelect: 'none',
-},
-});
-},
-],
-};
-</script>
+
 </head>
 <body class="bg-black h-screen w-screen overflow-hidden">
 <canvas id="canvas"></canvas>
