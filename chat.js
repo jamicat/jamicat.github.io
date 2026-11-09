@@ -3386,12 +3386,17 @@ async loadWatchParty() {
     );
 
     const updateTime = () => {
+        if (document.hidden) {
+            return;
+        }
+
         const player =
             window.watchPartyPlayer;
 
         if (!player?.getState) {
-            timeLabel.textContent =
-                "0:00 / 0:00";
+            if (timeLabel.textContent !== "0:00 / 0:00") {
+                timeLabel.textContent = "0:00 / 0:00";
+            }
 
             return;
         }
@@ -3413,12 +3418,16 @@ async loadWatchParty() {
                 ? Math.max(0, state.duration)
                 : 0;
 
-        timeLabel.textContent =
+        const timeText =
             `${this.formatDuration(
                 currentTime
             )} / ${this.formatDuration(
                 duration
             )}`;
+
+        if (timeLabel.textContent !== timeText) {
+            timeLabel.textContent = timeText;
+        }
 
         if (
             !progressInput ||
@@ -3427,22 +3436,17 @@ async loadWatchParty() {
             return;
         }
 
-        progressInput.max =
-            String(
-                duration > 0
-                    ? duration
-                    : 1
-            );
+        const progressMax = String(duration > 0 ? duration : 1);
+        if (progressInput.max !== progressMax) {
+            progressInput.max = progressMax;
+        }
 
-        progressInput.value =
-            String(
-                Math.min(
-                    currentTime,
-                    duration > 0
-                        ? duration
-                        : 1
-                )
-            );
+        const progressValue = String(
+            Math.min(currentTime, duration > 0 ? duration : 1)
+        );
+        if (progressInput.value !== progressValue) {
+            progressInput.value = progressValue;
+        }
 
         const percentage =
             duration > 0
@@ -3459,19 +3463,23 @@ async loadWatchParty() {
                 : 0;
 
         if (progressFill) {
-            progressFill.style.width =
-                `${percentage}%`;
+            const fillWidth = `${percentage}%`;
+            if (progressFill.style.width !== fillWidth) {
+                progressFill.style.width = fillWidth;
+            }
         }
 
         if (currentTooltip) {
-    currentTooltip.textContent =
-        this.formatDuration(
-            currentTime
-        );
+            const tooltipText = this.formatDuration(currentTime);
+            if (currentTooltip.textContent !== tooltipText) {
+                currentTooltip.textContent = tooltipText;
+            }
 
-    currentTooltip.style.left =
-        `${percentage}%`;
-}
+            const tooltipLeft = `${percentage}%`;
+            if (currentTooltip.style.left !== tooltipLeft) {
+                currentTooltip.style.left = tooltipLeft;
+            }
+        }
     };
 
     updateTime();
@@ -6377,6 +6385,28 @@ async loadHistory() {
         },
         750
     );
+}
+
+insertHistoryTimelineItem(item) {
+    let low = 0;
+    let high = this.historyTimeline.length;
+
+    while (low < high) {
+        const middle = (low + high) >>> 1;
+
+        if (
+            this.compareTimelineItems(
+                this.historyTimeline[middle],
+                item
+            ) <= 0
+        ) {
+            low = middle + 1;
+        } else {
+            high = middle;
+        }
+    }
+
+    this.historyTimeline.splice(low, 0, item);
 }
 
 compareTimelineItems(first, second) {
@@ -13507,21 +13537,13 @@ if (this.partyManager) {
         "image-upload-created"
 ) {
     if (data.upload) {
-        this.historyTimeline.push({
+        this.insertHistoryTimelineItem({
             type: "image-upload",
             createdAt:
                 data.upload.createdAt ||
                 new Date().toISOString(),
             value: data.upload
         });
-
-        this.historyTimeline.sort(
-            (first, second) =>
-                this.compareTimelineItems(
-                    first,
-                    second
-                )
-        );
     }
 
     this.addImageUpload(
@@ -13839,21 +13861,13 @@ if (data.type === "message") {
         this.isMinimized ||
         this.userHasScrolledUp;
 
-    this.historyTimeline.push({
+    this.insertHistoryTimelineItem({
         type: "message",
         createdAt:
             data.message?.created_at ||
             new Date().toISOString(),
         value: data.message
     });
-
-    this.historyTimeline.sort(
-        (first, second) =>
-            this.compareTimelineItems(
-                first,
-                second
-            )
-    );
 
     this.addMessage(data.message);
 
