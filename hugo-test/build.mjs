@@ -1,4 +1,4 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
@@ -33,5 +33,6 @@ for (const name of ['scripts', 'discscripts', 'chat']) {
   process.stdout.write(`${name}.js: ${reduction}% smaller before compression\n`);
 }
 
+await mkdir('data', { recursive: true });
 await writeFile('data/assetmanifest.json', JSON.stringify(manifest));
 execFileSync('hugo', [], { stdio: 'inherit' });
