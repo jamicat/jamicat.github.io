@@ -12597,6 +12597,9 @@ setupMemberActivity() {
         return;
     }
 
+    const memberRows =
+        document.createDocumentFragment();
+
     for (const member of members) {
         const row =
             document.createElement("div");
@@ -12676,7 +12679,7 @@ setupMemberActivity() {
             presence
         );
 
-        this.membersElement.appendChild(
+        memberRows.appendChild(
             row
         );
 
@@ -12700,6 +12703,10 @@ setupMemberActivity() {
             }
         );
     }
+
+    this.membersElement.appendChild(
+        memberRows
+    );
 }
 
 getEffectiveOutgoingAvatar() {
