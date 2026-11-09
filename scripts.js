@@ -1607,17 +1607,14 @@ function updateNormalProgressVisibility() {
     Boolean(loadedVideoId) &&
     duration > 0;
 
-  normalProgressWrap.classList.toggle(
-    "hidden",
-    !shouldShow
-  );
+  if (normalProgressWrap.classList.contains("hidden") === shouldShow) {
+    normalProgressWrap.classList.toggle("hidden", !shouldShow);
+  }
 
-  normalProgressWrap.setAttribute(
-    "aria-hidden",
-    shouldShow
-      ? "false"
-      : "true"
-  );
+  const ariaHidden = shouldShow ? "false" : "true";
+  if (normalProgressWrap.getAttribute("aria-hidden") !== ariaHidden) {
+    normalProgressWrap.setAttribute("aria-hidden", ariaHidden);
+  }
 
   if (!shouldShow) {
   normalProgressCurrentTooltip
@@ -1687,7 +1684,8 @@ function updateNormalProgress() {
 
 if (
   normalProgressCurrentTooltip &&
-  normalProgressWrap
+  normalProgressWrap &&
+  normalProgressCurrentTooltip.classList.contains("visible")
 ) {
   const sliderRect =
     normalProgressSlider
@@ -1830,6 +1828,8 @@ function showNormalProgressTooltips() {
     ?.classList.add(
       "visible"
     );
+
+  updateNormalProgress();
 }
 
 function hideNormalProgressTooltips() {
