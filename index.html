@@ -20,7 +20,6 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
     rel="stylesheet"
     href="./image-transfer.css?v=2"
 >
-<link rel="stylesheet" href="./image-remix.css?v=1">
 <link rel="stylesheet" href="stylesheet.css"/>
 <link rel="stylesheet" href="chat.css?v=v3">
 <link rel="canonical" href="https://jmeow.co.uk/">
@@ -39,16 +38,6 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
 <meta name="twitter:title" content="jamie - art, chat & music">
 <meta name="twitter:description" content="live chat, guest wall, furry art, music and interactive themes.">
 <meta name="twitter:image" content="https://jmeow.co.uk/og-image.png">
-<canvas id="canvas"></canvas>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>  
-<link href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/css/lightgallery-bundle.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/lightgallery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/video/lg-video.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script type="application/ld+json">
 {
@@ -76,6 +65,7 @@ addComponents({
 </script>
 </head>
 <body class="bg-black h-screen w-screen overflow-hidden">
+<canvas id="canvas"></canvas>
 <div
     id="bgndVideo"
     class="watch-party-cinematic"
@@ -586,25 +576,30 @@ addComponents({
     aria-live="polite"
     hidden
 >
-    <i
-        class="fa-solid fa-eye homepage-view-icon"
+    <svg
+        class="homepage-view-icon"
+        viewBox="0 0 576 512"
+        width="18"
+        height="1em"
+        fill="currentColor"
         aria-hidden="true"
-    ></i>
+        focusable="false"
+    >
+        <path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1-288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"></path>
+    </svg>
     <span id="siteViewCount">0</span>
 </div>
 
-<script src="scripts.js?v=17"></script>
-<script src="discscripts.js?v=5"></script>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+<script src="scripts.js?v=18"></script>
+<script src="discscripts.js?v=6"></script>
 <script
     src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"
     defer
 ></script>
 <script
-    src="./image-remix.js?v=2"
-    defer
-></script>
-<script
-    src="chat.js?v=v2"
+    src="chat.js?v=v3"
     defer
 ></script>
 </body>
