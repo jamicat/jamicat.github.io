@@ -1,0 +1,24 @@
+.sparkle-text {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+}
+
+.sparkle-dot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.sparkle-dot.small {
+  width: 3px;
+  height: 3px;
+  opacity: 0.7;
+}
+
+.sparkle-dot.big {
+  width: 7px;
+  height: 7px;
+  box-shadow: 0 0 14px white;
+  opacity: 1;
+}
