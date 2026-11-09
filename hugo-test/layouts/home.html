@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+if (window.location.hostname === "jamicat.github.io") {
+    window.location.replace(
+        "https://jmeow.co.uk" +
+        window.location.pathname +
+        window.location.search +
+        window.location.hash
+    );
+}
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description"
+content="jamie's personal website with a live chat, guest wall, furry art, music player and interactive themes.">
+<link rel="stylesheet" href="stylish.css?v=14"/>
+<link
+    rel="stylesheet"
+    href="./image-transfer.css?v=2"
+>
+<link rel="stylesheet" href="stylesheet.css"/>
+<link rel="stylesheet" href="chat.css?v=v3">
+<link rel="canonical" href="https://jmeow.co.uk/">
+<meta name="google-site-verification" content="NNLXarhWU52jJxwgu3PZ6VL_HREQ5Vu8jZcjt8MO4-E" />
+<title>Jamie</title>
+ <meta property="og:title" content="jamie - art, chat & music">
+  <meta
+    property="og:description"
+    content="live chat, guest wall, furry art, music and interactive themes."
+  >
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="jamie">
+ <meta property="og:image" content="https://jmeow.co.uk/og-image.png">
+  <meta property="og:url" content="https://jmeow.co.uk/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="jamie - art, chat & music">
+<meta name="twitter:description" content="live chat, guest wall, furry art, music and interactive themes.">
+<meta name="twitter:image" content="https://jmeow.co.uk/og-image.png">
+<link rel="stylesheet" href="tailwind.generated.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "jamie",
+  "url": "https://jmeow.co.uk/",
+  "description": "jamie's personal website with live chat, guest wall, furry art, music and interactive themes."
+}
+</script>
+
+</head>
+<body class="bg-black h-screen w-screen overflow-hidden">
+<canvas id="canvas"></canvas>
+<div
+    id="bgndVideo"
+    class="watch-party-cinematic"
+>
+<div id="videoPoster" class="absolute inset-0 bg-black z-0 bg-cover bg-center"></div>
+<div id="background-video-iframe" style="opacity: 0; transition: opacity 0.5s;"></div>
+</div>
+
+
+<button
+    id="tillyVideoTrigger"
+    class="tilly-video-trigger"
+    type="button"
+    aria-label="open tilly videos"
+>
+    <img
+        src="tilly.png"
+        alt=""
+        aria-hidden="true"
+        draggable="false"
+    >
+    <span class="tilly-video-tooltip" aria-hidden="true">doggy vids</span>
+</button>
+
+<button
+    id="letterMakerTrigger"
+    class="letter-maker-trigger"
+    type="button"
+    aria-label="open letter maker"
+    title="write a letter"
+    hidden
+>
+    <img
+        src="/tmplates/mbox.png"
+        alt=""
+        aria-hidden="true"
+        draggable="false"
+    >
+</button>
+
+<div
+    id="letterMakerOverlay"
+    class="letter-maker-overlay"
+    hidden
+>
+    <section
+        class="letter-maker-window"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="letterMakerTitle"
+    >
+        <div class="letter-maker-header">
+            <div>
+                <h2 id="letterMakerTitle" class="letter-maker-title">write a letter</h2>
+                <div id="letterMakerCount" class="letter-maker-count">01 / 18</div>
+            </div>
+            <button
+                id="letterMakerClose"
+                class="letter-maker-close"
+                type="button"
+                aria-label="close letter maker"
+                title="close"
+            >×</button>
+        </div>
+
+        <div
+            id="letterMakerStatus"
+            class="letter-maker-status"
+            aria-live="polite"
+        ></div>
+
+        <div class="letter-maker-stage">
+            <button
+                id="letterMakerPrev"
+                class="letter-maker-nav letter-maker-prev"
+                type="button"
+                aria-label="previous letter paper"
+                title="previous"
+            >‹</button>
+
+            <div class="letter-maker-preview-shell">
+                <div
+                    id="letterMakerPaper"
+                    class="letter-maker-paper"
+                    data-letter-font="nintendoh"
+                    data-letter-size="medium"
+                >
+                    <img
+                        id="letterMakerPreview"
+                        class="letter-maker-preview"
+                        src="/tmplates/Letter01.png"
+                        alt="letter paper 01"
+                        draggable="false"
+                    >
+                    <div
+                        id="letterMakerMessageBlock"
+                        class="letter-maker-text-block letter-maker-message-block"
+                    >
+                        <div
+                            id="letterMakerMessage"
+                            class="letter-maker-message"
+                            contenteditable="true"
+                            role="textbox"
+                            aria-multiline="true"
+                            aria-label="letter message"
+                            data-placeholder="write your letter..."
+                            spellcheck="true"
+                        ></div>
+                        <button
+                            id="letterMakerMessageMove"
+                            class="letter-maker-drag-handle"
+                            type="button"
+                            aria-label="move letter message"
+                            title="move"
+                        >✥</button>
+                    </div>
+                    <div
+                        id="letterMakerSignatureBlock"
+                        class="letter-maker-text-block letter-maker-signature-block"
+                    >
+                        <div
+                            id="letterMakerSignature"
+                            class="letter-maker-signature"
+                            contenteditable="true"
+                            role="textbox"
+                            aria-multiline="false"
+                            aria-label="letter signature"
+                            data-placeholder="signature"
+                            spellcheck="true"
+                        ></div>
+                        <button
+                            id="letterMakerSignatureMove"
+                            class="letter-maker-drag-handle"
+                            type="button"
+                            aria-label="move letter signature"
+                            title="move"
+                        >✥</button>
+                    </div>
+                </div>
+            </div>
+
+            <button
+                id="letterMakerNext"
+                class="letter-maker-nav letter-maker-next"
+                type="button"
+                aria-label="next letter paper"
+                title="next"
+            >›</button>
+        </div>
+
+        <div class="letter-maker-controls" aria-label="letter formatting">
+            <label class="letter-maker-control letter-maker-font-control">
+                <select id="letterMakerFont" aria-label="letter font">
+                    <option value="nintendoh">nintendoh</option>
+                    <option value="dynapuff">dynapuff</option>
+                    <option value="nunito">nunito</option>
+                    <option value="sans">sans</option>
+                </select>
+            </label>
+
+            <div class="letter-maker-control">
+                <div class="letter-maker-colours" role="group" aria-label="letter text colour">
+                    <button type="button" class="letter-maker-colour is-selected" data-letter-colour="#333238" aria-label="black" aria-pressed="true" style="--letter-colour:#333238"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#4f7fbd" aria-label="blue" aria-pressed="false" style="--letter-colour:#4f7fbd"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#9fc8ea" aria-label="pastel blue" aria-pressed="false" style="--letter-colour:#9fc8ea"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#a8d8b8" aria-label="pastel green" aria-pressed="false" style="--letter-colour:#a8d8b8"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#ee9fbd" aria-label="pastel pink" aria-pressed="false" style="--letter-colour:#ee9fbd"></button>
+                    <button type="button" class="letter-maker-colour" data-letter-colour="#b8a5df" aria-label="pastel lavender" aria-pressed="false" style="--letter-colour:#b8a5df"></button>
+                </div>
+            </div>
+
+            <div class="letter-maker-control">
+                <div class="letter-maker-sizes" role="group" aria-label="letter text size">
+                    <button type="button" class="letter-maker-size" data-letter-size="small" aria-pressed="false">small</button>
+                    <button type="button" class="letter-maker-size is-selected" data-letter-size="medium" aria-pressed="true">medium</button>
+                    <button type="button" class="letter-maker-size" data-letter-size="large" aria-pressed="false">large</button>
+                </div>
+            </div>
+
+            <div class="letter-maker-control">
+                <div class="letter-maker-styles" role="group" aria-label="letter text style">
+                    <button id="letterMakerBold" type="button" class="letter-maker-style" aria-label="bold" aria-pressed="false"><strong>b</strong></button>
+                    <button id="letterMakerItalic" type="button" class="letter-maker-style" aria-label="italic" aria-pressed="false"><em>i</em></button>
+                </div>
+            </div>
+
+            <div class="letter-maker-control">
+                <div class="letter-maker-emojis" role="group" aria-label="insert emoji">
+                    <button id="letterMakerEmoji" type="button" class="letter-maker-emoji" aria-label="add emoji">☺️</button>
+                </div>
+            </div>
+
+            <button
+                id="letterMakerSend"
+                class="letter-maker-send"
+                type="button"
+            >send letter</button>
+        </div>
+
+        <div
+            id="letterMakerEmojiPopover"
+            class="letter-maker-emoji-popover"
+            hidden
+        ></div>
+
+        <div
+            id="letterMakerTemplates"
+            class="letter-maker-templates"
+            aria-label="letter paper choices"
+        ></div>
+
+    </section>
+</div>
+
+<div id="terminal" class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[480px] rounded-3xl shadow-lg backdrop-blur-xl" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+<div class="drag-area text-pink-600 text-xs mb-2 select-none flex justify-between items-center">
+  <span class="flex items-center space-x-3">
+    <img
+      id="mainAvatar"
+      src="acl.png"
+      alt="avatar"
+      class="avatar-icon terminal-expanded-only"
+    >
+
+    <span
+      id="typed3"
+      class="terminal-expanded-only theme-heading font-medium text-3xl mt-9 text-white text-2xl mt-4 mb-1 text-blue-glow"
+    >
+      Jamie
+    </span>
+
+    <span
+      id="terminalMinimizedLabel"
+      class="theme-heading hidden text-xs font-bold tracking-widest text-white text-blue-glow"
+    >
+      jamie
+    </span>
+  </span>
+
+ <div class="flex items-center gap-2 mr-3 -mt-12">
+  <button
+    id="videoToggle"
+    type="button"
+    class="flex h-4 w-4 items-center justify-center text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none"
+  >
+    <svg
+      id="pauseIcon"
+      xmlns="http://www.w3.org/2000/svg"
+      class="block h-4 w-4 fill-current hidden"
+      viewBox="0 0 24 24"
+    >
+      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+    </svg>
+
+    <svg
+      id="playIcon"
+      xmlns="http://www.w3.org/2000/svg"
+      class="block h-4 w-4 fill-current"
+      viewBox="0 0 24 24"
+    >
+      <path d="M8 5v14l11-7z"></path>
+    </svg>
+  </button>
+
+  <button
+    id="nextTrack"
+    type="button"
+    class="flex h-4 w-4 items-center justify-center text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none"
+  >
+    <svg
+      id="nextIcon"
+      xmlns="http://www.w3.org/2000/svg"
+      class="block h-4 w-4 fill-current"
+      viewBox="0 0 24 24"
+    >
+      <path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2V6z"></path>
+    </svg>
+  </button>
+
+  <div class="relative flex h-4 w-4 items-center justify-center">
+    <button
+      id="changeTheme"
+      type="button"
+      class="flex mt-1 ml-2 h-4 w-4 items-center justify-center text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none"
+    >
+      <svg
+        id="themeIcon"
+        class="block h-4 w-4 fill-current"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M5.6 11.6l-1.2-1.2c-0.8-0.2-2-0.1-2.7 1-0.8 1.1-0.3 2.8-1.7 4.6 0 0 3.5 0 4.8-1.3 1.2-1.2 1.2-2.2 1-3l-0.2-0.1z"></path>
+        <path d="M5.8 8.1c-0.2 0.3-0.5 0.7-0.7 1 0 0.2-0.1 0.3-0.2 0.4l1.5 1.5c0.1-0.1 0.3-0.2 0.4-0.3 0.3-0.2 0.7-0.4 1-0.7 0.4 0 0.6-0.2 0.8-0.4l-2.2-2.2c-0.2 0.2-0.4 0.4-0.6 0.7z"></path>
+        <path d="M15.8 0.2c-0.3-0.3-0.7-0.3-1-0.1 0 0-3 2.5-5.9 5.1-0.4 0.4-0.7 0.7-1.1 1-0.2 0.2-0.4 0.4-0.6 0.5l2.1 2.1c0.2-0.2 0.4-0.4 0.5-0.7 0.3-0.4 0.6-0.7 0.9-1.1 2.5-3 5.1-5.9 5.1-5.9 0.3-0.2 0.3-0.6 0-0.9z"></path>
+      </svg>
+    </button>
+
+    <div
+      id="tooltip"
+      class="absolute left-1/2 top-full mt-2 -translate-x-1/2 rounded-3xl bg-transparent text-sm text-white transition-all duration-300 py-2 px-3 flex flex-col gap-1 z-50 shadow-lg backdrop-blur-sm border border-white/5 min-w-[8rem] opacity-0 pointer-events-none invisible"
+    >
+      <button id="themePastel" class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">pastel</button>
+      <button id="themeHalloween" class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">halloween</button>
+      <button id="themeDefault" class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">animal crossing</button>
+      <button id="themeStars" class="hidden theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">pixel cat</button>
+      <button id="themeCat" class="hidden theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">starcat</button>
+      <button id="themeAero" class="hidden theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">sky</button>
+    </div>
+  </div>
+
+  <button
+    id="rewind10"
+    type="button"
+    class="flex h-4 w-4 items-center justify-center text-red-300 transition-colors duration-200 text-lg leading-none"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      class="block h-4 w-4 fill-current"
+    >
+      <path d="M16.948 20.2a1 1 0 0 1-.465-.115l-4.472-2.352-4.471 2.348a1 1 0 0 1-1.451-1.054l.854-4.979-3.619-3.527a1 1 0 0 1 .554-1.706l5-.727 2.237-4.531A1 1 0 0 1 12.011 3a1 1 0 0 1 .9.558l2.236 4.53 5 .727a1 1 0 0 1 .554 1.706l-3.621 3.526.854 4.98a1 1 0 0 1-.986 1.173zM6.171 10.5l2.544 2.479a1 1 0 0 1 .285.888l-.6 3.5 3.144-1.653a.993.993 0 0 1 .931 0l3.144 1.653-.6-3.5a1 1 0 0 1 .288-.885l2.544-2.482-3.515-.511a1 1 0 0 1-.752-.547l-1.573-3.183-1.573 3.186a1 1 0 0 1-.752.547z"></path>
+    </svg>
+  </button>
+
+  <button
+    id="terminalMinimize"
+    type="button"
+    class="flex h-4 w-4 items-center justify-center text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none"
+    aria-label="minimize terminal"
+    aria-expanded="true"
+    title="minimize terminal"
+  >
+    <svg
+      id="terminalMinimizeIcon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      class="block h-4 w-4 fill-current"
+      aria-hidden="true"
+    >
+      <path d="M5 11h14v2H5z"></path>
+    </svg>
+
+    <svg
+      id="terminalRestoreIcon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      class="hidden block h-4 w-4 fill-current"
+      aria-hidden="true"
+    >
+      <path d="M7 7h10v10H7V7zm2 2v6h6V9H9z"></path>
+    </svg>
+  </button>
+</div>
+  </div>
+<div id="terminalContent" class="terminal-expanded-only">
+<div class="font-medium text-pink-600 mt-5 mb-4 text-center" id="typed"></div>
+<div id="buttonRow" class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap">
+<!--button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">about!</button-->
+<button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">art</button>
+<button class="terminal-button theme-body text-xs" onclick="showList()">playlist</button>
+<button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">guestbook</button>
+</div>
+</div>
+</div>
+<div class="homepage-media-controls">
+<div class="volume-wrap">
+ <svg
+  id="volumeIcon"
+  class="volume-icon"
+  xmlns="http://www.w3.org/2000/svg"
+  fill="none"
+  viewBox="0 0 24 24"
+  stroke="currentColor"
+>
+  <path
+    id="speakerBody"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    d="M11 5L6 9H3v6h3l5 4V5z"
+  />
+
+  <path
+    id="wave1"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    d="M15.5 8.5a5 5 0 010 7"
+  />
+
+  <path
+    id="wave2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    d="M18 6a8 8 0 010 12"
+  />
+
+   <path
+  id="muteLine1"
+  style="display:none"
+  stroke-linecap="round"
+  stroke-width="2"
+  d="M16 8L21 13"
+/>
+
+<path
+  id="muteLine2"
+  style="display:none"
+  stroke-linecap="round"
+  stroke-width="2"
+  d="M21 8L16 13"
+/>
+</svg>
+  <input
+    id="volumeSlider"
+    type="range"
+    min="0"
+    max="100"
+    value="50"
+ >
+</div>
+
+<div
+    id="normalProgressWrap"
+    class="normal-progress-wrap hidden"
+    aria-hidden="true"
+>
+    <div
+    id="normalProgressCurrentTooltip"
+    class="
+        normal-progress-tooltip
+        normal-progress-current-tooltip
+    "
+    role="tooltip"
+>
+    0:00
+</div>
+
+<div
+    id="normalProgressTooltip"
+    class="
+        normal-progress-tooltip
+        normal-progress-hover-tooltip
+    "
+    role="tooltip"
+>
+    0:00
+</div>
+
+    <input
+        id="normalProgressSlider"
+        type="range"
+        min="0"
+        max="100000"
+        step="1"
+        value="0"
+        aria-label="song progress"
+    >
+</div>
+</div>
+<nav
+    id="homepageSocialLinks"
+    class="homepage-social-links"
+    aria-label="social links"
+>
+    <a
+        class="homepage-social-link"
+        href="http://discordapp.com/users/160899636637204482"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="discord"
+        title="discord"
+    >
+        <img
+            class="homepage-social-icon"
+            src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/discord.svg"
+            alt=""
+            aria-hidden="true"
+            width="40"
+            height="40"
+        >
+    </a>
+
+    <a
+        class="homepage-social-link"
+        href="https://steamcommunity.com/id/jmiie"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="steam"
+        title="steam"
+    >
+        <img
+            class="homepage-social-icon"
+            src="https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/steam.svg"
+            alt=""
+            aria-hidden="true"
+            width="40"
+            height="40"
+        >
+    </a>
+</nav>
+
+<div
+    id="homepageViewCounter"
+    class="homepage-view-counter"
+    aria-label="site views"
+    aria-live="polite"
+    hidden
+>
+    <svg
+        class="homepage-view-icon"
+        viewBox="0 0 576 512"
+        width="18"
+        height="1em"
+        fill="currentColor"
+        aria-hidden="true"
+        focusable="false"
+    >
+        <path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1-288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"></path>
+    </svg>
+    <span id="siteViewCount">0</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+<script src="{{ index site.Data.assetmanifest "scripts" }}"></script>
+<script src="{{ index site.Data.assetmanifest "discscripts" }}"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"
+    defer
+></script>
+<script
+    src="{{ index site.Data.assetmanifest "chat" }}"
+    defer
+></script>
+</body>
+</html>
