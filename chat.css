@@ -6307,10 +6307,7 @@ html[data-chat-pastel="paws"]
     display: none !important;
 }
 
-#chatWindow[data-chat-pastel]
-#chatWatchPartyButton.hidden {
-    display: none !important;
-}
+
 
 html[data-chat-pastel]
 .jami-name-history-overlay {
@@ -7276,12 +7273,7 @@ html[data-chat-pastel="paws"]
     transform: translateY(-2px) !important;
 }
 
-#chatWindow[data-chat-pastel="paws"]
-#chatTitleBar > div,
-#chatWindow[data-chat-pastel="paws"]
-#chatTitleBar > div > div {
-    align-items: center !important;
-}
+
 
 html[data-chat-pastel="paws"]
 .jami-chat-context-menu
@@ -8408,11 +8400,7 @@ html[data-chat-theme="paws"]
     transform: none !important;
 }
 
-#chatWindow[data-chat-theme="original"] .jami-cute-avatar-button {
-    flex-basis: 44px !important;
-    width: 44px !important;
-    height: 44px !important;
-}
+
 
 #chatWindow[data-chat-theme="original"] .jami-original-name-input {
     display: block !important;
@@ -9184,11 +9172,7 @@ html[data-chat-theme="original"]
 
 
 
-#chatWindow[data-chat-theme="original"] .jami-cute-avatar-button {
-    flex-basis: 43px !important;
-    width: 43px !important;
-    height: 43px !important;
-}
+
 
 #chatWindow[data-chat-theme="original"] .jami-original-name-input {
     height: 43px !important;
@@ -9257,10 +9241,7 @@ html[data-chat-theme="original"]
 }
 
 
-#chatWindow[data-chat-theme="original"] .jami-original-message-input {
-    padding-top: 7px !important;
-    padding-bottom: 9px !important;
-}
+
 
 
 
@@ -9574,13 +9555,9 @@ html[data-chat-theme="original"][data-theme="Cat"]
 }
 
 
-#chatWindow[data-chat-theme="stars"] #chatThemeButton {
-    font-size: 10px !important;
-}
 
-#chatWindow[data-chat-theme="paws"] #chatThemeButton {
-    font-size: 9px !important;
-}
+
+
 
 
 
@@ -10039,14 +10016,7 @@ html[data-chat-theme="stars"]
 
 
 
-html[data-chat-theme="stars"]
-#chatWindow[data-chat-theme="stars"]
-#chatMembersPanel .theme-heading,
-html[data-chat-theme="stars"]
-#chatWindow[data-chat-theme="stars"]
-#chatMembers > div > span {
-    color: #ffffff !important;
-}
+
 
 
 html[data-chat-theme="stars"]
