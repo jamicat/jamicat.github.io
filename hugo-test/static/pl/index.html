@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Playlist</title>
+
+<style>
+@font-face{
+  font-family:"Nunito";
+  src:url("nunito.ttf") format("truetype");
+}
+
+body{
+  font-family:Nunito,sans-serif;
+  background:
+    radial-gradient(circle at top,#1b355d 0%,#0b1524 45%,#05080d 100%);
+  color:white;
+  padding:40px;
+}
+
+h2{
+  margin-bottom:20px;
+  color:#ffffff;
+}
+
+#list{
+  max-width:700px;
+}
+
+.card{
+  background:rgba(73,132,201,0.10);
+
+  padding:12px;
+
+  border-radius:14px;
+
+  margin-bottom:10px;
+
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+
+  overflow:hidden;
+  box-sizing:border-box;
+
+  border:1px solid rgba(120,199,255,.15);
+
+  transition:.2s;
+}
+
+.card:hover{
+  border-color:rgba(255,170,72,.35);
+  box-shadow:0 0 18px rgba(255,170,72,.12);
+}
+
+.card input{
+  width:100%;
+  box-sizing:border-box;
+
+  padding:8px;
+
+  border-radius:8px;
+  border:none;
+
+  background:rgba(255,255,255,.08);
+  color:white;
+
+  outline:none;
+}
+
+.card input::placeholder{
+  color:#9fb7d2;
+}
+
+.card input:focus{
+  box-shadow:0 0 0 2px rgba(120,199,255,.35);
+}
+
+button{
+  margin-top:6px;
+  padding:8px 10px;
+
+  border-radius:8px;
+  border:none;
+
+  cursor:pointer;
+
+  background:linear-gradient(135deg,#ffb15b,#ff8d3a);
+  color:#08131f;
+
+  font-family:Nunito,sans-serif;
+  font-weight:700;
+
+  transition:.15s;
+}
+
+button:hover{
+  transform:scale(1.03);
+  box-shadow:0 0 16px rgba(255,160,70,.35);
+}
+
+.card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.song-number{
+  font-size:.8rem;
+  color:#9fb7d2;
+}
+
+.order-controls{
+  display:flex;
+  gap:6px;
+}
+
+.order-button{
+  margin-top:0;
+  min-width:38px;
+  padding:6px 10px;
+}
+
+button:disabled{
+  opacity:.35;
+  cursor:not-allowed;
+  transform:none !important;
+  box-shadow:none !important;
+}
+
+.thumbnail-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.thumbnail-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:#d7e7f8;
+  font-size:.9rem;
+  cursor:pointer;
+  user-select:none;
+}
+
+.thumbnail-toggle input[type="checkbox"]{
+  width:auto;
+  margin:0;
+  padding:0;
+  box-shadow:none;
+  accent-color:#ff9d46;
+}
+
+.custom-thumbnail-input:disabled,
+.youtube-thumbnail-input:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.thumbnail-help{
+  margin:0;
+  color:#8fa8c4;
+  font-size:.78rem;
+  line-height:1.35;
+}
+
+.controls{
+  margin-top:20px;
+  display:flex;
+  gap:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Playlist</h2>
+
+<div id="list"></div>
+
+<div class="controls">
+  <button onclick="addSong()">+ Add Song</button>
+  <button onclick="save()">Save</button>
+</div>
+
+<script>
+const API = "https://api.jmeow.co.uk";
+const ADMIN_KEY = prompt("Enter password");
+
+if (!ADMIN_KEY) {
+  document.body.innerHTML = "Unauthorized";
+  throw new Error("Unauthorized");
+}
+
+let playlist = [];
+
+function escapeAttribute(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function extractYouTubeVideoId(value) {
+  const input = String(value ?? "").trim();
+
+  if (!input) return "";
+
+  if (/^[A-Za-z0-9_-]{11}$/.test(input)) {
+    return input;
+  }
+
+  let candidate = input;
+
+  if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(candidate)) {
+    candidate = `https://${candidate}`;
+  }
+
+  let url;
+
+  try {
+    url = new URL(candidate);
+  } catch {
+    return input;
+  }
+
+  const host = url.hostname
+    .toLowerCase()
+    .replace(/^www\./, "")
+    .replace(/^m\./, "")
+    .replace(/^music\./, "");
+
+  let videoId = "";
+
+  if (host === "youtu.be") {
+    videoId = url.pathname
+      .split("/")
+      .filter(Boolean)[0] || "";
+  } else if (
+    host === "youtube.com" ||
+    host.endsWith(".youtube.com") ||
+    host === "youtube-nocookie.com" ||
+    host.endsWith(".youtube-nocookie.com")
+  ) {
+    videoId =
+      url.searchParams.get("v") ||
+      url.searchParams.get("vi") ||
+      "";
+
+    if (!videoId) {
+      const parts = url.pathname
+        .split("/")
+        .filter(Boolean);
+
+      if (
+        ["shorts", "embed", "live", "v"].includes(parts[0]) &&
+        parts[1]
+      ) {
+        videoId = parts[1];
+      }
+    }
+
+    if (!videoId) {
+      const nested =
+        url.searchParams.get("u") ||
+        url.searchParams.get("q") ||
+        url.searchParams.get("url");
+
+      if (nested) {
+        const decoded = (() => {
+          try {
+            return decodeURIComponent(nested);
+          } catch {
+            return nested;
+          }
+        })();
+
+        const nestedValue =
+          decoded.startsWith("/")
+            ? `https://youtube.com${decoded}`
+            : decoded;
+
+        const nestedId =
+          extractYouTubeVideoId(nestedValue);
+
+        if (/^[A-Za-z0-9_-]{11}$/.test(nestedId)) {
+          videoId = nestedId;
+        }
+      }
+    }
+  }
+
+  videoId = String(videoId)
+    .split(/[?&#/]/)[0]
+    .trim();
+
+  return /^[A-Za-z0-9_-]{11}$/.test(videoId)
+    ? videoId
+    : input;
+}
+
+function updateVideoId(i, input) {
+  playlist[i].videoId = input.value;
+}
+
+function updateYouTubeThumbnailSource(i, input) {
+  playlist[i].youtubeThumbnailSource =
+    input.value;
+}
+
+async function fetchMeta(videoId) {
+  if (!videoId) return null;
+
+  const res = await fetch(`${API}/api/youtube/meta?id=${videoId}`);
+
+  if (!res.ok) return null;
+
+  return await res.json();
+}
+
+async function load() {
+  const res = await fetch(`${API}/api/playlist`);
+  const result = await res.json();
+
+  playlist = Array.isArray(result)
+    ? result.map(song => ({
+        ...song,
+        customThumbnailEnabled:
+          song?.customThumbnailEnabled === true,
+        customThumbnailUrl:
+          typeof song?.customThumbnailUrl === "string"
+            ? song.customThumbnailUrl
+            : "",
+        youtubeThumbnailEnabled:
+          song?.youtubeThumbnailEnabled === true,
+        youtubeThumbnailSource:
+          typeof song?.youtubeThumbnailSource === "string"
+            ? song.youtubeThumbnailSource
+            : ""
+      }))
+    : [];
+
+  render();
+}
+
+async function autoFill(i) {
+  const videoId =
+    extractYouTubeVideoId(
+      playlist[i].videoId
+    );
+
+  const meta = await fetchMeta(videoId);
+
+  if (!meta) return;
+
+  playlist[i].title = meta.title;
+  playlist[i].channelAvatar = meta.avatar;
+  playlist[i].channelUrl = meta.channelUrl;
+
+  render();
+}
+
+function moveSong(i, direction) {
+  const nextIndex = i + direction;
+
+  if (
+    nextIndex < 0 ||
+    nextIndex >= playlist.length
+  ) {
+    return;
+  }
+
+  const [song] = playlist.splice(i, 1);
+  playlist.splice(nextIndex, 0, song);
+
+  render();
+}
+
+function setCustomThumbnailEnabled(i, checkbox) {
+  playlist[i].customThumbnailEnabled =
+    checkbox.checked;
+
+  if (checkbox.checked) {
+    playlist[i].youtubeThumbnailEnabled = false;
+  }
+
+  render();
+}
+
+function setYouTubeThumbnailEnabled(i, checkbox) {
+  playlist[i].youtubeThumbnailEnabled =
+    checkbox.checked;
+
+  if (checkbox.checked) {
+    playlist[i].customThumbnailEnabled = false;
+  }
+
+  render();
+}
+
+function render() {
+  const el = document.getElementById("list");
+  el.innerHTML = "";
+
+  playlist.forEach((song, i) => {
+    const div = document.createElement("div");
+    div.className = "card";
+
+    const customThumbnailEnabled =
+      song.customThumbnailEnabled === true;
+
+    const youtubeThumbnailEnabled =
+      song.youtubeThumbnailEnabled === true;
+
+    div.innerHTML = `
+      <div class="card-head">
+        <span class="song-number">#${i + 1}</span>
+
+        <div class="order-controls">
+          <button
+            class="order-button"
+            type="button"
+            onclick="moveSong(${i}, -1)"
+            ${i === 0 ? "disabled" : ""}
+            aria-label="Move song up"
+            title="Move up"
+          >↑</button>
+
+          <button
+            class="order-button"
+            type="button"
+            onclick="moveSong(${i}, 1)"
+            ${i === playlist.length - 1 ? "disabled" : ""}
+            aria-label="Move song down"
+            title="Move down"
+          >↓</button>
+        </div>
+      </div>
+
+      <input
+        value="${escapeAttribute(song.videoId)}"
+        oninput="updateVideoId(${i}, this)"
+        placeholder="YouTube URL or video ID"
+      >
+
+      <button
+        type="button"
+        onclick="autoFill(${i})"
+      >Auto-fill</button>
+
+      <input
+        value="${escapeAttribute(song.title)}"
+        oninput="playlist[${i}].title=this.value"
+        placeholder="title"
+      >
+
+      <input
+        value="${escapeAttribute(song.channelAvatar)}"
+        oninput="playlist[${i}].channelAvatar=this.value"
+        placeholder="avatar"
+      >
+
+      <input
+        value="${escapeAttribute(song.channelUrl)}"
+        oninput="playlist[${i}].channelUrl=this.value"
+        placeholder="channel url"
+      >
+
+      <div class="thumbnail-row">
+        <label class="thumbnail-toggle">
+          <input
+            type="checkbox"
+            ${customThumbnailEnabled ? "checked" : ""}
+            onchange="setCustomThumbnailEnabled(${i}, this)"
+          >
+          Use custom image URL
+        </label>
+
+        <label class="thumbnail-toggle">
+          <input
+            type="checkbox"
+            ${youtubeThumbnailEnabled ? "checked" : ""}
+            onchange="setYouTubeThumbnailEnabled(${i}, this)"
+          >
+          Use another YouTube video's thumbnail
+        </label>
+      </div>
+
+      <input
+        class="custom-thumbnail-input"
+        type="url"
+        value="${escapeAttribute(song.customThumbnailUrl)}"
+        oninput="playlist[${i}].customThumbnailUrl=this.value"
+        placeholder="custom thumbnail image URL"
+        ${customThumbnailEnabled ? "" : "disabled"}
+      >
+
+      <input
+        class="youtube-thumbnail-input"
+        type="text"
+        value="${escapeAttribute(song.youtubeThumbnailSource)}"
+        oninput="updateYouTubeThumbnailSource(${i}, this)"
+        placeholder="YouTube video URL (or video ID) to borrow thumbnail from"
+        ${youtubeThumbnailEnabled ? "" : "disabled"}
+      >
+      
+      <button
+        type="button"
+        onclick="remove(${i})"
+      >Remove</button>
+    `;
+
+    el.appendChild(div);
+  });
+}
+
+function addSong() {
+  playlist.push({
+    videoId: "",
+    title: "",
+    channelAvatar: "",
+    channelUrl: "",
+    customThumbnailEnabled: false,
+    customThumbnailUrl: "",
+    youtubeThumbnailEnabled: false,
+    youtubeThumbnailSource: ""
+  });
+
+  render();
+}
+
+function remove(i) {
+  playlist.splice(i, 1);
+  render();
+}
+
+async function save() {
+  const payload = playlist.map(song => ({
+    ...song,
+    videoId:
+      extractYouTubeVideoId(song.videoId),
+    youtubeThumbnailSource:
+      extractYouTubeVideoId(
+        song.youtubeThumbnailSource
+      )
+  }));
+
+  const res = await fetch(`${API}/api/playlist/update?key=${ADMIN_KEY}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  if (res.status === 403) {
+    document.body.innerHTML = "Unauthorized";
+    throw new Error("Unauthorized");
+  }
+
+  if (!res.ok) {
+    alert(`Save failed (${res.status})`);
+    return;
+  }
+
+  alert("Saved!");
+}
+
+load();
+</script>
+</body>
+</html>
