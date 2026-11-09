@@ -3137,6 +3137,8 @@ const watchPartyVisualizers = (() => {
       canvas,
       context: canvas.getContext("2d"),
       mode: normaliseMode(mode),
+      inactiveIndicator: element.querySelector("[data-visualizer-inactive]"),
+      inactiveState: null,
       animationFrame: 0
     };
 
@@ -3445,11 +3447,17 @@ const watchPartyVisualizers = (() => {
     ctx.clearRect(0, 0, width, height);
 
     if (!analyser || !frequencyData || !timeData) {
-      panel.element.querySelector("[data-visualizer-inactive]")?.removeAttribute("hidden");
+      if (panel.inactiveState !== true) {
+        panel.inactiveIndicator?.removeAttribute("hidden");
+        panel.inactiveState = true;
+      }
       return;
     }
 
-    panel.element.querySelector("[data-visualizer-inactive]")?.setAttribute("hidden", "");
+    if (panel.inactiveState !== false) {
+      panel.inactiveIndicator?.setAttribute("hidden", "");
+      panel.inactiveState = false;
+    }
     analyser.getByteFrequencyData(frequencyData);
     analyser.getByteTimeDomainData(timeData);
     const accent = getAccent(panel);
@@ -3512,9 +3520,8 @@ const watchPartyVisualizers = (() => {
   function markCaptureStopped(message = "audio capture stopped") {
     stopAudioGraph();
     panels.forEach(panel => {
-      panel.element
-        .querySelector("[data-visualizer-inactive]")
-        ?.removeAttribute("hidden");
+      panel.inactiveIndicator?.removeAttribute("hidden");
+      panel.inactiveState = true;
     });
     emitState(message);
   }
