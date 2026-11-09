@@ -12469,3 +12469,8 @@ html.theme-halloween[data-chat-theme="original"]
     font-size: 10px !important;
     font-weight: 600 !important;
 }
+
+#chatMessages,
+#chatMembers {
+    contain: layout style;
+}
