@@ -2435,6 +2435,7 @@ top: -0.2px;
 }
 
 .jami-saved-remix-overlay {
+  contain: style;
     position: fixed;
     inset: 0;
     z-index: 100020;
