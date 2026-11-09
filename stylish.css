@@ -1925,6 +1925,7 @@ font-size: 0.65rem;
 }
 
 .letter-maker-overlay {
+  contain: style;
   position: fixed;
   inset: 0;
   z-index: 12000;
