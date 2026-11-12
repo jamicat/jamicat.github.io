@@ -1803,8 +1803,8 @@ font-size: 0.65rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 24px;
-  padding: 5px 10px;
+  min-height: 21px;
+  padding: 4px 8px;
   box-sizing: border-box;
   border: 1px solid rgba(255, 255, 255, .82);
   border-radius: 999px;
@@ -1819,7 +1819,7 @@ font-size: 0.65rem;
     inset 0 1px 0 rgba(255, 255, 255, .92);
   color: #d78aa6;
   font-family: 'fredoka', 'nunito', sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: .01em;
   line-height: 1;
@@ -1875,9 +1875,9 @@ font-size: 0.65rem;
 
   .tilly-video-tooltip {
     left: 82px;
-    min-height: 22px;
-    padding: 4px 8px;
-    font-size: 11px;
+    min-height: 20px;
+    padding: 3px 6px;
+    font-size: 10px;
   }
 
   .tilly-video-trigger:hover,
