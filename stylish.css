@@ -3484,3 +3484,19 @@ body.video-backdrop-active #jamiStarfield {
     width: min(140px, 28vw);
   }
 }
+
+.theme-pastel #typed2,
+.theme-pastel #typed2 span,
+.theme-halloween #typed2,
+.theme-halloween #typed2 span {
+  font-size: 1.45rem !important;
+}
+
+@media (max-width: 950px) and (pointer: coarse) {
+  .theme-pastel #typed2,
+  .theme-pastel #typed2 span,
+  .theme-halloween #typed2,
+  .theme-halloween #typed2 span {
+    font-size: 1.05rem !important;
+  }
+}
