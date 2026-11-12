@@ -3418,3 +3418,69 @@ body.video-backdrop-active #jamiStarfield {
 #bgndVideo.is-video-playing iframe {
   visibility: visible !important;
 }
+
+.homepage-media-controls {
+  gap: 10px;
+  min-height: 38px;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: transparent;
+}
+
+.homepage-media-controls .volume-wrap {
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.homepage-media-controls .local-playback-controls {
+  min-height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.homepage-media-controls .normal-progress-wrap {
+  min-height: 20px;
+  padding: 0 4px 0 2px;
+  border: 0;
+  border-radius: 0;
+}
+
+.homepage-media-controls .volume-wrap:hover #volumeSlider,
+.homepage-media-controls .volume-wrap:focus-within #volumeSlider,
+.homepage-media-controls .volume-wrap:active #volumeSlider {
+  width: 70px;
+  opacity: 1;
+  margin-left: 8px;
+}
+
+.theme-pastel #terminal #typed3,
+.theme-pastel #terminal #typed3 span,
+.theme-halloween #terminal #typed3,
+.theme-halloween #terminal #typed3 span {
+  font-size: 1.45rem !important;
+}
+
+.theme-pastel #terminal #typed .typed-paw-text,
+.theme-halloween #terminal #typed .typed-paw-text {
+  font-size: 0.76rem !important;
+}
+
+@media (max-width: 950px) and (pointer: coarse) {
+  .theme-pastel #terminal #typed3,
+  .theme-pastel #terminal #typed3 span,
+  .theme-halloween #terminal #typed3,
+  .theme-halloween #terminal #typed3 span {
+    font-size: 1.05rem !important;
+  }
+
+  .homepage-media-controls .normal-progress-wrap {
+    width: min(140px, 28vw);
+  }
+}
