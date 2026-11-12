@@ -5,15 +5,14 @@
   if (!ctx) return;
   const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   const glow = document.createElement("canvas");
-  glow.width = 48;
-  glow.height = 48;
+  glow.width = 64;
+  glow.height = 64;
   const glowCtx = glow.getContext("2d");
-  const gradient = glowCtx.createRadialGradient(24, 24, 0, 24, 24, 24);
-  gradient.addColorStop(0, "rgba(255,240,213,0.25)");
-  gradient.addColorStop(0.35, "rgba(255,245,225,0.10)");
-  gradient.addColorStop(1, "rgba(255,240,213,0)");
+  const gradient = glowCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gradient.addColorStop(0, "rgba(255,240,214,0.3)");
+  gradient.addColorStop(1, "rgba(255,240,214,0)");
   glowCtx.fillStyle = gradient;
-  glowCtx.fillRect(0, 0, 48, 48);
+  glowCtx.fillRect(0, 0, 64, 64);
   let stars = [];
   let width = 0;
   let height = 0;
@@ -21,8 +20,8 @@
   let frame = 0;
   let lastFrame = 0;
   let resizeFrame = 0;
-  let videoPlaying = false;
-  const targetInterval = 1000 / 24;
+  let videoPlaying = document.body.classList.contains("video-backdrop-active");
+  const targetInterval = 1000 / 30;
   function resize() {
     width = Math.max(1, window.innerWidth);
     height = Math.max(1, window.innerHeight);
@@ -30,27 +29,27 @@
     canvas.width = Math.round(width * pixelRatio);
     canvas.height = Math.round(height * pixelRatio);
     ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    const count = Math.max(45, Math.min(220, Math.round(width * height / 10300)));
+    const count = Math.max(50, Math.round(200 * width * height / (1920 * 1080)));
     stars = Array.from({ length: count }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      radius: 0.35 + Math.random() * 1.5,
-      phase: Math.random() * Math.PI * 2,
-      speed: 0.00028 + Math.random() * 0.00065,
-      color: "#fff0d9"
+      radius: Math.random() * 2 + 0.3,
+      twinkle: Math.random() * Math.PI * 2,
+      speed: 0.005 + Math.random() * 0.015
     }));
-    paint(performance.now());
+    lastFrame = 0;
+    if (!videoPlaying) paint(0);
   }
-  function paint(now) {
+  function paint(delta) {
     ctx.clearRect(0, 0, width, height);
     for (const star of stars) {
-      const alpha = motionQuery.matches ? 0.42 : 0.38 + 0.25 * Math.sin(now * star.speed + star.phase);
-      ctx.globalAlpha = alpha * 0.52;
-      ctx.drawImage(glow, star.x - 24, star.y - 24);
+      star.twinkle += star.speed * delta / (1000 / 60);
+      const alpha = Math.max(0, Math.min(1, 0.3 + Math.sin(star.twinkle) * 0.5));
       ctx.globalAlpha = alpha;
+      ctx.drawImage(glow, star.x - 32, star.y - 32);
       ctx.beginPath();
       ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-      ctx.fillStyle = star.color;
+      ctx.fillStyle = "#fff0d6";
       ctx.fill();
     }
     ctx.globalAlpha = 1;
@@ -58,9 +57,10 @@
   function tick(now) {
     frame = 0;
     if (document.hidden || motionQuery.matches || videoPlaying) return;
-    if (now - lastFrame >= targetInterval) {
+    if (!lastFrame || now - lastFrame >= targetInterval) {
+      const delta = lastFrame ? Math.min(100, now - lastFrame) : 0;
       lastFrame = now;
-      paint(now);
+      paint(delta);
     }
     frame = requestAnimationFrame(tick);
   }
@@ -68,7 +68,7 @@
     cancelAnimationFrame(frame);
     frame = 0;
     if (document.hidden || motionQuery.matches || videoPlaying) {
-      if (!document.hidden && !videoPlaying) paint(performance.now());
+      if (!document.hidden && !videoPlaying) paint(0);
       return;
     }
     lastFrame = 0;
