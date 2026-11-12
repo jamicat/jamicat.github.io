@@ -3327,3 +3327,34 @@ font-size: 0.65rem;
   user-select: none;
   opacity: 0.78;
 }
+
+#bgndVideo {
+  background: radial-gradient(ellipse at 28% 35%, #233c67 0%, transparent 55%), radial-gradient(ellipse at 78% 75%, #172d51 0%, transparent 58%), linear-gradient(140deg, #101e37, #081427 72%, #0a162c);
+}
+
+#videoPoster {
+  display: none !important;
+}
+
+#bgndVideo iframe {
+  opacity: 0 !important;
+}
+
+#bgndVideo.is-video-playing iframe {
+  opacity: 1 !important;
+}
+
+#jamiStarfield {
+  opacity: 0.94;
+  transition: opacity 350ms ease;
+}
+
+body.video-backdrop-active #jamiStarfield {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #jamiStarfield {
+    transition: none;
+  }
+}
