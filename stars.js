@@ -5,14 +5,14 @@
   if (!ctx) return;
   const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   const glow = document.createElement("canvas");
-  glow.width = 64;
-  glow.height = 64;
+  glow.width = 16;
+  glow.height = 16;
   const glowCtx = glow.getContext("2d");
-  const gradient = glowCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
-  gradient.addColorStop(0, "rgba(255,240,214,0.3)");
+  const gradient = glowCtx.createRadialGradient(8, 8, 0, 8, 8, 8);
+  gradient.addColorStop(0, "rgba(255,240,214,0.13)");
   gradient.addColorStop(1, "rgba(255,240,214,0)");
   glowCtx.fillStyle = gradient;
-  glowCtx.fillRect(0, 0, 64, 64);
+  glowCtx.fillRect(0, 0, 16, 16);
   let stars = [];
   let width = 0;
   let height = 0;
@@ -46,7 +46,7 @@
       star.twinkle += star.speed * delta / (1000 / 60);
       const alpha = Math.max(0, Math.min(1, 0.3 + Math.sin(star.twinkle) * 0.5));
       ctx.globalAlpha = alpha;
-      ctx.drawImage(glow, star.x - 32, star.y - 32);
+      ctx.drawImage(glow, star.x - 8, star.y - 8);
       ctx.beginPath();
       ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
       ctx.fillStyle = "#fff0d6";
