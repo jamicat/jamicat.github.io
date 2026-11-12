@@ -9,9 +9,9 @@
   glow.height = 48;
   const glowCtx = glow.getContext("2d");
   const gradient = glowCtx.createRadialGradient(24, 24, 0, 24, 24, 24);
-  gradient.addColorStop(0, "rgba(205,220,255,0.31)");
-  gradient.addColorStop(0.35, "rgba(225,220,245,0.12)");
-  gradient.addColorStop(1, "rgba(205,220,255,0)");
+  gradient.addColorStop(0, "rgba(255,240,213,0.25)");
+  gradient.addColorStop(0.35, "rgba(255,245,225,0.10)");
+  gradient.addColorStop(1, "rgba(255,240,213,0)");
   glowCtx.fillStyle = gradient;
   glowCtx.fillRect(0, 0, 48, 48);
   let stars = [];
@@ -21,6 +21,7 @@
   let frame = 0;
   let lastFrame = 0;
   let resizeFrame = 0;
+  let videoPlaying = false;
   const targetInterval = 1000 / 24;
   function resize() {
     width = Math.max(1, window.innerWidth);
@@ -36,7 +37,7 @@
       radius: 0.35 + Math.random() * 1.5,
       phase: Math.random() * Math.PI * 2,
       speed: 0.00028 + Math.random() * 0.00065,
-      color: Math.random() < 0.26 ? "#d4e3ff" : "#fff0da"
+      color: "#fff0d9"
     }));
     paint(performance.now());
   }
@@ -56,7 +57,7 @@
   }
   function tick(now) {
     frame = 0;
-    if (document.hidden || motionQuery.matches) return;
+    if (document.hidden || motionQuery.matches || videoPlaying) return;
     if (now - lastFrame >= targetInterval) {
       lastFrame = now;
       paint(now);
@@ -66,13 +67,17 @@
   function syncMotion() {
     cancelAnimationFrame(frame);
     frame = 0;
-    if (document.hidden || motionQuery.matches) {
-      if (!document.hidden) paint(performance.now());
+    if (document.hidden || motionQuery.matches || videoPlaying) {
+      if (!document.hidden && !videoPlaying) paint(performance.now());
       return;
     }
     lastFrame = 0;
     frame = requestAnimationFrame(tick);
   }
+  window.addEventListener("site-video-backdrop-state", event => {
+    videoPlaying = event.detail?.playing === true;
+    syncMotion();
+  });
   window.addEventListener("resize", () => {
     cancelAnimationFrame(resizeFrame);
     resizeFrame = requestAnimationFrame(() => {
