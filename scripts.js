@@ -1390,85 +1390,27 @@ function getPlaylistPosterOverrides(videoId) {
 }
 
 function setPoster(videoId) {
-  const posterEl =
-    document.getElementById("videoPoster");
+  const posterEl = document.getElementById("videoPoster");
+  if (!posterEl) return;
+  posterEl.style.backgroundImage = "none";
+  posterEl.style.opacity = "0";
+  if (videoId) posterEl.dataset.posterVideoId = videoId;
+  else delete posterEl.dataset.posterVideoId;
+}
 
-  if (!posterEl) {
-    return;
-  }
-
-  if (!videoId) {
-    posterEl.style.backgroundImage = "none";
-    posterEl.style.opacity = "0";
-    delete posterEl.dataset.posterVideoId;
-    return;
-  }
-
-  const posterOverrides =
-    getPlaylistPosterOverrides(videoId);
-
-  const highRes =
-    `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-
-  const fallback =
-    `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-
-  const candidates =
-    [...posterOverrides, highRes, fallback]
-      .filter(Boolean)
-      .filter(
-        (url, index, array) =>
-          array.indexOf(url) === index
-      );
-
-  posterEl.dataset.posterVideoId =
-    videoId;
-
-  let candidateIndex = 0;
-  const image = new Image();
-
-  const loadCandidate = () => {
-    const candidate =
-      candidates[candidateIndex];
-
-    if (!candidate) {
-      if (
-        posterEl.dataset.posterVideoId ===
-        videoId
-      ) {
-        posterEl.style.backgroundImage =
-          "none";
-      }
-      return;
-    }
-
-    image.src = candidate;
-  };
-
-  image.onload = () => {
-    if (
-      posterEl.dataset.posterVideoId !==
-      videoId
-    ) {
-      return;
-    }
-
-    const candidate =
-      candidates[candidateIndex];
-
-    posterEl.style.backgroundImage =
-      `url(${JSON.stringify(candidate)})`;
-  };
-
-  image.onerror = () => {
-    candidateIndex += 1;
-    loadCandidate();
-  };
-
-  loadCandidate();
+function setVideoBackdropPlaying(playing) {
+  const active = playing === true;
+  const background = document.getElementById("bgndVideo");
+  if (!background || background.classList.contains("is-video-playing") === active) return;
+  background.classList.toggle("is-video-playing", active);
+  document.body.classList.toggle("video-backdrop-active", active);
+  window.dispatchEvent(new CustomEvent("site-video-backdrop-state", {
+    detail: { playing: active }
+  }));
 }
 
 function showBlackPlayerBackground() {
+  setVideoBackdropPlaying(false);
   const posterEl =
     document.getElementById("videoPoster");
 
@@ -2024,6 +1966,7 @@ function rebuildYouTubePlayer({
     playerReady = false;
     loadedVideoId = null;
     isPlaying = false;
+    setVideoBackdropPlaying(false);
 
     updatePlaybackIcons(false);
 
@@ -2097,6 +2040,7 @@ function loadActiveVideo({
 
   loadedVideoId = videoId;
   setPoster(videoId);
+  if (!autoplay) setVideoBackdropPlaying(false);
 
   if (autoplay) {
     player.loadVideoById(videoId);
@@ -2268,6 +2212,7 @@ if (
 }
 
   if (!watchPartyState.enabled) {
+    if (previousEnabled) setVideoBackdropPlaying(false);
     const leavingWatchParty =
         previousEnabled === true;
 
@@ -2338,6 +2283,7 @@ if (
     });
 
     if (watchPartyState.paused) {
+        setVideoBackdropPlaying(false);
         player.pauseVideo();
         updatePlaybackIcons(false);
     } else {
@@ -2367,6 +2313,7 @@ if (
   }
 
   if (watchPartyState.paused) {
+    setVideoBackdropPlaying(false);
     player.pauseVideo();
     updatePlaybackIcons(false);
   } else {
@@ -2563,6 +2510,7 @@ player =
             player.playVideo();
             updatePlaybackIcons(true);
         } else {
+            setVideoBackdropPlaying(false);
             player.cueVideoById({
                 videoId:
                     rebuildState.videoId,
@@ -2629,6 +2577,7 @@ player =
               YT.PlayerState.PLAYING
             ) {
               isPlaying = true;
+              setVideoBackdropPlaying(true);
 
               if (posterEl) {
                 posterEl.style.opacity =
@@ -2649,6 +2598,7 @@ player =
               YT.PlayerState.PAUSED
             ) {
               isPlaying = false;
+              setVideoBackdropPlaying(false);
 
               const currentVideoId =
                 player
@@ -2674,6 +2624,7 @@ if (
   event.data ===
   YT.PlayerState.ENDED
 ) {
+  setVideoBackdropPlaying(false);
   updatePlaybackIcons(false);
 
   if (
