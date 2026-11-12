@@ -15,7 +15,7 @@ if (window.location.hostname === "jamicat.github.io") {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description"
 content="jamie's personal website with a live chat, guest wall, furry art, music player and interactive themes.">
-<link rel="stylesheet" href="stylish.css?v=17"/>
+<link rel="stylesheet" href="stylish.css?v=18"/>
 <link
     rel="stylesheet"
     href="./image-transfer.css?v=2"
@@ -293,45 +293,6 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
   </span>
 
  <div class="flex items-center gap-2 mr-3 -mt-12">
-  <button
-    id="videoToggle"
-    type="button"
-    class="flex h-4 w-4 items-center justify-center text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none"
-  >
-    <svg
-      id="pauseIcon"
-      xmlns="http://www.w3.org/2000/svg"
-      class="block h-4 w-4 fill-current hidden"
-      viewBox="0 0 24 24"
-    >
-      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
-    </svg>
-
-    <svg
-      id="playIcon"
-      xmlns="http://www.w3.org/2000/svg"
-      class="block h-4 w-4 fill-current"
-      viewBox="0 0 24 24"
-    >
-      <path d="M8 5v14l11-7z"></path>
-    </svg>
-  </button>
-
-  <button
-    id="nextTrack"
-    type="button"
-    class="flex h-4 w-4 items-center justify-center text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none"
-  >
-    <svg
-      id="nextIcon"
-      xmlns="http://www.w3.org/2000/svg"
-      class="block h-4 w-4 fill-current"
-      viewBox="0 0 24 24"
-    >
-      <path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2V6z"></path>
-    </svg>
-  </button>
-
   <div class="relative flex h-4 w-4 items-center justify-center">
     <button
       id="changeTheme"
@@ -362,20 +323,6 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
       <button id="themeAero" class="hidden theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition">sky</button>
     </div>
   </div>
-
-  <button
-    id="rewind10"
-    type="button"
-    class="flex h-4 w-4 items-center justify-center text-red-300 transition-colors duration-200 text-lg leading-none"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      class="block h-4 w-4 fill-current"
-    >
-      <path d="M16.948 20.2a1 1 0 0 1-.465-.115l-4.472-2.352-4.471 2.348a1 1 0 0 1-1.451-1.054l.854-4.979-3.619-3.527a1 1 0 0 1 .554-1.706l5-.727 2.237-4.531A1 1 0 0 1 12.011 3a1 1 0 0 1 .9.558l2.236 4.53 5 .727a1 1 0 0 1 .554 1.706l-3.621 3.526.854 4.98a1 1 0 0 1-.986 1.173zM6.171 10.5l2.544 2.479a1 1 0 0 1 .285.888l-.6 3.5 3.144-1.653a.993.993 0 0 1 .931 0l3.144 1.653-.6-3.5a1 1 0 0 1 .288-.885l2.544-2.482-3.515-.511a1 1 0 0 1-.752-.547l-1.573-3.183-1.573 3.186a1 1 0 0 1-.752.547z"></path>
-    </svg>
-  </button>
 
   <button
     id="terminalMinimize"
@@ -474,6 +421,51 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
     max="100"
     value="50"
  >
+</div>
+
+<div id="localPlaybackControls" class="local-playback-controls" role="group" aria-label="local playlist controls">
+  <button
+    id="videoToggle"
+    type="button"
+    aria-label="play or pause local playlist"
+    title="play or pause"
+    class="flex h-4 w-4 items-center justify-center text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none"
+  >
+    <svg
+      id="pauseIcon"
+      xmlns="http://www.w3.org/2000/svg"
+      class="block h-4 w-4 fill-current hidden"
+      viewBox="0 0 24 24"
+    >
+      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+    </svg>
+
+    <svg
+      id="playIcon"
+      xmlns="http://www.w3.org/2000/svg"
+      class="block h-4 w-4 fill-current"
+      viewBox="0 0 24 24"
+    >
+      <path d="M8 5v14l11-7z"></path>
+    </svg>
+  </button>
+
+  <button
+    id="nextTrack"
+    type="button"
+    aria-label="skip to next track"
+    title="next track"
+    class="flex h-4 w-4 items-center justify-center text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none"
+  >
+    <svg
+      id="nextIcon"
+      xmlns="http://www.w3.org/2000/svg"
+      class="block h-4 w-4 fill-current"
+      viewBox="0 0 24 24"
+    >
+      <path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2V6z"></path>
+    </svg>
+  </button>
 </div>
 
 <div
@@ -580,7 +572,7 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
 <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 <script src="stars.js?v=4" defer></script>
-<script src="scripts.js?v=19"></script>
+<script src="scripts.js?v=20"></script>
 <script src="discscripts.js?v=6"></script>
 <script
     src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"
