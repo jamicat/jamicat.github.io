@@ -1401,12 +1401,20 @@ function setPoster(videoId) {
 function setVideoBackdropPlaying(playing) {
   const active = playing === true;
   const background = document.getElementById("bgndVideo");
-  if (!background || background.classList.contains("is-video-playing") === active) return;
+  if (!background) return;
+  const changed = background.classList.contains("is-video-playing") !== active;
   background.classList.toggle("is-video-playing", active);
   document.body.classList.toggle("video-backdrop-active", active);
-  window.dispatchEvent(new CustomEvent("site-video-backdrop-state", {
-    detail: { playing: active }
-  }));
+  const iframe = background.querySelector("iframe");
+  if (iframe) {
+    iframe.style.setProperty("opacity", active ? "1" : "0", "important");
+    iframe.style.setProperty("visibility", active ? "visible" : "hidden", "important");
+  }
+  if (changed) {
+    window.dispatchEvent(new CustomEvent("site-video-backdrop-state", {
+      detail: { playing: active }
+    }));
+  }
 }
 
 function showBlackPlayerBackground() {
