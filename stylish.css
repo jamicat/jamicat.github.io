@@ -3377,7 +3377,7 @@ font-size: 0.65rem;
 }
 
 #bgndVideo {
-  background: radial-gradient(ellipse at 28% 35%, #233c67 0%, transparent 55%), radial-gradient(ellipse at 78% 75%, #172d51 0%, transparent 58%), linear-gradient(140deg, #101e37, #081427 72%, #0a162c);
+  background: linear-gradient(180deg, #303d59 0%, #35415c 100%);
 }
 
 #videoPoster {
