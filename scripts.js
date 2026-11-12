@@ -454,7 +454,7 @@ if (aboutBtn && themeName !== 'Pastel') {
 }
 
 const icons = document.querySelectorAll(
-    "#videoToggle, #nextTrack, #changeTheme, #terminalMinimize"
+    "#changeTheme, #terminalMinimize"
 );
 
 icons.forEach(icon => {
@@ -497,19 +497,6 @@ if (terminal) {
       ? 'none'
       : `3px 3px 0 ${theme.shadowColor}`;
   terminal.style.borderColor = theme.borderColor;
-}
-
-const rewind10 = document.getElementById('rewind10');
-if (rewind10) {
-  Object.values(themes).forEach(t => {
-    rewind10.classList.remove(t.galaxyActive, t.galaxyInactive);
-  });
-
-  if (typeof galaxyVisible !== 'undefined' && galaxyVisible) {
-    rewind10.classList.add(theme.galaxyActive);
-  } else {
-    rewind10.classList.add(theme.galaxyInactive);
-  }
 }
 
 const toggleBtn =
@@ -1056,7 +1043,6 @@ let player = null;
 let playerReady = false;
 let ytReady = false;
 let playlistReady = false;
-let galaxyVisible = false;
 
 let playbackMode = "normal";
 let normalPlaylistIndex = 0;
@@ -3901,6 +3887,7 @@ seek(seconds) {
 
 window.setTerminalPlaybackControlsVisible =
   function (visible) {
+    document.getElementById("localPlaybackControls")?.classList.toggle("hidden", !visible);
     toggleBtn?.classList.toggle(
       "hidden",
       !visible
@@ -4399,54 +4386,6 @@ if (!document.hidden) {
 }
 
 loadPlaylist();
-
-let galaxyScriptLoaded = false;
-
-rewind10.addEventListener('click', async () => {
-
-if (!galaxyScriptLoaded) {
-await import('./galaxy.js');
-galaxyScriptLoaded = true;
-}
-
-const guiElement = document.querySelector('.lil-gui');
-
-if (guiElement) {
-if (guiElement.style.display === 'none' || !guiElement.style.display) {
-guiElement.style.display = 'block';
-} else {
-guiElement.style.display = 'none';
-}
-}
-
-const canvas = document.getElementById('canvas');  
-
-rewind10.classList.remove(
-  'text-purple-200',
-  'text-purple-50',
-  'text-pink-500',
-  'text-cyan-100'
-);
-  
-const themeName = localStorage.getItem('theme') || 'Halloween';
-const theme = themes[themeName];
-  
-  if (galaxyVisible) {
-    galaxyVisible = false;
-    rewind10.classList.remove(theme.galaxyActive);
-    rewind10.classList.add(theme.galaxyInactive);
-    canvas.style.opacity = '0';
-    canvas.style.pointerEvents = 'none';
-  } else {
-    galaxyVisible = true;
-    rewind10.classList.remove(theme.galaxyInactive);
-    rewind10.classList.add(theme.galaxyActive);
-    canvas.style.opacity = '1';
-    canvas.style.pointerEvents = 'auto';
-  }
-});
-
-//rewind10.click();
 
 function showList() {
 
