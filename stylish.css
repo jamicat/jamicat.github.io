@@ -3329,7 +3329,7 @@ font-size: 0.65rem;
 }
 
 #bgndVideo {
-  background: radial-gradient(ellipse at 25% 72%, rgba(126, 91, 123, 0.50) 0%, transparent 57%), radial-gradient(ellipse at 82% 27%, rgba(101, 98, 151, 0.46) 0%, transparent 60%), linear-gradient(155deg, #24273e 0%, #363550 48%, #59475e 100%);
+  background: radial-gradient(ellipse at 28% 35%, #233c67 0%, transparent 55%), radial-gradient(ellipse at 78% 75%, #172d51 0%, transparent 58%), linear-gradient(140deg, #101e37, #081427 72%, #0a162c);
 }
 
 #videoPoster {
