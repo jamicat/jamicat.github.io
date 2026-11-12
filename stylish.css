@@ -1803,8 +1803,8 @@ font-size: 0.65rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 28px;
-  padding: 6px 12px;
+  min-height: 24px;
+  padding: 5px 10px;
   box-sizing: border-box;
   border: 1px solid rgba(255, 255, 255, .82);
   border-radius: 999px;
@@ -1819,19 +1819,17 @@ font-size: 0.65rem;
     inset 0 1px 0 rgba(255, 255, 255, .92);
   color: #d78aa6;
   font-family: 'fredoka', 'nunito', sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: .01em;
   line-height: 1;
   white-space: nowrap;
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
   text-shadow: 0 1px 0 rgba(255, 255, 255, .72);
-  transform: translateY(-50%) translateX(-8px) scale(.96);
+  transform: translateY(-50%);
   transform-origin: left center;
-  transition:
-    opacity 170ms ease,
-    transform 170ms ease;
+
 }
 
 
@@ -1846,12 +1844,6 @@ font-size: 0.65rem;
       0 4px 8px
       rgba(0, 0, 0, .28)
     );
-}
-
-.tilly-video-trigger:hover .tilly-video-tooltip,
-.tilly-video-trigger:focus-visible .tilly-video-tooltip {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0) scale(1);
 }
 
 
@@ -1883,9 +1875,9 @@ font-size: 0.65rem;
 
   .tilly-video-tooltip {
     left: 82px;
-    min-height: 24px;
-    padding: 5px 10px;
-    font-size: 12px;
+    min-height: 22px;
+    padding: 4px 8px;
+    font-size: 11px;
   }
 
   .tilly-video-trigger:hover,
