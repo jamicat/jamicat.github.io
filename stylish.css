@@ -3358,3 +3358,15 @@ body.video-backdrop-active #jamiStarfield {
     transition: none;
   }
 }
+
+#bgndVideo.is-video-playing {
+  z-index: 1;
+}
+
+#bgndVideo iframe {
+  visibility: hidden !important;
+}
+
+#bgndVideo.is-video-playing iframe {
+  visibility: visible !important;
+}
