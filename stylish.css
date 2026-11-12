@@ -382,6 +382,54 @@ html:not(.site-theme-ready) .avatar-icon2 {
   scale: 1;
 }
 
+.local-playback-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+}
+
+.local-playback-controls.hidden {
+  display: none;
+}
+
+.local-playback-controls > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  padding: 0;
+  margin: 0;
+  color: inherit !important;
+  cursor: pointer;
+  transition: opacity 180ms ease;
+}
+
+.local-playback-controls > button.hidden {
+  display: none;
+}
+
+.local-playback-controls > button:hover,
+.local-playback-controls > button:focus-visible {
+  opacity: 0.75;
+}
+
+.local-playback-controls svg {
+  width: 18px;
+  height: 18px;
+}
+
+.theme-halloween .local-playback-controls {
+  color: var(--homepage-media-accent);
+}
+
 .normal-progress-wrap {
   position: relative;
 
