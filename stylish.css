@@ -3500,3 +3500,50 @@ body.video-backdrop-active #jamiStarfield {
     font-size: 1.05rem !important;
   }
 }
+
+.homepage-media-controls {
+  gap: 7px;
+  min-height: 32px;
+  padding: 6px;
+  scale: 0.84;
+}
+
+.homepage-media-controls .volume-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.homepage-media-controls .local-playback-controls {
+  gap: 6px;
+  min-height: 18px;
+}
+
+.homepage-media-controls .local-playback-controls > button {
+  width: 18px;
+  height: 18px;
+  flex-basis: 18px;
+}
+
+.homepage-media-controls .local-playback-controls svg {
+  width: 16px;
+  height: 16px;
+}
+
+.homepage-media-controls .normal-progress-wrap {
+  width: 148px;
+  min-height: 18px;
+  padding: 0 3px 0 1px;
+}
+
+.homepage-media-controls .volume-wrap:hover #volumeSlider,
+.homepage-media-controls .volume-wrap:focus-within #volumeSlider,
+.homepage-media-controls .volume-wrap:active #volumeSlider {
+  width: 60px;
+  margin-left: 6px;
+}
+
+@media (max-width: 950px) and (pointer: coarse) {
+  .homepage-media-controls .normal-progress-wrap {
+    width: min(120px, 27vw);
+  }
+}
