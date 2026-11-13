@@ -15,7 +15,7 @@ if (window.location.hostname === "jamicat.github.io") {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description"
 content="jamie's personal website with a live chat, guest wall, furry art, music player and interactive themes.">
-<link rel="stylesheet" href="stylish.css?v=19"/>
+<link rel="stylesheet" href="stylish.css?v=20"/>
 <link
     rel="stylesheet"
     href="./image-transfer.css?v=2"
@@ -367,6 +367,7 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
 <section id="localPlaylistWindow" class="local-playlist-window" aria-label="playlist" hidden>
   <header class="local-playlist-header">
     <span class="local-playlist-heading"><span id="localPlaylistCat" aria-label="music cat">≽ᖰ^-⩊-^ᖳ≼</span><span id="localPlaylistNotes" aria-hidden="true"></span> <span id="localPlaylistCount" class="local-playlist-count"></span></span>
+    <span id="localPlaylistCatTrack" class="local-playlist-cat-track" aria-hidden="true"><span id="localPlaylistPixelCat" class="local-playlist-pixel-cat"></span></span>
     <div class="local-playlist-actions">
       <button id="localPlaylistMinimize" type="button" aria-label="minimize playlist" title="minimize"><svg class="lp-minimize-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 11h14v2H5z"/></svg><svg class="lp-restore-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10H7V7zm2 2v6h6V9H9z"/></svg></button>
       <button id="localPlaylistClose" type="button" aria-label="close playlist" title="close">×</button>
@@ -615,7 +616,7 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
 <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 <script src="stars.js?v=4" defer></script>
-<script src="scripts.js?v=21"></script>
+<script src="scripts.js?v=22"></script>
 <script src="discscripts.js?v=6"></script>
 <script
     src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"
