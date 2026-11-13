@@ -4403,6 +4403,9 @@ loadPlaylist();
 const localPlaylistWindow = document.getElementById("localPlaylistWindow");
 const localPlaylistTracks = document.getElementById("localPlaylistTracks");
 const localPlaylistSeek = document.getElementById("localPlaylistSeek");
+const localPlaylistSeekWrap = document.getElementById("localPlaylistSeekWrap");
+const localPlaylistCurrentTooltip = document.getElementById("localPlaylistCurrentTooltip");
+const localPlaylistHoverTooltip = document.getElementById("localPlaylistHoverTooltip");
 const localPlaylistFavouritesKey = "jmeow_local_playlist_favourites";
 let localPlaylistShuffle = false;
 let localPlaylistRepeat = false;
@@ -4457,12 +4460,32 @@ function updateLocalPlaylistWindowVisibility() {
   }
 }
 
+function updateLocalPlaylistTimeTip(tip, ratio, time) {
+  if (!tip || !localPlaylistSeek) return;
+  tip.textContent = localPlaylistTime(time);
+  tip.style.left = `${Math.max(0, Math.min(100, ratio * 100))}%`;
+}
+
+function updateLocalPlaylistHoverTip(event) {
+  if (!localPlaylistSeekWrap || !localPlaylistSeek || !localPlaylistHoverTooltip) return;
+  const duration = getNormalProgressDuration();
+  if (duration <= 0) return;
+  const rect = localPlaylistSeek.getBoundingClientRect();
+  if (!rect.width) return;
+  const ratio = getRangePointerRatio(localPlaylistSeek, event.clientX, 11);
+  updateLocalPlaylistTimeTip(localPlaylistHoverTooltip, ratio, ratio * duration);
+  localPlaylistHoverTooltip.classList.add("visible");
+}
+
 function updateLocalPlaylistProgress() {
   if (!localPlaylistWindow || localPlaylistWindow.hidden || playbackMode !== "normal") return;
   const duration = player && playerReady ? Number(player.getDuration?.()) || 0 : 0;
   const elapsed = player && playerReady ? Number(player.getCurrentTime?.()) || 0 : 0;
   document.getElementById("localPlaylistElapsed").textContent = localPlaylistTime(elapsed);
   document.getElementById("localPlaylistDuration").textContent = localPlaylistTime(duration);
+  if (localPlaylistCurrentTooltip && duration > 0) {
+    updateLocalPlaylistTimeTip(localPlaylistCurrentTooltip, Math.min(1, elapsed / duration), elapsed);
+  }
   if (!localPlaylistSeekBusy && localPlaylistSeek) {
     localPlaylistSeek.value = duration > 0 ? String(Math.round(Math.min(1, elapsed / duration) * 1000)) : "0";
     localPlaylistSeek.style.setProperty("--playlist-progress", `${duration > 0 ? Math.min(100, elapsed / duration * 100) : 0}%`);
@@ -4493,7 +4516,7 @@ function updateLocalPlaylistWindow() {
     channel.href = channelUrl;
     const path = new URL(channelUrl).pathname.split("/").filter(Boolean);
     const label = path.find(segment => segment.startsWith("@"));
-    channel.querySelector("span").textContent = label || "youtube channel";
+    channel.querySelector("span").textContent = label || "channel";
   }
   const avatarUrl = item?.channelAvatar;
   if (avatarUrl && /^https:\/\//i.test(avatarUrl)) {
@@ -4507,7 +4530,7 @@ function updateLocalPlaylistWindow() {
   heart.setAttribute("aria-pressed", String(localPlaylistFavourites.includes(id)));
   heart.disabled = !id;
   document.getElementById("localPlaylistPlaySymbol").textContent = isPlaying ? "Ⅱ" : "▶";
-  document.getElementById("localPlaylistCount").textContent = `${PLAYLIST.length} videos`;
+  document.getElementById("localPlaylistCount").textContent = `${PLAYLIST.length} ${PLAYLIST.length === 1 ? "video" : "videos"}`;
   document.getElementById("localPlaylistListCount").textContent = `(${PLAYLIST.length})`;
   const renderKey = PLAYLIST.map(v => `${v.videoId || ""}|${v.title || ""}|${v.channelAvatar || ""}|${v.channelUrl || ""}`).join("\n");
   if (localPlaylistRenderKey !== renderKey || localPlaylistTracks.children.length !== PLAYLIST.length) {
@@ -4611,23 +4634,48 @@ if (localPlaylistWindow) {
     try { localStorage.setItem(localPlaylistFavouritesKey, JSON.stringify(localPlaylistFavourites)); } catch {}
     updateLocalPlaylistWindow();
   });
-  localPlaylistSeek.addEventListener("pointerdown", () => { localPlaylistSeekBusy = true; });
+  localPlaylistSeek.addEventListener("pointerdown", () => {
+    localPlaylistSeekBusy = true;
+    localPlaylistCurrentTooltip?.classList.add("visible");
+  });
+  localPlaylistSeek.addEventListener("pointerenter", () => {
+    localPlaylistCurrentTooltip?.classList.add("visible");
+  });
+  localPlaylistSeek.addEventListener("pointermove", updateLocalPlaylistHoverTip);
+  localPlaylistSeek.addEventListener("pointerleave", () => {
+    localPlaylistHoverTooltip?.classList.remove("visible");
+    if (!localPlaylistSeekBusy) localPlaylistCurrentTooltip?.classList.remove("visible");
+  });
+  localPlaylistSeek.addEventListener("focus", () => localPlaylistCurrentTooltip?.classList.add("visible"));
+  localPlaylistSeek.addEventListener("blur", () => {
+    localPlaylistCurrentTooltip?.classList.remove("visible");
+    localPlaylistHoverTooltip?.classList.remove("visible");
+  });
   localPlaylistSeek.addEventListener("input", () => {
     const duration = getNormalProgressDuration();
     document.getElementById("localPlaylistElapsed").textContent = localPlaylistTime(duration * Number(localPlaylistSeek.value) / 1000);
     localPlaylistSeek.style.setProperty("--playlist-progress", `${Number(localPlaylistSeek.value) / 10}%`);
+    updateLocalPlaylistTimeTip(localPlaylistCurrentTooltip, Number(localPlaylistSeek.value) / 1000, duration * Number(localPlaylistSeek.value) / 1000);
   });
   localPlaylistSeek.addEventListener("change", () => {
     const duration = getNormalProgressDuration();
     if (playbackMode === "normal" && playerReady && duration > 0) player.seekTo(duration * Number(localPlaylistSeek.value) / 1000, true);
     localPlaylistSeekBusy = false;
   });
-  localPlaylistSeek.addEventListener("pointerup", () => { localPlaylistSeekBusy = false; });
-  localPlaylistSeek.addEventListener("pointercancel", () => { localPlaylistSeekBusy = false; });
+  localPlaylistSeek.addEventListener("pointerup", () => {
+    localPlaylistSeekBusy = false;
+    if (!localPlaylistSeek.matches(":hover")) localPlaylistCurrentTooltip?.classList.remove("visible");
+  });
+  localPlaylistSeek.addEventListener("pointercancel", () => {
+    localPlaylistSeekBusy = false;
+    localPlaylistCurrentTooltip?.classList.remove("visible");
+    localPlaylistHoverTooltip?.classList.remove("visible");
+  });
   window.addEventListener("site-player-state", updateLocalPlaylistWindow);
   if (window.interact) {
     interact("#localPlaylistWindow").draggable({
       allowFrom: ".local-playlist-header",
+      inertia: true,
       ignoreFrom: "button, a",
       modifiers: [interact.modifiers.restrictRect({ restriction: "parent", endOnly: true })],
       listeners: {
