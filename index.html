@@ -368,7 +368,7 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
   <header class="local-playlist-header">
     <span class="local-playlist-heading"><span id="localPlaylistCat" aria-label="music cat">≽ᖰ^-⩊-^ᖳ≼</span> <span id="localPlaylistCount" class="local-playlist-count"></span></span>
     <div class="local-playlist-actions">
-      <button id="localPlaylistMinimize" type="button" aria-label="minimize playlist" title="minimize">−</button>
+      <button id="localPlaylistMinimize" type="button" aria-label="minimize playlist" title="minimize"><svg class="lp-minimize-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 11h14v2H5z"/></svg><svg class="lp-restore-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10H7V7zm2 2v6h6V9H9z"/></svg></button>
       <button id="localPlaylistClose" type="button" aria-label="close playlist" title="close">×</button>
     </div>
   </header>
@@ -397,13 +397,13 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
     <div class="local-playlist-transport" role="group" aria-label="local playlist playback controls">
       <button id="localPlaylistShuffle" type="button" aria-label="shuffle" title="shuffle" aria-pressed="false">⤨</button>
       <button id="localPlaylistPrevious" type="button" aria-label="previous video" title="previous">⏮</button>
-      <button id="localPlaylistPlay" class="local-playlist-main-play" type="button" aria-label="play" title="play"><svg id="localPlaylistPlaySymbol" viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path class="lp-icon-play" d="M8 5.5 19 12 8 18.5Z" fill="currentColor"/><path class="lp-icon-pause" d="M8 6.5v11M16 6.5v11" fill="none" stroke="currentColor" stroke-width="3.3" stroke-linecap="round"/></svg></button>
+      <button id="localPlaylistPlay" class="local-playlist-main-play" type="button" aria-label="play" title="play"><svg id="localPlaylistPlaySymbol" viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path class="lp-icon-play" d="M8 5v14l11-7z" fill="currentColor"/><path class="lp-icon-pause" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"/></svg></button>
       <button id="localPlaylistNext" type="button" aria-label="next video" title="next">⏭</button>
       <button id="localPlaylistRepeat" type="button" aria-label="replay" title="replay" aria-pressed="false">↻</button>
       <label class="local-playlist-volume" title="volume"><svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 9a4 4 0 0 1 0 6"/></svg><input id="localPlaylistVolume" type="range" min="0" max="100" value="50" step="1" aria-label="playlist volume"></label>
     </div>
     <div class="local-playlist-list-heading">videos <span id="localPlaylistListCount"></span></div>
-    <div id="localPlaylistTracks" class="local-playlist-tracks" role="list" aria-label="playlist videos"></div>
+    <div id="localPlaylistTracks" class="local-playlist-tracks themed-scrollbar" role="list" aria-label="playlist videos"></div>
   </div>
 </section>
 
