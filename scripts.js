@@ -4409,7 +4409,7 @@ const localPlaylistHoverTooltip = document.getElementById("localPlaylistHoverToo
 const localPlaylistVolume = document.getElementById("localPlaylistVolume");
 const localPlaylistNoteThumb = document.getElementById("localPlaylistNoteThumb");
 const localPlaylistCat = document.getElementById("localPlaylistCat");
-const localPlaylistFaces = ["≽ᖰ^-⩊-^ᖳ≼", "≽ᖰ^-o-^ᖳ≼", "≽ᖰ^-O-^ᖳ≼"];
+const localPlaylistFaces = ["≽ᖰ^-⩊-^ᖳ≼", "≽ᖰ^-o-^ᖳ≼", "≽ᖰ^-O-^ᖳ≼", "≽ᖰ^˘⩊˘^ᖳ≼", "≽ᖰ^>⩊<^ᖳ≼", "≽ᖰ^ᵔoᵔ^ᖳ≼", "≽ᖰ^ᵔOᵔ^ᖳ≼"];
 let localPlaylistFaceIndex = 0;
 const localPlaylistFavouritesKey = "jmeow_local_playlist_favourites";
 let localPlaylistShuffle = false;
@@ -4480,6 +4480,8 @@ function updateLocalPlaylistHoverTip(event) {
   const ratio = getRangePointerRatio(localPlaylistSeek, event.clientX, 11);
   updateLocalPlaylistTimeTip(localPlaylistHoverTooltip, ratio, ratio * duration);
   localPlaylistHoverTooltip.classList.add("visible");
+  const currentRatio = Math.max(0, Math.min(1, (player && playerReady ? Number(player.getCurrentTime?.()) || 0 : 0) / duration));
+  localPlaylistCurrentTooltip?.classList.toggle("visible", Math.abs(ratio - currentRatio) * rect.width > 43);
 }
 
 function updateLocalPlaylistCat() {
@@ -4616,7 +4618,6 @@ function showList() {
   localPlaylistWindow.hidden = false;
   localPlaylistWindow.classList.remove("is-minimized");
   document.getElementById("localPlaylistMinimize").setAttribute("aria-label", "minimize playlist");
-  document.getElementById("localPlaylistMinimize").textContent = "−";
   if (localPlaylistVolume && volumeSlider) localPlaylistVolume.value = volumeSlider.value;
   updateLocalPlaylistWindow();
 }
@@ -4646,7 +4647,6 @@ if (localPlaylistWindow) {
   window.setInterval(updateLocalPlaylistCat, 1800);
   document.getElementById("localPlaylistMinimize").addEventListener("click", () => {
     const collapsed = localPlaylistWindow.classList.toggle("is-minimized");
-    document.getElementById("localPlaylistMinimize").textContent = collapsed ? "+" : "−";
     document.getElementById("localPlaylistMinimize").setAttribute("aria-label", collapsed ? "restore playlist" : "minimize playlist");
   });
   document.getElementById("localPlaylistPlay").addEventListener("click", () => {
