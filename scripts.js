@@ -4406,6 +4406,11 @@ const localPlaylistSeek = document.getElementById("localPlaylistSeek");
 const localPlaylistSeekWrap = document.getElementById("localPlaylistSeekWrap");
 const localPlaylistCurrentTooltip = document.getElementById("localPlaylistCurrentTooltip");
 const localPlaylistHoverTooltip = document.getElementById("localPlaylistHoverTooltip");
+const localPlaylistVolume = document.getElementById("localPlaylistVolume");
+const localPlaylistNoteThumb = document.getElementById("localPlaylistNoteThumb");
+const localPlaylistCat = document.getElementById("localPlaylistCat");
+const localPlaylistFaces = ["≽ᖰ^-⩊-^ᖳ≼", "≽ᖰ^-o-^ᖳ≼", "≽ᖰ^-O-^ᖳ≼"];
+let localPlaylistFaceIndex = 0;
 const localPlaylistFavouritesKey = "jmeow_local_playlist_favourites";
 let localPlaylistShuffle = false;
 let localPlaylistRepeat = false;
@@ -4477,6 +4482,16 @@ function updateLocalPlaylistHoverTip(event) {
   localPlaylistHoverTooltip.classList.add("visible");
 }
 
+function updateLocalPlaylistCat() {
+  if (!localPlaylistCat) return;
+  if (isPlaying && playbackMode === "normal" && !localPlaylistWindow?.hidden && !document.hidden) {
+    localPlaylistFaceIndex = (localPlaylistFaceIndex + 1) % localPlaylistFaces.length;
+  } else {
+    localPlaylistFaceIndex = 0;
+  }
+  localPlaylistCat.textContent = localPlaylistFaces[localPlaylistFaceIndex];
+}
+
 function updateLocalPlaylistProgress() {
   if (!localPlaylistWindow || localPlaylistWindow.hidden || playbackMode !== "normal") return;
   const duration = player && playerReady ? Number(player.getDuration?.()) || 0 : 0;
@@ -4489,6 +4504,7 @@ function updateLocalPlaylistProgress() {
   if (!localPlaylistSeekBusy && localPlaylistSeek) {
     localPlaylistSeek.value = duration > 0 ? String(Math.round(Math.min(1, elapsed / duration) * 1000)) : "0";
     localPlaylistSeek.style.setProperty("--playlist-progress", `${duration > 0 ? Math.min(100, elapsed / duration * 100) : 0}%`);
+    if (localPlaylistNoteThumb) localPlaylistNoteThumb.style.left = `${duration > 0 ? Math.min(100, elapsed / duration * 100) : 0}%`;
   }
 }
 
@@ -4529,7 +4545,13 @@ function updateLocalPlaylistWindow() {
   heart.textContent = localPlaylistFavourites.includes(id) ? "♥" : "♡";
   heart.setAttribute("aria-pressed", String(localPlaylistFavourites.includes(id)));
   heart.disabled = !id;
-  document.getElementById("localPlaylistPlaySymbol").textContent = isPlaying ? "Ⅱ" : "▶";
+  document.getElementById("localPlaylistPlay").classList.toggle("is-playing", isPlaying);
+  document.getElementById("localPlaylistPlay").setAttribute("aria-label", isPlaying ? "pause" : "play");
+  document.getElementById("localPlaylistPlay").title = isPlaying ? "pause" : "play";
+  if (!isPlaying && localPlaylistCat && localPlaylistFaceIndex) {
+    localPlaylistFaceIndex = 0;
+    localPlaylistCat.textContent = localPlaylistFaces[0];
+  }
   document.getElementById("localPlaylistCount").textContent = `${PLAYLIST.length} ${PLAYLIST.length === 1 ? "video" : "videos"}`;
   document.getElementById("localPlaylistListCount").textContent = `(${PLAYLIST.length})`;
   const renderKey = PLAYLIST.map(v => `${v.videoId || ""}|${v.title || ""}|${v.channelAvatar || ""}|${v.channelUrl || ""}`).join("\n");
@@ -4586,10 +4608,16 @@ function updateLocalPlaylistWindow() {
 
 function showList() {
   if (!localPlaylistWindow || playbackMode !== "normal") return;
+  if (!localPlaylistWindow.hidden) {
+    localPlaylistWindow.hidden = true;
+    localPlaylistWasOpenBeforeParty = false;
+    return;
+  }
   localPlaylistWindow.hidden = false;
   localPlaylistWindow.classList.remove("is-minimized");
   document.getElementById("localPlaylistMinimize").setAttribute("aria-label", "minimize playlist");
   document.getElementById("localPlaylistMinimize").textContent = "−";
+  if (localPlaylistVolume && volumeSlider) localPlaylistVolume.value = volumeSlider.value;
   updateLocalPlaylistWindow();
 }
 
@@ -4605,6 +4633,17 @@ if (localPlaylistWindow) {
     localPlaylistWindow.hidden = true;
     localPlaylistWasOpenBeforeParty = false;
   });
+  if (localPlaylistVolume && volumeSlider) {
+    localPlaylistVolume.value = volumeSlider.value;
+    localPlaylistVolume.addEventListener("input", () => {
+      volumeSlider.value = localPlaylistVolume.value;
+      volumeSlider.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    volumeSlider.addEventListener("input", () => {
+      if (localPlaylistVolume.value !== volumeSlider.value) localPlaylistVolume.value = volumeSlider.value;
+    });
+  }
+  window.setInterval(updateLocalPlaylistCat, 1800);
   document.getElementById("localPlaylistMinimize").addEventListener("click", () => {
     const collapsed = localPlaylistWindow.classList.toggle("is-minimized");
     document.getElementById("localPlaylistMinimize").textContent = collapsed ? "+" : "−";
@@ -4655,6 +4694,7 @@ if (localPlaylistWindow) {
     const duration = getNormalProgressDuration();
     document.getElementById("localPlaylistElapsed").textContent = localPlaylistTime(duration * Number(localPlaylistSeek.value) / 1000);
     localPlaylistSeek.style.setProperty("--playlist-progress", `${Number(localPlaylistSeek.value) / 10}%`);
+    if (localPlaylistNoteThumb) localPlaylistNoteThumb.style.left = `${Number(localPlaylistSeek.value) / 10}%`;
     updateLocalPlaylistTimeTip(localPlaylistCurrentTooltip, Number(localPlaylistSeek.value) / 1000, duration * Number(localPlaylistSeek.value) / 1000);
   });
   localPlaylistSeek.addEventListener("change", () => {
