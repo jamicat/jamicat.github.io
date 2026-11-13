@@ -3737,3 +3737,12 @@ body.video-backdrop-active #jamiStarfield {
 @keyframes lp-heart-pop { 0%,100% {transform:scale(1)} 40% {transform:scale(1.24)} 70% {transform:scale(.94)} }
 @keyframes lp-playing-note { 0%,100% {opacity:.55;transform:translateY(0)} 50% {opacity:1;transform:translateY(-2px)} }
 @media (prefers-reduced-motion:reduce) { #localPlaylistNotes.is-floating,.local-playlist-heart.is-popping,.local-playlist-track.is-playing::before {animation:none} #localPlaylistNotes.is-floating {opacity:1} }
+
+.local-playlist-list-heading { display:flex; align-items:center; gap:3px; }
+.local-playlist-idle-message { margin-left:auto; font-size:8px; font-weight:500; letter-spacing:0; color:var(--lp-text); opacity:.74; white-space:nowrap; }
+.local-playlist-idle-message[hidden] { display:none; }
+.local-playlist-window .local-playlist-main-play { transition:transform 150ms ease,color 150ms ease,text-shadow 150ms ease; }
+.local-playlist-window .local-playlist-main-play:hover { transform:scale(1.09); text-shadow:0 0 5px var(--lp-note-glow); }
+.local-playlist-window .local-playlist-main-play:active { transform:scale(.96); }
+.local-playlist-track.is-current:not(.is-playing) { background:var(--lp-soft-track); }
+@media (prefers-reduced-motion:reduce) { .local-playlist-window .local-playlist-main-play {transition:none} .local-playlist-window .local-playlist-main-play:hover,.local-playlist-window .local-playlist-main-play:active {transform:none} }
