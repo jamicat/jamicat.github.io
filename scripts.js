@@ -4421,23 +4421,21 @@ const localPlaylistNotes = document.getElementById("localPlaylistNotes");
 const localPlaylistIdleMessage = document.getElementById("localPlaylistIdleMessage");
 const localPlaylistCatTrack = document.getElementById("localPlaylistCatTrack");
 const localPlaylistPixelCat = document.getElementById("localPlaylistPixelCat");
-let localPlaylistPixelX = 0;
-let localPlaylistPixelDirection = 1;
 let localPlaylistPixelFrame = 0;
 let localPlaylistPixelLastTick = 0;
 let localPlaylistPixelFrameTime = 0;
 let localPlaylistPixelAnimation = 0;
 let localPlaylistPixelSource = "";
+let localPlaylistPixelWasPlaying = false;
 function updateLocalPlaylistPixelFrame(playing) {
   if (!localPlaylistPixelCat) return;
-  const source = playing ? "ginger-run.png" : "ginger-idle.png";
+  const source = playing ? "ginger-jump.png" : "ginger-idle.png";
   if (localPlaylistPixelSource !== source) {
     localPlaylistPixelSource = source;
     localPlaylistPixelCat.style.backgroundImage = `url("${source}")`;
   }
-  const row = localPlaylistPixelDirection > 0 ? 0 : 1;
-  localPlaylistPixelCat.style.backgroundPosition = `${-18 * localPlaylistPixelFrame}px ${-18 * row}px`;
-  localPlaylistPixelCat.style.transform = `translateX(${Math.round(localPlaylistPixelX)}px)`;
+  localPlaylistPixelCat.style.backgroundPosition = `${-18 * localPlaylistPixelFrame}px 0px`;
+  localPlaylistPixelCat.style.transform = "translateX(0px)";
 }
 function stopLocalPlaylistPixelMotion() {
   if (localPlaylistPixelAnimation) cancelAnimationFrame(localPlaylistPixelAnimation);
@@ -4446,36 +4444,39 @@ function stopLocalPlaylistPixelMotion() {
 }
 function localPlaylistPixelMotionTick(now) {
   localPlaylistPixelAnimation = 0;
-  if (!localPlaylistPixelCat || !localPlaylistCatTrack || !localPlaylistWindow || localPlaylistWindow.hidden || localPlaylistWindow.classList.contains("is-minimized") || document.hidden || playbackMode !== "normal" || !isPlaying || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (!localPlaylistPixelCat || !localPlaylistWindow || localPlaylistWindow.hidden || localPlaylistWindow.classList.contains("is-minimized") || document.hidden || playbackMode !== "normal" || matchMedia("(prefers-reduced-motion: reduce)").matches) {
     stopLocalPlaylistPixelMotion();
     updateLocalPlaylistPixelFrame(false);
     return;
   }
   if (!localPlaylistPixelLastTick) localPlaylistPixelLastTick = now;
-  const dt = Math.min(40, now - localPlaylistPixelLastTick);
+  const dt = Math.min(80, now - localPlaylistPixelLastTick);
   localPlaylistPixelLastTick = now;
-  const maxX = Math.max(0, localPlaylistCatTrack.clientWidth - 18);
-  localPlaylistPixelX = Math.min(maxX, Math.max(0, localPlaylistPixelX));
-  localPlaylistPixelX += localPlaylistPixelDirection * dt * 0.027;
-  if (localPlaylistPixelX >= maxX) { localPlaylistPixelX = maxX; localPlaylistPixelDirection = -1; }
-  if (localPlaylistPixelX <= 0) { localPlaylistPixelX = 0; localPlaylistPixelDirection = 1; }
-  localPlaylistPixelFrameTime += dt;
-  if (localPlaylistPixelFrameTime >= 115) {
-    localPlaylistPixelFrame = (localPlaylistPixelFrame + 1) % 6;
-    localPlaylistPixelFrameTime %= 115;
+  const playing = Boolean(isPlaying);
+  if (playing !== localPlaylistPixelWasPlaying) {
+    localPlaylistPixelWasPlaying = playing;
+    localPlaylistPixelFrame = 0;
+    localPlaylistPixelFrameTime = 0;
   }
-  updateLocalPlaylistPixelFrame(true);
+  localPlaylistPixelFrameTime += dt;
+  const duration = playing ? 135 : 420;
+  if (localPlaylistPixelFrameTime >= duration) {
+    localPlaylistPixelFrame = (localPlaylistPixelFrame + Math.floor(localPlaylistPixelFrameTime / duration)) % 6;
+    localPlaylistPixelFrameTime %= duration;
+  }
+  updateLocalPlaylistPixelFrame(playing);
   localPlaylistPixelAnimation = requestAnimationFrame(localPlaylistPixelMotionTick);
 }
 function syncLocalPlaylistPixelCat() {
   if (!localPlaylistPixelCat || !localPlaylistCatTrack) return;
-  const active = Boolean(isPlaying && playbackMode === "normal" && localPlaylistWindow && !localPlaylistWindow.hidden && !localPlaylistWindow.classList.contains("is-minimized") && !document.hidden);
-  const animate = active && !matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (!animate) {
+  const visible = playbackMode === "normal" && localPlaylistWindow && !localPlaylistWindow.hidden && !localPlaylistWindow.classList.contains("is-minimized") && !document.hidden;
+  if (!visible || matchMedia("(prefers-reduced-motion: reduce)").matches) {
     stopLocalPlaylistPixelMotion();
+    localPlaylistPixelFrame = 0;
+    localPlaylistPixelWasPlaying = false;
     updateLocalPlaylistPixelFrame(false);
   } else if (!localPlaylistPixelAnimation) {
-    localPlaylistPixelFrameTime = 0;
+    localPlaylistPixelLastTick = 0;
     localPlaylistPixelAnimation = requestAnimationFrame(localPlaylistPixelMotionTick);
   }
 }
@@ -4763,11 +4764,6 @@ if (localPlaylistWindow) {
     });
   }
   window.setInterval(updateLocalPlaylistCat, 1800);
-  window.setInterval(() => {
-    if (!localPlaylistPixelCat || !localPlaylistWindow || localPlaylistWindow.hidden || localPlaylistWindow.classList.contains("is-minimized") || playbackMode !== "normal" || document.hidden || isPlaying || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    localPlaylistPixelFrame = (localPlaylistPixelFrame + 1) % 6;
-    updateLocalPlaylistPixelFrame(false);
-  }, 420);
   document.addEventListener("visibilitychange", syncLocalPlaylistPixelCat);
   window.addEventListener("resize", syncLocalPlaylistPixelCat);
   syncLocalPlaylistPixelCat();
