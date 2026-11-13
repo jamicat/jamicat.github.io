@@ -4419,6 +4419,67 @@ const localPlaylistNoteThumb = document.getElementById("localPlaylistNoteThumb")
 const localPlaylistCat = document.getElementById("localPlaylistCat");
 const localPlaylistNotes = document.getElementById("localPlaylistNotes");
 const localPlaylistIdleMessage = document.getElementById("localPlaylistIdleMessage");
+const localPlaylistCatTrack = document.getElementById("localPlaylistCatTrack");
+const localPlaylistPixelCat = document.getElementById("localPlaylistPixelCat");
+let localPlaylistPixelX = 0;
+let localPlaylistPixelDirection = 1;
+let localPlaylistPixelFrame = 0;
+let localPlaylistPixelLastTick = 0;
+let localPlaylistPixelFrameTime = 0;
+let localPlaylistPixelAnimation = 0;
+let localPlaylistPixelSource = "";
+function updateLocalPlaylistPixelFrame(playing) {
+  if (!localPlaylistPixelCat) return;
+  const source = playing ? "ginger-run.png" : "ginger-idle.png";
+  if (localPlaylistPixelSource !== source) {
+    localPlaylistPixelSource = source;
+    localPlaylistPixelCat.style.backgroundImage = `url("${source}")`;
+  }
+  const row = localPlaylistPixelDirection > 0 ? 0 : 1;
+  localPlaylistPixelCat.style.backgroundPosition = `${-18 * localPlaylistPixelFrame}px ${-18 * row}px`;
+  localPlaylistPixelCat.style.transform = `translateX(${Math.round(localPlaylistPixelX)}px)`;
+}
+function stopLocalPlaylistPixelMotion() {
+  if (localPlaylistPixelAnimation) cancelAnimationFrame(localPlaylistPixelAnimation);
+  localPlaylistPixelAnimation = 0;
+  localPlaylistPixelLastTick = 0;
+}
+function localPlaylistPixelMotionTick(now) {
+  localPlaylistPixelAnimation = 0;
+  if (!localPlaylistPixelCat || !localPlaylistCatTrack || !localPlaylistWindow || localPlaylistWindow.hidden || localPlaylistWindow.classList.contains("is-minimized") || document.hidden || playbackMode !== "normal" || !isPlaying || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    stopLocalPlaylistPixelMotion();
+    updateLocalPlaylistPixelFrame(false);
+    return;
+  }
+  if (!localPlaylistPixelLastTick) localPlaylistPixelLastTick = now;
+  const dt = Math.min(40, now - localPlaylistPixelLastTick);
+  localPlaylistPixelLastTick = now;
+  const maxX = Math.max(0, localPlaylistCatTrack.clientWidth - 18);
+  localPlaylistPixelX = Math.min(maxX, Math.max(0, localPlaylistPixelX));
+  localPlaylistPixelX += localPlaylistPixelDirection * dt * 0.027;
+  if (localPlaylistPixelX >= maxX) { localPlaylistPixelX = maxX; localPlaylistPixelDirection = -1; }
+  if (localPlaylistPixelX <= 0) { localPlaylistPixelX = 0; localPlaylistPixelDirection = 1; }
+  localPlaylistPixelFrameTime += dt;
+  if (localPlaylistPixelFrameTime >= 115) {
+    localPlaylistPixelFrame = (localPlaylistPixelFrame + 1) % 6;
+    localPlaylistPixelFrameTime %= 115;
+  }
+  updateLocalPlaylistPixelFrame(true);
+  localPlaylistPixelAnimation = requestAnimationFrame(localPlaylistPixelMotionTick);
+}
+function syncLocalPlaylistPixelCat() {
+  if (!localPlaylistPixelCat || !localPlaylistCatTrack) return;
+  const active = Boolean(isPlaying && playbackMode === "normal" && localPlaylistWindow && !localPlaylistWindow.hidden && !localPlaylistWindow.classList.contains("is-minimized") && !document.hidden);
+  const animate = active && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!animate) {
+    stopLocalPlaylistPixelMotion();
+    updateLocalPlaylistPixelFrame(false);
+  } else if (!localPlaylistPixelAnimation) {
+    localPlaylistPixelFrameTime = 0;
+    localPlaylistPixelAnimation = requestAnimationFrame(localPlaylistPixelMotionTick);
+  }
+}
+
 const localPlaylistMusicNotes = ["", "♪", "♫", "♬", "♩", "♪", "♬", ""];
 const localPlaylistFaces = ["≽ᖰ^-⩊-^ᖳ≼", "≽ᖰ^-o-^ᖳ≼", "≽ᖰ^-O-^ᖳ≼", "≽ᖰ^˘⩊˘^ᖳ≼", "≽ᖰ^>⩊<^ᖳ≼", "≽ᖰ^ᵔoᵔ^ᖳ≼", "≽ᖰ^ᵔOᵔ^ᖳ≼"];
 const localPlaylistIdleFaces = ["≽ᖰ^-⩊-^ᖳ≼", "≽ᖰ^-ᴗ-^ᖳ≼", "≽ᖰ^-ω-^ᖳ≼", "≽ᖰ^-ᵕ-^ᖳ≼"];
@@ -4500,6 +4561,7 @@ function updateLocalPlaylistHoverTip(event) {
 }
 
 function updateLocalPlaylistCat() {
+  syncLocalPlaylistPixelCat();
   if (!localPlaylistCat) return;
   const visible = !localPlaylistWindow?.hidden && !document.hidden;
   const singing = isPlaying && playbackMode === "normal" && visible;
@@ -4666,6 +4728,7 @@ function showList() {
   if (!localPlaylistWindow || playbackMode !== "normal") return;
   if (!localPlaylistWindow.hidden) {
     localPlaylistWindow.hidden = true;
+    stopLocalPlaylistPixelMotion();
     localPlaylistWasOpenBeforeParty = false;
     return;
   }
@@ -4674,6 +4737,7 @@ function showList() {
   document.getElementById("localPlaylistMinimize").setAttribute("aria-label", "minimize playlist");
   if (localPlaylistVolume && volumeSlider) localPlaylistVolume.value = volumeSlider.value;
   updateLocalPlaylistWindow();
+  syncLocalPlaylistPixelCat();
 }
 
 function localPlaylistPreviousVideo() {
@@ -4699,8 +4763,17 @@ if (localPlaylistWindow) {
     });
   }
   window.setInterval(updateLocalPlaylistCat, 1800);
+  window.setInterval(() => {
+    if (!localPlaylistPixelCat || !localPlaylistWindow || localPlaylistWindow.hidden || localPlaylistWindow.classList.contains("is-minimized") || playbackMode !== "normal" || document.hidden || isPlaying || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    localPlaylistPixelFrame = (localPlaylistPixelFrame + 1) % 6;
+    updateLocalPlaylistPixelFrame(false);
+  }, 420);
+  document.addEventListener("visibilitychange", syncLocalPlaylistPixelCat);
+  window.addEventListener("resize", syncLocalPlaylistPixelCat);
+  syncLocalPlaylistPixelCat();
   document.getElementById("localPlaylistMinimize").addEventListener("click", () => {
     const collapsed = localPlaylistWindow.classList.toggle("is-minimized");
+    syncLocalPlaylistPixelCat();
     document.getElementById("localPlaylistMinimize").setAttribute("aria-label", collapsed ? "restore playlist" : "minimize playlist");
   });
   document.getElementById("localPlaylistPlay").addEventListener("click", () => {
@@ -4769,7 +4842,7 @@ if (localPlaylistWindow) {
     localPlaylistCurrentTooltip?.classList.remove("visible");
     localPlaylistHoverTooltip?.classList.remove("visible");
   });
-  window.addEventListener("site-player-state", updateLocalPlaylistWindow);
+  window.addEventListener("site-player-state", () => { updateLocalPlaylistWindow(); syncLocalPlaylistPixelCat(); });
   if (window.interact) {
     interact("#localPlaylistWindow").draggable({
       allowFrom: ".local-playlist-header",
