@@ -3746,3 +3746,10 @@ body.video-backdrop-active #jamiStarfield {
 .local-playlist-window .local-playlist-main-play:active { transform:scale(.96); }
 .local-playlist-track.is-current:not(.is-playing) { background:var(--lp-soft-track); }
 @media (prefers-reduced-motion:reduce) { .local-playlist-window .local-playlist-main-play {transition:none} .local-playlist-window .local-playlist-main-play:hover,.local-playlist-window .local-playlist-main-play:active {transform:none} }
+
+.local-playlist-heading { flex:0 0 auto; }
+.local-playlist-cat-track { flex:1 1 auto; min-width:22px; height:20px; position:relative; overflow:hidden; pointer-events:none; }
+.local-playlist-actions { flex:0 0 auto; }
+.local-playlist-pixel-cat { position:absolute; left:0; top:1px; width:18px; height:18px; display:block; background-image:url("ginger-idle.png"); background-position:0 0; background-size:108px 72px; background-repeat:no-repeat; image-rendering:pixelated; image-rendering:crisp-edges; transform:translateX(0); will-change:transform; }
+.local-playlist-window.is-minimized .local-playlist-cat-track { min-width:22px; }
+@media (prefers-reduced-motion: reduce) { .local-playlist-pixel-cat { will-change:auto; } }
