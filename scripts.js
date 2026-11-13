@@ -1753,6 +1753,14 @@ const relativeX =
   normalProgressTooltip.classList.add(
     "visible"
   );
+
+  if (normalProgressCurrentTooltip && !normalProgressSeeking) {
+    const currentTime = player && playerReady ? Number(player.getCurrentTime?.()) || 0 : 0;
+    const currentRatio = Math.max(0, Math.min(1, currentTime / duration));
+    const currentLeft = sliderRect.left - wrapRect.left + 5 + (sliderRect.width - 10) * currentRatio;
+    const nearCurrent = Math.abs(tooltipLeft - currentLeft) < 43;
+    normalProgressCurrentTooltip.classList.toggle("visible", !nearCurrent);
+  }
 }
 
 function showNormalProgressTooltips() {
@@ -4409,6 +4417,8 @@ const localPlaylistHoverTooltip = document.getElementById("localPlaylistHoverToo
 const localPlaylistVolume = document.getElementById("localPlaylistVolume");
 const localPlaylistNoteThumb = document.getElementById("localPlaylistNoteThumb");
 const localPlaylistCat = document.getElementById("localPlaylistCat");
+const localPlaylistNotes = document.getElementById("localPlaylistNotes");
+const localPlaylistMusicNotes = ["", "♪", "♫", "♬", "♩", "♪", "♬", ""];
 const localPlaylistFaces = ["≽ᖰ^-⩊-^ᖳ≼", "≽ᖰ^-o-^ᖳ≼", "≽ᖰ^-O-^ᖳ≼", "≽ᖰ^˘⩊˘^ᖳ≼", "≽ᖰ^>⩊<^ᖳ≼", "≽ᖰ^ᵔoᵔ^ᖳ≼", "≽ᖰ^ᵔOᵔ^ᖳ≼"];
 let localPlaylistFaceIndex = 0;
 const localPlaylistFavouritesKey = "jmeow_local_playlist_favourites";
@@ -4492,6 +4502,10 @@ function updateLocalPlaylistCat() {
     localPlaylistFaceIndex = 0;
   }
   localPlaylistCat.textContent = localPlaylistFaces[localPlaylistFaceIndex];
+  if (localPlaylistNotes) {
+    const singing = isPlaying && playbackMode === "normal" && !localPlaylistWindow?.hidden && !document.hidden;
+    localPlaylistNotes.textContent = singing ? localPlaylistMusicNotes[Math.floor(Math.random() * localPlaylistMusicNotes.length)] : "";
+  }
 }
 
 function updateLocalPlaylistProgress() {
@@ -4534,7 +4548,8 @@ function updateLocalPlaylistWindow() {
     channel.href = channelUrl;
     const path = new URL(channelUrl).pathname.split("/").filter(Boolean);
     const label = path.find(segment => segment.startsWith("@"));
-    channel.querySelector("span").textContent = label || "channel";
+    channel.setAttribute("aria-label", label ? `open ${label} on youtube` : "open youtube channel");
+    channel.title = label ? `open ${label} on youtube` : "open youtube channel";
   }
   const avatarUrl = item?.channelAvatar;
   if (avatarUrl && /^https:\/\//i.test(avatarUrl)) {
@@ -4553,6 +4568,7 @@ function updateLocalPlaylistWindow() {
   if (!isPlaying && localPlaylistCat && localPlaylistFaceIndex) {
     localPlaylistFaceIndex = 0;
     localPlaylistCat.textContent = localPlaylistFaces[0];
+    if (localPlaylistNotes) localPlaylistNotes.textContent = "";
   }
   document.getElementById("localPlaylistCount").textContent = `${PLAYLIST.length} ${PLAYLIST.length === 1 ? "video" : "videos"}`;
   document.getElementById("localPlaylistListCount").textContent = `(${PLAYLIST.length})`;
@@ -4568,7 +4584,7 @@ function updateLocalPlaylistWindow() {
       pick.type = "button";
       pick.className = "local-playlist-track-pick";
       pick.textContent = song.title || `video ${i + 1}`;
-      pick.title = "play this video";
+      pick.title = song.title || `video ${i + 1}`;
       pick.addEventListener("click", () => {
         if (playbackMode !== "normal") return;
         normalPlaylistIndex = i;
@@ -4582,6 +4598,12 @@ function updateLocalPlaylistWindow() {
       link.textContent = "↗";
       link.title = "open video on youtube";
       link.setAttribute("aria-label", `open ${song.title || "video"} on youtube`);
+      const favouriteMark = document.createElement("span");
+      favouriteMark.className = "local-playlist-track-heart";
+      favouriteMark.textContent = "♥";
+      favouriteMark.setAttribute("aria-label", "favourite video");
+      favouriteMark.hidden = !localPlaylistFavourites.includes(song.videoId);
+      row.appendChild(favouriteMark);
       const channelHref = localPlaylistChannelUrl(song);
       if (channelHref) {
         const creator = document.createElement("a");
@@ -4603,6 +4625,8 @@ function updateLocalPlaylistWindow() {
   }
   [...localPlaylistTracks.children].forEach((row, i) => {
     row.classList.toggle("is-current", i === normalPlaylistIndex);
+    const favMark = row.querySelector(".local-playlist-track-heart");
+    if (favMark) favMark.hidden = !localPlaylistFavourites.includes(PLAYLIST[i]?.videoId);
     row.querySelector(".local-playlist-track-pick")?.setAttribute("aria-current", i === normalPlaylistIndex ? "true" : "false");
   });
   updateLocalPlaylistProgress();
