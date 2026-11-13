@@ -4504,7 +4504,13 @@ function updateLocalPlaylistCat() {
   localPlaylistCat.textContent = localPlaylistFaces[localPlaylistFaceIndex];
   if (localPlaylistNotes) {
     const singing = isPlaying && playbackMode === "normal" && !localPlaylistWindow?.hidden && !document.hidden;
-    localPlaylistNotes.textContent = singing ? localPlaylistMusicNotes[Math.floor(Math.random() * localPlaylistMusicNotes.length)] : "";
+    const note = singing ? localPlaylistMusicNotes[Math.floor(Math.random() * localPlaylistMusicNotes.length)] : "";
+    localPlaylistNotes.textContent = note;
+    localPlaylistNotes.classList.remove("is-floating");
+    if (note) {
+      void localPlaylistNotes.offsetWidth;
+      localPlaylistNotes.classList.add("is-floating");
+    }
   }
 }
 
@@ -4625,6 +4631,7 @@ function updateLocalPlaylistWindow() {
   }
   [...localPlaylistTracks.children].forEach((row, i) => {
     row.classList.toggle("is-current", i === normalPlaylistIndex);
+    row.classList.toggle("is-playing", i === normalPlaylistIndex && isPlaying && playbackMode === "normal");
     const favMark = row.querySelector(".local-playlist-track-heart");
     if (favMark) favMark.hidden = !localPlaylistFavourites.includes(PLAYLIST[i]?.videoId);
     row.querySelector(".local-playlist-track-pick")?.setAttribute("aria-current", i === normalPlaylistIndex ? "true" : "false");
@@ -4695,6 +4702,10 @@ if (localPlaylistWindow) {
       ? localPlaylistFavourites.filter(item => item !== id)
       : [...localPlaylistFavourites, id];
     try { localStorage.setItem(localPlaylistFavouritesKey, JSON.stringify(localPlaylistFavourites)); } catch {}
+    const heart = document.getElementById("localPlaylistFavourite");
+    heart.classList.remove("is-popping");
+    void heart.offsetWidth;
+    heart.classList.add("is-popping");
     updateLocalPlaylistWindow();
   });
   localPlaylistSeek.addEventListener("pointerdown", () => {
