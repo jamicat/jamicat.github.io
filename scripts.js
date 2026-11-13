@@ -4418,8 +4418,13 @@ const localPlaylistVolume = document.getElementById("localPlaylistVolume");
 const localPlaylistNoteThumb = document.getElementById("localPlaylistNoteThumb");
 const localPlaylistCat = document.getElementById("localPlaylistCat");
 const localPlaylistNotes = document.getElementById("localPlaylistNotes");
+const localPlaylistIdleMessage = document.getElementById("localPlaylistIdleMessage");
 const localPlaylistMusicNotes = ["", "♪", "♫", "♬", "♩", "♪", "♬", ""];
 const localPlaylistFaces = ["≽ᖰ^-⩊-^ᖳ≼", "≽ᖰ^-o-^ᖳ≼", "≽ᖰ^-O-^ᖳ≼", "≽ᖰ^˘⩊˘^ᖳ≼", "≽ᖰ^>⩊<^ᖳ≼", "≽ᖰ^ᵔoᵔ^ᖳ≼", "≽ᖰ^ᵔOᵔ^ᖳ≼"];
+const localPlaylistIdleFaces = ["≽ᖰ^-⩊-^ᖳ≼", "≽ᖰ^-ᴗ-^ᖳ≼", "≽ᖰ^-ω-^ᖳ≼", "≽ᖰ^-ᵕ-^ᖳ≼"];
+let localPlaylistIdleTicks = 0;
+let localPlaylistIdleFaceIndex = 0;
+let localPlaylistIdleNext = 5 + Math.floor(Math.random() * 4);
 let localPlaylistFaceIndex = 0;
 const localPlaylistFavouritesKey = "jmeow_local_playlist_favourites";
 let localPlaylistShuffle = false;
@@ -4496,14 +4501,29 @@ function updateLocalPlaylistHoverTip(event) {
 
 function updateLocalPlaylistCat() {
   if (!localPlaylistCat) return;
-  if (isPlaying && playbackMode === "normal" && !localPlaylistWindow?.hidden && !document.hidden) {
+  const visible = !localPlaylistWindow?.hidden && !document.hidden;
+  const singing = isPlaying && playbackMode === "normal" && visible;
+  if (singing) {
     localPlaylistFaceIndex = (localPlaylistFaceIndex + 1) % localPlaylistFaces.length;
+    localPlaylistCat.textContent = localPlaylistFaces[localPlaylistFaceIndex];
+    localPlaylistIdleTicks = 0;
+    localPlaylistIdleFaceIndex = 0;
   } else {
     localPlaylistFaceIndex = 0;
+    if (visible && playbackMode === "normal" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      localPlaylistIdleTicks += 1;
+      if (localPlaylistIdleTicks >= localPlaylistIdleNext) {
+        localPlaylistIdleTicks = 0;
+        localPlaylistIdleNext = 5 + Math.floor(Math.random() * 4);
+        localPlaylistIdleFaceIndex = (localPlaylistIdleFaceIndex + 1) % localPlaylistIdleFaces.length;
+      }
+    } else {
+      localPlaylistIdleFaceIndex = 0;
+    }
+    localPlaylistCat.textContent = localPlaylistIdleFaces[localPlaylistIdleFaceIndex];
   }
-  localPlaylistCat.textContent = localPlaylistFaces[localPlaylistFaceIndex];
+  if (localPlaylistIdleMessage) localPlaylistIdleMessage.hidden = singing;
   if (localPlaylistNotes) {
-    const singing = isPlaying && playbackMode === "normal" && !localPlaylistWindow?.hidden && !document.hidden;
     const note = singing ? localPlaylistMusicNotes[Math.floor(Math.random() * localPlaylistMusicNotes.length)] : "";
     localPlaylistNotes.textContent = note;
     localPlaylistNotes.classList.remove("is-floating");
@@ -4571,9 +4591,12 @@ function updateLocalPlaylistWindow() {
   document.getElementById("localPlaylistPlay").classList.toggle("is-playing", isPlaying);
   document.getElementById("localPlaylistPlay").setAttribute("aria-label", isPlaying ? "pause" : "play");
   document.getElementById("localPlaylistPlay").title = isPlaying ? "pause" : "play";
+  if (localPlaylistIdleMessage) localPlaylistIdleMessage.hidden = isPlaying && playbackMode === "normal";
   if (!isPlaying && localPlaylistCat && localPlaylistFaceIndex) {
     localPlaylistFaceIndex = 0;
-    localPlaylistCat.textContent = localPlaylistFaces[0];
+    localPlaylistIdleFaceIndex = 0;
+    localPlaylistIdleTicks = 0;
+    localPlaylistCat.textContent = localPlaylistIdleFaces[0];
     if (localPlaylistNotes) localPlaylistNotes.textContent = "";
   }
   document.getElementById("localPlaylistCount").textContent = `${PLAYLIST.length} ${PLAYLIST.length === 1 ? "video" : "videos"}`;
