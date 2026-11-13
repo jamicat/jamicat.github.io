@@ -3715,3 +3715,25 @@ body.video-backdrop-active #jamiStarfield {
 .local-playlist-skip svg { width:12px; height:12px; fill:currentColor; }
 .local-playlist-skip-back svg { transform:scaleX(-1); }
 .theme-halloween #localPlaylistNotes { color:#dadada; }
+
+.local-playlist-window { --lp-soft-track:rgba(242,183,207,.28); --lp-note-glow:rgba(248,187,211,.18); }
+.local-playlist-track.is-current { background:var(--lp-soft-track); }
+.local-playlist-track.is-playing::before { content:"♫"; flex:0 0 9px; width:9px; font-size:9px; line-height:1; color:var(--lp-accent); text-align:center; animation:lp-playing-note 1.6s ease-in-out infinite; }
+.local-playlist-heart.is-popping { animation:lp-heart-pop 320ms cubic-bezier(.2,.8,.3,1.2); }
+.local-playlist-heart[aria-pressed="true"] { color:var(--lp-accent) !important; }
+#localPlaylistNotes { will-change:auto; }
+#localPlaylistNotes.is-floating { animation:lp-note-float 1100ms ease-out both; }
+.local-playlist-note-thumb { font-size:11px; font-weight:600; text-shadow:0 0 2px var(--lp-note-glow); }
+.local-playlist-seek-wrap:has(input:active) .local-playlist-note-thumb { text-shadow:0 0 4px var(--lp-note-glow); }
+.theme-pastel .local-playlist-window { --lp-soft-track:rgba(248,181,206,.15); --lp-note-glow:rgba(255,211,223,.22); }
+.theme-pastel .local-playlist-heart { color:#f7bbd2 !important; }
+.theme-pastel .local-playlist-track.is-playing::before { color:#f6d98b; }
+.theme-halloween .local-playlist-window { --lp-soft-track:rgba(200,200,200,.12); --lp-note-glow:rgba(235,235,235,.15); }
+.theme-halloween .local-playlist-track.is-playing::before { color:#d3d3d3; }
+.theme-halloween .local-playlist-heart[aria-pressed="true"] { color:#e3e3e3 !important; }
+.theme-aero .local-playlist-window { --lp-soft-track:rgba(185,227,255,.14); --lp-note-glow:rgba(185,227,255,.17); }
+.theme-cat .local-playlist-window,.theme-stars .local-playlist-window { --lp-soft-track:rgba(244,184,208,.15); }
+@keyframes lp-note-float { 0% {opacity:0;transform:translateY(3px) scale(.85)} 23% {opacity:1;transform:translateY(0) scale(1)} 75% {opacity:.8} 100% {opacity:0;transform:translateY(-7px) scale(1.03)} }
+@keyframes lp-heart-pop { 0%,100% {transform:scale(1)} 40% {transform:scale(1.24)} 70% {transform:scale(.94)} }
+@keyframes lp-playing-note { 0%,100% {opacity:.55;transform:translateY(0)} 50% {opacity:1;transform:translateY(-2px)} }
+@media (prefers-reduced-motion:reduce) { #localPlaylistNotes.is-floating,.local-playlist-heart.is-popping,.local-playlist-track.is-playing::before {animation:none} #localPlaylistNotes.is-floating {opacity:1} }
