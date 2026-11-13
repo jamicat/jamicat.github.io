@@ -15,7 +15,7 @@ if (window.location.hostname === "jamicat.github.io") {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description"
 content="jamie's personal website with a live chat, guest wall, furry art, music player and interactive themes.">
-<link rel="stylesheet" href="stylish.css?v=18"/>
+<link rel="stylesheet" href="stylish.css?v=19"/>
 <link
     rel="stylesheet"
     href="./image-transfer.css?v=2"
@@ -364,6 +364,42 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
 </div>
 </div>
 </div>
+<section id="localPlaylistWindow" class="local-playlist-window" aria-label="local playlist" hidden>
+  <header class="local-playlist-header">
+    <span class="local-playlist-heading">♫ &nbsp;local playlist <span id="localPlaylistCount" class="local-playlist-count"></span></span>
+    <div class="local-playlist-actions">
+      <button id="localPlaylistMinimize" type="button" aria-label="minimize playlist" title="minimize">−</button>
+      <button id="localPlaylistClose" type="button" aria-label="close playlist" title="close">×</button>
+    </div>
+  </header>
+  <div id="localPlaylistContent" class="local-playlist-content">
+    <div class="local-playlist-now">
+      <a id="localPlaylistArtworkLink" class="local-playlist-artwork" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="open video on youtube">
+        <img id="localPlaylistArtwork" alt="video thumbnail" loading="lazy" referrerpolicy="no-referrer">
+      </a>
+      <div class="local-playlist-info">
+        <a id="localPlaylistTitle" class="local-playlist-title" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">no video selected</a>
+        <a id="localPlaylistChannel" class="local-playlist-channel" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer"><img id="localPlaylistAvatar" alt="" loading="lazy"><span>youtube channel</span><span aria-hidden="true">↗</span></a>
+        <button id="localPlaylistFavourite" class="local-playlist-heart" type="button" aria-label="favourite this video" title="favourite">♡</button>
+      </div>
+    </div>
+    <div class="local-playlist-seek-row">
+      <span id="localPlaylistElapsed">0:00</span>
+      <input id="localPlaylistSeek" type="range" min="0" max="1000" step="1" value="0" aria-label="seek local video">
+      <span id="localPlaylistDuration">0:00</span>
+    </div>
+    <div class="local-playlist-transport" role="group" aria-label="local playlist playback controls">
+      <button id="localPlaylistShuffle" type="button" aria-label="shuffle" title="shuffle" aria-pressed="false">⤨</button>
+      <button id="localPlaylistPrevious" type="button" aria-label="previous video" title="previous">⏮</button>
+      <button id="localPlaylistPlay" class="local-playlist-main-play" type="button" aria-label="play or pause" title="play or pause"><span id="localPlaylistPlaySymbol">▶</span></button>
+      <button id="localPlaylistNext" type="button" aria-label="next video" title="next">⏭</button>
+      <button id="localPlaylistRepeat" type="button" aria-label="repeat current video" title="repeat current video" aria-pressed="false">↻</button>
+    </div>
+    <div class="local-playlist-list-heading">videos <span id="localPlaylistListCount"></span></div>
+    <div id="localPlaylistTracks" class="local-playlist-tracks" role="list" aria-label="playlist videos"></div>
+  </div>
+</section>
+
 <div class="homepage-media-controls">
 <div class="volume-wrap">
  <svg
@@ -572,7 +608,7 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
 <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 <script src="stars.js?v=4" defer></script>
-<script src="scripts.js?v=20"></script>
+<script src="scripts.js?v=21"></script>
 <script src="discscripts.js?v=6"></script>
 <script
     src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"
