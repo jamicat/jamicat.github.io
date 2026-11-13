@@ -3706,3 +3706,12 @@ body.video-backdrop-active #jamiStarfield {
 @media (max-width:650px) { .local-playlist-tracks { max-height:100px; } }
 
 .local-playlist-track { height:25px; box-sizing:border-box; }
+
+#localPlaylistNotes { display:inline-block; min-width:10px; margin-left:2px; font-size:9px; font-weight:700; color:var(--lp-accent); vertical-align:baseline; }
+.local-playlist-channel-link { width:9px; height:9px; flex:0 0 9px; opacity:.8; }
+.local-playlist-track-heart { color:var(--lp-accent); font-size:10px; flex:0 0 auto; line-height:1; }
+.local-playlist-track-heart[hidden] { display:none; }
+.local-playlist-transport .local-playlist-skip { display:inline-flex; justify-content:center; align-items:center; }
+.local-playlist-skip svg { width:12px; height:12px; fill:currentColor; }
+.local-playlist-skip-back svg { transform:scaleX(-1); }
+.theme-halloween #localPlaylistNotes { color:#dadada; }
