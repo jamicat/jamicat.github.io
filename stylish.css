@@ -3668,3 +3668,41 @@ body.video-backdrop-active #jamiStarfield {
 .theme-halloween .local-playlist-window .local-playlist-main-play { background:#d7d7d7; color:#292929; }
 @media(max-width:650px) { .local-playlist-window { width:min(290px,calc(100vw - 24px)); } .local-playlist-window .local-playlist-content { padding:7px 8px; } .local-playlist-transport { gap:5px; } }
 @media(prefers-reduced-motion:reduce) { .local-playlist-window,.local-playlist-window .local-playlist-content { transition:none; } }
+
+.local-playlist-window { --lp-scroll:rgba(246,168,200,.72); --lp-scroll-hover:rgba(246,168,200,.96); --lp-scroll-track:transparent; }
+.local-playlist-actions button { display:inline-flex; align-items:center; justify-content:center; }
+.local-playlist-actions svg { width:12px; height:12px; fill:currentColor; }
+.local-playlist-actions .lp-restore-icon { display:none; }
+.local-playlist-window.is-minimized .lp-minimize-icon { display:none; }
+.local-playlist-window.is-minimized .lp-restore-icon { display:block; }
+.local-playlist-main-play,.local-playlist-transport .local-playlist-main-play { width:19px; height:20px; flex:0 0 19px; background:transparent; color:var(--lp-accent); border-radius:4px; }
+.local-playlist-main-play svg { width:13px; height:13px; fill:currentColor; }
+.local-playlist-main-play:hover { background:rgba(255,255,255,.09); }
+.local-playlist-main-play .lp-icon-pause { display:none; }
+.local-playlist-main-play.is-playing .lp-icon-play { display:none; }
+.local-playlist-main-play.is-playing .lp-icon-pause { display:block; }
+.local-playlist-transport { gap:6px; }
+.local-playlist-time-tip,.local-playlist-hover-tip { top:calc(100% + 4px); bottom:auto; padding:1px 3px; border-radius:4px; line-height:1; font-size:8px; }
+.local-playlist-time-tip { min-width:26px; text-align:center; }
+.local-playlist-seek-row { margin-bottom:9px; }
+.local-playlist-tracks { max-height:100px; overflow-y:auto; scrollbar-gutter:stable; scrollbar-width:thin; scrollbar-color:var(--lp-scroll) var(--lp-scroll-track); }
+.local-playlist-tracks::-webkit-scrollbar { width:4px; background:transparent; }
+.local-playlist-tracks::-webkit-scrollbar-track { background:var(--lp-scroll-track); border-radius:9px; }
+.local-playlist-tracks::-webkit-scrollbar-thumb { background-color:var(--lp-scroll); border-radius:999px; }
+.local-playlist-tracks:hover::-webkit-scrollbar-thumb { background-color:var(--lp-scroll-hover); }
+.theme-pastel .local-playlist-window { --lp-scroll:rgba(246,168,200,.72); --lp-scroll-hover:rgba(246,168,200,.96); --lp-scroll-track:rgba(255,153,72,.08); --lp-text:#ffe9e2; background:radial-gradient(circle at 42% 20%,rgba(255,222,194,.11),rgba(255,191,139,.035) 38%,transparent 68%),linear-gradient(180deg,rgba(255,224,194,.035),rgba(83,31,12,.045)),rgba(255,153,72,.30); border-color:rgba(255,214,166,.66); box-shadow:0 12px 32px rgba(45,20,10,.30),0 0 7px rgba(255,205,155,.26),0 0 18px rgba(255,170,95,.21),0 0 38px rgba(255,140,65,.16),inset 0 1px 0 rgba(255,242,220,.27); }
+.theme-pastel .local-playlist-heading { color:#f2adca; }
+.theme-pastel .local-playlist-count { background:rgba(246,217,139,.17); color:#ffe7c5; }
+.theme-pastel .local-playlist-track.is-current { background:rgba(246,168,200,.22); }
+.theme-pastel .local-playlist-transport button:nth-child(2),.theme-pastel .local-playlist-transport button:nth-child(4) { color:#f6d98b; }
+.theme-pastel .local-playlist-transport button:nth-child(1),.theme-pastel .local-playlist-transport button:nth-child(5) { color:#9fc8ea; }
+.theme-pastel .local-playlist-volume svg { color:#a8d8b0; }
+.theme-pastel .local-playlist-main-play { color:#f4aacc; }
+.theme-halloween .local-playlist-window { --lp-scroll:rgba(205,205,205,.72); --lp-scroll-hover:rgba(238,238,238,.84); --lp-scroll-track:rgba(255,255,255,.025); }
+.theme-halloween .local-playlist-main-play,.theme-halloween .local-playlist-window .local-playlist-main-play { background:transparent; color:#dedede; }
+.theme-default .local-playlist-window { --lp-scroll:rgba(191,219,254,.65); --lp-scroll-hover:rgba(191,219,254,.9); }
+.theme-aero .local-playlist-window { --lp-scroll:rgba(185,227,255,.65); --lp-scroll-hover:rgba(185,227,255,.9); }
+.theme-cat .local-playlist-window,.theme-stars .local-playlist-window { --lp-scroll:rgba(244,184,208,.65); --lp-scroll-hover:rgba(244,184,208,.9); }
+@media (max-width:650px) { .local-playlist-tracks { max-height:100px; } }
+
+.local-playlist-track { height:25px; box-sizing:border-box; }
