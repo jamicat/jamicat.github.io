@@ -364,9 +364,9 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
 </div>
 </div>
 </div>
-<section id="localPlaylistWindow" class="local-playlist-window" aria-label="local playlist" hidden>
+<section id="localPlaylistWindow" class="local-playlist-window" aria-label="playlist" hidden>
   <header class="local-playlist-header">
-    <span class="local-playlist-heading">♫ &nbsp;local playlist <span id="localPlaylistCount" class="local-playlist-count"></span></span>
+    <span class="local-playlist-heading">♫ &nbsp;playlist <span id="localPlaylistCount" class="local-playlist-count"></span></span>
     <div class="local-playlist-actions">
       <button id="localPlaylistMinimize" type="button" aria-label="minimize playlist" title="minimize">−</button>
       <button id="localPlaylistClose" type="button" aria-label="close playlist" title="close">×</button>
@@ -379,13 +379,18 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
       </a>
       <div class="local-playlist-info">
         <a id="localPlaylistTitle" class="local-playlist-title" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">no video selected</a>
-        <a id="localPlaylistChannel" class="local-playlist-channel" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer"><img id="localPlaylistAvatar" alt="" loading="lazy"><span>youtube channel</span><span aria-hidden="true">↗</span></a>
-        <button id="localPlaylistFavourite" class="local-playlist-heart" type="button" aria-label="favourite this video" title="favourite">♡</button>
+        <a id="localPlaylistChannel" class="local-playlist-channel" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer"><img id="localPlaylistAvatar" alt="" loading="lazy"><span>channel</span><span aria-hidden="true">↗</span></a>
+
       </div>
+      <button id="localPlaylistFavourite" class="local-playlist-heart" type="button" aria-label="favourite this video" title="favourite">♡</button>
     </div>
     <div class="local-playlist-seek-row">
       <span id="localPlaylistElapsed">0:00</span>
-      <input id="localPlaylistSeek" type="range" min="0" max="1000" step="1" value="0" aria-label="seek local video">
+      <div id="localPlaylistSeekWrap" class="local-playlist-seek-wrap">
+        <input id="localPlaylistSeek" type="range" min="0" max="1000" step="1" value="0" aria-label="seek local video">
+        <span id="localPlaylistCurrentTooltip" class="local-playlist-time-tip" aria-hidden="true">0:00</span>
+        <span id="localPlaylistHoverTooltip" class="local-playlist-time-tip local-playlist-hover-tip" aria-hidden="true">0:00</span>
+      </div>
       <span id="localPlaylistDuration">0:00</span>
     </div>
     <div class="local-playlist-transport" role="group" aria-label="local playlist playback controls">
@@ -393,7 +398,7 @@ content="jamie's personal website with a live chat, guest wall, furry art, music
       <button id="localPlaylistPrevious" type="button" aria-label="previous video" title="previous">⏮</button>
       <button id="localPlaylistPlay" class="local-playlist-main-play" type="button" aria-label="play or pause" title="play or pause"><span id="localPlaylistPlaySymbol">▶</span></button>
       <button id="localPlaylistNext" type="button" aria-label="next video" title="next">⏭</button>
-      <button id="localPlaylistRepeat" type="button" aria-label="repeat current video" title="repeat current video" aria-pressed="false">↻</button>
+      <button id="localPlaylistRepeat" type="button" aria-label="replay" title="replay" aria-pressed="false">↻</button>
     </div>
     <div class="local-playlist-list-heading">videos <span id="localPlaylistListCount"></span></div>
     <div id="localPlaylistTracks" class="local-playlist-tracks" role="list" aria-label="playlist videos"></div>
