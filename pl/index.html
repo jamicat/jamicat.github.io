@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Playlist</title>
+<title>playlist</title>
 
 <style>
 @font-face{
@@ -15,7 +15,7 @@ body{
   background:
     radial-gradient(circle at top,#1b355d 0%,#0b1524 45%,#05080d 100%);
   color:white;
-  padding:40px;
+  padding:32px;
 }
 
 h2{
@@ -24,7 +24,7 @@ h2{
 }
 
 #list{
-  max-width:700px;
+  min-width:0;
 }
 
 .card{
@@ -181,7 +181,7 @@ button:disabled{
   flex-wrap:wrap;
 }
 .danger-button{background:rgba(225,104,112,.18);color:#ffb7c2;border:1px solid rgba(255,171,181,.38)}
-.import-section{max-width:700px;margin-top:18px;padding:15px;border-radius:14px;background:rgba(73,132,201,.09);border:1px solid rgba(120,199,255,.16)}
+.import-section{max-width:none;margin-top:18px;padding:15px;border-radius:14px;background:rgba(73,132,201,.09);border:1px solid rgba(120,199,255,.16)}
 .import-section label{display:block;font-size:.9rem;font-weight:700;margin-bottom:8px}
 .import-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
 .import-controls input[type=text]{min-width:180px;flex:1;padding:9px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(150,194,237,.25);color:#fff}
@@ -191,18 +191,40 @@ button:disabled{
 .pick-row input{width:auto;accent-color:#9bdcf8}
 .card.is-jamie-pick{border-color:rgba(147,212,245,.48)}
 #playlistImportStatus{min-height:1em}
+.workspace{display:grid;grid-template-columns:minmax(0,700px) minmax(205px,275px);gap:20px;align-items:start;max-width:1050px}
+.editor-pane{min-width:0}
+.order-pane{position:sticky;top:22px;min-width:0;border:1px solid rgba(155,210,249,.22);border-radius:15px;padding:13px;background:rgba(73,132,201,.10);box-shadow:0 10px 34px rgba(0,0,0,.12)}
+.order-pane h3{margin:0;font-size:.94rem;color:#d6e9fc;font-weight:800}
+.order-subtitle{font-size:.73rem;color:#a9c3dc;margin:5px 0 11px;line-height:1.4}
+#quickOrderList{display:flex;flex-direction:column;gap:5px;max-height:min(70vh,680px);overflow-y:auto;overscroll-behavior:contain;padding:2px 3px 2px 0;scrollbar-width:thin;scrollbar-color:#86bada transparent}
+.quick-order-song{display:flex;align-items:center;gap:7px;min-height:31px;border:1px solid rgba(155,210,249,.17);background:rgba(255,255,255,.045);border-radius:9px;padding:5px 7px;cursor:grab;user-select:none;touch-action:pan-y;transition:background .12s,border-color .12s,opacity .12s}
+.quick-order-song:hover{background:rgba(169,221,250,.12);border-color:rgba(169,221,250,.38)}
+.quick-order-song:active{cursor:grabbing}
+.quick-order-song.dragging{opacity:.32}
+.quick-order-song.drop-before{box-shadow:0 -3px 0 #a9ddfa}
+.quick-order-song.drop-after{box-shadow:0 3px 0 #a9ddfa}
+.quick-order-handle{font-size:13px;letter-spacing:-3px;color:#a9c3dc;flex-shrink:0;margin-right:3px}
+.quick-order-number{min-width:19px;font-size:.68rem;color:#a8c9e2;font-variant-numeric:tabular-nums}
+.quick-order-title{font-size:.77rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;color:#e0eafb}
+.quick-order-pick{font-size:.7rem;color:#a9ddfa;flex-shrink:0}
+.quick-order-empty{font-size:.78rem;color:#a9c3dc;padding:10px 3px}
+.order-save{width:100%;margin-top:10px;background:linear-gradient(135deg,#a9ddfa,#c6bef9);color:#15243d}
+#quickOrderStatus{min-height:1.1em;font-size:.72rem;color:#c9e4f6;line-height:1.4;margin:8px 0 0}
+@media(max-width:760px){body{padding:18px}.workspace{grid-template-columns:minmax(0,1fr)}.order-pane{position:static;grid-row:1}#quickOrderList{max-height:220px}}
 </style>
 </head>
 
 <body>
 
-<h2>Playlist</h2>
+<h2>playlist</h2>
 
+<div class="workspace">
+<div class="editor-pane">
 <div id="list"></div>
 
 <div class="controls">
-  <button onclick="addSong()">+ Add Song</button>
-  <button onclick="save()">Save</button>
+  <button onclick="addSong()">+ add song</button>
+  <button onclick="save()">save all changes</button>
   <button id="autoFillAllButton" type="button" onclick="autoFillAll()">✧ auto-fill all</button>
   <button onclick="exportPlaylist()" type="button">export backup</button>
   <button onclick="deleteAllSongs()" type="button" class="danger-button">delete all songs</button>
@@ -218,14 +240,23 @@ button:disabled{
   </div>
   <p id="playlistImportStatus" role="status" aria-live="polite"></p>
 </div>
+</div>
+<aside class="order-pane" aria-label="quick song order">
+  <h3>✧ quick order ♡</h3>
+  <p class="order-subtitle">drag little tunes into place, then save their order ♡</p>
+  <div id="quickOrderList" aria-label="drag to reorder songs"></div>
+  <button id="quickOrderSave" class="order-save" type="button" onclick="saveQuickOrder()">♡ save order</button>
+  <p id="quickOrderStatus" role="status" aria-live="polite"></p>
+</aside>
+</div>
 
 <script>
 const API = "https://api.jmeow.co.uk";
-const ADMIN_KEY = prompt("Enter password");
+const ADMIN_KEY = prompt("enter password");
 
 if (!ADMIN_KEY) {
-  document.body.innerHTML = "Unauthorized";
-  throw new Error("Unauthorized");
+  document.body.innerHTML = "unauthorized";
+  throw new Error("unauthorized");
 }
 
 let playlist = [];
@@ -338,6 +369,7 @@ function extractYouTubeVideoId(value) {
 
 function updateVideoId(i, input) {
   playlist[i].videoId = input.value;
+  renderQuickOrder();
 }
 
 function updateYouTubeThumbnailSource(i, input) {
@@ -520,8 +552,8 @@ function render() {
             type="button"
             onclick="moveSong(${i}, -1)"
             ${i === 0 ? "disabled" : ""}
-            aria-label="Move song up"
-            title="Move up"
+            aria-label="move song up"
+            title="move up"
           >↑</button>
 
           <button
@@ -529,20 +561,20 @@ function render() {
             type="button"
             onclick="moveSong(${i}, 1)"
             ${i === playlist.length - 1 ? "disabled" : ""}
-            aria-label="Move song down"
-            title="Move down"
+            aria-label="move song down"
+            title="move down"
           >↓</button>
           <button
             class="order-button order-top"
             type="button"
             onclick="moveSongToTop(${i})"
             ${i === 0 ? "disabled" : ""}
-            aria-label="Move song to top"
+            aria-label="move song to top"
             title="move to top"
           >⇧ top</button>
           <label class="order-jump" title="move to playlist position">
             #<input type="number" min="1" max="${playlist.length}" step="1" value="${i + 1}"
-              aria-label="Move song to position" onchange="moveSongToPosition(${i}, this)" onkeydown="if(event.key==='Enter')this.blur()">
+              aria-label="move song to position" onchange="moveSongToPosition(${i}, this)" onkeydown="if(event.key==='Enter')this.blur()">
           </label>
         </div>
       </div>
@@ -555,17 +587,17 @@ function render() {
       <input
         value="${escapeAttribute(song.videoId)}"
         oninput="updateVideoId(${i}, this)"
-        placeholder="YouTube URL or video ID"
+        placeholder="youtube url or video id"
       >
 
       <button
         type="button"
         onclick="autoFill(${i})"
-      >Auto-fill</button>
+      >auto-fill</button>
 
       <input
         value="${escapeAttribute(song.title)}"
-        oninput="playlist[${i}].title=this.value"
+        oninput="playlist[${i}].title=this.value; renderQuickOrder()"
         placeholder="title"
       >
 
@@ -588,7 +620,7 @@ function render() {
             ${customThumbnailEnabled ? "checked" : ""}
             onchange="setCustomThumbnailEnabled(${i}, this)"
           >
-          Use custom image URL
+          use custom image url
         </label>
 
         <label class="thumbnail-toggle">
@@ -597,7 +629,7 @@ function render() {
             ${youtubeThumbnailEnabled ? "checked" : ""}
             onchange="setYouTubeThumbnailEnabled(${i}, this)"
           >
-          Use another YouTube video's thumbnail
+          use another youtube video's thumbnail
         </label>
       </div>
 
@@ -615,18 +647,148 @@ function render() {
         type="text"
         value="${escapeAttribute(song.youtubeThumbnailSource)}"
         oninput="updateYouTubeThumbnailSource(${i}, this)"
-        placeholder="YouTube video URL (or video ID) to borrow thumbnail from"
+        placeholder="youtube video url (or video id) to borrow thumbnail from"
         ${youtubeThumbnailEnabled ? "" : "disabled"}
       >
       
       <button
         type="button"
         onclick="remove(${i})"
-      >Remove</button>
+      >remove</button>
     `;
 
     el.appendChild(div);
   });
+  renderQuickOrder();
+}
+
+let draggedOrderIndex = null;
+
+function orderSongLabel(song) {
+  return String(song.title || song.videoId || "untitled tune").trim() || "untitled tune";
+}
+
+function clearOrderDropMarkers() {
+  document.querySelectorAll("#quickOrderList .quick-order-song").forEach(row => {
+    row.classList.remove("drop-before", "drop-after");
+  });
+}
+
+function renderQuickOrder() {
+  const el = document.getElementById("quickOrderList");
+  if (!el) return;
+  el.replaceChildren();
+  if (!playlist.length) {
+    const empty = document.createElement("span");
+    empty.className = "quick-order-empty";
+    empty.textContent = "no little tunes yet ♡";
+    el.appendChild(empty);
+    return;
+  }
+  playlist.forEach((song, index) => {
+    const row = document.createElement("div");
+    row.className = "quick-order-song";
+    row.draggable = true;
+    row.dataset.index = String(index);
+    row.title = orderSongLabel(song);
+    row.setAttribute("aria-label", `drag song ${index + 1}: ${orderSongLabel(song)}`);
+    const handle = document.createElement("span");
+    handle.className = "quick-order-handle";
+    handle.textContent = "⠿";
+    handle.setAttribute("aria-hidden", "true");
+    const number = document.createElement("span");
+    number.className = "quick-order-number";
+    number.textContent = `${index + 1}.`;
+    const title = document.createElement("span");
+    title.className = "quick-order-title";
+    title.textContent = orderSongLabel(song);
+    row.append(handle, number, title);
+    if (song.jamiePick === true) {
+      const pick = document.createElement("span");
+      pick.className = "quick-order-pick";
+      pick.textContent = "✧♥";
+      pick.title = "jamie's pick";
+      row.appendChild(pick);
+    }
+    row.addEventListener("dragstart", event => {
+      draggedOrderIndex = index;
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("text/plain", String(index));
+      requestAnimationFrame(() => row.classList.add("dragging"));
+    });
+    row.addEventListener("dragover", event => {
+      if (draggedOrderIndex === null) return;
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "move";
+      clearOrderDropMarkers();
+      row.classList.add(event.clientY < row.getBoundingClientRect().top + row.offsetHeight / 2 ? "drop-before" : "drop-after");
+    });
+    row.addEventListener("drop", event => {
+      event.preventDefault();
+      if (draggedOrderIndex === null) return;
+      const source = draggedOrderIndex;
+      const target = index;
+      const after = event.clientY >= row.getBoundingClientRect().top + row.offsetHeight / 2;
+      draggedOrderIndex = null;
+      clearOrderDropMarkers();
+      const insertionIndex = target + (after ? 1 : 0) - (source < target + (after ? 1 : 0) ? 1 : 0);
+      if (source === insertionIndex) return;
+      const [song] = playlist.splice(source, 1);
+      playlist.splice(insertionIndex, 0, song);
+      render();
+      document.getElementById("quickOrderStatus").textContent = "new order ready ♡ press save order to publish";
+    });
+    row.addEventListener("dragend", () => {
+      draggedOrderIndex = null;
+      clearOrderDropMarkers();
+      row.classList.remove("dragging");
+    });
+    el.appendChild(row);
+  });
+}
+
+async function saveQuickOrder() {
+  const button = document.getElementById("quickOrderSave");
+  const status = document.getElementById("quickOrderStatus");
+  if (button.disabled) return;
+  button.disabled = true;
+  status.textContent = "saving the new order… ♡";
+  try {
+    const res = await fetch(`${API}/api/playlist`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`couldn't load published songs (${res.status})`);
+    const published = await res.json();
+    if (!Array.isArray(published)) throw new Error("couldn't read the published playlist");
+    const identity = song => extractYouTubeVideoId(song.videoId);
+    const counts = new Map();
+    const localIds = playlist.map(identity);
+    for (const id of localIds) counts.set(id, (counts.get(id) || 0) + 1);
+    for (const song of published) {
+      const id = identity(song);
+      if (!counts.get(id)) throw new Error("songs were added, removed or changed. save all changes first, then save order ♡");
+      counts.set(id, counts.get(id) - 1);
+    }
+    if (published.length !== playlist.length || [...counts.values()].some(n => n !== 0)) {
+      throw new Error("songs were added, removed or changed. save all changes first, then save order ♡");
+    }
+    const groups = new Map();
+    for (const song of published) {
+      const id = identity(song);
+      if (!groups.has(id)) groups.set(id, []);
+      groups.get(id).push(song);
+    }
+    const orderedPublished = localIds.map(id => groups.get(id).shift());
+    const saveRes = await fetch(`${API}/api/playlist/update?key=${encodeURIComponent(ADMIN_KEY)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderedPublished)
+    });
+    if (!saveRes.ok) throw new Error(`couldn't save order (${saveRes.status})`);
+    status.textContent = "order saved! your other edits weren't published ♡";
+  } catch (error) {
+    status.textContent = error.message || "couldn't save the order ♡";
+  } finally {
+    button.disabled = false;
+  }
 }
 
 function addSong() {
@@ -654,6 +816,7 @@ function setJamiePick(i, checked) {
   if (!playlist[i]) return;
   playlist[i].jamiePick = checked;
   document.querySelectorAll("#list .card")[i]?.classList.toggle("is-jamie-pick", checked);
+  renderQuickOrder();
 }
 
 function createImportedSong(value) {
@@ -764,16 +927,16 @@ async function save() {
   });
 
   if (res.status === 403) {
-    document.body.innerHTML = "Unauthorized";
-    throw new Error("Unauthorized");
+    document.body.innerHTML = "unauthorized";
+    throw new Error("unauthorized");
   }
 
   if (!res.ok) {
-    alert(`Save failed (${res.status})`);
+    alert(`save failed (${res.status})`);
     return;
   }
 
-  alert("Saved!");
+  alert("saved! ♡");
 }
 
 load();
