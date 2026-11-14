@@ -4434,7 +4434,7 @@ function updateLocalPlaylistPixelFrame(playing) {
     localPlaylistPixelSource = source;
     localPlaylistPixelCat.style.backgroundImage = `url("${source}")`;
   }
-  localPlaylistPixelCat.style.backgroundPosition = `${-18 * localPlaylistPixelFrame}px 0px`;
+  localPlaylistPixelCat.style.backgroundPosition = `${-18 * localPlaylistPixelFrame}px -36px`;
   localPlaylistPixelCat.style.transform = "translateX(0px)";
 }
 function stopLocalPlaylistPixelMotion() {
