@@ -171,7 +171,19 @@ button:disabled{
   margin-top:20px;
   display:flex;
   gap:10px;
+  flex-wrap:wrap;
 }
+.danger-button{background:rgba(225,104,112,.18);color:#ffb7c2;border:1px solid rgba(255,171,181,.38)}
+.import-section{max-width:700px;margin-top:18px;padding:15px;border-radius:14px;background:rgba(73,132,201,.09);border:1px solid rgba(120,199,255,.16)}
+.import-section label{display:block;font-size:.9rem;font-weight:700;margin-bottom:8px}
+.import-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.import-controls input[type=text]{min-width:180px;flex:1;padding:9px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(150,194,237,.25);color:#fff}
+.import-section p{font-size:.8rem;color:#a9c3dc;line-height:1.45}
+.file-pick{margin:6px 0 0 !important;padding:8px 10px;border-radius:8px;cursor:pointer;background:linear-gradient(135deg,#ffb15b,#ff8d3a);color:#08131f;font-size:.85rem !important}
+.pick-row{display:flex;align-items:center;gap:8px;font-size:.85rem;color:#a9ddfa}
+.pick-row input{width:auto;accent-color:#9bdcf8}
+.card.is-jamie-pick{border-color:rgba(147,212,245,.48)}
+#playlistImportStatus{min-height:1em}
 </style>
 </head>
 
@@ -184,6 +196,19 @@ button:disabled{
 <div class="controls">
   <button onclick="addSong()">+ Add Song</button>
   <button onclick="save()">Save</button>
+  <button onclick="exportPlaylist()" type="button">export backup</button>
+  <button onclick="deleteAllSongs()" type="button" class="danger-button">delete all songs</button>
+</div>
+<div class="import-section">
+  <label for="playlistImportInput">import a playlist</label>
+  <div class="import-controls">
+    <input id="playlistImportInput" type="text" placeholder="youtube playlist link or video links" autocomplete="off">
+    <button type="button" onclick="importFromInput()">import links</button>
+    <label class="file-pick" for="playlistImportFile">import json file</label>
+    <input id="playlistImportFile" type="file" accept=".json,application/json" onchange="importFromFile(this)" hidden>
+  </div>
+  <p>paste a youtube playlist link (up to 100 videos), video links separated by spaces, or choose a json backup. new songs are previewed here until you press save ♡</p>
+  <p id="playlistImportStatus" role="status" aria-live="polite"></p>
 </div>
 
 <script>
@@ -340,7 +365,8 @@ async function load() {
         youtubeThumbnailSource:
           typeof song?.youtubeThumbnailSource === "string"
             ? song.youtubeThumbnailSource
-            : ""
+            : "",
+        jamiePick: song?.jamiePick === true
       }))
     : [];
 
@@ -409,6 +435,7 @@ function render() {
   playlist.forEach((song, i) => {
     const div = document.createElement("div");
     div.className = "card";
+    div.classList.toggle("is-jamie-pick", song.jamiePick === true);
 
     const customThumbnailEnabled =
       song.customThumbnailEnabled === true;
@@ -440,6 +467,11 @@ function render() {
           >↓</button>
         </div>
       </div>
+
+      <label class="pick-row" title="shown to everyone, separate from their personal favourites">
+        <input type="checkbox" ${song.jamiePick === true ? "checked" : ""} onchange="setJamiePick(${i}, this.checked)">
+        ✧♥ jamie's pick
+      </label>
 
       <input
         value="${escapeAttribute(song.videoId)}"
@@ -527,7 +559,8 @@ function addSong() {
     customThumbnailEnabled: false,
     customThumbnailUrl: "",
     youtubeThumbnailEnabled: false,
-    youtubeThumbnailSource: ""
+    youtubeThumbnailSource: "",
+    jamiePick: false
   });
 
   render();
@@ -536,6 +569,102 @@ function addSong() {
 function remove(i) {
   playlist.splice(i, 1);
   render();
+}
+
+function setJamiePick(i, checked) {
+  if (!playlist[i]) return;
+  playlist[i].jamiePick = checked;
+  document.querySelectorAll("#list .card")[i]?.classList.toggle("is-jamie-pick", checked);
+}
+
+function createImportedSong(value) {
+  if (typeof value === "string") value = { videoId: value };
+  if (!value || typeof value !== "object") return null;
+  const videoId = extractYouTubeVideoId(value.videoId || value.url || "");
+  if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) return null;
+  return {
+    videoId,
+    title: typeof value.title === "string" ? value.title.slice(0, 250) : "",
+    channelAvatar: typeof value.channelAvatar === "string" ? value.channelAvatar : "",
+    channelUrl: typeof value.channelUrl === "string" ? value.channelUrl : "",
+    customThumbnailEnabled: value.customThumbnailEnabled === true,
+    customThumbnailUrl: typeof value.customThumbnailUrl === "string" ? value.customThumbnailUrl : "",
+    youtubeThumbnailEnabled: value.youtubeThumbnailEnabled === true,
+    youtubeThumbnailSource: typeof value.youtubeThumbnailSource === "string" ? value.youtubeThumbnailSource : "",
+    jamiePick: value.jamiePick === true
+  };
+}
+
+function appendImportedSongs(items) {
+  const existing = new Set(playlist.map(song => extractYouTubeVideoId(song.videoId)));
+  let added = 0;
+  for (const item of items) {
+    const song = createImportedSong(item);
+    if (!song || existing.has(song.videoId)) continue;
+    playlist.push(song);
+    existing.add(song.videoId);
+    added++;
+  }
+  render();
+  document.getElementById("playlistImportStatus").textContent = `${added} song${added === 1 ? "" : "s"} added. press save to publish.`;
+}
+
+async function importFromInput() {
+  const input = document.getElementById("playlistImportInput");
+  const value = input.value.trim();
+  if (!value) return;
+  const status = document.getElementById("playlistImportStatus");
+  let playlistUrl;
+  try {
+    const url = new URL(value);
+    if (/^(www\.|m\.|music\.)?(youtube\.com|youtu\.be)$/i.test(url.hostname) && url.searchParams.has("list") && !/[\s,]/.test(value)) playlistUrl = value;
+  } catch {}
+  if (playlistUrl) {
+    status.textContent = "fetching little tunes…";
+    try {
+      const res = await fetch(`${API}/api/playlist/import?key=${encodeURIComponent(ADMIN_KEY)}&url=${encodeURIComponent(playlistUrl)}`);
+      if (!res.ok) throw new Error(res.status === 404 ? "the worker import endpoint is not deployed yet" : `import failed (${res.status})`);
+      const data = await res.json();
+      appendImportedSongs(Array.isArray(data) ? data : data.videos || []);
+    } catch (error) {
+      status.textContent = error.message;
+    }
+    return;
+  }
+  const items = value.split(/[\s,]+/).filter(Boolean);
+  appendImportedSongs(items);
+}
+
+async function importFromFile(input) {
+  const file = input.files?.[0];
+  if (!file) return;
+  try {
+    const data = JSON.parse(await file.text());
+    const items = Array.isArray(data) ? data : data.playlist;
+    if (!Array.isArray(items)) throw new Error("please choose a playlist json array");
+    appendImportedSongs(items);
+  } catch (error) {
+    document.getElementById("playlistImportStatus").textContent = error.message;
+  }
+  input.value = "";
+}
+
+function exportPlaylist() {
+  const blob = new Blob([JSON.stringify(playlist, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = "jmeow-playlist-backup.json";
+  anchor.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function deleteAllSongs() {
+  if (!playlist.length) return;
+  if (!confirm(`remove all ${playlist.length} songs from the editor? this isn't published until you press save.`)) return;
+  playlist = [];
+  render();
+  document.getElementById("playlistImportStatus").textContent = "all songs removed from editor. press save to publish or reload to undo.";
 }
 
 async function save() {
