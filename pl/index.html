@@ -459,7 +459,7 @@ async function autoFillAll() {
       status.textContent = `filling little details… ${done}/${eligible.length} ♡`;
     }
   };
-  status.textContent = `filling little details… 0/${eligible.length} ♡`;
+  status.textContent = `filling details… 0/${eligible.length}`;
   try {
     await Promise.all(Array.from({ length: Math.min(3, eligible.length) }, () => worker()));
     render();
@@ -763,11 +763,11 @@ async function saveQuickOrder() {
     for (const id of localIds) counts.set(id, (counts.get(id) || 0) + 1);
     for (const song of published) {
       const id = identity(song);
-      if (!counts.get(id)) throw new Error("songs were added, removed or changed. save all changes first, then save order ♡");
+      if (!counts.get(id)) throw new Error("songs were added, removed or changed. save all changes first, then save order");
       counts.set(id, counts.get(id) - 1);
     }
     if (published.length !== playlist.length || [...counts.values()].some(n => n !== 0)) {
-      throw new Error("songs were added, removed or changed. save all changes first, then save order ♡");
+      throw new Error("songs were added, removed or changed. save all changes first, then save order");
     }
     const groups = new Map();
     for (const song of published) {
@@ -782,9 +782,9 @@ async function saveQuickOrder() {
       body: JSON.stringify(orderedPublished)
     });
     if (!saveRes.ok) throw new Error(`couldn't save order (${saveRes.status})`);
-    status.textContent = "order saved! your other edits weren't published ♡";
+    status.textContent = "order saved";
   } catch (error) {
-    status.textContent = error.message || "couldn't save the order ♡";
+    status.textContent = error.message || "couldn't save the order;
   } finally {
     button.disabled = false;
   }
