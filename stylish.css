@@ -3753,3 +3753,9 @@ body.video-backdrop-active #jamiStarfield {
 .local-playlist-pixel-cat { position:absolute; left:0; top:1px; width:18px; height:18px; display:block; background-image:url("ginger-idle.png"); background-position:0 0; background-size:108px 72px; background-repeat:no-repeat; image-rendering:pixelated; image-rendering:crisp-edges; transform:translateX(0); will-change:transform; }
 .local-playlist-window.is-minimized .local-playlist-cat-track { min-width:22px; }
 @media (prefers-reduced-motion: reduce) { .local-playlist-pixel-cat { will-change:auto; } }
+
+.local-playlist-jamie-heart { color:#a9ddfa; font-size:10px; flex:0 0 auto; line-height:1; white-space:nowrap; text-shadow:0 0 5px rgba(145,205,252,.16); }
+.local-playlist-jamie-heart::before { content:"✧"; font-size:8px; margin-right:1px; vertical-align:1px; }
+.local-playlist-jamie-heart[hidden] { display:none; }
+.theme-halloween .local-playlist-jamie-heart { color:#f1f1f1; font-size:11px; }
+.theme-halloween .local-playlist-jamie-heart::before { font-size:9px; }
