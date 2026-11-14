@@ -4867,6 +4867,7 @@ if (localPlaylistWindow) {
       }
     });
   }
+  if (window.innerWidth >= 1180 && playbackMode === "normal") showList();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
