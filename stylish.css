@@ -3759,3 +3759,10 @@ body.video-backdrop-active #jamiStarfield {
 .local-playlist-jamie-heart[hidden] { display:none; }
 .theme-halloween .local-playlist-jamie-heart { color:#f1f1f1; font-size:11px; }
 .theme-halloween .local-playlist-jamie-heart::before { font-size:9px; }
+
+@media (min-width:1180px) {
+  .local-playlist-window {
+    left:calc(50% - 560px);
+    top:calc(50% - 135px);
+  }
+}
