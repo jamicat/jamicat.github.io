@@ -4649,6 +4649,7 @@ function updateLocalPlaylistWindow() {
     avatar.hidden = true;
   }
   heart.textContent = localPlaylistFavourites.includes(id) ? "♥" : "♡";
+  heart.title = item?.jamiePick ? "your favourite · jamie's pick ♥" : "your favourite";
   heart.setAttribute("aria-pressed", String(localPlaylistFavourites.includes(id)));
   heart.disabled = !id;
   document.getElementById("localPlaylistPlay").classList.toggle("is-playing", isPlaying);
@@ -4664,7 +4665,7 @@ function updateLocalPlaylistWindow() {
   }
   document.getElementById("localPlaylistCount").textContent = `${PLAYLIST.length} ${PLAYLIST.length === 1 ? "video" : "videos"}`;
   document.getElementById("localPlaylistListCount").textContent = `(${PLAYLIST.length})`;
-  const renderKey = PLAYLIST.map(v => `${v.videoId || ""}|${v.title || ""}|${v.channelAvatar || ""}|${v.channelUrl || ""}`).join("\n");
+  const renderKey = PLAYLIST.map(v => `${v.videoId || ""}|${v.title || ""}|${v.channelAvatar || ""}|${v.channelUrl || ""}|${v.jamiePick === true}`).join("\n");
   if (localPlaylistRenderKey !== renderKey || localPlaylistTracks.children.length !== PLAYLIST.length) {
     localPlaylistRenderKey = renderKey;
     localPlaylistTracks.replaceChildren();
@@ -4696,6 +4697,13 @@ function updateLocalPlaylistWindow() {
       favouriteMark.setAttribute("aria-label", "favourite video");
       favouriteMark.hidden = !localPlaylistFavourites.includes(song.videoId);
       row.appendChild(favouriteMark);
+      const jamieMark = document.createElement("span");
+      jamieMark.className = "local-playlist-jamie-heart";
+      jamieMark.textContent = "♥";
+      jamieMark.setAttribute("aria-label", "jamie's pick");
+      jamieMark.title = "jamie's pick";
+      jamieMark.hidden = song.jamiePick !== true;
+      row.appendChild(jamieMark);
       const channelHref = localPlaylistChannelUrl(song);
       if (channelHref) {
         const creator = document.createElement("a");
@@ -4720,6 +4728,8 @@ function updateLocalPlaylistWindow() {
     row.classList.toggle("is-playing", i === normalPlaylistIndex && isPlaying && playbackMode === "normal");
     const favMark = row.querySelector(".local-playlist-track-heart");
     if (favMark) favMark.hidden = !localPlaylistFavourites.includes(PLAYLIST[i]?.videoId);
+    const jamieMark = row.querySelector(".local-playlist-jamie-heart");
+    if (jamieMark) jamieMark.hidden = PLAYLIST[i]?.jamiePick !== true;
     row.querySelector(".local-playlist-track-pick")?.setAttribute("aria-current", i === normalPlaylistIndex ? "true" : "false");
   });
   updateLocalPlaylistProgress();
