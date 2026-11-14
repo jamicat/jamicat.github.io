@@ -619,7 +619,7 @@ async function importFromInput() {
     if (/^(www\.|m\.|music\.)?(youtube\.com|youtu\.be)$/i.test(url.hostname) && url.searchParams.has("list") && !/[\s,]/.test(value)) playlistUrl = value;
   } catch {}
   if (playlistUrl) {
-    status.textContent = "fetching little tunes…";
+    status.textContent = "fetching…";
     try {
       const res = await fetch(`${API}/api/playlist/import?key=${encodeURIComponent(ADMIN_KEY)}&url=${encodeURIComponent(playlistUrl)}`);
       if (!res.ok) throw new Error(res.status === 404 ? "the worker import endpoint is not deployed yet" : `import failed (${res.status})`);
