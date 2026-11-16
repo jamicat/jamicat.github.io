@@ -12475,3 +12475,58 @@ html.theme-halloween[data-chat-theme="original"]
 #chatMembers {
     contain: layout style;
 }
+
+
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] {
+  background: rgba(28, 34, 48, 0.89) !important;
+  border-color: rgba(228, 205, 226, 0.46) !important;
+  box-shadow: 0 0 16px rgba(185, 163, 202, 0.17), 0 12px 30px rgba(0, 0, 0, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
+  backdrop-filter: blur(18px) saturate(1.08);
+  -webkit-backdrop-filter: blur(18px) saturate(1.08);
+}
+
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] #chatTitleBar {
+  background: rgba(228, 205, 226, 0.038) !important;
+  border-bottom-color: rgba(228, 205, 226, 0.15) !important;
+}
+
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] #chatMembersPanel {
+  background: rgba(228, 205, 226, 0.026) !important;
+  border-left-color: rgba(228, 205, 226, 0.13) !important;
+}
+
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] #chatMotd {
+  background: rgba(228, 205, 226, 0.022) !important;
+  border-bottom-color: rgba(228, 205, 226, 0.12) !important;
+}
+
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] #chatControls {
+  background: rgba(18, 23, 36, 0.28) !important;
+  border-top-color: rgba(228, 205, 226, 0.14) !important;
+}
+
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] .jami-original-name-input,
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] .jami-original-message-input,
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] .jami-cute-message-shell {
+  border-color: rgba(228, 205, 226, 0.18) !important;
+  background: rgba(228, 205, 226, 0.055) !important;
+}
+
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] .jami-cute-avatar-button,
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] .jami-original-image-button,
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] .jami-original-emoji-button,
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] #chatWatchPartyButton,
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] .jami-original-send-button {
+  border-color: rgba(228, 205, 226, 0.18) !important;
+  background: rgba(228, 205, 226, 0.055) !important;
+}
+
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] .jami-original-send-button:hover {
+  background: rgba(228, 205, 226, 0.11) !important;
+  border-color: rgba(236, 220, 235, 0.28) !important;
+}
+
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] #chatMessages,
+html.theme-default[data-chat-theme="original"] #chatWindow[data-chat-theme="original"] #chatMembers {
+  scrollbar-color: rgba(191, 219, 254, 0.58) transparent;
+}
