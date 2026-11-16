@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Guestbook</title>
+<title>guestbook</title>
 
 <style>
 @font-face{
@@ -106,21 +106,21 @@ textarea::placeholder{
 </style>
 </head>
 <body>
-<h2>Guestbook</h2>
+<h2>guestbook</h2>
 <div class="section">
-<h3>Pending</h3>
+<h3>pending</h3>
 <div id="pending"></div>
-<h3>Comments</h3>
+<h3>comments</h3>
 <div id="approved"></div>
 
 </div>
   
 <script>
 const API = "https://api.jmeow.co.uk";
-const ADMIN_KEY = prompt("Enter password")
+const ADMIN_KEY = prompt("enter password")
 
 if(!ADMIN_KEY){
-  document.body.innerHTML="Unauthorized"
+  document.body.innerHTML="unauthorized"
   throw new Error("Unauthorized")
 }
 
@@ -129,7 +129,7 @@ async function verify(){
   const res = await fetch(`${API}/api/pending?key=${ADMIN_KEY}`)
 
   if(res.status===403){
-    document.body.innerHTML="Unauthorized"
+    document.body.innerHTML="unauthorized"
     throw new Error("Unauthorized")
   }
 
@@ -154,8 +154,8 @@ async function loadPending(){
       <div style="overflow-wrap:anywhere; word-break:break-word;" class="name">${c.name}</div>
       <div class="text">${c.comment}</div>
       <br><div class="time">${c.timestamp}</div>
-      <button onclick="approve(${c.id})">Approve</button>
-      <button onclick="deletePending(${c.id})">Delete</button>
+      <button onclick="approve(${c.id})">approve</button>
+      <button onclick="deletePending(${c.id})">delete</button>
     `
 
     container.appendChild(div)
@@ -195,9 +195,9 @@ async function loadApproved(){
       overflow-wrap:anywhere;
       word-break:break-word;
     ">
-      <strong>Jamie:</strong> ${c.reply}
+      <strong>jamie:</strong> ${c.reply}
       <br>
-      <button onclick="deleteReply(${c.id})" style="margin-top:6px;">Delete Reply</button>
+      <button onclick="deleteReply(${c.id})" style="margin-top:6px;">delete reply</button>
     </div>
     `
     : ''
@@ -205,16 +205,16 @@ async function loadApproved(){
 
   <br><div class="time">${c.timestamp}</div>
 
-  <button onclick="toggleReplyBox(${c.id})">Reply</button>
-  <button onclick="deleteApproved(${c.id})">Delete</button>
+  <button onclick="toggleReplyBox(${c.id})">reply</button>
+  <button onclick="deleteApproved(${c.id})">delete</button>
 
   <div id="replyBox-${c.id}" style="display:none; margin-top:10px;">
     <textarea id="replyInput-${c.id}"
-      placeholder="Write reply..."
+      placeholder="write reply..."
       style="width:100%; padding:8px; border-radius:8px; border:none; margin-bottom:6px;"
     >${c.reply || ""}</textarea>
 
-    <button onclick="submitReply(${c.id})">Send</button>
+    <button onclick="submitReply(${c.id})">send</button>
   </div>
 `
 
@@ -255,7 +255,7 @@ async function deleteApproved(id){
 
 async function deleteReply(id){
 
-  if(!confirm("Delete this reply?")) return
+  if(!confirm("delete this reply?")) return
 
   await fetch(`${API}/api/reply/${id}?key=${ADMIN_KEY}`, {
     method: "POST",
@@ -276,7 +276,7 @@ async function submitReply(id){
   const reply = input.value.trim()
 
   if(!reply){
-    alert("Write something!")
+    alert("write something!")
     return
   }
 
