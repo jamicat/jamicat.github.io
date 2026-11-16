@@ -784,7 +784,7 @@ async function saveQuickOrder() {
     if (!saveRes.ok) throw new Error(`couldn't save order (${saveRes.status})`);
     status.textContent = "order saved";
   } catch (error) {
-    status.textContent = error.message || "couldn't save the order;
+    status.textContent = error.message || "couldn't save the order";
   } finally {
     button.disabled = false;
   }
