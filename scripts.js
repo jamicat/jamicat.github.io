@@ -5091,11 +5091,9 @@ function jamiRenderArtGallery() {
     jamiRenderArtGallery();
   }));
   wrap.querySelectorAll('[data-jami-open]').forEach(button => button.addEventListener('click', () => {
-    jamiArtSelected = jamiArtEntries.findIndex(art => art.id === button.dataset.jamiOpen);
-    if (jamiArtSelected < 0) return;
-    jamiArtPreviousView = jamiArtView;
-    jamiArtView = 'viewer';
-    jamiRenderArtGallery();
+    const index = jamiArtEntries.findIndex(art => art.id === button.dataset.jamiOpen);
+    if (index < 0) return;
+    jamiArtOpenFullscreen(index);
   }));
   wrap.querySelector('[data-jami-enlarge]')?.addEventListener('click', () => jamiArtOpenFullscreen(jamiArtSelected));
   wrap.querySelectorAll('[data-jami-favourite]').forEach(button => button.addEventListener('click', () => {
