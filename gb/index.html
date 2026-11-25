@@ -103,6 +103,28 @@ textarea{
 textarea::placeholder{
   color:#9fb7d2;
 }
+
+:root{color-scheme:dark;--ink:#f5dce0;--muted:#d9b9b5;--accent:#efb4cb;--warm:#e3bd91;--line:rgba(255,220,198,.21);--glass:rgba(104,69,58,.57)}
+*{box-sizing:border-box}
+html{min-height:100%;background:#0d1421}
+body{margin:0;min-height:100vh;padding:17px 18px 25px;font-size:11px;line-height:1.45;color:var(--ink);background:radial-gradient(ellipse at 46% -17%,rgba(159,111,90,.25),transparent 55%),radial-gradient(circle at 94% 93%,rgba(210,142,169,.07),transparent 34%),#0d1421}
+.section{width:100%;max-width:740px;margin:0 auto}
+h2{max-width:740px;margin:0 auto 12px;font-size:16px;font-weight:800;color:#f0bacd;letter-spacing:.01em}
+h3{margin:14px 0 7px;font-size:12px;font-weight:800;color:#f5c9cf}
+#pending,#approved{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:8px;align-items:start}
+.comment{margin:0;padding:10px 11px;border-radius:14px;border:1px solid var(--line);background:radial-gradient(circle at 15% 0%,rgba(255,233,211,.08),transparent 65%),var(--glass);box-shadow:0 7px 19px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,245,231,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:border-color .16s ease,background-color .16s ease,transform .16s ease}
+.comment:hover{transform:translateY(-1px);border-color:rgba(244,190,201,.43);box-shadow:0 7px 19px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,245,231,.08)}
+.name{font-size:12px;color:#f6c7d8;font-weight:800}
+.text{margin-top:3px;font-size:11px;line-height:1.5;color:#f1d7d1}
+.time{font-size:9px;color:#bbaaa6;opacity:1}
+button{margin:7px 4px 0 0;padding:4px 9px;min-height:25px;font-size:10px;border:1px solid rgba(250,204,217,.23);border-radius:8px;color:#f4cfda;background:rgba(241,186,201,.10);font-family:inherit;font-weight:800;box-shadow:none;transition:background .16s ease,border-color .16s ease,transform .16s ease}
+button:hover{transform:translateY(-1px);background:rgba(244,190,208,.18);border-color:rgba(248,211,221,.42);box-shadow:none}
+button:focus-visible,textarea:focus-visible{outline:2px solid rgba(245,196,215,.66);outline-offset:2px}
+textarea{max-width:100%;font:inherit;font-size:11px;color:#f4dce1;background:rgba(49,33,34,.27);border:1px solid rgba(250,214,203,.20) !important;border-radius:9px !important;resize:vertical}
+textarea::placeholder{color:#c7a9ac}
+@media(max-width:510px){body{padding:12px 10px 20px}#pending,#approved{grid-template-columns:1fr}.comment{padding:9px 10px}}
+@media(prefers-reduced-motion:reduce){.comment,button{transition:none}.comment:hover,button:hover{transform:none}}
+
 </style>
 </head>
 <body>
