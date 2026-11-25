@@ -94,7 +94,7 @@ document.getElementById('loginForm').addEventListener('submit',async event=>{
   status.textContent='checking...';
   try {
     const value=document.getElementById('password').value;
-    if(!await verify(value)) throw new Error('wrong password or admin secrets are not configured');
+    if(!await verify(value)) throw new Error('wrong password');
     password=value;sessionStorage.setItem(AUTH_KEY,value);document.getElementById('password').value='';status.textContent='';showDashboard();
   } catch(e){status.textContent=e.message||'could not log in';}
   finally{button.disabled=false;}
