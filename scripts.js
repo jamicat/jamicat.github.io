@@ -5483,7 +5483,7 @@ guestBookWindow.id = 'guestBookWindow';
  <div class="text-blue-100/80 text-md mt-2 mb-4 text-center"> 
  <p id="welcomeMessage" class="text-blue-glow text-white theme-body text-sm"> /ᐠ > ˕ <マ </p> </div>
  <form id="guestbookForm" class="space-y-4 text-blue-100"> 
- <input id="name" type="text" name="name" placeholder="name" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
+ <input id="name" type="text" name="name" placeholder="your name" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
  <textarea id="message" name="message" placeholder="message" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
  <div class="text-center"> 
  <button type="submit" class="theme-body text-xs terminal-button text-white guestbook-submit" > submit </button> 
