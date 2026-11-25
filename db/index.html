@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>jamie's admin</title>
+<style>
+@font-face{font-family:nunito;src:url('../nunito.ttf') format('truetype');font-display:swap}
+:root{color-scheme:dark;font-family:nunito,system-ui,sans-serif;font-size:12px;background:#0d1421;color:#f9dfdd}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:25px 15px;background:radial-gradient(circle at 50% 0%,#2a2838 0%,#0d1421 62%)}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;color:inherit;border:1px solid #cfafbc44;background:#f5c5cb12;border-radius:9px;padding:7px 12px}
+button:hover,button:focus-visible{background:#edb8d42a;border-color:#d5b4d06b}
+button:disabled{opacity:.45;cursor:default}
+input,textarea,select{border:1px solid #d7bbcb40;background:#ffffff0d;border-radius:9px;padding:9px;color:#fae4e8;width:100%}
+input:focus,textarea:focus,select:focus{outline:1px solid #f1bcd0}
+h1,h2,p{margin:0}
+h1{font-size:18px;color:#f2bdd0}
+h2{font-size:13px;color:#f2c7d7}
+p{line-height:1.5;color:#cebccc}
+small,.muted{font-size:10px;color:#cbb2c4}
+.shell{max-width:1080px;margin:auto;border:1px solid #e3b9c45e;border-radius:21px;padding:17px;background:#322c3a99;box-shadow:0 16px 44px #0005,inset 0 1px #fff1}
+.top{display:flex;gap:14px;justify-content:space-between;align-items:center;padding:0 3px 12px;border-bottom:1px solid #d6b6c039}
+.login{max-width:360px;margin:70px auto;text-align:center;display:grid;gap:12px}
+.login form{display:grid;gap:10px}
+.dashboard{margin-top:14px}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.tab{text-align:left;padding:12px;min-height:66px;display:grid;gap:4px}
+.tab.active{border-color:#edc5d6;background:#d4bac026}
+.tab strong{font-size:12px;color:#f5d1dd}
+.tab span{font-size:10px;color:#c6b3c6}
+.panel{margin-top:12px;border:1px solid #dac2d13c;background:#171b2c73;border-radius:15px;padding:11px}
+.panel[hidden],.login[hidden],.dashboard[hidden]{display:none!important}
+.panel-top{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:10px}
+.panel iframe{width:100%;height:66vh;min-height:450px;border:0;border-radius:11px;background:#101828}
+.art-filter{max-width:280px;margin:10px 0}
+.art-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:9px}
+.art-entry{border:1px solid #e0bac342;border-radius:12px;padding:11px;background:#ecc3ce0d;display:grid;gap:7px}
+.art-entry.pending{border-color:#f2d2a377}
+.art-meta{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.art-entry .name{font-size:11px;color:#f5bfd2;font-weight:bold;overflow-wrap:anywhere}
+.art-entry .content{white-space:pre-wrap;overflow-wrap:anywhere;color:#f2e1da;line-height:1.5}
+.art-entry .reply{font-size:10px;color:#ddc4d4}
+.actions{display:flex;gap:5px;flex-wrap:wrap}
+.art-entry textarea{min-height:42px;resize:vertical}
+.status{min-height:1em;margin-top:8px;color:#f5d4be}
+.logout{font-size:10px;padding:6px 10px}
+@media(max-width:560px){body{padding:9px}.shell{padding:12px}.tab{padding:9px;min-height:72px}.tab span{font-size:9px}.panel iframe{min-height:510px;height:70vh}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="top"><div><h1>jamie's admin</h1><p class="muted">a tiny place to keep everything tidy ♡</p></div><button class="logout" id="logout" type="button" hidden>log out</button></header>
+<section class="login" id="login"><h2>welcome back ♡</h2><form id="loginForm"><input id="password" type="password" autocomplete="current-password" placeholder="admin password" required><button type="submit">unlock</button></form><p id="loginStatus" role="status"></p></section>
+<section class="dashboard" id="dashboard" hidden>
+<nav class="tabs" aria-label="admin sections"><button class="tab active" type="button" data-panel="guestbook"><strong>guestbook</strong><span>approve · reply · delete</span></button><button class="tab" type="button" data-panel="playlist"><strong>playlist</strong><span>auto-fill · import · quick order</span></button><button class="tab" type="button" data-panel="art"><strong>art comments</strong><span>approve · reply · delete</span></button></nav>
+<section class="panel" id="panelGuestbook"><div class="panel-top"><h2>guestbook</h2><button type="button" data-reload="guestbook">refresh</button></div><iframe id="frameGuestbook" title="guestbook editor" loading="lazy"></iframe></section>
+<section class="panel" id="panelPlaylist" hidden><div class="panel-top"><h2>playlist</h2><button type="button" data-reload="playlist">refresh</button></div><iframe id="framePlaylist" title="playlist editor" loading="lazy"></iframe></section>
+<section class="panel" id="panelArt" hidden><div class="panel-top"><h2>art comments</h2><button id="artRefresh" type="button">refresh</button></div><p>notes are private until you approve them ♡</p><select id="artFilter" class="art-filter" aria-label="filter artworks"><option value="">all artworks</option><option value="sona-teph">jamie & teph</option><option value="sona-feara">jamie & feara</option><option value="kemono-jamie">jamie kemonomimi!!</option><option value="kemono-jp">pen sketch & colouring pencils</option></select><div id="artList" class="art-list" aria-live="polite"></div><p class="status" id="artStatus" role="status"></p></section>
+</section>
+</div>
+<script>
+const API = 'https://api.jmeow.co.uk';
+const AUTH_KEY = 'jmeow_admin_key';
+const login = document.getElementById('login');
+const dashboard = document.getElementById('dashboard');
+const logout = document.getElementById('logout');
+let password = sessionStorage.getItem(AUTH_KEY) || '';
+const artNames = {'sona-teph':'jamie & teph','sona-feara':'jamie & feara','kemono-jamie':'jamie kemonomimi!!','kemono-jp':'pen sketch & colouring pencils'};
+function openPanel(id){
+  for(const name of ['guestbook','playlist','art']) {
+    document.getElementById('panel'+name[0].toUpperCase()+name.slice(1)).hidden = name !== id;
+    document.querySelector(`[data-panel="${name}"]`).classList.toggle('active',name===id);
+  }
+  if (id==='art') refreshArt();
+  else {
+    const frame = document.getElementById(id==='guestbook'?'frameGuestbook':'framePlaylist');
+    if (!frame.getAttribute('src')) frame.src = id==='guestbook'?'../gb/':'../pl/';
+  }
+}
+function showDashboard(){
+  login.hidden=true;dashboard.hidden=false;logout.hidden=false;openPanel('guestbook');
+}
+async function verify(value){
+  const response = await fetch(`${API}/api/admin/unified/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:value}),cache:'no-store'});
+  return response.ok && (await response.json()).success === true;
+}
+document.getElementById('loginForm').addEventListener('submit',async event=>{
+  event.preventDefault();
+  const button = event.currentTarget.querySelector('button');
+  button.disabled=true;
+  const status=document.getElementById('loginStatus');
+  status.textContent='checking...';
+  try {
+    const value=document.getElementById('password').value;
+    if(!await verify(value)) throw new Error('wrong password or admin secrets are not configured');
+    password=value;sessionStorage.setItem(AUTH_KEY,value);document.getElementById('password').value='';status.textContent='';showDashboard();
+  } catch(e){status.textContent=e.message||'could not log in';}
+  finally{button.disabled=false;}
+});
+logout.addEventListener('click',()=>{sessionStorage.removeItem(AUTH_KEY);password='';dashboard.hidden=true;login.hidden=false;logout.hidden=true;for(const id of ['frameGuestbook','framePlaylist'])document.getElementById(id).removeAttribute('src');});
+document.querySelectorAll('[data-panel]').forEach(button=>button.addEventListener('click',()=>openPanel(button.dataset.panel)));
+document.querySelectorAll('[data-reload]').forEach(button=>button.addEventListener('click',()=>{const frame=document.getElementById(button.dataset.reload==='guestbook'?'frameGuestbook':'framePlaylist');frame.contentWindow?.location.reload();}));
+const artList=document.getElementById('artList');const artStatus=document.getElementById('artStatus');
+function make(tag,text,cls){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(cls)el.className=cls;return el;}
+async function refreshArt(){
+  if(!password)return;
+  artStatus.textContent='loading...';artList.replaceChildren();
+  try{
+    const res=await fetch(`${API}/api/admin/art/comments`,{headers:{Authorization:`Bearer ${password}`},cache:'no-store'});
+    if(!res.ok)throw new Error('could not load comments');
+    const comments=await res.json();const selected=document.getElementById('artFilter').value;
+    const visible=comments.filter(c=>!selected||c.art_id===selected);
+    if(!visible.length)artList.append(make('p','no notes here yet...'));
+    for(const c of visible){
+      const card=make('article',undefined,`art-entry ${c.status}`);
+      const meta=make('div',undefined,'art-meta');
+      meta.append(make('strong',artNames[c.art_id]||c.art_id,'name'),make('small',c.status,'muted'));
+      card.append(meta,make('div',c.name,'name'),make('div',c.comment,'content'));
+      if(c.reply)card.append(make('div',`jamie replied: ${c.reply}`,'reply'));
+      card.append(make('small',new Date(c.created_at).toLocaleString(),'muted'));
+      const textarea=make('textarea');textarea.value=c.reply||'';textarea.maxLength=500;textarea.placeholder='write a reply...';card.append(textarea);
+      const actions=make('div',undefined,'actions');
+      if(c.status==='pending')actions.append(actionButton('approve',c,'approve'));
+      actions.append(actionButton('save reply',c,'reply',()=>textarea.value),actionButton('delete',c,'delete'));
+      card.append(actions);artList.append(card);
+    }
+    artStatus.textContent=`${visible.length} ${visible.length===1?'note':'notes'}`;
+  }catch(e){artStatus.textContent=e.message||'could not load notes';}
+}
+function actionButton(label,comment,action,getReply){
+  const button=make('button',label);button.type='button';
+  button.addEventListener('click',async()=>{
+    if(action==='delete'&&!confirm('delete this note?'))return;
+    button.disabled=true;artStatus.textContent='saving...';
+    try{
+      const response=await fetch(`${API}/api/admin/art/comments`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${password}`},body:JSON.stringify({id:comment.id,action,reply:getReply?getReply():undefined})});
+      if(!response.ok)throw new Error('could not update note');await refreshArt();
+    }catch(e){artStatus.textContent=e.message||'could not save';button.disabled=false;}
+  });return button;
+}
+document.getElementById('artRefresh').addEventListener('click',refreshArt);
+document.getElementById('artFilter').addEventListener('change',refreshArt);
+if(password){verify(password).then(ok=>{if(ok)showDashboard();else{sessionStorage.removeItem(AUTH_KEY);password='';}}).catch(()=>{sessionStorage.removeItem(AUTH_KEY);password='';});}
+</script>
+</body>
+</html>
