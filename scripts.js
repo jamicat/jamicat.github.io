@@ -5082,7 +5082,7 @@ function jamiArtBindComments(wrap) {
     .then(result => { if (!result.ok) throw new Error('could not load notes'); return result.json(); })
     .then(comments => {
       if (requestId !== jamiArtCommentRequest || !section.isConnected) return;
-      count.textContent = `${comments.length} ${comments.length === 1 ? 'note' : ''}`;
+      count.textContent = String(comments.length);
       list.innerHTML = comments.length ? comments.map(comment => `<div class="jami-art-comment"><div class="jami-art-comment-name">${jamiArtEscape(comment.name)}</div><div class="jami-art-comment-text">${jamiArtEscape(comment.comment)}</div>${comment.reply ? `<div class="jami-art-comment-reply"><strong>jamie replied:</strong> ${jamiArtEscape(comment.reply)}</div>` : ''}</div>`).join('') : '';
     })
     .catch(() => { if (section.isConnected) list.textContent = 'could not load notes'; });
@@ -5122,7 +5122,7 @@ function jamiRenderArtGallery() {
   } else if (jamiArtView === 'kemono') {
     const commissions = jamiArtEntries.filter(art => art.group === 'kemono-commissions');
     const mine = jamiArtEntries.filter(art => art.group === 'kemono-mine');
-    content = `<p class="jami-gallery-subtitle">kemonomimi</p><h3 class="jami-gallery-section-title">commissions</h3><div class="jami-gallery-grid">${commissions.map((art, i) => jamiArtCard(art, i)).join('')}</div><h3 class="jami-gallery-section-title">drawn by me</h3><div class="jami-gallery-grid">${mine.map((art, i) => jamiArtCard(art, i)).join('')}</div>`;
+    content = `<p class="jami-gallery-subtitle">kemonomimi</p><div class="jami-gallery-grid">${commissions.map((art, i) => jamiArtCard(art, i)).join('')}</div><h3 class="jami-gallery-section-title">drawn by me</h3><div class="jami-gallery-grid">${mine.map((art, i) => jamiArtCard(art, i)).join('')}</div>`;
   } else if (jamiArtView === 'viewer') {
     const art = jamiArtEntries[jamiArtSelected];
     const siblings = jamiArtEntries.filter(entry => entry.group === art.group);
