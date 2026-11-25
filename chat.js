@@ -163,6 +163,7 @@ this.adminKey =
     ) || "";
 
 this.isAdmin = false;
+this.memberPresenceHidden = localStorage.getItem("jami_chat_member_hidden") === "true";
 this.moderationMenu = null;
 this.lastRenderedMembers = [];
 this.eggHatchIntervalMs = 450000;
@@ -1336,6 +1337,12 @@ setupAdminAuthentication() {
         }
     );
 
+    window.addEventListener("storage", event => {
+        if (event.key !== "jami_chat_member_hidden") return;
+        this.memberPresenceHidden = event.newValue === "true";
+        this.sendPresence();
+    });
+
     if (this.adminKey) {
         this.verifyAdminKey(
             this.adminKey
@@ -1362,6 +1369,17 @@ setupAdminAuthentication() {
 
     const cleanedKey =
         key.trim();
+
+    if (cleanedKey.toLowerCase() === "h") {
+        this.memberPresenceHidden = !this.memberPresenceHidden;
+        localStorage.setItem(
+            "jami_chat_member_hidden",
+            String(this.memberPresenceHidden)
+        );
+        this.sendPresence();
+        window.alert(this.memberPresenceHidden ? "hidden from members" : "visible in members");
+        return;
+    }
 
     if (!cleanedKey) {
         window.alert(
@@ -13165,6 +13183,8 @@ advanceEggHatch(stage) {
         avatar,
         afk:
             this.isAfk === true,
+        hiddenMember:
+            this.memberPresenceHidden === true,
         discordToken:
             this.discordAuthToken || ""
     }));
