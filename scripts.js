@@ -5103,7 +5103,10 @@ function jamiRenderArtGallery() {
     const index = jamiArtEntries.findIndex(art => art.id === button.dataset.jamiOpen);
     if (index < 0) return;
     if (!button.matches(':focus-visible')) button.blur();
-    jamiArtOpenFullscreen(index);
+    jamiArtPreviousView = jamiArtView;
+    jamiArtSelected = index;
+    jamiArtView = 'viewer';
+    jamiRenderArtGallery();
   }));
   wrap.querySelector('[data-jami-enlarge]')?.addEventListener('click', () => jamiArtOpenFullscreen(jamiArtSelected));
   wrap.querySelectorAll('[data-jami-favourite]').forEach(button => button.addEventListener('click', () => {
