@@ -5082,7 +5082,7 @@ function jamiArtBindComments(wrap) {
     .then(result => { if (!result.ok) throw new Error('could not load notes'); return result.json(); })
     .then(comments => {
       if (requestId !== jamiArtCommentRequest || !section.isConnected) return;
-      count.textContent = `${comments.length} ${comments.length === 1 ? 'note' : 'notes'}`;
+      count.textContent = `${comments.length} ${comments.length === 1 ? 'note' : ''}`;
       list.innerHTML = comments.length ? comments.map(comment => `<div class="jami-art-comment"><div class="jami-art-comment-name">${jamiArtEscape(comment.name)}</div><div class="jami-art-comment-text">${jamiArtEscape(comment.comment)}</div>${comment.reply ? `<div class="jami-art-comment-reply"><strong>jamie replied:</strong> ${jamiArtEscape(comment.reply)}</div>` : ''}</div>`).join('') : '';
     })
     .catch(() => { if (section.isConnected) list.textContent = 'could not load notes'; });
