@@ -283,7 +283,7 @@ button:focus-visible,.file-pick:focus-visible{outline:2px solid rgba(191,212,249
 <div class="controls">
   <button onclick="addSong()">+ add song</button>
   <button onclick="save()">save all changes</button>
-  <button id="autoFillAllButton" type="button" onclick="autoFillAll()">✧ auto-fill all</button>
+  <button id="autoFillAllButton" type="button" onclick="autoFillAll()">auto-fill all</button>
   <button onclick="exportPlaylist()" type="button">export backup</button>
   <button onclick="deleteAllSongs()" type="button" class="danger-button">delete all songs</button>
   <span id="autoFillAllStatus" role="status" aria-live="polite"></span>
@@ -300,10 +300,10 @@ button:focus-visible,.file-pick:focus-visible{outline:2px solid rgba(191,212,249
 </div>
 </div>
 <aside class="order-pane" aria-label="quick song order">
-  <h3>✧ quick order ♡</h3>
+  <h3>quick order</h3>
   <p class="order-subtitle">drag little tunes into place, then save their order ♡</p>
   <div id="quickOrderList" aria-label="drag to reorder songs"></div>
-  <button id="quickOrderSave" class="order-save" type="button" onclick="saveQuickOrder()">♡ save order</button>
+  <button id="quickOrderSave" class="order-save" type="button" onclick="saveQuickOrder()">save order</button>
   <p id="quickOrderStatus" role="status" aria-live="polite"></p>
 </aside>
 </div>
@@ -841,9 +841,9 @@ async function saveQuickOrder() {
       body: JSON.stringify(orderedPublished)
     });
     if (!saveRes.ok) throw new Error(`couldn't save order (${saveRes.status})`);
-    status.textContent = "order saved! your other edits weren't published ♡";
+    status.textContent = "order saved! your other edits weren't published";
   } catch (error) {
-    status.textContent = error.message || "couldn't save the order ♡";
+    status.textContent = error.message || "couldn't save the order";
   } finally {
     button.disabled = false;
   }
@@ -994,7 +994,7 @@ async function save() {
     return;
   }
 
-  alert("saved! ♡");
+  alert("saved!");
 }
 
 load();
