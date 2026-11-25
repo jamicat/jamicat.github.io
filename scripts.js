@@ -414,7 +414,7 @@ if (terminalMinimizedLabel) {
 const pastelButtons = document.querySelectorAll('.terminal-button');
 pastelButtons.forEach((btn, index) => {
   const navAction = btn.getAttribute('onclick') || '';
-  const navLabel = navAction.includes('showArt(') ? 'gallery' : navAction.includes('showList(') ? 'music player' : navAction.includes('showGuestBook(') ? 'guestbook' : '';
+  const navLabel = navAction.includes('showArt(') ? 'gallery' : navAction.includes('showList(') ? 'music player' : navAction.includes('showGuestBook(') ? 'guestbook' : navAction.includes('toggleHomepageChat(') ? 'chat' : '';
   const buttonText = navLabel || btn.textContent.trim().replace(/\s+/g, ' ');
   const isMainTerminalButton = Boolean(navLabel);
 
@@ -5076,7 +5076,7 @@ function jamiRenderArtGallery() {
   const filtered = jamiArtEntries.filter(art => jamiArtFavourites.includes(art.id));
   let content = '';
   if (jamiArtFavouritesOnly && jamiArtView !== 'viewer') {
-    content = `<h3 class="jami-gallery-section-title">your favourites</h3>${filtered.length ? `<div class="jami-gallery-grid">${filtered.map((art, i) => jamiArtCard(art, i)).join('')}</div>` : `<div class="jami-gallery-empty">no favourites yet... <span aria-hidden="true">🐾</span></div>`}`;
+    content = `<h3 class="jami-gallery-section-title">your favourites</h3>${filtered.length ? `<div class="jami-gallery-grid">${filtered.map((art, i) => jamiArtCard(art, i)).join('')}</div>` : `<div class="jami-gallery-empty">no favourites yet...</div>`}`;
   } else if (jamiArtView === 'home') {
     const sona = jamiArtEntries.filter(art => art.group === 'sona');
     const kemono = jamiArtEntries.filter(art => art.group.startsWith('kemono-'));
@@ -5800,8 +5800,9 @@ div.innerHTML = `
       ? `
       <div class="gb-reply-divider border-b border-blue-100/20 my-3 opacity-60"></div>
 
+      <div class="gb-reply-note">
       <div class="gb-reply-head mb-1 flex items-center gap-1 font-medium">
-  <span class="gb-name theme-body text-xs text-white text-blue-glow">${themeName === 'Pastel' ? pastelLetterText('jamie', 0) : (themeName === 'Halloween' ? halloweenLetterText('jamie', 2) : 'jamie')}</span>
+  <span class="gb-name theme-body text-xs text-white text-blue-glow">${themeName === 'Pastel' ? pastelLetterText('jamie replied:', 0) : (themeName === 'Halloween' ? halloweenLetterText('jamie replied:', 2) : 'jamie replied:')}</span>
 </div>
 
       <div class="gb-comment theme-body text-[0.60rem] mb-1 break-all">
@@ -5817,6 +5818,7 @@ div.innerHTML = `
         })}`
       : ""
   }
+</div>
 </div>
       `
       : ''
@@ -5903,6 +5905,17 @@ document.getElementById("message").value = "";
 document.getElementById("formResponse").textContent = " ദ്ദി◝ ⩊ ◜.ᐟ ";
 }
 
+function toggleHomepageChat() {
+  const chat = document.getElementById('chatWindow');
+  if (!chat) return;
+  const hidden = chat.classList.toggle('jami-chat-hidden-by-visitor');
+  document.querySelectorAll('#buttonRow button[onclick="toggleHomepageChat()"]')
+    .forEach(button => {
+      button.setAttribute('aria-pressed', String(!hidden));
+      button.title = hidden ? 'show chat' : 'hide chat';
+    });
+}
+
 function resetTerminal() {
 
 const terminal = document.getElementById('terminal');
@@ -5916,6 +5929,7 @@ terminal.classList.add('sm:w-[480px]');
 <button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">gallery</button>
 <button class="terminal-button theme-body text-xs" onclick="showList()">music player</button>
 <button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">guestbook</button>
+<button class="terminal-button theme-body text-xs" type="button" onclick="toggleHomepageChat()" aria-controls="chatWindow" aria-pressed="true">chat</button>
   </div>
 `);
 const currentTheme = localStorage.getItem('theme') || 'Halloween';
