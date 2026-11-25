@@ -4999,56 +4999,65 @@ function jamiArtFolder(id, label, entries, index) {
   </button>`;
 }
 
-let jamiArtFullscreenPreviousFocus = null;
+let jamiArtLightbox = null;
+let jamiArtLightboxOpening = false;
 
-function jamiArtCloseFullscreen() {
-  const overlay = document.getElementById('jamiArtFullscreen');
-  if (!overlay) return;
-  overlay.remove();
-  jamiArtFullscreenPreviousFocus?.focus?.();
-  jamiArtFullscreenPreviousFocus = null;
-}
-
-function jamiArtOpenFullscreen(index) {
+async function jamiArtOpenFullscreen(index) {
+  if (jamiArtLightboxOpening) return;
   const art = jamiArtEntries[index];
   if (!art) return;
-  const existing = document.getElementById('jamiArtFullscreen');
-  if (!existing) jamiArtFullscreenPreviousFocus = document.activeElement;
-  existing?.remove();
-  const overlay = document.createElement('div');
-  overlay.id = 'jamiArtFullscreen';
-  overlay.className = 'jami-art-fullscreen';
-  overlay.setAttribute('role', 'dialog');
-  overlay.setAttribute('aria-modal', 'true');
-  overlay.setAttribute('aria-label', art.title);
-  overlay.innerHTML = `<div class="jami-art-fullscreen-top"><span>${jamiArtEscape(art.title)}</span><button type="button" data-jami-full-close="true" aria-label="close image">×</button></div><div class="jami-art-fullscreen-content"><img src="${art.url}" alt="${jamiArtEscape(art.title)}"></div><div class="jami-art-fullscreen-bottom"><button type="button" data-jami-full-step="-1" aria-label="previous artwork">‹</button><span>${jamiArtEscape(art.artist ? `drawn by ${art.artist}` : art.title)}</span><button type="button" data-jami-full-step="1" aria-label="next artwork">›</button><a href="${art.url}" target="_blank" rel="noopener noreferrer">original ↗</a></div>`;
-  document.body.appendChild(overlay);
-  overlay.addEventListener('click', event => {
-    if (event.target === overlay || event.target.closest('[data-jami-full-close]')) jamiArtCloseFullscreen();
-    const step = event.target.closest('[data-jami-full-step]');
-    if (step) {
-      const siblings = jamiArtEntries.filter(entry => entry.group === art.group);
-      const at = siblings.findIndex(entry => entry.id === art.id);
-      const next = siblings[(at + Number(step.dataset.jamiFullStep) + siblings.length) % siblings.length];
-      jamiArtOpenFullscreen(jamiArtEntries.indexOf(next));
+  jamiArtLightboxOpening = true;
+  try {
+    await ensureLightGalleryDependencies({ thumbnail: true, zoom: true });
+    if (typeof lightGallery !== 'function') return;
+    if (jamiArtLightbox) {
+      jamiArtLightbox.destroy();
+      jamiArtLightbox = null;
     }
-  });
-  const siblings = jamiArtEntries.filter(entry => entry.group === art.group);
-  overlay.querySelectorAll('[data-jami-full-step]').forEach(button => { button.disabled = siblings.length < 2; });
-  overlay.querySelector('[data-jami-full-close]')?.focus();
-}
-
-document.addEventListener('keydown', event => {
-  if (!document.getElementById('jamiArtFullscreen')) return;
-  if (event.key === 'Escape') {
-    event.preventDefault();
-    jamiArtCloseFullscreen();
+    const visibleIds = [...(document.getElementById('artGallery')?.querySelectorAll('[data-jami-open]') || [])]
+      .map(button => button.dataset.jamiOpen);
+    const entries = visibleIds.length
+      ? visibleIds.map(id => jamiArtEntries.find(entry => entry.id === id)).filter(Boolean)
+      : jamiArtEntries.filter(entry => entry.group === art.group);
+    if (!entries.some(entry => entry.id === art.id)) entries.push(art);
+    const trigger = document.createElement('div');
+    trigger.className = 'jami-gallery-lightbox-trigger';
+    trigger.hidden = true;
+    document.body.appendChild(trigger);
+    const instance = lightGallery(trigger, {
+      dynamic: true,
+      plugins: [lgThumbnail, lgZoom],
+      dynamicEl: entries.map(entry => ({
+        src: entry.url,
+        thumb: entry.thumb,
+        subHtml: `<div class="jami-gallery-lightbox-caption"><strong>${jamiArtEscape(entry.title)}</strong>${entry.artist ? `<span>${entry.group.startsWith('kemono-') ? 'drawn by' : 'art by'} ${jamiArtEscape(entry.artist)}</span>` : ''}${entry.caption ? `<span>${jamiArtEscape(entry.caption)}</span>` : ''}<a href="${entry.url}" target="_blank" rel="noopener noreferrer">original ↗</a></div>`
+      })),
+      addClass: 'jami-art-lightgallery',
+      download: false,
+      counter: true,
+      controls: true,
+      loop: true,
+      escKey: true,
+      keyPress: true,
+      showCloseIcon: true,
+      thumbnail: true,
+      animateThumb: false,
+      zoom: true,
+      speed: 240
+    });
+    jamiArtLightbox = instance;
+    trigger.addEventListener('lgAfterClose', () => {
+      if (jamiArtLightbox === instance) jamiArtLightbox = null;
+      instance.destroy();
+      trigger.remove();
+    }, { once: true });
+    instance.openGallery(Math.max(0, entries.findIndex(entry => entry.id === art.id)));
+  } catch (error) {
+    console.error('could not open art gallery', error);
+  } finally {
+    jamiArtLightboxOpening = false;
   }
-  if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
-  event.preventDefault();
-  const step = document.querySelector(`#jamiArtFullscreen [data-jami-full-step="${event.key === 'ArrowLeft' ? '-1' : '1'}"]`);
-  step?.click();
-});
+}
 
 function jamiArtBack() {
   if (jamiArtView === 'viewer') jamiArtView = jamiArtPreviousView;
@@ -5085,7 +5094,7 @@ function jamiRenderArtGallery() {
     const entries = jamiArtEntries.filter(jamiArtInView);
     content = `<p class="jami-gallery-subtitle">${jamiArtEscape(section?.title || '')}</p><div class="jami-gallery-grid">${entries.map((art, i) => jamiArtCard(art, i)).join('')}</div>`;
   }
-  wrap.innerHTML = `<div class="jami-gallery-header"><div class="jami-gallery-heading"><span>artworks!!</span><span class="jami-gallery-count">${total} pieces</span></div><button class="jami-gallery-filter${jamiArtFavouritesOnly ? ' is-active' : ''}" type="button" data-jami-filter="true" aria-pressed="${jamiArtFavouritesOnly}" aria-label="${jamiArtFavouritesOnly ? 'show all artworks' : 'show favourites'}" title="${jamiArtFavouritesOnly ? 'show all' : 'your favourites'}">${jamiArtFavouritesOnly ? '♥' : '♡'}</button></div><div class="jami-gallery-scroll">${content}</div><div class="jami-gallery-footer"><button class="terminal-button jami-gallery-back" type="button" data-jami-back="true">back</button></div>`;
+  wrap.innerHTML = `<div class="jami-gallery-header"><div class="jami-gallery-heading"><span>artworks!!</span><span class="jami-gallery-count">${total} pieces</span></div><button class="jami-gallery-heart jami-gallery-filter-toggle${jamiArtFavouritesOnly ? ' is-favourite' : ''}" type="button" data-jami-filter="true" aria-pressed="${jamiArtFavouritesOnly}" aria-label="${jamiArtFavouritesOnly ? 'show all artworks' : 'show favourites'}" title="${jamiArtFavouritesOnly ? 'show all' : 'your favourites'}">${jamiArtFavouritesOnly ? '♥' : '♡'}</button></div><div class="jami-gallery-scroll">${content}</div><div class="jami-gallery-footer"><button class="terminal-button jami-gallery-back" type="button" data-jami-back="true">back</button></div>`;
   wrap.querySelectorAll('[data-jami-folder]').forEach(button => button.addEventListener('click', () => {
     jamiArtView = button.dataset.jamiFolder;
     jamiRenderArtGallery();
@@ -5093,6 +5102,7 @@ function jamiRenderArtGallery() {
   wrap.querySelectorAll('[data-jami-open]').forEach(button => button.addEventListener('click', () => {
     const index = jamiArtEntries.findIndex(art => art.id === button.dataset.jamiOpen);
     if (index < 0) return;
+    if (!button.matches(':focus-visible')) button.blur();
     jamiArtOpenFullscreen(index);
   }));
   wrap.querySelector('[data-jami-enlarge]')?.addEventListener('click', () => jamiArtOpenFullscreen(jamiArtSelected));
