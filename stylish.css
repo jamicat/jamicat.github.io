@@ -4668,7 +4668,7 @@ body:has(.lg-backdrop.in) .homepage-social-links {
   position: relative;
   --gb-rule-step: 20px;
   box-sizing: border-box;
-  margin: 0 0 15px !important;
+  margin: 0 0 20px !important;
   padding: 7px 10px 7px !important;
   border: 0 !important;
   border-radius: 0 !important;
@@ -4678,17 +4678,6 @@ body:has(.lg-backdrop.in) .homepage-social-links {
   background-position: 0 7px !important;
   background-repeat: repeat !important;
   box-shadow: none !important;
-}
-
-.theme-pastel #guestbookComments > .gb-entry::after {
-  content: "";
-  position: absolute;
-  height: 1px;
-  left: 10px;
-  right: 10px;
-  bottom: -8px;
-  pointer-events: none;
-  background: rgba(255, 230, 208, .32);
 }
 
 .theme-pastel #guestbookComments > .gb-entry:last-child {
