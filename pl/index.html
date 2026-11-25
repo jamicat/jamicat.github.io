@@ -210,7 +210,8 @@ button:disabled{
 .quick-order-empty{font-size:.78rem;color:#a9c3dc;padding:10px 3px}
 .order-save{width:100%;margin-top:10px;background:linear-gradient(135deg,#a9ddfa,#c6bef9);color:#15243d}
 #quickOrderStatus{min-height:1.1em;font-size:.72rem;color:#c9e4f6;line-height:1.4;margin:8px 0 0}
-@media(max-width:760px){body{padding:18px}.workspace{grid-template-columns:minmax(0,1fr)}.order-pane{position:static;grid-row:1}#quickOrderList{max-height:220px}}
+@media(max-width:760px){body{padding:12px}.workspace{grid-template-columns:minmax(0,1fr)}.order-pane{position:static;grid-row:1}#quickOrderList{max-height:220px}}
+body{padding:12px;font-size:12px}h2{font-size:17px;margin:2px 0 11px}button{font-size:11px;padding:6px 9px}.controls{gap:6px}.import-section{padding:10px;margin-top:10px}.quick-order-song{font-size:11px}.order-pane{padding:11px}@media(max-width:700px){body{padding:9px}}
 </style>
 </head>
 
@@ -223,9 +224,9 @@ button:disabled{
 <div id="list"></div>
 
 <div class="controls">
-  <button onclick="addSong()">add song</button>
+  <button onclick="addSong()">+ add song</button>
   <button onclick="save()">save all changes</button>
-  <button id="autoFillAllButton" type="button" onclick="autoFillAll()">auto-fill all</button>
+  <button id="autoFillAllButton" type="button" onclick="autoFillAll()">✧ auto-fill all</button>
   <button onclick="exportPlaylist()" type="button">export backup</button>
   <button onclick="deleteAllSongs()" type="button" class="danger-button">delete all songs</button>
   <span id="autoFillAllStatus" role="status" aria-live="polite"></span>
@@ -242,16 +243,17 @@ button:disabled{
 </div>
 </div>
 <aside class="order-pane" aria-label="quick song order">
-  <h3>quick order</h3>
+  <h3>✧ quick order ♡</h3>
+  <p class="order-subtitle">drag little tunes into place, then save their order ♡</p>
   <div id="quickOrderList" aria-label="drag to reorder songs"></div>
-  <button id="quickOrderSave" class="order-save" type="button" onclick="saveQuickOrder()">save</button>
+  <button id="quickOrderSave" class="order-save" type="button" onclick="saveQuickOrder()">♡ save order</button>
   <p id="quickOrderStatus" role="status" aria-live="polite"></p>
 </aside>
 </div>
 
 <script>
 const API = "https://api.jmeow.co.uk";
-const ADMIN_KEY = prompt("enter password");
+const ADMIN_KEY = sessionStorage.getItem("jmeow_admin_key") || prompt("enter password");
 
 if (!ADMIN_KEY) {
   document.body.innerHTML = "unauthorized";
@@ -459,7 +461,7 @@ async function autoFillAll() {
       status.textContent = `filling little details… ${done}/${eligible.length} ♡`;
     }
   };
-  status.textContent = `filling details… 0/${eligible.length}`;
+  status.textContent = `filling little details… 0/${eligible.length} ♡`;
   try {
     await Promise.all(Array.from({ length: Math.min(3, eligible.length) }, () => worker()));
     render();
@@ -763,11 +765,11 @@ async function saveQuickOrder() {
     for (const id of localIds) counts.set(id, (counts.get(id) || 0) + 1);
     for (const song of published) {
       const id = identity(song);
-      if (!counts.get(id)) throw new Error("songs were added, removed or changed. save all changes first, then save order");
+      if (!counts.get(id)) throw new Error("songs were added, removed or changed. save all changes first, then save order ♡");
       counts.set(id, counts.get(id) - 1);
     }
     if (published.length !== playlist.length || [...counts.values()].some(n => n !== 0)) {
-      throw new Error("songs were added, removed or changed. save all changes first, then save order");
+      throw new Error("songs were added, removed or changed. save all changes first, then save order ♡");
     }
     const groups = new Map();
     for (const song of published) {
@@ -782,9 +784,9 @@ async function saveQuickOrder() {
       body: JSON.stringify(orderedPublished)
     });
     if (!saveRes.ok) throw new Error(`couldn't save order (${saveRes.status})`);
-    status.textContent = "order saved";
+    status.textContent = "order saved! your other edits weren't published ♡";
   } catch (error) {
-    status.textContent = error.message || "couldn't save the order";
+    status.textContent = error.message || "couldn't save the order ♡";
   } finally {
     button.disabled = false;
   }
@@ -935,7 +937,7 @@ async function save() {
     return;
   }
 
-  alert("saved");
+  alert("saved! ♡");
 }
 
 load();
