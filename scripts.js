@@ -629,7 +629,7 @@ if (typedEl) {
 const welcomeMessage = document.getElementById('welcomeMessage');
 if (welcomeMessage) {
   if (themeName === 'Pastel') {
-    welcomeMessage.innerHTML = pastelFullText('/ᐠ > ˕ <マ', 0);
+    welcomeMessage.innerHTML = pastelFullText('/ᐠ > ˕ <マ♡!', 0);
   } else if (themeName === 'Halloween') {
     welcomeMessage.innerHTML = halloweenLetterText('/ᐠ > ˕ <マ', 2);
   } else {
