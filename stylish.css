@@ -4637,8 +4637,9 @@ body:has(.lg-backdrop.in) .homepage-social-links {
   box-shadow: none;
 }
 
-.jami-gallery-viewer-actions { gap:5px; padding:5px 0 2px; }
-.jami-gallery-viewer-actions button { font-size:15px; width:20px; height:19px; line-height:1; }
+.jami-gallery-viewer-actions { gap:3px; padding:4px 0 2px; font-size:8px; }
+.jami-gallery-viewer-actions button { font-size:11px; width:14px; height:15px; line-height:1; padding:0; }
+.jami-gallery-viewer-actions span { font-size:8px; font-variant-numeric:tabular-nums; }
 #guestbookComments .gb-reply-divider { display:none !important; }
 .jami-art-comments { border-top:1px solid var(--jg-border); padding:9px 1px 4px; margin-top:7px; color:var(--jg-text); font-size:10px; }
 .jami-art-comments-head { display:flex; align-items:center; justify-content:space-between; color:var(--jg-accent); font-weight:700; padding:0 2px 7px; }
