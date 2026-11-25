@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>guestbook</title>
+<title>guestbook</title><meta name="viewport" content="width=device-width,initial-scale=1">
 
 <style>
 @font-face{
   font-family:"Nunito";
-  src:url("nunito.ttf") format("truetype");
+  src:url("../nunito.ttf") format("truetype");
 }
 
 body{
@@ -15,17 +15,17 @@ body{
   background:
     radial-gradient(circle at top,#1b355d 0%,#0b1524 45%,#05080d 100%);
   color:white;
-  padding:40px;
+  padding:12px; font-size:12px;
 }
 
 h2{
   font-weight:600;
-  margin-bottom:30px;
+  margin-bottom:12px;
   color:#ffffff;
 }
 
 h3{
-  margin-top:40px;
+  margin-top:18px;
   color:#78c7ff;
 }
 
@@ -35,7 +35,7 @@ h3{
 
 .comment{
   margin-bottom:15px;
-  padding:16px;
+  padding:10px;
   border-radius:16px;
 
   background:rgba(73,132,201,0.10);
@@ -66,7 +66,7 @@ h3{
 }
 
 .time{
-  font-size:12px;
+  font-size:10px;
   opacity:.7;
   color:#ffb15b;
 }
@@ -74,7 +74,7 @@ h3{
 button{
   margin-top:10px;
   margin-right:6px;
-  padding:6px 14px;
+  padding:5px 9px; font-size:11px;
 
   border-radius:8px;
   border:none;
@@ -117,12 +117,14 @@ textarea::placeholder{
   
 <script>
 const API = "https://api.jmeow.co.uk";
-const ADMIN_KEY = prompt("enter password")
+const ADMIN_KEY = sessionStorage.getItem("jmeow_admin_key") || prompt("enter password")
 
 if(!ADMIN_KEY){
   document.body.innerHTML="unauthorized"
   throw new Error("Unauthorized")
 }
+
+function escapeAdminText(value){return String(value ?? "").replace(/[&<>"']/g, ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
 
 async function verify(){
 
@@ -151,9 +153,9 @@ async function loadPending(){
     div.className="comment"
 
     div.innerHTML=`
-      <div style="overflow-wrap:anywhere; word-break:break-word;" class="name">${c.name}</div>
-      <div class="text">${c.comment}</div>
-      <br><div class="time">${c.timestamp}</div>
+      <div style="overflow-wrap:anywhere; word-break:break-word;" class="name">${escapeAdminText(c.name)}</div>
+      <div class="text">${escapeAdminText(c.comment)}</div>
+      <br><div class="time">${escapeAdminText(c.timestamp)}</div>
       <button onclick="approve(${c.id})">approve</button>
       <button onclick="deletePending(${c.id})">delete</button>
     `
@@ -177,25 +179,21 @@ async function loadApproved(){
     div.className="comment"
 
     div.innerHTML=`
-  <div style="overflow-wrap:anywhere; word-break:break-word;" class="name">${c.name}</div>
+  <div style="overflow-wrap:anywhere; word-break:break-word;" class="name">${escapeAdminText(c.name)}</div>
 
-  <div class="text">${c.comment}</div>
+  <div class="text">${escapeAdminText(c.comment)}</div>
 
  ${
   c.reply
     ? `
-     <div style="
-      border-bottom:1px solid rgba(219,234,254,0.2);
-      margin:12px 0;
-      opacity:0.6;
-    "></div>
+     
 
     <div style="
       color:#b9deff;
       overflow-wrap:anywhere;
       word-break:break-word;
     ">
-      <strong>jamie:</strong> ${c.reply}
+      <strong>jamie replied:</strong> ${escapeAdminText(c.reply)}
       <br>
       <button onclick="deleteReply(${c.id})" style="margin-top:6px;">delete reply</button>
     </div>
@@ -203,7 +201,7 @@ async function loadApproved(){
     : ''
 }
 
-  <br><div class="time">${c.timestamp}</div>
+  <br><div class="time">${escapeAdminText(c.timestamp)}</div>
 
   <button onclick="toggleReplyBox(${c.id})">reply</button>
   <button onclick="deleteApproved(${c.id})">delete</button>
@@ -212,7 +210,7 @@ async function loadApproved(){
     <textarea id="replyInput-${c.id}"
       placeholder="write reply..."
       style="width:100%; padding:8px; border-radius:8px; border:none; margin-bottom:6px;"
-    >${c.reply || ""}</textarea>
+    >${escapeAdminText(c.reply || "")}</textarea>
 
     <button onclick="submitReply(${c.id})">send</button>
   </div>
