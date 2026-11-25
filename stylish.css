@@ -4514,3 +4514,86 @@ body.video-backdrop-active #jamiStarfield {
 .theme-pastel .jami-art-lightgallery .jami-gallery-lightbox-caption a { color:#f6b8ce; }
 .theme-halloween .jami-art-lightgallery .jami-gallery-lightbox-caption a { color:#dedede; }
 .theme-default .jami-art-lightgallery .jami-gallery-lightbox-caption a { color:#c9d6c3; }
+
+#chatWindow.jami-chat-hidden-by-visitor {
+  display: none !important;
+}
+
+body:has(.lg-outer.lg-visible) .homepage-media-controls,
+body:has(.lg-outer.lg-visible) .homepage-social-links,
+body:has(.lg-backdrop.in) .homepage-media-controls,
+body:has(.lg-backdrop.in) .homepage-social-links {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+#terminalContent:has(> #buttonRow) > #buttonRow button[onclick="toggleHomepageChat()"] {
+  margin-left: 0 !important;
+}
+
+#guestbookComments > .gb-entry {
+  box-sizing: border-box;
+  border-radius: 14px;
+  padding: 10px 11px !important;
+  margin-bottom: 9px !important;
+  border: 1px solid rgba(255, 231, 217, .16);
+  background: rgba(255, 226, 209, .055);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.055), 0 3px 9px rgba(23,12,16,.045);
+}
+
+#guestbookComments .gb-reply-note {
+  margin-top: 7px;
+  padding: 7px 10px 6px;
+  border-radius: 11px;
+  border: 1px solid rgba(255,231,217,.15);
+  background: rgba(255,225,207,.065);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.055);
+}
+
+#guestbookComments .gb-reply-note .gb-reply-head {
+  margin: 0 0 3px !important;
+}
+
+#guestbookComments .gb-reply-note .gb-comment {
+  overflow-wrap: anywhere;
+}
+
+.theme-pastel #guestbookComments > .gb-entry {
+  border-color: rgba(255,222,199,.22) !important;
+  background: rgba(255,220,195,.065) !important;
+}
+
+.theme-pastel #guestbookComments .gb-reply-note {
+  border-color: rgba(246,168,200,.25);
+  background: rgba(255,232,215,.105);
+}
+
+.theme-pastel #guestbookComments .gb-reply-note .gb-name,
+.theme-pastel #guestbookComments .gb-reply-note .gb-comment,
+.theme-pastel #guestbookComments .gb-reply-note .gb-timestamp {
+  min-height: var(--gb-rule-step);
+  line-height: var(--gb-rule-step) !important;
+}
+
+.theme-halloween #guestbookComments > .gb-entry {
+  border-color: rgba(220,220,220,.12) !important;
+  background: rgba(215,215,215,.048) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.theme-halloween #guestbookComments .gb-reply-note {
+  border-color: rgba(220,220,220,.13);
+  background: rgba(235,235,235,.045);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.theme-default #guestbookComments > .gb-entry {
+  border-color: rgba(228,205,226,.20);
+  background: rgba(228,205,226,.070);
+}
+
+.theme-default #guestbookComments .gb-reply-note {
+  border-color: rgba(228,205,226,.20);
+  background: rgba(228,205,226,.070);
+}
