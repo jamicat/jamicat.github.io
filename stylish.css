@@ -4248,3 +4248,108 @@ body.video-backdrop-active #jamiStarfield {
     transform: none;
   }
 }
+.jami-gallery {
+  --jg-text: #f7dfcf;
+  --jg-muted: #e6bfae;
+  --jg-accent: #f4c2d3;
+  --jg-photo: rgba(255, 230, 209, .22);
+  --jg-border: rgba(255, 219, 193, .38);
+  --jg-frame: rgba(255, 231, 213, .15);
+  --jg-glow: rgba(251, 194, 151, .19);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  max-height: min(65vh, 410px);
+  padding: 2px 0 0;
+  color: var(--jg-text);
+  font-family: var(--body-font, inherit);
+  text-align: left;
+}
+#terminalContent:has(> .jami-gallery) {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+#terminalContent > .jami-gallery { flex: 1 1 auto; }
+.jami-gallery * { box-sizing: border-box; }
+.jami-gallery button { cursor: pointer; }
+.jami-gallery-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 6px 9px 4px;
+  border-bottom: 1px solid var(--jg-border);
+}
+.jami-gallery-heading { display:flex; align-items:center; gap:8px; flex-wrap:wrap; color: var(--jg-accent); font-size: 14px; font-weight: 600; line-height: 1.3; }
+.jami-gallery-count { padding: 3px 7px; border-radius: 999px; color: var(--jg-text); background: var(--jg-frame); font-size: 9px; font-weight: normal; white-space: nowrap; }
+.jami-gallery-filter { display:grid; place-items:center; width:28px; height:28px; flex:0 0 auto; padding:5px; border-radius:10px; border: 1px solid transparent; color:var(--jg-accent); background:transparent; transition:background .18s, transform .18s, border-color .18s; }
+.jami-gallery-filter svg { width:17px; height:17px; fill:currentColor; opacity:.78; }
+.jami-gallery-filter:hover,.jami-gallery-filter:focus-visible,.jami-gallery-filter.is-active { background:var(--jg-frame); border-color:var(--jg-border); transform:translateY(-1px); }
+.jami-gallery-filter.is-active svg { opacity:1; }
+.jami-gallery-scroll { min-height: 0; flex:1 1 auto; overflow-y:auto; overflow-x:hidden; padding:12px 8px 10px 4px; scrollbar-width:thin; scrollbar-color:var(--jg-border) transparent; }
+.jami-gallery-scroll::-webkit-scrollbar { width:5px; }
+.jami-gallery-scroll::-webkit-scrollbar-thumb { background:var(--jg-border); border-radius:99px; }
+.jami-gallery-subtitle { margin:0 0 12px; font-size:11px; color:var(--jg-muted); text-align:center; }
+.jami-gallery-folders { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; margin:4px 2px 12px; }
+.jami-gallery-folder { display:flex; flex-direction:column; align-items:center; gap:3px; padding:9px 6px 11px; border:1px solid var(--jg-border); background:var(--jg-frame); border-radius:15px; min-width:0; color:var(--jg-text); box-shadow:0 4px 12px rgba(0,0,0,.07), inset 0 1px 0 rgba(255,255,255,.05); transition:transform .2s,background .2s,box-shadow .2s; }
+.jami-gallery-folder:hover,.jami-gallery-folder:focus-visible { transform:translateY(-2px); background:var(--jg-photo); box-shadow:0 7px 16px var(--jg-glow),inset 0 1px 0 rgba(255,255,255,.08); }
+.jami-gallery-folder-stack { position:relative; display:block; width:min(100%,142px); height:106px; }
+.jami-gallery-folder-photo { display:block; position:absolute; top:11px; left:24%; width:62%; height:75px; padding:4px 4px 11px; background:var(--jg-text); border-radius:3px; box-shadow:0 3px 8px rgba(0,0,0,.17); transform:rotate(-10deg); transition:transform .22s ease; }
+.jami-gallery-folder-photo img { width:100%; height:100%; display:block; object-fit:cover; border-radius:1px; }
+.jami-gallery-folder-photo-1 { left:10%; transform:rotate(-11deg); z-index:1; }
+.jami-gallery-folder-photo-2 { left:29%; top:7px; transform:rotate(9deg); z-index:2; }
+.jami-gallery-folder-photo-3 { left:20%; top:14px; transform:rotate(-1deg); z-index:3; }
+.jami-gallery-folder-base { position:absolute; display:block; z-index:0; bottom:0; left:6%; width:88%; height:35px; border-radius:5px 9px 8px 8px; border:1px solid var(--jg-border); background:var(--jg-photo); box-shadow:inset 0 1px 0 rgba(255,255,255,.11); }
+.jami-gallery-folder-base::before { content:""; position:absolute; top:-10px; left:0; width:45%; height:13px; border-radius:6px 8px 0 0; background:var(--jg-photo); border-top:1px solid var(--jg-border); }
+.jami-gallery-folder:hover .jami-gallery-folder-photo-1,.jami-gallery-folder:focus-visible .jami-gallery-folder-photo-1 { transform:translate(-4px,-5px) rotate(-16deg); }
+.jami-gallery-folder:hover .jami-gallery-folder-photo-2,.jami-gallery-folder:focus-visible .jami-gallery-folder-photo-2 { transform:translate(5px,-6px) rotate(14deg); }
+.jami-gallery-folder:hover .jami-gallery-folder-photo-3,.jami-gallery-folder:focus-visible .jami-gallery-folder-photo-3 { transform:translateY(-5px) rotate(0deg); }
+.jami-gallery-folder-name { display:block; font-size:11px; color:var(--jg-text); white-space:nowrap; }
+.jami-gallery-folder-count { display:block; font-size:9px; color:var(--jg-muted); }
+.jami-gallery-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px 12px; padding:7px 5px 12px; }
+.jami-gallery-card { min-width:0; padding:7px 7px 8px; transform:rotate(var(--photo-turn)); transform-origin:center top; background:var(--jg-frame); border:1px solid var(--jg-border); border-radius:8px; box-shadow:0 5px 11px rgba(0,0,0,.09); transition:transform .2s ease,box-shadow .2s ease; }
+.jami-gallery-card:hover,.jami-gallery-card:focus-within { transform:translateY(-3px) rotate(0deg); box-shadow:0 7px 15px var(--jg-glow); }
+.jami-gallery-photo { position:relative; padding:4px 4px 12px; background:var(--jg-photo); border:1px solid var(--jg-border); border-radius:5px; }
+.jami-gallery-image-button { display:block; width:100%; padding:0; margin:0; border:0; background:transparent; overflow:hidden; border-radius:3px; }
+.jami-gallery-image-button img { display:block; width:100%; aspect-ratio: 4 / 3; object-fit:cover; transition:transform .2s; }
+.jami-gallery-card:hover .jami-gallery-image-button img { transform:scale(1.025); }
+.jami-gallery-paw { display:block; position:absolute; top:7px; left:7px; width:20px; height:20px; color:var(--jg-accent); filter:drop-shadow(0 1px 1px rgba(0,0,0,.45)); pointer-events:none; }
+.jami-gallery-paw svg { width:100%; height:100%; fill:currentColor; opacity:.86; }
+.jami-gallery-caption { display:flex; align-items:center; justify-content:space-between; gap:4px; padding:6px 1px 0; }
+.jami-gallery-name { min-width:0; font-size:10px; font-weight:500; line-height:1.3; overflow-wrap:anywhere; }
+.jami-gallery-detail,.jami-gallery-credit { color:var(--jg-muted); font-size:9px; line-height:1.4; margin:3px 1px 0; }
+.jami-gallery-heart { display:grid; place-items:center; flex:0 0 auto; border:0; width:21px; height:21px; padding:0; color:var(--jg-accent); border-radius:50%; font-size:17px; background:transparent; line-height:1; transition:transform .18s,background .18s; }
+.jami-gallery-heart:hover,.jami-gallery-heart:focus-visible { background:var(--jg-photo); transform:scale(1.15); }
+.jami-gallery-heart.is-favourite { text-shadow:0 0 6px var(--jg-glow); }
+.jami-gallery-footer { display:flex; align-items:center; justify-content:center; border-top:1px solid var(--jg-border); padding:8px 0 0; margin:0 6px; flex:0 0 auto; }
+.jami-gallery-footer .terminal-button { font-size:11px; }
+.jami-gallery-viewer { display:flex; flex-direction:column; gap:5px; }
+.jami-gallery-viewer-frame { display:grid; place-items:center; max-height:240px; border:1px solid var(--jg-border); border-radius:10px; padding:6px; background:var(--jg-frame); }
+.jami-gallery-viewer-frame img { display:block; max-height:220px; max-width:100%; width:auto; height:auto; object-fit:contain; border-radius:5px; }
+.jami-gallery-viewer-actions { display:flex; gap:8px; justify-content:center; align-items:center; flex-wrap:wrap; padding:10px 0 4px; color:var(--jg-muted); font-size:10px; }
+.jami-gallery-viewer-actions button { font-size:22px; line-height:1; border-radius:7px; width:28px; height:25px; color:var(--jg-accent); }
+.jami-gallery-viewer-actions button:disabled { opacity:.35; cursor:default; }
+.jami-gallery-viewer-actions a { color:var(--jg-accent); margin-left:auto; font-size:10px; }
+.jami-gallery-viewer-actions a:hover { text-decoration:underline; }
+.jami-gallery-empty { text-align:center; font-size:11px; color:var(--jg-muted); padding:30px 8px; }
+.theme-pastel .jami-gallery { --jg-text:#ffe6d5; --jg-muted:#f0c4ad; --jg-accent:#f5bad0; --jg-photo:rgba(255,214,179,.21); --jg-border:rgba(255,219,193,.30); --jg-frame:rgba(255,221,201,.075); --jg-glow:rgba(255,175,130,.18); }
+.theme-halloween .jami-gallery { --jg-text:#e6e6e6; --jg-muted:#b9b9b9; --jg-accent:#dedede; --jg-photo:rgba(190,190,190,.13); --jg-border:rgba(205,205,205,.25); --jg-frame:rgba(220,220,220,.06); --jg-glow:rgba(240,240,240,.075); }
+.theme-default .jami-gallery { --jg-text:#f6e8ed; --jg-muted:#cbc1d6; --jg-accent:#e7bdd4; --jg-photo:rgba(196,210,192,.15); --jg-border:rgba(228,205,226,.30); --jg-frame:rgba(197,188,210,.09); --jg-glow:rgba(200,186,220,.15); }
+.theme-default .jami-gallery-folder-base { background:rgba(177,206,174,.22); }
+.theme-halloween .jami-gallery-paw { color:#d0d0d0; }
+@media (max-width: 950px) and (pointer:coarse) { .jami-gallery { max-height:min(59vh,350px); } .jami-gallery-folder-stack { height:92px; } .jami-gallery-folder-photo { height:66px; } .jami-gallery-grid { gap:13px 10px; } }
+@media (prefers-reduced-motion: reduce) {
+  .jami-gallery :is(.jami-gallery-card,.jami-gallery-folder,.jami-gallery-folder-photo,.jami-gallery-image-button img,.jami-gallery-heart,.jami-gallery-filter) { transition:none; }
+  .jami-gallery-folder:hover .jami-gallery-folder-photo,.jami-gallery-folder:focus-visible .jami-gallery-folder-photo { transform:none; }
+  .jami-gallery-card:hover,.jami-gallery-card:focus-within { transform:rotate(var(--photo-turn)); }
+}
+
+.jami-gallery-section-title { margin:7px 0 5px 4px; font-size:11px; font-weight:500; color:var(--jg-accent); }
+.jami-gallery-section-title:not(:first-child) { margin-top:14px; }
+
+.theme-pastel .jami-gallery-back { color:#f4bdce; }
+.theme-halloween .jami-gallery-back { color:#d4d4d4; }
+.theme-default .jami-gallery-back { color:#edc3d3; }
