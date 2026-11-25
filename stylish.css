@@ -4499,3 +4499,7 @@ body.video-backdrop-active #jamiStarfield {
 @media (prefers-reduced-motion: reduce) {
   .jami-gallery-viewer-frame { transition: none; }
 }
+
+.theme-pastel .jami-gallery .jami-gallery-card[data-paw-tone="0"] .jami-gallery-paw { color:#f6a8c8 !important; }
+.theme-pastel .jami-gallery .jami-gallery-card[data-paw-tone="1"] .jami-gallery-paw { color:#f6d98b !important; }
+.theme-pastel .jami-gallery .jami-gallery-card[data-paw-tone="2"] .jami-gallery-paw { color:#9fc8ea !important; }
