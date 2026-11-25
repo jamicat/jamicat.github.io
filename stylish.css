@@ -4636,3 +4636,24 @@ body:has(.lg-backdrop.in) .homepage-social-links {
   background: transparent;
   box-shadow: none;
 }
+
+.jami-gallery-viewer-actions { gap:5px; padding:5px 0 2px; }
+.jami-gallery-viewer-actions button { font-size:15px; width:20px; height:19px; line-height:1; }
+#guestbookComments .gb-reply-divider { display:none !important; }
+.jami-art-comments { border-top:1px solid var(--jg-border); padding:9px 1px 4px; margin-top:7px; color:var(--jg-text); font-size:10px; }
+.jami-art-comments-head { display:flex; align-items:center; justify-content:space-between; color:var(--jg-accent); font-weight:700; padding:0 2px 7px; }
+.jami-art-comments-head span + span { color:var(--jg-muted); font-size:9px; font-weight:500; }
+.jami-art-comment-list { display:grid; gap:6px; max-height:135px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--jg-border) transparent; }
+.jami-art-comment { background:var(--jg-frame); border:1px solid var(--jg-border); border-radius:9px; padding:7px 9px; overflow-wrap:anywhere; }
+.jami-art-comment-name { color:var(--jg-accent); font-weight:700; font-size:10px; }
+.jami-art-comment-text { margin-top:3px; line-height:1.5; white-space:pre-wrap; }
+.jami-art-comment-reply { margin-top:6px; color:var(--jg-muted); line-height:1.45; }
+.jami-art-comment-reply strong { color:var(--jg-accent); font-weight:700; }
+.jami-art-no-comments { color:var(--jg-muted); font-size:10px; padding:6px 2px; }
+.jami-art-comment-form { display:grid; gap:6px; margin-top:9px; }
+.jami-art-comment-form input:not(.jami-art-honey),.jami-art-comment-form textarea { width:100%; min-width:0; padding:7px 9px; border:1px solid var(--jg-border); border-radius:8px; background:var(--jg-frame); font:inherit; color:var(--jg-text); resize:vertical; }
+.jami-art-comment-form :is(input,textarea)::placeholder { color:var(--jg-muted); opacity:.8; }
+.jami-art-comment-form button { justify-self:end; color:var(--jg-accent); background:var(--jg-frame); padding:5px 10px; border-radius:8px; border:1px solid var(--jg-border); font-size:10px; }
+.jami-art-comment-form button:disabled { opacity:.55; }
+.jami-art-comment-status { color:var(--jg-muted); font-size:9px; text-align:right; }
+.jami-art-honey { position:absolute; left:-9999px; opacity:0; pointer-events:none; }
