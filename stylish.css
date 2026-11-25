@@ -4353,3 +4353,149 @@ body.video-backdrop-active #jamiStarfield {
 .theme-pastel .jami-gallery-back { color:#f4bdce; }
 .theme-halloween .jami-gallery-back { color:#d4d4d4; }
 .theme-default .jami-gallery-back { color:#edc3d3; }
+
+.jami-gallery-paw svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+}
+
+.jami-gallery-paw svg ellipse,
+.jami-gallery-paw svg path {
+  fill: currentColor;
+  opacity: .72;
+}
+
+.theme-pastel .jami-gallery-card[data-paw-tone="0"] .jami-gallery-paw { color: #f6a8c8; }
+.theme-pastel .jami-gallery-card[data-paw-tone="1"] .jami-gallery-paw { color: #f6d98b; }
+.theme-pastel .jami-gallery-card[data-paw-tone="2"] .jami-gallery-paw { color: #9fc8ea; }
+.theme-halloween .jami-gallery-card[data-paw-tone="0"] .jami-gallery-paw { color: #e0e0e0; }
+.theme-halloween .jami-gallery-card[data-paw-tone="1"] .jami-gallery-paw { color: #bcbcbc; }
+.theme-halloween .jami-gallery-card[data-paw-tone="2"] .jami-gallery-paw { color: #d0d0d0; }
+.theme-default .jami-gallery-card[data-paw-tone="0"] .jami-gallery-paw { color: #d4c2db; }
+.theme-default .jami-gallery-card[data-paw-tone="1"] .jami-gallery-paw { color: #c8d7b8; }
+.theme-default .jami-gallery-card[data-paw-tone="2"] .jami-gallery-paw { color: #f1dcbb; }
+
+.jami-gallery-filter {
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  border: 0;
+  font-size: 20px;
+  font-family: sans-serif;
+  line-height: 1;
+  border-radius: 8px;
+}
+
+.jami-gallery-filter.is-active {
+  color: var(--jg-accent);
+  text-shadow: 0 0 8px var(--jg-glow);
+}
+
+.jami-gallery-viewer-frame {
+  width: 100%;
+  cursor: zoom-in;
+  color: inherit;
+  transition: background .18s, border-color .18s;
+}
+
+.jami-gallery-viewer-frame:hover,
+.jami-gallery-viewer-frame:focus-visible {
+  border-color: var(--jg-accent);
+  background: var(--jg-photo);
+}
+
+.jami-art-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483600;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 12px;
+  padding: max(14px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+  color: #f9e7e8;
+  background: rgba(10, 13, 22, .96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font-family: var(--body-font, inherit);
+}
+
+.jami-art-fullscreen button {
+  color: inherit;
+  cursor: pointer;
+}
+
+.jami-art-fullscreen-top,
+.jami-art-fullscreen-bottom {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+  font-size: 12px;
+}
+
+.jami-art-fullscreen-top { justify-content: space-between; }
+.jami-art-fullscreen-top button {
+  width: 36px;
+  height: 36px;
+  font-size: 27px;
+  line-height: 1;
+  border-radius: 11px;
+  background: rgba(255,255,255,.08);
+}
+
+.jami-art-fullscreen-content {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.jami-art-fullscreen-content img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 3px;
+  box-shadow: 0 9px 35px rgba(0,0,0,.35);
+}
+
+.jami-art-fullscreen-bottom { justify-content: center; }
+.jami-art-fullscreen-bottom span { text-align: center; }
+.jami-art-fullscreen-bottom button {
+  font-size: 25px;
+  line-height: 1;
+  width: 34px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(255,255,255,.07);
+}
+.jami-art-fullscreen-bottom button:disabled { opacity: .3; cursor: default; }
+.jami-art-fullscreen-bottom a { margin-left: auto; color: inherit; text-decoration: none; font-size: 11px; }
+.jami-art-fullscreen-bottom a:hover { text-decoration: underline; }
+.jami-art-fullscreen :is(button,a):focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+
+.theme-pastel .jami-art-fullscreen { color: #ffe2d7; background: rgba(36, 23, 30, .96); }
+.theme-pastel .jami-art-fullscreen button { color: #f4b5ce; }
+.theme-halloween .jami-art-fullscreen { color: #e1e1e1; background: rgba(13, 13, 16, .97); }
+.theme-halloween .jami-art-fullscreen button { color: #cfcfcf; }
+.theme-default .jami-art-fullscreen { color: #f6e7ed; background: rgba(15, 19, 32, .97); }
+.theme-default .jami-art-fullscreen button { color: #d6c5df; }
+
+@media (max-width: 480px) {
+  .jami-art-fullscreen { gap: 8px; padding-inline: 10px; }
+  .jami-art-fullscreen-bottom { gap: 9px; font-size: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jami-gallery-viewer-frame { transition: none; }
+}
