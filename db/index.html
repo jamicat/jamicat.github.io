@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>jamie's dashboard</title>
+<title>dashboard</title>
 <style>
 @font-face{font-family:nunito;src:url('../nunito.ttf') format('truetype');font-display:swap}
 :root{color-scheme:dark;font-family:nunito,system-ui,sans-serif;font-size:12px;background:#0d1421;color:#f9dfdd}
@@ -51,8 +51,8 @@ small,.muted{font-size:10px;color:#cbb2c4}
 </head>
 <body>
 <div class="shell">
-<header class="top"><div><h1>jamie's dashboard</h1></div><button class="logout" id="logout" type="button" hidden>log out</button></header>
-<section class="login" id="login"><h2>welcome back</h2><form id="loginForm"><input id="password" type="password" autocomplete="current-password" placeholder="admin password" required><button type="submit">unlock</button></form><p id="loginStatus" role="status"></p></section>
+<header class="top"><div><h1>dashboard</h1></div><button class="logout" id="logout" type="button" hidden>log out</button></header>
+<section class="login" id="login"><h2>welcome back</h2><form id="loginForm"><input id="password" type="password" autocomplete="current-password" placeholder="password" required><button type="submit">unlock</button></form><p id="loginStatus" role="status"></p></section>
 <section class="dashboard" id="dashboard" hidden>
 <nav class="tabs" aria-label="admin sections"><button class="tab active" type="button" data-panel="guestbook"><strong>guestbook</strong><span>approve · reply · delete</span></button><button class="tab" type="button" data-panel="playlist"><strong>playlist</strong><span>auto-fill · import · quick order</span></button><button class="tab" type="button" data-panel="art"><strong>art comments</strong><span>approve · reply · delete</span></button></nav>
 <section class="panel" id="panelGuestbook"><div class="panel-top"><h2>guestbook</h2><button type="button" data-reload="guestbook">refresh</button></div><iframe id="frameGuestbook" title="guestbook editor" loading="lazy"></iframe></section>
