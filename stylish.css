@@ -4311,7 +4311,7 @@ body.video-backdrop-active #jamiStarfield {
 .jami-gallery-folder-count { display:block; font-size:9px; color:var(--jg-muted); }
 .jami-gallery-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px 12px; padding:7px 5px 12px; }
 .jami-gallery-card { min-width:0; padding:7px 7px 8px; transform:rotate(var(--photo-turn)); transform-origin:center top; background:var(--jg-frame); border:1px solid var(--jg-border); border-radius:8px; box-shadow:0 5px 11px rgba(0,0,0,.09); transition:transform .2s ease,box-shadow .2s ease; }
-.jami-gallery-card:hover,.jami-gallery-card:focus-within { transform:translateY(-3px) rotate(0deg); box-shadow:0 7px 15px var(--jg-glow); }
+.jami-gallery-card:hover,.jami-gallery-card:has(:focus-visible) { transform:translateY(-3px) rotate(0deg); box-shadow:0 7px 15px var(--jg-glow); }
 .jami-gallery-photo { position:relative; padding:4px 4px 12px; background:var(--jg-photo); border:1px solid var(--jg-border); border-radius:5px; }
 .jami-gallery-image-button { display:block; width:100%; padding:0; margin:0; border:0; background:transparent; overflow:hidden; border-radius:3px; }
 .jami-gallery-image-button img { display:block; width:100%; aspect-ratio: 4 / 3; object-fit:cover; transition:transform .2s; }
@@ -4503,3 +4503,14 @@ body.video-backdrop-active #jamiStarfield {
 .theme-pastel .jami-gallery .jami-gallery-card[data-paw-tone="0"] .jami-gallery-paw { color:#f6a8c8 !important; }
 .theme-pastel .jami-gallery .jami-gallery-card[data-paw-tone="1"] .jami-gallery-paw { color:#f6d98b !important; }
 .theme-pastel .jami-gallery .jami-gallery-card[data-paw-tone="2"] .jami-gallery-paw { color:#9fc8ea !important; }
+
+.jami-gallery-filter-toggle { margin-left:auto; }
+.jami-gallery-filter-toggle.is-favourite { text-shadow:0 0 6px var(--jg-glow); }
+.jami-gallery-lightbox-trigger[hidden] { display:none; }
+.jami-art-lightgallery .lg-sub-html { background:rgba(16,17,23,.65); }
+.jami-art-lightgallery .jami-gallery-lightbox-caption { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:4px 12px; font-size:11px; }
+.jami-art-lightgallery .jami-gallery-lightbox-caption strong { font-weight:700; }
+.jami-art-lightgallery .jami-gallery-lightbox-caption a { color:inherit; text-decoration:underline; text-underline-offset:2px; }
+.theme-pastel .jami-art-lightgallery .jami-gallery-lightbox-caption a { color:#f6b8ce; }
+.theme-halloween .jami-art-lightgallery .jami-gallery-lightbox-caption a { color:#dedede; }
+.theme-default .jami-art-lightgallery .jami-gallery-lightbox-caption a { color:#c9d6c3; }
