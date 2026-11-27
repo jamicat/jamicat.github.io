@@ -3275,7 +3275,7 @@ font-size: 0.65rem;
 }
 
 .theme-pastel #guestbookComments .gb-timestamp {
-  font-size: 7px !important;
+  font-size: 0.47rem !important;
   color: #8faebe !important;
   opacity: 0.62 !important;
   font-weight: 400 !important;
@@ -4709,8 +4709,8 @@ body:has(.lg-backdrop.in) .homepage-social-links {
   box-shadow: none !important;
 }
 
-#guestbookComments .gb-timestamp {
+.jami-gallery-detail, .jami-gallery-lightbox-caption span { white-space: pre-line; overflow-wrap: anywhere; }
+
+#guestbookComments .gb-entry .gb-timestamp {
   font-size: 7px !important;
 }
-
-.jami-gallery-detail, .jami-gallery-lightbox-caption span { white-space: pre-line; overflow-wrap: anywhere; }
