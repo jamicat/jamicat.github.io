@@ -4707,3 +4707,5 @@ body:has(.lg-backdrop.in) .homepage-social-links {
   background: transparent !important;
   box-shadow: none !important;
 }
+
+.jami-gallery-detail, .jami-gallery-lightbox-caption span { white-space: pre-line; overflow-wrap: anywhere; }
