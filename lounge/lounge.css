@@ -13,7 +13,7 @@
 #chatWindow .jami-lounge-emoji-form button {padding:7px;border:1px solid rgba(255,255,255,.25);border-radius:7px;background:rgba(255,255,255,.08);}
 #chatWindow[data-chat-theme="paws"] .jami-lounge-emoji-panel {background:rgba(93,54,80,.96);border-color:#f3b8ca;color:#ffeaf2;}
 #chatWindow[data-chat-theme="stars"] .jami-lounge-emoji-panel {background:rgba(36,31,67,.96);border-color:#b6a7eb;color:#f1eaff;}
-#chatWindow[data-chat-theme="original"] .jami-lounge-emoji-panel {background:rgba(83,57,50,.96);border-color:#f4d9b9;color:#fff1e4;}
+#chatWindow[data-chat-theme="original"] .jami-lounge-emoji-panel {background:#101620;border-color:rgba(255,255,255,.15);color:#e4e7ed;}
 #chatWindow[data-lounge-theme="halloween"] .jami-lounge-emoji-panel {background:rgba(33,33,37,.97);border-color:#777;color:#eee;}
 body.lounge-only {background:#05050c!important;}
 body.lounge-only #chatWindow {display:flex!important;}
@@ -95,3 +95,17 @@ html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitleBar b
 html[data-chat-theme="stars"] #chatWindow[data-chat-theme="stars"] #chatTitleBar button.jami-lounge-emoji-button:not(#chatMinimize) {color:#ffffff !important;}
 html.theme-halloween[data-chat-theme="original"] #chatWindow #chatTitleBar .jami-lounge-emoji-button {font-family:"Nunito",sans-serif !important;}
 html.theme-halloween[data-chat-theme="original"] #chatWindow[data-lounge-theme="halloween"] .jami-lounge-emoji-panel {background:rgba(33,33,37,.97);border-color:#777;color:#eee;}
+
+#chatWindow .jami-lounge-emoji-file {position:relative;display:flex;align-items:center;gap:6px;min-width:0;padding:5px;border:1px solid rgba(255,255,255,.18);border-radius:6px;background:rgba(0,0,0,.18);cursor:pointer;overflow:hidden;}
+#chatWindow .jami-lounge-emoji-file input[type="file"] {position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;padding:0;}
+#chatWindow .jami-lounge-emoji-file-button {flex:none;padding:4px 7px;border:1px solid rgba(255,255,255,.22);border-radius:4px;background:rgba(255,255,255,.10);white-space:nowrap;}
+#chatWindow .jami-lounge-emoji-file-name {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#chatWindow .jami-lounge-emoji-file:focus-within {outline:1px solid currentColor;outline-offset:2px;}
+#chatWindow[data-chat-theme="paws"] .jami-lounge-emoji-file {border-color:rgba(243,184,202,.55);}
+#chatWatchPartyPanel .lounge-party-volume {margin-left:auto;flex-shrink:0;letter-spacing:normal;gap:4px;}
+#chatWatchPartyPanel .lounge-party-volume svg {flex-shrink:0;}
+#chatWatchPartyPanel .lounge-party-volume input {width:56px;min-width:0;margin:0;padding:0;}
+html[data-chat-theme="stars"] #chatWatchPartyPanel .lounge-party-volume input {accent-color:#cbb9fa;}
+html[data-chat-theme="paws"] #chatWatchPartyPanel .lounge-party-volume input {accent-color:#f2a9c3;}
+html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatWatchPartyPanel[data-theme="default"] {background:#0c121c!important;border-color:rgba(255,255,255,.12)!important;box-shadow:0 8px 24px rgba(0,0,0,.25)!important;color:#e4e7ed!important;}
+html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatWatchPartyPanel[data-theme="default"] [data-watch-party-heading] {color:#e4e7ed!important;text-shadow:none!important;}
