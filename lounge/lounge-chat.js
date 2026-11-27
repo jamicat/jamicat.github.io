@@ -439,6 +439,9 @@ transition-[height] duration-200
             <button type="button" data-chat-theme-choice="original" role="menuitem">
                 original
             </button>
+            <button type="button" data-chat-theme-choice="vaporwave" role="menuitem">
+                vaporwave
+            </button>
             <button type="button" data-chat-theme-choice="halloween" role="menuitem">
                 halloween
             </button>
@@ -22471,7 +22474,8 @@ keepTitleBarInViewport() {
             "original",
             "stars",
             "paws",
-            "halloween"
+            "halloween",
+            "vaporwave"
         ].includes(
             storedTheme
         )
@@ -22500,7 +22504,8 @@ keepTitleBarInViewport() {
             "original",
             "stars",
             "paws",
-            "halloween"
+            "halloween",
+            "vaporwave"
         ].includes(
             cleaned
         )
@@ -22536,7 +22541,8 @@ keepTitleBarInViewport() {
             "original",
             "stars",
             "paws",
-            "halloween"
+            "halloween",
+            "vaporwave"
         ].includes(
             themeName
         )
@@ -22552,10 +22558,11 @@ keepTitleBarInViewport() {
         previousTheme !== cleaned;
 
     this.window.dataset.loungeTheme = cleaned;
-    const visualTheme = cleaned === "halloween" ? "original" : cleaned;
+    const visualTheme = ["halloween", "vaporwave"].includes(cleaned) ? "original" : cleaned;
+    document.documentElement.dataset.loungeChatTheme = cleaned;
     this.window.dataset.chatTheme = visualTheme;
     document.documentElement.classList.toggle("theme-halloween", cleaned === "halloween");
-    document.documentElement.classList.toggle("theme-pastel", cleaned === "original");
+    document.documentElement.classList.toggle("theme-pastel", visualTheme === "original" && cleaned !== "halloween");
     document.documentElement.setAttribute("data-theme", cleaned === "halloween" ? "Halloween" : "Pastel");
 
     this.window
