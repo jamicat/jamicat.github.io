@@ -314,6 +314,10 @@ function halloweenLetterText(text, offset = 0) {
 }
 
 function applyTheme(themeName) {
+  // The lounge chat owns Halloween activation, including during player refreshes.
+  const loungeTheme = document.getElementById('chatWindow')?.dataset.loungeTheme;
+  if (loungeTheme === 'halloween') themeName = 'Halloween';
+  else if (loungeTheme && themeName === 'Halloween') themeName = 'Pastel';
   const theme = themes[themeName];
   if (!theme) return console.warn(`theme not found: ${themeName}`);
 
