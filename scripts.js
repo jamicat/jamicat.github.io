@@ -5763,7 +5763,7 @@ body: JSON.stringify(data),
 
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
-const welcomeMessage = document.querySelector('p.text-base');
+const welcomeMessage = document.getElementById("welcomeMessage");
 welcomeMessage.textContent = "ദ്ദി◝ ⩊ ◜.ᐟ";
 
   setTimeout(() => {
@@ -5865,7 +5865,7 @@ div.innerHTML = `
     ${entry.comment || ''}
   </div>
 
- <div class="gb-timestamp theme-body text-[0.55rem] text-right">
+ <div class="gb-timestamp theme-body text-[7px] text-right">
   ${entry.timestamp
     ? `${new Date(entry.timestamp).toLocaleDateString("en-GB")} ${new Date(entry.timestamp).toLocaleTimeString("en-GB", {
         hour: "2-digit",
@@ -5889,7 +5889,7 @@ div.innerHTML = `
       <div class="gb-comment theme-body text-[0.60rem] mb-1 break-all">
         ${entry.reply}
       </div>
-<div class="gb-timestamp theme-body text-[0.55rem] text-right">
+<div class="gb-timestamp theme-body text-[7px] text-right">
   ${
     entry.reply_timestamp
       ? `${new Date(entry.reply_timestamp).toLocaleDateString("en-GB")} ${new Date(entry.reply_timestamp).toLocaleTimeString("en-GB", {
