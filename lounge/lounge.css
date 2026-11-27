@@ -180,9 +180,9 @@ html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-loung
     position:absolute!important;
     right:var(--vaporwave-member-width)!important;
     bottom:0!important;
-    width:150px!important;
+    width:185px!important;
     max-width:calc(100% - var(--vaporwave-member-width))!important;
-    height:174px!important;
+    height:215px!important;
     max-height:100%!important;
     background:url("./console-neko.png") no-repeat center top / 100% auto!important;
     transform:scaleX(-1)!important;
@@ -304,4 +304,84 @@ html[data-lounge-chat-theme="vaporwave"] body.lounge-only:not(.lounge-console-ac
 html[data-lounge-chat-theme="vaporwave"] body.lounge-only:not(.lounge-console-active) #chatSavedRemixManager .jami-saved-remix-title {
     color:#ffe7f6!important;
     text-shadow:none!important;
+}
+
+html body.lounge-only #chatWindow[data-lounge-theme="original"]:not(.lounge-console-mode) .jami-message-hover-actions {
+    background:rgba(16,22,32,.94)!important;
+    border:1px solid rgba(255,255,255,.16)!important;
+    box-shadow:0 5px 14px rgba(0,0,0,.24)!important;
+    backdrop-filter:blur(12px)!important;
+    -webkit-backdrop-filter:blur(12px)!important;
+    color:#d5dbe5!important;
+    text-shadow:none!important;
+}
+html body.lounge-only #chatWindow[data-lounge-theme="original"]:not(.lounge-console-mode) .jami-message-hover-actions .jami-message-hover-action {
+    background:transparent!important;
+    color:#d5dbe5!important;
+    border-right-color:rgba(255,255,255,.16)!important;
+    text-shadow:none!important;
+}
+html body.lounge-only #chatWindow[data-lounge-theme="original"]:not(.lounge-console-mode) .jami-message-hover-actions .jami-message-hover-action:is(:hover,:focus-visible) {
+    background:rgba(255,255,255,.09)!important;
+    color:#fff!important;
+}
+
+html body.lounge-only #chatWindow[data-lounge-theme="paws"]:not(.lounge-console-mode) .jami-message-hover-actions {
+    background:linear-gradient(135deg,rgba(255,231,237,.97),rgba(249,222,229,.96))!important;
+    border:1px solid rgba(185,128,148,.32)!important;
+    box-shadow:0 5px 14px rgba(150,91,114,.15)!important;
+    backdrop-filter:blur(12px)!important;
+    -webkit-backdrop-filter:blur(12px)!important;
+    color:#a95772!important;
+    text-shadow:none!important;
+}
+html body.lounge-only #chatWindow[data-lounge-theme="paws"]:not(.lounge-console-mode) .jami-message-hover-actions .jami-message-hover-action {
+    background:transparent!important;
+    color:#a95772!important;
+    border-right-color:rgba(185,128,148,.32)!important;
+    text-shadow:none!important;
+}
+html body.lounge-only #chatWindow[data-lounge-theme="paws"]:not(.lounge-console-mode) .jami-message-hover-actions .jami-message-hover-action:is(:hover,:focus-visible) {
+    background:rgba(215,110,130,.14)!important;
+    color:#91425e!important;
+}
+
+html body.lounge-only #chatWindow[data-lounge-theme="stars"]:not(.lounge-console-mode) .jami-message-hover-actions {
+    background:linear-gradient(135deg,rgba(158,145,218,.96),rgba(127,129,199,.96))!important;
+    border:1px solid rgba(238,232,255,.42)!important;
+    box-shadow:0 5px 14px rgba(60,47,110,.22)!important;
+    backdrop-filter:blur(12px)!important;
+    -webkit-backdrop-filter:blur(12px)!important;
+    color:#faf5ff!important;
+    text-shadow:none!important;
+}
+html body.lounge-only #chatWindow[data-lounge-theme="stars"]:not(.lounge-console-mode) .jami-message-hover-actions .jami-message-hover-action {
+    background:transparent!important;
+    color:#faf5ff!important;
+    border-right-color:rgba(238,232,255,.42)!important;
+    text-shadow:none!important;
+}
+html body.lounge-only #chatWindow[data-lounge-theme="stars"]:not(.lounge-console-mode) .jami-message-hover-actions .jami-message-hover-action:is(:hover,:focus-visible) {
+    background:rgba(255,255,255,.19)!important;
+    color:#fff!important;
+}
+
+html body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) .jami-message-hover-actions {
+    background:linear-gradient(110deg,rgba(53,29,70,.94),rgba(28,28,53,.94),rgba(23,48,67,.94))!important;
+    border:1px solid rgba(190,176,216,.38)!important;
+    box-shadow:0 5px 14px rgba(11,8,25,.30)!important;
+    backdrop-filter:blur(12px)!important;
+    -webkit-backdrop-filter:blur(12px)!important;
+    color:#e9d1f6!important;
+    text-shadow:none!important;
+}
+html body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) .jami-message-hover-actions .jami-message-hover-action {
+    background:transparent!important;
+    color:#e9d1f6!important;
+    border-right-color:rgba(190,176,216,.38)!important;
+    text-shadow:none!important;
+}
+html body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) .jami-message-hover-actions .jami-message-hover-action:is(:hover,:focus-visible) {
+    background:rgba(185,103,255,.20)!important;
+    color:#8ff6ff!important;
 }
