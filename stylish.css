@@ -3275,7 +3275,7 @@ font-size: 0.65rem;
 }
 
 .theme-pastel #guestbookComments .gb-timestamp {
-  font-size: 0.47rem !important;
+  font-size: 7px !important;
   color: #8faebe !important;
   opacity: 0.62 !important;
   font-weight: 400 !important;
@@ -4707,6 +4707,10 @@ body:has(.lg-backdrop.in) .homepage-social-links {
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
+}
+
+#guestbookComments .gb-timestamp {
+  font-size: 7px !important;
 }
 
 .jami-gallery-detail, .jami-gallery-lightbox-caption span { white-space: pre-line; overflow-wrap: anywhere; }
