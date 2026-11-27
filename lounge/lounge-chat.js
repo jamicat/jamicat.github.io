@@ -1454,6 +1454,7 @@ setupAdminAuthentication() {
     this.adminKey = "";
     this.isAdmin = false;
     this.loungeEmojiUpdate?.();
+    this.loungeEmojiPanel?.remove();
 
     loungeSessionStorage.removeItem(
         "chat_admin_key"
@@ -3795,6 +3796,19 @@ const hasWatchPartyVideo =
         this.watchParty.currentVideoId
     );
 
+    if (!this.loungeVolumeListenerAttached) {
+        this.loungeVolumeListenerAttached = true;
+        this.watchPartyPanel.addEventListener("input", event => {
+            if (!event.target.matches("[data-lounge-party-volume]")) return;
+            const value = Number(event.target.value);
+            const slider = document.getElementById("volumeSlider");
+            if (slider) {
+                slider.value = String(value);
+                slider.dispatchEvent(new Event("input", {bubbles: true}));
+            }
+            loungeLocalStorage.setItem("volume", String(value));
+        });
+    }
     this.watchPartyPanel.innerHTML = `
         <div
     class="
@@ -3817,6 +3831,10 @@ const hasWatchPartyVideo =
 </div>
 
 <div class="relative flex items-center gap-2">
+    <label class="lounge-party-volume no-drag" title="video volume">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 9a4 4 0 0 1 0 6"/></svg>
+        <input type="range" min="0" max="100" step="1" data-lounge-party-volume aria-label="watch party video volume" value="${Math.max(0, Math.min(100, Number(loungeLocalStorage.getItem("volume") ?? 50) || 0))}" />
+    </label>
     <div
     id="watchPartyColourPicker"
     class="
@@ -8778,6 +8796,7 @@ content.append(
 
             this.userHasScrolledUp =
                 false;
+            this.clearUnreadCount();
         });
     });
 }
@@ -13885,8 +13904,8 @@ if (data.type === "message-edited") {
 
 if (data.type === "message") {
     const shouldCountUnread =
-        this.isMinimized ||
-        this.userHasScrolledUp;
+        (this.isMinimized || !this.isMessagesNearBottom()) &&
+        data.message?.client_id !== this.clientId;
 
     this.insertHistoryTimelineItem({
         type: "message",
@@ -13900,6 +13919,8 @@ if (data.type === "message") {
 
     if (shouldCountUnread) {
         this.incrementUnreadCount();
+    } else if (!this.isMinimized && this.isMessagesNearBottom()) {
+        this.clearUnreadCount();
     }
 
     this.playNotificationSound(
@@ -21422,7 +21443,7 @@ renderDiscordAuthState() {
 
 renderAvatarPicker() {
     this.avatarGrid.replaceChildren();
-    const avatarChoices = [...this.avatars];
+    const avatarChoices = [...this.avatars, ...(this.loungeUploadedAvatars || [])];
     if (this.avatar?.startsWith("lounge_") && !avatarChoices.includes(this.avatar)) avatarChoices.push(this.avatar);
     for (const filename of avatarChoices) {
         const button = document.createElement("button");
@@ -21465,7 +21486,31 @@ renderAvatarPicker() {
             this.selectAvatar(filename);
         });
 
-        this.avatarGrid.appendChild(button);
+        if (filename.startsWith("lounge_")) {
+            const wrap = document.createElement("span");
+            wrap.className = "jami-lounge-avatar-choice";
+            const remove = document.createElement("button");
+            remove.type = "button";
+            remove.className = "jami-lounge-avatar-delete";
+            remove.textContent = "×";
+            remove.title = "delete uploaded avatar";
+            remove.setAttribute("aria-label", "delete uploaded avatar");
+            remove.addEventListener("click", async event => {
+                event.stopPropagation();
+                if (!confirm("delete this uploaded avatar?")) return;
+                const reply = await fetch(`${this.API}/api/lounge/avatars/${encodeURIComponent(filename)}`, {
+                    method: "DELETE", headers: {"X-Chat-Client-Id": this.clientId}
+                });
+                if (!reply.ok) { alert(await reply.text()); return; }
+                this.loungeUploadedAvatars = (this.loungeUploadedAvatars || []).filter(item => item !== filename);
+                if (this.avatar === filename) this.selectAvatar(this.avatars[0] || "original.gif");
+                this.renderAvatarPicker();
+            });
+            wrap.append(button, remove);
+            this.avatarGrid.append(wrap);
+        } else {
+            this.avatarGrid.appendChild(button);
+        }
     }
 }
 
@@ -25599,7 +25644,8 @@ keepTitleBarInViewport() {
         this.customEmojiCategories = this.customEmojiCategories.filter(category=>category.id!=="lounge-custom");
         const active=this.loungeEmojis.filter(emoji=>emoji.active);
         for (const emoji of this.loungeEmojis) {
-            this.customEmojiLookup.set(emoji.name,{id:emoji.name,name:emoji.name,src:emoji.src});
+            if (emoji.active) this.customEmojiLookup.set(emoji.name,{id:emoji.name,name:emoji.name,src:emoji.src});
+            else this.customEmojiLookup.delete(emoji.name);
         }
         if(active.length) this.customEmojiCategories.push({id:"lounge-custom",name:"lounge",emojis:active.map(emoji=>({id:emoji.name,name:emoji.name,keywords:[emoji.name],skins:[{src:emoji.src}]}))});
         if(this.emojiPicker){this.emojiPicker.remove();this.emojiPicker=null;}
@@ -25615,10 +25661,11 @@ keepTitleBarInViewport() {
     setupLoungeEmojis() {
         this.loungeEmojis=[];
         const action=document.createElement("button");
-        action.type="button";action.textContent="emojis";action.className="theme-body jami-lounge-emoji-button";
+        action.type="button";action.textContent="emojis";action.className="theme-body text-[9px] text-white/50 transition hover:text-white jami-lounge-emoji-button";
         action.hidden=true;
         this.loungeEmojiAction=action;
         this.chatThemeButton?.parentElement?.insertAdjacentElement("afterend",action);
+        action.setAttribute("aria-label", "manage lounge emojis");
         action.addEventListener("click",()=>this.openLoungeEmojis());
         this.loadLoungeEmojis().catch(console.error);
         this.loungeEmojiUpdate=()=>{action.hidden=!(this.isAdmin&&this.adminKey);};
@@ -25668,9 +25715,22 @@ keepTitleBarInViewport() {
             }catch(error){status.textContent=error.message||"upload failed";}
         });
     }
+    async loadLoungeAvatars() {
+        try {
+            const reply = await fetch(`${this.API}/api/lounge/avatars`, {
+                headers: {"X-Chat-Client-Id": this.clientId}, cache: "no-store"
+            });
+            if (!reply.ok) return;
+            const data = await reply.json();
+            this.loungeUploadedAvatars = Array.isArray(data.avatars) ? data.avatars : [];
+            this.renderAvatarPicker();
+        } catch (error) { console.error("could not load avatars", error); }
+    }
     setupLoungeAvatarUpload(){
+        this.loungeUploadedAvatars = [];
+        this.loadLoungeAvatars();
         const input=document.createElement("input");input.type="file";input.accept="image/png,image/jpeg,image/webp";input.hidden=true;
-        const button=document.createElement("button");button.type="button";button.className="jami-lounge-avatar-upload";button.textContent="upload avatar";
+        const button=document.createElement("button");button.type="button";button.className=`${this.discordAuthButton?.className || "theme-body mt-3 w-full rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-[9px] text-white/65 transition hover:bg-white/10 hover:text-white"} jami-lounge-avatar-upload`;button.textContent="upload avatar";
         this.avatarGrid?.insertAdjacentElement("afterend",button);
         this.avatarPicker?.append(input);
         button.addEventListener("click",()=>input.click());
@@ -25693,6 +25753,7 @@ keepTitleBarInViewport() {
                 if(!response.ok)throw new Error(await response.text());
                 const result=await response.json();
                 this.loungeAvatarName=result.name;
+                if (!this.loungeUploadedAvatars.includes(result.name)) this.loungeUploadedAvatars.push(result.name);
                 this.selectAvatar(result.name);
             }catch(error){alert(error.message||"avatar upload failed");}
             finally{if(url)URL.revokeObjectURL(url);button.disabled=false;button.textContent="upload avatar";input.value="";}
