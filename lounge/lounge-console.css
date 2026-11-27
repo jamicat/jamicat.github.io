@@ -1,0 +1,30 @@
+#loungeConsoleToggle{position:fixed;right:12px;bottom:5px;z-index:350;padding:2px 9px;border:1px solid #365346;border-radius:7px;background:#101a16;color:#a4e8ba;font:11px ui-monospace,monospace;line-height:17px;cursor:pointer}
+#loungeConsoleToggle:hover{background:#213e2e;color:#d4ffe1}
+#loungeConsoleToggle[hidden],body.video-backdrop-active #loungeConsoleToggle{display:none!important}
+#loungeConsoleTitle,#loungeConsoleOutput,#loungeConsolePrompt{display:none}
+body.lounge-only #chatWindow.lounge-console-mode{background:#08100c!important;color:#b7d7c1!important;border:1px solid #3c5a49!important;border-radius:8px!important;box-shadow:0 8px 32px #0008!important;backdrop-filter:none!important;font-family:ui-monospace,SFMono-Regular,Consolas,monospace!important;min-width:0!important;--chat-glass-bg:#101c15}
+#chatWindow.lounge-console-mode :is(.theme-body,.theme-heading,#chatTitleBar,#chatMessages,#chatMembersPanel,#chatControls,#chatMessage,#chatMotd,#chatTyping){font-family:ui-monospace,SFMono-Regular,Consolas,monospace!important;text-shadow:none!important;color:#b7d7c1!important}
+#chatWindow.lounge-console-mode #chatTitleBar{background:#101c15!important;border-color:#2a4535!important;padding:5px 9px!important;gap:8px!important;min-height:34px!important}
+#chatWindow.lounge-console-mode #chatTitle,#chatWindow.lounge-console-mode .jami-chat-theme-wrap{display:none!important}
+#chatWindow.lounge-console-mode #loungeConsoleTitle{display:block;min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#8ae4a8;font-size:11px;line-height:1.5}
+#chatWindow.lounge-console-mode #chatTitleBar button{font:10px ui-monospace,monospace!important;color:#8ae4a8!important;text-shadow:none!important}
+#chatWindow.lounge-console-mode #chatMain,#chatWindow.lounge-console-mode #chatMessages,#chatWindow.lounge-console-mode #chatMembersPanel,#chatWindow.lounge-console-mode #chatControls{background:transparent!important;border-color:#2a4535!important}
+#chatWindow.lounge-console-mode #chatMessages{padding:8px!important;font-size:11px!important}
+#chatWindow.lounge-console-mode .chatMessage[data-console-label]{display:block!important;padding:2px 0!important;margin:0!important;gap:0!important;background:transparent!important;border:0!important;color:#b7d7c1!important;font:11px/1.5 ui-monospace,monospace!important}
+#chatWindow.lounge-console-mode .chatMessage[data-console-label]::before{content:attr(data-console-label);color:#83d9a4;display:block;overflow-wrap:anywhere;font:11px/1.5 ui-monospace,monospace}
+#chatWindow.lounge-console-mode .chatMessage[data-console-label]>img,#chatWindow.lounge-console-mode .chatMessage[data-console-label] .chatMessageName,#chatWindow.lounge-console-mode .chatMessage[data-console-label] .chatTime{display:none!important}
+#chatWindow.lounge-console-mode .chatMessage[data-console-label]>div{padding-left:0!important;margin-left:0!important;min-width:0!important}
+#chatWindow.lounge-console-mode .chatMessage .chatText{font:11px/1.5 ui-monospace,monospace!important;color:#c6ddce!important;text-shadow:none!important}
+#chatWindow.lounge-console-mode #chatMembersPanel{width:105px!important;border-left:1px solid #2a4535!important;padding:8px!important}
+#chatWindow.lounge-console-mode #chatMembers{font:10px ui-monospace,monospace!important;color:#8ae4a8!important}
+#chatWindow.lounge-console-mode #chatMembers img{width:13px!important;height:13px!important}
+#chatWindow.lounge-console-mode #loungeConsoleOutput{display:block;flex-shrink:0;max-height:26%;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;padding:5px 9px;color:#83d9a4;background:#0e1912;border-top:1px solid #2a4535;font:11px/1.45 ui-monospace,monospace}
+#chatWindow.lounge-console-mode #chatControls{padding:6px!important;overflow:visible!important}
+#chatWindow.lounge-console-mode .jami-cute-message-shell{display:flex!important;align-items:center!important;gap:5px!important;background:#08100c!important;border:1px solid #2a4535!important;border-radius:3px!important;padding:4px!important;min-width:0!important}
+#chatWindow.lounge-console-mode #loungeConsolePrompt{display:inline;color:#83d9a4;font:10px ui-monospace,monospace;white-space:nowrap}
+#chatWindow.lounge-console-mode #chatMessage{flex:1!important;min-width:0!important;width:0!important;background:transparent!important;border:0!important;padding:3px!important;font-size:12px!important;outline:none!important;box-shadow:none!important}
+#chatWindow.lounge-console-mode #chatMessage::placeholder{color:#6b8c75!important}
+#chatWindow.lounge-console-mode #chatSend{color:#83d9a4!important;background:#14261b!important;border:1px solid #365346!important;border-radius:3px!important}
+#chatWindow.lounge-console-mode #chatEmojiButton,#chatWindow.lounge-console-mode #chatImageUploadButton,#chatWindow.lounge-console-mode #chatAvatarButton,#chatWindow.lounge-console-mode #chatWatchPartyButton{opacity:.65!important}
+#chatWindow.lounge-console-mode :is(#chatAvatarPicker,#chatEmojiPicker,.jami-lounge-emoji-panel){background:#101c15!important;color:#c6ddce!important;border-color:#365346!important;border-radius:5px!important;font-family:ui-monospace,monospace!important;box-shadow:0 8px 20px #0008!important}
+@media(max-width:600px){#loungeConsoleToggle{bottom:3px;right:8px}#chatWindow.lounge-console-mode #chatMembersPanel{width:78px!important}#chatWindow.lounge-console-mode #loungeConsolePrompt{font-size:9px}#chatWindow.lounge-console-mode #chatTitleBar{gap:3px!important}}
