@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>jamie's admin</title>
+<title>dashboard</title>
 <style>
 @font-face{font-family:nunito;src:url('../nunito.ttf') format('truetype');font-display:swap}
 :root{color-scheme:dark;font-family:nunito,system-ui,sans-serif;font-size:12px;background:#0d1421;color:#f9dfdd}
@@ -26,7 +26,7 @@ small,.muted{font-size:10px;color:#cbb2c4}
 .login form{display:grid;gap:10px}
 .dashboard{margin-top:14px}
 .tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
-.tab{text-align:left;padding:12px;min-height:66px;display:grid;gap:4px}
+.tab{text-align:center;padding:10px;min-height:40px;display:grid;place-items:center;gap:4px}
 .tab.active{border-color:#edc5d6;background:#d4bac026}
 .tab strong{font-size:12px;color:#f5d1dd}
 .tab span{font-size:10px;color:#c6b3c6}
@@ -46,7 +46,7 @@ small,.muted{font-size:10px;color:#cbb2c4}
 .art-entry textarea{min-height:42px;resize:vertical}
 .status{min-height:1em;margin-top:8px;color:#f5d4be}
 .logout{font-size:10px;padding:6px 10px}
-@media(max-width:560px){body{padding:9px}.shell{padding:12px}.tab{padding:9px;min-height:72px}.tab span{font-size:9px}.panel iframe{min-height:510px;height:70vh}}
+@media(max-width:560px){body{padding:9px}.shell{padding:12px}.tab{padding:9px;min-height:40px}.tab span{font-size:9px}.panel iframe{min-height:510px;height:70vh}}
 
 .upload-form{display:grid;gap:8px;max-width:720px}
 .upload-form label,.upload-card label{display:grid;gap:4px;font-size:10px;color:#d8c9d8}
@@ -76,23 +76,23 @@ small,.muted{font-size:10px;color:#cbb2c4}
 </head>
 <body>
 <div class="shell">
-<header class="top"><div><h1>jamie's admin</h1><p class="muted">a tiny place to keep everything tidy ♡</p></div><button class="logout" id="logout" type="button" hidden>log out</button></header>
-<section class="login" id="login"><h2>welcome back ♡</h2><form id="loginForm"><input id="password" type="password" autocomplete="current-password" placeholder="admin password" required><button type="submit">unlock</button></form><p id="loginStatus" role="status"></p></section>
+<header class="top"><div><h1>dashboard</h1></div><button class="logout" id="logout" type="button" hidden>log out</button></header>
+<section class="login" id="login"><h2>log in</h2><form id="loginForm"><input id="password" type="password" autocomplete="current-password" placeholder="admin password" required><button type="submit">unlock</button></form><p id="loginStatus" role="status"></p></section>
 <section class="dashboard" id="dashboard" hidden>
-<nav class="tabs" aria-label="admin sections"><button class="tab active" type="button" data-panel="guestbook"><strong>guestbook</strong><span>approve · reply · delete</span></button><button class="tab" type="button" data-panel="playlist"><strong>playlist</strong><span>auto-fill · import · quick order</span></button><button class="tab" type="button" data-panel="art"><strong>art comments</strong><span>approve · reply · delete</span></button><button class="tab" type="button" data-panel="uploads"><strong>art uploads</strong><span>upload · edit · delete</span></button></nav>
+<nav class="tabs" aria-label="admin sections"><button class="tab active" type="button" data-panel="guestbook"><strong>guestbook</strong></button><button class="tab" type="button" data-panel="playlist"><strong>playlist</strong></button><button class="tab" type="button" data-panel="art"><strong>art comments</strong></button><button class="tab" type="button" data-panel="uploads"><strong>art uploads</strong></button></nav>
 <section class="panel" id="panelGuestbook"><div class="panel-top"><h2>guestbook</h2><button type="button" data-reload="guestbook">refresh</button></div><iframe id="frameGuestbook" title="guestbook editor" loading="lazy"></iframe></section>
 <section class="panel" id="panelPlaylist" hidden><div class="panel-top"><h2>playlist</h2><button type="button" data-reload="playlist">refresh</button></div><iframe id="framePlaylist" title="playlist editor" loading="lazy"></iframe></section>
-<section class="panel" id="panelArt" hidden><div class="panel-top"><h2>art comments</h2><button id="artRefresh" type="button">refresh</button></div><p>notes are private until you approve them ♡</p><select id="artFilter" class="art-filter" aria-label="filter artworks"><option value="">all artworks</option><option value="sona-teph">jamie & teph</option><option value="sona-feara">jamie & feara</option><option value="kemono-jamie">jamie kemonomimi!!</option><option value="kemono-jp">pen sketch & colouring pencils</option></select><div id="artList" class="art-list" aria-live="polite"></div><p class="status" id="artStatus" role="status"></p></section>
+<section class="panel" id="panelArt" hidden><div class="panel-top"><h2>art comments</h2><button id="artRefresh" type="button">refresh</button></div><select id="artFilter" class="art-filter" aria-label="filter artworks"><option value="">all artworks</option><option value="sona-teph">jamie & teph</option><option value="sona-feara">jamie & feara</option><option value="kemono-jamie">jamie kemonomimi!!</option><option value="kemono-jp">pen sketch & colouring pencils</option></select><div id="artList" class="art-list" aria-live="polite"></div><p class="status" id="artStatus" role="status"></p></section>
 <section class="panel" id="panelUploads" hidden><div class="panel-top"><h2>art uploads</h2><button type="button" id="uploadRefresh">refresh</button></div>
 <form id="galleryFolderForm" class="folder-create"><label>new folder<input id="newFolderName" type="text" maxlength="48" placeholder="folder name" required></label><button type="submit">create folder</button><span id="folderStatus" class="upload-status" role="status"></span></form>
 <div id="galleryFolderList" class="folder-list"></div>
 <form id="galleryUploadForm" class="upload-form">
 <div class="upload-fields"><label>image<input name="original" type="file" accept="image/jpeg,image/png,image/webp,image/gif" required></label><label>folder<select name="group" required><option value="sona">fursona</option><option value="kemono-commissions">kemonomimi</option></select></label></div>
 <div class="thumb-tool"><span>thumbnail · 300 × 282</span><div class="thumb-options"><label><input type="radio" name="thumbMode" value="fit" checked> whole image</label><label><input type="radio" name="thumbMode" value="crop"> crop & position</label><label><input type="radio" name="thumbMode" value="manual"> my own thumbnail</label></div>
-<div id="cropControls" class="crop-controls" hidden><label>left / right<input type="range" id="cropX" min="0" max="100" value="50"></label><label>up / down<input type="range" id="cropY" min="0" max="100" value="50"></label><label>zoom<input type="range" id="cropZoom" min="1" max="2.5" step="0.05" value="1"></label></div><label id="manualThumbLabel" hidden>your thumbnail<input id="manualThumb" type="file" accept="image/jpeg,image/png,image/webp"></label><canvas id="thumbnailPreview" width="300" height="282" aria-label="thumbnail preview"></canvas><small>preview before upload · generated at 300 × 282, like your existing thumbnails</small></div>
+<div id="cropControls" class="crop-controls" hidden><label>left / right<input type="range" id="cropX" min="0" max="100" value="50"></label><label>up / down<input type="range" id="cropY" min="0" max="100" value="50"></label><label>zoom<input type="range" id="cropZoom" min="1" max="2.5" step="0.05" value="1"></label></div><label id="manualThumbLabel" hidden>your thumbnail<input id="manualThumb" type="file" accept="image/jpeg,image/png,image/webp"></label><canvas id="thumbnailPreview" width="300" height="282" aria-label="thumbnail preview"></canvas></div>
 <div class="upload-fields"><label>name<input name="title" type="text" maxlength="100" required placeholder="artwork name"></label><label>artist<input name="artist" type="text" maxlength="100" placeholder="artist name"></label></div>
 <label>description<textarea name="caption" rows="3" maxlength="800" placeholder="write a description..."></textarea></label>
-<small>press enter for a second line in the description ♡</small>
+
 <div class="actions"><button type="submit">upload artwork</button></div><p class="upload-status" id="uploadStatus" role="status"></p></form>
 <div class="upload-list" id="uploadList"></div><p class="upload-status" id="uploadListStatus" role="status"></p>
 </section>
@@ -340,7 +340,7 @@ async function refreshUploads() {
       const remove = make('button','delete');remove.type='button';
       save.addEventListener('click',async()=>{
         save.disabled=true;uploadListStatus.textContent='saving...';
-        try{await galleryAdminRequest('/api/admin/gallery/update',{id:art.id,title:name.control.value,artist:artist.control.value,caption:caption.control.value,group:select.value});uploadListStatus.textContent='saved ♡';}
+        try{await galleryAdminRequest('/api/admin/gallery/update',{id:art.id,title:name.control.value,artist:artist.control.value,caption:caption.control.value,group:select.value});uploadListStatus.textContent='saved';}
         catch(e){uploadListStatus.textContent=e.message;}
         finally{save.disabled=false;}
       });
@@ -371,7 +371,7 @@ uploadForm.addEventListener('submit',async event=>{
     await galleryAdminRequest('/api/admin/gallery/upload',data);
     uploadForm.reset();
     await drawThumbnail();
-    uploadStatus.textContent='artwork uploaded ♡';
+    uploadStatus.textContent='artwork uploaded';
     await refreshUploads();
   }catch(e){uploadStatus.textContent=e.message||'could not upload';}
   finally{button.disabled=false;}
