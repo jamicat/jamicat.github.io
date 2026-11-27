@@ -24,3 +24,12 @@ body:not([data-lounge-background="ocean"]) #loungeOcean *,body.video-backdrop-ac
 body.video-backdrop-active #loungeBackgroundPicker {display:none;}
 @media(max-width:540px) {#loungeBackgroundPicker {top:max(10px,env(safe-area-inset-top));bottom:auto;left:max(10px,env(safe-area-inset-left));}}
 @media(prefers-reduced-motion:reduce) {#loungeOcean {transition:none;}#loungeOcean * {animation:none!important;}.lounge-shark {left:var(--rest);}.lounge-ocean-bubble {bottom:var(--rest);opacity:.55;}}
+
+#loungeBackgroundPicker button {color:#eee;}
+#loungeBackgroundPicker {background:rgba(12,12,12,.92);border-color:rgba(255,255,255,.2);}
+#loungeBackgroundPicker button[aria-pressed="true"] {background:#333;border-color:rgba(255,255,255,.4);}
+#loungeBackgroundPicker button:focus-visible {outline-color:#ddd;}
+.lounge-black-swatch {display:block;width:15px;height:15px;border-radius:4px;background:#000;border:1px solid #aaa;}
+body.lounge-only[data-lounge-background="none"]:not(.video-backdrop-active) {background:#000!important;}
+body.lounge-only[data-lounge-background="none"]:not(.video-backdrop-active) #bgndVideo {background:#000!important;}
+body.lounge-only[data-lounge-background="none"]:not(.video-backdrop-active) #videoPoster {background:#000!important;}
