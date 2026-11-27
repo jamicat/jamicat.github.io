@@ -85,13 +85,13 @@
     function status() {
       const p = c.watchParty, q = p.queue || [], track = q.find(x=>x.videoId===p.currentVideoId);
       const playing = window.watchPartyPlayer?.getState()?.playing;
-      const label = p.enabled ? `party on · ${track ? `${playing?'playing':'paused'}: ${track.title || track.videoId}`:'nothing playing'} · ${q.length} queued` : 'party off';
-      const heading = p.enabled ? `cat chat · ${label}` : 'cat chat';
+      const label = p.enabled ? `party on - ${track ? `${playing?'playing':'paused'}: ${track.title || track.videoId}`:'nothing playing'} - ${q.length} queued` : 'party off';
+      const heading = p.enabled ? `cat chat - ${label}` : 'cat chat';
       if(title.textContent!==heading) title.textContent=heading;
       title.title=heading;
       const volume = document.getElementById('volumeSlider')?.value ?? '–';
       const state = window.watchPartyPlayer?.getState();
-      const bar = `${label} | vol: ${volume}%${p.enabled && track ? ` | ${Math.floor(state?.currentTime || 0)}/${Math.floor(state?.duration || 0)}s` : ''}`;
+      const bar = `${label} - vol: ${volume}%${p.enabled && track ? ` - ${Math.floor(state?.currentTime || 0)}/${Math.floor(state?.duration || 0)}s` : ''}`;
       if(statusBar.textContent!==bar) statusBar.textContent=bar;
       prompt.textContent = `${c.nameInput.value || 'guest'}@lounge:~$`;
       if(active) attachInput();
@@ -105,7 +105,7 @@
       else if(active){consolePosition=savePosition();}
       active=on; entered=true; w.classList.toggle('lounge-console-mode',on); document.body.classList.toggle('lounge-console-active',on);
       if (!on && password) { password=false; input.type='text'; input.value=''; }
-      input.placeholder=on?'type /help to start':oldPlaceholder;
+      input.placeholder=on?'':oldPlaceholder;
       try { localStorage.setItem('lounge_console_mode',String(on)); } catch {}
       if(on) {
         if(c.isMinimized) document.getElementById('chatMinimize')?.click();
@@ -120,7 +120,7 @@
         attachInput(); promptRow.append(c.avatarPicker);
         c.closeAvatarPicker(); c.closeEmojiPicker();
         if(c.watchPartyOpen) c.toggleWatchParty();
-        reconcile(); if(!localLines.length) log('connected · type /help to start');
+        reconcile(); if(!localLines.length) log('connected - /help for commands');
         c.messages.scrollTop=c.messages.scrollHeight; input.focus();
       } else {
         c.closeAvatarPicker(); c.closeEmojiPicker();
@@ -186,15 +186,15 @@
     for(const [name,selector] of [['skip','next'],['previous','previous'],['subtitles','subtitles'],['visualizer','visualizer-menu-toggle']]) add(name,`/${name}`,()=>panelClick(`[data-watch-party-${selector}]`));
     for(const name of ['play','pause']) add(name,`/${name}`,()=>{party();if(!c.watchParty.currentVideoId)fail('nothing playing');if(Boolean(window.watchPartyPlayer?.getState()?.playing)===(name==='play'))return log(`already ${name==='play'?'playing':'paused'}`);panelClick('button[data-watch-party-play=""]')});
     add('seek','/seek <seconds or m:ss>',async arg=>{party();if(!c.watchParty.currentVideoId)fail('nothing playing');if(!/^\d+(?::[0-5]\d){0,2}$/.test(arg))fail('enter seconds or m:ss');const time=arg.split(':').reduce((n,x)=>n*60+Number(x),0);const duration=window.watchPartyPlayer?.getState()?.duration;if(duration&&time>duration)fail('timestamp exceeds duration');const response=await fetch(`${c.API}/api/watchparty/seek`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clientId:c.clientId,currentTime:time})});if(!response.ok)fail('seek failed');window.watchPartyPlayer?.seekTo(time);log(`seek: ${time} seconds`);});
-    add('nowplaying','/nowplaying',()=>{const s=window.watchPartyPlayer?.getState();log(`${title.textContent} · ${Math.floor(s?.currentTime||0)} / ${Math.floor(s?.duration||0)} seconds`);});
+    add('nowplaying','/nowplaying',()=>{const s=window.watchPartyPlayer?.getState();log(`${title.textContent} - ${Math.floor(s?.currentTime||0)} / ${Math.floor(s?.duration||0)} seconds`);});
     add('volume','/volume [0–100|mute|unmute]',arg=>{const slider=document.getElementById('volumeSlider');if(!slider)fail('volume unavailable');if(!arg)return log(`volume: ${slider.value}%`);let n=Number(arg);if(arg==='mute'){if(Number(slider.value)>0)lastVolume=Number(slider.value);n=0;}if(arg==='unmute')n=lastVolume;if(!Number.isFinite(n)||n<0||n>100)fail('volume must be 0–100');slider.value=String(Math.round(n));slider.dispatchEvent(new Event('input',{bubbles:true}));const other=c.watchPartyPanel.querySelector('[data-lounge-party-volume]');if(other)other.value=slider.value;log(`volume: ${slider.value}%`);});
     add('video','/video <fit|cinematic>',arg=>{if(!['fit','cinematic'].includes(arg))fail('use fit or cinematic');c.setWatchPartyVideoMode(arg);});
     add('background','/background <stars|ocean|none>',arg=>{if(!['stars','ocean','none'].includes(arg))fail('use stars, ocean or none');click(`#loungeBackgroundPicker [data-background="${arg}"]`);});
-    add('partycolour','/partycolour [colour]',arg=>{if(!arg)return log(c.WATCH_PARTY_COLOURS.join(' · '));if(!c.WATCH_PARTY_COLOURS.includes(arg))fail('unknown colour');c.setWatchPartyTheme(arg);log(`party colour: ${arg}`);});
+    add('partycolour','/partycolour [colour]',arg=>{if(!arg)return log(c.WATCH_PARTY_COLOURS.join(' - '));if(!c.WATCH_PARTY_COLOURS.includes(arg))fail('unknown colour');c.setWatchPartyTheme(arg);log(`party colour: ${arg}`);});
     add('discord','/discord [login|logout]',arg=>{if(arg==='login')c.avatarPicker.querySelector('#chatDiscordAuthButton').click();else if(arg==='logout')document.getElementById('chatDiscordLogout')?.click();else log(c.discordUser?'discord connected':'discord not connected');});
     add('admin','/admin (party management)',()=>c.openPartyManager(),true);
-    async function submit(){const raw=input.value;if(password){password=false;input.type='text';input.value='';input.placeholder='type /help to start';try{if(await c.verifyAdminKey(raw.trim())){c.enableAdminMode(raw.trim());log('admin authenticated');}else log('incorrect admin key');}catch{log('authentication failed');}return;}if(!raw.startsWith('/')){if(raw.trim())await c.sendMessage();return;}input.value='';input.dispatchEvent(new Event('input',{bubbles:true}));const [word,...rest]=raw.trim().slice(1).split(/\s+/);const cmd=commands.get(word.toLowerCase());if(word.toLowerCase()!=='login'){history.push(raw);cursor=history.length;log(`${prompt.textContent} ${raw}`);}else if(rest.length){log('use /login without a password argument');return;}else log(`${prompt.textContent} /login`);try{if(!cmd||cmd.restricted&&!canAdmin())fail('unknown command; type /help');await cmd.fn(rest.join(' '));}catch(e){log(e.message||'command failed');}status();}
-    input.addEventListener('keydown',e=>{if(!active||e.isComposing)return;if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();e.stopImmediatePropagation();submit();}else if(!password&&e.ctrlKey&&e.key.toLowerCase()==='l'){e.preventDefault();clearLocal();}else if(!password&&['ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();cursor=Math.max(0,Math.min(history.length,cursor+(e.key==='ArrowUp'?-1:1)));input.value=history[cursor]||'';}else if(!password&&e.key==='Tab'&&/^\/\w*$/.test(input.value)){const matches=visibleCommands().filter(([k])=>k.startsWith(input.value.slice(1)));if(matches.length){e.preventDefault();if(matches.length===1)input.value=`/${matches[0][0]} `;else log(matches.map(([k])=>`/${k}`).join('  '));}}else if(e.key==='Escape'&&password){password=false;input.type='text';input.value='';input.placeholder='type /help to start';}},true);
+    async function submit(){const raw=input.value;if(password){password=false;input.type='text';input.value='';input.placeholder='';try{if(await c.verifyAdminKey(raw.trim())){c.enableAdminMode(raw.trim());log('admin authenticated');}else log('incorrect admin key');}catch{log('authentication failed');}return;}if(!raw.startsWith('/')){if(raw.trim())await c.sendMessage();return;}input.value='';input.dispatchEvent(new Event('input',{bubbles:true}));const [word,...rest]=raw.trim().slice(1).split(/\s+/);const cmd=commands.get(word.toLowerCase());if(word.toLowerCase()!=='login'){history.push(raw);cursor=history.length;log(`${prompt.textContent} ${raw}`);}else if(rest.length){log('use /login without a password argument');return;}else log(`${prompt.textContent} /login`);try{if(!cmd||cmd.restricted&&!canAdmin())fail('unknown command; type /help');await cmd.fn(rest.join(' '));}catch(e){log(e.message||'command failed');}status();}
+    input.addEventListener('keydown',e=>{if(!active||e.isComposing)return;if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();e.stopImmediatePropagation();submit();}else if(!password&&e.ctrlKey&&e.key.toLowerCase()==='l'){e.preventDefault();clearLocal();}else if(!password&&['ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();cursor=Math.max(0,Math.min(history.length,cursor+(e.key==='ArrowUp'?-1:1)));input.value=history[cursor]||'';}else if(!password&&e.key==='Tab'&&/^\/\w*$/.test(input.value)){const matches=visibleCommands().filter(([k])=>k.startsWith(input.value.slice(1)));if(matches.length){e.preventDefault();if(matches.length===1)input.value=`/${matches[0][0]} `;else log(matches.map(([k])=>`/${k}`).join('  '));}}else if(e.key==='Escape'&&password){password=false;input.type='text';input.value='';input.placeholder='';}},true);
     c.sendButton.addEventListener('click',e=>{if(active&&(password||input.value.startsWith('/'))){e.preventDefault();e.stopImmediatePropagation();submit();}},true);
     input.addEventListener('input',e=>{if(active&&(password||input.value.startsWith('/')))e.stopImmediatePropagation();},true);
     new MutationObserver(reconcile).observe(c.messages,{childList:true,subtree:true});
