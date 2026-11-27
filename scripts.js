@@ -5098,6 +5098,13 @@ function jamiArtBack() {
   jamiRenderArtGallery();
 }
 
+function jamiArtNoteTime(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return `${date.toLocaleDateString('en-GB')} ${date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })}`;
+}
+
 const jamiArtCommentApi = 'https://api.jmeow.co.uk/api/art/comments';
 let jamiArtCommentRequest = 0;
 
@@ -5113,7 +5120,7 @@ function jamiArtBindComments(wrap) {
     .then(comments => {
       if (requestId !== jamiArtCommentRequest || !section.isConnected) return;
       count.textContent = String(comments.length);
-      list.innerHTML = comments.length ? comments.map(comment => `<div class="jami-art-comment"><div class="jami-art-comment-name">${jamiArtEscape(comment.name)}</div><div class="jami-art-comment-text">${jamiArtEscape(comment.comment)}</div>${comment.reply ? `<div class="jami-art-comment-reply"><strong>jamie replied:</strong> ${jamiArtEscape(comment.reply)}</div>` : ''}</div>`).join('') : '';
+      list.innerHTML = comments.length ? comments.map(comment => `<div class="jami-art-comment"><div class="jami-art-comment-name">${jamiArtEscape(comment.name)}</div><div class="jami-art-comment-text">${jamiArtEscape(comment.comment)}</div>${comment.reply ? `<div class="jami-art-comment-reply"><strong>jamie replied:</strong> ${jamiArtEscape(comment.reply)}</div>` : ''}${jamiArtNoteTime(comment.created_at) ? `<div class="jami-art-comment-time">${jamiArtNoteTime(comment.created_at)}</div>` : ''}</div>`).join('') : '';
     })
     .catch(() => { if (section.isConnected) list.textContent = 'could not load notes'; });
   section.querySelector('[data-jami-comment-form]')?.addEventListener('submit', async event => {
