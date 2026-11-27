@@ -86,7 +86,7 @@
       const p = c.watchParty, q = p.queue || [], track = q.find(x=>x.videoId===p.currentVideoId);
       const playing = window.watchPartyPlayer?.getState()?.playing;
       const label = p.enabled ? `console · party on · ${track ? `${playing?'playing':'paused'}: ${track.title || track.videoId}`:'nothing playing'} · ${q.length} queued` : 'console · party off';
-      const heading = `cat chat — ${label}`;
+      const heading = `cat chat · ${label}`;
       if(title.textContent!==heading) title.textContent=heading;
       title.title=heading;
       const volume = document.getElementById('volumeSlider')?.value ?? '–';
@@ -120,7 +120,7 @@
         attachInput(); promptRow.append(c.avatarPicker);
         c.closeAvatarPicker(); c.closeEmojiPicker();
         if(c.watchPartyOpen) c.toggleWatchParty();
-        reconcile(); if(!localLines.length) log('connected to lounge · type /help to start');
+        reconcile(); if(!localLines.length) log('connected · type /help to start');
         c.messages.scrollTop=c.messages.scrollHeight; input.focus();
       } else {
         c.closeAvatarPicker(); c.closeEmojiPicker();
