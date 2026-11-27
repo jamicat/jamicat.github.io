@@ -17,12 +17,16 @@
     <ellipse cx="116" cy="49" rx="5.5" ry="2.5" fill="#e9afc4" opacity=".85"/>
     <path d="M126 49q4 4 7-1" fill="none" stroke="#47657e" stroke-width="1.3" stroke-linecap="round"/>
   </svg>`;
+  const pinkShark = shark.replace(/#(?:719bb6|92b7cf|d6e8ee|628aa5|47657e|e9afc4)/g, colour => ({
+    '#719bb6': '#c69bb5', '#92b7cf': '#e3b9cf', '#d6e8ee': '#f5e3eb',
+    '#628aa5': '#b58ba6', '#47657e': '#89677f', '#e9afc4': '#ef9fba'
+  })[colour]);
   const swimmers = [[12,110,43,0.82,0],[34,66,60,0.4,1],[66,125,52,0.86,1],[82,80,72,0.5,0],[5,48,82,0.31,1],[49,55,69,0.36,0]];
   swimmers.forEach(([depth,size,duration,alpha,reverse],i) => {
     const el = document.createElement('div');
     el.className = `lounge-shark${reverse ? ' reverse' : ''}`;
     el.style.cssText = `--depth:${depth}%;--size:${size}px;--duration:${duration}s;--delay:${-duration*(.17+i*.29)%duration}s;--alpha:${alpha};--direction:${reverse?-1:1};--rest:${(i*37+8)%86}%;`;
-    el.innerHTML = shark;
+    el.innerHTML = [0, 3, 4].includes(i) ? pinkShark : shark;
     ocean.append(el);
   });
   for (let i=0;i<30;i++) {
