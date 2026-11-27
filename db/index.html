@@ -361,7 +361,7 @@ uploadForm.addEventListener('submit',async event=>{
   const button = uploadForm.querySelector('button[type=submit]');
   const file = uploadForm.elements.original.files?.[0];
   if (!file) return;
-  if (file.size>8000000) {uploadStatus.textContent='images must be under 8 mb';return;}
+  if (file.size>20000000) {uploadStatus.textContent='images must be under 20 mb';return;}
   button.disabled=true;uploadStatus.textContent='making thumbnail...';
   try {
     const thumbnail = await makeArtworkThumbnail(file);
