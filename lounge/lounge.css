@@ -107,3 +107,11 @@ html[data-chat-theme="stars"] #chatWatchPartyPanel .lounge-party-volume input {a
 html[data-chat-theme="paws"] #chatWatchPartyPanel .lounge-party-volume input {accent-color:#f2a9c3;}
 html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatWatchPartyPanel {background:#0c121c!important;border:1px solid rgba(255,255,255,.12)!important;box-shadow:0 8px 24px rgba(0,0,0,.25)!important;color:#e4e7ed!important;}
 html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatWatchPartyPanel[data-theme="default"] [data-watch-party-heading] {color:#e4e7ed!important;text-shadow:none!important;}
+
+html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatSavedRemixManager {background:#0c121c!important;border:1px solid rgba(255,255,255,.12)!important;box-shadow:0 8px 24px rgba(0,0,0,.25)!important;color:#e4e7ed!important;}
+html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatSavedRemixManager .jami-saved-remix-header {background:rgba(255,255,255,.025)!important;border-bottom-color:rgba(255,255,255,.10)!important;}
+html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatSavedRemixManager .jami-saved-remix-title {color:#e4e7ed!important;text-shadow:none!important;}
+html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatSavedRemixManager .jami-saved-remix-card {background:rgba(255,255,255,.035)!important;border-color:rgba(255,255,255,.11)!important;}
+html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatSavedRemixManager :is(.jami-saved-remix-close,.jami-saved-remix-action) {background:rgba(255,255,255,.045)!important;border-color:rgba(255,255,255,.12)!important;color:rgba(255,255,255,.70)!important;}
+html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatSavedRemixManager :is(.jami-saved-remix-close,.jami-saved-remix-action):hover {background:rgba(255,255,255,.10)!important;border-color:rgba(255,255,255,.24)!important;color:#fff!important;}
+html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatSavedRemixManager .jami-saved-remix-delete:hover {border-color:rgba(248,113,113,.45)!important;color:rgb(254,202,202)!important;}
