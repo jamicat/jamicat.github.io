@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<script>
+if (window.location.hostname === "jamicat.github.io") {
+    window.location.replace(
+        "https://jmeow.co.uk" +
+        window.location.pathname +
+        window.location.search +
+        window.location.hash
+    );
+}
+</script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="a little lounge for chat and watch parties." name="description"/>
+<link href="/stylish.css?v=21" rel="stylesheet"/>
+<link href="/image-transfer.css?v=2" rel="stylesheet"/>
+<link href="/stylesheet.css" rel="stylesheet">
+<link href="/chat.css?v=v3" rel="stylesheet"/>
+<link href="https://jmeow.co.uk/lounge/" rel="canonical"/>
+</link><link href="./lounge.css" rel="stylesheet"/></head>
+<body class="bg-black h-screen w-screen overflow-hidden lounge-only">
+<canvas class="lounge-compat-hidden" id="canvas"></canvas>
+<div class="watch-party-cinematic" id="bgndVideo">
+<div class="absolute inset-0 bg-black z-0 bg-cover bg-center" id="videoPoster"></div>
+<div id="background-video-iframe" style="opacity: 0; transition: opacity 0.5s;"></div>
+</div>
+<canvas aria-hidden="true" id="jamiStarfield"></canvas>
+
+
+
+<div class="terminal absolute p-6 max-w-full w-[90vw] sm:w-[480px] rounded-3xl shadow-lg backdrop-blur-xl lounge-compat-hidden" id="terminal" style="z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+<div class="drag-area text-pink-600 text-xs mb-2 select-none flex justify-between items-center">
+<span class="flex items-center space-x-3">
+<img alt="avatar" class="avatar-icon terminal-expanded-only" id="mainAvatar" src="/acl.png"/>
+<span class="terminal-expanded-only theme-heading font-medium text-3xl mt-9 text-white text-2xl mt-4 mb-1 text-blue-glow" id="typed3">
+      Jamie
+    </span>
+<span class="theme-heading hidden text-xs font-bold tracking-widest text-white text-blue-glow" id="terminalMinimizedLabel">
+      jamie
+    </span>
+</span>
+<div class="flex items-center gap-2 mr-3 -mt-12">
+<div class="relative flex h-4 w-4 items-center justify-center">
+<button class="flex mt-1 ml-2 h-4 w-4 items-center justify-center text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none" id="changeTheme" type="button">
+<svg class="block h-4 w-4 fill-current" id="themeIcon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.6 11.6l-1.2-1.2c-0.8-0.2-2-0.1-2.7 1-0.8 1.1-0.3 2.8-1.7 4.6 0 0 3.5 0 4.8-1.3 1.2-1.2 1.2-2.2 1-3l-0.2-0.1z"></path>
+<path d="M5.8 8.1c-0.2 0.3-0.5 0.7-0.7 1 0 0.2-0.1 0.3-0.2 0.4l1.5 1.5c0.1-0.1 0.3-0.2 0.4-0.3 0.3-0.2 0.7-0.4 1-0.7 0.4 0 0.6-0.2 0.8-0.4l-2.2-2.2c-0.2 0.2-0.4 0.4-0.6 0.7z"></path>
+<path d="M15.8 0.2c-0.3-0.3-0.7-0.3-1-0.1 0 0-3 2.5-5.9 5.1-0.4 0.4-0.7 0.7-1.1 1-0.2 0.2-0.4 0.4-0.6 0.5l2.1 2.1c0.2-0.2 0.4-0.4 0.5-0.7 0.3-0.4 0.6-0.7 0.9-1.1 2.5-3 5.1-5.9 5.1-5.9 0.3-0.2 0.3-0.6 0-0.9z"></path>
+</svg>
+</button>
+<div class="absolute left-1/2 top-full mt-2 -translate-x-1/2 rounded-3xl bg-transparent text-sm text-white transition-all duration-300 py-2 px-3 flex flex-col gap-1 z-50 shadow-lg backdrop-blur-sm border border-white/5 min-w-[8rem] opacity-0 pointer-events-none invisible" id="tooltip">
+<button class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition" id="themePastel">pastel</button>
+<button class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition" id="themeHalloween">halloween</button>
+<button class="theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition" id="themeDefault">animal crossing</button>
+<button class="hidden theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition" id="themeStars">pixel cat</button>
+<button class="hidden theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition" id="themeCat">starcat</button>
+<button class="hidden theme-body text-white text-xs hover:bg-white/10 text-aquag-glow rounded px-2 py-1 transition" id="themeAero">sky</button>
+</div>
+</div>
+<button aria-expanded="true" aria-label="minimize terminal" class="flex h-4 w-4 items-center justify-center text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none" id="terminalMinimize" title="minimize terminal" type="button">
+<svg aria-hidden="true" class="block h-4 w-4 fill-current" id="terminalMinimizeIcon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 11h14v2H5z"></path>
+</svg>
+<svg aria-hidden="true" class="hidden block h-4 w-4 fill-current" id="terminalRestoreIcon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 7h10v10H7V7zm2 2v6h6V9H9z"></path>
+</svg>
+</button>
+</div>
+</div>
+<div class="terminal-expanded-only" id="terminalContent">
+<div class="font-medium text-pink-600 mt-5 mb-4 text-center" id="typed"></div>
+<div class="flex justify-center space-x-4 flex-wrap sm:flex-nowrap" id="buttonRow">
+<!--button id="aboutButton" class="terminal-button theme-body text-xs" onclick="siteFAQ()">about!</button-->
+<button class="terminal-button ml-2 theme-body text-xs" onclick="showArt()">gallery</button>
+<button class="terminal-button theme-body text-xs" onclick="showList()">music player</button>
+<button class="terminal-button ml-5 theme-body text-xs" onclick="showGuestBook()">guestbook</button>
+<button aria-controls="chatWindow" aria-pressed="true" class="terminal-button theme-body text-xs" onclick="toggleHomepageChat()" type="button">chat</button>
+</div>
+</div>
+</div>
+<section aria-label="playlist" class="local-playlist-window lounge-compat-hidden" hidden="" id="localPlaylistWindow">
+<header class="local-playlist-header">
+<span class="local-playlist-heading"><span aria-label="music cat" id="localPlaylistCat">≽ᖰ^-⩊-^ᖳ≼</span><span aria-hidden="true" id="localPlaylistNotes"></span> <span class="local-playlist-count" id="localPlaylistCount"></span></span>
+<span aria-hidden="true" class="local-playlist-cat-track" id="localPlaylistCatTrack"><span class="local-playlist-pixel-cat" id="localPlaylistPixelCat"></span></span>
+<div class="local-playlist-actions">
+<button aria-label="minimize playlist" id="localPlaylistMinimize" title="minimize" type="button"><svg aria-hidden="true" class="lp-minimize-icon" viewbox="0 0 24 24"><path d="M5 11h14v2H5z"></path></svg><svg aria-hidden="true" class="lp-restore-icon" viewbox="0 0 24 24"><path d="M7 7h10v10H7V7zm2 2v6h6V9H9z"></path></svg></button>
+<button aria-label="close playlist" id="localPlaylistClose" title="close" type="button">×</button>
+</div>
+</header>
+<div class="local-playlist-content" id="localPlaylistContent">
+<div class="local-playlist-now">
+<a aria-label="open video on youtube" class="local-playlist-artwork" href="https://www.youtube.com/" id="localPlaylistArtworkLink" rel="noopener noreferrer" target="_blank">
+<img alt="video thumbnail" id="localPlaylistArtwork" loading="lazy" referrerpolicy="no-referrer"/>
+</a>
+<div class="local-playlist-info">
+<a class="local-playlist-title" href="https://www.youtube.com/" id="localPlaylistTitle" rel="noopener noreferrer" target="_blank">no video selected</a>
+<a class="local-playlist-channel" href="https://www.youtube.com/" id="localPlaylistChannel" rel="noopener noreferrer" target="_blank"><img alt="" id="localPlaylistAvatar" loading="lazy"/><svg aria-hidden="true" class="local-playlist-channel-link" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l2-2a5 5 0 0 0-7.07-7.07l-1.15 1.15"></path><path d="M14 11a5 5 0 0 0-7.07 0l-2 2a5 5 0 0 0 7.07 7.07l1.15-1.15"></path></svg></a>
+</div>
+<button aria-label="favourite this video" class="local-playlist-heart" id="localPlaylistFavourite" title="favourite" type="button">♡</button>
+</div>
+<div class="local-playlist-seek-row">
+<span id="localPlaylistElapsed">0:00</span>
+<div class="local-playlist-seek-wrap" id="localPlaylistSeekWrap">
+<input aria-label="seek local video" id="localPlaylistSeek" max="1000" min="0" step="1" type="range" value="0"/>
+<span aria-hidden="true" class="local-playlist-note-thumb" id="localPlaylistNoteThumb">♫</span>
+<span aria-hidden="true" class="local-playlist-time-tip" id="localPlaylistCurrentTooltip">0:00</span>
+<span aria-hidden="true" class="local-playlist-time-tip local-playlist-hover-tip" id="localPlaylistHoverTooltip">0:00</span>
+</div>
+<span id="localPlaylistDuration">0:00</span>
+</div>
+<div aria-label="local playlist playback controls" class="local-playlist-transport" role="group">
+<button aria-label="shuffle" aria-pressed="false" id="localPlaylistShuffle" title="shuffle" type="button">⤨</button>
+<button aria-label="previous video" class="local-playlist-skip local-playlist-skip-back" id="localPlaylistPrevious" title="previous" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2V6z"></path></svg></button>
+<button aria-label="play" class="local-playlist-main-play" id="localPlaylistPlay" title="play" type="button"><svg aria-hidden="true" height="13" id="localPlaylistPlaySymbol" viewbox="0 0 24 24" width="13"><path class="lp-icon-play" d="M8 5v14l11-7z" fill="currentColor"></path><path class="lp-icon-pause" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"></path></svg></button>
+<button aria-label="next video" class="local-playlist-skip" id="localPlaylistNext" title="next" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2V6z"></path></svg></button>
+<button aria-label="replay" aria-pressed="false" id="localPlaylistRepeat" title="replay" type="button">↻</button>
+<label class="local-playlist-volume" title="volume"><svg aria-hidden="true" fill="none" height="12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="12"><path d="M11 5 6 9H3v6h3l5 4V5Z"></path><path d="M15 9a4 4 0 0 1 0 6"></path></svg><input aria-label="playlist volume" id="localPlaylistVolume" max="100" min="0" step="1" type="range" value="50"/></label>
+</div>
+<div class="local-playlist-list-heading">videos <span id="localPlaylistListCount"></span><span class="local-playlist-idle-message" hidden="" id="localPlaylistIdleMessage">waiting for tunes ♡</span></div>
+<div aria-label="playlist videos" class="local-playlist-tracks themed-scrollbar" id="localPlaylistTracks" role="list"></div>
+</div>
+</section>
+<div class="homepage-media-controls lounge-compat-hidden">
+<div class="volume-wrap">
+<svg class="volume-icon" fill="none" id="volumeIcon" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 5L6 9H3v6h3l5 4V5z" id="speakerBody" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M15.5 8.5a5 5 0 010 7" id="wave1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M18 6a8 8 0 010 12" id="wave2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M16 8L21 13" id="muteLine1" stroke-linecap="round" stroke-width="2" style="display:none"></path>
+<path d="M21 8L16 13" id="muteLine2" stroke-linecap="round" stroke-width="2" style="display:none"></path>
+</svg>
+<input id="volumeSlider" max="100" min="0" type="range" value="50"/>
+</div>
+<div aria-label="local playlist controls" class="local-playback-controls" id="localPlaybackControls" role="group">
+<button aria-label="play or pause local playlist" class="flex h-4 w-4 items-center justify-center text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none" id="videoToggle" title="play or pause" type="button">
+<svg class="block h-4 w-4 fill-current hidden" id="pauseIcon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+</svg>
+<svg class="block h-4 w-4 fill-current" id="playIcon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 5v14l11-7z"></path>
+</svg>
+</button>
+<button aria-label="skip to next track" class="flex h-4 w-4 items-center justify-center text-red-300 hover:text-cyan-400 transition-colors duration-200 text-lg leading-none" id="nextTrack" title="next track" type="button">
+<svg class="block h-4 w-4 fill-current" id="nextIcon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2V6z"></path>
+</svg>
+</button>
+</div>
+<div aria-hidden="true" class="normal-progress-wrap hidden" id="normalProgressWrap">
+<div class="normal-progress-tooltip normal-progress-current-tooltip" id="normalProgressCurrentTooltip" role="tooltip">
+    0:00
+</div>
+<div class="normal-progress-tooltip normal-progress-hover-tooltip" id="normalProgressTooltip" role="tooltip">
+    0:00
+</div>
+<input aria-label="song progress" id="normalProgressSlider" max="100000" min="0" step="1" type="range" value="0"/>
+</div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+<script defer="" src="/stars.js?v=4"></script>
+<script src="./lounge-player.js"></script>
+
+<script defer="" src="https://cdn.jsdelivr.net/npm/emoji-mart@5.6.0/dist/browser.js"></script>
+<script defer="" src="./lounge-chat.js"></script>
+</body>
+</html>

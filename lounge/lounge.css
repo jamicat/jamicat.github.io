@@ -1,0 +1,43 @@
+
+#chatWindow .jami-lounge-emoji-button { font-size:9px; color:rgba(255,255,255,.65); padding:0; margin-left:6px; }
+#chatWindow .jami-lounge-emoji-panel { position:absolute;top:45px;right:8px;width:min(290px,calc(100% - 16px));max-height:78%;overflow:auto;z-index:100;background:var(--chat-glass-bg,rgba(31,31,40,.96));color:inherit;border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:12px;backdrop-filter:blur(18px);box-shadow:0 8px 30px rgba(0,0,0,.38);font-size:10px; }
+#chatWindow .jami-lounge-emoji-heading {display:flex;justify-content:space-between;align-items:center;font-weight:bold;margin-bottom:8px;}
+#chatWindow .jami-lounge-emoji-heading button {font-size:17px;}
+#chatWindow .jami-lounge-emoji-items {display:grid;gap:5px;max-height:220px;overflow:auto;}
+#chatWindow .jami-lounge-emoji-row {display:flex;align-items:center;gap:8px;padding:5px;border-radius:6px;background:rgba(255,255,255,.05);}
+#chatWindow .jami-lounge-emoji-row img {width:28px;height:28px;object-fit:contain;}
+#chatWindow .jami-lounge-emoji-row span {flex:1;}
+#chatWindow .jami-lounge-emoji-row button {opacity:.8;}
+#chatWindow .jami-lounge-emoji-form {display:grid;gap:7px;margin-top:10px;}
+#chatWindow .jami-lounge-emoji-form input {width:100%;min-width:0;padding:6px;border:1px solid rgba(255,255,255,.18);border-radius:6px;background:rgba(0,0,0,.18);color:inherit;}
+#chatWindow .jami-lounge-emoji-form button {padding:7px;border:1px solid rgba(255,255,255,.25);border-radius:7px;background:rgba(255,255,255,.08);}
+#chatWindow[data-chat-theme="paws"] .jami-lounge-emoji-panel {background:rgba(93,54,80,.96);border-color:#f3b8ca;color:#ffeaf2;}
+#chatWindow[data-chat-theme="stars"] .jami-lounge-emoji-panel {background:rgba(36,31,67,.96);border-color:#b6a7eb;color:#f1eaff;}
+#chatWindow[data-chat-theme="original"] .jami-lounge-emoji-panel {background:rgba(83,57,50,.96);border-color:#f4d9b9;color:#fff1e4;}
+#chatWindow[data-lounge-theme="halloween"] .jami-lounge-emoji-panel {background:rgba(33,33,37,.97);border-color:#777;color:#eee;}
+#chatWindow[data-lounge-theme="halloween"] {background:rgba(23,23,27,.83)!important;border-color:rgba(195,195,195,.35)!important;}
+#chatWindow[data-lounge-theme="halloween"] #chatTitleBar {background:rgba(31,31,33,.8)!important;border-color:rgba(165,165,165,.24)!important;}
+#chatWindow[data-lounge-theme="halloween"] #chatTitle {color:#ededed!important;text-shadow:0 0 9px rgba(255,255,255,.15)!important;}
+#chatWindow[data-lounge-theme="halloween"] .chatMessage {color:#e3e3e3;}
+#chatWindow[data-lounge-theme="halloween"] button:hover {color:#fff;}
+body.lounge-only {background:#05050c!important;}
+body.lounge-only #chatWindow {display:flex!important;}
+body.lounge-only #jamiStarfield {display:block!important;}
+body.lounge-only #bgndVideo {display:block!important;}
+body.lounge-only #chatWindow {right:16px;bottom:16px;}
+body.lounge-only .lounge-compat-hidden {display:none!important;}
+
+#chatWindow .jami-lounge-avatar-upload {display:block;font-size:9px;margin:8px 0 0;width:100%;padding:5px 8px;border:1px solid rgba(255,255,255,.18);border-radius:6px;color:inherit;background:rgba(255,255,255,.06)}
+#chatWindow .jami-lounge-avatar-upload:disabled {opacity:.5}
+body.lounge-only #chatWindow .jami-lounge-emoji-button[hidden] {display:none!important}
+body.lounge-only #chatWindow {z-index:300!important}
+body.lounge-only .lounge-compat-hidden {position:absolute!important;visibility:hidden!important;pointer-events:none!important;opacity:0!important;width:1px!important;height:1px!important;overflow:hidden!important}
+body.lounge-only #terminal {display:none!important}
+
+#jamiStarfield {position:fixed!important;inset:0!important;z-index:0!important;pointer-events:none!important;opacity:1!important;}
+body.lounge-only #bgndVideo {z-index:1}
+#chatWindow[data-lounge-theme="halloween"] .jami-chat-theme-menu {background:rgba(30,30,32,.96)!important;border-color:rgba(205,205,205,.3)!important;}
+
+#chatWindow[data-lounge-theme="halloween"] .theme-body {color:#d5d5d7}
+#chatWindow[data-lounge-theme="halloween"] .jami-lounge-emoji-button {color:#d2d2d2}
+#chatWindow[data-lounge-theme="halloween"] .jami-lounge-avatar-upload {border-color:#777;color:#eee}
