@@ -18,6 +18,17 @@
     const avatarHome = c.avatarPicker.parentElement; const avatarNext = c.avatarPicker.nextSibling;
     const localLines = [];
     let clearedAt = -Infinity, inputHome = null, inputNext = null, entered = false;
+    let guiPosition = null, consolePosition = null;
+    const positionKeys = ['left','top','right','bottom','transform'];
+    const savePosition = () => ({styles:positionKeys.map(k=>[k,w.style.getPropertyValue(k),w.style.getPropertyPriority(k)]),x:w.dataset.x,y:w.dataset.y});
+    const restorePosition = pos => {
+      for(const [k,v,priority] of pos.styles) { if(v) w.style.setProperty(k,v,priority); else w.style.removeProperty(k); }
+      for(const k of ['x','y']) { if(pos[k]===undefined) delete w.dataset[k]; else w.dataset[k]=pos[k]; }
+    };
+    const storageKeys=['chat_x','chat_y','chat_left','chat_top'];
+    let guiStorage=null;
+    const saveGuiStorage=()=>{try{guiStorage=storageKeys.map(k=>[k,localStorage.getItem(k)]);}catch{}};
+    const restoreGuiStorage=()=>{try{for(const [k,v] of guiStorage||[]) {if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v);}}catch{}};
     const stamp = row => Number(row.dataset.timestamp) || 0;
     function attachInput() {
       if (!active || input.parentElement === promptRow) return;
@@ -90,12 +101,22 @@
     }
     function setMode(on) {
       if (on === active && entered) return;
+      if(on){guiPosition=savePosition();saveGuiStorage();}
+      else if(active){consolePosition=savePosition();}
       active=on; entered=true; w.classList.toggle('lounge-console-mode',on); document.body.classList.toggle('lounge-console-active',on);
       if (!on && password) { password=false; input.type='text'; input.value=''; }
       input.placeholder=on?'type /help to start':oldPlaceholder;
       try { localStorage.setItem('lounge_console_mode',String(on)); } catch {}
       if(on) {
         if(c.isMinimized) document.getElementById('chatMinimize')?.click();
+        if(consolePosition) restorePosition(consolePosition);
+        else {
+          for(const k of positionKeys) w.style.removeProperty(k);
+          w.style.left=`${Math.max(8,(innerWidth-w.offsetWidth)/2)}px`;
+          w.style.top=`${Math.max(8,(innerHeight-w.offsetHeight)/2)}px`;
+          w.style.right='auto';w.style.bottom='auto';w.dataset.x='0';w.dataset.y='0';
+        }
+        c.keepTitleBarInViewport();
         attachInput(); promptRow.append(c.avatarPicker);
         c.closeAvatarPicker(); c.closeEmojiPicker();
         if(c.watchPartyOpen) c.toggleWatchParty();
@@ -105,12 +126,17 @@
         c.closeAvatarPicker(); c.closeEmojiPicker();
         if(inputHome && input.parentElement===promptRow) inputHome.insertBefore(input, inputNext?.parentElement===inputHome ? inputNext : null);
         if(c.avatarPicker.parentElement===promptRow) avatarHome.insertBefore(c.avatarPicker, avatarNext?.parentElement===avatarHome ? avatarNext : null);
+        if(guiPosition){restorePosition(guiPosition);restoreGuiStorage();guiPosition=null;}
+        w.classList.remove('hidden');
+        w.style.removeProperty('display');
+        c.keepTitleBarInViewport();
         for(const line of localLines) line.remove();
         for(const row of c.messages.children) row.classList.remove('lounge-console-cleared');
       }
       status();
     }
-    toggle.addEventListener('click',()=>setMode(!active));
+    toggle.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();setMode(!active);});
+    window.addEventListener('pagehide',()=>{if(active)restoreGuiStorage();});
     const add=(name,usage,fn,restricted=false,publicUsage=usage)=>commands.set(name,{usage,fn,restricted,publicUsage});
     const canAdmin=()=>Boolean(c.isAdmin && c.adminKey);
     const visibleCommands=()=>[...commands].filter(([,v])=>!v.restricted||canAdmin());
