@@ -436,11 +436,11 @@ transition-[height] duration-200
             class="jami-chat-theme-menu invisible pointer-events-none opacity-0"
             role="menu"
         >
-            <button type="button" data-chat-theme-choice="original" role="menuitem">
-                original
-            </button>
             <button type="button" data-chat-theme-choice="vaporwave" role="menuitem">
                 vaporwave
+            </button>
+            <button type="button" data-chat-theme-choice="original" role="menuitem">
+                original
             </button>
             <button type="button" data-chat-theme-choice="halloween" role="menuitem">
                 halloween
@@ -22484,7 +22484,7 @@ keepTitleBarInViewport() {
 
     if (!nextTheme) {
         nextTheme =
-            "original";
+            "vaporwave";
     }
 
     this.applyChatTheme(
@@ -22547,7 +22547,7 @@ keepTitleBarInViewport() {
             themeName
         )
             ? themeName
-            : "original";
+            : "vaporwave";
 
     const previousTheme =
         this.window.dataset.loungeTheme ||
