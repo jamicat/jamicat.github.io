@@ -85,13 +85,13 @@
     function status() {
       const p = c.watchParty, q = p.queue || [], track = q.find(x=>x.videoId===p.currentVideoId);
       const playing = window.watchPartyPlayer?.getState()?.playing;
-      const label = p.enabled ? `console · party on · ${track ? `${playing?'playing':'paused'}: ${track.title || track.videoId}`:'nothing playing'} · ${q.length} queued` : 'console · party off';
-      const heading = `cat chat · ${label}`;
+      const label = p.enabled ? `party on · ${track ? `${playing?'playing':'paused'}: ${track.title || track.videoId}`:'nothing playing'} · ${q.length} queued` : 'party off';
+      const heading = p.enabled ? `cat chat · ${label}` : 'cat chat';
       if(title.textContent!==heading) title.textContent=heading;
       title.title=heading;
       const volume = document.getElementById('volumeSlider')?.value ?? '–';
       const state = window.watchPartyPlayer?.getState();
-      const bar = `${label.replace(/^console · /,'')} | vol: ${volume}%${p.enabled && track ? ` | ${Math.floor(state?.currentTime || 0)}/${Math.floor(state?.duration || 0)}s` : ''}`;
+      const bar = `${label} | vol: ${volume}%${p.enabled && track ? ` | ${Math.floor(state?.currentTime || 0)}/${Math.floor(state?.duration || 0)}s` : ''}`;
       if(statusBar.textContent!==bar) statusBar.textContent=bar;
       prompt.textContent = `${c.nameInput.value || 'guest'}@lounge:~$`;
       if(active) attachInput();
