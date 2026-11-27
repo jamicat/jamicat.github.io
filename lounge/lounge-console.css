@@ -54,3 +54,8 @@ html body #chatWindow#chatWindow.lounge-console-mode[data-chat-theme] :is(#loung
 
 html body.lounge-only #chatWindow#chatWindow.lounge-console-mode[data-chat-theme] #chatMembers .jami-member-presence{display:none!important}
 html body.lounge-only #chatWindow#chatWindow.lounge-console-mode[data-chat-theme] #chatMembers > div.text-white\/35{font-size:8px!important;line-height:1.4!important}
+
+html body.lounge-only #chatWindow#chatWindow.lounge-console-mode[data-chat-theme] #chatMain{position:relative!important;isolation:isolate;--console-member-width:88px}
+html body.lounge-only #chatWindow#chatWindow.lounge-console-mode[data-chat-theme] #chatMain::before{all:unset!important;content:""!important;display:block!important;position:absolute!important;right:var(--console-member-width)!important;bottom:0!important;width:150px!important;max-width:calc(100% - var(--console-member-width))!important;height:174px!important;max-height:100%!important;background:url("./console-neko.png") no-repeat center top / 100% auto!important;transform:scaleX(-1)!important;opacity:.26!important;pointer-events:none!important;z-index:0!important}
+html body.lounge-only #chatWindow#chatWindow.lounge-console-mode[data-chat-theme] :is(#chatMessages,#chatMembersPanel){position:relative!important;z-index:1!important}
+@media(max-width:600px){html body.lounge-only #chatWindow#chatWindow.lounge-console-mode[data-chat-theme] #chatMain{--console-member-width:76px}}
