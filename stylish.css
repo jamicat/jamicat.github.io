@@ -4303,7 +4303,7 @@ body.video-backdrop-active #jamiStarfield {
 .jami-gallery-folder-photo-2 { left:29%; top:7px; transform:rotate(9deg); z-index:2; }
 .jami-gallery-folder-photo-3 { left:20%; top:14px; transform:rotate(-1deg); z-index:3; }
 .jami-gallery-folder-base { position:absolute; display:block; z-index:0; bottom:0; left:6%; width:88%; height:35px; border-radius:5px 9px 8px 8px; border:1px solid var(--jg-border); background:var(--jg-photo); box-shadow:inset 0 1px 0 rgba(255,255,255,.11); }
-.jami-gallery-folder-base::before { content:""; position:absolute; top:-10px; left:0; width:45%; height:13px; border-radius:6px 8px 0 0; background:var(--jg-photo); border-top:1px solid var(--jg-border); }
+
 .jami-gallery-folder:hover .jami-gallery-folder-photo-1,.jami-gallery-folder:focus-visible .jami-gallery-folder-photo-1 { transform:translate(-4px,-5px) rotate(-16deg); }
 .jami-gallery-folder:hover .jami-gallery-folder-photo-2,.jami-gallery-folder:focus-visible .jami-gallery-folder-photo-2 { transform:translate(5px,-6px) rotate(14deg); }
 .jami-gallery-folder:hover .jami-gallery-folder-photo-3,.jami-gallery-folder:focus-visible .jami-gallery-folder-photo-3 { transform:translateY(-5px) rotate(0deg); }
