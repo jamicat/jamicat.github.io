@@ -82,3 +82,18 @@ html.theme-halloween[data-chat-theme="original"] #chatWindow #chatAvatarPicker .
 #chatWindow #chatAvatarPicker #chatDiscordAuthButton {
   min-height:27px;
 }
+
+/* Match the existing main-chat header controls, not the inherited site font. */
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitleBar .jami-lounge-emoji-button,
+html[data-chat-theme="stars"] #chatWindow[data-chat-theme="stars"] #chatTitleBar .jami-lounge-emoji-button {
+  font-family: "Nunito", sans-serif !important;
+  font-size: 9px !important;
+  font-weight: 650 !important;
+  letter-spacing: .015em !important;
+  line-height: 1 !important;
+  text-shadow: none !important;
+}
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitleBar .jami-lounge-emoji-button {color:#d76e82 !important;}
+html[data-chat-theme="stars"] #chatWindow[data-chat-theme="stars"] #chatTitleBar .jami-lounge-emoji-button {color:#ffffff !important;}
+html.theme-halloween[data-chat-theme="original"] #chatWindow #chatTitleBar .jami-lounge-emoji-button {font-family:"Nunito",sans-serif !important;}
+html.theme-halloween[data-chat-theme="original"] #chatWindow[data-lounge-theme="halloween"] .jami-lounge-emoji-panel {background:rgba(33,33,37,.97);border-color:#777;color:#eee;}
