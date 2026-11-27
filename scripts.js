@@ -629,7 +629,7 @@ if (typedEl) {
 const welcomeMessage = document.getElementById('welcomeMessage');
 if (welcomeMessage) {
   if (themeName === 'Pastel') {
-    welcomeMessage.innerHTML = pastelFullText('/ᐠ > ˕ <マ♡!', 0);
+    welcomeMessage.innerHTML = pastelFullText('/ᐠ > ˕ <マ', 0);
   } else if (themeName === 'Halloween') {
     welcomeMessage.innerHTML = halloweenLetterText('/ᐠ > ˕ <マ', 2);
   } else {
@@ -4935,11 +4935,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-const jamiArtEntries = [
+let jamiArtEntries = [
   { id: 'sona-teph', group: 'sona', title: 'jamie & teph', caption: 'happy burger', artist: 'saproena', url: 'art/sona/jamieteph.png', thumb: 'art/sona/jamieteph_thumb.jpg' },
   { id: 'sona-feara', group: 'sona', title: 'jamie & feara', caption: '', artist: 'haru', url: 'art/sona/jamiefeara.png', thumb: 'art/sona/feara_thumb.jpg' },
-  { id: 'kemono-jamie', group: 'kemono-commissions', title: 'Jamie kemonomimi!!', caption: '', artist: 'Tanuki', url: 'art/kemonomimi/1/Jamie.jpg', thumb: 'art/kemonomimi/1/Jamie_thumb.jpg' },
-  { id: 'kemono-jp', group: 'kemono-mine', title: 'pen sketch & colouring pencils', caption: '', artist: 'jamie', url: 'art/kemonomimi/2/JP.jpg', thumb: 'art/kemonomimi/2/JP_thumb.jpg' }
+  { id: 'kemono-jamie', group: 'kemono-commissions', title: 'Jamie kemonomimi!!', caption: '', artist: 'Tanuki', url: 'art/kemonomimi/1/Jamie.jpg', thumb: 'art/kemonomimi/1/Jamie_thumb.jpg' }
 ];
 
 const jamiArtGroups = {
@@ -4957,9 +4956,39 @@ const jamiArtStorageKey = 'jmeow-art-favourites-v1';
 let jamiArtFavourites = (() => {
   try {
     const saved = JSON.parse(localStorage.getItem(jamiArtStorageKey) || '[]');
-    return Array.isArray(saved) ? saved.filter(id => jamiArtEntries.some(art => art.id === id)) : [];
+    return Array.isArray(saved) ? saved.filter(id => typeof id === 'string') : [];
   } catch { return []; }
 })();
+
+const jamiOriginalArtEntries = [...jamiArtEntries];
+let jamiUploadedArtRequest = null;
+let jamiUploadedFolders = [];
+
+async function jamiLoadUploadedArt() {
+  if (jamiUploadedArtRequest) return jamiUploadedArtRequest;
+  jamiUploadedArtRequest = Promise.all([
+    fetch('https://api.jmeow.co.uk/api/gallery', { cache: 'no-store' }).then(response => { if (!response.ok) throw new Error('gallery unavailable'); return response.json(); }),
+    fetch('https://api.jmeow.co.uk/api/gallery/folders', { cache: 'no-store' }).then(response => response.ok ? response.json() : [])
+  ])
+    .then(([entries, folders]) => {
+      if (!Array.isArray(entries)) return;
+      jamiUploadedFolders = Array.isArray(folders) ? folders.filter(folder => /^custom-[0-9a-f-]{36}$/.test(folder.id) && typeof folder.name === 'string') : [];
+      const selectedId = jamiArtEntries[jamiArtSelected]?.id;
+      const uploaded = entries.filter(item =>
+        item && /^r2-[0-9a-f-]{36}$/.test(item.id) &&
+        (['sona', 'kemono-commissions'].includes(item.group) || jamiUploadedFolders.some(folder => folder.id === item.group)) &&
+        typeof item.title === 'string' && typeof item.url === 'string' && typeof item.thumb === 'string'
+      );
+      jamiArtEntries = [...jamiOriginalArtEntries, ...uploaded];
+      const nextSelected = jamiArtEntries.findIndex(item => item.id === selectedId);
+      if (nextSelected >= 0) jamiArtSelected = nextSelected;
+      else if (jamiArtView === 'viewer') jamiArtView = jamiArtPreviousView;
+      if (document.getElementById('artGallery')) jamiRenderArtGallery();
+    })
+    .catch(error => { console.warn('could not load uploaded artworks', error); })
+    .finally(() => { jamiUploadedArtRequest = null; });
+  return jamiUploadedArtRequest;
+}
 
 function jamiArtEscape(value) {
   return String(value ?? '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
@@ -4974,6 +5003,7 @@ function jamiArtInView(art) {
   if (jamiArtView === 'sona') return art.group === 'sona';
   if (jamiArtView === 'kemono-commissions' || jamiArtView === 'kemono-mine') return art.group === jamiArtView;
   if (jamiArtView === 'kemono') return art.group.startsWith('kemono-');
+  if (jamiArtView.startsWith('custom-')) return art.group === jamiArtView;
   return true;
 }
 
@@ -5118,10 +5148,10 @@ function jamiRenderArtGallery() {
   } else if (jamiArtView === 'home') {
     const sona = jamiArtEntries.filter(art => art.group === 'sona');
     const kemono = jamiArtEntries.filter(art => art.group.startsWith('kemono-'));
-    content = `<div class="jami-gallery-folders">${jamiArtFolder('sona', 'fursona', sona, 0)}${jamiArtFolder('kemono', 'kemonomimi', kemono, 1)}</div>`;
+    const custom = jamiUploadedFolders.map((folder, i) => jamiArtFolder(folder.id, jamiArtEscape(folder.name), jamiArtEntries.filter(art => art.group === folder.id), i + 2)).join('');
+    content = `<div class="jami-gallery-folders">${jamiArtFolder('sona', 'fursona', sona, 0)}${jamiArtFolder('kemono', 'kemonomimi', kemono, 1)}${custom}</div>`;
   } else if (jamiArtView === 'kemono') {
     const commissions = jamiArtEntries.filter(art => art.group === 'kemono-commissions');
-    const mine = jamiArtEntries.filter(art => art.group === 'kemono-mine');
     content = `<p class="jami-gallery-subtitle">kemonomimi</p><div class="jami-gallery-grid">${commissions.map((art, i) => jamiArtCard(art, i)).join('')}</div>`;
   } else if (jamiArtView === 'viewer') {
     const art = jamiArtEntries[jamiArtSelected];
@@ -5130,7 +5160,8 @@ function jamiRenderArtGallery() {
     content = `<div class="jami-gallery-viewer"><button class="jami-gallery-viewer-frame" type="button" data-jami-enlarge="true" aria-label="view ${jamiArtEscape(art.title)} fullscreen"><img src="${art.url}" alt="${jamiArtEscape(art.title)}"></button><div class="jami-gallery-caption"><strong class="jami-gallery-name">${jamiArtEscape(art.title)}</strong>${jamiArtHeart(art)}</div>${art.caption ? `<p class="jami-gallery-detail">${jamiArtEscape(art.caption)}</p>` : ''}${art.artist ? `<p class="jami-gallery-credit">${art.group.startsWith('kemono-') ? 'drawn by' : 'art by'} ${jamiArtEscape(art.artist)}</p>` : ''}<div class="jami-gallery-viewer-actions"><button type="button" data-jami-step="-1" ${siblings.length < 2 ? 'disabled' : ''} aria-label="previous artwork">‹</button><span>${at + 1} / ${siblings.length}</span><button type="button" data-jami-step="1" ${siblings.length < 2 ? 'disabled' : ''} aria-label="next artwork">›</button><a href="${art.url}" target="_blank" rel="noopener noreferrer">original ↗</a></div><section class="jami-art-comments" data-jami-comments="${jamiArtEscape(art.id)}" aria-label="artwork comments"><div class="jami-art-comments-head"><span>little notes</span><span data-jami-comment-count></span></div><div class="jami-art-comment-list" aria-live="polite">loading notes...</div><form class="jami-art-comment-form" data-jami-comment-form><input name="name" type="text" required maxlength="40" placeholder="your name" aria-label="your name"><textarea name="comment" required minlength="2" maxlength="500" rows="2" placeholder="leave a note..." aria-label="your comment"></textarea><input class="jami-art-honey" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true"><button type="submit">submit</button><span class="jami-art-comment-status" role="status"></span></form></section></div>`;
   } else {
     const entries = jamiArtEntries.filter(jamiArtInView);
-    content = `<p class="jami-gallery-subtitle">${jamiArtEscape(section?.title || '')}</p><div class="jami-gallery-grid">${entries.map((art, i) => jamiArtCard(art, i)).join('')}</div>`;
+    const label = jamiUploadedFolders.find(folder => folder.id === jamiArtView)?.name || section?.title || '';
+    content = `<p class="jami-gallery-subtitle">${jamiArtEscape(label)}</p><div class="jami-gallery-grid">${entries.map((art, i) => jamiArtCard(art, i)).join('')}</div>`;
   }
   wrap.innerHTML = `<div class="jami-gallery-header"><div class="jami-gallery-heading"><span>artworks!!</span><span class="jami-gallery-count">${total} pieces</span></div><button class="jami-gallery-heart jami-gallery-filter-toggle${jamiArtFavouritesOnly ? ' is-favourite' : ''}" type="button" data-jami-filter="true" aria-pressed="${jamiArtFavouritesOnly}" aria-label="${jamiArtFavouritesOnly ? 'show all artworks' : 'show favourites'}" title="${jamiArtFavouritesOnly ? 'show all' : 'your favourites'}">${jamiArtFavouritesOnly ? '♥' : '♡'}</button></div><div class="jami-gallery-scroll">${content}</div><div class="jami-gallery-footer"><button class="terminal-button jami-gallery-back" type="button" data-jami-back="true">back</button></div>`;
   wrap.querySelectorAll('[data-jami-folder]').forEach(button => button.addEventListener('click', () => {
@@ -5176,6 +5207,7 @@ function showArt() {
   jamiArtFavouritesOnly = false;
   setTerminalContent('<section id="artGallery" class="jami-gallery" aria-label="art gallery"></section>');
   jamiRenderArtGallery();
+  jamiLoadUploadedArt();
   applyTheme(localStorage.getItem('theme') || 'Halloween');
 }
 
@@ -5484,7 +5516,7 @@ guestBookWindow.id = 'guestBookWindow';
  <p id="welcomeMessage" class="text-blue-glow text-white theme-body text-sm"> /ᐠ > ˕ <マ </p> </div>
  <form id="guestbookForm" class="space-y-4 text-blue-100"> 
  <input id="name" type="text" name="name" placeholder="your name" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required /> 
- <textarea id="message" name="message" placeholder="leave a message..." class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
+ <textarea id="message" name="message" placeholder="message" class="theme-body text-xs w-full p-2 rounded bg-pink-100/10 text-pink-100 placeholder-blue-100/80" required ></textarea> 
  <div class="text-center"> 
  <button type="submit" class="theme-body text-xs terminal-button text-white guestbook-submit" > submit </button> 
  </div> 
