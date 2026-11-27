@@ -21,6 +21,6 @@ body:not([data-lounge-background="ocean"]) #loungeOcean *,body.video-backdrop-ac
 #loungeBackgroundPicker button:hover {background:rgba(255,255,255,.09);}
 #loungeBackgroundPicker button[aria-pressed="true"] {background:#344459;border-color:rgba(188,216,243,.35);}
 #loungeBackgroundPicker button:focus-visible {outline:2px solid #b7d8ef;outline-offset:2px;}
-body.lounge-watch-party-enabled #loungeBackgroundPicker {display:none;}
+body.video-backdrop-active #loungeBackgroundPicker {display:none;}
 @media(max-width:540px) {#loungeBackgroundPicker {top:max(10px,env(safe-area-inset-top));bottom:auto;left:max(10px,env(safe-area-inset-left));}}
 @media(prefers-reduced-motion:reduce) {#loungeOcean {transition:none;}#loungeOcean * {animation:none!important;}.lounge-shark {left:var(--rest);}.lounge-ocean-bubble {bottom:var(--rest);opacity:.55;}}
