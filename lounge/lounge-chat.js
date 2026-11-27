@@ -3833,10 +3833,7 @@ const hasWatchPartyVideo =
 </div>
 
 <div class="relative flex items-center gap-2">
-    <label class="lounge-party-volume no-drag" title="video volume">
-        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 9a4 4 0 0 1 0 6"/></svg>
-        <input type="range" min="0" max="100" step="1" data-lounge-party-volume aria-label="watch party video volume" value="${Math.max(0, Math.min(100, Number(loungeLocalStorage.getItem("volume") ?? 50) || 0))}" />
-    </label>
+
     <div
     id="watchPartyColourPicker"
     class="
@@ -4155,6 +4152,10 @@ const hasWatchPartyVideo =
         >
             0:00 / 0:00
         </span>
+    <label class="lounge-party-volume no-drag" title="video volume">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 9a4 4 0 0 1 0 6"/></svg>
+        <input type="range" min="0" max="100" step="1" data-lounge-party-volume aria-label="watch party video volume" value="${Math.max(0, Math.min(100, Number(loungeLocalStorage.getItem("volume") ?? 50) || 0))}" />
+    </label>
     </div>
 
             <div
@@ -25686,11 +25687,18 @@ keepTitleBarInViewport() {
         close.addEventListener("click",()=>panel.remove());head.append(title,close);panel.append(head);
         const items=document.createElement("div");items.className="jami-lounge-emoji-items";panel.append(items);
         const form=document.createElement("form");form.className="jami-lounge-emoji-form";
-        const name=document.createElement("input");name.placeholder="name, e.g. sharkdance";name.required=true;name.maxLength=32;name.pattern="[a-z0-9_-]{2,32}";
+        const name=document.createElement("input");name.placeholder="name, e.g. pikadance";name.required=true;name.maxLength=32;name.pattern="[a-z0-9_-]{2,32}";
         const file=document.createElement("input");file.type="file";file.accept="image/png,image/gif,image/webp";file.required=true;
+        const filePicker=document.createElement("label");filePicker.className="jami-lounge-emoji-file";
+        const fileButton=document.createElement("span");fileButton.className="jami-lounge-emoji-file-button";fileButton.textContent="choose file";
+        const fileName=document.createElement("span");fileName.className="jami-lounge-emoji-file-name";fileName.textContent="no file chosen";
+        file.setAttribute("aria-label","choose emoji file");
+        const updateFileName=()=>{fileName.textContent=file.files[0]?.name.toLowerCase()||"no file chosen";};
+        file.addEventListener("change",updateFileName);
+        filePicker.append(fileButton,fileName,file);
         const add=document.createElement("button");add.type="submit";add.textContent="add emoji";
         const status=document.createElement("div");status.className="jami-lounge-emoji-status";
-        form.append(name,file,add,status);panel.append(form);this.window.append(panel);
+        form.append(name,filePicker,add,status);panel.append(form);this.window.append(panel);
         const refresh=()=>{
             items.replaceChildren();
             for(const emoji of this.loungeEmojis.filter(e=>e.active)){
@@ -25713,7 +25721,7 @@ keepTitleBarInViewport() {
             try{
                 const response=await fetch(`${this.API}/api/lounge/emojis`,{method:"POST",headers:{"Authorization":`Bearer ${this.adminKey}`},body:payload});
                 if(!response.ok)throw new Error(await response.text());
-                name.value="";file.value="";
+                name.value="";file.value="";updateFileName();
                 await this.loadLoungeEmojis();refresh();status.textContent="added";
             }catch(error){status.textContent=error.message||"upload failed";}
         });
