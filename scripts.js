@@ -628,7 +628,11 @@ if (typedEl) {
 
 const welcomeMessage = document.getElementById('welcomeMessage');
 if (welcomeMessage && !welcomeMessage.dataset.submitting) {
-  welcomeMessage.textContent = '/ᐠ > ˕ <マ♡!!';
+  if (themeName === 'Pastel') {
+    welcomeMessage.innerHTML = pastelFullText('/ᐠ > ˕ <マ♡!!');
+  } else {
+    welcomeMessage.textContent = '/ᐠ > ˕ <マ♡!!';
+  }
 }
 
 const nameInput = document.getElementById('name');
@@ -5762,7 +5766,11 @@ welcomeMessage.dataset.submitting = "true";
 welcomeMessage.textContent = "ദ്ദി◝ ⩊ ◜.ᐟ";
 
   setTimeout(() => {
-    welcomeMessage.textContent = "/ᐠ > ˕ <マ♡!!";
+    if (localStorage.getItem('theme') === 'Pastel') {
+      welcomeMessage.innerHTML = pastelFullText('/ᐠ > ˕ <マ♡!!');
+    } else {
+      welcomeMessage.textContent = '/ᐠ > ˕ <マ♡!!';
+    }
     delete welcomeMessage.dataset.submitting;
   }, 5000);
   loadGuestbookComments();
