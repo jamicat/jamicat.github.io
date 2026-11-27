@@ -5122,7 +5122,7 @@ function jamiRenderArtGallery() {
   } else if (jamiArtView === 'kemono') {
     const commissions = jamiArtEntries.filter(art => art.group === 'kemono-commissions');
     const mine = jamiArtEntries.filter(art => art.group === 'kemono-mine');
-    content = `<p class="jami-gallery-subtitle">kemonomimi</p><div class="jami-gallery-grid">${commissions.map((art, i) => jamiArtCard(art, i)).join('')}</div><h3 class="jami-gallery-section-title">drawn by me</h3><div class="jami-gallery-grid">${mine.map((art, i) => jamiArtCard(art, i)).join('')}</div>`;
+    content = `<p class="jami-gallery-subtitle">kemonomimi</p><div class="jami-gallery-grid">${commissions.map((art, i) => jamiArtCard(art, i)).join('')}</div>`;
   } else if (jamiArtView === 'viewer') {
     const art = jamiArtEntries[jamiArtSelected];
     const siblings = jamiArtEntries.filter(entry => entry.group === art.group);
