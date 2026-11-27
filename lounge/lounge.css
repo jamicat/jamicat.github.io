@@ -107,5 +107,5 @@ html.theme-halloween[data-chat-theme="original"] #chatWindow[data-lounge-theme="
 #chatWatchPartyPanel .lounge-party-volume input {width:56px;min-width:0;margin:0;padding:0;}
 html[data-chat-theme="stars"] #chatWatchPartyPanel .lounge-party-volume input {accent-color:#cbb9fa;}
 html[data-chat-theme="paws"] #chatWatchPartyPanel .lounge-party-volume input {accent-color:#f2a9c3;}
-html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatWatchPartyPanel[data-theme="default"] {background:#0c121c!important;border-color:rgba(255,255,255,.12)!important;box-shadow:0 8px 24px rgba(0,0,0,.25)!important;color:#e4e7ed!important;}
+html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatWatchPartyPanel {background:#0c121c!important;border:1px solid rgba(255,255,255,.12)!important;box-shadow:0 8px 24px rgba(0,0,0,.25)!important;color:#e4e7ed!important;}
 html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatWatchPartyPanel[data-theme="default"] [data-watch-party-heading] {color:#e4e7ed!important;text-shadow:none!important;}
