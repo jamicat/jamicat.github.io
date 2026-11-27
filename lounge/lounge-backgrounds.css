@@ -1,0 +1,26 @@
+#loungeOcean {
+  position:fixed;inset:0;z-index:1;overflow:hidden;pointer-events:none;
+  background:radial-gradient(ellipse at 45% -15%,#28536a 0%,transparent 65%),linear-gradient(170deg,#142f45,#0a192e 65%,#080f20);
+  opacity:0;visibility:hidden;transition:opacity 350ms ease,visibility 350ms;
+}
+body[data-lounge-background="ocean"]:not(.video-backdrop-active) #loungeOcean {opacity:1;visibility:visible;}
+body[data-lounge-background="ocean"] #jamiStarfield,body[data-lounge-background="none"] #jamiStarfield {visibility:hidden;opacity:0;}
+#loungeOcean::before {content:"";position:absolute;inset:-20% -15% 0;background:repeating-linear-gradient(112deg,transparent 0 12%,rgba(156,224,243,.045) 15%,transparent 22%);transform:rotate(-8deg);}
+.lounge-shark {position:absolute;top:var(--depth);left:0;width:var(--size);opacity:var(--alpha);animation:lounge-shark-swim var(--duration) linear infinite;animation-delay:var(--delay);}
+.lounge-shark svg {display:block;width:100%;overflow:visible;transform:scaleX(var(--direction));}
+.lounge-shark-tail {transform-origin:36px 44px;animation:lounge-shark-tail 1.2s ease-in-out infinite alternate;}
+.lounge-shark.reverse {animation-name:lounge-shark-reverse;}
+.lounge-ocean-bubble {position:absolute;bottom:-20px;left:var(--x);width:var(--size);height:var(--size);border:1px solid rgba(173,224,243,.35);border-radius:50%;box-shadow:inset 1px 1px 2px rgba(214,243,255,.15);animation:lounge-bubble-rise var(--duration) linear infinite;animation-delay:var(--delay);}
+@keyframes lounge-shark-swim {0%{transform:translate3d(-180px,0,0)}25%{transform:translate3d(25vw,-14px,0)}50%{transform:translate3d(50vw,6px,0)}75%{transform:translate3d(75vw,-12px,0)}100%{transform:translate3d(calc(100vw + 180px),0,0)}}
+@keyframes lounge-shark-reverse {0%{transform:translate3d(calc(100vw + 180px),0,0)}25%{transform:translate3d(75vw,-12px,0)}50%{transform:translate3d(50vw,6px,0)}75%{transform:translate3d(25vw,-14px,0)}100%{transform:translate3d(-180px,0,0)}}
+@keyframes lounge-shark-tail {from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
+@keyframes lounge-bubble-rise {0%{transform:translate3d(0,0,0);opacity:0}10%{opacity:.8}85%{opacity:.7}100%{transform:translate3d(25px,-110vh,0);opacity:0}}
+body:not([data-lounge-background="ocean"]) #loungeOcean *,body.video-backdrop-active #loungeOcean *,body.lounge-background-inactive #loungeOcean * {animation-play-state:paused;}
+#loungeBackgroundPicker {position:fixed;bottom:max(16px,env(safe-area-inset-bottom));left:max(16px,env(safe-area-inset-left));z-index:200;display:flex;gap:4px;padding:5px;border:1px solid rgba(190,210,235,.18);border-radius:999px;background:rgba(12,18,28,.88);backdrop-filter:blur(12px);box-shadow:0 5px 18px rgba(0,0,0,.22);}
+#loungeBackgroundPicker button {display:grid;place-items:center;width:32px;height:32px;border-radius:50%;color:#e4e7ed;font-size:16px;line-height:1;border:1px solid transparent;background:transparent;cursor:pointer;}
+#loungeBackgroundPicker button:hover {background:rgba(255,255,255,.09);}
+#loungeBackgroundPicker button[aria-pressed="true"] {background:#344459;border-color:rgba(188,216,243,.35);}
+#loungeBackgroundPicker button:focus-visible {outline:2px solid #b7d8ef;outline-offset:2px;}
+body.lounge-watch-party-enabled #loungeBackgroundPicker {display:none;}
+@media(max-width:540px) {#loungeBackgroundPicker {top:max(10px,env(safe-area-inset-top));bottom:auto;left:max(10px,env(safe-area-inset-left));}}
+@media(prefers-reduced-motion:reduce) {#loungeOcean {transition:none;}#loungeOcean * {animation:none!important;}.lounge-shark {left:var(--rest);}.lounge-ocean-bubble {bottom:var(--rest);opacity:.55;}}
