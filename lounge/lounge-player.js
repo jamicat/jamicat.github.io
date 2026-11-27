@@ -2177,6 +2177,7 @@ function applyWatchPartyState(state) {
     watchPartyState.enabled
         ? "watch-party"
         : "normal";
+  document.body.classList.toggle("lounge-watch-party-enabled", watchPartyState.enabled);
   updateLocalPlaylistWindowVisibility();
 
   window.setHomepageSocialLinksVisible?.(
