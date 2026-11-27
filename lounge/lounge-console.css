@@ -20,7 +20,7 @@ html body #chatWindow.lounge-console-mode[data-chat-theme] .chatMessage[data-con
 html body #chatWindow.lounge-console-mode[data-chat-theme] #chatMembersPanel{display:flex!important;flex:0 0 88px!important;width:88px!important;border:0!important;border-left:1px solid #39393d!important;padding:8px!important;font:12px/1.5 "Nunito",sans-serif!important}
 html body #chatWindow.lounge-console-mode[data-chat-theme] #chatMembersPanel *{font-family:"Nunito",sans-serif!important;text-shadow:none!important;letter-spacing:normal!important}
 html body #chatWindow.lounge-console-mode[data-chat-theme] #chatMembers img{display:none!important}
-html body #chatWindow.lounge-console-mode[data-chat-theme] #chatMembers{font-size:12px!important;scrollbar-width:thin;scrollbar-color:#454549 #101012}
+html body #chatWindow.lounge-console-mode[data-chat-theme] #chatMembers{font-size:8px!important;scrollbar-width:thin;scrollbar-color:#454549 #101012}
 html body #chatWindow.lounge-console-mode[data-chat-theme] .lounge-console-local{display:block;white-space:pre-wrap;overflow-wrap:anywhere;color:#83d9a4;font:12px/1.4 "Nunito",sans-serif;padding:1px 0}
 html body #chatWindow.lounge-console-mode[data-chat-theme] .lounge-console-cleared{display:none!important}
 html body #chatWindow.lounge-console-mode[data-chat-theme] #loungeConsoleStatus{display:block;flex:none;background:rgba(35,35,38,.55);color:#bdbdc2;border-top:1px solid #39393d;padding:3px 10px;font:11px/1.5 "Nunito",sans-serif;overflow-wrap:anywhere}
@@ -49,3 +49,5 @@ html body #chatWindow#chatWindow.lounge-console-mode[data-chat-theme] #chatMotd{
 html body #chatWindow#chatWindow.lounge-console-mode[data-chat-theme] #loungeConsoleStatus{font-size:10px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:2px 9px}
 
 html body.lounge-only #chatWindow.lounge-console-mode[data-chat-theme]{background-image:linear-gradient(140deg,rgba(255,255,255,.065),transparent 60%)!important}
+
+html body.lounge-only #chatWindow#chatWindow.lounge-console-mode[data-chat-theme] #chatMembers > div > span:not(.jami-member-presence){font-size:8px!important;line-height:1.4!important}
