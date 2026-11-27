@@ -1436,6 +1436,7 @@ setupAdminAuthentication() {
     this.adminKey = key;
     this.isAdmin = true;
     this.loungeEmojiUpdate?.();
+    if (this.avatarGrid) this.renderAvatarPicker();
 
     loungeSessionStorage.setItem(
         "chat_admin_key",
@@ -1454,6 +1455,7 @@ setupAdminAuthentication() {
     this.adminKey = "";
     this.isAdmin = false;
     this.loungeEmojiUpdate?.();
+    if (this.avatarGrid) this.renderAvatarPicker();
     this.loungeEmojiPanel?.remove();
 
     loungeSessionStorage.removeItem(
@@ -21486,7 +21488,7 @@ renderAvatarPicker() {
             this.selectAvatar(filename);
         });
 
-        if (filename.startsWith("lounge_")) {
+        if (filename.startsWith("lounge_") && this.isAdmin && this.adminKey) {
             const wrap = document.createElement("span");
             wrap.className = "jami-lounge-avatar-choice";
             const remove = document.createElement("button");
@@ -21497,9 +21499,10 @@ renderAvatarPicker() {
             remove.setAttribute("aria-label", "delete uploaded avatar");
             remove.addEventListener("click", async event => {
                 event.stopPropagation();
+                if (!this.isAdmin || !this.adminKey) return;
                 if (!confirm("delete this uploaded avatar?")) return;
                 const reply = await fetch(`${this.API}/api/lounge/avatars/${encodeURIComponent(filename)}`, {
-                    method: "DELETE", headers: {"X-Chat-Client-Id": this.clientId}
+                    method: "DELETE", headers: {"Authorization": `Bearer ${this.adminKey}`, "X-Chat-Client-Id": this.clientId}
                 });
                 if (!reply.ok) { alert(await reply.text()); return; }
                 this.loungeUploadedAvatars = (this.loungeUploadedAvatars || []).filter(item => item !== filename);
@@ -22583,7 +22586,7 @@ keepTitleBarInViewport() {
     document.documentElement
         .setAttribute(
             "data-chat-theme",
-            cleaned
+            visualTheme
         );
 
     if (
