@@ -4714,3 +4714,10 @@ body:has(.lg-backdrop.in) .homepage-social-links {
 #guestbookComments .gb-entry .gb-timestamp {
   font-size: 7px !important;
 }
+
+#guestbookComments .gb-entry .gb-timestamp {
+  font-size: 7px !important;
+  font-weight: 400 !important;
+  transform: scale(0.8);
+  transform-origin: right center;
+}
