@@ -29,8 +29,6 @@ body.lounge-only #chatWindow {z-index:300!important}
 body.lounge-only .lounge-compat-hidden {position:absolute!important;visibility:hidden!important;pointer-events:none!important;opacity:0!important;width:1px!important;height:1px!important;overflow:hidden!important}
 body.lounge-only #terminal {display:none!important}
 
-#jamiStarfield {position:fixed!important;inset:0!important;z-index:0!important;pointer-events:none!important;opacity:1!important;}
-body.lounge-only #bgndVideo {z-index:1}
 
 
 #chatWindow .jami-lounge-emoji-panel {font-family:inherit;}
