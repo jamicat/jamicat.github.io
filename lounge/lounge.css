@@ -115,3 +115,193 @@ html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatSav
 html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatSavedRemixManager :is(.jami-saved-remix-close,.jami-saved-remix-action) {background:rgba(255,255,255,.045)!important;border-color:rgba(255,255,255,.12)!important;color:rgba(255,255,255,.70)!important;}
 html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatSavedRemixManager :is(.jami-saved-remix-close,.jami-saved-remix-action):hover {background:rgba(255,255,255,.10)!important;border-color:rgba(255,255,255,.24)!important;color:#fff!important;}
 html:not(.theme-halloween)[data-chat-theme="original"] body.lounge-only #chatSavedRemixManager .jami-saved-remix-delete:hover {border-color:rgba(248,113,113,.45)!important;color:rgb(254,202,202)!important;}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) {
+    --chat-glass-bg:rgba(28,16,46,.95);
+    background:rgba(14,10,24,.58)!important;
+    background-image:linear-gradient(145deg,rgba(255,113,206,.10),rgba(255,113,206,.02) 28%,rgba(1,205,254,.02) 60%,rgba(185,103,255,.10)),radial-gradient(circle at 50% 110%,rgba(255,251,150,.10),rgba(255,113,206,.08) 12%,transparent 26%)!important;
+    border:1px solid rgba(190,176,216,.34)!important;
+    box-shadow:0 5px 20px rgba(2,3,10,.34),0 0 0 1px rgba(1,205,254,.08),0 0 22px rgba(185,103,255,.10)!important;
+    backdrop-filter:blur(4px)!important;
+    -webkit-backdrop-filter:blur(4px)!important;
+    color:#efe9f7!important;
+    font-family:"Nunito",sans-serif!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) :is(.theme-body,.theme-heading,button,input,textarea,.chatText,.chatMessageName) {
+    font-family:"Nunito",sans-serif!important;
+    text-shadow:none!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatTitleBar {
+    background:linear-gradient(90deg,rgba(255,113,206,.14),rgba(185,103,255,.08) 38%,rgba(1,205,254,.10))!important;
+    border-bottom-color:rgba(190,176,216,.24)!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatTitle.theme-heading {
+    color:#ffe7f6!important;
+    font-family:"Nunito",sans-serif!important;
+    text-shadow:none!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatTitleBar :is(#chatMembersToggle,#chatThemeButton,#chatBanManagerButton,#chatPartyManagerButton,#chatMinimize,.jami-lounge-emoji-button) {
+    color:#d7c5e9!important;
+    text-shadow:none!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatTitleBar :is(#chatMembersToggle,#chatThemeButton,#chatBanManagerButton,#chatPartyManagerButton,#chatMinimize,.jami-lounge-emoji-button):hover {
+    color:#8ff6ff!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatMotd {
+    background:linear-gradient(90deg,rgba(1,205,254,.08),rgba(255,113,206,.05))!important;
+    border-bottom-color:rgba(190,176,216,.20)!important;
+    color:#d7c5e9!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatMotd span {
+    color:#efe9f7!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatMain {
+    position:relative!important;
+    isolation:isolate;
+    --vaporwave-member-width:112px;
+    background:transparent!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatMain:has(#chatMembersPanel.hidden) {
+    --vaporwave-member-width:0px;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatMain::before {
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    right:var(--vaporwave-member-width)!important;
+    bottom:0!important;
+    width:150px!important;
+    max-width:calc(100% - var(--vaporwave-member-width))!important;
+    height:174px!important;
+    max-height:100%!important;
+    background:url("./console-neko.png") no-repeat center top / 100% auto!important;
+    transform:scaleX(-1)!important;
+    opacity:.26!important;
+    pointer-events:none!important;
+    z-index:0!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatMain > :is(#chatMessages,#chatMembersPanel) {
+    position:relative!important;
+    z-index:1!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatMessages {
+    background:transparent!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatMembersPanel {
+    background:rgba(185,103,255,.035)!important;
+    border-left-color:rgba(190,176,216,.20)!important;
+    color:#d7c5e9!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatMembersPanel .theme-heading {
+    color:#e3c9ef!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) .chatMessageName {
+    color:#8ff6ff!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) .chatText {
+    color:#efe9f7!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) :is(.chatTime,.chatContinuationTime,#chatTyping) {
+    color:#c1b5d0!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) #chatControls {
+    background:linear-gradient(90deg,rgba(255,113,206,.055),rgba(185,103,255,.06),rgba(1,205,254,.045))!important;
+    border-top-color:rgba(190,176,216,.24)!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) :is(.jami-original-name-input,.jami-original-message-input,.jami-cute-message-shell,.jami-cute-avatar-button,.jami-original-image-button,.jami-original-emoji-button,#chatWatchPartyButton,.jami-original-send-button) {
+    background:rgba(28,16,46,.36)!important;
+    border-color:rgba(190,176,216,.29)!important;
+    color:#efe9f7!important;
+    box-shadow:none!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) :is(.jami-original-name-input,.jami-original-message-input)::placeholder {
+    color:#b7acc4!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) .jami-original-send-button {
+    background:linear-gradient(90deg,rgba(255,113,206,.15),rgba(185,103,255,.12),rgba(1,205,254,.10))!important;
+    color:#ffe7f6!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) :is(.jami-original-send-button,.jami-cute-avatar-button,.jami-original-image-button,.jami-original-emoji-button,#chatWatchPartyButton):hover {
+    border-color:rgba(255,113,206,.55)!important;
+    color:#8ff6ff!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) :is(.jami-original-name-input,.jami-original-message-input):focus {
+    border-color:rgba(1,205,254,.48)!important;
+    caret-color:#8ff6ff!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) :is(#chatMessages,#chatMembers) {
+    scrollbar-color:rgba(185,103,255,.55) transparent!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only #chatWindow[data-lounge-theme="vaporwave"]:not(.lounge-console-mode) :is(#chatMessages,#chatMembers)::-webkit-scrollbar-thumb {
+    background:rgba(185,103,255,.48)!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only:not(.lounge-console-active) :is(#chatAvatarPicker,#chatThemeMenu,#chatEmojiPicker,#chatReactionEmojiPicker,.jami-lounge-emoji-panel,.jami-admin-glass-panel,.jami-chat-context-menu,#chatSavedRemixManager,.jami-name-history-manager,.jami-emoji-combine-menu,#chatWatchPartyVisualizerMenu,.watch-party-visualizer-window) {
+    background:linear-gradient(145deg,rgba(45,23,63,.96),rgba(18,15,33,.96))!important;
+    border-color:rgba(190,176,216,.34)!important;
+    box-shadow:0 8px 24px rgba(2,3,10,.4),0 0 16px rgba(185,103,255,.12)!important;
+    color:#efe9f7!important;
+    font-family:"Nunito",sans-serif!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only:not(.lounge-console-active) :is(#chatThemeMenu,.jami-chat-context-menu,.jami-admin-glass-panel,#chatAvatarPicker) button {
+    color:#e3c9ef!important;
+    text-shadow:none!important;
+    font-family:"Nunito",sans-serif!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only:not(.lounge-console-active) #chatThemeMenu button:is(:hover,.is-active) {
+    background:rgba(185,103,255,.17)!important;
+    color:#8ff6ff!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only:not(.lounge-console-active) #chatWatchPartyPanel {
+    background:linear-gradient(145deg,rgba(45,23,63,.80),rgba(18,15,33,.84))!important;
+    border:1px solid rgba(190,176,216,.34)!important;
+    box-shadow:0 8px 24px rgba(2,3,10,.34),0 0 16px rgba(185,103,255,.12)!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only:not(.lounge-console-active) #chatWatchPartyPanel[data-theme="default"] :is([data-watch-party-heading],.theme-heading,.theme-body) {
+    color:#e3c9ef!important;
+    text-shadow:none!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only:not(.lounge-console-active) #chatWatchPartyPanel[data-theme="default"] .lounge-party-volume input {
+    accent-color:#c9a0ec;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only:not(.lounge-console-active) #chatSavedRemixManager :is(.jami-saved-remix-header,.jami-saved-remix-card,.jami-saved-remix-close,.jami-saved-remix-action) {
+    background:rgba(185,103,255,.08)!important;
+    border-color:rgba(190,176,216,.24)!important;
+    color:#efe9f7!important;
+}
+
+html[data-lounge-chat-theme="vaporwave"] body.lounge-only:not(.lounge-console-active) #chatSavedRemixManager .jami-saved-remix-title {
+    color:#ffe7f6!important;
+    text-shadow:none!important;
+}
