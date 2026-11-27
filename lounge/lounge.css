@@ -61,7 +61,6 @@ body.lounge-only #bgndVideo {z-index:1}
 #chatWindow[data-chat-theme="stars"] .jami-lounge-emoji-button {color:rgba(247,244,255,.58) !important;}
 html.theme-halloween[data-chat-theme="original"] #chatWindow .jami-lounge-emoji-button {color:rgba(218,218,218,.62) !important;}
 #chatWindow .jami-lounge-emoji-button:hover {color: #fff !important;}
-#chatWindow[data-chat-theme="paws"] .jami-lounge-emoji-button:hover {color:#a94f6b !important;}
 #chatWindow .jami-lounge-avatar-upload { display:block; width:100%; font-family:inherit; }
 #chatWindow .jami-lounge-avatar-upload:disabled {opacity:.5;}
 #chatWindow #chatAvatarGrid .jami-lounge-avatar-choice {aspect-ratio:1; width:100%; min-height:0;}
@@ -83,9 +82,8 @@ html.theme-halloween[data-chat-theme="original"] #chatWindow #chatAvatarPicker .
   min-height:27px;
 }
 
-/* Match the existing main-chat header controls, not the inherited site font. */
-html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitleBar .jami-lounge-emoji-button,
-html[data-chat-theme="stars"] #chatWindow[data-chat-theme="stars"] #chatTitleBar .jami-lounge-emoji-button {
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitleBar button.jami-lounge-emoji-button:not(#chatMinimize),
+html[data-chat-theme="stars"] #chatWindow[data-chat-theme="stars"] #chatTitleBar button.jami-lounge-emoji-button:not(#chatMinimize) {
   font-family: "Nunito", sans-serif !important;
   font-size: 9px !important;
   font-weight: 650 !important;
@@ -93,7 +91,7 @@ html[data-chat-theme="stars"] #chatWindow[data-chat-theme="stars"] #chatTitleBar
   line-height: 1 !important;
   text-shadow: none !important;
 }
-html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitleBar .jami-lounge-emoji-button {color:#d76e82 !important;}
-html[data-chat-theme="stars"] #chatWindow[data-chat-theme="stars"] #chatTitleBar .jami-lounge-emoji-button {color:#ffffff !important;}
+html[data-chat-theme="paws"] #chatWindow[data-chat-theme="paws"] #chatTitleBar button.jami-lounge-emoji-button:not(#chatMinimize) {color:#d76e82 !important;}
+html[data-chat-theme="stars"] #chatWindow[data-chat-theme="stars"] #chatTitleBar button.jami-lounge-emoji-button:not(#chatMinimize) {color:#ffffff !important;}
 html.theme-halloween[data-chat-theme="original"] #chatWindow #chatTitleBar .jami-lounge-emoji-button {font-family:"Nunito",sans-serif !important;}
 html.theme-halloween[data-chat-theme="original"] #chatWindow[data-lounge-theme="halloween"] .jami-lounge-emoji-panel {background:rgba(33,33,37,.97);border-color:#777;color:#eee;}
