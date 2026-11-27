@@ -627,14 +627,8 @@ if (typedEl) {
 }
 
 const welcomeMessage = document.getElementById('welcomeMessage');
-if (welcomeMessage) {
-  if (themeName === 'Pastel') {
-    welcomeMessage.innerHTML = pastelFullText('', 0);
-  } else if (themeName === 'Halloween') {
-    welcomeMessage.innerHTML = halloweenLetterText('', 2);
-  } else {
-    welcomeMessage.textContent = '';
-  }
+if (welcomeMessage && !welcomeMessage.dataset.submitting) {
+  welcomeMessage.textContent = '/ᐠ > ˕ <マ♡!!';
 }
 
 const nameInput = document.getElementById('name');
@@ -5764,10 +5758,12 @@ body: JSON.stringify(data),
 document.getElementById("name").value = "";
 document.getElementById("message").value = "";
 const welcomeMessage = document.getElementById("welcomeMessage");
+welcomeMessage.dataset.submitting = "true";
 welcomeMessage.textContent = "ദ്ദി◝ ⩊ ◜.ᐟ";
 
   setTimeout(() => {
     welcomeMessage.textContent = "/ᐠ > ˕ <マ♡!!";
+    delete welcomeMessage.dataset.submitting;
   }, 5000);
   loadGuestbookComments();
   });
